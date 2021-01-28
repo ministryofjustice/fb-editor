@@ -17,7 +17,8 @@ class EditorApp < SitePrism::Page
   element :form_name_field, :field, 'Form name'
   element :save_button, :button, 'Save'
 
-  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces'
+  element :page_url_field, :field, '#singlequestion #page_page_url'
+  element :check_answers_page_url_field, '#checkanswers #page_page_url'
   element :add_single_page_button, :button, 'Add Single Question page'
   element :add_check_answers_page_button, :button, 'Add Check Answers page'
 

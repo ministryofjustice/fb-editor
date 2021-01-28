@@ -6,7 +6,7 @@
   </div>
 <% end %>
 
-<%= form_for(@page_creation, :html=> {:id => 'singlequestion'}, as: :page, url: pages_path) do |f| %>
+<%= form_for(@page_creation, html: { id: 'singlequestion' }, as: :page, url: pages_path) do |f| %>
   <% f.object.errors.each do |error|  %>
     <%= error.message %>
   <% end %>
@@ -19,7 +19,7 @@
   <button class="govuk-button govuk-button--secondary">Cancel</button>
 <% end %>
 
-<%= form_for(@page_creation, :html=> {:id => 'checkanswers'}, as: :page, url: pages_path) do |f| %>
+<%= form_for(@page_creation, html: { id: 'checkanswers' }, as: :page, url: pages_path) do |f| %>
   <% f.object.errors.each do |error|  %>
     <%= error.message %>
   <% end %>

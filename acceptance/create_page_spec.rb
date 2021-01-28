@@ -44,15 +44,11 @@ feature 'Create page' do
   end
 
   def and_I_add_a_page_url
-    within find('#singlequestion') do
-      editor.page_url_field.set('phasma')
-    end
+    editor.page_url_field.set('phasma')
   end
 
   def and_I_add_an_existing_page_url
-    within find('#singlequestion') do
-      editor.page_url_field.set('/')
-    end
+    editor.page_url_field.set('/')
   end
 
   def when_I_add_the_page
@@ -75,9 +71,7 @@ feature 'Create page' do
   end
 
   def and_I_add_a_check_answers_page_url
-    within find('#checkanswers') do
-      editor.page_url_field.set('aquifolium')
-    end
+    editor.check_answers_page_url_field.set('aquifolium')
   end
 
   def when_I_add_check_answers_page
