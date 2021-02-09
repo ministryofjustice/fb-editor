@@ -1,4 +1,6 @@
 class ServiceCreation < Editor::Service
+  attr_accessor :payload
+
   def create
     return false if invalid?
 
@@ -17,6 +19,7 @@ class ServiceCreation < Editor::Service
   def assign_service_attributes(service)
     self.tap do
       self.service_id = service.id
+      self.payload = service
     end
   end
 
