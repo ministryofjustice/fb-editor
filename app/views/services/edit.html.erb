@@ -3,7 +3,7 @@
 <div class="form-overview">
   <% service.pages.each do |page| %>
     <div class="form-step">
-      <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
+      <%= render template: 'page_flow/show', locals: { page: page } %>
 
       <%# TODO: Backend to add dynamic data-driven values to this standard output %>
       <%# Note: This would probably be more efficient if outside the loop so that %>
