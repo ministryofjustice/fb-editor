@@ -14,7 +14,11 @@ class PageCreation
   validates :page_url, metadata_url: { metadata_method: :latest_metadata }
 
   def page_uuid
-    version.metadata['pages'].last['_uuid'] if version
+    page.uuid if version
+  end
+
+  def page
+    MetadataPresenter::Page.new(version.metadata['pages'].last)
   end
 
   def create

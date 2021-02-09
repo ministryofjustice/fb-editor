@@ -5,6 +5,10 @@ class PagesController < FormController
     @page_creation = PageCreation.new(page_creation_params)
 
     if @page_creation.create
+      Thumbnail.new(
+        page: @page_creation.page,
+        service: service
+      ).create
       redirect_to edit_page_path(service_id, @page_creation.page_uuid)
     else
       render template: 'services/edit', status: :unprocessable_entity
@@ -21,6 +25,8 @@ class PagesController < FormController
     @metadata_updater = MetadataUpdater.new(page_update_params)
 
     if @metadata_updater.update
+      Thumbnail.new(page: @page, service: service).create
+
       redirect_to edit_page_path(service.service_id, params[:page_uuid])
     else
       render :edit, status: :unprocessable_entity

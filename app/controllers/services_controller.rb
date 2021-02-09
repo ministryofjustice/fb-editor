@@ -10,6 +10,7 @@ class ServicesController < ApplicationController
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
+      Thumbnail.new(page: service.pages.first, service: service).create
       redirect_to edit_service_path(@service_creation.service_id)
     else
       render :index
