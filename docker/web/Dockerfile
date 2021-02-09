@@ -3,7 +3,7 @@ FROM ruby:2.7.2-alpine3.12
 ARG UID=1001
 
 RUN apk add git nodejs yarn build-base postgresql-contrib postgresql-dev \
-      bash libcurl curl
+      bash libcurl curl chromium-chromedriver chromium
 
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
