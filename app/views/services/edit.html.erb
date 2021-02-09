@@ -1,9 +1,9 @@
 <h1><%= t('pages.form') %></h1>
 
 <div class="form-overview">
-  <% service.pages.each do |page| %>
+  <% service.pages.each_with_index do |page, index| %>
     <div class="form-step">
-      <%= render template: 'page_flow/show', locals: { page: page } %>
+      <%= render template: 'page_flow/show', locals: { page: page, index: index } %>
 
       <%# TODO: Backend to add dynamic data-driven values to this standard output %>
       <%# Note: This would probably be more efficient if outside the loop so that %>
