@@ -87,6 +87,6 @@ workflows:
             branches:
               only:
                 - main
-      - acceptance_tests:
-          requires:
-            - build_and_deploy_to_test
+      # - acceptance_tests:
+      #     requires:
+      #       - build_and_deploy_to_test
