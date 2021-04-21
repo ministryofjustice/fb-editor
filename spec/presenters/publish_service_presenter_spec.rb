@@ -12,6 +12,9 @@ RSpec.describe PublishServicePresenter do
     end
 
     let(:params) { { id: service.service_id } }
+    let(:expected_hostname) do
+      %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://service-name.dev.test.form.service.justice.gov.uk\">service-name.dev.test.form.service.justice.gov.uk</a>)
+    end
 
     before do
       allow(view).to receive(:service).and_return(service)
@@ -25,9 +28,7 @@ RSpec.describe PublishServicePresenter do
         end
 
         it 'returns hostname link' do
-          expect(hostname).to eq(
-            %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://service-name.dev.test.form.service.justice.gov.uk\">service-name.dev.test.form.service.justice.gov.uk</a>)
-          )
+          expect(hostname).to eq(expected_hostname)
         end
       end
 
@@ -49,8 +50,8 @@ RSpec.describe PublishServicePresenter do
         create(:publish_service, :dev, :queued, service_id: service.service_id)
       end
 
-      it 'returns nil' do
-        expect(hostname).to be_nil
+      it 'always shows the hostname' do
+        expect(hostname).to eq(expected_hostname)
       end
     end
 
