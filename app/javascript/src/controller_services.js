@@ -66,6 +66,13 @@ ServicesController.edit = function(app) {
 
   // Fix for the scrolling of form overview.
   applyCustomOverviewWorkaround();
+  let scrollTimeout;
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
+      clearTimeout(scrollTimeout);
+      applyCustomOverviewWorkaround();
+    }, 500);
+  });
 }
 
 
@@ -237,14 +244,9 @@ function applyCustomOverviewWorkaround() {
     else {
       $container.css("left", ~(offsetLeft - margin));
     }
-
-    // Make sure to limit so a scrollbar can kick in, if necessary.
-    $container.css({
-      "max-width": maxWidth,
-    });
-
   }
 
+  $container.css("max-width", maxWidth); // Make sure to limit so a scrollbar can kick in, if necessary.
   $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
   $overview.height($container.outerHeight(true));
 }
