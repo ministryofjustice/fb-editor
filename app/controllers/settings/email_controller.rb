@@ -23,10 +23,8 @@ class Settings::EmailController < FormController
     end
   end
 
-  private
-
   def email_settings_params
-    params.require(:email_settings).permit(
+    email_params.permit(
       :deployment_environment,
       :send_by_email,
       :service_email_output,
@@ -36,6 +34,18 @@ class Settings::EmailController < FormController
       :service_email_pdf_heading,
       :service_email_pdf_subheading
     )
+  end
+
+  private
+
+  def email_params
+    params.require(:email_settings).tap do |settings|
+      settings[:send_by_email] = settings[send_by_email(settings)]
+    end
+  end
+
+  def send_by_email(settings)
+    "send_by_email_#{settings[:deployment_environment]}"
   end
 
   def assign_form_objects
