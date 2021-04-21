@@ -13,7 +13,7 @@ RSpec.describe PublishServicePresenter do
 
     let(:params) { { id: service.service_id } }
     let(:expected_hostname) do
-      %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://service-name.dev.test.form.service.justice.gov.uk\">service-name.dev.test.form.service.justice.gov.uk</a>)
+      %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://version-fixture.dev.test.form.service.justice.gov.uk\">version-fixture.dev.test.form.service.justice.gov.uk</a>)
     end
 
     before do

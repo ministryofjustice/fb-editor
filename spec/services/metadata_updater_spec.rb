@@ -134,7 +134,7 @@ RSpec.describe MetadataUpdater do
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
             page = metadata['pages'].find do |fixture_page|
-              fixture_page['url'] == '/star-wars-knowledge'
+              fixture_page['url'] == 'star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -173,7 +173,7 @@ RSpec.describe MetadataUpdater do
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
             page = metadata['pages'].find do |fixture_page|
-              fixture_page['url'] == '/star-wars-knowledge'
+              fixture_page['url'] == 'star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -228,7 +228,7 @@ RSpec.describe MetadataUpdater do
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
             page = metadata['pages'].find do |fixture_page|
-              fixture_page['url'] == '/star-wars-knowledge'
+              fixture_page['url'] == 'star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -275,7 +275,7 @@ RSpec.describe MetadataUpdater do
           end
           let(:attributes) do
             ActiveSupport::HashWithIndifferentAccess.new({
-              id: 'page._check-answers',
+              id: 'page.check-answers',
               service_id: service.service_id,
               latest_metadata: fixture,
               actions: { add_component: 'content', component_collection: 'extra_components' }
@@ -300,17 +300,21 @@ RSpec.describe MetadataUpdater do
         {
           '_id' => 'page.privacy',
           '_type' => 'page.standalone',
-          '_uuid' => 'd658f790-0ceb-4507-b8ac-ae30ece6bc8d',
+          '_uuid' => '4b86fe8c-7723-4cce-9378-7b2510279e04',
           'body' => 'Some joke about the cookie monster',
           'heading' => 'Privacy notice',
-          'url' => 'privacy',
+          'url' => '/privacy',
           'components' => []
         }
       end
 
       let(:updated_metadata) do
         metadata = fixture.deep_dup
-        metadata['standalone_pages'][-1] = metadata['standalone_pages'][-1].merge(expected_updated_page)
+        metadata['standalone_pages'].each_with_index do |page, index|
+          if page['url'] == page_url
+            metadata['standalone_pages'][index] = page.merge(expected_updated_page)
+          end
+        end
         metadata
       end
 
@@ -331,7 +335,7 @@ RSpec.describe MetadataUpdater do
       it 'updates the page metadata' do
         updater.update
         expect(
-          updater.update['standalone_pages'][-1]
+          updater.update['standalone_pages'].find { |page| page['url'] == page_url }
         ).to eq(expected_updated_page)
       end
     end
@@ -384,7 +388,7 @@ RSpec.describe MetadataUpdater do
       end
       let(:attributes) do
         {
-          id: 'page.accessibility',
+          id: 'page.privacy',
           service_id: service.service_id,
           latest_metadata: service_metadata
         }
