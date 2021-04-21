@@ -5,7 +5,7 @@ class PublishServicePresenter
   delegate :deployment_environment, to: :publish_service
 
   def self.hostname_for(deployment_environment:, view:)
-    publish_service = completed_published_service(
+    publish_service = last_published_service(
       service_id: view.service.service_id,
       deployment_environment: deployment_environment
     )
@@ -16,8 +16,8 @@ class PublishServicePresenter
     end
   end
 
-  def self.completed_published_service(service_id:, deployment_environment:)
-    PublishService.completed.where(
+  def self.last_published_service(service_id:, deployment_environment:)
+    PublishService.where(
       deployment_environment: deployment_environment,
       service_id: service_id
     ).desc.first
