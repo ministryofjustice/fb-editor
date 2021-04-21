@@ -62,18 +62,7 @@ ServicesController.edit = function(app) {
   });
 
   // Create the menu for Add Page functionality.
-  let pageAdditionMenu = new PageActionMenu(this, $("[data-component='PageAdditionMenu']"), {
-    selection_event: "PageAdditionMenuSelection",
-    pageCreateDialog: pageCreateDialog,
-    menu: {
-      position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-    }
-  });
-
-  // Add handler for main 'Add page' button to clear any add_page_after values.
-  pageAdditionMenu.menu.activator.$node.on("click.servicescontrolleredit", function() {
-    updateHiddenInputOnForm(pageCreateDialog.$form, "page[add_page_after]", "");
-  });
+  createPageAdditionMenu(pageCreateDialog);
 
   // Fix for the scrolling of form overview.
   applyCustomOverviewWorkaround();
@@ -183,6 +172,23 @@ function pageActionMenuSelection(event, data) {
 }
 
 
+/* TODO
+ * Description here
+ **/
+function createPageAdditionMenu(pageCreateDialog) {
+  new PageActionMenu(this, $("[data-component='PageAdditionMenu']"), {
+      selection_event: "PageAdditionMenuSelection",
+      pageCreateDialog: pageCreateDialog,
+      menu: {
+        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+      }
+    }).menu.activator.$node.on("click.servicescontrolleredit", function() {
+      // Add handler for main 'Add page' button to clear any add_page_after values.
+      updateHiddenInputOnForm(pageCreateDialog.$form, "page[add_page_after]", "");
+  });
+}
+
+
 /* Controls what happens when user selects a page type.
  * 1). Clear page_type & component_type values in hidden form.
  * (if we then have new values):
@@ -215,12 +221,32 @@ function pageAdditionMenuSelection(event, data) {
 function applyCustomOverviewWorkaround() {
   var $overview = $("#form-overview");
   var $container = $overview.find(" > .container");
+  var $button = $(".form-overview_button")
+  var containerWidth = $container.width();
+  var overviewWidth = $overview.width();
+  var offsetLeft = $overview.offset().left;
+  var margin = 30; // Arbitrary number based on common
+  var spacerForMenu = 250;
+  var maxWidth = window.innerWidth - (margin * 2) - spacerForMenu;
 
-  $overview.height($container.height());
-  $container.css({
-    right: ~($overview.offset().left) + 30
-  }); // + 30 is arbitrary extra spacing
+  if(containerWidth > overviewWidth) {
+    let left = ((containerWidth + spacerForMenu) - overviewWidth) / 2;
+    if(left < offsetLeft) {
+      $container.css("left", ~left);
+    }
+    else {
+      $container.css("left", ~(offsetLeft - margin));
+    }
 
+    // Make sure to limit so a scrollbar can kick in, if necessary.
+    $container.css({
+      "max-width": maxWidth,
+    });
+
+  }
+
+  $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
+  $overview.height($container.outerHeight(true));
 }
 
 
