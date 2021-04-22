@@ -84,7 +84,10 @@ RSpec.describe NewPageGenerator do
 
       context 'when inserting page after a given page' do
         # this is the third page so the new page should be the fourth page
-        let(:add_page_after) { 'ccf49acb-ad33-4fd3-8a7e-f0594b86cc96' }
+        let(:add_page_after) do
+          page = service.find_page_by_url('email-address')
+          page.uuid
+        end
 
         it 'adds new page after the given page' do
           expect(generator.to_metadata['pages']).to_not be_blank
@@ -153,7 +156,7 @@ RSpec.describe NewPageGenerator do
 
       it 'adds the page to the standalone_pages array' do
         metadata = generator.to_metadata
-        expect(metadata['standalone_pages'].count).to eq(1)
+        expect(metadata['standalone_pages'].count).to eq(4) # there are 3 pages generated there already by default
         expect(metadata['pages'].count).to eq(1)
       end
     end

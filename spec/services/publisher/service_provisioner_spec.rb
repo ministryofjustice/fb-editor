@@ -14,7 +14,7 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
 
     it 'returns slug using the service name' do
-      expect(service_provisioner.service_slug).to eq('service-name')
+      expect(service_provisioner.service_slug).to eq('version-fixture')
     end
   end
 
