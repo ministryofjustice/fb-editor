@@ -20,8 +20,6 @@ var converter = new showdown.Converter({
                   noHeaderId: true,
                   strikethrough: true,
                   omitExtraWLInCodeBlocks: true,
-                  simplifiedAutoLink: false,
-                  tables: true,
                   disableForced4SpacesIndentedSublists: true
                 });
 
@@ -148,63 +146,29 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    var $input = $("<textarea class=\"input\"></textarea>");
-    var $output = $("<div class=\"output\"></div>");
-    var $span = $("<span>measure</span>");
-    var lineHeight;
-
-    // ??
-    $span.css({
-      font: "inherit",
-      visibility: "hidden"
-    });
-
-    $node.append($span);
-    lineHeight = $span.height();
-    $span.remove();
-
-    // Use a textarea for input because it is more predictable than
-    // using a div with contentEditable attribute.
-    $output.append($node.html());
-    $node.empty();
-    $node.append($input);
-    $node.append($output);
-
-    // Clear inherited events
-    $node.off("blur.editablecomponent");
-    $node.off("focus.editablecomponent");
-    $node.off("paste.editablecomponent");
-    $node.off("keydown.editablecomponent");
-
-    // Add event to required element
-    $output.on("click.editablecontent, focus.editablecontent", this.edit.bind(this) );
-    $input.on("blur.editablecontent", this.update.bind(this) );
-    // TODO: Experimental and not quite working properly auto-resizing effort.
-    //       Disabled for MVP unless there is time to get it right.
-    //$input.on("keydown.editablecontent, paste.editablecontent", EditableContent.inputResizer.bind(this) );
-
-    // Correct the class:
-    $node.removeClass("EditableElement");
-    $node.addClass("EditableContent");
 
     if(config.text.default_content) {
       this._defaultContent = config.text.default_content;
     }
 
+    // Adjust event for multiple line input.
+    $node.off("keydown.editablecomponent");
+    $node.on("keydown.editablecontent", e => multipleLineInputRestrictions(e) );
+
+    // Correct the class:
+    $node.removeClass("EditableElement");
+    $node.addClass("EditableContent");
+
     this._editing = false;
-    this._content = convertToMarkdown($output.html().trim()); // trim removes whitespace from template.
-    this._lineHeight = lineHeight;
-    this.$input = $input;
-    this.$output = $output;
+    this._content = $node.html().trim(); // trim removes whitespace from template.
   }
 
   // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = this._content;
+    var content = convertToMarkdown(this._content);
     var contentWithoutWhitespace = content.replace(/\s/mig, "");
     var defaultWithoutWhitespace = this._defaultContent.replace(/\s/mig, "");
 
-    // Remove whitespace for better comparison
     content = (contentWithoutWhitespace == defaultWithoutWhitespace ? "" : content);
 
     // Bit hacky but we handle one type of content value as a string (see above),
@@ -217,38 +181,57 @@ class EditableContent extends EditableElement {
     return content;
   }
 
+  // Set content takes markdown (because it should be called after editing).
+  // It should convert the markdown to HTML and put back as DOM node content.
   set content(markdown) {
-    this._content = markdown;
+    this._content = convertToHtml(markdown);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
-    this.$node.addClass(this._config.editClassname);
-    this.$input.val(this._content); // Adds latest stored content to input area
-    this.$input.focus();
-    this.$input.select();
+    if(!this._editing) {
+      EditableContent.displayMarkdownInBrowser.call(this);
+      this._editing = true;
+      super.edit();
+    }
   }
 
   update() {
-    this.content = this.$input.val().trim(); // Get the latest markdown
-    this.$node.removeClass(this._config.editClassname);
+    if(this._editing) {
+      // Get the content which should be markdown mixed with
+      // some HTML due to browser contentEditable handling.
+      this.content = this.$node.html();
+      EditableContent.displayHtmlInBrowser.call(this);
+      this.$node.removeClass(this._config.editClassname);
+      this._editing = false;
+    }
+  }
 
-    // Figure out what content to show
-    let defaultContent = this._defaultContent || this._originalContent;
-    let content = (this._content == "" ? defaultContent : this._content);
-
-    // Add latest content to output area
-    this.$output.html(convertToHtml(content));
+  markdown() {
+    return convertToMarkdown(this._content);
   }
 }
 
-/* Experimental effort to auto-resize input area.
- * Currently not used as not working 100%.
+/* Function to display the content as markdown in browser.
+ * Had own function because we need to manipulate the content to
+ * make sure it displays correctly formatted (visually), and
+ * for clarity of where the display action happens.
  **/
-EditableContent.inputResizer = function(e) {
-  if(e.which == 13) {
-    this.$input.height(this.$input.height() + this._lineHeight);
-  }
+EditableContent.displayMarkdownInBrowser = function() {
+  var markdown = this.markdown();
+  this.$node.html(markdown.replace(/\n/g,"<br>")); // Displays on one line without this.
+}
+
+
+/* Function to display the content as markdown in browser.
+ * Had own function because we need to manipulate the content to
+ * make sure it displays correctly formatted (visually), and
+ * for clarity of where the display action happens.
+ **/
+EditableContent.displayHtmlInBrowser = function() {
+  var defaultContent = this._defaultContent || this._originalContent;
+  var content = (this._content == "" ? defaultContent : this._content);
+  this.$node.html(content);
 }
 
 
@@ -750,7 +733,7 @@ class EditableCollectionItemRemover {
       editableCollectionItem.remove();
     });
 
-    // Close on ENTER || SPACE
+    // Close on SPACE and ENTER
     $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       if(e.which == 13 || e.which == 32) {
@@ -771,7 +754,11 @@ class EditableCollectionItemRemover {
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
-  return converter.makeMarkdown(html);
+  html = html.trim();
+  html = html.replace(/<!-- -->/mig, "");
+  html = html.replace(/(<\/p>)/mig, "$1\n\n");
+  html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
+  return converter.makeMarkdown(html).trim();
 }
 
 
@@ -779,8 +766,19 @@ function convertToMarkdown(html) {
  * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
 function convertToHtml(markdown) {
-console.log("markdown: ", markdown);
-  return converter.makeHtml(markdown);
+  // First clean up what we got as it will probably contain
+  // some nonsense due to browser contentEditabl handling. 
+  markdown = markdown.trim();
+  markdown = markdown.replace(/&nbsp;/mig, " "); // Entity spaces mess things up.
+  markdown = markdown.replace(/<br>/mig, "\n");  // Revert any we added for visual purpose.
+  markdown = markdown.replace(/<\/div><div>/mig, "\n");
+  markdown = markdown.replace(/<[\/]?div>/mig, "");
+  markdown = markdown.replace(/&gt;/mig, ">"); // Fix blockquotes.
+
+  // Next do the conversion and correct some things to display properly.
+  let html = converter.makeHtml(markdown);
+  html = html.replace(/<li><p>(.*)?<\/p>/mig, "<li>$1");  // Don't want <p> tags in there.
+  return html;
 }
 
 
@@ -790,7 +788,14 @@ console.log("markdown: ", markdown);
  * editing as plain text and markdown for all elements so try to
  * prevent unwanted entry with this function.
  **/
-function multipleLineInputRestrictions(event) {}
+function multipleLineInputRestrictions(event) {
+
+  // Prevent ENTER adding <div><br></div> nonsense.
+  if(event.which == 13) {
+    event.preventDefault();
+    document.execCommand("insertText", false, "\n");
+  }
+}
 
 
 /* Single Line Input Restrictions
