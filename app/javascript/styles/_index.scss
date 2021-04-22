@@ -161,6 +161,7 @@ html {
   .input {
     border: none;
     display: none;
+    font: inherit;
     min-height: 200px; // Arbitrary
     width: 100%;
   }
