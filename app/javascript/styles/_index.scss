@@ -157,11 +157,23 @@ html {
   }
 }
 
-.EditableContent,
-.EditableElement {
-  &:focus,
+.EditableContent {
+  .input {
+    border: none;
+    display: none;
+    min-height: 200px; // Arbitrary
+    width: 100%;
+  }
+
   &.active {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
+    .input {
+      display: block;
+      outline: $govuk-focus-width solid $govuk-focus-colour;
+    }
+
+    .output {
+      display: none;
+    }
   }
 }
 
@@ -191,6 +203,13 @@ html {
     .ActivatedMenu_Activator {
       opacity: 1;
     }
+  }
+}
+
+.EditableElement {
+  &:focus,
+  &.active {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
   }
 }
 
