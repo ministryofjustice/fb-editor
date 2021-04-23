@@ -202,4 +202,9 @@ module CommonSteps
     and_I_return_to_flow_page
     and_I_preview_the_form
   end
+
+  def when_I_change_editable_content(element, content:)
+    element.click
+    element.find('textarea').set(content)
+  end
 end
