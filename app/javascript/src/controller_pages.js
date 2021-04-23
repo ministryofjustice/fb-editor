@@ -351,7 +351,7 @@ function editPageCheckAnswersViewCustomisations() {
 
 function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
-  var $target = $("#new_answers :submit");
+  var $target = $("#new_answers input:submit");
   $target.before($button1);
 }
 
