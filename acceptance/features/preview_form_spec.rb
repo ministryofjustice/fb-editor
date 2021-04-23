@@ -92,7 +92,8 @@ feature 'Preview form' do
     and_I_add_a_component
     and_I_add_a_content_area
     expect(editor.second_component.text).to eq(optional_content)
-    editor.second_component.set(content)
+    when_I_change_editable_content(editor.second_component, content: content)
+    editor.service_name.click # click outside to close the editable component
   end
 
   def when_I_update_the_question_name(question_name)

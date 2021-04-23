@@ -37,7 +37,7 @@ feature 'Edit confirmation pages' do
   end
 
   def and_I_change_the_page_body(body)
-    editor.page_body.set(body)
+    when_I_change_editable_content(editor.page_body, content: body)
   end
 
   def then_I_should_see_the_confirmation_lede(lede)
