@@ -779,7 +779,6 @@ function convertToMarkdown(html) {
  * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
 function convertToHtml(markdown) {
-console.log("markdown: ", markdown);
   return converter.makeHtml(markdown);
 }
 
