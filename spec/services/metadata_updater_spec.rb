@@ -70,7 +70,7 @@ RSpec.describe MetadataUpdater do
       context 'when there are no components on the page' do
         context 'add to components collection' do
           let(:fixture) { metadata_fixture(:no_component_page) }
-          let(:page_url) { '/confirmation' }
+          let(:page_url) { 'confirmation' }
           let(:expected_created_component) do
             ActiveSupport::HashWithIndifferentAccess.new({
               '_id': 'confirmation_content_1',
@@ -88,7 +88,7 @@ RSpec.describe MetadataUpdater do
               'body' => "You'll receive a confirmation email",
               'heading' => 'Complaint sent',
               'lede' => 'Updated lede',
-              'url' => '/confirmation',
+              'url' => 'confirmation',
               'components' => [expected_created_component]
             }
           end
@@ -253,7 +253,7 @@ RSpec.describe MetadataUpdater do
 
         context 'add to extra components collection' do
           let(:fixture) { metadata_fixture(:version) }
-          let(:page_url) { '/check-answers' }
+          let(:page_url) { 'check-answers' }
           let(:expected_created_component) do
             ActiveSupport::HashWithIndifferentAccess.new({
               '_id': 'check-answers_content_3',
@@ -294,7 +294,7 @@ RSpec.describe MetadataUpdater do
 
     context 'when updating attributes for standalone pages' do
       let(:fixture) { metadata_fixture(:version) }
-      let(:page_url) { '/privacy' }
+      let(:page_url) { 'privacy' }
 
       let(:expected_updated_page) do
         {
@@ -303,7 +303,7 @@ RSpec.describe MetadataUpdater do
           '_uuid' => '4b86fe8c-7723-4cce-9378-7b2510279e04',
           'body' => 'Some joke about the cookie monster',
           'heading' => 'Privacy notice',
-          'url' => '/privacy',
+          'url' => 'privacy',
           'components' => []
         }
       end
