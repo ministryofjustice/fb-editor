@@ -43,3 +43,5 @@ yarn-debug.log*
 
 # macOS finder #
 .DS_Store
+
+coverage/
