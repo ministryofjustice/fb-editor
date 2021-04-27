@@ -600,8 +600,12 @@ EditableCollectionFieldComponent.createCollectionItemTemplate = function(config)
  **/
 EditableCollectionFieldComponent.createEditableCollectionItems = function(config) {
   var component = this;
-  var data = mergeObjects({}, config.data, ["items", "_uuid"]); // pt.1 Copy without items and component uuid.
   component.$node.find(config.selectorCollectionItem).each(function(i) {
+    // WARNING! DO NOT MOVE data or itemConfig OUTSIDE OF THIS LOOP
+    // Due to JS reference handling of objects we need to make sure data and itemConfig are
+    // inside the loop to instantiate two completely different variables. JS will not pass
+    // by value so the alternative is creating EditableCollectionItems that share these objects.
+    var data = mergeObjects({}, config.data, ["items", "_uuid"]); // pt.1 Copy without items and component uuid.
     var itemConfig = mergeObjects({ preserveItem: (i < component._preservedItemCount) }, config, ["data"]); // pt.2 Without data
     itemConfig.data = mergeObjects(data, config.data.items[i]); // Bug fix response to JS reference handling.
 
