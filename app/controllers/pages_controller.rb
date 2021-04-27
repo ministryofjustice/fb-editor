@@ -16,7 +16,7 @@ class PagesController < FormController
   end
 
   def update
-    @metadata_updater = MetadataUpdater.new(page_update_params)
+    @metadata_updater = PageUpdater.new(page_update_params)
 
     if @metadata_updater.update
       redirect_to edit_page_path(
@@ -31,7 +31,7 @@ class PagesController < FormController
   end
 
   def destroy
-    @metadata_updater = MetadataUpdater.new(common_params.merge(id: @page.id))
+    @metadata_updater = PageDestroyer.new(common_params.merge(id: @page.id))
 
     @metadata_updater.destroy
     redirect_to edit_service_path(service.service_id)

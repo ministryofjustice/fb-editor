@@ -5,6 +5,10 @@ inherit_gem:
     - config/default.yml
     - config/rails.yml
 
+
+Rails/SaveBang:
+  Enabled: false
+
 AllCops:
   # Exclude anything that isn't really part of our code.
   # rails_helper is excluded because it's full of solecisms, but it's mostly

@@ -25,7 +25,6 @@ class NewComponentGenerator
     end
   end
 
-
   private
 
   def component_id
