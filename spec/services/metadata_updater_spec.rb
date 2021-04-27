@@ -208,6 +208,7 @@ RSpec.describe MetadataUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_1',
                   '_type' => 'radio',
+                  '_uuid' => "Dead or alive you're coming with me",
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-1'
@@ -215,6 +216,7 @@ RSpec.describe MetadataUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_2',
                   '_type' => 'radio',
+                  '_uuid' => "Dead or alive you're coming with me",
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-2'

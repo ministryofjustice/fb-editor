@@ -10,7 +10,7 @@ RSpec.describe NewComponentGenerator do
   non_input_components = %w[content]
 
   before do
-    allow(SecureRandom).to receive(:uuid).and_return('Get to the choppa')
+    allow(SecureRandom).to receive(:uuid).and_return('Get to the choppa', 'Get to the choppa 1', 'Get to the choppa 2')
   end
 
   describe '#to_metadata' do
@@ -116,14 +116,16 @@ RSpec.describe NewComponentGenerator do
                     '_type' => component.singularize,
                     'hint' => '',
                     'label' => 'Option',
-                    'value' => 'value-1'
+                    'value' => 'value-1',
+                    '_uuid' => 'Get to the choppa 1'
                   },
                   {
                     '_id' => "#{page_url}_#{component}_1_item_2",
                     '_type' => component.singularize,
                     'hint' => '',
                     'label' => 'Option',
-                    'value' => 'value-2'
+                    'value' => 'value-2',
+                    '_uuid' => 'Get to the choppa 2'
                   }
                 ],
                 'legend' => 'Question',
