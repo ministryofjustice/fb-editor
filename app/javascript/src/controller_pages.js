@@ -22,6 +22,14 @@ import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
 import { ServicesController } from './controller_services';
 
+const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
+const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
+const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
+const SELECTOR_DISABLED = "input:not(:hidden), textarea";
+const SELECTOR_GROUP_FIELD_LABEL = "legend > :first-child";
+const SELECTOR_HINT_STANDARD = ".govuk-hint";
+const SELECTOR_LABEL_HEADING = "label h1, label h2";
+const SELECTOR_LABEL_STANDARD = "label";
 
 class PagesController extends DefaultPage {
   constructor(app) {
@@ -38,9 +46,9 @@ class PagesController extends DefaultPage {
   }
 }
 
-
-/* Setup for the Edit action
- **/
+/* ------------------------------
+ * Setup for the Edit action view
+ * ------------------------------ */
 PagesController.edit = function(app) {
   var $form = $("#editContentForm");
   this.$form = $form;
@@ -48,9 +56,6 @@ PagesController.edit = function(app) {
 
   bindEditableContentHandlers.call(this, app);
   focusOnEditableComponent.call(this);
-
-  // Bind document event listeners.
-  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
 
   // Handle page-specific view customisations here.
   switch(this.type) {
@@ -82,19 +87,22 @@ PagesController.edit = function(app) {
   });
 
   // Enhance any Add Component buttons.
+  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
   });
 }
 
-
-/* Setup for the Create action
- **/
+/* --------------------------------
+ * Setup for the Create action view
+ * -------------------------------- */
 PagesController.create = function(app) {
   // Actually uses the Services controller due to view redirect on server.
   ServicesController.edit.call(this, app);
 }
+
+
 
 
 /* Gives add component buttons functionality to select a component type
@@ -177,9 +185,6 @@ function focusOnEditableComponent() {
  * TODO: Add more description on how this works.
  **/
 function bindEditableContentHandlers($area) {
-  const SELECTOR_LABEL_STANDARD = "label h1, label h2";
-  const SELECTOR_HINT_STANDARD = ".govuk-hint";
-
   var page = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
@@ -204,19 +209,19 @@ function bindEditableContentHandlers($area) {
         id: $node.data("fb-content-id"),
 
         // Selectors for editable component labels/legends/hints, etc.
-        selectorTextFieldLabel: SELECTOR_LABEL_STANDARD, // Also used by Number
+        selectorTextFieldLabel: SELECTOR_LABEL_HEADING, // Also used by Number
         selectorTextFieldHint: SELECTOR_HINT_STANDARD,   // Also used by Number
-        selectorTextareaFieldLabel: SELECTOR_LABEL_STANDARD,
+        selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
         selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
-        selectorGroupFieldLabel: "legend > :first-child", // Used by Date
-        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,   // Used by Date
-        selectorCollectionFieldLabel: "legend > :first-child", // Used by Radios
-        selectorCollectionFieldHint: "fieldset > .govuk-hint", // Used by Radios
-        selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item", // Used by Radio and Checkbox option parent
-        selectorComponentCollectionItemLabel: "label",               // Used by Radio and Checkbox options
-        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD, // Used by Radio and Checkbox options
+        selectorGroupFieldLabel: SELECTOR_GROUP_FIELD_LABEL, // Used by Date
+        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,      // Used by Date
+        selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
+        selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
+        selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
+        selectorComponentCollectionItemLabel: SELECTOR_LABEL_STANDARD, // Used by Radio and Checkbox options
+        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD,   // Used by Radio and Checkbox options
         // Other selectors
-        selectorDisabled: "input:not(:hidden), textarea",
+        selectorDisabled: SELECTOR_DISABLED,
 
         text: {
           addItem: app.text.actions.option_add,
