@@ -18,7 +18,7 @@
 
 import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 import { editableComponent } from './editable_components';
 import { ServicesController } from './controller_services';
 
@@ -31,7 +31,7 @@ const SELECTOR_HINT_STANDARD = ".govuk-hint";
 const SELECTOR_LABEL_HEADING = "label h1, label h2";
 const SELECTOR_LABEL_STANDARD = "label";
 
-class PagesController extends DefaultPage {
+class PagesController extends DefaultController {
   constructor(app) {
     super();
 
