@@ -81,10 +81,11 @@ class EditorApp < SitePrism::Page
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
 
-  elements :question_heading, '.EditableElement'
+  elements :question_heading, 'h1'
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
+  data_content_id :section_heading, 'page[section_heading]'
   data_content_id :page_heading, 'page[heading]'
   data_content_id :page_lede, 'page[lede]'
   data_content_id :page_body, 'page[body]'
