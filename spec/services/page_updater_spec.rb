@@ -17,7 +17,9 @@ RSpec.describe PageUpdater do
     ).and_return(version)
 
     allow(SecureRandom).to receive(:uuid).and_return(
-      "Dead or alive you're coming with me"
+      "Dead or alive you're coming with me",
+      'KNOCK KNOCK',
+      'Hasta la vista, baby'
     )
   end
 
@@ -208,7 +210,7 @@ RSpec.describe PageUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_1',
                   '_type' => 'radio',
-                  '_uuid' => "Dead or alive you're coming with me",
+                  '_uuid' => 'KNOCK KNOCK',
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-1'
@@ -216,7 +218,7 @@ RSpec.describe PageUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_2',
                   '_type' => 'radio',
-                  '_uuid' => "Dead or alive you're coming with me",
+                  '_uuid' => 'Hasta la vista, baby',
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-2'
@@ -291,6 +293,68 @@ RSpec.describe PageUpdater do
             ).to eq(expected_created_component)
           end
         end
+      end
+    end
+
+    context 'when receiving component / items with duplicated UUID' do
+      let(:page_url) { 'do-you-like-star-wars' }
+      let(:attributes) do
+        {
+          id: 'page.do-you-like-star-wars',
+          service_id: service.service_id,
+          latest_metadata: service_metadata
+        }.merge(attributes_to_update)
+      end
+      let(:attributes_to_update) do
+        {
+          'components' => [
+            '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+            'items' => [
+              {
+                '_uuid' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+              },
+              {
+                '_uuid' => '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              }
+            ]
+          ]
+        }.stringify_keys
+      end
+
+      before do
+        # we just want to test the metadata generated
+        RSpec::Mocks.space.proxy_for(MetadataApiClient::Version).reset
+
+        allow(SecureRandom).to receive(:uuid).and_return(
+          'Captain Insano shows no mercy',
+          'No, You are wrong Colonel Sanders',
+          'Now thats what I call high quality H2O'
+        )
+      end
+
+      it 'updates the page metadata replacing duplicated UUIDs' do
+        updated_page = MetadataPresenter::Service.new(
+          page.metadata
+        ).find_page_by_url(page_url)
+        uuids = updated_page.to_h[:components][0]['items'].map { |item| item['_uuid'] }
+        expect(uuids).to eq(
+          [
+            'c5571937-9388-4411-b5fa-34ddf9bc4ca0',
+            '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6',
+            'Captain Insano shows no mercy',
+            'No, You are wrong Colonel Sanders',
+            'Now thats what I call high quality H2O'
+          ]
+        )
       end
     end
 

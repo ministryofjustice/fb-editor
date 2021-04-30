@@ -39,6 +39,8 @@ class PageUpdater
       @component_added = component
     end
 
+    new_object = make_sure_uuids_are_unique(new_object)
+
     @latest_metadata[page_collection][index] = new_object
     @latest_metadata
   end
@@ -57,5 +59,25 @@ class PageUpdater
 
   def all_components(obj)
     [obj['components'], obj['extra_components']].flatten.compact
+  end
+
+  # When the frontend sends new options it uses the component UUID to the
+  # option uuid so we need to do this.
+  #
+  def make_sure_uuids_are_unique(new_object)
+    object =
+      ActiveSupport::HashWithIndifferentAccess.new(new_object)
+
+    Array(object[:components]).map do |component|
+      component_id = component[:_uuid]
+
+      Array(component[:items]).each do |item|
+        if item[:_uuid] == component_id
+          item[:_uuid] = SecureRandom.uuid
+        end
+      end
+    end
+
+    object
   end
 end
