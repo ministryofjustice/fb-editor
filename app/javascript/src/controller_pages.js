@@ -50,17 +50,18 @@ class PagesController extends DefaultController {
  * Setup for the Edit action view
  * ------------------------------ */
 PagesController.edit = function(app) {
+  var view = this;
   var $form = $("#editContentForm");
   this.$form = $form;
   this.editableContent = [];
 
-  bindEditableContentHandlers.call(this, app);
-  focusOnEditableComponent.call(this);
+  bindEditableContentHandlers.call(view, app);
+  focusOnEditableComponent.call(view);
 
   // Handle page-specific view customisations here.
-  switch(this.type) {
+  switch(view.type) {
     case "page.multiplequestions":
-         editPageMultipleQuestionsViewCustomisations.call(this);
+         editPageMultipleQuestionsViewCustomisations.call(view);
          break;
 
     case "page.singlequestion":
@@ -68,7 +69,7 @@ PagesController.edit = function(app) {
          break;
 
     case "page.content":
-         editPageContentViewCustomisations.call(this);
+         editPageContentViewCustomisations.call(view);
          break;
 
     case "page.confirmation":
@@ -76,7 +77,7 @@ PagesController.edit = function(app) {
          break;
 
     case "page.checkanswers":
-         editPageCheckAnswersViewCustomisations.call(this);
+         editPageCheckAnswersViewCustomisations.call(view);
          break;
   }
 
@@ -87,7 +88,7 @@ PagesController.edit = function(app) {
   });
 
   // Enhance any Add Component buttons.
-  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
+  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
