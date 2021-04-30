@@ -23,6 +23,7 @@ feature 'Default text' do
     preview_page = when_I_preview_the_page
     then_I_should_preview_the_page(preview_page) do
       and_I_should_not_see_the_default_text
+      and_I_should_not_see_the_optional_section_heading_text
     end
   end
 
@@ -64,6 +65,10 @@ feature 'Default text' do
 
   def and_I_should_not_see_the_default_text
     expect(page.text).to_not include('[Optional hint text]')
+  end
+
+  def and_I_should_not_see_the_optional_section_heading_text
+    expect(page.text).to_not include('[Optional section heading]')
   end
 
   def when_I_customise_hint

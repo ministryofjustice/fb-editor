@@ -18,6 +18,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing text component' do
     given_I_have_a_single_question_page_with_text
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview
@@ -25,6 +26,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing textarea component' do
     given_I_have_a_single_question_page_with_textarea
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview
@@ -32,6 +34,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing number component' do
     given_I_have_a_single_question_page_with_number
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview
@@ -39,6 +42,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing date component' do
     given_I_have_a_single_question_page_with_date
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview
@@ -46,6 +50,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing radio component' do
     given_I_have_a_single_question_page_with_radio
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_return_to_flow_page
@@ -55,6 +60,7 @@ feature 'Edit single question page' do
 
   scenario 'when editing checkboxes component' do
     given_I_have_a_single_question_page_with_checkboxes
+    and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_return_to_flow_page
@@ -132,5 +138,9 @@ feature 'Edit single question page' do
         expect(page.text).to include(option)
       end
     end
+  end
+
+  def and_I_have_optional_section_heading_text
+    expect(page.text).to include('[Optional section heading]')
   end
 end
