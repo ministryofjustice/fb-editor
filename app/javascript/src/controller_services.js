@@ -20,10 +20,10 @@
 import { mergeObjects, post, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 
 
-class ServicesController extends DefaultPage {
+class ServicesController extends DefaultController {
   constructor(app) {
     super();
 

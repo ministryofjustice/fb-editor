@@ -18,10 +18,10 @@
 
 import { mergeObjects, safelyActivateFunction, isFunction, post } from './utilities';
 import { ActivatedFormDialog } from './component_activated_form_dialog';
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 
 
-class PublishController extends DefaultPage {
+class PublishController extends DefaultController {
   constructor(app) {
     super();
 

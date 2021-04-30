@@ -17,10 +17,10 @@
 
 
 import { ActivatedDialog } from './component_activated_dialog';
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 
 
-class FormListPage extends DefaultPage {
+class FormListPage extends DefaultController {
   constructor() {
     super();
 

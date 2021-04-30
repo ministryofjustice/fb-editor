@@ -1,4 +1,4 @@
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 import { PagesController } from './controller_pages';
 import { ServicesController } from './controller_services';
 import { FormListPage } from './page_form_list';
@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     default:
          console.log(controllerAndAction());
-         new DefaultPage();
+         new DefaultController();
   }
 });
 
