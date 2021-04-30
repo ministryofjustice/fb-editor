@@ -14,7 +14,7 @@
  *
  **/
 
-import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
+import { property, mergeObjects, createElement, safelyActivateFunction } from './utilities';
 
 
 class ActivatedMenu {
@@ -31,7 +31,7 @@ class ActivatedMenu {
       my: "left top",
       at: "left bottom",
       of: this.activator.$node
-    }, config.menu.position);
+    }, property(config, "menu.position") );
 
     this.state = {
       open: false,
