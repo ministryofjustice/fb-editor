@@ -1,5 +1,5 @@
-RSpec.describe MetadataUpdater do
-  subject(:updater) { MetadataUpdater.new(attributes) }
+RSpec.describe PageUpdater do
+  subject(:page) { described_class.new(attributes) }
   let(:service_id) { service.service_id }
   let(:updated_metadata) do
     metadata = service_metadata.deep_dup
@@ -17,7 +17,9 @@ RSpec.describe MetadataUpdater do
     ).and_return(version)
 
     allow(SecureRandom).to receive(:uuid).and_return(
-      "Dead or alive you're coming with me"
+      "Dead or alive you're coming with me",
+      'KNOCK KNOCK',
+      'Hasta la vista, baby'
     )
   end
 
@@ -44,12 +46,12 @@ RSpec.describe MetadataUpdater do
       end
 
       it 'updates the page metadata' do
-        updated_page = updater.update['pages'][0]
+        updated_page = page.update['pages'][0]
         expect(updated_page).to include(attributes_to_update)
       end
 
       it 'creates valid page metadata' do
-        updated_page = updater.update['pages'][0]
+        updated_page = page.update['pages'][0]
         expect(
           MetadataPresenter::ValidateSchema.validate(
             updated_page, 'page.start'
@@ -60,7 +62,7 @@ RSpec.describe MetadataUpdater do
       it 'creates valid service metadata' do
         expect(
           MetadataPresenter::ValidateSchema.validate(
-            updater.update, 'service.base'
+            page.update, 'service.base'
           )
         ).to be(valid)
       end
@@ -108,9 +110,9 @@ RSpec.describe MetadataUpdater do
           end
 
           it 'updates the page metadata' do
-            updater.update['pages'][-1]
+            page.update['pages'][-1]
             expect(
-              updater.component_added.to_h.stringify_keys
+              page.component_added.to_h.stringify_keys
             ).to eq(expected_created_component)
           end
         end
@@ -150,9 +152,9 @@ RSpec.describe MetadataUpdater do
           end
 
           it 'add new component' do
-            updater.update['pages']
+            page.update['pages']
             expect(
-              updater.component_added.to_h.stringify_keys
+              page.component_added.to_h.stringify_keys
             ).to eq(new_component)
           end
         end
@@ -189,9 +191,9 @@ RSpec.describe MetadataUpdater do
           end
 
           it 'add new component' do
-            updater.update['pages']
+            page.update['pages']
             expect(
-              updater.component_added.to_h.stringify_keys
+              page.component_added.to_h.stringify_keys
             ).to eq(new_component)
           end
         end
@@ -208,6 +210,7 @@ RSpec.describe MetadataUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_1',
                   '_type' => 'radio',
+                  '_uuid' => 'KNOCK KNOCK',
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-1'
@@ -215,6 +218,7 @@ RSpec.describe MetadataUpdater do
                 {
                   '_id' => 'star-wars-knowledge_radios_2_item_2',
                   '_type' => 'radio',
+                  '_uuid' => 'Hasta la vista, baby',
                   'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-2'
@@ -244,9 +248,9 @@ RSpec.describe MetadataUpdater do
           end
 
           it 'add new component' do
-            updater.update['pages']
+            page.update['pages']
             expect(
-              updater.component_added.to_h.stringify_keys
+              page.component_added.to_h.stringify_keys
             ).to eq(new_component)
           end
         end
@@ -283,12 +287,74 @@ RSpec.describe MetadataUpdater do
           end
 
           it 'updates the page metadata' do
-            updater.update['pages'][-2]
+            page.update['pages'][-2]
             expect(
-              updater.component_added.to_h.stringify_keys
+              page.component_added.to_h.stringify_keys
             ).to eq(expected_created_component)
           end
         end
+      end
+    end
+
+    context 'when receiving component / items with duplicated UUID' do
+      let(:page_url) { 'do-you-like-star-wars' }
+      let(:attributes) do
+        {
+          id: 'page.do-you-like-star-wars',
+          service_id: service.service_id,
+          latest_metadata: service_metadata
+        }.merge(attributes_to_update)
+      end
+      let(:attributes_to_update) do
+        {
+          'components' => [
+            '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+            'items' => [
+              {
+                '_uuid' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+              },
+              {
+                '_uuid' => '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              },
+              {
+                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+              }
+            ]
+          ]
+        }.stringify_keys
+      end
+
+      before do
+        # we just want to test the metadata generated
+        RSpec::Mocks.space.proxy_for(MetadataApiClient::Version).reset
+
+        allow(SecureRandom).to receive(:uuid).and_return(
+          'Captain Insano shows no mercy',
+          'No, You are wrong Colonel Sanders',
+          'Now thats what I call high quality H2O'
+        )
+      end
+
+      it 'updates the page metadata replacing duplicated UUIDs' do
+        updated_page = MetadataPresenter::Service.new(
+          page.metadata
+        ).find_page_by_url(page_url)
+        uuids = updated_page.to_h[:components][0]['items'].map { |item| item['_uuid'] }
+        expect(uuids).to eq(
+          [
+            'c5571937-9388-4411-b5fa-34ddf9bc4ca0',
+            '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6',
+            'Captain Insano shows no mercy',
+            'No, You are wrong Colonel Sanders',
+            'Now thats what I call high quality H2O'
+          ]
+        )
       end
     end
 
@@ -333,69 +399,10 @@ RSpec.describe MetadataUpdater do
       end
 
       it 'updates the page metadata' do
-        updater.update
+        update = page.update
         expect(
-          updater.update['standalone_pages'].find { |page| page['url'] == page_url }
+          update['standalone_pages'].find { |page| page['url'] == page_url }
         ).to eq(expected_updated_page)
-      end
-    end
-  end
-
-  describe '#destroy' do
-    context 'when deleting start page' do
-      let(:updated_metadata) do
-        service_metadata.deep_dup
-      end
-      let(:attributes) do
-        {
-          id: 'page.start',
-          service_id: service.service_id,
-          latest_metadata: service_metadata
-        }
-      end
-
-      it 'creates new version with start page' do
-        expect(updater.destroy).to eq(updated_metadata)
-      end
-    end
-
-    context 'when deleting other flow pages' do
-      let(:updated_metadata) do
-        metadata = service_metadata.deep_dup
-        metadata['pages'].delete_at(1)
-        metadata['pages'][0]['steps'].delete('page.name')
-        metadata
-      end
-      let(:attributes) do
-        {
-          id: 'page.name',
-          service_id: service.service_id,
-          latest_metadata: service_metadata
-        }
-      end
-
-      it 'creates new version with page deleted' do
-        expect(updater.destroy).to eq(updated_metadata)
-      end
-    end
-
-    # In future, we may not want to allow users to delete Privacy, Accessibility or Cookies standalone pages
-    context 'when deleting standalone pages' do
-      let(:updated_metadata) do
-        metadata = service_metadata.deep_dup
-        metadata['standalone_pages'].delete_at(1)
-        metadata
-      end
-      let(:attributes) do
-        {
-          id: 'page.privacy',
-          service_id: service.service_id,
-          latest_metadata: service_metadata
-        }
-      end
-
-      it 'creates new version with page deleted' do
-        expect(updater.destroy).to eq(updated_metadata)
       end
     end
   end

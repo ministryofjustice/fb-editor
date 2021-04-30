@@ -19,6 +19,7 @@ class NewComponentGenerator
       if metadata['items'].present?
         metadata['items'].each_with_index do |item, index|
           item['_id'] = "#{component_id}_item_#{index + 1}"
+          item['_uuid'] = SecureRandom.uuid
         end
       end
     end
