@@ -12,6 +12,7 @@ en:
     button_delete_option: 'Delete option'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
+    button_update: 'Update'
     heading: General heading here
     heading_delete: Delete \"%{label}\"?
     heading_delete_option: Delete the option \"%{option label}\"?
@@ -46,6 +47,12 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
+  page:
+    activator: 'Properties'
+    menu:
+      required: 'Required...'
+    dialog:
+      required_message: 'Is answering this question required?'
   pages:
     form: 'Pages flow'
     name: 'Pages'
