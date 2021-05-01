@@ -2,7 +2,8 @@
   var app = {
     page: {
       action: "<%= action_name %>",
-      controller:  "<%= controller_name %>"
+      controller:  "<%= controller_name %>",
+      properties: JSON.parse('<%= yield(:properties).presence || "{}" %>')
     },
     text: {
       default_content: "<%= MetadataPresenter::DefaultText[:content] %>",
