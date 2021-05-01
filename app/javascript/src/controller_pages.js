@@ -88,7 +88,7 @@ PagesController.edit = function(app) {
   });
 
   // Enhance any Add Component buttons.
-  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
+  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
