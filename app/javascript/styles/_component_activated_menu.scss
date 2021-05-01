@@ -59,15 +59,17 @@
     padding-right: 30px;
     position: relative;
 
-    &:after {
-      content: ">";
-      font-family: monospace;
-      font-size: 22px;
-      height: 100%;
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      vertical-align: middle;
+    &[aria-haspopup] {
+      &:after {
+        content: ">";
+        font-family: monospace;
+        font-size: 22px;
+        height: 100%;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        vertical-align: middle;
+      }
     }
   }
 

@@ -16,7 +16,7 @@
  **/
 
 
-import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
+import { mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultController } from './controller_default';
 import { editableComponent } from './editable_components';
@@ -28,7 +28,7 @@ const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea";
 const SELECTOR_GROUP_FIELD_LABEL = "legend > :first-child";
 const SELECTOR_HINT_STANDARD = ".govuk-hint";
-const SELECTOR_LABEL_HEADING = "label h1, label h2";
+const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 const SELECTOR_LABEL_STANDARD = "label";
 
 class PagesController extends DefaultController {
@@ -93,7 +93,21 @@ PagesController.edit = function(app) {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
   });
+
+  // Add Question property menus
+  let questionMenuTemplate = $("[data-component-template=QuestionMenu]");
+  $(SELECTOR_LABEL_HEADING).each(function() {
+    var $node = $(questionMenuTemplate.html());
+    var menu = new QuestionMenu($node, {
+      activator_text: questionMenuTemplate.data("activator-text"),
+      required: false // Should have some data from server, fed in from somewhere, to give us this information.
+    });
+
+    view.$body.append(menu.$node);
+    $(this).before(menu.activator.$node);
+  });
 }
+
 
 /* --------------------------------
  * Setup for the Create action view
@@ -104,6 +118,23 @@ PagesController.create = function(app) {
 }
 
 
+
+
+/* Controls form step add/edit/delete/preview controls
+ **/
+class QuestionMenu {
+  constructor($node, config) {
+    var conf = mergeObjects({
+      container_classname: "QuestionMenu",
+      activator_classname: $node.data("activator-classname"),
+      container_id: $node.data("activated-menu-container-id"),
+      activator_text: $node.data("activator-text")
+    }, config);
+
+    this.menu = new ActivatedMenu($node, conf);
+    this.activator = this.menu.activator;
+  }
+}
 
 
 /* Gives add component buttons functionality to select a component type
