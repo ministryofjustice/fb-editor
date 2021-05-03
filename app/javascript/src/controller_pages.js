@@ -18,6 +18,7 @@
 
 import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
+import { Question } from './question';
 import { DefaultController } from './controller_default';
 import { editableComponent } from './editable_components';
 import { ServicesController } from './controller_services';
@@ -94,17 +95,16 @@ PagesController.edit = function(app) {
     new AddComponent($node, { $form: $form });
   });
 
-  // Add Question property menus
+  // Initialise questions
   let questionMenuTemplate = $("[data-component-template=QuestionMenu]");
-  $(SELECTOR_LABEL_HEADING).each(function() {
-    var $node = $(questionMenuTemplate.html());
-    var menu = new QuestionMenu($node, {
-      activator_text: questionMenuTemplate.data("activator-text"),
-      required: false // Should have some data from server, fed in from somewhere, to give us this information.
+  $("[data-fb-content-data]").each(function() {
+    var $node = $(this);
+    new Question($node, {
+      data: $node.data("fb-content-data"),
+      property_menu_activator_text: questionMenuTemplate.data("activator-text"),
+      property_menu_target_selector: SELECTOR_LABEL_HEADING,
+      property_menu_template: questionMenuTemplate.html()
     });
-
-    view.$body.append(menu.$node);
-    $(this).before(menu.activator.$node);
   });
 }
 
@@ -118,50 +118,6 @@ PagesController.create = function(app) {
 }
 
 
-
-
-/* Controls form step add/edit/delete/preview controls
- **/
-class QuestionMenu {
-  constructor($node, config) {
-    var conf = mergeObjects({
-      container_classname: "QuestionMenu",
-      activator_classname: $node.data("activator-classname"),
-      container_id: $node.data("activated-menu-container-id"),
-      activator_text: $node.data("activator-text")
-    }, config);
-
-    $node.on("menuselect", QuestionMenu.selection.bind(this) );
-
-    this.menu = new ActivatedMenu($node, conf);
-    this.activator = this.menu.activator;
-  }
-
-  get required() {
-    // TODO: (perhaps... just thinking it through right now)
-    // 1. Create a dialog box for property
-    // 2. Populate dialog box with relevant content and settings (including errors if return visit)
-    // 3. Open dialog box
-    console.log("get required setting");
-  }
-
-  set required(settings) {
-     // TODO: (perhaps... just thinking it through right now)
-     // 1. Close dialog box
-     // 2. Store/update/send settings ??
-     // 3. Delete dialog box
-     console.log("set required setting");
-  }
-}
-
-/* Handles what happens when an item in the menu has been selected
- * @event (jQuery Event Object) See jQuery docs for info.
- * @data  (Object) See ActivatedMenu and search for config.selection_event_node
- **/
-QuestionMenu.selection = function(event, ui) {
-  var action = $(event.originalEvent.currentTarget).data("action");
-  safelyActivateFunction(this[action]);
-}
 
 
 /* Gives add component buttons functionality to select a component type
