@@ -16,7 +16,7 @@
  **/
 
 
-import { mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
+import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultController } from './controller_default';
 import { editableComponent } from './editable_components';
@@ -131,9 +131,36 @@ class QuestionMenu {
       activator_text: $node.data("activator-text")
     }, config);
 
+    $node.on("menuselect", QuestionMenu.selection.bind(this) );
+
     this.menu = new ActivatedMenu($node, conf);
     this.activator = this.menu.activator;
   }
+
+  get required() {
+    // TODO: (perhaps... just thinking it through right now)
+    // 1. Create a dialog box for property
+    // 2. Populate dialog box with relevant content and settings (including errors if return visit)
+    // 3. Open dialog box
+    console.log("get required setting");
+  }
+
+  set required(settings) {
+     // TODO: (perhaps... just thinking it through right now)
+     // 1. Close dialog box
+     // 2. Store/update/send settings ??
+     // 3. Delete dialog box
+     console.log("set required setting");
+  }
+}
+
+/* Handles what happens when an item in the menu has been selected
+ * @event (jQuery Event Object) See jQuery docs for info.
+ * @data  (Object) See ActivatedMenu and search for config.selection_event_node
+ **/
+QuestionMenu.selection = function(event, ui) {
+  var action = $(event.originalEvent.currentTarget).data("action");
+  safelyActivateFunction(this[action]);
 }
 
 
