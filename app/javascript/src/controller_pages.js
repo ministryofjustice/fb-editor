@@ -20,6 +20,7 @@ import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentif
 import { ActivatedMenu } from './component_activated_menu';
 import { Question } from './question';
 import { QuestionMenu } from './component_activated_question_menu';
+import { DialogConfiguration } from './component_dialog_configuration';
 import { editableComponent } from './editable_components';
 import { DefaultController } from './controller_default';
 import { ServicesController } from './controller_services';
@@ -54,8 +55,10 @@ class PagesController extends DefaultController {
 PagesController.edit = function(app) {
   var view = this;
   var $form = $("#editContentForm");
+  this.text = app.text;
   this.$form = $form;
   this.editableContent = [];
+  this.dialogConfiguration = createDialogConfiguration.call(this);
 
   bindEditableContentHandlers.call(view, app);
   focusOnEditableComponent.call(view);
@@ -102,16 +105,18 @@ PagesController.edit = function(app) {
 
     // Initialise the question as an object.
     var $node = $(this);
-    var question = new Question($node, {
+    var question = new Question($node, view, {
       data: $node.data("fb-content-data")
     });
 
     // Create a menu for Question property editing.
     // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
     var $ul = $(questionMenuTemplate.html()).before(view.$body.children().last());
-    var menu = new QuestionMenu($ul, question, {
+    var menu = new QuestionMenu($ul, {
       activator_text: questionMenuTemplate.data("activator-text"),
-      $target: $(SELECTOR_LABEL_HEADING, $node)
+      $target: $(SELECTOR_LABEL_HEADING, $node),
+      question: question,
+      view: view
     });
   });
 }
@@ -352,6 +357,27 @@ function collectionItemControlsInActivatedMenu($item, config) {
     $item.data("ActivatedMenu", menu);
   }
 }
+
+
+/* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
+ * Component allows passing a function to it's 'confirm()' function so that actions
+ * can be played out on whether user clicks 'ok' or 'cancel'.
+ **/
+function createDialogConfiguration() {
+  var $template = $("[data-component-template=DialogConfiguration]");
+  var $node = $($template.text());
+  return new DialogConfiguration($node, {
+    autoOpen: false,
+    cancelText: $template.data("text-cancel"),
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-activator": "govuk-button fb-govuk-button",
+      "ui-button": "govuk-button",
+      "ui-dialog": $template.data("classes")
+    }
+  });
+}
+
 
 
 /**************************************************************/

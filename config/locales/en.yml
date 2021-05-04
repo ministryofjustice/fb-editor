@@ -52,7 +52,7 @@ en:
     menu:
       required: 'Required...'
     dialog:
-      required_message: 'Is answering this question required?'
+      required_heading: 'Is answering this question required?'
   pages:
     form: 'Pages flow'
     name: 'Pages'
