@@ -19,7 +19,7 @@ import { property, mergeObjects, createElement, safelyActivateFunction } from '.
 
 class ActivatedMenu {
   constructor($menu, config) {
-    this.config = mergeObjects({ menu: {} }, config);
+    this._config = mergeObjects({ menu: {} }, config);
     this.$node = $menu;
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
@@ -102,16 +102,16 @@ ActivatedMenu.bindMenuEventHandlers = function() {
 
   // Add a trigger for any listening document event
   // to activate on menu item selection.
-  if(this.config.selection_event) {
+  if(this._config.selection_event) {
     let component = this;
     component.$node.on("menuselect", function(event, ui) {
       var e = event.originalEvent;
 
-      if(component.config.preventDefault) {
+      if(component._config.preventDefault) {
          e.preventDefault();
       }
 
-      $(document).trigger(component.config.selection_event, {
+      $(document).trigger(component._config.selection_event, {
         activator: ui.item,
         menu: event.currentTarget,
         component: component,
@@ -126,7 +126,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
 
 /* Private function
  * Positions the menu in relation to the activator  if received
- * a setting in passed configuration (this.config.position).
+ * a setting in passed configuration (this._config.position).
  * Uses the jQueryUI position() utility function to set the values.
  **/
 ActivatedMenu.setMenuOpenPosition = function(position) {
