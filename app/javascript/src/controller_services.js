@@ -43,7 +43,6 @@ ServicesController.edit = function(app) {
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
   $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this) );
-  $document.on("PageAdditionMenuSelection", pageAdditionMenuSelection.bind(this) );
 
   // Create dialog for handling new page input and error reporting.
   let pageCreateDialog = new PageCreateDialog(this, $("[data-component='PageCreateDialog']"));
@@ -62,7 +61,17 @@ ServicesController.edit = function(app) {
   });
 
   // Create the menu for Add Page functionality.
-  createPageAdditionMenu(pageCreateDialog);
+  $("[data-component='PageAdditionMenu']").each(function(i) {
+    var selection_event = "PageAdditionMenuSelection_" + i;
+    var menu = new PageAdditionMenu($(this), pageCreateDialog, {
+      selection_event: selection_event,
+      menu: {
+        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+      }
+    });
+
+    $document.on(selection_event, PageAdditionMenu.selection.bind(menu) );
+  });
 
   // Fix for the scrolling of form overview.
   applyCustomOverviewWorkaround();
@@ -86,7 +95,7 @@ class PageCreateDialog {
     var $submit = $form.find(":submit");
     var $errors = $node.find(".govuk-error-message");
 
-    new ActivatedDialog($node, {
+    var dialog = new ActivatedDialog($node, {
       autoOpen: $errors.length ? true: false,
       cancelText: $node.data("cancel-text"),
       okText: $submit.val(),
@@ -105,6 +114,7 @@ class PageCreateDialog {
 
     // Disable button as we're replacing it.
     $submit.attr("disabled", true);
+    this.dialog = dialog;
     this.$form = $form;
     this.$submit = $submit;
     this.$errors = $errors;
@@ -179,22 +189,25 @@ function pageActionMenuSelection(event, data) {
 }
 
 
-/* TODO
- * Description here
+/* Controls form step Add page functionality
  **/
-function createPageAdditionMenu(pageCreateDialog) {
-  new PageActionMenu(this, $("[data-component='PageAdditionMenu']"), {
-      selection_event: "PageAdditionMenuSelection",
-      pageCreateDialog: pageCreateDialog,
-      menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-      }
-    }).menu.activator.$node.on("click.servicescontrolleredit", function() {
-      // Add handler for main 'Add page' button to clear any add_page_after values.
-      updateHiddenInputOnForm(pageCreateDialog.$form, "page[add_page_after]", "");
-  });
-}
+class PageAdditionMenu extends ActivatedMenu {
+  constructor($node, dialog, config) {
+    super($node, mergeObjects({
+      activator_classname: $node.data("activator-classname"),
+      container_id: $node.data("activated-menu-container-id"),
+      activator_text: $node.data("activator-text")
+    }, config));
 
+
+    this.dialog = dialog;
+    this.activator.$node.on("click.pageadditionmenu", function() {
+      // Add handler for main 'Add page' button to clear any add_page_after values.
+      updateHiddenInputOnForm(dialog.$form, "page[add_page_after]", "");
+    });
+
+  }
+}
 
 /* Controls what happens when user selects a page type.
  * 1). Clear page_type & component_type values in hidden form.
@@ -203,9 +216,9 @@ function createPageAdditionMenu(pageCreateDialog) {
  * 3). Close the open menu
  * 4). Open the form URL input dialog.
  **/
-function pageAdditionMenuSelection(event, data) {
+PageAdditionMenu.selection = function(event, data) {
   var $activator = data.activator.find("> a");
-  var form = data.component.config.pageCreateDialog.$form;
+  var form = this.dialog.$form; // Form sending information back to server.
 
   // First reset to remove any lingering values.
   updateHiddenInputOnForm(form, "page[page_type]", "");
