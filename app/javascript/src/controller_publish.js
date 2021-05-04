@@ -47,7 +47,7 @@ PublishController.index = function(app) {
     this.dialog.content = {
       ok: app.text.dialogs.button_publish,
       heading: app.text.dialogs.heading_publish,
-      message: app.text.dialogs.message_publish
+      content: app.text.dialogs.message_publish
     };
 
     this.dialog.open();

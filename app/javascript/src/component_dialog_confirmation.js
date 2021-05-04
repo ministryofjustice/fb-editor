@@ -70,7 +70,7 @@ class DialogConfirmation extends Dialog {
 
   set content(text) {
     this._elements.heading.text(text.heading || this._defaultText.heading);
-    this._elements.message.text(text.message || this._defaultText.message);
+    this._elements.content.text(text.content || this._defaultText.content);
     this._elements.ok.text(text.ok || this._defaultText.ok);
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
@@ -96,7 +96,7 @@ DialogConfirmation.setElements = function($node) {
   $buttons.eq(1).show(); // Reverse inherited state.
 
   elements.heading = $node.find("[data-node='heading']");
-  elements.message = $node.find("[data-node='message']");
+  elements.content = $node.find("[data-node='content']");
 
   // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
@@ -110,7 +110,7 @@ DialogConfirmation.setElements = function($node) {
 DialogConfirmation.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
-    message: this._elements.message.text(),
+    content: this._elements.content.text(),
     ok: this._elements.ok.text(),
     cancel: this._elements.cancel.text()
   };

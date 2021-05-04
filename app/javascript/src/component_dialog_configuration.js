@@ -66,7 +66,7 @@ class DialogConfiguration extends Dialog {
 
   set content(text) {
     this._elements.heading.text(text.heading || this._defaultText.heading);
-    this._elements.message.text(text.message || this._defaultText.message);
+    this._elements.content.html(text.message || this._defaultText.message);
     this._elements.ok.text(text.ok || this._defaultText.ok);
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
@@ -95,7 +95,7 @@ DialogConfiguration.setElements = function($node) {
   $buttons.eq(1).show(); // Reverse inherited state.
 
   elements.heading = $node.find("[data-node='heading']");
-  elements.message = $node.find("[data-node='message']");
+  elements.content = $node.find("[data-node='message']");
 
   // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
@@ -109,7 +109,7 @@ DialogConfiguration.setElements = function($node) {
 DialogConfiguration.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
-    message: this._elements.message.text(),
+    message: this._elements.content.text(),
     ok: this._elements.ok.text(),
     cancel: this._elements.cancel.text()
   };
