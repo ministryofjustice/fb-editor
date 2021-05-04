@@ -116,7 +116,8 @@ PagesController.edit = function(app) {
       activator_text: questionMenuTemplate.data("activator-text"),
       $target: $(SELECTOR_LABEL_HEADING, $node),
       question: question,
-      view: view
+      view: view,
+      page_property_fields: $("[data-component-template=PagePropertyFields]").html()
     });
   });
 }

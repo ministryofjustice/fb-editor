@@ -47,8 +47,10 @@ class QuestionMenu extends ActivatedMenu {
 
     var view = this._config.view;
     var elements = view.dialogConfiguration._elements;
-    elements.heading.text(view.text.dialogs.page_property_required_message);
-    elements.message.text("");
+    var field_content = this._config.page_property_fields
+    elements.heading.text("");
+    elements.content.empty();
+    elements.content.html(field_content);
     this._config.view.dialogConfiguration.open();
   }
 
