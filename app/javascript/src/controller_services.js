@@ -50,9 +50,8 @@ ServicesController.edit = function(app) {
 
   // Create the context menus for each page thumbnail.
   $("[data-component='PageActionMenu']").each((i, el) => {
-    new PageActionMenu(this, $(el), {
+    new PageActionMenu($(el), pageCreateDialog, {
       selection_event: "PageActionMenuSelection",
-      pageCreateDialog: pageCreateDialog,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
@@ -129,16 +128,16 @@ class PageCreateDialog {
 
 /* Controls form step add/edit/delete/preview controls
  **/
-class PageActionMenu {
-  constructor(page, $node, config) {
-    var conf = mergeObjects({
+class PageActionMenu extends ActivatedMenu {
+  constructor($node, dialog, config) {
+    super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
       activator_text: $node.data("activator-text")
-    }, config);
+    }, config));
 
     this.uuid = $node.data("uuid");
-    this.menu = new ActivatedMenu($node, conf);
+    this.dialog = dialog;
   }
 }
 
@@ -163,7 +162,7 @@ function pageActionMenuSelection(event, data) {
          // Set the 'add_page_here' value in form.
          // This should be a uuid value if from thumbnail context menu, of
          // just set it to blank string if from the main 'Add page' button.
-         updateHiddenInputOnForm(data.component.config.pageCreateDialog.$form, "page[add_page_after]", data.component.$node.data("uuid"));
+         updateHiddenInputOnForm(data.component.dialog.$form, "page[add_page_after]", data.component.uuid);
 
          // Current menu option needs to activate the (separate entity)
          // Add page menu to allow add page options to show.
