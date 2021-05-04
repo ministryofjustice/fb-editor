@@ -19,8 +19,9 @@
 import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { Question } from './question';
-import { DefaultController } from './controller_default';
+import { QuestionMenu } from './component_activated_question_menu';
 import { editableComponent } from './editable_components';
+import { DefaultController } from './controller_default';
 import { ServicesController } from './controller_services';
 
 const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
@@ -98,12 +99,19 @@ PagesController.edit = function(app) {
   // Initialise questions
   let questionMenuTemplate = $("[data-component-template=QuestionMenu]");
   $("[data-fb-content-data]").each(function() {
+
+    // Initialise the question as an object.
     var $node = $(this);
-    new Question($node, {
-      data: $node.data("fb-content-data"),
-      property_menu_activator_text: questionMenuTemplate.data("activator-text"),
-      property_menu_target_selector: SELECTOR_LABEL_HEADING,
-      property_menu_template: questionMenuTemplate.html()
+    var question = new Question($node, {
+      data: $node.data("fb-content-data")
+    });
+
+    // Create a menu for Question property editing.
+    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
+    var $ul = $(questionMenuTemplate.html()).before(view.$body.children().last());
+    var menu = new QuestionMenu($ul, question, {
+      activator_text: questionMenuTemplate.data("activator-text"),
+      $target: $(SELECTOR_LABEL_HEADING, $node)
     });
   });
 }
