@@ -17,6 +17,7 @@ body {
 }
 
 html {
+  background-color: govuk-colour("light-grey");
   min-height: 100%;
   position: relative;
 }
@@ -49,8 +50,8 @@ html {
 }
 
 #main-content {
-  margin-bottom: 220px; /* approx height of footer - prevents visual overlap */
   position: relative;
+  min-height: 55vh;
 }
 
 
@@ -60,12 +61,6 @@ html {
   // Trying to compensate for inherit GovUK maring-top settings
   // (or lack of them) on <p> tags and things that should be in them.
   margin-bottom: 1.2em;
-}
-
-.fb-editor-footer {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
 }
 
 .fb-editor-list,
