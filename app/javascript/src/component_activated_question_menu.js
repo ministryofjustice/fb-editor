@@ -20,11 +20,13 @@ import { ActivatedMenu } from './component_activated_menu';
 
 
 class QuestionMenu extends ActivatedMenu {
-  constructor($node, question, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       container_classname: "QuestionMenu",
       activator_text: "",
-      $target: $() // Used in placing the activator
+      $target: $(), // Used in placing the activator
+      question: {}, // TODO: Not sure if we should do this way
+      view: {}
     }, config));
 
     $node.on("menuselect", QuestionMenu.selection.bind(this) );
@@ -32,6 +34,8 @@ class QuestionMenu extends ActivatedMenu {
     if(this._config.$target.length) {
       $(this._config.$target, $node).before(this.activator.$node);
     }
+
+    this.question = this._config.question;
   }
 
   get required() {
@@ -40,6 +44,12 @@ class QuestionMenu extends ActivatedMenu {
     // 2. Populate dialog box with relevant content and settings (including errors if return visit)
     // 3. Open dialog box
     console.log("get required setting");
+
+    var view = this._config.view;
+    var elements = view.dialogConfiguration._elements;
+    elements.heading.text(view.text.dialogs.page_property_required_message);
+    elements.message.text("");
+    this._config.view.dialogConfiguration.open();
   }
 
   set required(settings) {
