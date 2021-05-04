@@ -53,6 +53,8 @@ en:
       required: 'Required...'
     dialog:
       required_heading: 'Is answering this question required?'
+      affirmative: 'Yes'
+      negative: 'No'
   pages:
     form: 'Pages flow'
     name: 'Pages'
