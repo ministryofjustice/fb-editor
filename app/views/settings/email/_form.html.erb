@@ -40,7 +40,7 @@
       </h3>
     </legend>
 
-    <a href="#" class="govuk-link">See sample PDF</a>
+    <%= link_to 'See sample PDF',asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank' %>
 
     <div class="govuk-hint">
       <%= f.object.class.human_attribute_name :pdf_hint %>
