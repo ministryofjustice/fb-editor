@@ -45,13 +45,11 @@ class QuestionMenu extends ActivatedMenu {
     // 3. Open dialog box
     console.log("get required setting");
 
-    var view = this._config.view;
-    var elements = view.dialogConfiguration._elements;
-    var field_content = this._config.page_property_fields
-    elements.heading.text("");
-    elements.content.empty();
-    elements.content.html(field_content);
-    this._config.view.dialogConfiguration.open();
+    var dialog = this._config.view.dialogConfiguration;
+    var field_content = this._config.page_property_fields; // TODO: Expect this to change when we add more property fields
+    dialog.configure({
+      content: field_content
+    });
   }
 
   set required(settings) {
