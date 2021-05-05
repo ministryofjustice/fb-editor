@@ -36,7 +36,7 @@ class DialogConfiguration extends Dialog {
       {
         text: config.okText,
         click: () => {
-          safelyActivateFunction($node.data("instance")._action);
+          this.save();
           $node.dialog("close");
         }
       },
@@ -58,10 +58,12 @@ class DialogConfiguration extends Dialog {
       DialogConfiguration.setElements.call(this, $node);
       DialogConfiguration.setDefaultText.call(this, $node);
     }
+
+    this.saveAction = function(){} // Gets overwritten within set content.
   }
 
   get content() {
-    return this._defaultText;
+    return this._elements.content;
   }
 
   set content(text) {
@@ -70,18 +72,13 @@ class DialogConfiguration extends Dialog {
   }
 
   configure(text, action) {
-    console.log("Configure");
     this.content = text;
-    /*
-    for(var t in text) {
-      if(text.hasOwnProperty(t) && this._elements[t]) {
-        let current = this._elements[t].text();
-        this._elements[t].text();
-      }
-    }
-    this._action = action;
-    */
+    this._saveAction = action;
     this.$node.dialog("open");
+  }
+
+  save() {
+    safelyActivateFunction(this._saveAction, this.content)
   }
 }
 

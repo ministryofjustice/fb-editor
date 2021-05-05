@@ -44,20 +44,20 @@ class QuestionMenu extends ActivatedMenu {
     // 2. Populate dialog box with relevant content and settings (including errors if return visit)
     // 3. Open dialog box
     console.log("get required setting");
-
     var dialog = this._config.view.dialogConfiguration;
     var field_content = this._config.page_property_fields; // TODO: Expect this to change when we add more property fields
     dialog.configure({
       content: field_content
-    });
+    }, (content) => { this.required = content } );
   }
 
-  set required(settings) {
+  set required(content) {
      // TODO: (perhaps... just thinking it through right now)
      // 1. Close dialog box
      // 2. Store/update/send settings ??
      // 3. Delete dialog box
-     console.log("set required setting");
+     var setting = content.find("form").serialize();
+     console.log("setting: ", setting);
   }
 }
 
