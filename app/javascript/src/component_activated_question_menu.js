@@ -35,29 +35,26 @@ class QuestionMenu extends ActivatedMenu {
       $(this._config.$target, $node).before(this.activator.$node);
     }
 
-    this.question = this._config.question;
+    // TODO: Perhaps this should simply be separate data record of some type.
+    this.question = this._config.question.$node.data("instance");
   }
 
   get required() {
-    // TODO: (perhaps... just thinking it through right now)
-    // 1. Create a dialog box for property
-    // 2. Populate dialog box with relevant content and settings (including errors if return visit)
-    // 3. Open dialog box
-    console.log("get required setting");
     var dialog = this._config.view.dialogConfiguration;
     var field_content = this._config.page_property_fields; // TODO: Expect this to change when we add more property fields
+    var required = this.question.data.validation.required;
+    var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
+    field_content = field_content.replace(regex, "$1 checked=\"true\"")
     dialog.configure({
       content: field_content
     }, (content) => { this.required = content } );
   }
 
   set required(content) {
-     // TODO: (perhaps... just thinking it through right now)
-     // 1. Close dialog box
-     // 2. Store/update/send settings ??
-     // 3. Delete dialog box
-     var setting = content.find("form").serialize();
-     console.log("setting: ", setting);
+    var arr = content.find("form").serializeArray();
+    for(var i=0; i < arr.length; ++i) {
+      this.question.data.validation[arr[i].name] = arr[i].value;
+    }
   }
 }
 
