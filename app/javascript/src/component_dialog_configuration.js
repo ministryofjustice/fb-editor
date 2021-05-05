@@ -55,24 +55,23 @@ class DialogConfiguration extends Dialog {
       $node.parents(".ui-dialog").addClass("DialogConfiguration");
       $node.data("instance", this);
 
-      //DialogConfiguration.setElements.call(this, $node);
-      //DialogConfiguration.setDefaultText.call(this, $node);
+      DialogConfiguration.setElements.call(this, $node);
+      DialogConfiguration.setDefaultText.call(this, $node);
     }
   }
-/*
+
   get content() {
     return this._defaultText;
   }
 
   set content(text) {
-    this._elements.heading.text(text.heading || this._defaultText.heading);
-    this._elements.content.html(text.message || this._defaultText.message);
-    this._elements.ok.text(text.ok || this._defaultText.ok);
-    this._elements.cancel.text(text.cancel || this._defaultText.cancel);
+    this._elements.content.empty();
+    this._elements.content.html(text.content);
   }
-*/
+
   configure(text, action) {
     console.log("Configure");
+    this.content = text;
     /*
     for(var t in text) {
       if(text.hasOwnProperty(t) && this._elements[t]) {
@@ -87,6 +86,7 @@ class DialogConfiguration extends Dialog {
 }
 
 /* Private
+ * Replace inherited elements with those required for this dialog.
  * Finds required elements to populate this._elements property.
  **/
 DialogConfiguration.setElements = function($node) {
@@ -94,8 +94,7 @@ DialogConfiguration.setElements = function($node) {
   var $buttons = $node.parents(".DialogConfiguration").find(".ui-dialog-buttonset button");
   $buttons.eq(1).show(); // Reverse inherited state.
 
-  elements.heading = $node.find("[data-node='heading']");
-  elements.content = $node.find("[data-node='message']");
+  elements.content = $node.find("[data-node='content']");
 
   // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
@@ -104,12 +103,12 @@ DialogConfiguration.setElements = function($node) {
 }
 
 /* Private
+ * Replace inherited elements with those required for this dialog.
  * Finds on-load text to use as default values.
  **/
 DialogConfiguration.setDefaultText = function($node) {
   this._defaultText = {
-    heading: this._elements.heading.text(),
-    message: this._elements.content.text(),
+    content: "",
     ok: this._elements.ok.text(),
     cancel: this._elements.cancel.text()
   };
