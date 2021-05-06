@@ -1,8 +1,10 @@
 <h1 class="govuk-heading-xl"><%= t('publish.heading') %></h1>
 <p id="publish-intro">
   <%# COMMENT: Should we have service.updated_at instead of creation date? %>
-  You are publishing the version from <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
-  <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>.
+  You are publishing the version from <span class="date version">
+  <%= l(service.created_at.to_time.in_time_zone('London'), format: :date) %></span>
+  <span class="time version">
+  <%= l(service.created_at.to_time.in_time_zone('London'), format: :time) %></span>.
   <%# TODO: Require BE to expose this data before we can see it %>
   <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
