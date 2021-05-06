@@ -31,8 +31,11 @@ class QuestionMenu extends ActivatedMenu {
 
     $node.on("menuselect", QuestionMenu.selection.bind(this) );
 
-    if(this._config.$target.length) {
-      $(this._config.$target, $node).before(this.activator.$node);
+    let $target = this._config.$target;
+    if($target.length) {
+      $target.before(this.activator.$node);
+      $target.on("focus.questionmenu", () => this.activator.$node.addClass("active"));
+      $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
     }
 
     // TODO: Perhaps this should simply be separate data record of some type.

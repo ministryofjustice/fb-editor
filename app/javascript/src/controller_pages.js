@@ -61,7 +61,6 @@ PagesController.edit = function(app) {
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
   bindEditableContentHandlers.call(view, app);
-  focusOnEditableComponent.call(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -120,6 +119,8 @@ PagesController.edit = function(app) {
       page_property_fields: $("[data-component-template=PagePropertyFields]").html()
     });
   });
+
+  focusOnEditableComponent.call(view);
 }
 
 
@@ -275,6 +276,7 @@ function bindEditableContentHandlers($area) {
           // This is not very good but expecting it to get significant rework when
           // we add more menu items (not for MVP).
           collectionItemControlsInActivatedMenu($node, {
+            activator_text: app.text.actions.edit,
             classnames: "editableCollectionItemControls"
           });
         },
@@ -315,6 +317,7 @@ function bindEditableContentHandlers($area) {
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
       collectionItemControlsInActivatedMenu($(this), {
+       activator_text: app.text.actions.edit,
         classnames: "editableCollectionItemControls"
       });
     });
@@ -348,6 +351,7 @@ function collectionItemControlsInActivatedMenu($item, config) {
     $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
     $elements.wrap("<li></li>");
     let menu = new ActivatedMenu($elements.parents("ul"), {
+      activator_text: config.activator_text,
       container_classname: config.classnames,
       container_id: uniqueString("activatedMenu-"),
       menu: {
