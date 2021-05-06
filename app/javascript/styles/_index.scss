@@ -181,6 +181,9 @@ html {
   }
 }
 
+.EditableCollectionFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent,
 .EditableComponentCollectionItem {
   position: relative;
 
@@ -189,10 +192,6 @@ html {
     opacity: 0;
     position: absolute;
     top: 0;
-
-    &:after {
-      top: -4px;
-    }
   }
 
   &.active {
