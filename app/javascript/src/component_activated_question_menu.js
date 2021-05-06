@@ -40,6 +40,8 @@ class QuestionMenu extends ActivatedMenu {
 
     // TODO: Perhaps this should simply be separate data record of some type.
     this.question = this._config.question.$node.data("instance");
+
+    QuestionMenu.setRequiredViewState.call(this);
   }
 
   get required() {
@@ -56,8 +58,9 @@ class QuestionMenu extends ActivatedMenu {
   set required(content) {
     var arr = content.find("form").serializeArray();
     for(var i=0; i < arr.length; ++i) {
-      this.question.data.validation[arr[i].name] = arr[i].value;
+      this.question.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
+    QuestionMenu.setRequiredViewState.call(this);
   }
 }
 
@@ -68,6 +71,18 @@ class QuestionMenu extends ActivatedMenu {
 QuestionMenu.selection = function(event, ui) {
   var action = $(event.originalEvent.currentTarget).data("action");
   safelyActivateFunction(this[action]);
+}
+
+
+/* Change required option state for view purpose
+ **/
+QuestionMenu.setRequiredViewState = function() {
+  if(this.question.data.validation.required) {
+    $("[data-action=required]").addClass("on");
+  }
+  else {
+    $("[data-action=required]").removeClass("on");
+  }
 }
 
 
