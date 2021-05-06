@@ -18,7 +18,7 @@ gem 'metadata_presenter', '1.0.7'
 
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'fb-jwt-auth', '0.6.0'
+gem 'fb-jwt-auth', '0.7.0'
 gem 'hashie'
 gem 'omniauth-auth0', '~> 3.0.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.0'

@@ -125,7 +125,7 @@ GEM
     faraday-net_http_persistent (1.1.0)
     faraday_middleware (1.0.0)
       faraday (~> 1.0)
-    fb-jwt-auth (0.6.0)
+    fb-jwt-auth (0.7.0)
       activesupport
       json
       jwt
@@ -144,7 +144,7 @@ GEM
     json (2.5.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jwt (2.2.2)
+    jwt (2.2.3)
     kramdown (2.3.1)
       rexml
     listen (3.5.1)
@@ -375,7 +375,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   faraday_middleware
-  fb-jwt-auth (= 0.6.0)
+  fb-jwt-auth (= 0.7.0)
   hashie
   listen (~> 3.5)
   metadata_presenter (= 1.0.7)
