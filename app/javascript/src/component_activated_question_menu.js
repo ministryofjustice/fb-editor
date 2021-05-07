@@ -46,7 +46,7 @@ class QuestionMenu extends ActivatedMenu {
 
   get required() {
     var dialog = this._config.view.dialogConfiguration;
-    var field_content = this._config.page_property_fields; // TODO: Expect this to change when we add more property fields
+    var field_content = this._config.question_property_fields; // TODO: Expect this to change when we add more property fields
     var required = this.question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     field_content = field_content.replace(regex, "$1 checked=\"true\"")

@@ -116,7 +116,7 @@ PagesController.edit = function(app) {
       $target: $(SELECTOR_LABEL_HEADING, $node),
       question: question,
       view: view,
-      page_property_fields: $("[data-component-template=PagePropertyFields]").html()
+      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html()
     });
   });
 
