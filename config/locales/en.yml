@@ -48,14 +48,6 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
-  page:
-    activator: 'Properties'
-    menu:
-      required: 'Required...'
-    dialog:
-      required_heading: 'Is answering this question required?'
-      affirmative: 'Yes'
-      negative: 'No'
   pages:
     form: 'Pages flow'
     name: 'Pages'
@@ -77,6 +69,14 @@ en:
     menu:
       question: 'Question'
       content_area: 'Content area'
+  question:
+    menu:
+      activator: 'Properties'
+      required: 'Required...'
+    dialog:
+      required_heading: 'Is answering this question required?'
+      affirmative: 'Yes'
+      negative: 'No'
   settings:
     name: 'Settings'
     form_information: 'Form details'
