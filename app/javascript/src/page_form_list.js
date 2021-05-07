@@ -21,8 +21,8 @@ import { DefaultController } from './controller_default';
 
 
 class FormListPage extends DefaultController {
-  constructor() {
-    super();
+  constructor(app) {
+    super(app);
 
     // Create dialog for handling new form input and error reporting.
     new FormCreateDialog(this, $("[data-component='FormCreateDialog']"));

@@ -36,14 +36,14 @@ const SELECTOR_LABEL_STANDARD = "label";
 
 class PagesController extends DefaultController {
   constructor(app) {
-    super();
+    super(app);
 
     switch(app.page.action) {
       case "edit":
-        PagesController.edit.call(this, app);
+        PagesController.edit.call(this);
         break;
       case "create":
-        PagesController.create.call(this, app);
+        PagesController.create.call(this);
         break;
     }
   }
@@ -52,15 +52,14 @@ class PagesController extends DefaultController {
 /* ------------------------------
  * Setup for the Edit action view
  * ------------------------------ */
-PagesController.edit = function(app) {
+PagesController.edit = function() {
   var view = this;
   var $form = $("#editContentForm");
-  this.text = app.text;
   this.$form = $form;
   this.editableContent = [];
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
-  bindEditableContentHandlers.call(view, app);
+  bindEditableContentHandlers.call(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -127,9 +126,9 @@ PagesController.edit = function(app) {
 /* --------------------------------
  * Setup for the Create action view
  * -------------------------------- */
-PagesController.create = function(app) {
+PagesController.create = function() {
   // Actually uses the Services controller due to view redirect on server.
-  ServicesController.edit.call(this, app);
+  ServicesController.edit.call(this);
 }
 
 
@@ -214,8 +213,8 @@ function focusOnEditableComponent() {
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
-function bindEditableContentHandlers($area) {
-  var page = this;
+function bindEditableContentHandlers() {
+  var view = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
@@ -223,7 +222,7 @@ function bindEditableContentHandlers($area) {
 
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-      page.editableContent.push(editableComponent($node, {
+      view.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
         attributeDefaultText: "fb-default-text",
@@ -254,19 +253,19 @@ function bindEditableContentHandlers($area) {
         selectorDisabled: SELECTOR_DISABLED,
 
         text: {
-          addItem: app.text.actions.option_add,
-          removeItem: app.text.actions.option_remove,
+          addItem: view.text.actions.option_add,
+          removeItem: view.text.actions.option_remove,
 
-          default_element: app.text.default_element,
-          default_content: app.text.default_content
+          default_element: view.text.default_element,
+          default_content: view.text.default_content
         },
 
         onCollectionItemClone: function($node) {
            // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
            // Runs after the collection item has been cloned, so further custom manipulation can be
            // carried out on the element.
-           $node.find("label").text(app.text.default_option);
-           $node.find("span").text(app.text.default_option_hint);
+           $node.find("label").text(view.text.default_option);
+           $node.find("span").text(view.text.default_option_hint);
         },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
@@ -276,7 +275,7 @@ function bindEditableContentHandlers($area) {
           // This is not very good but expecting it to get significant rework when
           // we add more menu items (not for MVP).
           collectionItemControlsInActivatedMenu($node, {
-            activator_text: app.text.actions.edit,
+            activator_text: view.text.actions.edit,
             classnames: "editableCollectionItemControls"
           });
         },
@@ -296,11 +295,11 @@ function bindEditableContentHandlers($area) {
           // Runs before onItemRemove when removing an editable Collection item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          page.dialogConfirmationDelete.content = {
-            heading: app.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: app.text.dialogs.button_delete_option
+          view.dialogConfirmationDelete.content = {
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            ok: view.text.dialogs.button_delete_option
           };
-          page.dialogConfirmationDelete.confirm({}, function() {
+          view.dialogConfirmationDelete.confirm({}, function() {
             item.component.remove(item);
           });
         },
@@ -317,15 +316,15 @@ function bindEditableContentHandlers($area) {
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
       collectionItemControlsInActivatedMenu($(this), {
-       activator_text: app.text.actions.edit,
+       activator_text: view.text.actions.edit,
         classnames: "editableCollectionItemControls"
       });
     });
 
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
-      for(var i=0; i<page.editableContent.length; ++i) {
-        page.editableContent[i].save();
+      for(var i=0; i<view.editableContent.length; ++i) {
+        view.editableContent[i].save();
       }
     });
   }

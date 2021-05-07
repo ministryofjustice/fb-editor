@@ -23,14 +23,14 @@ import { DefaultController } from './controller_default';
 
 class PublishController extends DefaultController {
   constructor(app) {
-    super();
+    super(app);
 
     switch(app.page.action) {
       case "create":
-        PublishController.create.call(this, app);
+        PublishController.create.call(this);
         break;
       case "index":
-        PublishController.index.call(this, app);
+        PublishController.index.call(this);
         break;
     }
   }
@@ -39,15 +39,16 @@ class PublishController extends DefaultController {
 
 /* Setup for the Index action
  **/
-PublishController.index = function(app) {
+PublishController.index = function() {
+  var view = this;
   setupPublishForms.call(this);
 
   // When to show 15 minute message.
   if(this.publishFormTest.firstTimePublish() || this.publishFormProd.firstTimePublish()) {
     this.dialog.content = {
-      ok: app.text.dialogs.button_publish,
-      heading: app.text.dialogs.heading_publish,
-      content: app.text.dialogs.message_publish
+      ok: view.text.dialogs.button_publish,
+      heading: view.text.dialogs.heading_publish,
+      content: view.text.dialogs.message_publish
     };
 
     this.dialog.open();
@@ -57,7 +58,7 @@ PublishController.index = function(app) {
 
 /* Set up for the Create action
  **/
-PublishController.create = function(app) {
+PublishController.create = function() {
   setupPublishForms.call(this);
 }
 
