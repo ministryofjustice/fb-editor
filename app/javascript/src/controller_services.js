@@ -25,11 +25,11 @@ import { DefaultController } from './controller_default';
 
 class ServicesController extends DefaultController {
   constructor(app) {
-    super();
+    super(app);
 
     switch(app.page.action) {
       case "edit":
-        ServicesController.edit.call(this, app);
+        ServicesController.edit.call(this);
         break;
     }
   }
@@ -38,7 +38,7 @@ class ServicesController extends DefaultController {
 
 /* Setup for the Edit action
  **/
-ServicesController.edit = function(app) {
+ServicesController.edit = function() {
   let $document = $(document);
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
