@@ -103,8 +103,9 @@ PagesController.edit = function() {
 
     // Initialise the question as an object.
     var $node = $(this);
-    var question = new Question($node, view, {
-      data: $node.data("fb-content-data")
+    var question = new Question($node, {
+      data: $node.data("fb-content-data"),
+      view: view
     });
 
     // Create a menu for Question property editing.
@@ -119,14 +120,12 @@ PagesController.edit = function() {
       view: view,
       question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
       onSetRequired: function(questionMenu) {
-        if(questionMenu.question.data.validation.required) {
-          $target.parent().append($optionalFlag);
-        }
-        else {
-          $optionalFlag.remove();
-        }
+        setQuestionRequiredFlag(question, $target, $optionalFlag);
       }
     });
+
+    // Set initial view state
+    setQuestionRequiredFlag(question, $target, $optionalFlag);
   });
 
   focusOnEditableComponent.call(view);
@@ -142,6 +141,18 @@ PagesController.create = function() {
 }
 
 
+
+/* The design calls for a visual indicator that the question is optional.
+ * This function is to handle the adding the extra element.
+ **/
+function setQuestionRequiredFlag(question, $target, $optionalFlag) {
+  if(question.data().validation.required) {
+    $target.parent().append($optionalFlag);
+  }
+  else {
+    $optionalFlag.remove();
+  }
+}
 
 
 /* Gives add component buttons functionality to select a component type
