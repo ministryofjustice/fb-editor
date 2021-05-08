@@ -26,18 +26,12 @@ class Question {
     }, config);
 
     $node.addClass("Question");
-
     this.$node = $node;
     this._config = conf;
   }
 
-  get data() {
+  data() {
     return this._config.data;
-  }
-
-  set data(data) {
-    // TODO: What?
-    // this._config.data = data;
   }
 }
 
