@@ -75,14 +75,15 @@ function createElement(tag, text, classes) {
  *   run it only if that proves true.
  *
  * @func (Function) Expected to be required function.
- *
- * Function only specifies an argument for the expected function but,
- * if you pass other arguments they will be passed on to your function.
+ * 
+ * Note: You can also pass in several other arguments (as is possible with
+ * JavaScript functions, and these will be passed to the called function).
  **/
-function safelyActivateFunction(func, ...args) {
+function safelyActivateFunction(func) {
+  var args = Array.from(arguments);
   if(isFunction(func)) {
-    if(args) {
-      func.apply(this, args);
+    if(args.length) {
+      func.apply(this, args.slice(1));
     }
     else {
       func();
