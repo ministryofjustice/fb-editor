@@ -110,12 +110,22 @@ PagesController.edit = function() {
     // Create a menu for Question property editing.
     // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
     var $ul = $(questionMenuTemplate.html()).before(view.$body.children().last());
+    var $target = $(SELECTOR_LABEL_HEADING, $node);
+    var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
     var menu = new QuestionMenu($ul, {
       activator_text: questionMenuTemplate.data("activator-text"),
-      $target: $(SELECTOR_LABEL_HEADING, $node),
+      $target: $target,
       question: question,
       view: view,
-      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html()
+      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
+      onSetRequired: function(questionMenu) {
+        if(questionMenu.question.data.validation.required) {
+          $target.parent().append($optionalFlag);
+        }
+        else {
+          $optionalFlag.remove();
+        }
+      }
     });
   });
 

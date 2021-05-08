@@ -26,7 +26,8 @@ class QuestionMenu extends ActivatedMenu {
       activator_text: "",
       $target: $(), // Used in placing the activator
       question: {}, // TODO: Not sure if we should do this way
-      view: {}
+      view: {},
+      onSetRequired: function(){} // Called at end of set required function
     }, config));
 
     $node.on("menuselect", QuestionMenu.selection.bind(this) );
@@ -49,7 +50,7 @@ class QuestionMenu extends ActivatedMenu {
     var field_content = this._config.question_property_fields; // TODO: Expect this to change when we add more property fields
     var required = this.question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
-    field_content = field_content.replace(regex, "$1 checked=\"true\"")
+    field_content = field_content.replace(regex, "$1 checked=\"true\"");
     dialog.configure({
       content: field_content
     }, (content) => { this.required = content } );
@@ -61,6 +62,7 @@ class QuestionMenu extends ActivatedMenu {
       this.question.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
     QuestionMenu.setRequiredViewState.call(this);
+    safelyActivateFunction(this._config.onSetRequired, this);
   }
 }
 
