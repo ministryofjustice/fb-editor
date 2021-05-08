@@ -70,6 +70,7 @@ en:
       question: 'Question'
       content_area: 'Content area'
   question:
+    optional_flag: '(Optional)'
     menu:
       activator: 'Properties'
       required: 'Required...'
