@@ -109,11 +109,14 @@ PagesController.edit = function() {
     });
 
     // Create a menu for Question property editing.
-    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
-    var $ul = $(questionMenuTemplate.html()).before(view.$body.children().last());
+    var $ul = $(questionMenuTemplate.html());
     var $target = $(SELECTOR_LABEL_HEADING, $node);
     var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
-    var menu = new QuestionMenu($ul, {
+
+    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
+    view.$body.append($ul);
+
+    new QuestionMenu($ul, {
       activator_text: questionMenuTemplate.data("activator-text"),
       $target: $target,
       question: question,
