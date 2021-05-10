@@ -203,6 +203,19 @@ html {
   }
 }
 
+// Not nice but trying to work around some margin annoyance caused by GDS css
+[data-fb-pagetype="page.multiplequestions"] {
+  .EditableCollectionFieldComponent,
+  .EditableGroupFieldComponent,
+  .EditableTextFieldComponent,
+  .EditableTextareaFieldComponent,
+  .EditableComponentCollectionItem {
+    .ActivatedMenu_Activator {
+      top: 45px;
+    }
+  }
+}
+
 .EditableElement {
   &:focus,
   &.active {
