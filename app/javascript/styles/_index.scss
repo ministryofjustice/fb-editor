@@ -174,6 +174,7 @@ html {
 }
 
 .EditableCollectionFieldComponent,
+.EditableGroupFieldComponent,
 .EditableTextFieldComponent,
 .EditableTextareaFieldComponent {
   :disabled {
@@ -181,6 +182,10 @@ html {
   }
 }
 
+.EditableCollectionFieldComponent,
+.EditableGroupFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent,
 .EditableComponentCollectionItem {
   position: relative;
 
@@ -189,15 +194,24 @@ html {
     opacity: 0;
     position: absolute;
     top: 0;
-
-    &:after {
-      top: -4px;
-    }
   }
 
   &.active {
     .ActivatedMenu_Activator {
       opacity: 1;
+    }
+  }
+}
+
+// Not nice but trying to work around some margin annoyance caused by GDS css
+[data-fb-pagetype="page.multiplequestions"] {
+  .EditableCollectionFieldComponent,
+  .EditableGroupFieldComponent,
+  .EditableTextFieldComponent,
+  .EditableTextareaFieldComponent,
+  .EditableComponentCollectionItem {
+    .ActivatedMenu_Activator {
+      top: 45px;
     }
   }
 }
@@ -364,6 +378,64 @@ html {
 
   .govuk-button {
     display: none; // JS injected element, not required.
+  }
+}
+
+
+/* Question
+ * -------- */
+.Question {
+  legend, label {
+    h1 {
+      display: inline-block;
+      & + .flag {
+        @include govuk-font($size: 48);
+        display: inline-block;
+        font-weight: bold;
+      }
+    }
+  }
+
+  legend, label {
+    h2 {
+      display: inline-block;
+      & + .flag {
+        @include govuk-font($size: 24);
+        display: inline-block;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+
+/* Question Menu
+ * ------------- */
+.QuestionMenu {
+  [data-action="required"].on {
+    position: relative;
+
+    span {
+      &:after {
+        border-color: $govuk-link-colour;
+        border-style: solid;
+        border-width: 0 2px 3px 0;
+        bottom: 13px;
+        content: "";
+        display: block;
+        height: 17px;
+        position: absolute;
+        right: 17px;
+        transform: rotate(45deg);
+        width: 6px;
+      }
+
+      &:hover {
+        &:after {
+          border-color: govuk-colour("white");
+        }
+      }
+    }
   }
 }
 

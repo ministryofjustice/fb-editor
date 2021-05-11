@@ -21,12 +21,15 @@ import { DialogConfirmation } from './component_dialog_confirmation';
 import { post } from './utilities';
 
 
-class DefaultPage {
-  constructor() {
+class DefaultController {
+  constructor(app) {
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
+    this.text = app.text;
     this.dialog = createDialog.call(this);
     this.dialogConfirmation = createDialogConfirmation.call(this);
     this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
+    this.$document = $(document);
+    this.$body = $(document.body);
 
     isolatedMethodDeleteLinks();
   }
@@ -88,7 +91,10 @@ function createDialogConfirmationDelete() {
   });
 }
 
-/* Targets the user links in header
+/* Targets the user links in header.
+ * Converts links wanting to use method DELETE into a form
+ * that will work with Rails (default RailsJS versions messed
+ * with other scripts wanting to use e.preventDefault().
  **/
 function isolatedMethodDeleteLinks() {
   $("header [data-method=delete]").on("click", function(e) {
@@ -98,4 +104,4 @@ function isolatedMethodDeleteLinks() {
 }
 
 
-export { DefaultPage }
+export { DefaultController }

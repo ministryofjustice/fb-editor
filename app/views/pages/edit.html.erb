@@ -23,3 +23,13 @@
 <%= render template: @page.template %>
 <%= render partial: 'partials/add_component_button' %>
 <%= render partial: 'partials/add_content_button' %>
+<%= render partial: 'partials/template_question_menu' %>
+<%= render partial: 'partials/template_dialog_configuration' %>
+<%= render partial: 'partials/template_question_property_fields' %>
+
+
+<% # app.page is initialised in partials/properties. %>
+<% # JS object should exist at this point so we're not checking for existence. %>
+<% # If app.page does not exist at this point, something is seriously wrong. %>
+<% # Let it fail so that we can see some error output in console. %>
+<% content_for :properties do %><%= @page.to_json.html_safe %><% end %>

@@ -17,12 +17,12 @@
 
 
 import { ActivatedDialog } from './component_activated_dialog';
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 
 
-class FormListPage extends DefaultPage {
-  constructor() {
-    super();
+class FormListPage extends DefaultController {
+  constructor(app) {
+    super(app);
 
     // Create dialog for handling new form input and error reporting.
     new FormCreateDialog(this, $("[data-component='FormCreateDialog']"));

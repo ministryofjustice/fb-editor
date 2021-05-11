@@ -16,46 +16,55 @@
  **/
 
 
-import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
+import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
-import { DefaultPage } from './page_default';
+import { Question } from './question';
+import { QuestionMenu } from './component_activated_question_menu';
+import { DialogConfiguration } from './component_dialog_configuration';
 import { editableComponent } from './editable_components';
+import { DefaultController } from './controller_default';
 import { ServicesController } from './controller_services';
 
+const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
+const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
+const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
+const SELECTOR_DISABLED = "input:not(:hidden), textarea";
+const SELECTOR_GROUP_FIELD_LABEL = "legend > :first-child";
+const SELECTOR_HINT_STANDARD = ".govuk-hint";
+const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
+const SELECTOR_LABEL_STANDARD = "label";
 
-class PagesController extends DefaultPage {
+class PagesController extends DefaultController {
   constructor(app) {
-    super();
+    super(app);
 
     switch(app.page.action) {
       case "edit":
-        PagesController.edit.call(this, app);
+        PagesController.edit.call(this);
         break;
       case "create":
-        PagesController.create.call(this, app);
+        PagesController.create.call(this);
         break;
     }
   }
 }
 
-
-/* Setup for the Edit action
- **/
-PagesController.edit = function(app) {
+/* ------------------------------
+ * Setup for the Edit action view
+ * ------------------------------ */
+PagesController.edit = function() {
+  var view = this;
   var $form = $("#editContentForm");
   this.$form = $form;
   this.editableContent = [];
+  this.dialogConfiguration = createDialogConfiguration.call(this);
 
-  bindEditableContentHandlers.call(this, app);
-  focusOnEditableComponent.call(this);
-
-  // Bind document event listeners.
-  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
+  bindEditableContentHandlers.call(view);
 
   // Handle page-specific view customisations here.
-  switch(this.type) {
+  switch(view.type) {
     case "page.multiplequestions":
-         editPageMultipleQuestionsViewCustomisations.call(this);
+         editPageMultipleQuestionsViewCustomisations.call(view);
          break;
 
     case "page.singlequestion":
@@ -63,7 +72,7 @@ PagesController.edit = function(app) {
          break;
 
     case "page.content":
-         editPageContentViewCustomisations.call(this);
+         editPageContentViewCustomisations.call(view);
          break;
 
     case "page.confirmation":
@@ -71,7 +80,7 @@ PagesController.edit = function(app) {
          break;
 
     case "page.checkanswers":
-         editPageCheckAnswersViewCustomisations.call(this);
+         editPageCheckAnswersViewCustomisations.call(view);
          break;
   }
 
@@ -82,18 +91,70 @@ PagesController.edit = function(app) {
   });
 
   // Enhance any Add Component buttons.
+  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
   });
+
+  // Initialise questions
+  let questionMenuTemplate = $("[data-component-template=QuestionMenu]");
+  $("[data-fb-content-data]").each(function() {
+
+    // Initialise the question as an object.
+    var $node = $(this);
+    var question = new Question($node, {
+      data: $node.data("fb-content-data"),
+      view: view
+    });
+
+    // Create a menu for Question property editing.
+    var $ul = $(questionMenuTemplate.html());
+    var $target = $(SELECTOR_LABEL_HEADING, $node);
+    var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
+
+    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
+    view.$body.append($ul);
+
+    new QuestionMenu($ul, {
+      activator_text: questionMenuTemplate.data("activator-text"),
+      $target: $target,
+      question: question,
+      view: view,
+      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
+      onSetRequired: function(questionMenu) {
+        setQuestionRequiredFlag(question, $target, $optionalFlag);
+      }
+    });
+
+    // Set initial view state
+    setQuestionRequiredFlag(question, $target, $optionalFlag);
+  });
+
+  focusOnEditableComponent.call(view);
 }
 
 
-/* Setup for the Create action
- **/
-PagesController.create = function(app) {
+/* --------------------------------
+ * Setup for the Create action view
+ * -------------------------------- */
+PagesController.create = function() {
   // Actually uses the Services controller due to view redirect on server.
-  ServicesController.edit.call(this, app);
+  ServicesController.edit.call(this);
+}
+
+
+
+/* The design calls for a visual indicator that the question is optional.
+ * This function is to handle the adding the extra element.
+ **/
+function setQuestionRequiredFlag(question, $target, $optionalFlag) {
+  if(question.data().validation.required) {
+    $target.parent().append($optionalFlag);
+  }
+  else {
+    $optionalFlag.remove();
+  }
 }
 
 
@@ -176,11 +237,8 @@ function focusOnEditableComponent() {
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
-function bindEditableContentHandlers($area) {
-  const SELECTOR_LABEL_STANDARD = "label h1, label h2";
-  const SELECTOR_HINT_STANDARD = ".govuk-hint";
-
-  var page = this;
+function bindEditableContentHandlers() {
+  var view = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
@@ -188,7 +246,7 @@ function bindEditableContentHandlers($area) {
 
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-      page.editableContent.push(editableComponent($node, {
+      view.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
         attributeDefaultText: "fb-default-text",
@@ -204,34 +262,34 @@ function bindEditableContentHandlers($area) {
         id: $node.data("fb-content-id"),
 
         // Selectors for editable component labels/legends/hints, etc.
-        selectorTextFieldLabel: SELECTOR_LABEL_STANDARD, // Also used by Number
+        selectorTextFieldLabel: SELECTOR_LABEL_HEADING, // Also used by Number
         selectorTextFieldHint: SELECTOR_HINT_STANDARD,   // Also used by Number
-        selectorTextareaFieldLabel: SELECTOR_LABEL_STANDARD,
+        selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
         selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
-        selectorGroupFieldLabel: "legend > :first-child", // Used by Date
-        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,   // Used by Date
-        selectorCollectionFieldLabel: "legend > :first-child", // Used by Radios
-        selectorCollectionFieldHint: "fieldset > .govuk-hint", // Used by Radios
-        selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item", // Used by Radio and Checkbox option parent
-        selectorComponentCollectionItemLabel: "label",               // Used by Radio and Checkbox options
-        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD, // Used by Radio and Checkbox options
+        selectorGroupFieldLabel: SELECTOR_GROUP_FIELD_LABEL, // Used by Date
+        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,      // Used by Date
+        selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
+        selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
+        selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
+        selectorComponentCollectionItemLabel: SELECTOR_LABEL_STANDARD, // Used by Radio and Checkbox options
+        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD,   // Used by Radio and Checkbox options
         // Other selectors
-        selectorDisabled: "input:not(:hidden), textarea",
+        selectorDisabled: SELECTOR_DISABLED,
 
         text: {
-          addItem: app.text.actions.option_add,
-          removeItem: app.text.actions.option_remove,
+          addItem: view.text.actions.option_add,
+          removeItem: view.text.actions.option_remove,
 
-          default_element: app.text.default_element,
-          default_content: app.text.default_content
+          default_element: view.text.default_element,
+          default_content: view.text.default_content
         },
 
         onCollectionItemClone: function($node) {
            // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
            // Runs after the collection item has been cloned, so further custom manipulation can be
            // carried out on the element.
-           $node.find("label").text(app.text.default_option);
-           $node.find("span").text(app.text.default_option_hint);
+           $node.find("label").text(view.text.default_option);
+           $node.find("span").text(view.text.default_option_hint);
         },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
@@ -241,6 +299,7 @@ function bindEditableContentHandlers($area) {
           // This is not very good but expecting it to get significant rework when
           // we add more menu items (not for MVP).
           collectionItemControlsInActivatedMenu($node, {
+            activator_text: view.text.actions.edit,
             classnames: "editableCollectionItemControls"
           });
         },
@@ -260,11 +319,11 @@ function bindEditableContentHandlers($area) {
           // Runs before onItemRemove when removing an editable Collection item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          page.dialogConfirmationDelete.content = {
-            heading: app.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: app.text.dialogs.button_delete_option
+          view.dialogConfirmationDelete.content = {
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            ok: view.text.dialogs.button_delete_option
           };
-          page.dialogConfirmationDelete.confirm({}, function() {
+          view.dialogConfirmationDelete.confirm({}, function() {
             item.component.remove(item);
           });
         },
@@ -281,14 +340,15 @@ function bindEditableContentHandlers($area) {
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
       collectionItemControlsInActivatedMenu($(this), {
+       activator_text: view.text.actions.edit,
         classnames: "editableCollectionItemControls"
       });
     });
 
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
-      for(var i=0; i<page.editableContent.length; ++i) {
-        page.editableContent[i].save();
+      for(var i=0; i<view.editableContent.length; ++i) {
+        view.editableContent[i].save();
       }
     });
   }
@@ -314,6 +374,7 @@ function collectionItemControlsInActivatedMenu($item, config) {
     $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
     $elements.wrap("<li></li>");
     let menu = new ActivatedMenu($elements.parents("ul"), {
+      activator_text: config.activator_text,
       container_classname: config.classnames,
       container_id: uniqueString("activatedMenu-"),
       menu: {
@@ -324,6 +385,27 @@ function collectionItemControlsInActivatedMenu($item, config) {
     $item.data("ActivatedMenu", menu);
   }
 }
+
+
+/* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
+ * Component allows passing a function to it's 'confirm()' function so that actions
+ * can be played out on whether user clicks 'ok' or 'cancel'.
+ **/
+function createDialogConfiguration() {
+  var $template = $("[data-component-template=DialogConfiguration]");
+  var $node = $($template.text());
+  return new DialogConfiguration($node, {
+    autoOpen: false,
+    cancelText: $template.data("text-cancel"),
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-activator": "govuk-button fb-govuk-button",
+      "ui-button": "govuk-button",
+      "ui-dialog": $template.data("classes")
+    }
+  });
+}
+
 
 
 /**************************************************************/

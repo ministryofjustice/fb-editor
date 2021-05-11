@@ -2,12 +2,14 @@
   var app = {
     page: {
       action: "<%= action_name %>",
-      controller:  "<%= controller_name %>"
+      controller:  "<%= controller_name %>",
+      properties: JSON.parse('<%= yield(:properties).presence || "{}" %>')
     },
     text: {
       default_content: "<%= MetadataPresenter::DefaultText[:content] %>",
       default_option: "<%= MetadataPresenter::DefaultText[:option] %>",
       default_option_hint: "<%= MetadataPresenter::DefaultText[:option_hint] %>",
+      question_optional_flag: "<%= t('question.optional_flag') %>",
       dialogs: {
         button_cancel: "<%= t('dialogs.button_cancel') %>",
         button_delete: "<%= t('dialogs.button_delete') %>",
@@ -24,6 +26,7 @@
         message_publish: "<%= t('publish.dialog.alert_text').html_safe %>"
       },
       actions: {
+        edit: "<%= t('actions.edit') %>",
         save: "<%= t('actions.save') %>",
         option_add: "<%= t('actions.option_add') %>",
         option_remove: "<%= t('actions.option_remove') %>"

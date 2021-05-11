@@ -12,6 +12,7 @@ en:
     button_delete_option: 'Delete option'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
+    button_update: 'Update'
     heading: General heading here
     heading_delete: Delete \"%{label}\"?
     heading_delete_option: Delete the option \"%{option label}\"?
@@ -37,6 +38,7 @@ en:
     existing_user:
       welcome_html: 'Signed in successfully'
   actions:
+    edit: 'Edit'
     save: 'Save'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
@@ -67,6 +69,15 @@ en:
     menu:
       question: 'Question'
       content_area: 'Content area'
+  question:
+    optional_flag: '(Optional)'
+    menu:
+      activator: 'Properties'
+      required: 'Required...'
+    dialog:
+      required_heading: 'Is answering this question required?'
+      affirmative: 'Yes'
+      negative: 'No'
   settings:
     name: 'Settings'
     form_information: 'Form details'

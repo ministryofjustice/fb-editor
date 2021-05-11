@@ -75,14 +75,15 @@ function createElement(tag, text, classes) {
  *   run it only if that proves true.
  *
  * @func (Function) Expected to be required function.
- *
- * Function only specifies an argument for the expected function but,
- * if you pass other arguments they will be passed on to your function.
+ * 
+ * Note: You can also pass in several other arguments (as is possible with
+ * JavaScript functions, and these will be passed to the called function).
  **/
-function safelyActivateFunction(func, ...args) {
+function safelyActivateFunction(func) {
+  var args = Array.from(arguments);
   if(isFunction(func)) {
-    if(args) {
-      func.apply(this, args);
+    if(args.length) {
+      func.apply(this, args.slice(1));
     }
     else {
       func();
@@ -178,35 +179,27 @@ function updateHiddenInputOnForm($form, name, content) {
 }
 
 
-/* Function return specified namespace (creates if doesn't exist).
+/* Function returns specified property or undefined.
+ *
  * This means you can safely do something like this:
- * namespace("my.name.space").something = "foo";
- * without having the 'space' object previously exist, for example.
+ * var space = property(existingObject, "an.existing.property");
  *
- * Also, it means you can avoid undefined errors by doing this:
- * if(namespace("my.name.space").something) {
- *   // something exists so use it
+ * ...without having to that everything exists first.
+ *
+ * Also, it means you can avoid undefined errors when doing this:
+ * if(property(config, "this.is.missing")) {
+ *   // Won't get here because condition will be testing against 'undefined'
  * }
  *
- * If 'space' did not exist this code would fall over when trying
- * to see if 'something' has value. Instead, although 'something'
- * would still not exist (because 'space' did not) the check should
- * work but without having to write an alternative such as:
- * if(my && my.name && my.name.space && my.name.space.something) {
- *   // something exists so use it
- * }
  **/
-function namespace(namespace) {
-  var split = namespace.split(".");
-  var context = this;
-  var i = 0;
-  while( i < split.length) {
-    context = namespace.call(context, split(i));
-    ++i;
+function property(context, props) {
+  var split = (props != "" ? props.split(".") : []);
+  if(context && split.length > 0) {
+    context = property(context[split.shift()], split.join());
   }
   return context;
 }
 
 
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post, updateHiddenInputOnForm };
+export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post, updateHiddenInputOnForm, property };

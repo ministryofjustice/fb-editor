@@ -1,4 +1,4 @@
-import { DefaultPage } from './page_default';
+import { DefaultController } from './controller_default';
 import { PagesController } from './controller_pages';
 import { ServicesController } from './controller_services';
 import { FormListPage } from './page_form_list';
@@ -6,12 +6,13 @@ import { PublishController } from './controller_publish'
 
 
 // Always runs when document ready.
+// app is global set inside app/view/partials/properties
 //
 $(document).ready(function() {
   switch(controllerAndAction()) {
     case "ServicesController#index":
     case "ServicesController#create":
-         new FormListPage();
+         new FormListPage(app);
     break;
 
     case "ServicesController#edit":
@@ -30,7 +31,7 @@ $(document).ready(function() {
 
     default:
          console.log(controllerAndAction());
-         new DefaultPage();
+         new DefaultController(app);
   }
 });
 
