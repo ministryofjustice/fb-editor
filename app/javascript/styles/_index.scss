@@ -386,23 +386,35 @@ html {
  * -------- */
 .Question {
   legend, label {
+    @include govuk-responsive-margin(8, "bottom");
+
     h1 {
-      display: inline-block;
+      display: inline;
       & + .flag {
         @include govuk-font($size: 48);
         display: inline-block;
         font-weight: bold;
       }
+
+      &.active {
+        display: inline-block;
+      }
     }
   }
 
   legend, label {
+    @include govuk-responsive-margin(8, "bottom");
+
     h2 {
-      display: inline-block;
+      display: inline;
       & + .flag {
         @include govuk-font($size: 24);
         display: inline-block;
         font-weight: bold;
+      }
+
+      &.active {
+        display: inline-block;
       }
     }
   }
