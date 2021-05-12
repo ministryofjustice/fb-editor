@@ -150,10 +150,10 @@ PagesController.create = function() {
  **/
 function setQuestionRequiredFlag(question, $target, $optionalFlag) {
   if(question.data().validation.required) {
-    $target.parent().append($optionalFlag);
+    $optionalFlag.remove();
   }
   else {
-    $optionalFlag.remove();
+    $target.parent().append($optionalFlag);
   }
 }
 
