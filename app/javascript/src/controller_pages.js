@@ -111,7 +111,7 @@ PagesController.edit = function() {
     // Create a menu for Question property editing.
     var $ul = $(questionMenuTemplate.html());
     var $target = $(SELECTOR_LABEL_HEADING, $node);
-    var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
+    //var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
 
     // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
     view.$body.append($ul);
@@ -123,12 +123,12 @@ PagesController.edit = function() {
       view: view,
       question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
       onSetRequired: function(questionMenu) {
-        setQuestionRequiredFlag(question, $target, $optionalFlag);
+        setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
       }
     });
 
     // Set initial view state
-    setQuestionRequiredFlag(question, $target, $optionalFlag);
+    setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
   });
 
   focusOnEditableComponent.call(view);
@@ -148,12 +148,15 @@ PagesController.create = function() {
 /* The design calls for a visual indicator that the question is optional.
  * This function is to handle the adding the extra element.
  **/
-function setQuestionRequiredFlag(question, $target, $optionalFlag) {
-  if(question.data().validation.required) {
-    $optionalFlag.remove();
-  }
-  else {
-    $target.parent().append($optionalFlag);
+function setQuestionRequiredFlag(question, $target, text) {
+  var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
+  var textWithSpace =  " " + text;
+  var re = new RegExp(regExpTextWithSpace + "$");
+
+  // Since we always remove first we can add knowing duplicates should not happen.
+  $target.text($target.text().replace(re, ""));
+  if(!question.data().validation.required) {
+    $target.text($target.text() + textWithSpace);
   }
 }
 
