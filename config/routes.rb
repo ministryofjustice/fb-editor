@@ -34,5 +34,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    resources :services do
+      resources :pages, only: [:show]
+    end
+  end
+
   root to: 'home#show'
 end
