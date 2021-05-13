@@ -1,0 +1,16 @@
+type: object
+properties:
+  $ref: ../schemas/service.yaml
+example: {
+  "meta": {
+    "default_text": {
+       "section_heading": "[Optional section heading]",
+       "lede": "[Optional lede paragraph]",
+       "body": "[Optional content]",
+       "content": "[Optional content]",
+       "hint": "[Optional hint text]",
+       "option": "Option",
+       "option_hint": "[Optional hint text]"
+    }
+  }
+}
