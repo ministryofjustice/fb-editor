@@ -1,5 +1,5 @@
 module Api
-  class PagesController < ActionController::API
+  class PagesController < ApiController
     def show
       render json: {
         meta: {
