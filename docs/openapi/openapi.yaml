@@ -27,9 +27,8 @@ paths:
     $ref: 'paths/api@services@{service_id}@pages@{pages_uuid}.yaml'
 components:
   securitySchemes:
-    jwt:
+    basicAuth:
       type: http
-      scheme: bearer
-      bearerFormat: JWT
+      scheme: basic
 security:
-  - jwt: []
+  - - basicAuth: []

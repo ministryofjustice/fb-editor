@@ -104,3 +104,23 @@ For example, if the pod name for a service is `awesome-form-78b47fc858-cxgfl` an
 `ruby ./lib/scripts/remove_services.rb formbuilder-services-test-dev awesome-form`
 
 If target is not provided it will attempt to remove all services within the supplied namespace. This is temporary for now until we have a proper mechanism for removing a service and its configuration. It will not work in production namespaces, developers will need to do those by hand if required.
+
+## API Documentation
+The Editor API docs are found in the `docs` folder.
+
+To run locally:
+#### Install
+1. Install [Node JS](https://nodejs.org/en/).
+2. `cd` into the `docs` folder
+2. Run `npm install`
+#### Usage
+`npm start`
+Starts the reference docs preview server.
+
+`npm run build`
+Bundles the definition to the dist folder.
+
+`npm test`
+Validates the definition.
+
+Navigate to `localhost:8080`
