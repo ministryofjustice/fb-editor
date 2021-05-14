@@ -96,7 +96,7 @@ PagesController.edit = function() {
     var $node = $(this);
     new AddComponent($node, { $form: $form });
   });
-
+/*
   // Initialise questions
   let questionMenuTemplate = $("[data-component-template=QuestionMenu]");
   $("[data-fb-content-data]").each(function() {
@@ -130,7 +130,7 @@ PagesController.edit = function() {
     // Set initial view state
     setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
   });
-
+*/
   focusOnEditableComponent.call(view);
 }
 
