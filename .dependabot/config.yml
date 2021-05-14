@@ -18,6 +18,14 @@ update_configs:
     - tomas-stefano
     - brenetic
     - njseeto
+  - package_manager: "javascript"
+    directory: "/docs"
+    update_schedule: "live"
+    default_reviewers:
+    - mattempty
+    - tomas-stefano
+    - brenetic
+    - njseeto
   - package_manager: "docker"
     directory: "/docker/web"
     update_schedule: "daily"
