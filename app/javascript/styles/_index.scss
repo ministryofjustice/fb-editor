@@ -382,33 +382,6 @@ html {
 }
 
 
-/* Question
- * -------- */
-.Question {
-  legend, label {
-    h1 {
-      display: inline-block;
-      & + .flag {
-        @include govuk-font($size: 48);
-        display: inline-block;
-        font-weight: bold;
-      }
-    }
-  }
-
-  legend, label {
-    h2 {
-      display: inline-block;
-      & + .flag {
-        @include govuk-font($size: 24);
-        display: inline-block;
-        font-weight: bold;
-      }
-    }
-  }
-}
-
-
 /* Question Menu
  * ------------- */
 .QuestionMenu {
