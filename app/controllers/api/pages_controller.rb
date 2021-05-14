@@ -3,7 +3,7 @@ module Api
     def show
       render json: {
         meta: {
-          default_text: Rails.application.config.default_text
+          default_text: I18n.t('default_text')
         }
       }
     end
