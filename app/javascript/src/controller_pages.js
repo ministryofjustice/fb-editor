@@ -422,8 +422,11 @@ function setQuestionRequiredFlag(question, $target, text) {
   $target.text($target.text().replace(re, ""));
   if(!question.data().validation.required) {
     $target.text($target.text() + textWithSpace);
-    // TODO: something to update the target (editable element data)
   }
+
+  // If we've changed the $target content, or the eitor has, we
+  // need to check whether required flag needs to show, or not.
+  $target.data("instance").update();
 }
 
 
