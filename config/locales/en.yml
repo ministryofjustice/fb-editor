@@ -1,4 +1,12 @@
 en:
+  default_text:
+    section_heading: '[Optional section heading]'
+    lede: '[Optional lede paragraph]'
+    body: '[Optional content]'
+    content: '[Optional content]'
+    hint: '[Optional hint text]'
+    option: 'Option'
+    option_hint: '[Optional hint text]'
   default_values:
     service_email_output: ''
     service_email_from: 'moj-forms@digital.justice.gov.uk'
