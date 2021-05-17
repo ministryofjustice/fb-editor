@@ -62,6 +62,16 @@ spec:
               secretKeyRef:
                 name: fb-acceptance-tests-date-secrets
                 key: basic_auth_pass
+          - name: SERVICE_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: service_secret
+          - name: SERVICE_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: service_token
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
         imagePullPolicy: Always
         ports:

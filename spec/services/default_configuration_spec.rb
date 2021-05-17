@@ -25,7 +25,11 @@ RSpec.describe DefaultConfiguration do
       end
 
       it 'generates 2 keys per deployment environment' do
-        expect(service_configuration).to match_array(
+        configs = service_configuration.select do |service_config|
+          service_config[:name].in?(%w[ENCODED_PRIVATE_KEY ENCODED_PUBLIC_KEY])
+        end
+
+        expect(configs).to match_array(
           [
             {
               name: 'ENCODED_PRIVATE_KEY',
@@ -55,6 +59,33 @@ RSpec.describe DefaultConfiguration do
             expect(public_keys).to include(key.public_key.to_pem)
           }.to_not raise_error
         end
+      end
+
+      it 'generates the service secret and service token per environment' do
+        configs = service_configuration.select do |service_config|
+          service_config[:name].in?(%w[SERVICE_SECRET SERVICE_TOKEN])
+        end
+
+        expect(configs).to match_array(
+          [
+            {
+              name: 'SERVICE_SECRET',
+              deployment_environment: 'dev'
+            },
+            {
+              name: 'SERVICE_TOKEN',
+              deployment_environment: 'dev'
+            },
+            {
+              name: 'SERVICE_SECRET',
+              deployment_environment: 'production'
+            },
+            {
+              name: 'SERVICE_TOKEN',
+              deployment_environment: 'production'
+            }
+          ]
+        )
       end
     end
   end
