@@ -111,16 +111,18 @@ class EditableElement extends EditableBase {
   set content(content) {
     this._content = content.trim();
     this.populate(content);
-    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
     this.$node.addClass(this._config.editClassname);
   }
 
-  update() {
+  update(suppressSaveNotification) {
     this.content = this.$node.text().trim();
     this.$node.removeClass(this._config.editClassname);
+    if(!suppressSaveNotification) {
+      safelyActivateFunction(this._config.onSaveRequired);
+    }
   }
 
   // Expects content or blank string to show content or default text in view.

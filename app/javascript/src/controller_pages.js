@@ -199,7 +199,7 @@ function bindEditableContentHandlers() {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
-    $saveButton.attr("disabled", true); // disable until needed.
+    $saveButton.prop("disabled", true); // disable until needed.
 
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
@@ -287,7 +287,7 @@ function bindEditableContentHandlers() {
         onSaveRequired: function() {
           // Code detected something changed to
           // make the submit button available.
-          $saveButton.attr("disabled", false);
+          $saveButton.prop("disabled", false);
         },
         type: $node.data("fb-content-type")
       }));
@@ -426,7 +426,7 @@ function setQuestionRequiredFlag(question, $target, text) {
 
   // If we've changed the $target content, or the eitor has, we
   // need to check whether required flag needs to show, or not.
-  $target.data("instance").update();
+  $target.data("instance").update(true); // passing true prevents onSaveRequired trigger to keep 'Save' button disabled.
 }
 
 
