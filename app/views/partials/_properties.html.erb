@@ -1,8 +1,12 @@
 <script>
   var app = {
     page: {
+      id: "<%= params[:page_uuid] %>",
       action: "<%= action_name %>",
-      controller:  "<%= controller_name %>"
+      controller:  "<%= controller_name %>",
+    },
+    service: {
+      id: "<%= params[:id] %>"
     },
     text: {
       default_content: "<%= MetadataPresenter::DefaultText[:content] %>",
