@@ -426,7 +426,7 @@ function setQuestionRequiredFlag(question, $target, text) {
 
   // If we've changed the $target content, or the eitor has, we
   // need to check whether required flag needs to show, or not.
-  $target.data("instance").update(true); // passing true prevents onSaveRequired trigger to keep 'Save' button disabled.
+  $target.data("instance").update();
 }
 
 

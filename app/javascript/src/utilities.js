@@ -201,5 +201,12 @@ function property(context, props) {
 }
 
 
+/* Determine if passed item is of Boolean origin.
+ **/
+function isBoolean(thing) {
+  return thing.constructor === Boolean;
+}
+
+
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post, updateHiddenInputOnForm, property };
+export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post, updateHiddenInputOnForm, property, isBoolean };

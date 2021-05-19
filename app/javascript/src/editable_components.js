@@ -14,7 +14,7 @@
  **/
 
 
-import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm } from './utilities';
+import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm, isBoolean } from './utilities';
 var showdown  = require('showdown');
 var converter = new showdown.Converter({
                   noHeaderId: true,
@@ -109,7 +109,16 @@ class EditableElement extends EditableBase {
   }
 
   set content(content) {
-    this._content = content.trim();
+    var trimmedContent = content.trim();
+    if(this._content != trimmedContent) {
+      this._content = trimmedContent;
+
+      // If something change, let's make sure it's not
+      if(this._content != "" && this._content != this._defaultContent && this._content != this._originalContent) {
+        safelyActivateFunction(this._config.onSaveRequired);
+      }
+    }
+
     this.populate(content);
   }
 
@@ -117,12 +126,9 @@ class EditableElement extends EditableBase {
     this.$node.addClass(this._config.editClassname);
   }
 
-  update(suppressSaveNotification) {
+  update() {
     this.content = this.$node.text().trim();
     this.$node.removeClass(this._config.editClassname);
-    if(!suppressSaveNotification) {
-      safelyActivateFunction(this._config.onSaveRequired);
-    }
   }
 
   // Expects content or blank string to show content or default text in view.
