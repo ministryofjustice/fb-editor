@@ -4,6 +4,7 @@
       id: "<%= params[:page_uuid] %>",
       action: "<%= action_name %>",
       controller:  "<%= controller_name %>",
+      data_url: "<%= yield :page_data_url %>"
     },
     service: {
       id: "<%= params[:id] %>"

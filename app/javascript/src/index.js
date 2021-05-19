@@ -12,15 +12,16 @@ function controllerAndAction() {
 }
 
 // Fetch JSON data from server
-function loadData(app, url) {
-  if(url) {
-    $.getJSON(url, (data) => {
+function loadPageData(app) {
+  $.ajax({
+    url: app.page.data_url,
+    async: false,
+    dataType: "json",
+    success: function(data) {
       app.default_text = data.meta.default_text;
-      console.log("finished: ", app.default_text);
-    });
-  }
+    }
+  });
 }
-
 
 
 // Set the controller we want to use.
@@ -42,7 +43,7 @@ switch(controllerAndAction()) {
   case "PagesController#edit":
   case "PagesController#create":
        Controller = PagesController;
-       loadData(app, "/api/services/" + app.service.id  + "/pages/" + app.page.id);
+       loadPageData(app);
   break;
 
   case "PublishController#index":
