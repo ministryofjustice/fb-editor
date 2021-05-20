@@ -585,7 +585,7 @@ EditableCollectionFieldComponent.createCollectionItemTemplate = function(config)
   var $clone = this.$node.find(config.selectorCollectionItem).eq(0).clone();
   var data = mergeObjects({}, config.data, ["items", "_uuid"]); // pt.1 Copy without items and component uuid.
   var itemConfig = mergeObjects({}, config, ["data"]); // pt.2 Copy without data.
-  itemConfig.data = mergeObjects(data, config.data.items[0]); // Bug fix response to JS reference handling.
+  itemConfig.data = mergeObjects(data, config.data.items[0], "_uuid"); // Bug fix response to JS reference handling.
 
   // Filters could be changing the blah_1 values to blah_0, depending on filters in play.
   itemConfig.data = EditableCollectionFieldComponent.applyFilters(config.filters, 0, itemConfig.data);
@@ -634,7 +634,6 @@ EditableCollectionFieldComponent.addItem = function($node, config) {
   this.items.push(new EditableComponentCollectionItem(this, $node, config));
 
   // TODO: need to update the data on each item so _id and value are different.
-  
 }
 
 /* Private function
