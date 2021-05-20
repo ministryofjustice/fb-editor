@@ -18,7 +18,7 @@ function loadPageData(app) {
     async: false,
     dataType: "json",
     success: function(data) {
-      app.default_text = data.meta.default_text;
+      app.text.defaults = data.meta.default_text;
     }
   });
 }

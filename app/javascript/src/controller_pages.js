@@ -59,7 +59,8 @@ PagesController.edit = function() {
   this.editableContent = [];
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
-  bindEditableContentHandlers.call(view);
+  workaroundForDefaultText(view);
+  bindEditableContentHandlers(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -194,8 +195,7 @@ function focusOnEditableComponent() {
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
-function bindEditableContentHandlers() {
-  var view = this;
+function bindEditableContentHandlers(view) {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
@@ -430,6 +430,22 @@ function setQuestionRequiredFlag(question, $target, text) {
   $target.data("instance").update();
 }
 
+
+/* Due to limitations in using the GDS templates, we cannot
+ * add appropriate HTML attributes to relevant elements in
+ * both radio and checkbox hints. This is a workaround to
+ * add them, so fixes missing default text without affecting
+ * the current method of finding them view fb-default-text
+ * attribute.
+ **/
+function workaroundForDefaultText(view) {
+  $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
+    var $this = $(this);
+    var $span = $this.find("span");
+    $span.attr("fb-default-text", view.text.defaults.option_hint);
+    $span.data("fb-default-text", view.text.defaults.option_hint);
+  });
+}
 
 
 /**************************************************************/
