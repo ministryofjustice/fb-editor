@@ -25,6 +25,7 @@ import { editableComponent } from './editable_components';
 import { DefaultController } from './controller_default';
 import { ServicesController } from './controller_services';
 
+const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
 const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
 const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
@@ -206,7 +207,7 @@ function bindEditableContentHandlers(view) {
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
-        attributeDefaultText: "fb-default-text",
+        attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
         filters: {
           _id: function(index) {
             return this.replace(/^(.*)?[\d]+$/, "$1" + index);
@@ -442,8 +443,7 @@ function workaroundForDefaultText(view) {
   $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
     var $this = $(this);
     var $span = $this.find("span");
-    $span.attr("fb-default-text", view.text.defaults.option_hint);
-    $span.data("fb-default-text", view.text.defaults.option_hint);
+    $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
   });
 }
 
