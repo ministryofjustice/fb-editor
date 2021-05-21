@@ -370,7 +370,8 @@ function createDialogConfiguration() {
 function setupQuestions() {
   var view = this;
   var questionMenuTemplate = $("[data-component-template=QuestionMenu]");
-  $("[data-fb-content-data]").each(function() {
+
+  $("[data-fb-content-data]").not("[data-fb-content-type='content']").each(function() {
 
     // Initialise the question as an object.
     var $node = $(this);
