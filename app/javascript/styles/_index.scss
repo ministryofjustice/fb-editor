@@ -208,6 +208,11 @@ html {
   .EditableCollectionFieldComponent,
   .EditableGroupFieldComponent,
   .EditableComponentCollectionItem {
+
+    legend {
+      display: contents;
+    }
+
     .ActivatedMenu_Activator {
       top: 45px;
     }
