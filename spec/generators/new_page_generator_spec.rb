@@ -90,14 +90,15 @@ RSpec.describe NewPageGenerator do
         end
 
         it 'adds new page after the given page' do
-          expect(generator.to_metadata['pages']).to_not be_blank
-          expect(generator.to_metadata['pages'][4]).to include(page_attributes)
+          pages = generator.to_metadata['pages']
+          expect(pages).to_not be_blank
+          expect(pages[3]).to include(page_attributes)
         end
 
         it 'adds the new page after given page steps' do
           expect(
-            # the step index is 3 because 'steps' doesn't count the start page
-            generator.to_metadata['pages'][0]['steps'][3]
+            # the step index is 2 because 'steps' doesn't count the start page
+            generator.to_metadata['pages'][0]['steps'][2]
           ).to include("page.#{page_url}")
         end
       end

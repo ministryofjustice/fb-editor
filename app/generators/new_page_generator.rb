@@ -37,8 +37,8 @@ class NewPageGenerator
 
   def add_flow_page
     latest_metadata.tap do
-      latest_metadata['pages'].insert(insert_page_at, page_metadata)
-      latest_metadata['pages'][0]['steps'].insert(insert_page_at, page_name)
+      latest_metadata['pages'].insert(pages_index, page_metadata)
+      latest_metadata['pages'][0]['steps'].insert(steps_index, page_name)
     end
   end
 
@@ -61,14 +61,22 @@ class NewPageGenerator
 
   INSERT_LAST = -1
 
-  def insert_page_at
-    if add_page_after.present?
-      index = find_page_index_to_be_inserted_after
+  def pages_index
+    @pages_index ||= begin
+      if add_page_after.present?
+        index = find_page_index_to_be_inserted_after
 
-      return index + 1 if index
+        return index + 1 if index
+      end
+
+      INSERT_LAST
     end
+  end
 
-    INSERT_LAST
+  def steps_index
+    # steps array doesn't include start page so is always one count less than
+    # the pages array
+    pages_index.positive? ? pages_index - 1 : pages_index
   end
 
   def find_page_index_to_be_inserted_after
