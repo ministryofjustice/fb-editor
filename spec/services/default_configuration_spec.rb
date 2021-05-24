@@ -61,9 +61,9 @@ RSpec.describe DefaultConfiguration do
         end
       end
 
-      it 'generates the service secret and service token per environment' do
+      it 'generates the service secret per environment' do
         configs = service_configuration.select do |service_config|
-          service_config[:name].in?(%w[SERVICE_SECRET SERVICE_TOKEN])
+          service_config[:name].in?(%w[SERVICE_SECRET])
         end
 
         expect(configs).to match_array(
@@ -73,15 +73,7 @@ RSpec.describe DefaultConfiguration do
               deployment_environment: 'dev'
             },
             {
-              name: 'SERVICE_TOKEN',
-              deployment_environment: 'dev'
-            },
-            {
               name: 'SERVICE_SECRET',
-              deployment_environment: 'production'
-            },
-            {
-              name: 'SERVICE_TOKEN',
               deployment_environment: 'production'
             }
           ]
