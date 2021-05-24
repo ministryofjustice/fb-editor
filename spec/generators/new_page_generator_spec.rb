@@ -23,7 +23,8 @@ RSpec.describe NewPageGenerator do
         '_id' => 'page.home-one',
         '_type' => 'page.singlequestion',
         '_uuid' => 'mandalorian-123',
-        'heading' => 'Question',
+        'section_heading' => '',
+        'heading' => '',
         'lede' => '',
         'body' => 'Body section',
         'components' => [
@@ -196,7 +197,7 @@ RSpec.describe NewPageGenerator do
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do
-          %w[checkboxes date number radios text textarea].each do |type|
+          %w[checkboxes date number radios text textarea upload].each do |type|
             context "when #{type} component" do
               let(:page_type) { 'singlequestion' }
               let(:component_type) { type }
