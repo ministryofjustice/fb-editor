@@ -207,9 +207,12 @@ html {
 [data-fb-pagetype="page.multiplequestions"] {
   .EditableCollectionFieldComponent,
   .EditableGroupFieldComponent,
-  .EditableTextFieldComponent,
-  .EditableTextareaFieldComponent,
   .EditableComponentCollectionItem {
+
+    legend {
+      display: contents;
+    }
+
     .ActivatedMenu_Activator {
       top: 45px;
     }
@@ -383,7 +386,7 @@ html {
 
 
 /* Question Menu
- * ------------- *
+ * ------------- */
 .QuestionMenu {
   [data-action="required"].on {
     position: relative;
@@ -411,7 +414,7 @@ html {
     }
   }
 }
-*/
+
 
 /* govuk-navigation does not appear to exist
  * so adding something simple here.
