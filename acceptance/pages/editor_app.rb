@@ -68,6 +68,11 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
 
+  element :question_three_dots_button, '.ActivatedMenu_Activator'
+  element :required_question,
+          :xpath,
+          "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"
+
   element :add_text, :link, 'Text', visible: false
   element :add_text_area, :link, 'Textarea', visible: false
   element :add_number, :link, 'Number', visible: false
