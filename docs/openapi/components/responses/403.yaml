@@ -1,0 +1,13 @@
+type: object
+description: The error message returned when the requesting service does not have permission to perform the operation
+properties:
+  message:
+    description: Response message
+    type: array
+    items:
+      type: string
+      minLength: 1
+      example: You do not have permission to perform this operation
+example: {
+  message: 'Unauthorised'
+}
