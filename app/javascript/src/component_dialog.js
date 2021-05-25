@@ -14,7 +14,8 @@
  *
  **/
 
-import { safelyActivateFunction } from './utilities';
+const utilities = require('./utilities');
+const safelyActivateFunction = utilities.safelyActivateFunction;
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
@@ -112,5 +113,5 @@ Dialog.setDefaultText = function($node) {
 
 
 // Make available for importing.
-export { Dialog };
+module.exports = Dialog;
 

@@ -16,8 +16,8 @@
  **/
 
 
-import { ActivatedDialog } from './component_activated_dialog';
-import { DefaultController } from './controller_default';
+const ActivatedDialog = require('./component_activated_dialog');
+const DefaultController = require('./controller_default');
 
 
 class FormListPage extends DefaultController {
@@ -73,4 +73,4 @@ class FormCreateDialog {
 }
 
 
-export { FormListPage }
+module.exports = FormListPage;

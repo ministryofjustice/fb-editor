@@ -16,7 +16,8 @@
  **/
 
 
-import { mergeObjects } from './utilities';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
 
 
 class Question {
@@ -37,4 +38,4 @@ class Question {
 
 
 
-export { Question }
+module.exports = Question;

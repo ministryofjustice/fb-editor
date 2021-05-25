@@ -16,9 +16,9 @@
  **/
 
 
-import { Dialog } from './component_dialog';
-import { DialogConfirmation } from './component_dialog_confirmation';
-import { post } from './utilities';
+const Dialog = require('./component_dialog');
+const DialogConfirmation = require('./component_dialog_confirmation');
+const post = require('./utilities');
 
 
 class DefaultController {
@@ -105,4 +105,4 @@ function isolatedMethodDeleteLinks() {
 }
 
 
-export { DefaultController }
+module.exports = DefaultController;
