@@ -15,8 +15,11 @@
  **/
 
 
-import { safelyActivateFunction, mergeObjects, updateHiddenInputOnForm } from './utilities';
-import { ActivatedMenu } from './component_activated_menu';
+const utilities = require('./utilities');
+const safelyActivateFunction = utilities.safelyActivateFunction;
+const mergeObjects = utilities.mergeObjects;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const ActivatedMenu = require('./component_activated_menu');
 
 
 class QuestionMenu extends ActivatedMenu {
@@ -89,4 +92,4 @@ QuestionMenu.setRequiredViewState = function() {
 
 
 
-export { QuestionMenu }
+module.exports = QuestionMenu;

@@ -14,7 +14,11 @@
  *
  **/
 
-import { property, mergeObjects, createElement, safelyActivateFunction } from './utilities';
+const utilities = require('./utilities');
+const property = utilities.property;
+const mergeObjects = utilities.mergeObjects;
+const createElement = utilities.createElement;
+const safelyActivateFunction = utilities.safelyActivateFunction;
 
 
 class ActivatedMenu {
@@ -239,5 +243,5 @@ class ActivatedMenuActivator {
 
 
 // Make available for importing.
-export { ActivatedMenu };
+module.exports = ActivatedMenu;
 

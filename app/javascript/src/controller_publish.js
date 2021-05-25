@@ -16,9 +16,12 @@
  **/
 
 
-import { mergeObjects, safelyActivateFunction, isFunction, post } from './utilities';
-import { ActivatedFormDialog } from './component_activated_form_dialog';
-import { DefaultController } from './controller_default';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const safelyActivateFunction = utilities.isFunction;
+const post = utilities.post;
+const ActivatedFormDialog = require('./component_activated_form_dialog');
+const DefaultController = require('./controller_default');
 
 
 class PublishController extends DefaultController {
@@ -131,4 +134,4 @@ function setupPublishForms(page) {
   this.publishFormProd = new PublishForm($("#publish-form-live"));
 }
 
-export { PublishController }
+module.exports = PublishController;

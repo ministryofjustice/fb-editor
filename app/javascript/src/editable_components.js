@@ -14,16 +14,21 @@
  **/
 
 
-import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm, isBoolean } from './utilities';
-var showdown  = require('showdown');
-var converter = new showdown.Converter({
-                  noHeaderId: true,
-                  strikethrough: true,
-                  omitExtraWLInCodeBlocks: true,
-                  simplifiedAutoLink: false,
-                  tables: true,
-                  disableForced4SpacesIndentedSublists: true
-                });
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const createElement = utilities.createElement;
+const safelyActivateFunction = utilities.safelyActivateFunction;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const isBoolean = utilities.isBoolean;
+const showdown  = require('showdown');
+const converter = new showdown.Converter({
+                    noHeaderId: true,
+                    strikethrough: true,
+                    omitExtraWLInCodeBlocks: true,
+                    simplifiedAutoLink: false,
+                    tables: true,
+                    disableForced4SpacesIndentedSublists: true
+                  });
 
 showdown.setFlavor('github');
 
@@ -894,4 +899,4 @@ function editableComponent($node, config) {
 
 
 // Make available for importing.
-export { editableComponent };
+module.exports =  editableComponent;

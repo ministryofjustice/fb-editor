@@ -16,7 +16,7 @@
  **/
 
 
-import { ActivatedDialog } from './component_activated_dialog';
+const ActivatedDialog = require('./component_activated_dialog');
 
 
 class ActivatedFormDialog {
@@ -49,4 +49,4 @@ class ActivatedFormDialog {
 }
 
 
-export { ActivatedFormDialog }
+module.exports = ActivatedFormDialog;

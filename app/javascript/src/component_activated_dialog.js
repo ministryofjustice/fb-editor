@@ -14,7 +14,9 @@
  *
  **/
 
-import { mergeObjects, safelyActivateFunction } from './utilities';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const safelyActivateFunction = utilities.safelyActivateFunction;
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
@@ -103,5 +105,5 @@ function createActivator($dialog, text, classes) {
 
 
 // Make available for importing.
-export { ActivatedDialog };
+module.exports = ActivatedDialog;
 

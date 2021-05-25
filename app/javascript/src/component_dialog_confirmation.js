@@ -14,8 +14,10 @@
  *
  **/
 
-import { mergeObjects, safelyActivateFunction } from './utilities';
-import { Dialog } from './component_dialog';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const safelyActivateFunction = utilities.safelyActivateFunciton;
+const Dialog = require('./component_dialog');
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
@@ -118,5 +120,5 @@ DialogConfirmation.setDefaultText = function($node) {
 
 
 // Make available for importing.
-export { DialogConfirmation };
+module.exports = DialogConfirmation;
 

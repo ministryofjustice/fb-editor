@@ -1,8 +1,8 @@
-import { DefaultController } from './controller_default';
-import { PagesController } from './controller_pages';
-import { ServicesController } from './controller_services';
-import { FormListPage } from './page_form_list';
-import { PublishController } from './controller_publish'
+const DefaultController = require('./controller_default');
+const PagesController = require('./controller_pages');
+const ServicesController = require('./controller_services');
+const FormListPage = require('./page_form_list');
+const PublishController = require('./controller_publish');
 
 
 // Determine the controller we need to use

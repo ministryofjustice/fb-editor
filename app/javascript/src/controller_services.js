@@ -17,10 +17,13 @@
 
 
 
-import { mergeObjects, post, updateHiddenInputOnForm } from './utilities';
-import { ActivatedMenu } from './component_activated_menu';
-import { ActivatedDialog } from './component_activated_dialog';
-import { DefaultController } from './controller_default';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const post = utilities.post;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const ActivatedMenu = require('./component_activated_menu');
+const ActivatedDialog = require('./component_activated_dialog');
+const DefaultController = require('./controller_default');
 
 
 class ServicesController extends DefaultController {
@@ -265,4 +268,4 @@ function applyCustomOverviewWorkaround() {
 
 
 
-export { ServicesController }
+module.exports = ServicesController;
