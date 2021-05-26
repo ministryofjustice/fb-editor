@@ -32,4 +32,4 @@
 <% # JS object should exist at this point so we're not checking for existence. %>
 <% # If app.page does not exist at this point, something is seriously wrong. %>
 <% # Let it fail so that we can see some error output in console. %>
-<% content_for :page_data_url do %><%= "/api/services/#{:id}/pages/#{:page_uuid}" %><% end %>
+<% content_for :page_data_url do %><%= api_service_page_path(':id', ':page_uuid') %><% end %>
