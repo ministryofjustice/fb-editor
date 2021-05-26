@@ -25,6 +25,7 @@ import { editableComponent } from './editable_components';
 import { DefaultController } from './controller_default';
 import { ServicesController } from './controller_services';
 
+const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
 const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
 const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
@@ -59,7 +60,8 @@ PagesController.edit = function() {
   this.editableContent = [];
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
-  bindEditableContentHandlers.call(view);
+  workaroundForDefaultText(view);
+  bindEditableContentHandlers(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -194,8 +196,7 @@ function focusOnEditableComponent() {
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
-function bindEditableContentHandlers() {
-  var view = this;
+function bindEditableContentHandlers(view) {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
@@ -206,7 +207,7 @@ function bindEditableContentHandlers() {
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
-        attributeDefaultText: "fb-default-text",
+        attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
         filters: {
           _id: function(index) {
             return this.replace(/^(.*)?[\d]+$/, "$1" + index);
@@ -236,17 +237,15 @@ function bindEditableContentHandlers() {
         text: {
           addItem: view.text.actions.option_add,
           removeItem: view.text.actions.option_remove,
-
-          default_element: view.text.default_element,
-          default_content: view.text.default_content
+          default_content: view.text.defaults.content
         },
 
         onCollectionItemClone: function($node) {
            // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
            // Runs after the collection item has been cloned, so further custom manipulation can be
            // carried out on the element.
-           $node.find("label").text(view.text.default_option);
-           $node.find("span").text(view.text.default_option_hint);
+           $node.find("label").text(view.text.defaults.option);
+           $node.find("span").text(view.text.defaults.option_hint);
         },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
@@ -430,6 +429,21 @@ function setQuestionRequiredFlag(question, $target, text) {
   $target.data("instance").update();
 }
 
+
+/* Due to limitations in using the GDS templates, we cannot
+ * add appropriate HTML attributes to relevant elements in
+ * both radio and checkbox hints. This is a workaround to
+ * add them, so fixes missing default text without affecting
+ * the current method of finding them view fb-default-text
+ * attribute.
+ **/
+function workaroundForDefaultText(view) {
+  $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
+    var $this = $(this);
+    var $span = $this.find("span");
+    $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
+  });
+}
 
 
 /**************************************************************/

@@ -24,6 +24,7 @@ import { post } from './utilities';
 class DefaultController {
   constructor(app) {
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
+    this.page = app.page;
     this.text = app.text;
     this.dialog = createDialog.call(this);
     this.dialogConfirmation = createDialogConfirmation.call(this);

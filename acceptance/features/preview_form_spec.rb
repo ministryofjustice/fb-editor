@@ -107,15 +107,19 @@ feature 'Preview form' do
       expect(page.text).to include('Service name goes here')
       page.click_button 'Start now'
       expect(page.text).to include('Full name')
+      then_I_should_not_see_optional_text(page)
       page.fill_in 'Full name', with: 'Charmy Pappitson'
       page.click_button 'Continue'
       expect(page.text).to include(content_component)
+      then_I_should_not_see_optional_text(page)
       page.fill_in text_component_question, with: 'Car Car Binks'
       page.fill_in textarea_component_question, with: 'R2-Detour'
       page.click_button 'Continue'
       expect(page.text).to include(content_page_heading)
+      then_I_should_not_see_optional_text(page)
       page.click_button 'Continue'
       expect(page.text).to include('Date of birth')
+      then_I_should_not_see_optional_text(page)
       page.fill_in 'Day', with: '03'
       page.fill_in 'Month', with: '06'
       page.fill_in 'Year', with: '2002'
@@ -123,6 +127,7 @@ feature 'Preview form' do
       expect(page.text).to include('Check your answers')
       expect(page.text).to include('Charmy Pappitson')
       expect(page.text).to include('03 June 2002')
+      then_I_should_not_see_optional_text(page)
       then_I_should_not_see_content_page_in_check_your_answers(page)
       then_I_should_not_see_content_components_in_check_your_answers(page)
       page.click_button 'Accept and send application'
@@ -136,5 +141,16 @@ feature 'Preview form' do
 
   def then_I_should_not_see_content_components_in_check_your_answers(page)
     expect(page.text).to_not include(content_page_heading)
+  end
+
+  def then_I_should_not_see_optional_text(page)
+    [
+      "[Optional section heading]",
+      "[Optional lede paragraph]",
+      "[Optional content]",
+      "[Optional hint text]"
+    ].each do |optional_text|
+      expect(page.text).to_not include(optional_content)
+    end
   end
 end

@@ -1,13 +1,15 @@
 <script>
   var app = {
     page: {
+      id: "<%= params[:page_uuid] %>",
       action: "<%= action_name %>",
-      controller:  "<%= controller_name %>"
+      controller:  "<%= controller_name %>",
+      data_url: "<%= yield :page_data_url %>"
+    },
+    service: {
+      id: "<%= params[:id] %>"
     },
     text: {
-      default_content: "<%= MetadataPresenter::DefaultText[:content] %>",
-      default_option: "<%= MetadataPresenter::DefaultText[:option] %>",
-      default_option_hint: "<%= MetadataPresenter::DefaultText[:option_hint] %>",
       question_optional_flag: "<%= t('question.optional_flag') %>",
       dialogs: {
         button_cancel: "<%= t('dialogs.button_cancel') %>",
