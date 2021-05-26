@@ -13,6 +13,7 @@ Rails.application.config.platform_environments =
       namespace: 'formbuilder-services-%{platform_environment}-%{deployment_environment}',
       user_datastore_url: "http://fb-user-datastore-api-svc-%{platform_environment}-%{deployment_environment}.formbuilder-platform-%{platform_environment}-%{deployment_environment}/",
       submitter_url: "http://fb-submitter-api-svc-%{platform_environment}-%{deployment_environment}.formbuilder-platform-%{platform_environment}-%{deployment_environment}/",
+      filestore_url: "http://fb-user-filestore-api-svc-%{platform_environment}-%{deployment_environment}.formbuilder-platform-%{platform_environment}-%{deployment_environment}/",
       container_port: 3000
     }
   })
