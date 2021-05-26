@@ -237,17 +237,15 @@ function bindEditableContentHandlers(view) {
         text: {
           addItem: view.text.actions.option_add,
           removeItem: view.text.actions.option_remove,
-
-          default_element: view.text.default_element,
-          default_content: view.text.default_content
+          default_content: view.text.defaults.content
         },
 
         onCollectionItemClone: function($node) {
            // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
            // Runs after the collection item has been cloned, so further custom manipulation can be
            // carried out on the element.
-           $node.find("label").text(view.text.default_option);
-           $node.find("span").text(view.text.default_option_hint);
+           $node.find("label").text(view.text.defaults.option);
+           $node.find("span").text(view.text.defaults.option_hint);
         },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
