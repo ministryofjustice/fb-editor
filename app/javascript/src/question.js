@@ -22,7 +22,7 @@ const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const editableComponent = require('./editable_components');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
-
+const SELECTOR_DISABLED = "input:not(:hidden), textarea";
 
 class Question {
   constructor($node, config) {
@@ -32,6 +32,7 @@ class Question {
       data: $node.data("fb-content-data"),
       editClassname: "active",
       id: $node.data("fb-content-id"),
+      selectorDisabled: SELECTOR_DISABLED,
       type: $node.data("fb-content-type")
     }, config);
 
