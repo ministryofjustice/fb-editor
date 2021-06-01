@@ -210,7 +210,7 @@ function bindEditableContentHandlers(view) {
   if($editContentForm.length) {
     $saveButton.prop("disabled", true); // disable until needed.
 
-    $("[data-fb-content-type=text]").each(function(i, node) {
+    $("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
       view.editableContent.push(new TextComponent($(this), {
         form: $editContentForm,
         text: {
@@ -219,7 +219,7 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text]").each(function(i, node) {
+    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
@@ -237,8 +237,6 @@ function bindEditableContentHandlers(view) {
         id: $node.data("fb-content-id"),
 
         // Selectors for editable component labels/legends/hints, etc.
-        selectorTextFieldLabel: SELECTOR_LABEL_HEADING, // Also used by Number
-        selectorTextFieldHint: SELECTOR_HINT_STANDARD,   // Also used by Number
         selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
         selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
         selectorGroupFieldLabel: SELECTOR_GROUP_FIELD_LABEL, // Used by Date
