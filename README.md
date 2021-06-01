@@ -3,8 +3,8 @@
 New editor from the MoJ online.
 
 ## Setup
-Ensure you are running on Node version 14.16.1:
-`nvm use 14.16.1`
+Ensure you are running on Node version 14.17.0:
+`nvm use 14.17.0`
 
 Compile the necessary assets and run webpack:
 `make assets`
