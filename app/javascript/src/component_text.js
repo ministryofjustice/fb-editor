@@ -1,8 +1,8 @@
 /**
- * Question
+ * Text Question
  * ----------------------------------------------------
  * Description:
- * Basic construct of a standard question
+ * Text component extension of a Question
  *
  * Documentation:
  *
@@ -28,8 +28,8 @@ class TextComponent extends Question {
     super($node, mergeObjects({
       // Add stuff here if you want to set defaults
       default_content: "empty",
-      selectorTextFieldLabel: SELECTOR_LABEL,
-      selectorTextFieldHint: SELECTOR_HINT
+      selectorLabel: SELECTOR_LABEL,
+      selectorHint: SELECTOR_HINT
     }, config));
   }
 }
