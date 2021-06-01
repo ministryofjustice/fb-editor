@@ -18,21 +18,40 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const editableComponent = require('./editable_components');
+
+const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
 
 class Question {
   constructor($node, config) {
     var conf = mergeObjects({
-      data: {}
+      // Config defaults
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      data: $node.data("fb-content-data"),
+      editClassname: "active",
+      id: $node.data("fb-content-id"),
+      type: $node.data("fb-content-type")
     }, config);
 
     $node.addClass("Question");
+    this.editable = editableComponent($node, conf);
     this.$node = $node;
     this._config = conf;
   }
 
   data() {
     return this._config.data;
+  }
+
+  focus() {
+    this.editable.focus();
+  }
+
+  save() {
+    // TODO: Replace with proper mechanism to remove this workaround
+    this.editable.save();
   }
 }
 

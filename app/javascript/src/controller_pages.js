@@ -24,6 +24,9 @@ const findFragmentIdentifier = utilities.findFragmentIdentifier;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const Question = require('./question');
+
+const TextComponent = require('./component_text');
+
 const QuestionMenu = require('./component_activated_question_menu');
 const DialogConfiguration = require('./component_dialog_configuration');
 const editableComponent = require('./editable_components');
@@ -207,7 +210,16 @@ function bindEditableContentHandlers(view) {
   if($editContentForm.length) {
     $saveButton.prop("disabled", true); // disable until needed.
 
-    $(".fb-editable").each(function(i, node) {
+    $("[data-fb-content-type=text]").each(function(i, node) {
+      view.editableContent.push(new TextComponent($(this), {
+        form: $editContentForm,
+        text: {
+          default_content: view.text.defaults.content
+        }
+      }));
+    });
+
+    $(".fb-editable").not("[data-fb-content-type=text]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
