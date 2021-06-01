@@ -63,6 +63,11 @@ module CommonSteps
     editor.add_number.click
   end
 
+  def given_I_add_a_single_question_page_with_upload
+    given_I_want_to_add_a_single_question_page
+    editor.add_file_upload.click
+  end
+
   def given_I_add_a_single_question_page_with_date
     given_I_want_to_add_a_single_question_page
     editor.add_date.click

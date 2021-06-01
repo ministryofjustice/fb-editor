@@ -653,7 +653,7 @@ EditableCollectionFieldComponent.updateItems = function() {
  * Applies config.filters to the data passed in, with an index number, since this should
  * be called within a loop of the items. It has been expracted out to counter complications
  * running into closure issues due to manipulating data within a loop.
- * @unique (Integer|String) Should be current loop number, or at least something unique. 
+ * @unique (Integer|String) Should be current loop number, or at least something unique.
  * @data   (Object) Collection item data.
  **/
 EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) {
@@ -861,6 +861,7 @@ function editableComponent($node, config) {
       break;
     case "text":
     case "number":
+    case "upload":
       klass = EditableTextFieldComponent;
       break;
     case "textarea":

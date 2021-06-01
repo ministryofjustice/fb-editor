@@ -40,6 +40,14 @@ feature 'Edit single question page' do
     then_I_should_see_my_changes_on_preview
   end
 
+  scenario 'when editing upload component' do
+    given_I_have_a_single_question_page_with_upload
+    and_I_have_optional_section_heading_text
+    when_I_update_the_question_name
+    and_I_return_to_flow_page
+    then_I_should_see_my_changes_on_preview
+  end
+
   scenario 'when editing date component' do
     given_I_have_a_single_question_page_with_date
     and_I_have_optional_section_heading_text
@@ -76,6 +84,12 @@ feature 'Edit single question page' do
 
   def given_I_have_a_single_question_page_with_number
     given_I_add_a_single_question_page_with_number
+    and_I_add_a_page_url
+    when_I_add_the_page
+  end
+
+  def given_I_have_a_single_question_page_with_upload
+    given_I_add_a_single_question_page_with_upload
     and_I_add_a_page_url
     when_I_add_the_page
   end
