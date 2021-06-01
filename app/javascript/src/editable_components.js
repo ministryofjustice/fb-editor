@@ -358,8 +358,8 @@ class EditableTextFieldComponent extends EditableComponentBase {
     //       ready so we can edit attribute values, such as placeholder.
     //  {input: new EditableAttribute($node.find("input"), config)}
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorTextFieldLabel,
-      selectorElementHint: config.selectorTextFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableTextFieldComponent");
   }
