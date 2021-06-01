@@ -443,8 +443,8 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
 class EditableGroupFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorGroupFieldLabel,
-      selectorElementHint: config.selectorGroupFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableGroupFieldComponent");
   }

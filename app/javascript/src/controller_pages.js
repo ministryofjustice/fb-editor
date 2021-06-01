@@ -25,6 +25,7 @@ const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const Question = require('./question');
 
+const DateComponent = require('./component_date');
 const TextComponent = require('./component_text');
 
 const QuestionMenu = require('./component_activated_question_menu');
@@ -38,7 +39,6 @@ const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
 const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
 const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea";
-const SELECTOR_GROUP_FIELD_LABEL = "legend > :first-child";
 const SELECTOR_HINT_STANDARD = ".govuk-hint";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 const SELECTOR_LABEL_STANDARD = "label";
@@ -219,7 +219,13 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
+    $("[data-fb-content-type=date]").each(function(i, node) {
+      view.editableContent.push(new DateComponent($(this), {
+        form: $editContentForm
+      }));
+    });
+
+    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
@@ -239,8 +245,6 @@ function bindEditableContentHandlers(view) {
         // Selectors for editable component labels/legends/hints, etc.
         selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
         selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
-        selectorGroupFieldLabel: SELECTOR_GROUP_FIELD_LABEL, // Used by Date
-        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,      // Used by Date
         selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
         selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
         selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
