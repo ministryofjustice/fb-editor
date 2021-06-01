@@ -396,8 +396,8 @@ class EditableTextFieldComponent extends EditableComponentBase {
 class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorTextareaFieldLabel,
-      selectorElementHint: config.selectorTextareaFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableTextareaFieldComponent");
   }

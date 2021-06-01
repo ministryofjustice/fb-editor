@@ -27,6 +27,7 @@ const Question = require('./question');
 
 const DateComponent = require('./component_date');
 const TextComponent = require('./component_text');
+const TextareaComponent = require('./component_text');
 
 const QuestionMenu = require('./component_activated_question_menu');
 const DialogConfiguration = require('./component_dialog_configuration');
@@ -225,7 +226,13 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date]").each(function(i, node) {
+    $("[data-fb-content-type=textarea]").each(function(i, node) {
+      view.editableContent.push(new TextareaComponent($(this), {
+        form: $editContentForm
+      }));
+    });
+
+    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
@@ -243,8 +250,6 @@ function bindEditableContentHandlers(view) {
         id: $node.data("fb-content-id"),
 
         // Selectors for editable component labels/legends/hints, etc.
-        selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
-        selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
         selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
         selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
         selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
