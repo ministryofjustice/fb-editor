@@ -11,7 +11,8 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'ENCODED_PRIVATE_KEY', value: private_key),
         build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: public_key),
         build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
-        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass)
+        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
+        build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret)
       ]
     )
   end
@@ -31,7 +32,9 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   let(:basic_auth_pass) do
     EncryptionService.new.encrypt('r2d2')
   end
-
+  let(:service_secret) do
+    EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')
+  end
   before do
     allow(service_provisioner).to receive(:service).and_return(
       MetadataPresenter::Service.new(
