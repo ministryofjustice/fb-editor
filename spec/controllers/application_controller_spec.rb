@@ -34,8 +34,7 @@ RSpec.describe ApplicationController do
         {
           answers: {
             'computer' => Rack::Test::UploadedFile.new(
-              MetadataPresenter::Engine.root.join('./spec/fixtures/computer_says_no.gif'),
-              'image/gif'
+              Rails.root.join('spec/fixtures/computer_says_no.gif'), 'image/gif'
             )
           },
           id: '123456'

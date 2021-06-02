@@ -76,8 +76,8 @@ class Publisher
       platform_app_url(:submitter_url)
     end
 
-    def filestore_url
-      platform_app_url(:filestore_url)
+    def user_filestore_url
+      platform_app_url(:user_filestore_url)
     end
 
     def submission_encryption_key
