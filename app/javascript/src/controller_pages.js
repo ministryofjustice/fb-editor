@@ -25,6 +25,7 @@ const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const Question = require('./question');
 
+const CheckboxesComponent = require('./component_checkboxes');
 const DateComponent = require('./component_date');
 const TextComponent = require('./component_text');
 const TextareaComponent = require('./component_text');
@@ -109,7 +110,8 @@ PagesController.edit = function() {
   });
 
   // Initialise questions
-  setupQuestions.call(view);
+  // TODO: Fix this because currently causing things to run twice (which new Question changes)
+  //setupQuestions.call(view);
 
   // Setting focus for editing.
   focusOnEditableComponent.call(view);
@@ -232,7 +234,32 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea]").each(function(i, node) {
+    $("[data-fb-content-type=checkboxes]").each(function(i, node) {
+      view.editableContent.push(new CheckboxesComponent($(this), {
+        form: $editContentForm,
+        text: {
+          option: view.text.defaults.option,
+          optionHint: view.text.defaults.option_hint,
+          edit: view.text.actions.edit
+        },
+
+        onItemRemoveConfirmation: function(item) {
+          // @item (EditableComponentItem) Item to be deleted.
+          // Runs before onItemRemove when removing an editable Collection item.
+          // Currently not used but added for future option and consistency
+          // with onItemAdd (provides an opportunity for clean up).
+          view.dialogConfirmationDelete.content = {
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            ok: view.text.dialogs.button_delete_option
+          };
+          view.dialogConfirmationDelete.confirm({}, function() {
+            item.component.remove(item);
+          });
+        }
+      }));
+    });
+
+    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea], [data-fb-content-type=checkboxes]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
@@ -307,6 +334,7 @@ function bindEditableContentHandlers(view) {
             item.component.remove(item);
           });
         },
+
         onSaveRequired: function() {
           // Code detected something changed to
           // make the submit button available.
@@ -316,53 +344,12 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    // If any Collection items are present with ability to be removed, we need
-    // to find them and scoop up the Remove buttons to put in menu component.
-    $(".EditableComponentCollectionItem").each(function() {
-      collectionItemControlsInActivatedMenu($(this), {
-       activator_text: view.text.actions.edit,
-        classnames: "editableCollectionItemControls"
-      });
-    });
-
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
       for(var i=0; i<view.editableContent.length; ++i) {
         view.editableContent[i].save();
       }
     });
-  }
-}
-
-
-/* Finds elements to wrap in Activated Menu component.
- * Best used for dynamically generated elements that have been injected into the page
- * through JS enhancement. If items existed in the template code, you could probably
- * just use an easier method such as applyMenus() function.
- *
- * This function will basically find desired elments, wrap each one with an <li> tag,
- * add those to a new <ul> element, and then create an ActivateMenu component from
- * that structure.
- *
- * @selector (String) jQuery compatible selector to find elements for menu inclusion.
- * @$node  (jQuery node) Wrapping element/container that should hold the elements sought.
- * effects and wraps them with the required functionality.
- **/
-function collectionItemControlsInActivatedMenu($item, config) {
-  var $elements = $(".EditableCollectionItemRemover", $item);
-  if($elements.length) {
-    $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
-    $elements.wrap("<li></li>");
-    let menu = new ActivatedMenu($elements.parents("ul"), {
-      activator_text: config.activator_text,
-      container_classname: config.classnames,
-      container_id: uniqueString("activatedMenu-"),
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
-      }
-    });
-
-    $item.data("ActivatedMenu", menu);
   }
 }
 

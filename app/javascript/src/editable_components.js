@@ -516,8 +516,8 @@ class EditableGroupFieldComponent extends EditableComponentBase {
 class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorCollectionFieldLabel,
-      selectorElementHint: config.selectorCollectionFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
 
     var text = config.text || {}; // Make sure it exists to avoid errors later on.
@@ -525,6 +525,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
+
     new EditableCollectionItemInjector(this, config);
     $node.addClass("EditableCollectionFieldComponent");
   }

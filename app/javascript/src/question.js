@@ -33,6 +33,7 @@ class Question {
       editClassname: "active",
       id: $node.data("fb-content-id"),
       selectorDisabled: SELECTOR_DISABLED,
+      text: {},
       type: $node.data("fb-content-type")
     }, config);
 
