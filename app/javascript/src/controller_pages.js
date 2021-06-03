@@ -26,6 +26,7 @@ const ActivatedMenu = require('./component_activated_menu');
 const Question = require('./question');
 
 const CheckboxesComponent = require('./component_checkboxes');
+const RadiosComponent = require('./component_radios');
 const DateComponent = require('./component_date');
 const TextComponent = require('./component_text');
 const TextareaComponent = require('./component_text');
@@ -259,7 +260,32 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea], [data-fb-content-type=checkboxes]").each(function(i, node) {
+    $("[data-fb-content-type=radios]").each(function(i, node) {
+      view.editableContent.push(new RadiosComponent($(this), {
+        form: $editContentForm,
+        text: {
+          option: view.text.defaults.option,
+          optionHint: view.text.defaults.option_hint,
+          edit: view.text.actions.edit
+        },
+
+        onItemRemoveConfirmation: function(item) {
+          // @item (EditableComponentItem) Item to be deleted.
+          // Runs before onItemRemove when removing an editable Collection item.
+          // Currently not used but added for future option and consistency
+          // with onItemAdd (provides an opportunity for clean up).
+          view.dialogConfirmationDelete.content = {
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            ok: view.text.dialogs.button_delete_option
+          };
+          view.dialogConfirmationDelete.confirm({}, function() {
+            item.component.remove(item);
+          });
+        }
+      }));
+    });
+
+    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea], [data-fb-content-type=checkboxes], [data-fb-content-type=radios]").each(function(i, node) {
       var $node = $(node);
       view.editableContent.push(editableComponent($node, {
         editClassname: "active",
