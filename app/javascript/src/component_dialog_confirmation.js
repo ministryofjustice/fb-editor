@@ -16,7 +16,7 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const safelyActivateFunction = utilities.safelyActivateFunciton;
+const safelyActivateFunction = utilities.safelyActivateFunction;
 const Dialog = require('./component_dialog');
 
 
