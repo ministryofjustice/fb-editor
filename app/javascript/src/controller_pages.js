@@ -72,7 +72,7 @@ PagesController.edit = function() {
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
   workaroundForDefaultText(view);
-  bindEditableContentHandlers(view);
+  enhanceQuestions(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -110,12 +110,25 @@ PagesController.edit = function() {
     new AddComponent($node, { $form: $form });
   });
 
-  // Initialise questions
-  // TODO: Fix this because currently causing things to run twice (which new Question changes)
-  //setupQuestions.call(view);
-
   // Setting focus for editing.
   focusOnEditableComponent.call(view);
+
+
+  // Bind listeners
+  // --------------
+
+  // QuestionMenuSelectionRequired
+  this.$document.on("QuestionMenuSelectionRequired", function(event, question) {
+    var dialog = view.dialogConfiguration;
+    // TODO: Expect field_content to change when add more property fields
+    var field_content = $("[data-component-template=QuestionPropertyFields]").html();
+    var required = question.data.validation.required;
+    var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
+    field_content = field_content.replace(regex, "$1 checked=\"true\"");
+    dialog.configure({
+      content: field_content
+    }, (content) => { question.required = content } );
+  });
 }
 
 
@@ -208,7 +221,7 @@ function focusOnEditableComponent() {
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
-function bindEditableContentHandlers(view) {
+function enhanceQuestions(view) {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   var $editable = $(".fb-editable");
@@ -220,20 +233,27 @@ function bindEditableContentHandlers(view) {
       view.editableContent.push(new TextComponent($(this), {
         form: $editContentForm,
         text: {
-          default_content: view.text.defaults.content
+          default_content: view.text.defaults.content,
+          optionalFlag: view.text.question_optional_flag
         }
       }));
     });
 
     $editable.filter("[data-fb-content-type=date]").each(function(i, node) {
       view.editableContent.push(new DateComponent($(this), {
-        form: $editContentForm
+        form: $editContentForm,
+        text: {
+          optionalFlag: view.text.question_optional_flag
+        }
       }));
     });
 
     $editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
       view.editableContent.push(new TextareaComponent($(this), {
-        form: $editContentForm
+        form: $editContentForm,
+        text: {
+          optionalFlag: view.text.question_optional_flag
+        }
       }));
     });
 
@@ -241,9 +261,10 @@ function bindEditableContentHandlers(view) {
       view.editableContent.push(new CheckboxesComponent($(this), {
         form: $editContentForm,
         text: {
+          edit: view.text.actions.edit,
           option: view.text.defaults.option,
           optionHint: view.text.defaults.option_hint,
-          edit: view.text.actions.edit
+          optionalFlag: view.text.question_optional_flag
         },
 
         onItemRemoveConfirmation: function(item) {
@@ -266,9 +287,10 @@ function bindEditableContentHandlers(view) {
       view.editableContent.push(new RadiosComponent($(this), {
         form: $editContentForm,
         text: {
+          edit: view.text.actions.edit,
           option: view.text.defaults.option,
           optionHint: view.text.defaults.option_hint,
-          edit: view.text.actions.edit
+          optionalFlag: view.text.question_optional_flag
         },
 
         onItemRemoveConfirmation: function(item) {
@@ -335,73 +357,6 @@ function createDialogConfiguration() {
       "ui-dialog": $template.data("classes")
     }
   });
-}
-
-
-/* Apply functionality for Question Menu that handles the settings
- * for the question and page view.
- **/
-function setupQuestions() {
-  var view = this;
-  var questionMenuTemplate = $("[data-component-template=QuestionMenu]");
-
-  $("[data-fb-content-data]").not("[data-fb-content-type='content']").each(function() {
-
-    // Initialise the question as an object.
-    var $node = $(this);
-    var question = new Question($node, {
-      data: $node.data("fb-content-data"),
-      view: view
-    });
-
-    // Create a menu for Question property editing.
-    var $ul = $(questionMenuTemplate.html());
-    var $target = $(SELECTOR_LABEL_HEADING, $node);
-    //var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
-
-    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
-    view.$body.append($ul);
-
-    new QuestionMenu($ul, {
-      activator_text: questionMenuTemplate.data("activator-text"),
-      $target: $target,
-      question: question,
-      view: view,
-      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
-      onSetRequired: function(questionMenu) {
-        setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-      }
-    });
-
-    // Check view state on element edits
-    $target.on("blur", function() {
-      setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-    });
-
-
-    // Set initial view state
-    setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-  });
-}
-
-
-/* The design calls for a visual indicator that the question is optional.
- * This function is to handle the adding the extra element.
- **/
-function setQuestionRequiredFlag(question, $target, text) {
-  var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
-  var textWithSpace =  " " + text;
-  var re = new RegExp(regExpTextWithSpace + "$");
-
-  // Since we always remove first we can add knowing duplicates should not happen.
-  $target.text($target.text().replace(re, ""));
-  if(!question.data().validation.required) {
-    $target.text($target.text() + textWithSpace);
-  }
-
-  // If we've changed the $target content, or the eitor has, we
-  // need to check whether required flag needs to show, or not.
-  $target.data("instance").update();
 }
 
 
