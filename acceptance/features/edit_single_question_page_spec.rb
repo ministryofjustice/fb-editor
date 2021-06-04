@@ -88,12 +88,6 @@ feature 'Edit single question page' do
     when_I_add_the_page
   end
 
-  def given_I_have_a_single_question_page_with_upload
-    given_I_add_a_single_question_page_with_upload
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
   def given_I_have_a_single_question_page_with_date
     given_I_add_a_single_question_page_with_date
     and_I_add_a_page_url

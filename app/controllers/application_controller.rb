@@ -44,21 +44,8 @@ class ApplicationController < ActionController::Base
     user_data['user_data']
   end
 
-  def upload_file
-    user_data = load_user_data
-    @page_answers.page.upload_components.each do |component|
-      answer = user_data[component.id]
-
-      if answer.present?
-        @page_answers.answers[component.id] = answer
-      end
-
-      file = OpenStruct.new(
-        file: @page_answers.send(component.id),
-        component: component
-      )
-      @page_answers.uploaded_files.push(file)
-    end
+  def upload_adapter
+    MetadataPresenter::OfflineUploadAdapter
   end
 
   def service_metadata
