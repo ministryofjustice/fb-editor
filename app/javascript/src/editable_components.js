@@ -900,4 +900,12 @@ function editableComponent($node, config) {
 
 
 // Make available for importing.
-module.exports =  editableComponent;
+module.exports =  {
+  editableComponent: editableComponent,
+  EditableElement: EditableElement,
+  EditableContent: EditableContent,
+  EditableTextFieldComponent: EditableTextFieldComponent,
+  EditableTextareaFieldComponent: EditableTextareaFieldComponent,
+  EditableGroupFieldComponent: EditableGroupFieldComponent,
+  EditableCollectionFieldComponent: EditableCollectionFieldComponent
+}
