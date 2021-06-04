@@ -23,6 +23,7 @@ const uniqueString = utilities.uniqueString;
 const findFragmentIdentifier = utilities.findFragmentIdentifier;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
+const EditableElement = require('./editable_components').EditableElement;
 const Question = require('./question');
 
 const CheckboxesComponent = require('./component_checkboxes');
@@ -33,7 +34,6 @@ const TextareaComponent = require('./component_text');
 
 const QuestionMenu = require('./component_activated_question_menu');
 const DialogConfiguration = require('./component_dialog_configuration');
-const editableComponent = require('./editable_components');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
@@ -211,10 +211,12 @@ function focusOnEditableComponent() {
 function bindEditableContentHandlers(view) {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
+  var $editable = $(".fb-editable");
+
   if($editContentForm.length) {
     $saveButton.prop("disabled", true); // disable until needed.
 
-    $("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
       view.editableContent.push(new TextComponent($(this), {
         form: $editContentForm,
         text: {
@@ -223,19 +225,19 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $("[data-fb-content-type=date]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=date]").each(function(i, node) {
       view.editableContent.push(new DateComponent($(this), {
         form: $editContentForm
       }));
     });
 
-    $("[data-fb-content-type=textarea]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
       view.editableContent.push(new TextareaComponent($(this), {
         form: $editContentForm
       }));
     });
 
-    $("[data-fb-content-type=checkboxes]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
       view.editableContent.push(new CheckboxesComponent($(this), {
         form: $editContentForm,
         text: {
@@ -260,7 +262,7 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $("[data-fb-content-type=radios]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
       view.editableContent.push(new RadiosComponent($(this), {
         form: $editContentForm,
         text: {
@@ -285,80 +287,16 @@ function bindEditableContentHandlers(view) {
       }));
     });
 
-    $(".fb-editable").not("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=date], [data-fb-content-type=textarea], [data-fb-content-type=checkboxes], [data-fb-content-type=radios]").each(function(i, node) {
+    $editable.filter("[data-fb-content-type=element]").each(function(i, node) {
       var $node = $(node);
-      view.editableContent.push(editableComponent($node, {
+      view.editableContent.push(new EditableElement($node, {
         editClassname: "active",
-        data: $node.data("fb-content-data"),
         attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-        filters: {
-          _id: function(index) {
-            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
-          },
-          value: function(index) {
-            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
-          }
-        },
         form: $editContentForm,
         id: $node.data("fb-content-id"),
 
-        // Selectors for editable component labels/legends/hints, etc.
-        selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
-        selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
-        selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
-        selectorComponentCollectionItemLabel: SELECTOR_LABEL_STANDARD, // Used by Radio and Checkbox options
-        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD,   // Used by Radio and Checkbox options
-        // Other selectors
-        selectorDisabled: SELECTOR_DISABLED,
-
         text: {
-          addItem: view.text.actions.option_add,
-          removeItem: view.text.actions.option_remove,
           default_content: view.text.defaults.content
-        },
-
-        onCollectionItemClone: function($node) {
-           // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
-           // Runs after the collection item has been cloned, so further custom manipulation can be
-           // carried out on the element.
-           $node.find("label").text(view.text.defaults.option);
-           $node.find("span").text(view.text.defaults.option_hint);
-        },
-        onItemAdd: function($node) {
-          // @$node (jQuery node) Node (instance.$node) that has been added.
-          // Runs after adding a new Collection item.
-          // This adjust the view to wrap Remove button with desired menu component.
-          //
-          // This is not very good but expecting it to get significant rework when
-          // we add more menu items (not for MVP).
-          collectionItemControlsInActivatedMenu($node, {
-            activator_text: view.text.actions.edit,
-            classnames: "editableCollectionItemControls"
-          });
-        },
-        onItemRemove: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before removing an editable Collection item.
-          // Provides an opportunity for clean up.
-          var activatedMenu = item.$node.data("ActivatedMenu");
-          if(activatedMenu) {
-            activatedMenu.activator.$node.remove();
-            activatedMenu.$node.remove();
-            activatedMenu.container.$node.remove();
-          }
-        },
-        onItemRemoveConfirmation: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before onItemRemove when removing an editable Collection item.
-          // Currently not used but added for future option and consistency
-          // with onItemAdd (provides an opportunity for clean up).
-          view.dialogConfirmationDelete.content = {
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: view.text.dialogs.button_delete_option
-          };
-          view.dialogConfirmationDelete.confirm({}, function() {
-            item.component.remove(item);
-          });
         },
 
         onSaveRequired: function() {
