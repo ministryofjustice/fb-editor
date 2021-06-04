@@ -19,7 +19,7 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const editableComponent = require('./editable_components');
+const editableComponent = require('./editable_components').editableComponent;
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea";
