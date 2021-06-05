@@ -19,7 +19,10 @@
 const utilities = require('./utilities');
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
-const EditableElement = require('./editable_components').EditableElement;
+
+const editable_components = require('./editable_components');
+const EditableElement = editable_components.EditableElement;
+const EditableContent = editable_components.EditableElement;
 
 const CheckboxesComponent = require('./component_checkboxes');
 const RadiosComponent = require('./component_radios');
@@ -56,10 +59,12 @@ PagesController.edit = function() {
   var view = this;
   var dataController = new DataController();
 
+  this.$editable = $(".fb-editable");
   this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
   workaroundForDefaultText(view);
+  enhanceContent(view);
   enhanceQuestions(view);
 
   // Handle page-specific view customisations here.
@@ -223,16 +228,61 @@ function focusOnEditableComponent() {
 }
 
 
-/* Controls all the Editable Component setup for each page.
- * TODO: Add more description on how this works.
+/* Add edit functionality and component enhancements to content.
+ * Affects simple elements (e.g. Headings) and full text blocks.
+ **/
+function enhanceContent(view) {
+  view.$editable.filter("[data-fb-content-type=element]").each(function(i, node) {
+    var $node = $(node);
+    new EditableElement($node, {
+      editClassname: "active",
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      form: view.dataController.$form,
+      id: $node.data("fb-content-id"),
+
+      text: {
+        default_content: view.text.defaults.content
+      },
+
+      onSaveRequired: function() {
+        // Code detected something changed to
+        // make the submit button available.
+        $saveButton.prop("disabled", false);
+      },
+      type: $node.data("fb-content-type")
+    });
+  });
+
+  view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
+    var $node = $(node);
+    new EditableContent($node, {
+      editClassname: "active",
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      form: view.dataController.$form,
+      id: $node.data("fb-content-id"),
+
+      text: {
+        default_content: view.text.defaults.content
+      },
+
+      onSaveRequired: function() {
+        // Code detected something changed to
+        // make the submit button available.
+        $saveButton.prop("disabled", false);
+      },
+      type: $node.data("fb-content-type")
+    });
+  });
+}
+
+
+/* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
   var $saveButton = view.dataController.$form.find(":submit");
-  var $editable = $(".fb-editable");
-
   $saveButton.prop("disabled", true); // disable until needed.
 
-  $editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
     new TextComponent($(this), {
       form: view.dataController.$form,
       text: {
@@ -242,7 +292,7 @@ function enhanceQuestions(view) {
     });
   });
 
-  $editable.filter("[data-fb-content-type=date]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     new DateComponent($(this), {
       form: view.dataController.$form,
       text: {
@@ -251,7 +301,7 @@ function enhanceQuestions(view) {
     });
   });
 
-  $editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
     new TextareaComponent($(this), {
       form: view.dataController.$form,
       text: {
@@ -260,7 +310,7 @@ function enhanceQuestions(view) {
     });
   });
 
-  $editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     new CheckboxesComponent($(this), {
       form: view.dataController.$form,
       text: {
@@ -286,7 +336,7 @@ function enhanceQuestions(view) {
     });
   });
 
-  $editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     new RadiosComponent($(this), {
       form: view.dataController.$form,
       text: {
@@ -309,27 +359,6 @@ function enhanceQuestions(view) {
           item.component.remove(item);
         });
       }
-    });
-  });
-
-  $editable.filter("[data-fb-content-type=element]").each(function(i, node) {
-    var $node = $(node);
-    new EditableElement($node, {
-      editClassname: "active",
-      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-      form: view.dataController.$form,
-      id: $node.data("fb-content-id"),
-
-      text: {
-        default_content: view.text.defaults.content
-      },
-
-      onSaveRequired: function() {
-        // Code detected something changed to
-        // make the submit button available.
-        $saveButton.prop("disabled", false);
-      },
-      type: $node.data("fb-content-type")
     });
   });
 }
