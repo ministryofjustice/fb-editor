@@ -31,6 +31,8 @@ class TextComponent extends Question {
       selectorLabel: SELECTOR_LABEL,
       selectorHint: SELECTOR_HINT
     }, config));
+
+    $node.addClass("TextComponent");
   }
 }
 

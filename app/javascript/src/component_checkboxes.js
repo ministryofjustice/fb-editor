@@ -97,6 +97,7 @@ class CheckboxesComponent extends Question {
       });
     });
 
+    $node.addClass("CheckboxesComponent");
     this._preservedItemCount = 1;
   }
 }

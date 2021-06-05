@@ -30,6 +30,8 @@ class DateComponent extends Question {
       selectorLabel: SELECTOR_LABEL,
       selectorHint: SELECTOR_HINT
     }, config));
+
+    $node.addClass("DateComponent");
   }
 }
 
