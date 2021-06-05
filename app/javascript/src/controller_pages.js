@@ -17,14 +17,9 @@
 
 
 const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const mergeObjects = utilities.mergeObjects;
-const uniqueString = utilities.uniqueString;
-const findFragmentIdentifier = utilities.findFragmentIdentifier;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const EditableElement = require('./editable_components').EditableElement;
-const Question = require('./question');
 
 const CheckboxesComponent = require('./component_checkboxes');
 const RadiosComponent = require('./component_radios');
@@ -32,19 +27,12 @@ const DateComponent = require('./component_date');
 const TextComponent = require('./component_text');
 const TextareaComponent = require('./component_text');
 
-const QuestionMenu = require('./component_activated_question_menu');
 const DialogConfiguration = require('./component_dialog_configuration');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
-const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
-const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
-const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
-const SELECTOR_DISABLED = "input:not(:hidden), textarea";
-const SELECTOR_HINT_STANDARD = ".govuk-hint";
-const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
-const SELECTOR_LABEL_STANDARD = "label";
+
 
 class PagesController extends DefaultController {
   constructor(app) {
