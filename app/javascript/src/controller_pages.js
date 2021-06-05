@@ -122,6 +122,9 @@ PagesController.edit = function() {
       content: field_content
     }, (content) => { question.required = content } );
   });
+
+  dataController.saveRequired(false);
+  this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
 }
 
 
@@ -138,12 +141,18 @@ class DataController {
   constructor() {
     var controller = this;
     var $form = $("#editContentForm");
-
-    $form.on("submit", (e) => {
-      controller.update();
-    });
+    $form.on("submit", controller.update);
 
     this.$form = $form;
+  }
+
+  saveRequired(required) {
+    if(required) {
+      this.$form.find(":submit").prop("disabled", false);
+    }
+    else {
+      this.$form.find(":submit").prop("disabled", true);
+    }
   }
 
   update() {
@@ -244,11 +253,6 @@ function enhanceContent(view) {
         default_content: view.text.defaults.content
       },
 
-      onSaveRequired: function() {
-        // Code detected something changed to
-        // make the submit button available.
-        $saveButton.prop("disabled", false);
-      },
       type: $node.data("fb-content-type")
     });
   });
@@ -265,11 +269,6 @@ function enhanceContent(view) {
         default_content: view.text.defaults.content
       },
 
-      onSaveRequired: function() {
-        // Code detected something changed to
-        // make the submit button available.
-        $saveButton.prop("disabled", false);
-      },
       type: $node.data("fb-content-type")
     });
   });
@@ -279,9 +278,6 @@ function enhanceContent(view) {
 /* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
-  var $saveButton = view.dataController.$form.find(":submit");
-  $saveButton.prop("disabled", true); // disable until needed.
-
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
     new TextComponent($(this), {
       form: view.dataController.$form,

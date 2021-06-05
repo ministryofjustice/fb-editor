@@ -50,7 +50,6 @@ class EditableBase {
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
-
     $node.on("click.editablecomponent focus.editablecomponent", (e) => {
       e.preventDefault();
     });
@@ -63,6 +62,10 @@ class EditableBase {
   save() {
     updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }
+
+  emitSaveRequired() {
+    $(document).trigger("SaveRequired");
+  }
 }
 
 
@@ -72,14 +75,7 @@ class EditableBase {
  * Switched into edit mode on focus and out again on blur.
  *
  * @$node  (jQuery object) jQuery wrapped HTML node.
- * @config (Object) Configurable options, e.g.
- *                  {
- *                    onSaveRequired: function() {
- *                      // Pass function to do something. Triggered if
- *                      // the code believes something has changed on
- *                      // an internal 'update' call.
- *                    }
- *                  }
+ * @config (Object) Configurable options
  **/
 class EditableElement extends EditableBase {
   constructor($node, config) {
@@ -120,7 +116,7 @@ class EditableElement extends EditableBase {
 
       // If something change, let's make sure it's not
       if(this._content != "" && this._content != this._defaultContent && this._content != this._originalContent) {
-        safelyActivateFunction(this._config.onSaveRequired);
+        this.emitSaveRequired();
       }
     }
 
@@ -232,7 +228,7 @@ class EditableContent extends EditableElement {
 
   set content(markdown) {
     this._content = markdown;
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   edit() {
@@ -556,7 +552,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
     safelyActivateFunction(this._config.onItemAdd, $clone);
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   // Dynamically removes an item to the components collection
@@ -566,7 +562,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this.items.splice(index, 1);
     item.$node.remove();
     EditableCollectionFieldComponent.updateItems.call(this);
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   save() {
