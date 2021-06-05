@@ -22,7 +22,7 @@ const ActivatedMenu = require('./component_activated_menu');
 
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
-const EditableContent = editable_components.EditableElement;
+const EditableContent = editable_components.EditableContent;
 
 const CheckboxesComponent = require('./component_checkboxes');
 const RadiosComponent = require('./component_radios');
@@ -260,8 +260,9 @@ function enhanceContent(view) {
   view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
     var $node = $(node);
     new EditableContent($node, {
-      editClassname: "active",
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      data: $node.data("fb-content-data"), // TODO: Like to replace perhaps with API
+      editClassname: "active",
       form: view.dataController.$form,
       id: $node.data("fb-content-id"),
 
