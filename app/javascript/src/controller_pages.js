@@ -54,9 +54,9 @@ class PagesController extends DefaultController {
  * ------------------------------ */
 PagesController.edit = function() {
   var view = this;
-  var $form = $("#editContentForm");
-  this.$form = $form;
-  this.editableContent = [];
+  var dataController = new DataController();
+
+  this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
   workaroundForDefaultText(view);
@@ -88,14 +88,14 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: $form });
+    new AddContent($node, { $form: dataController.$form });
   });
 
   // Enhance any Add Component buttons.
   view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
-    new AddComponent($node, { $form: $form });
+    new AddComponent($node, { $form: dataController.$form });
   });
 
   // Setting focus for editing.
@@ -129,6 +129,25 @@ PagesController.create = function() {
 }
 
 
+class DataController {
+  constructor() {
+    var controller = this;
+    var $form = $("#editContentForm");
+
+    $form.on("submit", (e) => {
+      controller.update();
+    });
+
+    this.$form = $form;
+  }
+
+  update() {
+    $(".fb-editable").each(function() {
+      $(this).data("instance").save();
+    });
+  }
+}
+
 
 /* Gives add component buttons functionality to select a component type
  * from a drop menu, and update the 'save' form by activation of a 
@@ -160,8 +179,8 @@ class AddComponent {
  **/
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
-  updateHiddenInputOnForm(this.$form, "page[add_component]", action);
-  this.$form.submit();
+  updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
+  this.dataController.$form.submit();
 }
 
 
@@ -199,9 +218,7 @@ function focusOnEditableComponent() {
   }
   else {
     // Standard editable page so find first editable item.
-    if(this.editableContent.length > 0) {
-      this.editableContent[0].focus();
-    }
+    $(".fb-editable").eq(0).focus();
   }
 }
 
@@ -210,121 +227,111 @@ function focusOnEditableComponent() {
  * TODO: Add more description on how this works.
  **/
 function enhanceQuestions(view) {
-  var $editContentForm = $("#editContentForm");
-  var $saveButton = $editContentForm.find(":submit");
+  var $saveButton = view.dataController.$form.find(":submit");
   var $editable = $(".fb-editable");
 
-  if($editContentForm.length) {
-    $saveButton.prop("disabled", true); // disable until needed.
+  $saveButton.prop("disabled", true); // disable until needed.
 
-    $editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
-      view.editableContent.push(new TextComponent($(this), {
-        form: $editContentForm,
-        text: {
-          default_content: view.text.defaults.content,
-          optionalFlag: view.text.question_optional_flag
-        }
-      }));
-    });
-
-    $editable.filter("[data-fb-content-type=date]").each(function(i, node) {
-      view.editableContent.push(new DateComponent($(this), {
-        form: $editContentForm,
-        text: {
-          optionalFlag: view.text.question_optional_flag
-        }
-      }));
-    });
-
-    $editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
-      view.editableContent.push(new TextareaComponent($(this), {
-        form: $editContentForm,
-        text: {
-          optionalFlag: view.text.question_optional_flag
-        }
-      }));
-    });
-
-    $editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
-      view.editableContent.push(new CheckboxesComponent($(this), {
-        form: $editContentForm,
-        text: {
-          edit: view.text.actions.edit,
-          option: view.text.defaults.option,
-          optionHint: view.text.defaults.option_hint,
-          optionalFlag: view.text.question_optional_flag
-        },
-
-        onItemRemoveConfirmation: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before onItemRemove when removing an editable Collection item.
-          // Currently not used but added for future option and consistency
-          // with onItemAdd (provides an opportunity for clean up).
-          view.dialogConfirmationDelete.content = {
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: view.text.dialogs.button_delete_option
-          };
-          view.dialogConfirmationDelete.confirm({}, function() {
-            item.component.remove(item);
-          });
-        }
-      }));
-    });
-
-    $editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
-      view.editableContent.push(new RadiosComponent($(this), {
-        form: $editContentForm,
-        text: {
-          edit: view.text.actions.edit,
-          option: view.text.defaults.option,
-          optionHint: view.text.defaults.option_hint,
-          optionalFlag: view.text.question_optional_flag
-        },
-
-        onItemRemoveConfirmation: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before onItemRemove when removing an editable Collection item.
-          // Currently not used but added for future option and consistency
-          // with onItemAdd (provides an opportunity for clean up).
-          view.dialogConfirmationDelete.content = {
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: view.text.dialogs.button_delete_option
-          };
-          view.dialogConfirmationDelete.confirm({}, function() {
-            item.component.remove(item);
-          });
-        }
-      }));
-    });
-
-    $editable.filter("[data-fb-content-type=element]").each(function(i, node) {
-      var $node = $(node);
-      view.editableContent.push(new EditableElement($node, {
-        editClassname: "active",
-        attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-        form: $editContentForm,
-        id: $node.data("fb-content-id"),
-
-        text: {
-          default_content: view.text.defaults.content
-        },
-
-        onSaveRequired: function() {
-          // Code detected something changed to
-          // make the submit button available.
-          $saveButton.prop("disabled", false);
-        },
-        type: $node.data("fb-content-type")
-      }));
-    });
-
-    // Add handler to activate save functionality from the independent 'save' button.
-    $editContentForm.on("submit", (e) => {
-      for(var i=0; i<view.editableContent.length; ++i) {
-        view.editableContent[i].save();
+  $editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
+    new TextComponent($(this), {
+      form: view.dataController.$form,
+      text: {
+        default_content: view.text.defaults.content,
+        optionalFlag: view.text.question_optional_flag
       }
     });
-  }
+  });
+
+  $editable.filter("[data-fb-content-type=date]").each(function(i, node) {
+    new DateComponent($(this), {
+      form: view.dataController.$form,
+      text: {
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+  });
+
+  $editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
+    new TextareaComponent($(this), {
+      form: view.dataController.$form,
+      text: {
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+  });
+
+  $editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
+    new CheckboxesComponent($(this), {
+      form: view.dataController.$form,
+      text: {
+        edit: view.text.actions.edit,
+        option: view.text.defaults.option,
+        optionHint: view.text.defaults.option_hint,
+        optionalFlag: view.text.question_optional_flag
+      },
+
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.content = {
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+        };
+        view.dialogConfirmationDelete.confirm({}, function() {
+          item.component.remove(item);
+        });
+      }
+    });
+  });
+
+  $editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
+    new RadiosComponent($(this), {
+      form: view.dataController.$form,
+      text: {
+        edit: view.text.actions.edit,
+        option: view.text.defaults.option,
+        optionHint: view.text.defaults.option_hint,
+        optionalFlag: view.text.question_optional_flag
+      },
+
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.content = {
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+        };
+        view.dialogConfirmationDelete.confirm({}, function() {
+          item.component.remove(item);
+        });
+      }
+    });
+  });
+
+  $editable.filter("[data-fb-content-type=element]").each(function(i, node) {
+    var $node = $(node);
+    new EditableElement($node, {
+      editClassname: "active",
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      form: view.dataController.$form,
+      id: $node.data("fb-content-id"),
+
+      text: {
+        default_content: view.text.defaults.content
+      },
+
+      onSaveRequired: function() {
+        // Code detected something changed to
+        // make the submit button available.
+        $saveButton.prop("disabled", false);
+      },
+      type: $node.data("fb-content-type")
+    });
+  });
 }
 
 
