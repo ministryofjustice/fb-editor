@@ -87,6 +87,7 @@ class RadiosComponent extends Question {
       }
     }, config));
 
+    $node.addClass("RadiosComponent");
 
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.

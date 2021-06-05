@@ -30,6 +30,8 @@ class TextareaComponent extends Question {
       selectorLabel: SELECTOR_LABEL,
       selectorHint: SELECTOR_HINT
     }, config));
+
+    $node.addClass("TextareaComponent");
   }
 }
 
