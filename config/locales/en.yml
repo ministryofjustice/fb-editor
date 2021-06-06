@@ -84,6 +84,7 @@ en:
     optional_flag: '(Optional)'
     menu:
       activator: 'Properties'
+      remove: 'Delete...'
       required: 'Required...'
     dialog:
       required_heading: 'Is answering this question required?'
