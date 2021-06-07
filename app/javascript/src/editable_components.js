@@ -249,6 +249,10 @@ class EditableContent extends EditableElement {
     this.$input.select();
   }
 
+  focus() {
+    this.edit();
+  }
+
   update() {
     this.content = sanitiseHtml(this.$input.val().trim()); // Get the latest markdown
     this.$node.removeClass(this._config.editClassname);
