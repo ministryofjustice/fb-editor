@@ -80,6 +80,14 @@ en:
     menu:
       question: 'Question'
       content_area: 'Content area'
+  content:
+    menu:
+      activator: 'Settings'
+      remove: 'Delete...'
+    dialog:
+      heading_remove: "Delete the component?"
+      affirmative: 'Yes'
+      negative: 'No'
   question:
     optional_flag: '(Optional)'
     menu:
