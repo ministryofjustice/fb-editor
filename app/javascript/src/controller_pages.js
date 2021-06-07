@@ -22,7 +22,7 @@ const ActivatedMenu = require('./component_activated_menu');
 
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
-const EditableContent = editable_components.EditableContent;
+const Content = require('./content');
 
 const CheckboxesQuestion = require('./question_checkboxes');
 const RadiosQuestion = require('./question_radios');
@@ -111,6 +111,7 @@ PagesController.edit = function() {
   // --------------
 
   addQuestionMenuListeners(view);
+  addContentMenuListeners(view);
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
@@ -249,6 +250,38 @@ function addQuestionMenuListeners(view) {
 }
 
 
+/* Content Menu needs to interact with Dialog components before
+ * running any action, so we need to work with listeners to coordinate
+ * between different component/widgets/functionality, etc.
+ **/
+function addContentMenuListeners(view) {
+  var templateContent = $("[data-component-template=ContentPropertyFields]").html();
+
+  // ContentMenuSelectionRemove
+  view.$document.on("ContentMenuSelectionRemove", function(event, component) {
+    var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.content = {
+      heading: html.replace(/#{label}/, ""),
+      ok: view.text.dialogs.button_delete_option
+    };
+    view.dialogConfirmationDelete.confirm({}, function() {
+      // Workaround solution that doesn't require extra backend work
+      // 1. First remove component from view
+      component.$node.hide();
+
+      // 2. Update form (in case anything else has changed)
+      view.dataController.update();
+
+      // 3. Remove corresponding component from form
+      component.remove();
+
+      // 4. Trigger save required (to enable Save button)
+      view.dataController.saveRequired(true); // 4
+    });
+  });
+}
+
+
 /* Set focus on first editable component or, if a new component has been
  * added, the first element with that new component.
  **/
@@ -291,18 +324,11 @@ function enhanceContent(view) {
 
   view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
     var $node = $(node);
-    new EditableContent($node, {
-      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-      data: $node.data("fb-content-data"), // TODO: Like to replace perhaps with API
-      editClassname: "active",
+    new Content($node, {
       form: view.dataController.$form,
-      id: $node.data("fb-content-id"),
-
       text: {
         default_content: view.text.defaults.content
-      },
-
-      type: $node.data("fb-content-type")
+      }
     });
   });
 }
