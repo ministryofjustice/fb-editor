@@ -18,6 +18,7 @@ const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
 const safelyActivateFunction = utilities.safelyActivateFunction;
+const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const isBoolean = utilities.isBoolean;
 const showdown  = require('showdown');
@@ -61,7 +62,8 @@ class EditableBase {
 
   remove() {
     // TODO: Need to figure out what to send to backend so that they can delete the component.
-    updateHiddenInputOnForm(this._config.form, this._config.id, "");
+    var uuid = this._config.data._uuid;
+    addHiddenInpuElementToForm(this._config.form, "delete_components[]", uuid);
   }
 
   save() {

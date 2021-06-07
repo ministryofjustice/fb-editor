@@ -166,7 +166,7 @@ function post(url, data) {
  * capture form (new content sent to server).
  *
  * @$form   (jQuery Object) The target form to send content back to the server.
- * @id      (String) Used as the name attribute on input[hidden] form elements.
+ * @name    (String) Used as the name attribute on input[hidden] form elements.
  * @content (String) instance.content value added to input[hidden] field.
  **/
 function updateHiddenInputOnForm($form, name, content) {
@@ -175,6 +175,20 @@ function updateHiddenInputOnForm($form, name, content) {
     $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
     $form.prepend($input);
   }
+  $input.val(content);
+}
+
+
+/* Function used to add a hidden form input field to an existing form.
+ * The function does not check to see if exists so duplicates can result.
+ *
+ * @$form   (jQuery Object) The target form to send content back to the server.
+ * @name    (String) Used as the name attribute on input[hidden] form elements.
+ * @content (String) instance.content value added to input[hidden] field.
+ **/
+function addHiddenInpuElementToForm($form, name, content) {
+  $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
+  $form.prepend($input);
   $input.val(content);
 }
 
@@ -218,6 +232,7 @@ module.exports  = {
   findFragmentIdentifier: findFragmentIdentifier,
   meta: meta,
   post: post,
+  addHiddenInpuElementToForm: addHiddenInpuElementToForm,
   updateHiddenInputOnForm: updateHiddenInputOnForm,
   property: property,
   isBoolean: isBoolean
