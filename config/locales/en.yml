@@ -87,7 +87,7 @@ en:
       remove: 'Delete...'
       required: 'Required...'
     dialog:
-      heading_remove: Delete the component?
+      heading_remove: "Delete the component? #{label}"
       heading_required: 'Is answering this question required?'
       affirmative: 'Yes'
       negative: 'No'

@@ -46,6 +46,10 @@ class QuestionMenu extends ActivatedMenu {
     this.setRequiredViewState();
   }
 
+  remove() {
+    $(document).trigger("QuestionMenuSelectionRemove", this.question);
+  }
+
   required() {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
   }
