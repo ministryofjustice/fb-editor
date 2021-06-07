@@ -61,9 +61,13 @@ class EditableBase {
   }
 
   remove() {
-    // TODO: Need to figure out what to send to backend so that they can delete the component.
-    var uuid = this._config.data._uuid;
-    addHiddenInpuElementToForm(this._config.form, "delete_components[]", uuid);
+    // 1. Remove any form element with target name.
+    // 2. Add uuid of target component to delete_components array.
+    var $input = $(this._config.form).find("[name='" + this._config.id + "']")
+    if($input.length) {
+      $input.remove();
+    }
+    addHiddenInpuElementToForm(this._config.form, "delete_components[]", this._config.data._uuid);
   }
 
   save() {
