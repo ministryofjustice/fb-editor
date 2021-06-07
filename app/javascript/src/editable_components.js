@@ -59,6 +59,11 @@ class EditableBase {
     return $node.text();
   }
 
+  remove() {
+    // TODO: Need to figure out what to send to backend so that they can delete the component.
+    updateHiddenInputOnForm(this._config.form, this._config.id, "");
+  }
+
   save() {
     updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }

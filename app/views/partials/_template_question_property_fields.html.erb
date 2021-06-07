@@ -27,29 +27,8 @@
   </form>
 
   <form data-node="remove">
-    <div class="govuk-form-group">
-      <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h1 class="govuk-fieldset__heading">
-            <%= t('question.dialog.heading_remove') %>
-          </h1>
-        </legend>
-        <div class="govuk-radios govuk-radios--inline">
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="question_required_1" name="remove" type="radio" value="true">
-            <label class="govuk-label govuk-radios__label" for="question_remove_1">
-              <%= t('question.dialog.affirmative') %>
-            </label>
-          </div>
-          <div class="govuk-radios__item">
-            <input class="govuk-radios__input" id="question_required_2" name="remove" type="radio" value="false">
-            <label class="govuk-label govuk-radios__label" for="question_remove_2">
-              <%= t('question.dialog.negative') %>
-            </label>
-          </div>
-        </div>
-      </fieldset>
-    </div>
+    <!-- Using dialogConfirmationDelete so only require text here -->
+    <%= t('question.dialog.heading_remove') %>
   </form>
 
 </script>

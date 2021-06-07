@@ -110,18 +110,7 @@ PagesController.edit = function() {
   // Bind listeners
   // --------------
 
-  // QuestionMenuSelectionRequired
-  this.$document.on("QuestionMenuSelectionRequired", function(event, question) {
-    var dialog = view.dialogConfiguration;
-    // TODO: Expect field_content to change when add more property fields
-    var field_content = $("[data-component-template=QuestionPropertyFields]").html();
-    var required = question.data.validation.required;
-    var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
-    field_content = field_content.replace(regex, "$1 checked=\"true\"");
-    dialog.configure({
-      content: field_content
-    }, (content) => { question.required = content } );
-  });
+  addQuestionMenuListeners(view);
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
@@ -214,6 +203,49 @@ class AddContent {
 
     $node.addClass("AddContent");
   }
+}
+
+
+/* Question Menu needs to interact with Dialog components before
+ * running any action, so we need to work with listeners to coordinate
+ * between different component/widgets/functionality, etc.
+ **/
+function addQuestionMenuListeners(view) {
+  var templateContent = $("[data-component-template=QuestionPropertyFields]").html();
+
+  // QuestionMenuSelectionRemove
+  view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
+    var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.content = {
+      heading: html.replace(/#{label}/, question.$heading.text()),
+      ok: view.text.dialogs.button_delete_option
+    };
+    view.dialogConfirmationDelete.confirm({}, function() {
+      // Workaround solution that doesn't require extra backend work
+      // 1. First remove component from view
+      question.$node.hide();
+
+      // 2. Update form (in case anything else has changed)
+      view.dataController.update();
+
+      // 3. Remove corresponding component from form
+      question.remove();
+
+      // 4. Trigger save required (to enable Save button)
+      view.dataController.saveRequired(true); // 4
+    });
+  });
+
+  // QuestionMenuSelectionRequired
+  view.$document.on("QuestionMenuSelectionRequired", function(event, question) {
+    var html = $(templateContent).filter("[data-node=required]").html();
+    var remove = question.data.validation.remove;
+    var regex = new RegExp("(input.*name=\"remove\".*value=\"" + remove + "\")", "mig");
+    html = html.replace(regex, "$1 checked=\"true\"");
+    view.dialogConfiguration.configure({
+      content: html
+    }, (content) => { question.required = content } );
+  });
 }
 
 

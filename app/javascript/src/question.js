@@ -97,6 +97,11 @@ class Question {
     this.editable.focus();
   }
 
+  remove() {
+    // TODO: Replace with proper mechanism to remove this workaround
+    this.editable.remove();
+  }
+
   save() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.save();
