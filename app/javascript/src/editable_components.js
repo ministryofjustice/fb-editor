@@ -555,7 +555,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   }
 
   // Dynamically adds an item to the components collection
-  add() {
+  addItem() {
     // Component should always have at least one item, otherwise something is very wrong.
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
@@ -567,7 +567,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   }
 
   // Dynamically removes an item to the components collection
-  remove(item) {
+  removeItem(item) {
     var index = this.items.indexOf(item);
     safelyActivateFunction(this._config.onItemRemove, item);
     this.items.splice(index, 1);
@@ -726,7 +726,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     }
     else {
       // or just run the remove function.
-      this.component.remove(this);
+      this.component.removeItem(this);
     }
   }
 
@@ -771,14 +771,14 @@ class EditableCollectionItemRemover {
     $node.attr("type", "button");
     $node.on("click.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
-      editableCollectionItem.remove();
+      editableCollectionItem.removeItem();
     });
 
     // Close on ENTER || SPACE
     $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       if(e.which == 13 || e.which == 32) {
-        editableCollectionItem.remove();
+        editableCollectionItem.removeItem();
       }
     });
 
