@@ -1,8 +1,8 @@
 /**
- * Radios Question
+ * Date Question
  * ----------------------------------------------------
  * Description:
- * Radio component extension of Question
+ * Checkbox component extension of Question
  *
  * Documentation:
  *
@@ -27,12 +27,12 @@ const editableComponent = require('./editable_components');
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
-const SELECTOR_ITEM = ".govuk-radios__item";
+const SELECTOR_ITEM = ".govuk-checkboxes__item";
 const SELECTOR_ITEM_HINT = ".govuk-hint";
 const SELECTOR_ITEM_LABEL = "label";
 
 
-class RadiosComponent extends Question {
+class CheckboxesQuestion extends Question {
   constructor($node, config) {
     super($node, mergeObjects({
       // Add stuff here if you want to set defaults
@@ -87,7 +87,6 @@ class RadiosComponent extends Question {
       }
     }, config));
 
-    $node.addClass("RadiosComponent");
 
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
@@ -98,7 +97,8 @@ class RadiosComponent extends Question {
       });
     });
 
-    this._preservedItemCount = 2;
+    $node.addClass("CheckboxesQuestion");
+    this._preservedItemCount = 1;
   }
 }
 
@@ -136,4 +136,4 @@ function collectionItemControlsInActivatedMenu($item, config) {
 }
 
 
-module.exports = RadiosComponent;
+module.exports = CheckboxesQuestion;

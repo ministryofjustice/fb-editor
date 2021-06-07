@@ -1,8 +1,8 @@
 /**
- * Date Question
+ * Text Question
  * ----------------------------------------------------
  * Description:
- * Date component extension of Question
+ * Text component extension of a Question
  *
  * Documentation:
  *
@@ -21,19 +21,20 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require('./question');
 
 const SELECTOR_HINT = ".govuk-hint";
-const SELECTOR_LABEL = "legend > :first-child";
+const SELECTOR_LABEL = "label h1, label h2, legend h1, legend h2";
 
-class DateComponent extends Question {
+class TextQuestion extends Question {
   constructor($node, config) {
     super($node, mergeObjects({
       // Add stuff here if you want to set defaults
+      default_content: "empty",
       selectorLabel: SELECTOR_LABEL,
       selectorHint: SELECTOR_HINT
     }, config));
 
-    $node.addClass("DateComponent");
+    $node.addClass("TextQuestion");
   }
 }
 
 
-module.exports = DateComponent;
+module.exports = TextQuestion;

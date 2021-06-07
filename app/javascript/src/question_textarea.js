@@ -1,8 +1,8 @@
 /**
- * Text Question
+ * Date Question
  * ----------------------------------------------------
  * Description:
- * Text component extension of a Question
+ * Textarea component extension of Question
  *
  * Documentation:
  *
@@ -23,18 +23,17 @@ const Question = require('./question');
 const SELECTOR_HINT = ".govuk-hint";
 const SELECTOR_LABEL = "label h1, label h2, legend h1, legend h2";
 
-class TextComponent extends Question {
+class TextareaQuestion extends Question {
   constructor($node, config) {
     super($node, mergeObjects({
       // Add stuff here if you want to set defaults
-      default_content: "empty",
       selectorLabel: SELECTOR_LABEL,
       selectorHint: SELECTOR_HINT
     }, config));
 
-    $node.addClass("TextComponent");
+    $node.addClass("TextareaQuestion");
   }
 }
 
 
-module.exports = TextComponent;
+module.exports = TextareaQuestion;

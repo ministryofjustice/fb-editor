@@ -24,11 +24,11 @@ const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const EditableContent = editable_components.EditableContent;
 
-const CheckboxesComponent = require('./component_checkboxes');
-const RadiosComponent = require('./component_radios');
-const DateComponent = require('./component_date');
-const TextComponent = require('./component_text');
-const TextareaComponent = require('./component_text');
+const CheckboxesQuestion = require('./question_checkboxes');
+const RadiosQuestion = require('./question_radios');
+const DateQuestion = require('./question_date');
+const TextQuestion = require('./question_text');
+const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DefaultController = require('./controller_default');
@@ -312,7 +312,7 @@ function enhanceContent(view) {
  **/
 function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number]").each(function(i, node) {
-    new TextComponent($(this), {
+    new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
         default_content: view.text.defaults.content,
@@ -322,7 +322,7 @@ function enhanceQuestions(view) {
   });
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
-    new DateComponent($(this), {
+    new DateQuestion($(this), {
       form: view.dataController.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
@@ -331,7 +331,7 @@ function enhanceQuestions(view) {
   });
 
   view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
-    new TextareaComponent($(this), {
+    new TextareaQuestion($(this), {
       form: view.dataController.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
@@ -340,7 +340,7 @@ function enhanceQuestions(view) {
   });
 
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
-    new CheckboxesComponent($(this), {
+    new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
@@ -366,7 +366,7 @@ function enhanceQuestions(view) {
   });
 
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
-    new RadiosComponent($(this), {
+    new RadiosQuestion($(this), {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
