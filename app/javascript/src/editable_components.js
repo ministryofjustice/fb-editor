@@ -790,7 +790,10 @@ function convertToMarkdown(html) {
  * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
 function convertToHtml(markdown) {
-  return converter.makeHtml(markdown);
+  var html = converter.makeHtml(markdown);
+  html = html.replace("</script>", "&lt;/script&gt;");
+  html = html.replace(/<script(.*?)>/, "&lt;script$1&gt;");
+  return html;
 }
 
 
