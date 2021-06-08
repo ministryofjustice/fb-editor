@@ -28,7 +28,7 @@ jobs:
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-  build_and_deploy_to_test:
+  build_and_deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
     docker: &ecr_image
       - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
@@ -56,6 +56,32 @@ jobs:
             ENVIRONMENT_NAME: test
           command: './deploy-scripts/bin/build'
       - run:
+          name: deploy testable branch
+          environment:
+            APPLICATION_NAME: fb-editor
+            PLATFORM_ENV: test
+            K8S_NAMESPACE: formbuilder-saas-test
+          command: './deploy-scripts/bin/deploy'
+      - slack/status:
+          fail_only: true
+          failure_message: ":facepalm:  Failed job ${CIRCLE_JOB} for ${CIRCLE_BRANCH}  :homer-disappear:"
+          include_job_number_field: false
+  build_and_deploy_to_test:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - add_ssh_keys: *ssh_keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
+      - run:
+          name: build and push docker images
+          environment:
+            ENVIRONMENT_NAME: test
+          command: './deploy-scripts/bin/build'
+      - run:
           name: deploy to test
           environment:
             APPLICATION_NAME: fb-editor
@@ -77,6 +103,21 @@ jobs:
           name: Run acceptance tests
           command: 'make acceptance-ci -s'
       - slack/status: *slack_status
+  testable_branch_acceptance_tests:
+    docker: *ecr_image
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run acceptance tests
+          environment:
+            ACCEPTANCE_TESTS_EDITOR_APP: "https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk/"
+          command: 'make acceptance-ci-testable-branch -s'
+      - slack/status:
+          fail_only: true
+          failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
+          include_job_number_field: false
   build_and_deploy_to_live:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
@@ -109,7 +150,11 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore:
+                - /^testable-.*$/
       - build_and_deploy_to_test:
           requires:
             - test
@@ -132,3 +177,25 @@ workflows:
       - build_and_deploy_to_live:
           requires:
             - confirm_live_deploy
+  deploy_testable_branch:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only:
+                - /^testable-.*$/
+      - build_and_deploy_testable_branch:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - /^testable-.*$/
+      - testable_branch_acceptance_tests:
+          requires:
+            - build_and_deploy_testable_branch
+      - slack/approval-notification:
+          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+          include_job_number_field: false
+          requires:
+            - testable_branch_acceptance_tests
