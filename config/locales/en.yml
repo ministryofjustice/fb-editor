@@ -30,11 +30,13 @@ en:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
     home_link_alt: "Ministry of Justice Logo - homepage"
-    sign_out:
+
   partials:
     header:
       forms: Your forms
       sign_out: Sign out %{user_name}
+      support: "Support"
+      supportURL: "https://moj-forms.service.justice.gov.uk/contact/"
   home:
     show:
       title: MoJ Forms
