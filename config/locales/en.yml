@@ -73,6 +73,7 @@ en:
       date: 'Date'
       radios: 'Radio buttons'
       checkboxes: 'Checkboxes'
+      upload: 'File upload'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'

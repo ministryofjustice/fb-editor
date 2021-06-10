@@ -76,6 +76,7 @@ class EditorApp < SitePrism::Page
   element :add_text, :link, 'Text', visible: false
   element :add_text_area, :link, 'Textarea', visible: false
   element :add_number, :link, 'Number', visible: false
+  element :add_file_upload, :link, 'File upload', visible: false
   element :add_date, :link, 'Date', visible: false
   element :add_radio, :link, 'Radio buttons', visible: false
   element :add_checkboxes, :link, 'Checkboxes', visible: false

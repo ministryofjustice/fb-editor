@@ -69,11 +69,15 @@ class Publisher
     end
 
     def user_datastore_url
-      sprintf(Rails.application.config.platform_environments[:common][:user_datastore_url], platform_environment: platform_environment, deployment_environment: deployment_environment)
+      platform_app_url(:user_datastore_url)
     end
 
     def submitter_url
-      sprintf(Rails.application.config.platform_environments[:common][:submitter_url], platform_environment: platform_environment, deployment_environment: deployment_environment)
+      platform_app_url(:submitter_url)
+    end
+
+    def user_filestore_url
+      platform_app_url(:user_filestore_url)
     end
 
     def submission_encryption_key
@@ -127,6 +131,16 @@ class Publisher
 
     def platform_deployment
       "#{platform_environment}-#{deployment_environment}"
+    end
+
+    def platform_app_url(app_name)
+      sprintf(
+        Rails.application
+          .config
+          .platform_environments[:common][app_name],
+        platform_environment: platform_environment,
+        deployment_environment: deployment_environment
+      )
     end
   end
 end

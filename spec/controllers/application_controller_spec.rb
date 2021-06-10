@@ -24,17 +24,43 @@ RSpec.describe ApplicationController do
   end
 
   describe '#save_user_data' do
+    before do
+      allow(controller).to receive(:params).and_return(params)
+      controller.save_user_data
+    end
+
+    context 'when saving uploaded file' do
+      let(:params) do
+        {
+          answers: {
+            'computer' => Rack::Test::UploadedFile.new(
+              Rails.root.join('spec', 'fixtures', 'computer_says_no.gif'),
+              'image/gif'
+            )
+          },
+          id: '123456'
+        }
+      end
+
+      it 'saves it with the service id' do
+        expect(controller.session.to_h).to eq(
+          {
+            '123456' => {
+              'user_data' => {
+                'computer' => { 'original_filename' => 'computer_says_no.gif' }
+              }
+            }
+          }
+        )
+      end
+    end
+
     context 'when saving user data to the session' do
       let(:params) do
         {
           answers: { 'frodo' => 'samwise' },
           id: '123456'
         }
-      end
-
-      before do
-        allow(controller).to receive(:params).and_return(params)
-        controller.save_user_data
       end
 
       it 'saves it with the service id' do

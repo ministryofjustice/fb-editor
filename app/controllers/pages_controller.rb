@@ -82,6 +82,11 @@ class PagesController < FormController
     }
   end
 
+  def answered?(component_id)
+    false
+  end
+  helper_method :answered?
+
   delegate :service_id, to: :service
 
   def change_answer_path(url:)

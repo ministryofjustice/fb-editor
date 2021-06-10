@@ -48,6 +48,12 @@ module CommonSteps
     when_I_add_the_page
   end
 
+  def given_I_have_a_single_question_page_with_upload
+    given_I_add_a_single_question_page_with_upload
+    and_I_add_a_page_url
+    when_I_add_the_page
+  end
+
   def given_I_add_a_single_question_page_with_text
     given_I_want_to_add_a_single_question_page
     editor.add_text.click
@@ -61,6 +67,11 @@ module CommonSteps
   def given_I_add_a_single_question_page_with_number
     given_I_want_to_add_a_single_question_page
     editor.add_number.click
+  end
+
+  def given_I_add_a_single_question_page_with_upload
+    given_I_want_to_add_a_single_question_page
+    editor.add_file_upload.click
   end
 
   def given_I_add_a_single_question_page_with_date

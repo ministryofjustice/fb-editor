@@ -11,10 +11,10 @@ gem 'delayed_job_active_record'
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
 # gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'default-text'
+#    github: 'ministryofjustice/fb-metadata-presenter',
+#    branch: 'feature/move-upload-to-gem'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '1.0.8'
+gem 'metadata_presenter', '1.3.1'
 
 gem 'faraday'
 gem 'faraday_middleware'

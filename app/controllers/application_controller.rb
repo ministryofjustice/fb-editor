@@ -22,7 +22,13 @@ class ApplicationController < ActionController::Base
     session[service_id]['user_data'] ||= {}
 
     params[:answers].each do |field, answer|
-      session[service_id]['user_data'][field] = answer
+      session[service_id]['user_data'][field] = if answer.respond_to?(:original_filename)
+                                                  {
+                                                    'original_filename' => answer.original_filename
+                                                  }
+                                                else
+                                                  answer
+                                                end
     end
   end
 
@@ -30,6 +36,16 @@ class ApplicationController < ActionController::Base
     user_data = session[params[:id]] || {}
 
     user_data['user_data'] || {}
+  end
+
+  def remove_user_data(component_id)
+    user_data = session[params[:id]] || {}
+    user_data['user_data'].delete(component_id)
+    user_data['user_data']
+  end
+
+  def upload_adapter
+    MetadataPresenter::OfflineUploadAdapter
   end
 
   def service_metadata
