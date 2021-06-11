@@ -238,7 +238,7 @@ class EditableContent extends EditableElement {
   }
 
   update() {
-    this.content = this.$input.val().trim(); // Get the latest markdown
+    this.content = sanitiseHtml(this.$input.val().trim()); // Get the latest markdown
     this.$node.removeClass(this._config.editClassname);
 
     // Figure out what content to show
@@ -782,17 +782,28 @@ class EditableCollectionItemRemover {
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
+  html = sanitiseHtml(html);
   return converter.makeMarkdown(html);
 }
 
+/* Extremely simple function to safely convert target elements, 
+ * such as <script>, so JS doesn't run in editor.
+ * Note: Because we're converting from Markup, we need to be
+ * careful about what is converted into entity or escaped form.
+ * For that reason, we are trying to be minimalistic in approach.
+ **/ 
+function sanitiseHtml(html) {
+  html = html.replace("</script>", "&lt;/script&gt;");
+  html = html.replace(/<script(.*?)>/, "&lt;script$1&gt;");
+  return html;
+}
 
 /* Convert Markdown to HTML by tapping into third-party code.
  * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
 function convertToHtml(markdown) {
   var html = converter.makeHtml(markdown);
-  html = html.replace("</script>", "&lt;/script&gt;");
-  html = html.replace(/<script(.*?)>/, "&lt;script$1&gt;");
+  html = sanitiseHtml(html);
   return html;
 }
 
