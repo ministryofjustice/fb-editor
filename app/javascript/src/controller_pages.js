@@ -370,9 +370,11 @@ function enhanceQuestions(view) {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
+        itemAdd: view.text.option_add,
+        itemRemove: view.text.option_remove,
         option: view.text.defaults.option,
         optionHint: view.text.defaults.option_hint,
-        optionalFlag: view.text.question_optional_flag
+        optionalFlag: view.text.question_optional_flag,
       },
 
       onItemRemoveConfirmation: function(item) {
@@ -396,6 +398,8 @@ function enhanceQuestions(view) {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
+        itemAdd: view.text.option_add,
+        itemRemove: view.text.option_remove,
         option: view.text.defaults.option,
         optionHint: view.text.defaults.option_hint,
         optionalFlag: view.text.question_optional_flag
