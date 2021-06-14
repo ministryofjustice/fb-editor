@@ -744,8 +744,8 @@ class EditableComponentCollectionItem extends EditableComponentBase {
 class EditableCollectionItemInjector {
   constructor(editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ addItem: 'add' }, config.text);
-    var $node = $(createElement("button", text.addItem, conf.classes));
+    var text = mergeObjects({ itemAdd: 'add' }, config.text);
+    var $node = $(createElement("button", text.itemAdd, conf.classes));
     editableCollectionFieldComponent.$node.append($node);
     $node.addClass("EditableCollectionItemInjector");
     $node.attr("type", "button");
@@ -764,8 +764,8 @@ class EditableCollectionItemInjector {
 class EditableCollectionItemRemover {
   constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ removeItem: 'remove' }, config.text);
-    var $node = $(createElement("button", text.removeItem, conf.classes));
+    var text = mergeObjects({ itemRemove: 'remove' }, config.text);
+    var $node = $(createElement("button", text.itemRemove, conf.classes));
     var removeCollectionItem = function() {
       editableCollectionFieldComponent.remove(editableCollectionItem);
     }
