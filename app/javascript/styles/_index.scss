@@ -246,11 +246,10 @@ html {
   }
 }
 
-
 .EditableCollectionItemInjector {
   @include button_type_link;
   @include addition_icon;
-  margin: 0 0 55px 55px;
+  margin: 0 0 0 55px;
 }
 
 .EditableCollectionItemRemover {
@@ -261,6 +260,11 @@ html {
     border-color: govuk-colour("red");
     color: govuk-colour("white");
   }
+}
+
+.EditableCollectionFieldComponent + [type=submit] {
+  // Workaround to compensate for GDS CSS issues
+  margin-top: 55px;
 }
 
 
