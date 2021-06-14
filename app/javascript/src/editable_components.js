@@ -590,7 +590,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
 }
 
 /* Private function
- * Create an item template which can be cloned in component.add()
+ * Create an item template which can be cloned in component.addItem()
  * config (Object) key/value pairs for extra information.
  *
  * Note: Initial index elements of Array/Collection is called directly
@@ -752,7 +752,7 @@ class EditableCollectionItemInjector {
     $node.data("instance", this);
     $node.on("click", function(e) {
       e.preventDefault();
-      editableCollectionFieldComponent.add();
+      editableCollectionFieldComponent.addItem();
     });
 
     this.component = editableCollectionFieldComponent;
