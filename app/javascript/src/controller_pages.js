@@ -239,7 +239,7 @@ function addQuestionMenuListeners(view) {
 
   // QuestionMenuSelectionRequired
   view.$document.on("QuestionMenuSelectionRequired", function(event, question) {
-    var html = $(templateContent).filter("[data-node=required]").html();
+    var html = $(templateContent).filter("[data-node=required]").get(0).outerHTML;
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
