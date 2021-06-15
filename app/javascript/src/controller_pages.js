@@ -387,7 +387,7 @@ function enhanceQuestions(view) {
           ok: view.text.dialogs.button_delete_option
         };
         view.dialogConfirmationDelete.confirm({}, function() {
-          item.component.remove(item);
+          item.component.removeItem(item);
         });
       }
     });
@@ -415,7 +415,7 @@ function enhanceQuestions(view) {
           ok: view.text.dialogs.button_delete_option
         };
         view.dialogConfirmationDelete.confirm({}, function() {
-          item.component.remove(item);
+          item.component.removeItem(item);
         });
       }
     });

@@ -775,14 +775,14 @@ class EditableCollectionItemRemover {
     $node.attr("type", "button");
     $node.on("click.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
-      editableCollectionItem.removeItem();
+      editableCollectionItem.remove();
     });
 
     // Close on ENTER || SPACE
     $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       if(e.which == 13 || e.which == 32) {
-        editableCollectionItem.removeItem();
+        editableCollectionItem.remove();
       }
     });
 
