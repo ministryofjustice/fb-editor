@@ -117,6 +117,6 @@ class EditorApp < SitePrism::Page
   end
 
   def modal_create_service_button
-    find_button(I18n.t('services.create'))
+    all('.ui-dialog-buttonpane button').first
   end
 end
