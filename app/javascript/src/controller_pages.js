@@ -240,8 +240,8 @@ function addQuestionMenuListeners(view) {
   // QuestionMenuSelectionRequired
   view.$document.on("QuestionMenuSelectionRequired", function(event, question) {
     var html = $(templateContent).filter("[data-node=required]").html();
-    var remove = question.data.validation.remove;
-    var regex = new RegExp("(input.*name=\"remove\".*value=\"" + remove + "\")", "mig");
+    var required = question.data.validation.required;
+    var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
     view.dialogConfiguration.configure({
       content: html
