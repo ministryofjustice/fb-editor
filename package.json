@@ -2,7 +2,7 @@
   "name": "fb_editor",
   "private": true,
   "engines": {
-    "node": "14.17.0"
+    "node": "14.17.1"
   },
   "dependencies": {
     "@rails/actioncable": "^6.1.3",
