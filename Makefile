@@ -33,6 +33,10 @@ acceptance: setup
 copy-env-vars-ci:
 	cp .env.acceptance_tests.ci .env.acceptance_tests
 
+.PHONY: copy-testable-branch-env-vars-ci
+copy-testable-branch-env-vars-ci:
+	cp .env.acceptance_tests.testable_branch .env.acceptance_tests
+
 .PHONY: add-env-vars-ci
 add-env-vars-ci:
 	echo "ACCEPTANCE_TESTS_USER=${ACCEPTANCE_TESTS_USER}" >> .env.acceptance_tests
@@ -44,6 +48,14 @@ setup-ci:
 
 .PHONY: acceptance-ci
 acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
+	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
+
+.PHONY: add-testable-branch-env-vars-ci
+add-testable-branch-env-vars-ci:
+	echo "ACCEPTANCE_TESTS_EDITOR_APP=${ACCEPTANCE_TESTS_EDITOR_APP}" >> .env.acceptance_tests
+
+.PHONY: acceptance-ci-testable-branch
+acceptance-ci-testable-branch: copy-testable-branch-env-vars-ci add-testable-branch-env-vars-ci add-env-vars-ci setup-ci
 	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
 
 .PHONY: assets

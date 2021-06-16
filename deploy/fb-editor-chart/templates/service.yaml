@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "fb-editor-svc-{{ .Values.environmentName }}"
+  name: "{{ .Values.app_name }}-svc-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
   labels:
-    app: "fb-editor-web-{{ .Values.environmentName }}"
+    app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
     appGroup: "fb-editor"
 spec:
   ports:
@@ -12,4 +12,4 @@ spec:
     name: http
     targetPort: 3000
   selector:
-    app: "fb-editor-web-{{ .Values.environmentName }}"
+    app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"

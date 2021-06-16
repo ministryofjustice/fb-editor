@@ -1,12 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: "fb-editor-service-monitor-{{ .Values.environmentName }}"
+  name: "{{ .Values.app_name }}-service-monitor-{{ .Values.environmentName }}"
   namespace: "formbuilder-saas-{{ .Values.environmentName }}"
 spec:
   selector:
     matchLabels:
-      app: "fb-editor-web-{{ .Values.environmentName }}"
+      app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   endpoints:
   - port: http
     interval: 15s
@@ -19,7 +19,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: "fb-editor-web-{{ .Values.environmentName }}"
+      app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   policyTypes:
   - Ingress
   ingress:

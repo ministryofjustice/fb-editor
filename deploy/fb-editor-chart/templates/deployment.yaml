@@ -3,23 +3,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "fb-editor-web-{{ .Values.environmentName }}"
+  name: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "fb-editor-web-{{ .Values.environmentName }}"
+      app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   template:
     metadata:
       labels:
-        app: "fb-editor-web-{{ .Values.environmentName }}"
+        app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
         appGroup: "fb-editor"
         fb-service-token-cache-access: "true"
         tier: "frontend"
     spec:
       containers:
-      - name: "fb-editor-web-{{ .Values.environmentName }}"
+      - name: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-web:{{ .Values.circleSha1 }}"
         volumeMounts:
         - mountPath: /tmp
@@ -115,17 +115,17 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "fb-editor-workers-{{ .Values.environmentName }}"
+  name: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: "fb-editor-workers-{{ .Values.environmentName }}"
+      app: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
   template:
     metadata:
       labels:
-        app: "fb-editor-workers-{{ .Values.environmentName }}"
+        app: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
         appGroup: "fb-editor"
         fb-service-token-cache-access: "true"
         tier: "frontend"
@@ -134,7 +134,7 @@ spec:
         runAsUser: 1001
       serviceAccountName: "formbuilder-editor-workers-{{ .Values.environmentName }}"
       containers:
-      - name: "fb-editor-workers-{{ .Values.environmentName }}"
+      - name: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
         volumeMounts:
         - mountPath: /tmp
