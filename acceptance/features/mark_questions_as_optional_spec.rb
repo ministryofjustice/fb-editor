@@ -30,6 +30,7 @@ feature 'Mark question as optional' do
   def when_I_want_to_select_question_properties
     editor.question_heading.first.click
     editor.question_three_dots_button.click
+    editor.should_not have_css('span', text: 'Delete...')
   end
 
   def and_I_want_to_set_a_question_optional
