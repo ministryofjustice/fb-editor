@@ -41,7 +41,7 @@ class Content {
     this.data = $node.data("fb-content-data");
     this.$node = $node;
     this.editable = editableComponent($node, conf);
-    this.menu = createContentMenu.call(this);
+    this.menu = this.data && createContentMenu.call(this); // Components with data are user added, others are templated
   }
 
   focus() {
