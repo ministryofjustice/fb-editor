@@ -91,7 +91,6 @@ feature 'Preview form' do
   def and_I_add_a_multiple_page_content_component(content:)
     and_I_add_a_component
     and_I_add_a_content_area
-    expect(editor.second_component.text).to eq(optional_content)
     when_I_change_editable_content(editor.second_component, content: content)
     #
     editor.service_name.click # click outside to close the editable component
