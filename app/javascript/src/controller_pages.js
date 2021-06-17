@@ -74,7 +74,7 @@ PagesController.edit = function() {
          break;
 
     case "page.singlequestion":
-         // No customisations required for this view.
+         editPageSingleQuestionViewCustomisations.call(view);
          break;
 
     case "page.content":
@@ -486,6 +486,12 @@ function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
   var $target = $("#new_answers input:submit");
   $target.before($button1);
+}
+
+
+function editPageSingleQuestionViewCustomisations() {
+  // Hide menu options not required for SingleQuestion page
+  $(".QuestionMenu [data-action=remove]").hide();
 }
 
 
