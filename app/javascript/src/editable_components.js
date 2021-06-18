@@ -14,16 +14,22 @@
  **/
 
 
-import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm, isBoolean } from './utilities';
-var showdown  = require('showdown');
-var converter = new showdown.Converter({
-                  noHeaderId: true,
-                  strikethrough: true,
-                  omitExtraWLInCodeBlocks: true,
-                  simplifiedAutoLink: false,
-                  tables: true,
-                  disableForced4SpacesIndentedSublists: true
-                });
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const createElement = utilities.createElement;
+const safelyActivateFunction = utilities.safelyActivateFunction;
+const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const isBoolean = utilities.isBoolean;
+const showdown  = require('showdown');
+const converter = new showdown.Converter({
+                    noHeaderId: true,
+                    strikethrough: true,
+                    omitExtraWLInCodeBlocks: true,
+                    simplifiedAutoLink: false,
+                    tables: true,
+                    disableForced4SpacesIndentedSublists: true
+                  });
 
 showdown.setFlavor('github');
 
@@ -45,7 +51,6 @@ class EditableBase {
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
-
     $node.on("click.editablecomponent focus.editablecomponent", (e) => {
       e.preventDefault();
     });
@@ -55,8 +60,22 @@ class EditableBase {
     return $node.text();
   }
 
+  remove() {
+    // 1. Remove any form element with target name.
+    // 2. Add uuid of target component to delete_components array.
+    var $input = $(this._config.form).find("[name='" + this._config.id + "']")
+    if($input.length) {
+      $input.remove();
+    }
+    addHiddenInpuElementToForm(this._config.form, "delete_components[]", this._config.data._uuid);
+  }
+
   save() {
     updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
+  }
+
+  emitSaveRequired() {
+    $(document).trigger("SaveRequired");
   }
 }
 
@@ -67,14 +86,7 @@ class EditableBase {
  * Switched into edit mode on focus and out again on blur.
  *
  * @$node  (jQuery object) jQuery wrapped HTML node.
- * @config (Object) Configurable options, e.g.
- *                  {
- *                    onSaveRequired: function() {
- *                      // Pass function to do something. Triggered if
- *                      // the code believes something has changed on
- *                      // an internal 'update' call.
- *                    }
- *                  }
+ * @config (Object) Configurable options
  **/
 class EditableElement extends EditableBase {
   constructor($node, config) {
@@ -115,7 +127,7 @@ class EditableElement extends EditableBase {
 
       // If something change, let's make sure it's not
       if(this._content != "" && this._content != this._defaultContent && this._content != this._originalContent) {
-        safelyActivateFunction(this._config.onSaveRequired);
+        this.emitSaveRequired();
       }
     }
 
@@ -227,7 +239,7 @@ class EditableContent extends EditableElement {
 
   set content(markdown) {
     this._content = markdown;
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   edit() {
@@ -235,6 +247,10 @@ class EditableContent extends EditableElement {
     this.$input.val(this._content); // Adds latest stored content to input area
     this.$input.focus();
     this.$input.select();
+  }
+
+  focus() {
+    this.edit();
   }
 
   update() {
@@ -353,8 +369,8 @@ class EditableTextFieldComponent extends EditableComponentBase {
     //       ready so we can edit attribute values, such as placeholder.
     //  {input: new EditableAttribute($node.find("input"), config)}
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorTextFieldLabel,
-      selectorElementHint: config.selectorTextFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableTextFieldComponent");
   }
@@ -391,8 +407,8 @@ class EditableTextFieldComponent extends EditableComponentBase {
 class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorTextareaFieldLabel,
-      selectorElementHint: config.selectorTextareaFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableTextareaFieldComponent");
   }
@@ -438,8 +454,8 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
 class EditableGroupFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorGroupFieldLabel,
-      selectorElementHint: config.selectorGroupFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
     $node.addClass("EditableGroupFieldComponent");
   }
@@ -511,8 +527,8 @@ class EditableGroupFieldComponent extends EditableComponentBase {
 class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
-      selectorElementLabel: config.selectorCollectionFieldLabel,
-      selectorElementHint: config.selectorCollectionFieldHint
+      selectorElementLabel: config.selectorLabel,
+      selectorElementHint: config.selectorHint
     }, config));
 
     var text = config.text || {}; // Make sure it exists to avoid errors later on.
@@ -520,6 +536,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
+
     new EditableCollectionItemInjector(this, config);
     $node.addClass("EditableCollectionFieldComponent");
   }
@@ -542,7 +559,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   }
 
   // Dynamically adds an item to the components collection
-  add() {
+  addItem() {
     // Component should always have at least one item, otherwise something is very wrong.
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
@@ -550,17 +567,17 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
     safelyActivateFunction(this._config.onItemAdd, $clone);
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   // Dynamically removes an item to the components collection
-  remove(item) {
+  removeItem(item) {
     var index = this.items.indexOf(item);
     safelyActivateFunction(this._config.onItemRemove, item);
     this.items.splice(index, 1);
     item.$node.remove();
     EditableCollectionFieldComponent.updateItems.call(this);
-    safelyActivateFunction(this._config.onSaveRequired);
+    this.emitSaveRequired();
   }
 
   save() {
@@ -573,7 +590,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
 }
 
 /* Private function
- * Create an item template which can be cloned in component.add()
+ * Create an item template which can be cloned in component.addItem()
  * config (Object) key/value pairs for extra information.
  *
  * Note: Initial index elements of Array/Collection is called directly
@@ -713,7 +730,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     }
     else {
       // or just run the remove function.
-      this.component.remove(this);
+      this.component.removeItem(this);
     }
   }
 
@@ -727,15 +744,15 @@ class EditableComponentCollectionItem extends EditableComponentBase {
 class EditableCollectionItemInjector {
   constructor(editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ addItem: 'add' }, config.text);
-    var $node = $(createElement("button", text.addItem, conf.classes));
+    var text = mergeObjects({ itemAdd: 'add' }, config.text);
+    var $node = $(createElement("button", text.itemAdd, conf.classes));
     editableCollectionFieldComponent.$node.append($node);
     $node.addClass("EditableCollectionItemInjector");
     $node.attr("type", "button");
     $node.data("instance", this);
     $node.on("click", function(e) {
       e.preventDefault();
-      editableCollectionFieldComponent.add();
+      editableCollectionFieldComponent.addItem();
     });
 
     this.component = editableCollectionFieldComponent;
@@ -747,8 +764,8 @@ class EditableCollectionItemInjector {
 class EditableCollectionItemRemover {
   constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ removeItem: 'remove' }, config.text);
-    var $node = $(createElement("button", text.removeItem, conf.classes));
+    var text = mergeObjects({ itemRemove: 'remove' }, config.text);
+    var $node = $(createElement("button", text.itemRemove, conf.classes));
     var removeCollectionItem = function() {
       editableCollectionFieldComponent.remove(editableCollectionItem);
     }
@@ -894,4 +911,12 @@ function editableComponent($node, config) {
 
 
 // Make available for importing.
-export { editableComponent };
+module.exports =  {
+  editableComponent: editableComponent,
+  EditableElement: EditableElement,
+  EditableContent: EditableContent,
+  EditableTextFieldComponent: EditableTextFieldComponent,
+  EditableTextareaFieldComponent: EditableTextareaFieldComponent,
+  EditableGroupFieldComponent: EditableGroupFieldComponent,
+  EditableCollectionFieldComponent: EditableCollectionFieldComponent
+}

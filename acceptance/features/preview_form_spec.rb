@@ -91,10 +91,17 @@ feature 'Preview form' do
   def and_I_add_a_multiple_page_content_component(content:)
     and_I_add_a_component
     and_I_add_a_content_area
-    expect(editor.second_component.text).to eq(optional_content)
+    and_the_content_component_has_the_optional_content
     when_I_change_editable_content(editor.second_component, content: content)
-    #
+  end
+
+  def and_the_content_component_has_the_optional_content
     editor.service_name.click # click outside to close the editable component
+
+    # the output element p tag of a content component is the thing which has
+    # the actual text in it
+    output_component = editor.second_component.find('.output p', visible: false)
+    expect(output_component.text).to eq(optional_content)
   end
 
   def when_I_update_the_question_name(question_name)

@@ -16,25 +16,116 @@
  **/
 
 
-import { mergeObjects } from './utilities';
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const editableComponent = require('./editable_components').editableComponent;
+const QuestionMenu = require('./component_activated_question_menu');
+
+const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
+const SELECTOR_DISABLED = "input:not(:hidden), textarea";
+const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
 
 class Question {
   constructor($node, config) {
+    var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects({
-      data: {}
+      // Config defaults
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      data: $node.data("fb-content-data"), // TODO: Phase this out because Question should control data
+      editClassname: "active",
+      id: $node.data("fb-content-id"),
+      selectorDisabled: SELECTOR_DISABLED,
+      text: {
+        // optionalFlag: Replaced with design requirement
+      },
+      type: $node.data("fb-content-type"),
+      view: {}
     }, config);
 
     $node.addClass("Question");
-    this.$node = $node;
     this._config = conf;
+    this.data = $node.data("fb-content-data");
+    this.$node = $node;
+    this.$heading = $heading;
+    this.editable = editableComponent($node, conf);
+    this.menu = createQuestionMenu.call(this);
+
+    // Check view state on element edit or interaction and set initial state.
+    $heading.on("blur", this.setRequiredFlag.bind(this));
+    this.setRequiredFlag();
   }
 
-  data() {
-    return this._config.data;
+  get required() {
+    return this.data.validation.required;
+  }
+
+  set required(content) {
+    var arr = content.find("form").serializeArray();
+    for(var i=0; i < arr.length; ++i) {
+      this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
+    }
+
+    this.menu.setRequiredViewState();
+    this.setRequiredFlag();
+  }
+
+
+  /* The design calls for a visual indicator that the question is optional.
+   * This function is to handle the adding the extra element.
+   **/
+  setRequiredFlag() {
+    var $target = this.$heading;
+    var text = this._config.text.optionalFlag;
+    var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
+    var textWithSpace =  " " + text;
+    var re = new RegExp(regExpTextWithSpace + "$");
+
+    // Since we always remove first we can add knowing duplicates should not happen.
+    $target.text($target.text().replace(re, ""));
+    if(!this.required) {
+      $target.text($target.text() + textWithSpace);
+    }
+
+    // If we've changed the $target content, or the eitor has, we
+    // need to check whether required flag needs to show, or not.
+    $target.data("instance").update();
+  }
+
+  focus() {
+    this.editable.focus();
+  }
+
+  remove() {
+    // TODO: Replace with proper mechanism to remove this workaround
+    this.editable.remove();
+  }
+
+  save() {
+    // TODO: Replace with proper mechanism to remove this workaround
+    this.editable.save();
   }
 }
 
 
+/* Create a menu for Question property editing.
+ **/
+function createQuestionMenu() {
+  var question = this;
+  var template = $("[data-component-template=QuestionMenu]");
+  var $ul = $(template.html());
 
-export { Question }
+  // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
+  $(document.body).append($ul);
+
+  return new QuestionMenu($ul, {
+    activator_text: template.data("activator-text"),
+    $target: question.$heading,
+    question: question
+  });
+}
+
+
+
+module.exports = Question;

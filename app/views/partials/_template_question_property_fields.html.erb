@@ -5,7 +5,7 @@
       <fieldset class="govuk-fieldset" aria-describedby="changed-name-hint">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h1 class="govuk-fieldset__heading">
-            <%= t('question.dialog.required_heading') %>
+            <%= t('question.dialog.heading_required') %>
           </h1>
         </legend>
         <div class="govuk-radios govuk-radios--inline">
@@ -24,6 +24,11 @@
         </div>
       </fieldset>
     </div>
+  </form>
+
+  <form data-node="remove">
+    <!-- Using dialogConfirmationDelete so only require text here -->
+    <%= t('question.dialog.heading_remove') %>
   </form>
 
 </script>

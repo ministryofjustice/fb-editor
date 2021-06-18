@@ -16,24 +16,26 @@
  **/
 
 
-import { safelyActivateFunction, mergeObjects, uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
-import { ActivatedMenu } from './component_activated_menu';
-import { Question } from './question';
-import { QuestionMenu } from './component_activated_question_menu';
-import { DialogConfiguration } from './component_dialog_configuration';
-import { editableComponent } from './editable_components';
-import { DefaultController } from './controller_default';
-import { ServicesController } from './controller_services';
+const utilities = require('./utilities');
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const ActivatedMenu = require('./component_activated_menu');
+
+const editable_components = require('./editable_components');
+const EditableElement = editable_components.EditableElement;
+const Content = require('./content');
+
+const CheckboxesQuestion = require('./question_checkboxes');
+const RadiosQuestion = require('./question_radios');
+const DateQuestion = require('./question_date');
+const TextQuestion = require('./question_text');
+const TextareaQuestion = require('./question_text');
+
+const DialogConfiguration = require('./component_dialog_configuration');
+const DefaultController = require('./controller_default');
+const ServicesController = require('./controller_services');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
-const SELECTOR_COLLECTION_FIELD_LABEL = "legend > :first-child";
-const SELECTOR_COLLECTION_FIELD_HINT = "fieldset > .govuk-hint";
-const SELECTOR_COLLECTION_ITEM = ".govuk-radios__item, .govuk-checkboxes__item";
-const SELECTOR_DISABLED = "input:not(:hidden), textarea";
-const SELECTOR_GROUP_FIELD_LABEL = "legend > :first-child";
-const SELECTOR_HINT_STANDARD = ".govuk-hint";
-const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
-const SELECTOR_LABEL_STANDARD = "label";
+
 
 class PagesController extends DefaultController {
   constructor(app) {
@@ -55,13 +57,15 @@ class PagesController extends DefaultController {
  * ------------------------------ */
 PagesController.edit = function() {
   var view = this;
-  var $form = $("#editContentForm");
-  this.$form = $form;
-  this.editableContent = [];
+  var dataController = new DataController();
+
+  this.$editable = $(".fb-editable");
+  this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
   workaroundForDefaultText(view);
-  bindEditableContentHandlers(view);
+  enhanceContent(view);
+  enhanceQuestions(view);
 
   // Handle page-specific view customisations here.
   switch(view.type) {
@@ -70,7 +74,7 @@ PagesController.edit = function() {
          break;
 
     case "page.singlequestion":
-         // No customisations required for this view.
+         editPageSingleQuestionViewCustomisations.call(view);
          break;
 
     case "page.content":
@@ -89,21 +93,28 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: $form });
+    new AddContent($node, { $form: dataController.$form });
   });
 
   // Enhance any Add Component buttons.
   view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
-    new AddComponent($node, { $form: $form });
+    new AddComponent($node, { $form: dataController.$form });
   });
-
-  // Initialise questions
-  setupQuestions.call(view);
 
   // Setting focus for editing.
   focusOnEditableComponent.call(view);
+
+
+  // Bind listeners
+  // --------------
+
+  addQuestionMenuListeners(view);
+  addContentMenuListeners(view);
+
+  dataController.saveRequired(false);
+  this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
 }
 
 
@@ -115,6 +126,31 @@ PagesController.create = function() {
   ServicesController.edit.call(this);
 }
 
+
+class DataController {
+  constructor() {
+    var controller = this;
+    var $form = $("#editContentForm");
+    $form.on("submit", controller.update);
+
+    this.$form = $form;
+  }
+
+  saveRequired(required) {
+    if(required) {
+      this.$form.find(":submit").prop("disabled", false);
+    }
+    else {
+      this.$form.find(":submit").prop("disabled", true);
+    }
+  }
+
+  update() {
+    $(".fb-editable").each(function() {
+      $(this).data("instance").save();
+    });
+  }
+}
 
 
 /* Gives add component buttons functionality to select a component type
@@ -147,8 +183,8 @@ class AddComponent {
  **/
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
-  updateHiddenInputOnForm(this.$form, "page[add_component]", action);
-  this.$form.submit();
+  updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
+  this.dataController.$form.submit();
 }
 
 
@@ -171,6 +207,81 @@ class AddContent {
 }
 
 
+/* Question Menu needs to interact with Dialog components before
+ * running any action, so we need to work with listeners to coordinate
+ * between different component/widgets/functionality, etc.
+ **/
+function addQuestionMenuListeners(view) {
+  var templateContent = $("[data-component-template=QuestionPropertyFields]").html();
+
+  // QuestionMenuSelectionRemove
+  view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
+    var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.content = {
+      heading: html.replace(/#{label}/, question.$heading.text()),
+      ok: view.text.dialogs.button_delete_option
+    };
+    view.dialogConfirmationDelete.confirm({}, function() {
+      // Workaround solution that doesn't require extra backend work
+      // 1. First remove component from view
+      question.$node.hide();
+
+      // 2. Update form (in case anything else has changed)
+      view.dataController.update();
+
+      // 3. Remove corresponding component from form
+      question.remove();
+
+      // 4. Trigger save required (to enable Save button)
+      view.dataController.saveRequired(true); // 4
+    });
+  });
+
+  // QuestionMenuSelectionRequired
+  view.$document.on("QuestionMenuSelectionRequired", function(event, question) {
+    var html = $(templateContent).filter("[data-node=required]").get(0).outerHTML;
+    var required = question.data.validation.required;
+    var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
+    html = html.replace(regex, "$1 checked=\"true\"");
+    view.dialogConfiguration.configure({
+      content: html
+    }, (content) => { question.required = content } );
+  });
+}
+
+
+/* Content Menu needs to interact with Dialog components before
+ * running any action, so we need to work with listeners to coordinate
+ * between different component/widgets/functionality, etc.
+ **/
+function addContentMenuListeners(view) {
+  var templateContent = $("[data-component-template=ContentPropertyFields]").html();
+
+  // ContentMenuSelectionRemove
+  view.$document.on("ContentMenuSelectionRemove", function(event, component) {
+    var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.content = {
+      heading: html.replace(/#{label}/, ""),
+      ok: view.text.dialogs.button_delete_option
+    };
+    view.dialogConfirmationDelete.confirm({}, function() {
+      // Workaround solution that doesn't require extra backend work
+      // 1. First remove component from view
+      component.$node.hide();
+
+      // 2. Update form (in case anything else has changed)
+      view.dataController.update();
+
+      // 3. Remove corresponding component from form
+      component.remove();
+
+      // 4. Trigger save required (to enable Save button)
+      view.dataController.saveRequired(true); // 4
+    });
+  });
+}
+
+
 /* Set focus on first editable component or, if a new component has been
  * added, the first element with that new component.
  **/
@@ -186,160 +297,129 @@ function focusOnEditableComponent() {
   }
   else {
     // Standard editable page so find first editable item.
-    if(this.editableContent.length > 0) {
-      this.editableContent[0].focus();
-    }
+    $(".fb-editable").eq(0).focus();
   }
 }
 
 
-/* Controls all the Editable Component setup for each page.
- * TODO: Add more description on how this works.
+/* Add edit functionality and component enhancements to content.
+ * Affects simple elements (e.g. Headings) and full text blocks.
  **/
-function bindEditableContentHandlers(view) {
-  var $editContentForm = $("#editContentForm");
-  var $saveButton = $editContentForm.find(":submit");
-  if($editContentForm.length) {
-    $saveButton.prop("disabled", true); // disable until needed.
+function enhanceContent(view) {
+  view.$editable.filter("[data-fb-content-type=element]").each(function(i, node) {
+    var $node = $(node);
+    new EditableElement($node, {
+      editClassname: "active",
+      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+      form: view.dataController.$form,
+      id: $node.data("fb-content-id"),
 
-    $(".fb-editable").each(function(i, node) {
-      var $node = $(node);
-      view.editableContent.push(editableComponent($node, {
-        editClassname: "active",
-        data: $node.data("fb-content-data"),
-        attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-        filters: {
-          _id: function(index) {
-            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
-          },
-          value: function(index) {
-            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
-          }
-        },
-        form: $editContentForm,
-        id: $node.data("fb-content-id"),
+      text: {
+        default_content: view.text.defaults.content
+      },
 
-        // Selectors for editable component labels/legends/hints, etc.
-        selectorTextFieldLabel: SELECTOR_LABEL_HEADING, // Also used by Number
-        selectorTextFieldHint: SELECTOR_HINT_STANDARD,   // Also used by Number
-        selectorTextareaFieldLabel: SELECTOR_LABEL_HEADING,
-        selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
-        selectorGroupFieldLabel: SELECTOR_GROUP_FIELD_LABEL, // Used by Date
-        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,      // Used by Date
-        selectorCollectionFieldLabel: SELECTOR_COLLECTION_FIELD_LABEL,  // Used by Radios
-        selectorCollectionFieldHint: SELECTOR_COLLECTION_FIELD_HINT,    // Used by Radios
-        selectorCollectionItem: SELECTOR_COLLECTION_ITEM, // Used by Radio and Checkbox option parent
-        selectorComponentCollectionItemLabel: SELECTOR_LABEL_STANDARD, // Used by Radio and Checkbox options
-        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD,   // Used by Radio and Checkbox options
-        // Other selectors
-        selectorDisabled: SELECTOR_DISABLED,
-
-        text: {
-          addItem: view.text.actions.option_add,
-          removeItem: view.text.actions.option_remove,
-          default_content: view.text.defaults.content
-        },
-
-        onCollectionItemClone: function($node) {
-           // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
-           // Runs after the collection item has been cloned, so further custom manipulation can be
-           // carried out on the element.
-           $node.find("label").text(view.text.defaults.option);
-           $node.find("span").text(view.text.defaults.option_hint);
-        },
-        onItemAdd: function($node) {
-          // @$node (jQuery node) Node (instance.$node) that has been added.
-          // Runs after adding a new Collection item.
-          // This adjust the view to wrap Remove button with desired menu component.
-          //
-          // This is not very good but expecting it to get significant rework when
-          // we add more menu items (not for MVP).
-          collectionItemControlsInActivatedMenu($node, {
-            activator_text: view.text.actions.edit,
-            classnames: "editableCollectionItemControls"
-          });
-        },
-        onItemRemove: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before removing an editable Collection item.
-          // Provides an opportunity for clean up.
-          var activatedMenu = item.$node.data("ActivatedMenu");
-          if(activatedMenu) {
-            activatedMenu.activator.$node.remove();
-            activatedMenu.$node.remove();
-            activatedMenu.container.$node.remove();
-          }
-        },
-        onItemRemoveConfirmation: function(item) {
-          // @item (EditableComponentItem) Item to be deleted.
-          // Runs before onItemRemove when removing an editable Collection item.
-          // Currently not used but added for future option and consistency
-          // with onItemAdd (provides an opportunity for clean up).
-          view.dialogConfirmationDelete.content = {
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            ok: view.text.dialogs.button_delete_option
-          };
-          view.dialogConfirmationDelete.confirm({}, function() {
-            item.component.remove(item);
-          });
-        },
-        onSaveRequired: function() {
-          // Code detected something changed to
-          // make the submit button available.
-          $saveButton.prop("disabled", false);
-        },
-        type: $node.data("fb-content-type")
-      }));
+      type: $node.data("fb-content-type")
     });
+  });
 
-    // If any Collection items are present with ability to be removed, we need
-    // to find them and scoop up the Remove buttons to put in menu component.
-    $(".EditableComponentCollectionItem").each(function() {
-      collectionItemControlsInActivatedMenu($(this), {
-       activator_text: view.text.actions.edit,
-        classnames: "editableCollectionItemControls"
-      });
-    });
-
-    // Add handler to activate save functionality from the independent 'save' button.
-    $editContentForm.on("submit", (e) => {
-      for(var i=0; i<view.editableContent.length; ++i) {
-        view.editableContent[i].save();
+  view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
+    var $node = $(node);
+    new Content($node, {
+      form: view.dataController.$form,
+      text: {
+        default_content: view.text.defaults.content
       }
     });
-  }
+  });
 }
 
 
-/* Finds elements to wrap in Activated Menu component.
- * Best used for dynamically generated elements that have been injected into the page
- * through JS enhancement. If items existed in the template code, you could probably
- * just use an easier method such as applyMenus() function.
- *
- * This function will basically find desired elments, wrap each one with an <li> tag,
- * add those to a new <ul> element, and then create an ActivateMenu component from
- * that structure.
- *
- * @selector (String) jQuery compatible selector to find elements for menu inclusion.
- * @$node  (jQuery node) Wrapping element/container that should hold the elements sought.
- * effects and wraps them with the required functionality.
+/* Add edit functionality and component enhancements to questions.
  **/
-function collectionItemControlsInActivatedMenu($item, config) {
-  var $elements = $(".EditableCollectionItemRemover", $item);
-  if($elements.length) {
-    $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
-    $elements.wrap("<li></li>");
-    let menu = new ActivatedMenu($elements.parents("ul"), {
-      activator_text: config.activator_text,
-      container_classname: config.classnames,
-      container_id: uniqueString("activatedMenu-"),
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
+function enhanceQuestions(view) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
+    new TextQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        default_content: view.text.defaults.content,
+        optionalFlag: view.text.question_optional_flag
       }
     });
+  });
 
-    $item.data("ActivatedMenu", menu);
-  }
+  view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
+    new DateQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+  });
+
+  view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
+    new TextareaQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+  });
+
+  view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
+    new CheckboxesQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        edit: view.text.actions.edit,
+        itemAdd: view.text.option_add,
+        itemRemove: view.text.option_remove,
+        option: view.text.defaults.option,
+        optionHint: view.text.defaults.option_hint,
+        optionalFlag: view.text.question_optional_flag,
+      },
+
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.content = {
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+        };
+        view.dialogConfirmationDelete.confirm({}, function() {
+          item.component.removeItem(item);
+        });
+      }
+    });
+  });
+
+  view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
+    new RadiosQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        edit: view.text.actions.edit,
+        itemAdd: view.text.option_add,
+        itemRemove: view.text.option_remove,
+        option: view.text.defaults.option,
+        optionHint: view.text.defaults.option_hint,
+        optionalFlag: view.text.question_optional_flag
+      },
+
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.content = {
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+        };
+        view.dialogConfirmationDelete.confirm({}, function() {
+          item.component.removeItem(item);
+        });
+      }
+    });
+  });
 }
 
 
@@ -360,73 +440,6 @@ function createDialogConfiguration() {
       "ui-dialog": $template.data("classes")
     }
   });
-}
-
-
-/* Apply functionality for Question Menu that handles the settings
- * for the question and page view.
- **/
-function setupQuestions() {
-  var view = this;
-  var questionMenuTemplate = $("[data-component-template=QuestionMenu]");
-
-  $("[data-fb-content-data]").not("[data-fb-content-type='content']").each(function() {
-
-    // Initialise the question as an object.
-    var $node = $(this);
-    var question = new Question($node, {
-      data: $node.data("fb-content-data"),
-      view: view
-    });
-
-    // Create a menu for Question property editing.
-    var $ul = $(questionMenuTemplate.html());
-    var $target = $(SELECTOR_LABEL_HEADING, $node);
-    //var $optionalFlag = $("<span class=\"flag\">&nbsp;" + view.text.question_optional_flag + "</span>").css("font-size", $target.get(0).style.fontSize);
-
-    // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
-    view.$body.append($ul);
-
-    new QuestionMenu($ul, {
-      activator_text: questionMenuTemplate.data("activator-text"),
-      $target: $target,
-      question: question,
-      view: view,
-      question_property_fields: $("[data-component-template=QuestionPropertyFields]").html(),
-      onSetRequired: function(questionMenu) {
-        setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-      }
-    });
-
-    // Check view state on element edits
-    $target.on("blur", function() {
-      setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-    });
-
-
-    // Set initial view state
-    setQuestionRequiredFlag(question, $target, view.text.question_optional_flag);
-  });
-}
-
-
-/* The design calls for a visual indicator that the question is optional.
- * This function is to handle the adding the extra element.
- **/
-function setQuestionRequiredFlag(question, $target, text) {
-  var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
-  var textWithSpace =  " " + text;
-  var re = new RegExp(regExpTextWithSpace + "$");
-
-  // Since we always remove first we can add knowing duplicates should not happen.
-  $target.text($target.text().replace(re, ""));
-  if(!question.data().validation.required) {
-    $target.text($target.text() + textWithSpace);
-  }
-
-  // If we've changed the $target content, or the eitor has, we
-  // need to check whether required flag needs to show, or not.
-  $target.data("instance").update();
 }
 
 
@@ -476,4 +489,10 @@ function editPageMultipleQuestionsViewCustomisations() {
 }
 
 
-export { PagesController }
+function editPageSingleQuestionViewCustomisations() {
+  // Hide menu options not required for SingleQuestion page
+  $(".QuestionMenu [data-action=remove]").hide();
+}
+
+
+module.exports = PagesController;

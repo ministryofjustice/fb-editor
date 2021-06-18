@@ -193,10 +193,6 @@ module CommonSteps
     editor.page_url_field.set(path)
   end
 
-  def and_I_change_the_page_heading(heading)
-    editor.page_heading.set(heading)
-  end
-
   def then_I_should_see_the_confirmation_heading(heading)
     expect(editor.page_heading.text).to eq(heading)
   end
@@ -215,7 +211,23 @@ module CommonSteps
   end
 
   def when_I_change_editable_content(element, content:)
-    element.click
-    element.find('textarea').set(content)
+    # activate the input element for the content component by clicking on the
+    # output element tag first
+    element_output(element).click
+
+    # the input element of the content component is what needs to be
+    # interacted with in order to set a value
+    element.find('.input', visible: false).set(content)
+
+    # click outside to close the editable component
+    editor.service_name.click
+  end
+
+  def element_output(element)
+    # content component elements
+    element.find('.output p', visible: false)
+  rescue Capybara::ElementNotFound
+    # body elements
+    element.find('.output', visible: false)
   end
 end

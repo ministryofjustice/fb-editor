@@ -40,6 +40,18 @@ feature 'Edit multiple questions page' do
     then_I_can_answer_the_questions_in_the_page(preview_form)
   end
 
+  scenario 'deleting components' do
+    given_I_have_a_multiple_questions_page
+    and_I_add_a_text_component
+    and_I_add_a_textarea_component
+    and_I_change_the_text_component(text_component_question)
+    when_I_save_my_changes
+    when_I_want_to_select_component_properties
+    and_I_want_to_delete_a_component
+    when_I_save_my_changes
+    and_the_text_component_is_deleted
+  end
+
   def then_I_can_answer_the_questions_in_the_page(preview_form)
     within_window(preview_form) do
       expect(page.text).to include('Service name goes here')
@@ -57,5 +69,9 @@ feature 'Edit multiple questions page' do
       # gracefully.
       expect(page.text).to include("The page you were looking for doesn't exist.")
     end
+  end
+
+  def and_the_text_component_is_deleted
+    expect(page).to have_selector('.Question', count: 1)
   end
 end
