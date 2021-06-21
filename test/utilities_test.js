@@ -7,7 +7,7 @@ const { JSDOM } = jsdom;
 
 describe('Utilities', function () {
   before(function() {
-    return JSDOM.fromFile('./test/templates/govuk/radios.html')
+    return JSDOM.fromFile('./test/templates/test.html')
       .then((dom) => {
         global.window = dom.window;
         global.document = window.document;
@@ -34,9 +34,21 @@ describe('Utilities', function () {
     });
   });
 
+  describe('createElement', function() {
+    it('should create a new DOM node', function() {
+      var node = utilities.createElement('p', 'Some text here', ['classname1', 'classname2']);
+      var paragraphs = document.getElementsByTagName('p');
+
+      assert.equal(paragraphs.length, 2);
+      assert.equal(paragraphs[1].firstChild.nodeValue, 'Some text here');
+      assert.include(paragraphs[1].className, ['classname1', 'classname2']);
+    });
+  });
+
+
 /*
   mergeObjects()
-createElement()
+  createElement()
 safelyActivateFunction()
 isFunction()
 uniqueString()
