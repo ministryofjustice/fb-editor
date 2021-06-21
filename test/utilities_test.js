@@ -88,13 +88,31 @@ describe('Utilities', function () {
     });
   });
 
+  describe('uniqueString', function() {
+    it('should return a string without passed arguments', function() {
+      assert.isString(utilities.uniqueString());
+    });
+
+    it('should return a string that include the passed string value', function() {
+      var str = 'mystringvalue';
+      assert.isString(utilities.uniqueString(str));
+      assert.include(utilities.uniqueString(str), str);
+    });
+
+    it('should not return the same string value', function() {
+      var str = 'mystringvalue';
+      var str1 = utilities.uniqueString(str);
+      var str2 = utilities.uniqueString(str);
+      assert.notEqual(str1, str2);
+    });
+  });
 
 /*
   mergeObjects()
   createElement()
   isFunction()
   safelyActivateFunction()
-uniqueString()
+  uniqueString()
 findFragmentIdentifier()
 meta()
 post()
