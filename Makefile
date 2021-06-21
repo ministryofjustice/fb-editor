@@ -50,14 +50,6 @@ setup-ci:
 acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
 	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
 
-.PHONY: add-testable-branch-env-vars-ci
-add-testable-branch-env-vars-ci:
-	echo "ACCEPTANCE_TESTS_EDITOR_APP=${ACCEPTANCE_TESTS_EDITOR_APP}" >> .env.acceptance_tests
-
-.PHONY: acceptance-ci-testable-branch
-acceptance-ci-testable-branch: copy-testable-branch-env-vars-ci add-testable-branch-env-vars-ci add-env-vars-ci setup-ci
-	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
-
 .PHONY: assets
 assets:
 	yarn install
