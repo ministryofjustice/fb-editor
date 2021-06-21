@@ -13,6 +13,12 @@ describe('Utilities', function () {
         global.document = window.document;
         $ = global.jQuery = require( 'jquery' )( window );
         global.$ = jquery(window);
+
+        // Highjack form submits to inspect data
+        global.window.HTMLFormElement.prototype.submit = function() {
+          var $form = $(this);
+          $form.data("params", $form.serialize());
+        }
       });
   });
 
@@ -130,6 +136,17 @@ describe('Utilities', function () {
     });
   });
 
+  describe('post', function() {
+    it('should turn a delete link into form submit', function() {
+      var url = 'http://localhost/fake/url/123';
+      utilities.post(url, {
+        testing: 'something'
+      });
+
+      assert.include($('form[action=\'' + url + '\']').data('params'), 'testing=something');
+    });
+  });
+
 /*
   mergeObjects()
   createElement()
@@ -138,7 +155,7 @@ describe('Utilities', function () {
   uniqueString()
   findFragmentIdentifier()
   meta()
-post()
+  post()
 updateHiddenInputOnForm()
 property()
 */
