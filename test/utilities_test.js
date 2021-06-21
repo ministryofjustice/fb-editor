@@ -166,6 +166,28 @@ describe('Utilities', function () {
     });
   });
 
+  describe('updateHiddenInputOnForm', function() {
+    before(function() {
+      var $form = $('<form></form>');
+      $form.attr('id', 'updateHiddenInputOnForm');
+      $(document.body).append($form);
+    });
+
+    it('should update an existing hidden form element', function() {
+      var $form1 = $('#updateHiddenInputOnForm');
+      utilities.addHiddenInpuElementToForm($form1, 'field2', 'field-2-content');
+
+      assert.equal($form1.find('[name=\'field2\']').val(), 'field-2-content');
+
+      utilities.updateHiddenInputOnForm($form1, 'field2', 'field-2-content-updated');
+
+      assert.equal($form1.find('[name=\'field2\']').val(), 'field-2-content-updated');
+    });
+
+    after(function() {
+      $('#updateHiddenInputOnForm').remove();
+    });
+  });
 
 /*
   mergeObjects()
@@ -177,7 +199,7 @@ describe('Utilities', function () {
   meta()
   post()
   addHiddenInputOnForm()
-updateHiddenInputOnForm()
+  updateHiddenInputOnForm()
 property()
 */
 
