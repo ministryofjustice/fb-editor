@@ -57,12 +57,43 @@ describe('Utilities', function () {
     });
   });
 
+  describe('safelyActivateFunction', function() {
+    it('should fail silently when not a function', function() {
+      try {
+        utilities.safelyActivateFunction('I am a string');
+        assert.isOk('Safely Executed');
+      } catch(e) {
+        if(e instanceof TypeError) {
+          assert.fail('TypeError created by non-function');
+        }
+      }
+    });
+
+    it('should run the function passed to it without arguments', function() {
+      var a = 1;
+      utilities.safelyActivateFunction(function(){ a++; });
+      assert.notEqual(a, 1);
+      assert.equal(a, 2);
+    });
+
+    it('should run the function passed to it including arguments', function() {
+      var a = 1;
+      var func = function(b) {
+        a = b;
+      }
+
+      utilities.safelyActivateFunction(func(3));
+      assert.notEqual(a, 1);
+      assert.equal(a, 3);
+    });
+  });
+
 
 /*
   mergeObjects()
   createElement()
   isFunction()
-safelyActivateFunction()
+  safelyActivateFunction()
 uniqueString()
 findFragmentIdentifier()
 meta()
