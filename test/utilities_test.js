@@ -147,6 +147,26 @@ describe('Utilities', function () {
     });
   });
 
+  describe('addHiddenInpuElementToForm', function() {
+    before(function() {
+      var $form = $('<form></form>');
+      $form.attr('id', 'addHiddenInpuElementToForm');
+      $(document.body).append($form);
+    });
+
+    it('should add a new hidden form element to specified form if does not exist', function() {
+      var $form = $('#addHiddenInpuElementToForm');
+      utilities.addHiddenInpuElementToForm($form, 'field1', 'field-1-content');
+
+      assert.equal($form.find('[name=\'field1\']').val(), 'field-1-content');
+    });
+
+    after(function() {
+      $('#addHiddenInpuElementToForm').remove();
+    });
+  });
+
+
 /*
   mergeObjects()
   createElement()
@@ -156,6 +176,7 @@ describe('Utilities', function () {
   findFragmentIdentifier()
   meta()
   post()
+  addHiddenInputOnForm()
 updateHiddenInputOnForm()
 property()
 */
