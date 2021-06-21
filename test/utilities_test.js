@@ -119,6 +119,17 @@ describe('Utilities', function () {
     });
   });
 
+  describe('meta', function() {
+    it('should return the meta tag value', function() {
+      var meta = document.createElement('meta');
+      meta.setAttribute('name', 'mytestmetatag');
+      meta.setAttribute('content', 'mytestcontentvalue');
+      document.head.appendChild(meta);
+
+      assert.equal(utilities.meta('mytestmetatag'), 'mytestcontentvalue');
+    });
+  });
+
 /*
   mergeObjects()
   createElement()
@@ -126,7 +137,7 @@ describe('Utilities', function () {
   safelyActivateFunction()
   uniqueString()
   findFragmentIdentifier()
-meta()
+  meta()
 post()
 updateHiddenInputOnForm()
 property()
