@@ -107,13 +107,25 @@ describe('Utilities', function () {
     });
   });
 
+  describe('findFragmentIdentifier', function() {
+    it('should return the fragment identifer from passed url value', function() {
+      assert.equal(utilities.findFragmentIdentifier('http://example.com/some/url#withfragment'), 'withfragment');
+      assert.notEqual(utilities.findFragmentIdentifier('http://example.com/some/url#withfragment'), 'wrongfragment');
+    });
+
+    it('should return the url when no fragment identifer is found', function() {
+      var url = 'http://example.com/some/url';
+      assert.equal(utilities.findFragmentIdentifier(url), url);
+    });
+  });
+
 /*
   mergeObjects()
   createElement()
   isFunction()
   safelyActivateFunction()
   uniqueString()
-findFragmentIdentifier()
+  findFragmentIdentifier()
 meta()
 post()
 updateHiddenInputOnForm()
