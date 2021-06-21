@@ -45,12 +45,24 @@ describe('Utilities', function () {
     });
   });
 
+  describe('isFunction', function() {
+    it('should return true if type is a function', function() {
+      var thisIsAFunction = function() {};
+      assert.isTrue(utilities.isFunction(thisIsAFunction));
+    });
+
+    it('should return false if type is not a function', function() {
+      var thisIsNotAFunction = 'I am a string';
+      assert.isFalse(utilities.isFunction(thisIsNotAFunction));
+    });
+  });
+
 
 /*
   mergeObjects()
   createElement()
+  isFunction()
 safelyActivateFunction()
-isFunction()
 uniqueString()
 findFragmentIdentifier()
 meta()
