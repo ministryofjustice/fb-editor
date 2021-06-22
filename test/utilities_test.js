@@ -222,26 +222,13 @@ describe('Utilities', function () {
     });
   });
 
-/*
-  mergeObjects()
-  createElement()
-  isFunction()
-  safelyActivateFunction()
-  uniqueString()
-  findFragmentIdentifier()
-  meta()
-  post()
-  addHiddenInputOnForm()
-  updateHiddenInputOnForm()
-  property()
-*/
+  describe('isBoolean', function() {
+    it('should return false if a String is checked', function() {
+      assert.isFalse(utilities.isBoolean("a string"));
+    });
 
-
-
-
-
-
-
-
-
+    it('should return true if a Boolean is checked', function() {
+      assert.isTrue(utilities.isBoolean(true));
+    });
+  });
 });
