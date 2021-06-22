@@ -4,6 +4,7 @@ orbs:
   ruby: circleci/ruby@1.1.3
   node: circleci/node@4.5.1
   browser-tools: circleci/browser-tools@1.1.3
+  kubernetes: circleci/kubernetes@0.12.0
 
 jobs:
   build:
@@ -169,6 +170,21 @@ jobs:
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
       - slack/status: *testable_slack_status
+  remove_testable_editors:
+    docker:
+      - image: 'cimg/ruby:2.7-node'
+    steps:
+    - checkout
+    - ruby/install-deps
+    - kubernetes/install-kubectl
+    - run: *deploy_scripts
+    - run:
+        name: set kubernetes context for saas namespace
+        command: './deploy-scripts/bin/set_testable_editors_context'
+    - run:
+        name: remove testable editors
+        command: bundle exec rails remove:testable_editors
+    - slack/status: *testable_slack_status
   build_web_image:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
@@ -289,6 +305,13 @@ jobs:
 
 workflows:
   version: 2
+  tear_down_testable_editors:
+    jobs:
+      - remove_testable_editors:
+          filters:
+            branches:
+              only:
+                - main
   test_and_build:
     jobs:
       - build:

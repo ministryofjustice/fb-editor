@@ -2,14 +2,14 @@ require 'net/http'
 require 'uri'
 
 class NotificationService
-  def self.notify(message)
+  def self.notify(message, webhook: ENV['SLACK_PUBLISH_WEBHOOK'])
     body = {
       text: message,
       username: 'MOJ Forms Editor',
       icon_emoji: ':rockon:'
     }
 
-    uri = URI.parse(ENV['SLACK_PUBLISH_WEBHOOK'])
+    uri = URI.parse(webhook)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
 
