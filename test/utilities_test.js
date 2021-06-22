@@ -189,6 +189,39 @@ describe('Utilities', function () {
     });
   });
 
+  describe('property', function() {
+    it('should return the specified top level property value', function() {
+      var obj1 = {
+        something: {
+          goes: 'here'
+        }
+      }
+
+       assert.deepEqual(utilities.property(obj1, 'something'), { goes: 'here' });
+    });
+
+    it('should return the specified inner level property value', function() {
+      var obj2 = {
+        something: {
+          goes: 'here'
+        }
+      }
+
+       assert.equal(utilities.property(obj2, 'something.goes'), 'here');
+    });
+
+    it('should return the specified deep inner level property value', function() {
+      var obj3 = {
+        something: {
+          goes: {
+            here: 'inside'
+          }
+        }
+      }
+       assert.equal(utilities.property(obj3, 'something.goes.here'), 'inside');
+    });
+  });
+
 /*
   mergeObjects()
   createElement()
@@ -200,7 +233,7 @@ describe('Utilities', function () {
   post()
   addHiddenInputOnForm()
   updateHiddenInputOnForm()
-property()
+  property()
 */
 
 
