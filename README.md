@@ -31,6 +31,18 @@ This will spin down any past Docker containers and then spin up new ones.
 
 You should now be able to access the Editor on `localhost:3000`
 
+## Unit tests
+
+There are two types for ruby and JS.
+
+Ruby rspec tests:
+
+`bundle exec rspec`
+
+JS tests:
+
+`yarn run jstest`
+
 ## Acceptance tests
 
 You need to install the Chromium web driver:
