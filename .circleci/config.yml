@@ -50,7 +50,7 @@ jobs:
       - ruby/install-deps
       - run: bundle exec brakeman -q --no-pager -i brakeman.ignore
       - slack/status: *slack_status
-  test:
+  rspec_test:
     docker: &test_image
       - image: 'cimg/ruby:2.7-node'
       - environment:
@@ -85,6 +85,21 @@ jobs:
           command: |
             TESTFILES=$(circleci tests glob "project/spec/**/*_spec.rb" | circleci tests split --split-by=name)
             bundle exec rspec $TESTFILES --profile 10
+      - slack/status: *slack_status
+  js_test:
+    docker:
+      - image: 'cimg/ruby:2.7-node'
+    parallelism: 3
+    steps:
+      - checkout
+      - run: *node_version
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Running the tests
+          command: |
+            TESTFILES=$(circleci tests glob "project/test/**/*_test.js" | circleci tests split --split-by=name)
+            yarn run jstest $TESTFILES --profile 10
       - slack/status: *slack_status
   build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
@@ -287,14 +302,18 @@ workflows:
       - security:
           requires:
             - build
-      - test:
+      - rspec_test:
+          requires:
+            - build
+      - js_test:
           requires:
             - build
       - build_web_image:
           requires:
             - lint
             - security
-            - test
+            - rspec_test
+            - js_test
           filters:
             branches:
               only:
@@ -303,7 +322,8 @@ workflows:
           requires:
             - lint
             - security
-            - test
+            - rspec_test
+            - js_test
           filters:
             branches:
               only:
@@ -340,14 +360,18 @@ workflows:
       - security:
           requires:
             - build
-      - test:
+      - rspec_test:
+          requires:
+            - build
+      - js_test:
           requires:
             - build
       - build_web_testable_branch:
           requires:
             - lint
             - security
-            - test
+            - rspec_test
+            - js_test
           filters:
             branches:
               only:
@@ -356,7 +380,8 @@ workflows:
           requires:
             - lint
             - security
-            - test
+            - rspec_test
+            - js_test
           filters:
             branches:
               only:
