@@ -86,13 +86,53 @@ jobs:
             TESTFILES=$(circleci tests glob "project/spec/**/*_spec.rb" | circleci tests split --split-by=name)
             bundle exec rspec $TESTFILES --profile 10
       - slack/status: *slack_status
-  build_and_deploy_testable_branch:
+  build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
     docker: &ecr_image
       - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
         aws_auth:
           aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: &build_sha
+          name: Setup base environment variable
+          command: |
+            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+      - run: &deploy_scripts
+          name: cloning deploy scripts
+          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - run:
+          name: build testable editor web docker images
+          environment:
+            ENVIRONMENT_NAME: test
+            IMAGE_TYPE: web
+          command: './deploy-scripts/bin/build'
+      - slack/status: &testable_slack_status
+          fail_only: true
+          failure_message: ":facepalm:  Failed job ${CIRCLE_JOB} for ${CIRCLE_BRANCH}  :homer-disappear:"
+          include_job_number_field: false
+  build_workers_testable_branch:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: *build_sha
+      - run: *deploy_scripts
+      - run:
+          name: build testable editor workers docker images
+          environment:
+            ENVIRONMENT_NAME: test
+            IMAGE_TYPE: workers
+          command: './deploy-scripts/bin/build'
+      - slack/status: *testable_slack_status
+  deploy_testable_branch:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker:
@@ -105,26 +145,48 @@ jobs:
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
             echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_0fd3b5c2a17e0aa3d32a8441efcc94f5" >> $BASH_ENV
-      - run: &deploy_scripts
-          name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - run: *deploy_scripts
       - run:
-          name: build and push docker images
-          environment:
-            ENVIRONMENT_NAME: test
-          command: './deploy-scripts/bin/build'
-      - run:
-          name: deploy testable branch
+          name: deploy to test
           environment:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
-      - slack/status:
-          fail_only: true
-          failure_message: ":facepalm:  Failed job ${CIRCLE_JOB} for ${CIRCLE_BRANCH}  :homer-disappear:"
-          include_job_number_field: false
-  build_and_deploy_to_test:
+      - slack/status: *testable_slack_status
+  build_web_image:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: *build_sha
+      - run: *deploy_scripts
+      - run:
+          name: build web docker images
+          environment:
+            ENVIRONMENT_NAME: test
+            IMAGE_TYPE: web
+          command: './deploy-scripts/bin/build'
+      - slack/status: *slack_status
+  build_workers_image:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - run: *build_sha
+      - run: *deploy_scripts
+      - run:
+          name: build workers docker images
+          environment:
+            ENVIRONMENT_NAME: test
+            IMAGE_TYPE: workers
+          command: './deploy-scripts/bin/build'
+      - slack/status: *slack_status
+  deploy_to_test:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
     steps:
@@ -135,22 +197,13 @@ jobs:
       - run: *base_environment_variables
       - run: *deploy_scripts
       - run:
-          name: build and push docker images
-          environment:
-            ENVIRONMENT_NAME: test
-          command: './deploy-scripts/bin/build'
-      - run:
           name: deploy to test
           environment:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
-      - slack/status:
-          only_for_branches: main
-          success_message: ":rocket:  Successfully deployed to Test  :guitar:"
-          failure_message: ":alert:  Failed to deploy to Test  :try_not_to_cry:"
-          include_job_number_field: false
+      - slack/status: *slack_status
   acceptance_tests:
     docker: *test_image
     resource_class: large
@@ -196,7 +249,7 @@ jobs:
           fail_only: true
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-  build_and_deploy_to_live:
+  deploy_to_live:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
     steps:
@@ -206,11 +259,6 @@ jobs:
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
-      - run:
-          name: build and push docker images
-          environment:
-            ENVIRONMENT_NAME: live
-          command: './deploy-scripts/bin/build'
       - run:
           name: deploy to live
           environment:
@@ -242,7 +290,7 @@ workflows:
       - test:
           requires:
             - build
-      - build_and_deploy_to_test:
+      - build_web_image:
           requires:
             - lint
             - security
@@ -251,9 +299,22 @@ workflows:
             branches:
               only:
                 - main
+      - build_workers_image:
+          requires:
+            - lint
+            - security
+            - test
+          filters:
+            branches:
+              only:
+                - main
+      - deploy_to_test:
+          requires:
+            - build_web_image
+            - build_workers_image
       - acceptance_tests:
           requires:
-            - build_and_deploy_to_test
+            - deploy_to_test
       - slack/approval-notification:
           message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
           include_job_number_field: false
@@ -263,7 +324,7 @@ workflows:
           type: approval
           requires:
             - acceptance_tests
-      - build_and_deploy_to_live:
+      - deploy_to_live:
           requires:
             - confirm_live_deploy
   deploy_testable_branch:
@@ -282,7 +343,7 @@ workflows:
       - test:
           requires:
             - build
-      - build_and_deploy_testable_branch:
+      - build_web_testable_branch:
           requires:
             - lint
             - security
@@ -291,9 +352,22 @@ workflows:
             branches:
               only:
                 - /^testable-.*$/
+      - build_workers_testable_branch:
+          requires:
+            - lint
+            - security
+            - test
+          filters:
+            branches:
+              only:
+                - /^testable-.*$/
+      - deploy_testable_branch:
+          requires:
+            - build_web_testable_branch
+            - build_workers_testable_branch
       - testable_branch_acceptance_tests:
           requires:
-            - build_and_deploy_testable_branch
+            - deploy_testable_branch
       - slack/approval-notification:
           message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
           include_job_number_field: false
