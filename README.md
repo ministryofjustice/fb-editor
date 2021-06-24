@@ -50,12 +50,34 @@ These use a acceptance tests specific Dockerfile found in the `acceptance` direc
 ### Pointing to a local editor
 
 There is the docker compose with all containers needed for the editor.
-In order to run the acceptance tests against a local editor all you need to run
-is:
 
-```
-  make acceptance
-```
+There are two ways of doing this locally.
+
+1. Run `make setup`. This will spin up the necessary databases and metadata api
+   app that the Editor needs. It also copies the .env.acceptance_tests.local file
+   to .env.acceptance_tests. At this point you should make a decision:
+
+ONE OF THE FOLLOWING
+
+2. The docker-compose used by the `make setup` command will create and Editor app
+   available at http://localhost:9090. By default running `bundle exec rspec acceptance`
+   will target this container. This container does not run the webpack-dev-server
+   command therefore you will need to run `./bin/webpack-dev-server` on your local
+   machine and then any changes to the JS and assets will be reflected in the Editor
+   container running on port 9090.
+
+OR
+
+3. You can also change the ACCEPTANCE_TESTS_EDITOR_APP variable in the
+   .env.acceptance_tests file to point to http://localhost:3000 and then spin up
+   the rails server locally using `bundle exec rails s` and then running
+   `bundle exec rspec acceptance` will point those acceptance tests at the server
+   running on port 3000. Making changes locally to the JS or assets will require
+   you to run webpack-dev-server similarly to the step above: `./bin/webpack-dev-server`
+
+OR
+
+4. May the Force be with you. Always.
 
 ### Pointing to a remote editor
 
