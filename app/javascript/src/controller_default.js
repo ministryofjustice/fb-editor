@@ -18,7 +18,7 @@
 
 const Dialog = require('./component_dialog');
 const DialogConfirmation = require('./component_dialog_confirmation');
-const post = require('./utilities');
+const post = require('./utilities').post;
 
 
 class DefaultController {
