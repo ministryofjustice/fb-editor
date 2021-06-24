@@ -209,7 +209,7 @@ function addHiddenInpuElementToForm($form, name, content) {
 function property(context, props) {
   var split = (props != "" ? props.split(".") : []);
   if(context && split.length > 0) {
-    context = property(context[split.shift()], split.join());
+    context = property(context[split.shift()], split.join("."));
   }
   return context;
 }
