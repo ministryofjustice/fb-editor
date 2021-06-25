@@ -28,7 +28,8 @@ RSpec.describe TestableEditorRemover do
     let(:removal_service) { double(call: true, status: []) }
 
     before do
-      allow(ENV).to receive(:[]).with('SLACK_PUBLISH_WEBHOOK').and_return(webhook)
+      allow(ENV).to receive(:[])
+      allow(ENV).to receive(:[]).with('SLACK_WEBHOOK').and_return(webhook)
       allow(testable_editor_remover).to receive(
         :remote_branches
       ).and_return(remote_branches)

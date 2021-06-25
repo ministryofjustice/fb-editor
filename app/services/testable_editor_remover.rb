@@ -17,7 +17,12 @@ class TestableEditorRemover
     testable_editors_to_remove.each do |testable_editor|
       k8s_config_removal_service(testable_editor).tap do |removal_service|
         removal_service.call
-        NotificationService.notify(removal_service.status.join("\n"))
+        if webhook
+          NotificationService.notify(
+            removal_service.status.join("\n"),
+            webhook: ENV['SLACK_WEBHOOK']
+          )
+        end
       end
     end
   end
@@ -69,5 +74,11 @@ class TestableEditorRemover
         name: "#{testable_editor}#{configuration[:append]}"
       }
     end
+  end
+
+  def webhook
+    # This is only run during deployment. SLACK_WEBHOOK exists in the CircleCI deployment job
+    # SLACK_PUBLISH_WEBHOOK is used by the Editor itself when running in Test or Live
+    @webhook ||= ENV['SLACK_WEBHOOK']
   end
 end
