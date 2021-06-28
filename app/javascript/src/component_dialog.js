@@ -71,12 +71,7 @@ class Dialog {
   }
 
   open(text) {
-    for(var t in text) {
-      if(text.hasOwnProperty(t) && this._elements[t]) {
-        let current = this._elements[t].text();
-        this._elements[t].text();
-      }
-    }
+    this.content = text || {};
     this.$node.dialog("open");
   }
 }
