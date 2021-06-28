@@ -26,6 +26,7 @@ RSpec.describe ApplicationController do
   describe '#save_user_data' do
     before do
       allow(controller).to receive(:params).and_return(params)
+      allow(controller).to receive(:answer_params).and_return(answer_params)
       controller.save_user_data
     end
 
@@ -41,24 +42,28 @@ RSpec.describe ApplicationController do
           id: '123456'
         }
       end
+      let(:answer_params) do
+        {
+          'computer' => {
+            'original_filename' => 'computer_says_no.gif',
+            'content_type' => 'application/image',
+            'tempfile' => 'path/to/file/computer_says_no.gif'
+          }
+        }
+      end
 
       it 'saves it with the service id' do
         expect(controller.session.to_h).to eq(
-          {
-            '123456' => {
-              'user_data' => {
-                'computer' => { 'original_filename' => 'computer_says_no.gif' }
-              }
-            }
-          }
+          { '123456' => { 'user_data' => answer_params } }
         )
       end
     end
 
     context 'when saving user data to the session' do
+      let(:answer_params) { { 'frodo' => 'samwise' } }
       let(:params) do
         {
-          answers: { 'frodo' => 'samwise' },
+          answers: answer_params,
           id: '123456'
         }
       end
@@ -79,6 +84,15 @@ RSpec.describe ApplicationController do
         expect(controller.load_user_data.to_h).to eq(
           { 'frodo' => 'samwise' }
         )
+      end
+    end
+
+    context 'with no service id in the params' do
+      let(:answer_params) { {} }
+      let(:params) { {} }
+
+      it 'saves nothing' do
+        expect(controller.load_user_data.to_h).to eq({})
       end
     end
   end
