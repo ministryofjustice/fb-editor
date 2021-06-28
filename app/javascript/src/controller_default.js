@@ -46,7 +46,6 @@ function createDialog() {
     autoOpen: false,
     okText: $template.data("text-ok"),
     classes: {
-      "ui-button": "fb-govuk-button",
       "ui-dialog": $template.data("classes")
     }
   });
