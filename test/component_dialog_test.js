@@ -1,47 +1,31 @@
+require('./setup');
 const expect = require('chai').expect;
-const jsdom = require("jsdom");
-const jquery = require('jquery');
-const { JSDOM } = jsdom;
-const Dialog = require('../app/javascript/src/component_dialog');
 
 describe("Dialog", function() {
+
+  const Dialog = require('../app/javascript/src/component_dialog');
   const OK_TEXT = "Dialog says Ok";
   const DIALOG_CLASSES = "dialog-classname and-something";
-
-  const dom = new JSDOM(`<html>
-    <head>
-      <title>Testing HTML document</title>
-    </head>
-    <body>
-      <h1>Test HTML document</h1>
-      <div id="main">
-        <div class="component component-dialog" id="dialog">
-          <h3 data-node="heading" class="heading">General heading here</h3>
-          <p data-node="content">General message here</p>
-        </div>
-      </div>
-    </body>
-  </html>`);
-
-  global.window = dom.window;
-  global.document = window.document;
-  global.jQuery = require( 'jquery' )( window );
-  global.$ = jQuery;
-  require('jquery-ui/ui/widget');
-  require('jquery-ui/ui/unique-id');
-  require('jquery-ui/ui/widgets/button');
-  require('jquery-ui/ui/widgets/dialog');
-  require('jquery-ui/ui/safe-active-element');
-  require('jquery-ui/ui/data');
-  require('jquery-ui/ui/tabbable');
-  require('jquery-ui/ui/focusable');
-  require('jquery-ui/ui/safe-blur');
+  const DIALOG_ID = "component-dialog-test-id";
+  const CONTAINER_ID = "component-dialog-test-container";
+  var dialog;
 
   before(function() {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
-    var $node = $(document).find("#dialog");
-    global.dialog = new Dialog($node, {
+
+    var $container = $("<div></div>");
+    var $dialog = $(`<div class="component component-dialog">
+          <h3 data-node="heading" class="heading">General heading here</h3>
+          <p data-node="content">General message here</p>
+        </div>`);
+
+    $dialog.attr("id", DIALOG_ID);
+    $container.attr("id", CONTAINER_ID);
+    $container.append($dialog);
+    $(document.body).append($container);
+
+    dialog = new Dialog($dialog, {
       autoOpen: false,
       okText: OK_TEXT,
       classes: {
@@ -50,13 +34,18 @@ describe("Dialog", function() {
     });
   });
 
+  after(function() {
+    $("#" + DIALOG_ID).dialog("destroy");
+    $("#" + CONTAINER_ID).remove();
+  });
+
   describe("HTML", function() {
     it("should have the basic HTML in place", function() {
-      expect($("#dialog").length).to.equal(1);
+      expect($("#" + DIALOG_ID).length).to.equal(1);
     });
 
     it("should have the Dialog class name present", function() {
-      expect($("#dialog").parents(".Dialog").length).to.equal(1);
+      expect($("#" + DIALOG_ID).parents(".Dialog").length).to.equal(1);
     });
 
     it("should not have a default jQuery UI cancel button", function() {
@@ -68,7 +57,7 @@ describe("Dialog", function() {
 
   describe("Config", function() {
     it("should apply CSS classnames passed in config", function() {
-       var $parent = $("#dialog").parents(".Dialog");
+       var $parent = $("#" + DIALOG_ID).parents(".Dialog");
        expect($parent.get(0).className).to.include(DIALOG_CLASSES);
     });
 
@@ -79,16 +68,17 @@ describe("Dialog", function() {
   });
 
   describe("Properties", function() {
-    it("should make the $node public", function() {
-      expect(dialog.$node).to.exist;
-      expect(dialog.$node.length).to.equal(1);
-      expect(dialog.$node.attr("id")).to.equal("dialog");
-    });
-
     it("should make the instance available as data on the $node", function() {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.data("instance")).to.eql(dialog);
+    });
+
+    it("should make the $node public", function() {
+      var dialog = $("#" + DIALOG_ID).data("instance");
+      expect(dialog.$node).to.exist;
+      expect(dialog.$node.length).to.equal(1);
+      expect(dialog.$node.attr("id")).to.equal(DIALOG_ID);
     });
 
     it("should make (public but indicated as) private reference to elements", function() {

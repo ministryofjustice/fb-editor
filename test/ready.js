@@ -1,25 +1,15 @@
+require('./setup');
+
 const expect = require('chai').expect;
-const jsdom = require("jsdom");
-const jquery = require('jquery');
-const { JSDOM } = jsdom;
-
 const utilities = require('../app/javascript/src/utilities.js');
-
+//require('jquery-ui/ui/widgets/dialog');
 describe('Test', function () {
-  before(function() {
-    return JSDOM.fromFile('./test/templates/test.html')
-      .then((dom) => {
-        global.window = dom.window;
-        global.document = window.document;
-        global.jQuery = require( 'jquery' )( window );
-        global.$ = jquery(window);
-        require('jquery-ui/ui/widget');
-        require('jquery-ui/ui/widgets/dialog');
-      });
-  });
-
 
   describe('templates', function() {
+
+    before(function() {
+    });
+
     it('should have a window available', function() {
       expect(typeof window).to.equal(typeof (new Object));
     });
@@ -29,7 +19,7 @@ describe('Test', function () {
     });
 
     it('should have a viable DOM', function() {
-      expect(document.title).to.equal("Testing HTML document");
+      expect(document.title).to.equal("Test document");
     });
   });
 
@@ -44,7 +34,7 @@ describe('Test', function () {
     });
 
     it('should find elements with jQuery', function() {
-      expect($(document).find("h1").text()).to.equal("Test HTML document");
+      expect($(document).find("h1").text()).to.equal("Testing document");
     });
 
     it('should load jQueryUI', function() {
