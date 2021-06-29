@@ -78,6 +78,14 @@ feature 'Preview form' do
     when_I_update_the_question_name('Date of birth')
     and_I_return_to_flow_page
 
+    given_I_add_a_single_question_page_with_checkboxes
+    and_I_add_a_page_url('favourite-fruit')
+    when_I_add_the_page
+    when_I_update_the_question_name('What is your favourite fruit?')
+    and_I_edit_the_option_items
+    and_I_make_the_question_optional
+    and_I_return_to_flow_page
+
     given_I_add_a_check_answers_page
     and_I_add_a_page_url('cya')
     when_I_add_the_page
@@ -113,30 +121,57 @@ feature 'Preview form' do
     within_window(preview_form) do
       expect(page.text).to include('Service name goes here')
       page.click_button 'Start now'
+
       expect(page.text).to include('Full name')
-      then_I_should_not_see_optional_text(page)
+      then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text, ['Full name'])
       page.fill_in 'Full name', with: 'Charmy Pappitson'
       page.click_button 'Continue'
+
       expect(page.text).to include(content_component)
-      then_I_should_not_see_optional_text(page)
+      then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text)
       page.fill_in text_component_question, with: 'Car Car Binks'
       page.fill_in textarea_component_question, with: 'R2-Detour'
       page.click_button 'Continue'
+
       expect(page.text).to include(content_page_heading)
-      then_I_should_not_see_optional_text(page)
+      then_I_should_not_see_optional_text(page.text)
       page.click_button 'Continue'
+
       expect(page.text).to include('Date of birth')
-      then_I_should_not_see_optional_text(page)
+      then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text, ['Date of birth'])
       page.fill_in 'Day', with: '03'
       page.fill_in 'Month', with: '06'
       page.fill_in 'Year', with: '2002'
       page.click_button 'Continue'
+
+      expect(page.text).to include('What is your favourite fruit?')
+      and_I_select_an_option_item
+      page.click_button 'Continue'
+
       expect(page.text).to include('Check your answers')
       expect(page.text).to include('Charmy Pappitson')
+      expect(page.text).to include('Car Car Binks')
+      expect(page.text).to include('R2-Detour')
       expect(page.text).to include('03 June 2002')
-      then_I_should_not_see_optional_text(page)
+      expect(page.text).to include('Apples')
+      then_I_should_not_see_optional_text(page.text)
       then_I_should_not_see_content_page_in_check_your_answers(page)
       then_I_should_not_see_content_components_in_check_your_answers(page)
+
+      and_I_want_to_change_the_checkbox_answer
+      expect(page.text).to include('What is your favourite fruit?')
+      and_I_unselect_an_option_item
+      page.click_button 'Continue'
+
+      expect(page.text).to include('Check your answers')
+      expect(page.text).not_to include('Apples')
+
       page.click_button 'Accept and send application'
       expect(page.text).to include('Application complete')
     end
@@ -150,14 +185,30 @@ feature 'Preview form' do
     expect(page.text).to_not include(content_page_heading)
   end
 
-  def then_I_should_not_see_optional_text(page)
-    [
-      "[Optional section heading]",
-      "[Optional lede paragraph]",
-      "[Optional content]",
-      "[Optional hint text]"
-    ].each do |optional_text|
-      expect(page.text).to_not include(optional_content)
-    end
+  def and_I_edit_the_option_items
+    editor.editable_options.first.set('Apples')
+    editor.service_name.click
+    editor.editable_options.last.set('Oranges')
+    editor.service_name.click
+    when_I_save_my_changes
+  end
+
+  def and_I_make_the_question_optional
+    when_I_want_to_select_question_properties
+    and_I_want_to_set_a_question_optional
+    and_I_update_the_question_to_be_optional
+    when_I_save_my_changes
+  end
+
+  def and_I_want_to_change_the_checkbox_answer
+    page.find(:link, text: 'Your answer for What is your favourite fruit?', visible: false).click
+  end
+
+  def and_I_select_an_option_item
+    page.find(:css, '#answers-favourite-fruit-checkboxes-1-apples-field', visible: false).check
+  end
+
+  def and_I_unselect_an_option_item
+    page.find(:css, '#answers-favourite-fruit-checkboxes-1-apples-field', visible: false).uncheck
   end
 end

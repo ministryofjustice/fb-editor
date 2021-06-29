@@ -27,21 +27,6 @@ feature 'Mark question as optional' do
     and_I_update_the_question_to_be_optional
   end
 
-  def when_I_want_to_select_question_properties
-    editor.question_heading.first.click
-    editor.question_three_dots_button.click
-    editor.should_not have_css('span', text: 'Delete...')
-  end
-
-  def and_I_want_to_set_a_question_optional
-    editor.required_question.click
-  end
-
-  def and_I_update_the_question_to_be_optional
-    editor.choose 'No', visible: false
-    editor.click_button 'Update'
-  end
-
   def page_url
     "Stormtrooper-#{SecureRandom.uuid}"
   end

@@ -1,4 +1,12 @@
 module CommonSteps
+  OPTIONAL_TEXT = [
+    '[Optional section heading]',
+    '[Optional lede paragraph]',
+    '[Optional content]',
+    '[Optional hint text]'
+  ].freeze
+  ERROR_MESSAGE = 'There is a problem'.freeze
+
   def given_I_am_logged_in
     editor.load
     editor.sign_in_button.click
@@ -160,6 +168,7 @@ module CommonSteps
     within_window(preview_page) do
       expect(page.find('input[type="submit"]')).to_not be_disabled
       expect(page.text).to include('Question')
+      then_I_should_not_see_optional_text(page.text)
       yield if block_given?
     end
   end
@@ -169,6 +178,21 @@ module CommonSteps
     editor.service_name.click
     expect(editor.save_page_button).to_not be_disabled
     editor.save_page_button.click
+  end
+
+  def when_I_want_to_select_question_properties
+    editor.question_heading.first.click
+    editor.question_three_dots_button.click
+    editor.should_not have_css('span', text: 'Delete...')
+  end
+
+  def and_I_want_to_set_a_question_optional
+    editor.required_question.click
+  end
+
+  def and_I_update_the_question_to_be_optional
+    editor.choose 'No', visible: false
+    editor.click_button 'Update'
   end
 
   def given_I_have_a_single_question_page_with_radio
@@ -229,5 +253,18 @@ module CommonSteps
   rescue Capybara::ElementNotFound
     # body elements
     element.find('.output', visible: false)
+  end
+
+  def then_I_should_not_see_optional_text(text)
+    OPTIONAL_TEXT.each { |optional| expect(text).not_to include(optional) }
+  end
+
+  def then_I_should_see_an_error_message(text, fields = [])
+    expect(page.text).to include(ERROR_MESSAGE)
+    if fields.empty?
+      expect(page.text).to include('Enter an answer for')
+    else
+      fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
+    end
   end
 end

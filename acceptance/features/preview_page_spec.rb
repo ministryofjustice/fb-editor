@@ -41,6 +41,7 @@ feature 'Preview page' do
     within_window(preview_page) do
       expect(page.find('button')).to_not be_disabled
       expect(page.text).to include('Before you start')
+      then_I_should_not_see_optional_text(page.text)
     end
   end
 
@@ -74,6 +75,7 @@ feature 'Preview page' do
   end
 
   def then_I_should_be_on_the_check_your_answers_page
+    then_I_should_not_see_optional_text(page.text)
     expect(page.current_url).to include('cya')
   end
 
