@@ -15,33 +15,21 @@ class ApplicationController < ActionController::Base
   helper_method :back_link
 
   def save_user_data
-    return {} if params[:answers].blank? || params[:id].blank?
+    return {} if params[:id].blank?
 
-    service_id = params[:id]
-    session[service_id] ||= {}
-    session[service_id]['user_data'] ||= {}
-
-    params[:answers].each do |field, answer|
-      session[service_id]['user_data'][field] = if answer.respond_to?(:original_filename)
-                                                  {
-                                                    'original_filename' => answer.original_filename
-                                                  }
-                                                else
-                                                  answer
-                                                end
-    end
+    Preview::SessionDataAdapter.new(session, params[:id]).save(answer_params)
   end
 
   def load_user_data
-    user_data = session[params[:id]] || {}
-
-    user_data['user_data'] || {}
+    Preview::SessionDataAdapter.new(session, params[:id]).load_data
   end
 
   def remove_user_data(component_id)
-    user_data = session[params[:id]] || {}
-    user_data['user_data'].delete(component_id)
-    user_data['user_data']
+    Preview::SessionDataAdapter.new(session, params[:id]).delete(component_id)
+  end
+
+  def answer_params
+    Preview::AnswerParams.new(@page_answers).answers
   end
 
   def upload_adapter
