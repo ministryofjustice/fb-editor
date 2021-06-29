@@ -4,7 +4,8 @@ module CommonSteps
     '[Optional lede paragraph]',
     '[Optional content]',
     '[Optional hint text]'
-  ]
+  ].freeze
+  ERROR_MESSAGE = 'There is a problem'.freeze
 
   def given_I_am_logged_in
     editor.load
@@ -241,5 +242,14 @@ module CommonSteps
 
   def then_I_should_not_see_optional_text(text)
     OPTIONAL_TEXT.each { |optional| expect(text).not_to include(optional) }
+  end
+
+  def then_I_should_see_an_error_message(text, fields = [])
+    expect(page.text).to include(ERROR_MESSAGE)
+    if fields.empty?
+      expect(page.text).to include('Enter an answer for')
+    else
+      fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
+    end
   end
 end

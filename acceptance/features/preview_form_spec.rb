@@ -115,10 +115,14 @@ feature 'Preview form' do
       page.click_button 'Start now'
       expect(page.text).to include('Full name')
       then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text, ['Full name'])
       page.fill_in 'Full name', with: 'Charmy Pappitson'
       page.click_button 'Continue'
       expect(page.text).to include(content_component)
       then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text)
       page.fill_in text_component_question, with: 'Car Car Binks'
       page.fill_in textarea_component_question, with: 'R2-Detour'
       page.click_button 'Continue'
@@ -127,6 +131,8 @@ feature 'Preview form' do
       page.click_button 'Continue'
       expect(page.text).to include('Date of birth')
       then_I_should_not_see_optional_text(page.text)
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message(page.text, ['Date of birth'])
       page.fill_in 'Day', with: '03'
       page.fill_in 'Month', with: '06'
       page.fill_in 'Year', with: '2002'
