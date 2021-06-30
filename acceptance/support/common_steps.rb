@@ -166,7 +166,7 @@ module CommonSteps
 
   def then_I_should_preview_the_page(preview_page)
     within_window(preview_page) do
-      expect(page.find('input[type="submit"]')).to_not be_disabled
+      expect(page.find('[type="submit"]')).to_not be_disabled
       expect(page.text).to include('Question')
       then_I_should_not_see_optional_text(page.text)
       yield if block_given?
