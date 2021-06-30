@@ -111,5 +111,10 @@ describe("Confirmation Dialog", function() {
       expect(dialog._elements.cancel).to.exist;
       expect(dialog._elements.cancel.length).to.equal(1);
     });
+
+    it("should make (public but indicated as) private reference to config", function() {
+      expect(dialog._config).to.exist;
+      expect(dialog._config.okText).to.equal(OK_TEXT);
+    });
   });
 });
