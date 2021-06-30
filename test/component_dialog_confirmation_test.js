@@ -283,5 +283,22 @@ describe("Confirmation Dialog", function() {
       // Check the dialog is now closed
       expect($parent.get(0).style.display).to.equal("none");
     });
+
+    it("should close the dialog on 'X' (Dialog closer) button click", function() {
+      var $dialog = $(".DialogConfirmation");
+      var $button = $(".ui-dialog-titlebar-close");
+
+      expect($dialog).to.exist;
+      expect($dialog.length).to.equal(1);
+
+      expect($button).to.exist;
+      expect($button.length).to.equal(1);
+
+      dialog.open();
+      expect($dialog.get(0).style.display).to.equal("");
+
+      $button.click();
+      expect($dialog.get(0).style.display).to.equal("none");
+    });
   });
 });
