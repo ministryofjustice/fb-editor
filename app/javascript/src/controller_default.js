@@ -64,8 +64,6 @@ function createDialogConfirmation() {
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),
     classes: {
-      "ui-activator": "govuk-button fb-govuk-button",
-      "ui-button": "govuk-button",
       "ui-dialog": $template.data("classes")
     }
   });
