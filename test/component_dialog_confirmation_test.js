@@ -132,5 +132,22 @@ describe("Confirmation Dialog", function() {
       expect(text.content).to.equal("General message here");
       expect(text.ok).to.equal("Dialog says Ok");
     });
+
+    it("should set element text with content method", function() {
+      var $heading = $("[data-node='heading']");
+      var $content = $("[data-node='content']");
+
+      expect($heading).to.exist;
+      expect($heading.length).to.equal(1);
+      expect($heading.text()).to.equal("General heading here");
+
+      expect($content).to.exist;
+      expect($content.length).to.equal(1);
+      expect($content.text()).to.equal("General message here");
+
+      dialog.content = { heading: "Updated heading", content: "Updated content" }
+      expect($heading.text()).to.equal("Updated heading");
+      expect($content.text()).to.equal("Updated content");
+    });
   });
 });
