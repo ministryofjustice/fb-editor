@@ -263,5 +263,25 @@ describe("Confirmation Dialog", function() {
       // Check the dialog is now closed
       expect($parent.get(0).style.display).to.equal("none");
     });
+
+    it("should close the dialog on Cancel button click", function() {
+      var $parent = dialog.$node.parents(".DialogConfirmation");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+
+      // Dialog is closed...
+      expect($parent).to.exist;
+      expect($parent.length).to.equal(1);
+      expect($parent.get(0).style.display).to.equal("none");
+
+      // ...so we open it.
+      dialog.open();
+      expect($parent.get(0).style.display).to.equal("");
+
+      // Click the Cancel button
+      $buttons.eq(1).click();
+
+      // Check the dialog is now closed
+      expect($parent.get(0).style.display).to.equal("none");
+    });
   });
 });
