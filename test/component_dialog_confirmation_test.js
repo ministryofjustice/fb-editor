@@ -197,4 +197,24 @@ describe("Confirmation Dialog", function() {
       expect(dialog._action).to.not.equal(originalAction);
     });
   });
+
+  describe("Actions", function() {
+    it("should run dialog._action on OK button click", function() {
+      var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+      var $element = $("<p>Original text</p>");
+
+      $(document.body).append($element);
+      expect($element.text()).to.equal("Original text");
+
+      // Open and click OK
+      dialog.open({}, function() { $element.text("Updated text"); });
+      $buttons.eq(0).click();
+
+      expect($element.text()).to.equal("Updated text");
+
+      // Clean up.
+      $element.remove();
+    });
+  });
 });
