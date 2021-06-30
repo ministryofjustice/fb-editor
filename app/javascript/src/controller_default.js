@@ -53,7 +53,7 @@ function createDialog() {
 
 
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
- * Component allows passing a function to it's 'confirm()' function so that actions
+ * Component allows passing a function to it's 'open()' function so that actions
  * can be played out on whether user clicks 'ok' or 'cancel'.
  **/
 function createDialogConfirmation() {

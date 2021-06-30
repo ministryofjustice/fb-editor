@@ -217,11 +217,10 @@ function addQuestionMenuListeners(view) {
   // QuestionMenuSelectionRemove
   view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
     var html = $(templateContent).filter("[data-node=remove]").text();
-    view.dialogConfirmationDelete.content = {
+    view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, question.$heading.text()),
       ok: view.text.dialogs.button_delete_option
-    };
-    view.dialogConfirmationDelete.confirm({}, function() {
+      }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
       question.$node.hide();
@@ -260,11 +259,10 @@ function addContentMenuListeners(view) {
   // ContentMenuSelectionRemove
   view.$document.on("ContentMenuSelectionRemove", function(event, component) {
     var html = $(templateContent).filter("[data-node=remove]").text();
-    view.dialogConfirmationDelete.content = {
+    view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
       ok: view.text.dialogs.button_delete_option
-    };
-    view.dialogConfirmationDelete.confirm({}, function() {
+      }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
       component.$node.hide();
@@ -382,11 +380,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
-        view.dialogConfirmationDelete.content = {
+        view.dialogConfirmationDelete.open({
           heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
           ok: view.text.dialogs.button_delete_option
-        };
-        view.dialogConfirmationDelete.confirm({}, function() {
+          }, function() {
           item.component.removeItem(item);
         });
       }
@@ -410,11 +407,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
-        view.dialogConfirmationDelete.content = {
+        view.dialogConfirmationDelete.open({
           heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
           ok: view.text.dialogs.button_delete_option
-        };
-        view.dialogConfirmationDelete.confirm({}, function() {
+          }, function() {
           item.component.removeItem(item);
         });
       }
@@ -424,7 +420,7 @@ function enhanceQuestions(view) {
 
 
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
- * Component allows passing a function to it's 'confirm()' function so that actions
+ * Component allows passing a function to it's 'open()' function so that actions
  * can be played out on whether user clicks 'ok' or 'cancel'.
  **/
 function createDialogConfiguration() {

@@ -61,7 +61,7 @@ class DialogConfirmation extends Dialog {
     }
 
     this._config = config;
-    this._action = function() {} // Should be overwritten in confirm()
+    this._action = function() {} // Should be overwritten in open()
     this.$node = $node;
   }
 
@@ -76,15 +76,9 @@ class DialogConfirmation extends Dialog {
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
 
-  confirm(text, action) {
-    for(var t in text) {
-      if(text.hasOwnProperty(t) && this._elements[t]) {
-        let current = this._elements[t].text();
-        this._elements[t].text();
-      }
-    }
+  open(text, action) {
     this._action = action;
-    this.$node.dialog("open");
+    super.open(text);
   }
 }
 
