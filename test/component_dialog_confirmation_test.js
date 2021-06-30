@@ -123,7 +123,6 @@ describe("Confirmation Dialog", function() {
     });
   });
 
-
   describe("Content", function() {
     it("should return default text with content method", function() {
       var text = dialog.content;
@@ -148,6 +147,45 @@ describe("Confirmation Dialog", function() {
       dialog.content = { heading: "Updated heading", content: "Updated content" }
       expect($heading.text()).to.equal("Updated heading");
       expect($content.text()).to.equal("Updated content");
+    });
+
+    it("should load passed text into the dialog through the open() method", function() {
+      var $heading = $("[data-node='heading']");
+      var $content = $("[data-node='content']");
+      var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+      var $ok = $buttons.eq(0);
+      var $cancel = $buttons.eq(1);
+
+      expect($heading).to.exist;
+      expect($heading.length).to.equal(1);
+
+      expect($content).to.exist;
+      expect($content.length).to.equal(1);
+
+      expect($ok).to.exist;
+      expect($ok.length).to.equal(1);
+
+      expect($cancel).to.exist;
+      expect($cancel.length).to.equal(1);
+
+      $heading.text("General heading here");
+      expect($heading.text()).to.equal("General heading here");
+
+      $content.text("General message here");
+      expect($content.text()).to.equal("General message here");
+
+      $ok.text("Ok text");
+      expect($ok.text()).to.equal("Ok text");
+
+      $cancel.text("Cancel text");
+      expect($cancel.text()).to.equal("Cancel text");
+
+      dialog.open({ heading: "Updated heading", content: "Updated content", ok: "Updated ok", cancel: "Updated cancel" })
+      expect($heading.text()).to.equal("Updated heading");
+      expect($content.text()).to.equal("Updated content");
+      expect($ok.text()).to.equal("Updated ok");
+      expect($cancel.text()).to.equal("Updated cancel");
     });
   });
 });
