@@ -95,5 +95,21 @@ describe("Confirmation Dialog", function() {
       expect($node.length).to.equal(1);
       expect($node.data("instance")).to.equal(dialog);
     });
+
+    it("should make (public but indicated as) private reference to elements", function() {
+      expect(dialog._elements).to.exist;
+
+      expect(dialog._elements.heading).to.exist;
+      expect(dialog._elements.heading.length).to.equal(1);
+
+      expect(dialog._elements.content).to.exist;
+      expect(dialog._elements.content.length).to.equal(1);
+
+      expect(dialog._elements.ok).to.exist;
+      expect(dialog._elements.ok.length).to.equal(1);
+
+      expect(dialog._elements.cancel).to.exist;
+      expect(dialog._elements.cancel.length).to.equal(1);
+    });
   });
 });
