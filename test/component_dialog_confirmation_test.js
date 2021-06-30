@@ -70,5 +70,11 @@ describe("Confirmation Dialog", function() {
        var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
        expect($parent.get(0).className).to.include(DIALOG_CLASSES);
     });
+
+    it("should use config.okText as OK button text", function() {
+       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       expect($button.eq(0).text()).to.include(OK_TEXT);
+    });
+
   });
 });
