@@ -49,5 +49,9 @@ describe("Confirmation Dialog", function() {
     it("should have the basic HTML in place", function() {
       expect($("#" + DIALOG_ID).length).to.equal(1);
     });
+
+    it("should NOT have the Dialog class name present", function() {
+      expect($("#" + DIALOG_ID).parents(".Dialog").length).to.equal(0);
+    });
   });
 });
