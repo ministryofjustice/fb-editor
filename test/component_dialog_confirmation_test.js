@@ -76,5 +76,10 @@ describe("Confirmation Dialog", function() {
        expect($button.eq(0).text()).to.include(OK_TEXT);
     });
 
+    it("should use config.cancelText as Cancel button text", function() {
+       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       expect($button.eq(1).text()).to.include(CANCEL_TEXT);
+    });
+
   });
 });
