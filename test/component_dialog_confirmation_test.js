@@ -183,5 +183,18 @@ describe("Confirmation Dialog", function() {
       expect($ok.text()).to.equal("Updated ok");
       expect($cancel.text()).to.equal("Updated cancel");
     });
+
+    it("should update passed action for dialog through the open() method", function() {
+      var originalAction = dialog._action;
+      var newAction = function() { return 1 + 1; };
+
+      expect(dialog._action).to.exist;
+      expect(typeof dialog._action).to.equal("function");
+
+      dialog.open({ heading: "Updated heading", content: "Updated content" }, newAction)
+      expect(dialog._action).to.exist;
+      expect(typeof dialog._action).to.equal("function");
+      expect(dialog._action).to.not.equal(originalAction);
+    });
   });
 });
