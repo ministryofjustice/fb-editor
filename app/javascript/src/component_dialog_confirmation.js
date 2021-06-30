@@ -77,7 +77,9 @@ class DialogConfirmation extends Dialog {
   }
 
   open(text, action) {
-    this._action = action;
+    if(arguments.length > 1 && typeof action == "function") {
+      this._action = action;
+    }
     super.open(text);
   }
 }
