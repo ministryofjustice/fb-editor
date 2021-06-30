@@ -38,7 +38,6 @@ describe("Confirmation Dialog", function() {
         "ui-dialog": DIALOG_CLASSES
       }
     });
-
   });
 
   after(function() {
@@ -46,9 +45,9 @@ describe("Confirmation Dialog", function() {
     $("#" + CONTAINER_ID).remove();
   });
 
-  describe("Ready", function() {
-    it("should pass here", function() {
-      expect(1).to.equal(1);
+  describe("HTML", function() {
+    it("should have the basic HTML in place", function() {
+      expect($("#" + DIALOG_ID).length).to.equal(1);
     });
   });
 });
