@@ -88,5 +88,12 @@ describe("Confirmation Dialog", function() {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
     });
+
+    it("should make the instance available as data on the $node", function() {
+      var $node = $("#" + DIALOG_ID);
+      expect($node).to.exist;
+      expect($node.length).to.equal(1);
+      expect($node.data("instance")).to.equal(dialog);
+    });
   });
 });
