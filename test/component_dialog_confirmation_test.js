@@ -53,5 +53,9 @@ describe("Confirmation Dialog", function() {
     it("should NOT have the Dialog class name present", function() {
       expect($("#" + DIALOG_ID).parents(".Dialog").length).to.equal(0);
     });
+
+    it("should have the DialogConfirmation class name present", function() {
+      expect($("#" + DIALOG_ID).parents(".DialogConfirmation").length).to.equal(1);
+    });
   });
 });
