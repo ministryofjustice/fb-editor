@@ -6,8 +6,6 @@ describe("Confirmation Dialog", function() {
   const DialogConfirmation = require('../app/javascript/src/component_dialog_confirmation');
   const CANCEL_TEXT = "Dialog says Cancel";
   const OK_TEXT = "Dialog says Ok";
-  const ACTIVATOR_CLASSES = "activator-classname and-some-activator";
-  const BUTTON_CLASSES = "button-classname and-some-button";
   const DIALOG_CLASSES = "dialog-classname and-some-dialog";
   const DIALOG_ID = "component-dialog-confirmation-test-id";
   const CONTAINER_ID = "component-dialog-confirmation-test-container";
@@ -33,8 +31,6 @@ describe("Confirmation Dialog", function() {
       cancelText: CANCEL_TEXT,
       okText: OK_TEXT,
       classes: {
-        "ui-activator": ACTIVATOR_CLASSES,
-        "ui-button": BUTTON_CLASSES,
         "ui-dialog": DIALOG_CLASSES
       }
     });
