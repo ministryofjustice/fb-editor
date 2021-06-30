@@ -242,4 +242,26 @@ describe("Confirmation Dialog", function() {
       $element.remove();
     });
   });
+
+  describe("Buttons", function() {
+    it("should close the dialog on OK button click", function() {
+      var $parent = dialog.$node.parents(".DialogConfirmation");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+
+      // Dialog is closed...
+      expect($parent).to.exist;
+      expect($parent.length).to.equal(1);
+      expect($parent.get(0).style.display).to.equal("none");
+
+      // ...so we open it.
+      dialog.open();
+      expect($parent.get(0).style.display).to.equal("");
+
+      // Click the OK button
+      $buttons.eq(0).click();
+
+      // Check the dialog is now closed
+      expect($parent.get(0).style.display).to.equal("none");
+    });
+  });
 });
