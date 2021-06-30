@@ -57,5 +57,11 @@ describe("Confirmation Dialog", function() {
     it("should have the DialogConfirmation class name present", function() {
       expect($("#" + DIALOG_ID).parents(".DialogConfirmation").length).to.equal(1);
     });
+
+    it("should have action two buttons", function() {
+      var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+      expect($buttons.length).to.equal(2);
+    });
   });
 });
