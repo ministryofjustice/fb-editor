@@ -64,4 +64,11 @@ describe("Confirmation Dialog", function() {
       expect($buttons.length).to.equal(2);
     });
   });
+
+  describe("Config", function() {
+    it("should apply CSS classnames passed in config", function() {
+       var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
+       expect($parent.get(0).className).to.include(DIALOG_CLASSES);
+    });
+  });
 });
