@@ -122,4 +122,15 @@ describe("Confirmation Dialog", function() {
       expect(typeof dialog._action).to.equal("function");
     });
   });
+
+
+  describe("Content", function() {
+    it("should return default text with content method", function() {
+      var text = dialog.content;
+
+      expect(text.heading).to.equal("General heading here");
+      expect(text.content).to.equal("General message here");
+      expect(text.ok).to.equal("Dialog says Ok");
+    });
+  });
 });
