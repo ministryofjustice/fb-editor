@@ -116,5 +116,10 @@ describe("Confirmation Dialog", function() {
       expect(dialog._config).to.exist;
       expect(dialog._config.okText).to.equal(OK_TEXT);
     });
+
+    it("should make (public but indicated as) private reference to action", function() {
+      expect(dialog._action).to.exist;
+      expect(typeof dialog._action).to.equal("function");
+    });
   });
 });
