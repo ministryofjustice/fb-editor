@@ -216,5 +216,30 @@ describe("Confirmation Dialog", function() {
       // Clean up.
       $element.remove();
     });
+
+    it("should NOT run dialog._action on Cancel click", function() {
+      var $parent = dialog.$node.parents(".DialogConfirmation");
+      var $element = $("<p>Original text</p>");
+      var $buttons = $parent.find(".ui-dialog-buttonset button");
+
+      $(document.body).append($element);
+      expect($element.text()).to.equal("Original text");
+
+      // Dialog is closed...
+      expect($parent).to.exist;
+      expect($parent.length).to.equal(1);
+      expect($parent.get(0).style.display).to.equal("none");
+
+      // ...so we open it.
+      dialog.open({}, function() { $element.text("Updated text"); });
+      expect($parent.get(0).style.display).to.equal("");
+
+      // Click the cancel button...
+      $buttons.eq(1).click();
+
+      // ...and check the action didn't change the text.
+      expect($element.text()).to.equal("Original text");
+      $element.remove();
+    });
   });
 });
