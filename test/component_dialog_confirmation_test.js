@@ -80,6 +80,13 @@ describe("Confirmation Dialog", function() {
        var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
        expect($button.eq(1).text()).to.include(CANCEL_TEXT);
     });
+  });
 
+
+  describe("Properties", function() {
+    it("should make the $node public", function() {
+      expect(dialog.$node).to.exist;
+      expect(dialog.$node.length).to.equal(1);
+    });
   });
 });
