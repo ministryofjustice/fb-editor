@@ -90,11 +90,6 @@ module MultipleQuestionsPageHelper
     end
   end
 
-  def when_I_want_to_select_component_properties
-    page.find('h2', text: text_component_question).click
-    editor.first('.ActivatedMenu_Activator').click
-  end
-
   def and_I_want_to_delete_a_component
     editor.find('span', text: 'Delete...').click
     editor.find('button', text: 'Delete option').click

@@ -52,6 +52,46 @@ feature 'Edit check your answers page' do
     then_I_should_see_the_first_extra_component(content_extra_component)
   end
 
+  scenario 'deleting components' do
+    given_I_have_a_check_your_answers_page
+    and_I_add_a_content_component(
+      content: content_component
+    )
+    and_I_add_a_content_extra_component(
+      content: content_extra_component
+    )
+    when_I_save_my_changes
+    then_I_should_see_my_content(content_component, content_extra_component)
+
+    when_I_want_to_select_component_properties('.output', content_component)
+    and_I_want_to_delete_a_component
+    when_I_save_my_changes
+    then_I_should_not_see_my_content(content_component)
+
+    when_I_want_to_select_component_properties('.output', content_extra_component)
+    and_I_want_to_delete_a_component
+    when_I_save_my_changes
+    then_I_should_not_see_my_content(content_extra_component)
+
+
+    and_I_add_a_content_component(
+      content: content_component
+    )
+    and_I_add_a_content_extra_component(
+      content: content_extra_component
+    )
+    when_I_save_my_changes
+    then_I_should_see_my_content(content_component, content_extra_component)
+
+    when_I_want_to_select_component_properties('.output', content_component)
+    and_I_want_to_delete_a_component
+
+    when_I_want_to_select_component_properties('.output', content_extra_component)
+    and_I_want_to_delete_a_component
+    when_I_save_my_changes
+    then_I_should_not_see_my_content(content_component, content_extra_component)
+  end
+
   def and_I_change_the_send_heading(send_heading)
     editor.page_send_heading.set(send_heading)
   end

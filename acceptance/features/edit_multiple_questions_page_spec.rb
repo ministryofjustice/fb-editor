@@ -46,7 +46,7 @@ feature 'Edit multiple questions page' do
     and_I_add_a_textarea_component
     and_I_change_the_text_component(text_component_question)
     when_I_save_my_changes
-    when_I_want_to_select_component_properties
+    when_I_want_to_select_component_properties('h2', text_component_question)
     and_I_want_to_delete_a_component
     when_I_save_my_changes
     and_the_text_component_is_deleted
