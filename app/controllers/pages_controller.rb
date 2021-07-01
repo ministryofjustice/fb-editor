@@ -58,7 +58,9 @@ class PagesController < FormController
     end
 
     if params['delete_components'].present?
-      delete_components(update_params)
+      update_params[:actions] = (update_params[:actions] || {}).merge(
+        delete_components: params['delete_components']
+      )
     end
 
     parse_components(update_params)
