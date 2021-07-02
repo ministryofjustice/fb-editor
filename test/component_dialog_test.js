@@ -117,7 +117,7 @@ describe("Dialog", function() {
       expect(text.ok).to.equal("Dialog says Ok");
     });
 
-    it("It should set element text with content method", function() {
+    it("should set element text with content method", function() {
       var $heading = $("[data-node='heading']");
       var $content = $("[data-node='content']");
 

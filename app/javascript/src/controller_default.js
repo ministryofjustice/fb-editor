@@ -53,7 +53,7 @@ function createDialog() {
 
 
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
- * Component allows passing a function to it's 'confirm()' function so that actions
+ * Component allows passing a function to it's 'open()' function so that actions
  * can be played out on whether user clicks 'ok' or 'cancel'.
  **/
 function createDialogConfirmation() {
@@ -64,8 +64,6 @@ function createDialogConfirmation() {
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),
     classes: {
-      "ui-activator": "govuk-button fb-govuk-button",
-      "ui-button": "govuk-button",
       "ui-dialog": $template.data("classes")
     }
   });
@@ -84,8 +82,6 @@ function createDialogConfirmationDelete() {
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),
     classes: {
-      "ui-activator": "govuk-button fb-govuk-button",
-      "ui-button": "govuk-button",
       "ui-dialog": $template.data("classes")
     }
   });

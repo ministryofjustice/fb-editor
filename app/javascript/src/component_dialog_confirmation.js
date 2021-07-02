@@ -23,7 +23,6 @@ const Dialog = require('./component_dialog');
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
  * Extra config options specific to this enhancement
- * config.classes["ui-activator"]  will put the value in activator classes value.
  * config.onOk takes a function to run when 'Ok' button is activated.
  * config.onCancel takes a function to run when 'Cancel' button is activated.
  * config.onClose takes a function to run after dialog is closed.
@@ -62,7 +61,7 @@ class DialogConfirmation extends Dialog {
     }
 
     this._config = config;
-    this._action = function() {} // Should be overwritten in confirm()
+    this._action = function() {} // Should be overwritten in open()
     this.$node = $node;
   }
 
@@ -77,15 +76,11 @@ class DialogConfirmation extends Dialog {
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
 
-  confirm(text, action) {
-    for(var t in text) {
-      if(text.hasOwnProperty(t) && this._elements[t]) {
-        let current = this._elements[t].text();
-        this._elements[t].text();
-      }
+  open(text, action) {
+    if(arguments.length > 1 && typeof action == "function") {
+      this._action = action;
     }
-    this._action = action;
-    this.$node.dialog("open");
+    super.open(text);
   }
 }
 
