@@ -40,7 +40,7 @@ spec:
         # defined in config_map.yaml
         envFrom:
           - configMapRef:
-              name: fb-editor-config-map
+              name: "{{ .Values.app_name }}-config-map"
         env:
           - name: SECRET_KEY_BASE
             valueFrom:
@@ -148,7 +148,7 @@ spec:
         # defined in config_map.yaml
         envFrom:
           - configMapRef:
-              name: fb-editor-config-map
+              name: "{{ .Values.app_name }}-config-map"
         env:
           - name: SECRET_KEY_BASE
             valueFrom:

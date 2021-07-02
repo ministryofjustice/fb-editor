@@ -159,8 +159,9 @@ jobs:
       - run: &base_environment_variables
           name: Setup base environment variable
           command: |
-            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-            echo "export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_0fd3b5c2a17e0aa3d32a8441efcc94f5" >> $BASH_ENV
+            echo 'export BUILD_SHA=$CIRCLE_SHA1' >> $BASH_ENV
+            echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_0fd3b5c2a17e0aa3d32a8441efcc94f5' >> $BASH_ENV
+            source $BASH_ENV
       - run: *deploy_scripts
       - run:
           name: deploy to test
@@ -249,10 +250,14 @@ jobs:
       - run: *db_setup
       - run:
           name: Run acceptance tests
-          environment:
-            ACCEPTANCE_TESTS_EDITOR_APP: 'https://fb-editor-test.apps.live-1.cloud-platform.service.justice.gov.uk/'
-            CI_MODE: 'true'
           command: |
+            EDITOR_APP=https://fb-editor-test.apps.live-1.cloud-platform.service.justice.gov.uk
+            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
+            echo 'export CI_MODE=true' >> $BASH_ENV
+            source $BASH_ENV
+
             TESTFILES=$(circleci tests glob "project/acceptance/**/*_spec.rb" | circleci tests split --split-by=name)
             bundle exec rspec acceptance $TESTFILES --profile 10 -f doc
       - slack/status: *slack_status
@@ -270,10 +275,14 @@ jobs:
       - run: *db_setup
       - run:
           name: Run acceptance tests
-          environment:
-            ACCEPTANCE_TESTS_EDITOR_APP: "https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk/"
-            CI_MODE: 'true'
           command: |
+            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk
+            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
+            echo 'export CI_MODE=true' >> $BASH_ENV
+            source $BASH_ENV
+
             TESTFILES=$(circleci tests glob "project/acceptance/**/*_spec.rb" | circleci tests split --split-by=name)
             bundle exec rspec acceptance $TESTFILES --profile 10 -f doc
       - slack/status:
@@ -318,7 +327,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - /^testable-.*$/
+                - /testable-.*/
       - lint:
           requires:
             - build
@@ -376,7 +385,7 @@ workflows:
           filters:
             branches:
               only:
-                - /^testable-.*$/
+                - /testable-.*/
       - lint:
           requires:
             - build
@@ -398,7 +407,7 @@ workflows:
           filters:
             branches:
               only:
-                - /^testable-.*$/
+                - /testable-.*/
       - build_workers_testable_branch:
           requires:
             - lint
@@ -408,7 +417,7 @@ workflows:
           filters:
             branches:
               only:
-                - /^testable-.*$/
+                - /testable-.*/
       - deploy_testable_branch:
           requires:
             - build_web_testable_branch
