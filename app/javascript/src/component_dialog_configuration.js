@@ -74,9 +74,8 @@ class DialogConfiguration extends Dialog {
   }
 
   open(text, action) {
-    this.content = text;
-    this._saveAction = action;
-    this.$node.dialog("open");
+    this._saveAction = action || function() {};
+    super.open(text);
   }
 
   save() {
