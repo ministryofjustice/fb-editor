@@ -14,7 +14,7 @@ gem 'delayed_job_active_record'
 #    github: 'ministryofjustice/fb-metadata-presenter',
 #    branch: 'feature/move-upload-to-gem'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '1.3.2'
+gem 'metadata_presenter', '1.6.1'
 
 gem 'faraday'
 gem 'faraday_middleware'
