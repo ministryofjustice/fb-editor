@@ -35,10 +35,10 @@ feature 'Edit multiple questions page' do
 
   scenario 'adding and updating components' do
     given_I_have_a_multiple_questions_page
-    and_I_add_a_text_component
-    and_I_add_a_textarea_component
-    and_I_add_a_radio_component
-    and_I_add_a_checkbox_component
+    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(editor.add_radio)
+    and_I_add_the_component(editor.add_checkboxes)
     and_I_update_the_components
     when_I_save_my_changes
     and_I_return_to_flow_page
@@ -46,10 +46,10 @@ feature 'Edit multiple questions page' do
     then_I_can_answer_the_questions_in_the_page(preview_form)
   end
 
-  scenario 'deleting components' do
+  scenario 'deleting a text component' do
     given_I_have_a_multiple_questions_page
-    and_I_add_a_text_component
-    and_I_add_a_textarea_component
+    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(editor.add_text_area)
     and_I_change_the_text_component(text_component_question)
     when_I_save_my_changes
     when_I_want_to_select_component_properties('h2', text_component_question)

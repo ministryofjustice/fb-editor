@@ -5,10 +5,10 @@ module MultipleQuestionsPageHelper
     when_I_add_the_page
   end
 
-  def and_I_add_a_text_component
+  def and_I_add_the_component(component)
     and_I_add_a_component
     and_I_add_a_question
-    editor.add_text.click
+    component.click
   end
 
   def and_I_add_a_multiple_page_content_component
@@ -26,24 +26,6 @@ module MultipleQuestionsPageHelper
 
   def and_I_add_a_content_area
     editor.content_component.click
-  end
-
-  def and_I_add_a_textarea_component
-    and_I_add_a_component
-    and_I_add_a_question
-    editor.add_text_area.click
-  end
-
-  def and_I_add_a_radio_component
-    and_I_add_a_component
-    and_I_add_a_question
-    editor.add_radio.click
-  end
-
-  def and_I_add_a_checkbox_component
-    and_I_add_a_component
-    and_I_add_a_question
-    editor.add_checkboxes.click
   end
 
   def and_I_update_the_components
