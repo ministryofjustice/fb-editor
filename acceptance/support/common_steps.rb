@@ -168,7 +168,7 @@ module CommonSteps
     within_window(preview_page) do
       expect(page.find('[type="submit"]')).to_not be_disabled
       expect(page.text).to include('Question')
-      then_I_should_not_see_optional_text(page.text)
+      then_I_should_not_see_optional_text
       yield if block_given?
     end
   end
@@ -255,11 +255,11 @@ module CommonSteps
     element.find('.output', visible: false)
   end
 
-  def then_I_should_not_see_optional_text(text)
-    OPTIONAL_TEXT.each { |optional| expect(text).not_to include(optional) }
+  def then_I_should_not_see_optional_text
+    OPTIONAL_TEXT.each { |optional| expect(page.text).not_to include(optional) }
   end
 
-  def then_I_should_see_an_error_message(text, fields = [])
+  def then_I_should_see_an_error_message(*fields)
     expect(page.text).to include(ERROR_MESSAGE)
     if fields.empty?
       expect(page.text).to include('Enter an answer for')
