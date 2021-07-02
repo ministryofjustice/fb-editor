@@ -21,6 +21,12 @@ feature 'Edit multiple questions page' do
   let(:checkboxes_component_options) do
     ['Prequels']
   end
+  let(:content_component) do
+    'You underestimate the power of the Dark Side.'
+  end
+  let(:optional_content) do
+    '[Optional content]'
+  end
 
   background do
     given_I_am_logged_in
@@ -29,10 +35,10 @@ feature 'Edit multiple questions page' do
 
   scenario 'adding and updating components' do
     given_I_have_a_multiple_questions_page
-    and_I_add_a_text_component
-    and_I_add_a_textarea_component
-    and_I_add_a_radio_component
-    and_I_add_a_checkbox_component
+    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(editor.add_radio)
+    and_I_add_the_component(editor.add_checkboxes)
     and_I_update_the_components
     when_I_save_my_changes
     and_I_return_to_flow_page
@@ -40,16 +46,37 @@ feature 'Edit multiple questions page' do
     then_I_can_answer_the_questions_in_the_page(preview_form)
   end
 
-  scenario 'deleting components' do
+  scenario 'deleting a text component' do
     given_I_have_a_multiple_questions_page
-    and_I_add_a_text_component
-    and_I_add_a_textarea_component
+    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(editor.add_text_area)
     and_I_change_the_text_component(text_component_question)
     when_I_save_my_changes
-    when_I_want_to_select_component_properties
+    when_I_want_to_select_component_properties('h2', text_component_question)
     and_I_want_to_delete_a_component
     when_I_save_my_changes
     and_the_text_component_is_deleted
+  end
+
+  scenario 'deleting content components' do
+    given_I_have_a_multiple_questions_page
+    then_I_add_a_content_component(
+      content: content_component
+    )
+    when_I_save_my_changes
+    then_I_should_see_my_content(content_component)
+
+    when_I_want_to_select_component_properties('.output', content_component)
+    and_I_want_to_delete_a_component
+    when_I_save_my_changes
+    then_I_should_not_see_my_content(content_component)
+  end
+
+  def then_I_add_a_content_component(content:)
+    and_I_add_a_component
+    editor.add_content.click
+    expect(editor.first_component.text).to eq(optional_content)
+    when_I_change_editable_content(editor.first_component, content: content)
   end
 
   def then_I_can_answer_the_questions_in_the_page(preview_form)

@@ -267,4 +267,17 @@ module CommonSteps
       fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
     end
   end
+
+  def then_I_should_see_my_content(*expected_text)
+    expected_text.each { |text| expect(page.text).to include(text)}
+  end
+
+  def then_I_should_not_see_my_content(*expected_text)
+    expected_text.each { |text| expect(page.text).to_not include(text)}
+  end
+
+  def when_I_want_to_select_component_properties(attribute, text)
+    page.find(attribute, text: text).click
+    page.first('.ActivatedMenu_Activator').click
+  end
 end

@@ -405,5 +405,49 @@ RSpec.describe PageUpdater do
         ).to eq(expected_updated_page)
       end
     end
+
+    context 'when removing the cannoli (aka a content component)' do
+      let(:attributes_to_update) do
+        { id: 'page.check-answers', actions: { delete_components: [uuid] } }
+      end
+
+      context 'removing from regular components' do
+        let(:uuid) { 'b065ff4f-90c5-4ba2-b4ac-c984a9dd2470' }
+        let(:updated_metadata) do
+          metadata = service_metadata.deep_dup
+          metadata['pages'][-2]['components'] = []
+          metadata
+        end
+
+        it 'removes the correct component' do
+          update = page.update
+          page = update['pages'].find { |p| p['url'] == 'check-answers' }
+          component_uuids = page['components'].map do |component|
+            component['_uuid']
+          end
+
+          expect(component_uuids).to_not include(uuid)
+        end
+      end
+
+      context 'removing from extra_components' do
+        let(:uuid) { '3e6ef27e-91a6-402f-8291-b7ce669e824e' }
+        let(:updated_metadata) do
+          metadata = service_metadata.deep_dup
+          metadata['pages'][-2]['extra_components'] = []
+          metadata
+        end
+
+        it 'removes the correct component' do
+          update = page.update
+          page = update['pages'].find { |p| p['url'] == 'check-answers' }
+          component_uuids = page['components'].map do |component|
+            component['_uuid']
+          end
+
+          expect(component_uuids).to_not include(uuid)
+        end
+      end
+    end
   end
 end

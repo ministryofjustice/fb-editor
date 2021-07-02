@@ -80,6 +80,7 @@ class EditorApp < SitePrism::Page
   element :add_date, :link, 'Date', visible: false
   element :add_radio, :link, 'Radio buttons', visible: false
   element :add_checkboxes, :link, 'Checkboxes', visible: false
+  element :add_content, :link, 'Content area', visible: false
 
   elements :add_page_submit_button, :button, 'Add page'
   element :save_page_button, :xpath, '//input[@value="Save"]'

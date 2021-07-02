@@ -58,7 +58,9 @@ class PagesController < FormController
     end
 
     if params['delete_components'].present?
-      delete_components(update_params)
+      update_params[:actions] = (update_params[:actions] || {}).merge(
+        delete_components: params['delete_components']
+      )
     end
 
     parse_components(update_params)
@@ -111,15 +113,6 @@ class PagesController < FormController
     )
   end
   helper_method :pages_presenters
-
-  def delete_components(update_params)
-    update_params[:components].each do |k, v|
-      if params['delete_components'].include?(JSON.parse(v)['_uuid'])
-        update_params[:components].delete(k)
-      end
-    end
-    update_params[:components] = [] if update_params[:components].blank?
-  end
 
   private
 

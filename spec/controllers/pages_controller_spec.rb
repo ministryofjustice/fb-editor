@@ -1,5 +1,6 @@
 RSpec.describe PagesController do
   describe '#page_update_params' do
+    let(:params) { { components: [] } }
     let(:extra_params) { {} }
     let(:page) { service.find_page_by_url('/name') }
     before do
@@ -92,66 +93,33 @@ RSpec.describe PagesController do
     end
 
     context 'when deleting a component on multiple component page' do
-      let(:component_params_one) do
-        {
-          '_uuid' => 'fda1e5a1-ed5f-49c9-a943-dc930a520984'
-        }
-      end
-      let(:component_params_two) do
-        {
-          '_uuid' => '82444d3d-dab6-44c4-a147-e2650326c9eb'
-        }
-      end
-
       let(:page) { service.find_page_by_url('star-wars-knowledge') }
-      let(:params) do
-        {
-          components: {
-            '0' => JSON.dump(component_params_one),
-            '1' => JSON.dump(component_params_two)
-          }
-        }
-      end
+
       context 'when deleting a single component' do
+        let(:to_delete) { %w[fda1e5a1-ed5f-49c9-a943-dc930a520984] }
         let(:extra_params) do
-          {
-            delete_components: %w[fda1e5a1-ed5f-49c9-a943-dc930a520984]
-          }
+          { delete_components: to_delete }
         end
 
-        it 'removes the deleted component' do
-          expect(controller.page_update_params[:components]).to eq([component_params_two])
+        it 'adds component to delete to the actions property' do
+          expect(
+            controller.page_update_params[:actions][:delete_components]
+          ).to eq(to_delete)
         end
       end
 
       context 'when deleting multiple components at once' do
-        let(:extra_params) do
-          {
-            delete_components: %w[fda1e5a1-ed5f-49c9-a943-dc930a520984 82444d3d-dab6-44c4-a147-e2650326c9eb]
-          }
-        end
-
-        it 'removes all the deleted components' do
-          expect(controller.page_update_params[:components]).to eq([])
-        end
-      end
-
-      context 'when deleting all existing components on the page' do
-        let(:params) do
-          {
-            components: {
-              '0' => JSON.dump(component_params_one)
-            }
-          }
+        let(:to_delete) do
+          %w[fda1e5a1-ed5f-49c9-a943-dc930a520984 82444d3d-dab6-44c4-a147-e2650326c9eb]
         end
         let(:extra_params) do
-          {
-            delete_components: %w[fda1e5a1-ed5f-49c9-a943-dc930a520984]
-          }
+          { delete_components: to_delete }
         end
 
-        it 'deletes the component hash' do
-          expect(controller.page_update_params[:components]).to eq([])
+        it 'adds mulitple components to the actions property' do
+          expect(
+            controller.page_update_params[:actions][:delete_components]
+          ).to eq(to_delete)
         end
       end
     end

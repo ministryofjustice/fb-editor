@@ -39,6 +39,16 @@ class PageUpdater
       @component_added = component
     end
 
+    if @actions && @actions[:delete_components].present?
+      %w[components extra_components].each do |component_type|
+        next if new_object[component_type].blank?
+
+        new_object[component_type].delete_if do |hash|
+          hash['_uuid'].in?(@actions[:delete_components])
+        end
+      end
+    end
+
     new_object = make_sure_uuids_are_unique(new_object)
 
     @latest_metadata[page_collection][index] = new_object
