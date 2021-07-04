@@ -336,35 +336,38 @@ function enhanceContent(view) {
  **/
 function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
-    new TextQuestion($(this), {
+    var question = new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
       }
     });
+    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
-    new DateQuestion($(this), {
+    var question = new DateQuestion($(this), {
       form: view.dataController.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
     });
+    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
-    new TextareaQuestion($(this), {
+    var question = new TextareaQuestion($(this), {
       form: view.dataController.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
     });
+    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
-    new CheckboxesQuestion($(this), {
+    var question = new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
@@ -388,10 +391,11 @@ function enhanceQuestions(view) {
         });
       }
     });
+    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
-    new RadiosQuestion($(this), {
+    var question = new RadiosQuestion($(this), {
       form: view.dataController.$form,
       text: {
         edit: view.text.actions.edit,
@@ -415,6 +419,7 @@ function enhanceQuestions(view) {
         });
       }
     });
+    view.addLastPointHandler(question.menu.activator.$node);
   });
 }
 

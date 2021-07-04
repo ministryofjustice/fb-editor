@@ -23,16 +23,43 @@ const post = require('./utilities').post;
 
 class DefaultController {
   constructor(app) {
+    var view = this;
+    var $document = $(document);
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
     this.page = app.page;
     this.text = app.text;
     this.dialog = createDialog.call(this);
     this.dialogConfirmation = createDialogConfirmation.call(this);
     this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
-    this.$document = $(document);
+    this.$document = $document;
     this.$body = $(document.body);
+    this.$lastPoint = $(); // Use it to set a focal point in switching between components.
 
     isolatedMethodDeleteLinks();
+
+    // To support keyboard navigation, try to set focus
+    // for tabbing back to last important point.
+    $document.on("DialogClose ActivatedDialogClose", function() {
+      view.$lastPoint.focus();
+      view.$lastPoint = $(); // Reset in case it was never used after any setting.
+    });
+  }
+
+  /* We have difficulty supporting keyboard tabbing because some components
+   * need to interact with others thus, jumping the tab focus around the
+   * actual DOM. Some components also have their own keyboard tabbing handling,
+   * such as the jQueryUI Dialogs, which makes it even harder to keep track.
+   * To compensate, we use a variable on the view called $lastPoint. This is
+   * expected to be a jQuery node, set by the last point (node) we want to
+   * come back to after a Dialog has closed, for instance (shifting focus back).
+   *
+   * Register the activator node  as a possible last point for tab focus support.
+   **/
+  addLastPointHandler($node) {
+    var view = this;
+    $node.on("keydown", function() {
+      view.$lastPoint = $node;
+    });
   }
 }
 

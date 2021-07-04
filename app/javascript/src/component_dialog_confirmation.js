@@ -55,6 +55,9 @@ class DialogConfirmation extends Dialog {
       $node.parents(".ui-dialog").removeClass("Dialog");
       $node.parents(".ui-dialog").addClass("DialogConfirmation");
       $node.data("instance", this);
+      $node.on( "dialogclose", function( event, ui ) {
+        $(document).trigger("DialogConfirmationClose");
+      });
 
       DialogConfirmation.setElements.call(this, $node);
       DialogConfirmation.setDefaultText.call(this, $node);

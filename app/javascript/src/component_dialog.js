@@ -51,6 +51,9 @@ class Dialog {
 
       $node.parents(".ui-dialog").addClass("Dialog");
       $node.data("instance", this);
+      $node.on( "dialogclose", function( event, ui ) {
+        $(document).trigger("DialogClose");
+      });
 
       Dialog.setElements.call(this, $node);
       Dialog.setDefaultText.call(this, $node);
