@@ -3,12 +3,12 @@
   class: 'govuk-button editor-button fb-govuk-button fb-preview-button',
   target: '_blank' %>
 
-<h1 class="govuk-heading-xl"><%= t('pages.form') %></h1>
+<h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
 <div id="form-overview">
   <div class="container">
     <% service.pages.each do |page| %>
-      <div class="form-step">
+      <div class="form-step" aria-label="<%= t('pages.flow.step') %>">
 
         <%= flow_thumbnail(page, service.service_id) %>
 
