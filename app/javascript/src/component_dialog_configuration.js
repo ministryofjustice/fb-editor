@@ -61,7 +61,7 @@ class DialogConfiguration extends Dialog {
       DialogConfiguration.setDefaultText.call(this, $node);
     }
 
-    this.saveAction = function(){} // Gets overwritten within set content.
+    this._saveAction = function(){} // Gets overwritten within open().
   }
 
   get content() {
