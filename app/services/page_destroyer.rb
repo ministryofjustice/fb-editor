@@ -26,7 +26,6 @@ class PageDestroyer
     return @latest_metadata if object['_type'] == 'page.start'
 
     @latest_metadata[page_collection].delete_at(index)
-    @latest_metadata['pages'][0]['steps'].delete(object['_id']) if flow_page?(page_collection)
     @latest_metadata
   end
 end

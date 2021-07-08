@@ -61,10 +61,6 @@ RSpec.describe ServiceUpdater do
         expect(service_updater.latest_metadata['flow']).to eq(service_flow)
       end
 
-      it 'remove the steps from the start page' do
-        expect(service_updater.latest_metadata['pages'][0].keys).not_to include('steps')
-      end
-
       it 'creates valid service metadata' do
         expect(
           MetadataPresenter::ValidateSchema.validate(

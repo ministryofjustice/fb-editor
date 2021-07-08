@@ -41,7 +41,6 @@ RSpec.describe PageDestroyer do
       let(:updated_metadata) do
         metadata = service_metadata.deep_dup
         metadata['pages'].delete_at(1)
-        metadata['pages'][0]['steps'].delete('page.name')
         metadata
       end
       let(:attributes) do
