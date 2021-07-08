@@ -24,7 +24,11 @@ class NewFlowPageGenerator
   end
 
   def next_page
-    @next_page ||= latest_metadata['pages'][page_index + 1]
+    @next_page ||= begin
+      return if page_index.nil?
+
+      latest_metadata['pages'][page_index + 1]
+    end
   end
 
   def default_metadata

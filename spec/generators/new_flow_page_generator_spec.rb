@@ -52,7 +52,7 @@ RSpec.describe NewFlowPageGenerator do
     context 'when there is no next page' do
       it_behaves_like 'a flow page generator' do
         let(:page_uuid) { latest_metadata['pages'].last['_uuid'] }
-        let(:page_index) { latest_metadata['pages'].size - 1 }
+        let(:page_index) { nil }
         let(:expected_metadata) do
           {
             page_uuid => {

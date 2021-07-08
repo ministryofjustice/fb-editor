@@ -17,14 +17,16 @@ class NewPageGenerator
   end
 
   def page_metadata
-    metadata = DefaultMetadata["page.#{page_type}"]
+    @page_metadata ||= begin
+      metadata = DefaultMetadata["page.#{page_type}"]
 
-    metadata.tap do
-      metadata['_id'] = page_name
-      metadata['_uuid'] = page_uuid
-      metadata['url'] = page_url
-      if component_type.present?
-        metadata['components'].push(component)
+      metadata.tap do
+        metadata['_id'] = page_name
+        metadata['_uuid'] = page_uuid
+        metadata['url'] = page_url
+        if component_type.present?
+          metadata['components'].push(component)
+        end
       end
     end
   end
@@ -37,8 +39,18 @@ class NewPageGenerator
 
   def add_flow_page
     latest_metadata.tap do
+      latest_metadata['flow'][previous_page_uuid]['next']['default'] = page_metadata['_uuid']
+      latest_metadata['flow'].merge!(new_flow_page_metadata)
       latest_metadata['pages'].insert(pages_index, page_metadata)
     end
+  end
+
+  def new_flow_page_metadata
+    NewFlowPageGenerator.new(
+      page_uuid: page_metadata['_uuid'],
+      page_index: index_to_be_inserted_after,
+      latest_metadata: latest_metadata
+    ).to_metadata
   end
 
   def add_standalone_page
@@ -63,7 +75,7 @@ class NewPageGenerator
   def pages_index
     @pages_index ||= begin
       if add_page_after.present?
-        index = find_page_index_to_be_inserted_after
+        index = index_to_be_inserted_after
 
         return index + 1 if index
       end
@@ -72,9 +84,21 @@ class NewPageGenerator
     end
   end
 
-  def find_page_index_to_be_inserted_after
-    latest_metadata['pages'].index(
+  def index_to_be_inserted_after
+    @index_to_be_inserted_after ||=
+      latest_metadata['pages'].index(page_to_be_inserted_after)
+  end
+
+  def page_to_be_inserted_after
+    @page_to_be_inserted_after ||=
       latest_metadata['pages'].find { |page| page['_uuid'] == add_page_after }
-    )
+  end
+
+  def previous_page_uuid
+    if pages_index == INSERT_LAST
+      latest_metadata['pages'].last['_uuid']
+    else
+      page_to_be_inserted_after['_uuid']
+    end
   end
 end
