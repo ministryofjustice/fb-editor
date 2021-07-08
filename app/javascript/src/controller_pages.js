@@ -242,7 +242,7 @@ function addQuestionMenuListeners(view) {
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
-    view.dialogConfiguration.configure({
+    view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
   });

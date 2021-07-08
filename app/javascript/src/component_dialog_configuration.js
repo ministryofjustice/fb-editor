@@ -61,7 +61,7 @@ class DialogConfiguration extends Dialog {
       DialogConfiguration.setDefaultText.call(this, $node);
     }
 
-    this.saveAction = function(){} // Gets overwritten within set content.
+    this._saveAction = function(){} // Gets overwritten within open().
   }
 
   get content() {
@@ -73,7 +73,7 @@ class DialogConfiguration extends Dialog {
     this._elements.content.html(text.content);
   }
 
-  configure(text, action) {
+  open(text, action) {
     this.content = text;
     this._saveAction = action;
     this.$node.dialog("open");
