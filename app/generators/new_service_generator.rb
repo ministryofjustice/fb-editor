@@ -18,11 +18,20 @@ class NewServiceGenerator
       metadata['created_by'] = current_user.id
     end
 
+    metadata['flow'] = start_page_flow_object(metadata)
     metadata['standalone_pages'] = footer_pages
     metadata
   end
 
   private
+
+  def start_page_flow_object(metadata)
+    NewFlowPageGenerator.new(
+      page_uuid: metadata['pages'][0]['_uuid'],
+      page_index: 0,
+      latest_metadata: metadata
+    ).to_metadata
+  end
 
   def footer_pages
     I18n.t('footer').map do |attributes|

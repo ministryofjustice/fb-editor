@@ -10,6 +10,16 @@ RSpec.describe NewServiceGenerator do
           current_user: current_user
         ).to_metadata
       end
+      let(:expected_service_flow) do
+        {
+          service_metadata['pages'][0]['_uuid'] => {
+            '_type' => 'flow.page',
+            'next' => {
+              'default' => ''
+            }
+          }
+        }
+      end
 
       it 'creates a valid service metadata' do
         expect(
@@ -25,6 +35,11 @@ RSpec.describe NewServiceGenerator do
           '_type' => 'page.start',
           'url' => '/'
         )
+      end
+
+      it 'creates the start page flow object' do
+        expect(service_metadata['flow']).to be_present
+        expect(service_metadata['flow']).to eq(expected_service_flow)
       end
 
       it 'creates the default footer pages' do
