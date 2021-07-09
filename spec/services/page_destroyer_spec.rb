@@ -1,6 +1,7 @@
 RSpec.describe PageDestroyer do
   subject(:page) { described_class.new(attributes) }
-  let(:service_id) { service.service_id }
+  let(:service_id) { fixture['service_id'] }
+  let(:fixture) { metadata_fixture(:version_with_flow) }
   let(:version) do
     double(errors?: false, errors: [], metadata: updated_metadata)
   end
@@ -17,13 +18,13 @@ RSpec.describe PageDestroyer do
   describe '#destroy' do
     context 'when deleting start page' do
       let(:updated_metadata) do
-        service_metadata.deep_dup
+        fixture.deep_dup
       end
       let(:attributes) do
         {
-          uuid: service_metadata['pages'][0]['_uuid'],
-          service_id: service.service_id,
-          latest_metadata: service_metadata
+          uuid: fixture['pages'][0]['_uuid'],
+          service_id: service_id,
+          latest_metadata: fixture
         }
       end
       before do
@@ -32,47 +33,65 @@ RSpec.describe PageDestroyer do
         ).to_not receive(:create)
       end
 
-      it 'creates new version with start page' do
+      it 'does not delete the start page from the pages array or the service flow' do
         expect(page.destroy).to eq(updated_metadata)
       end
     end
 
     context 'when deleting other flow pages' do
+      let(:start_page_uuid) { fixture['pages'][0]['_uuid'] }
+      let(:page_to_delete_uuid) { fixture['pages'][1]['_uuid'] }
+      let(:third_page_uuid) { fixture['pages'][2]['_uuid'] }
       let(:updated_metadata) do
-        metadata = service_metadata.deep_dup
+        metadata = fixture.deep_dup
         metadata['pages'].delete_at(1)
+        metadata['flow'].delete(page_to_delete_uuid)
+        metadata['flow'][start_page_uuid]['next']['default'] = third_page_uuid
         metadata
       end
       let(:attributes) do
         {
-          uuid: '9e1ba77f-f1e5-42f4-b090-437aa9af7f73',
-          service_id: service.service_id,
-          latest_metadata: service_metadata
+          uuid: page_to_delete_uuid,
+          service_id: service_id,
+          latest_metadata: fixture
         }
       end
 
-      it 'creates new version with page deleted' do
+      it 'creates new version with page deleted and the page flow object deleted' do
         expect(page.destroy).to eq(updated_metadata)
+      end
+
+      it 'updates the reference to the deleted page to point at the next page in the flow' do
+        start_page_flow = page.destroy['flow'][start_page_uuid]
+        expect(start_page_flow['next']['default']).to eq(third_page_uuid)
+      end
+
+      context 'when the page being deleted is the last page in the service flow' do
+        # to do
       end
     end
 
     # In future, we may not want to allow users to delete Privacy, Accessibility or Cookies standalone pages
     context 'when deleting standalone pages' do
       let(:updated_metadata) do
-        metadata = service_metadata.deep_dup
+        metadata = fixture.deep_dup
         metadata['standalone_pages'].delete_at(1)
         metadata
       end
       let(:attributes) do
         {
-          uuid: '4b86fe8c-7723-4cce-9378-7b2510279e04',
-          service_id: service.service_id,
-          latest_metadata: service_metadata
+          uuid: fixture['standalone_pages'][1]['_uuid'],
+          service_id: service_id,
+          latest_metadata: fixture
         }
       end
 
       it 'creates new version with page deleted' do
         expect(page.destroy).to eq(updated_metadata)
+      end
+
+      it 'does not remove anything from the service flow' do
+        expect(page.destroy['flow'].size).to eq(fixture['flow'].size)
       end
     end
   end

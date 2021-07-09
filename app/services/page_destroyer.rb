@@ -26,6 +26,21 @@ class PageDestroyer
     return @latest_metadata if object['_type'] == 'page.start'
 
     @latest_metadata[page_collection].delete_at(index)
+    @latest_metadata['flow'] = update_service_flow if page_collection == 'pages'
     @latest_metadata
+  end
+
+  private
+
+  def update_service_flow
+    linked_to_uuid = @latest_metadata['flow'][uuid]['next']['default']
+    @latest_metadata['flow'].each do |_flow_uuid, properties|
+      if properties['next']['default'] == uuid
+        properties['next']['default'] = linked_to_uuid
+      end
+    end
+
+    @latest_metadata['flow'].delete(uuid)
+    @latest_metadata['flow']
   end
 end
