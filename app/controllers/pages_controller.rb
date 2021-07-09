@@ -31,7 +31,7 @@ class PagesController < FormController
   end
 
   def destroy
-    @metadata_updater = PageDestroyer.new(common_params.merge(id: @page.id))
+    @metadata_updater = PageDestroyer.new(common_params.merge(uuid: @page.uuid))
 
     @metadata_updater.destroy
     redirect_to edit_service_path(service.service_id)
@@ -47,7 +47,7 @@ class PagesController < FormController
 
   def page_update_params
     update_params = ActiveSupport::HashWithIndifferentAccess.new({
-      id: @page.id
+      uuid: @page.uuid
     }.merge(common_params).merge(page_attributes))
 
     if params[:page] && additional_component

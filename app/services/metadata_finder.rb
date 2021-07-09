@@ -1,15 +1,15 @@
 # The included object needs to respond to #id, #latest_metadata
 #
 module MetadataFinder
-  def find_node_attribute_by_id
+  def find_node_attribute_by_uuid
     latest_metadata.extend Hashie::Extensions::DeepLocate
 
-    latest_metadata.deep_locate(find_id).first
+    latest_metadata.deep_locate(find_uuid).first
   end
 
-  def find_id
+  def find_uuid
     lambda do |key, value, _object|
-      key == '_id' && value == id
+      key == '_uuid' && value == uuid
     end
   end
 
