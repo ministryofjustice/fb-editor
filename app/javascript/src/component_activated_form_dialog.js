@@ -17,26 +17,32 @@
 
 
 const ActivatedDialog = require('./component_activated_dialog');
+const utilities = require('./utilities');
+const mergeObjects = utilities.mergeObjects;
 
 
-class ActivatedFormDialog {
+class ActivatedFormDialog extends ActivatedDialog {
   constructor($form, config) {
-    $form.before(config.activator);
-    var activatedFormDialog = this;
     var $errors = $form.find(".govuk-error-message");
+    $form.before(config.activator); // We need to move before invoking any jQueryUI dialog.
 
-    new ActivatedDialog($form, {
+    super($form, mergeObjects( config, {
       autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
       okText: config.activator.val(),
       activator: config.activator,
       onOk: () => {
-        activatedFormDialog.$form.submit();
+        this.$form.submit();
       },
       onClose: () => {
-        activatedFormDialog.clearErrors();
+        this.clearErrors();
       }
-    });
+    }));
+
+    // Change inherited class name to reflect this Class
+    $form.parents(".ActivatedDialog")
+      .removeClass("ActivatedDialog")
+      .addClass("ActivatedFormDialog");
 
     this.$form = $form;
     this.$errors = $errors;
