@@ -221,11 +221,11 @@ describe("DialogConfiguration", function() {
   describe("Save", function() {
     it("should run safely without passing action to open", function() {
 
-      // Open without passing a function should set action to undefined
+      // Open without passing a function should set action to blank function
       dialog.open({})
-      expect(dialog._saveAction).to.not.exist;
+      expect(typeof dialog._saveAction).to.equal("function");
 
-      // Now we know it does not exist, test the save() method.
+      // Since it is the default blank function we can test the save() method.
       // If all is fine the expectation should run without a fail.
       dialog.save();
       expect(1).to.equal(1);
