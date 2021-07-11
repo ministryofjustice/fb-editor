@@ -56,12 +56,11 @@ class ActivatedDialog {
       close: conf.onClose
     });
 
-    $dialog.parents(".ui-dialog").addClass("ActivatedDialog");
-
-    this._config = conf;
+    this.$container = $dialog.parents(".ui-dialog").addClass(" ActivatedDialog");
     this.$node = $dialog;
     this.$node.data("instance", this);
     this.activator = activator;
+    this._config = conf;
   }
 
   open() {
