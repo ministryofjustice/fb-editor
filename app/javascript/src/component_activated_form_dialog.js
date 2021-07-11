@@ -50,7 +50,8 @@ class ActivatedFormDialog extends ActivatedDialog {
 
   clearErrors() {
     this.$errors.parents().removeClass("govuk-form-group--error");
-    this.$errors.remove();
+    this.$errors.remove(); // Remove from DOM (includes removing all jQuery data)
+    this.$errors = $(); // Make sure nothing is left.
   }
 }
 
