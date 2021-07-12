@@ -57,6 +57,9 @@ class ActivatedDialog {
     });
 
     $dialog.parents(".ui-dialog").addClass("ActivatedDialog");
+    $dialog.on( "dialogclose", function( event, ui ) {
+      $(document).trigger("ActivatedDialogClose");
+    });
 
     this._config = conf;
     this.$node = $dialog;

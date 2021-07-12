@@ -51,6 +51,9 @@ class Dialog {
 
       $node.parents(".ui-dialog").addClass("Dialog");
       $node.data("instance", this);
+      $node.on( "dialogclose", function( event, ui ) {
+        $(document).trigger("DialogClose");
+      });
 
       Dialog.setElements.call(this, $node);
       Dialog.setDefaultText.call(this, $node);
@@ -71,8 +74,18 @@ class Dialog {
   }
 
   open(text) {
+    var $node = this.$node;
     this.content = text || {};
     this.$node.dialog("open");
+    window.setTimeout(function() {
+      // Not great but works.
+      // We want the focus put inside dialog as all functionality to trap tabbing is there already.
+      // Because we sometimes open dialogs from other components, those other components may (like
+      // menus) shift focus from the opening dialog. We need this delay to allow those other events
+      // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
+      // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
+      $node.parent().find("input, button").not(".ui-dialog-titlebar-close").eq(0).focus();
+    }, 100);
   }
 }
 

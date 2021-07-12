@@ -56,6 +56,9 @@ class DialogConfiguration extends Dialog {
       $node.parents(".ui-dialog").removeClass("Dialog");
       $node.parents(".ui-dialog").addClass("DialogConfiguration");
       $node.data("instance", this);
+      $node.on( "dialogclose", function( event, ui ) {
+        $(document).trigger("DialogConfigurationClose");
+      });
 
       DialogConfiguration.setElements.call(this, $node);
       DialogConfiguration.setDefaultText.call(this, $node);
@@ -74,9 +77,8 @@ class DialogConfiguration extends Dialog {
   }
 
   open(text, action) {
-    this.content = text;
-    this._saveAction = action;
-    this.$node.dialog("open");
+    this._saveAction = action || function() {};
+    super.open(text);
   }
 
   save() {
