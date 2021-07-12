@@ -38,6 +38,8 @@ class Dialog {
         }
       }];
 
+    var $container = $(); // Prevent jQuery errors if does not get a value
+
     if($node && $node.length) {
       $node.dialog({
         autoOpen: conf.autoOpen || false,
@@ -49,7 +51,8 @@ class Dialog {
         resizable: false
       });
 
-      $node.parents(".ui-dialog").addClass("Dialog");
+      $container = $node.parents(".ui-dialog");
+      $container.addClass("Dialog");
       $node.data("instance", this);
       $node.on( "dialogclose", function( event, ui ) {
         $(document).trigger("DialogClose");
@@ -60,6 +63,7 @@ class Dialog {
     }
 
     this._config = conf;
+    this.$container = $container;
     this.$node = $node;
   }
 
