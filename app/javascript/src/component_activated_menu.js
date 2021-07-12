@@ -235,6 +235,7 @@ class ActivatedMenuActivator {
 
     menu.$node.before($node);
     $node.addClass("ActivatedMenu_Activator");
+    $node.attr("aria-haspopup", "menu");
 
     this.$node = $node;
     this.menu = menu;

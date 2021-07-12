@@ -59,7 +59,9 @@ en:
     option_add: 'Add option'
     option_remove: 'Delete...'
   pages:
-    form: 'Pages flow'
+    flow:
+      heading: 'Pages flow'
+      step: 'Form page'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'

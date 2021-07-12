@@ -42,7 +42,8 @@ class ServicesController extends DefaultController {
 /* Setup for the Edit action
  **/
 ServicesController.edit = function() {
-  let $document = $(document);
+  var view = this;
+  var $document = $(document);
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
   $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this) );
@@ -53,13 +54,15 @@ ServicesController.edit = function() {
 
   // Create the context menus for each page thumbnail.
   $("[data-component='PageActionMenu']").each((i, el) => {
-    new PageActionMenu($(el), pageCreateDialog, {
+    var menu = new PageActionMenu($(el), pageCreateDialog, {
       selection_event: "PageActionMenuSelection",
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
       }
     });
+
+    view.addLastPointHandler(menu.activator.$node);
   });
 
   // Create the menu for Add Page functionality.
@@ -72,6 +75,7 @@ ServicesController.edit = function() {
       }
     });
 
+    view.addLastPointHandler(menu.activator.$node);
     $document.on(selection_event, PageAdditionMenu.selection.bind(menu) );
   });
 
@@ -264,7 +268,6 @@ function applyCustomOverviewWorkaround() {
   $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
   $overview.height($container.outerHeight(true));
 }
-
 
 
 module.exports = ServicesController;
