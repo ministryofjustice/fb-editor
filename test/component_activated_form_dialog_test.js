@@ -40,7 +40,7 @@ describe("ActivatedFormDialog", function() {
       expect(dialog.$container.hasClass(COMPONENT_CLASS_NAME)).to.be.true;
     });
 
-    it("should not have a two form buttons", function() {
+    it("should have two buttons", function() {
        var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
        expect($buttons.length).to.equal(2);
     });
