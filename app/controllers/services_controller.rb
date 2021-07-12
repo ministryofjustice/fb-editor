@@ -35,7 +35,7 @@ class ServicesController < PermissionsController
   end
 
   def create_flow
-    if service.flow.blank?
+    if service.flow.blank? || ENV['PLATFORM_ENV'] == 'test'
       ServiceUpdater.new(service.metadata).tap do |service_updater|
         service_updater.create_flow
         service_updater.update

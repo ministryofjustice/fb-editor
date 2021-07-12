@@ -2,6 +2,9 @@ RSpec.describe 'Services' do
   let(:current_user) do
     double(id: SecureRandom.uuid)
   end
+  let(:service_updater) do
+    double(create_flow: true, update: true)
+  end
 
   describe 'GET /services/:id/edit' do
     before do
@@ -13,9 +16,6 @@ RSpec.describe 'Services' do
     context 'when there is no flow object in the service metadata' do
       let(:service) do
         MetadataPresenter::Service.new(metadata_fixture('no_flow_service'))
-      end
-      let(:service_updater) do
-        double(create_flow: true, update: true)
       end
 
       it 'will call the service updater' do
@@ -33,9 +33,23 @@ RSpec.describe 'Services' do
         MetadataPresenter::Service.new(metadata_fixture('branching'))
       end
 
-      it 'does not call the service updater' do
-        expect(ServiceUpdater).not_to receive(:new)
-        get "/services/#{service.service_id}/edit"
+      context 'in Test environment' do
+        it 'does not call the service updater' do
+          expect(ServiceUpdater).to receive(:new).and_return(service_updater)
+          get "/services/#{service.service_id}/edit"
+        end
+      end
+
+      context 'in Live environment' do
+        before do
+          allow(ENV).to receive(:[])
+          allow(ENV).to receive(:[]).with('PLATFORM_ENV').and_return('live')
+        end
+
+        it 'does not call the service updater' do
+          expect(ServiceUpdater).not_to receive(:new)
+          get "/services/#{service.service_id}/edit"
+        end
       end
     end
   end
