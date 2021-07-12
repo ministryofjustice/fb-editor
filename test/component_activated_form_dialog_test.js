@@ -185,8 +185,6 @@ describe("ActivatedFormDialog", function() {
         .dialog("destroy")
         .remove();
     });
-
-    $(document.body).empty();
   });
 
   /*
