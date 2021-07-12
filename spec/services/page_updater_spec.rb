@@ -1,4 +1,9 @@
 RSpec.describe PageUpdater do
+  def find_page_uuid(url, meta)
+    all_pages = meta['pages'] + meta['standalone_pages']
+    all_pages.find { |page| page['url'] == url }['_uuid']
+  end
+
   subject(:page) { described_class.new(attributes) }
   let(:service_id) { service.service_id }
   let(:updated_metadata) do
@@ -27,7 +32,7 @@ RSpec.describe PageUpdater do
     let(:valid) { true }
     let(:attributes) do
       {
-        id: 'page.start',
+        uuid: service_metadata['pages'][0]['_uuid'],
         service_id: service.service_id,
         latest_metadata: service_metadata
       }.merge(attributes_to_update)
@@ -101,7 +106,7 @@ RSpec.describe PageUpdater do
           end
           let(:attributes) do
             ActiveSupport::HashWithIndifferentAccess.new({
-              id: 'page._confirmation',
+              uuid: find_page_uuid('confirmation', fixture),
               service_id: service.service_id,
               latest_metadata: fixture,
               actions: { add_component: 'content', component_collection: 'components' },
@@ -146,7 +151,7 @@ RSpec.describe PageUpdater do
             ActiveSupport::HashWithIndifferentAccess.new({
               service_id: service.service_id,
               latest_metadata: service_metadata,
-              id: 'page.star-wars-knowledge',
+              uuid: find_page_uuid('star-wars-knowledge', updated_metadata),
               actions: { add_component: 'number', component_collection: 'components' }
             })
           end
@@ -185,7 +190,7 @@ RSpec.describe PageUpdater do
             ActiveSupport::HashWithIndifferentAccess.new({
               service_id: service.service_id,
               latest_metadata: service_metadata,
-              id: 'page.star-wars-knowledge',
+              uuid: find_page_uuid('star-wars-knowledge', updated_metadata),
               actions: { add_component: 'text', component_collection: 'components' }
             })
           end
@@ -242,7 +247,7 @@ RSpec.describe PageUpdater do
             ActiveSupport::HashWithIndifferentAccess.new({
               service_id: service.service_id,
               latest_metadata: service_metadata,
-              id: 'page.star-wars-knowledge',
+              uuid: find_page_uuid('star-wars-knowledge', updated_metadata),
               actions: { add_component: 'radios', component_collection: 'components' }
             })
           end
@@ -279,7 +284,7 @@ RSpec.describe PageUpdater do
           end
           let(:attributes) do
             ActiveSupport::HashWithIndifferentAccess.new({
-              id: 'page.check-answers',
+              uuid: find_page_uuid('check-answers', updated_metadata),
               service_id: service.service_id,
               latest_metadata: fixture,
               actions: { add_component: 'content', component_collection: 'extra_components' }
@@ -300,7 +305,7 @@ RSpec.describe PageUpdater do
       let(:page_url) { 'do-you-like-star-wars' }
       let(:attributes) do
         {
-          id: 'page.do-you-like-star-wars',
+          uuid: find_page_uuid('do-you-like-star-wars', service_metadata),
           service_id: service.service_id,
           latest_metadata: service_metadata
         }.merge(attributes_to_update)
@@ -386,7 +391,7 @@ RSpec.describe PageUpdater do
 
       let(:attributes) do
         ActiveSupport::HashWithIndifferentAccess.new({
-          id: 'page.privacy',
+          uuid: find_page_uuid('privacy', updated_metadata),
           service_id: service.service_id,
           latest_metadata: fixture
         }.merge(attributes_to_update))
@@ -408,7 +413,10 @@ RSpec.describe PageUpdater do
 
     context 'when removing the cannoli (aka a content component)' do
       let(:attributes_to_update) do
-        { id: 'page.check-answers', actions: { delete_components: [uuid] } }
+        {
+          uuid: find_page_uuid('check-answers', updated_metadata),
+          actions: { delete_components: [uuid] }
+        }
       end
 
       context 'removing from regular components' do

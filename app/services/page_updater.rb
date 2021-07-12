@@ -1,10 +1,10 @@
 class PageUpdater
   include MetadataFinder
-  attr_reader :latest_metadata, :id, :service_id, :actions, :attributes
+  attr_reader :latest_metadata, :uuid, :service_id, :actions, :attributes
 
   def initialize(attributes)
     @latest_metadata = attributes.delete(:latest_metadata).to_h.deep_dup
-    @id = attributes.delete(:id)
+    @uuid = attributes.delete(:uuid)
     @service_id = attributes.delete(:service_id)
     @actions = attributes.delete(:actions)
     @attributes = attributes
@@ -26,7 +26,7 @@ class PageUpdater
   end
 
   def metadata
-    object = find_node_attribute_by_id
+    object = find_node_attribute_by_uuid
     page_collection, index = find_page_collection_and_index(object)
 
     new_object = object.merge(attributes)

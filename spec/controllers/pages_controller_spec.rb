@@ -39,7 +39,7 @@ RSpec.describe PagesController do
 
       it 'parses components as json' do
         expect(controller.page_update_params).to eq({
-          'id' => page.id,
+          'uuid' => page.uuid,
           'latest_metadata' => service_metadata,
           'components' => [component_params_one, component_params_two],
           'service_id' => service.service_id
@@ -52,7 +52,7 @@ RSpec.describe PagesController do
 
       it 'parses params' do
         expect(controller.page_update_params).to eq({
-          'id' => page.id,
+          'uuid' => page.uuid,
           'latest_metadata' => service_metadata,
           'service_id' => service.service_id,
           'heading' => 'They are taking the Hobbits to Isengard'

@@ -21,7 +21,7 @@ RSpec.describe PageDestroyer do
       end
       let(:attributes) do
         {
-          id: 'page.start',
+          uuid: service_metadata['pages'][0]['_uuid'],
           service_id: service.service_id,
           latest_metadata: service_metadata
         }
@@ -46,7 +46,7 @@ RSpec.describe PageDestroyer do
       end
       let(:attributes) do
         {
-          id: 'page.name',
+          uuid: '9e1ba77f-f1e5-42f4-b090-437aa9af7f73',
           service_id: service.service_id,
           latest_metadata: service_metadata
         }
@@ -66,7 +66,7 @@ RSpec.describe PageDestroyer do
       end
       let(:attributes) do
         {
-          id: 'page.privacy',
+          uuid: '4b86fe8c-7723-4cce-9378-7b2510279e04',
           service_id: service.service_id,
           latest_metadata: service_metadata
         }

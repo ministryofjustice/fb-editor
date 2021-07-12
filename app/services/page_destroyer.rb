@@ -1,10 +1,10 @@
 class PageDestroyer
   include MetadataFinder
-  attr_reader :latest_metadata, :id, :service_id, :attributes
+  attr_reader :latest_metadata, :uuid, :service_id, :attributes
 
   def initialize(attributes)
     @latest_metadata = attributes.delete(:latest_metadata).to_h.deep_dup
-    @id = attributes.delete(:id)
+    @uuid = attributes.delete(:uuid)
     @service_id = attributes.delete(:service_id)
     @attributes = attributes
   end
@@ -19,14 +19,14 @@ class PageDestroyer
   end
 
   def metadata
-    object = find_node_attribute_by_id
+    object = find_node_attribute_by_uuid
     page_collection, index = find_page_collection_and_index(object)
 
     # Don't delete start pages
     return @latest_metadata if object['_type'] == 'page.start'
 
     @latest_metadata[page_collection].delete_at(index)
-    @latest_metadata['pages'][0]['steps'].delete(@id) if flow_page?(page_collection)
+    @latest_metadata['pages'][0]['steps'].delete(object['_id']) if flow_page?(page_collection)
     @latest_metadata
   end
 end
