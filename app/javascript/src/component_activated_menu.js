@@ -193,6 +193,7 @@ class ActivatedMenuContainer {
     $(document.body).append($node);
 
     this.$node = $node;
+    this.menu = menu;
   }
 }
 
