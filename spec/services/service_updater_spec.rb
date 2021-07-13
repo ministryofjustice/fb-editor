@@ -1,5 +1,6 @@
 RSpec.describe ServiceUpdater do
   subject(:service_updater) { described_class.new(latest_metadata) }
+  let(:valid) { true }
 
   describe '#create_flow' do
     let(:latest_metadata) { metadata_fixture('no_flow_service') }
@@ -9,7 +10,6 @@ RSpec.describe ServiceUpdater do
     end
 
     context 'creating flow objects from existing pages' do
-      let(:valid) { true }
       let(:service_flow) do
         {
           'cf6dc32f-502c-4215-8c27-1151a45735bb' => {

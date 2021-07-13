@@ -18,6 +18,11 @@ Rails.application.routes.draw do
     member do
       resources :publish, only: [:index, :create]
       resources :pages, param: :page_uuid, only: [:create, :edit, :update, :destroy]
+      resources :branches, param: :flow_uuid, only: [:create, :edit] do
+        member do
+          get '/new', to: 'branches#new'
+        end
+      end
 
       resources :settings, only: [:index]
       namespace :settings do
