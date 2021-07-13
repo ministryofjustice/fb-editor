@@ -193,6 +193,7 @@ class ActivatedMenuContainer {
     $(document.body).append($node);
 
     this.$node = $node;
+    this.$node.data("instance", this);
     this.menu = menu;
   }
 }
@@ -242,6 +243,7 @@ class ActivatedMenuActivator {
     $node.attr("aria-haspopup", "menu");
 
     this.$node = $node;
+    this.$node.data("instance", this);
     this.menu = menu;
   }
 }
