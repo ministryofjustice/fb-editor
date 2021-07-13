@@ -28,26 +28,27 @@ class ActivatedMenu {
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
 
-    this.position = mergeObjects({
+    this._position = mergeObjects({
       // Default position settings (can be set on instantiation or overide
       // on-the-fly by passing to component.open() function. Passing in a
       // position object will set the temporary value this.state.position.
       my: "left top",
       at: "left bottom",
       of: this.activator.$node
-    }, property(config, "menu.position") );
+    }, property(config, "menu._position") );
 
     this.state = {
       open: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
-                     // See config.position (above) and jQueryUI documentation
+                     // See config._position (above) and jQueryUI documentation
                      // for what value(s) are required.
     }
 
+    this.container.$node.addClass("ActivatedMenu"); // Also add the main component class.
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
-    this.container.$node.addClass("ActivatedMenu"); // Also add the main component class
+    this.$node.data("instance", this); // Add reference for instance from original node.
 
     ActivatedMenu.bindMenuEventHandlers.call(this);
     ActivatedMenu.setMenuOpenPosition.call(this);
@@ -137,9 +138,9 @@ ActivatedMenu.bindMenuEventHandlers = function() {
 ActivatedMenu.setMenuOpenPosition = function(position) {
   var pos = position || {};
   this.container.$node.position({
-    my: (pos.my || this.position.my),
-    at: (pos.at || this.position.at),
-    of: (pos.of || this.position.of)
+    my: (pos.my || this._position.my),
+    at: (pos.at || this._position.at),
+    of: (pos.of || this._position.of)
   });
 }
 
