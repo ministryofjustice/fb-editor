@@ -33,23 +33,9 @@ RSpec.describe 'Services' do
         MetadataPresenter::Service.new(metadata_fixture('branching'))
       end
 
-      context 'in Test environment' do
-        it 'does not call the service updater' do
-          expect(ServiceUpdater).to receive(:new).and_return(service_updater)
-          get "/services/#{service.service_id}/edit"
-        end
-      end
-
-      context 'in Live environment' do
-        before do
-          allow(ENV).to receive(:[])
-          allow(ENV).to receive(:[]).with('PLATFORM_ENV').and_return('live')
-        end
-
-        it 'does not call the service updater' do
-          expect(ServiceUpdater).not_to receive(:new)
-          get "/services/#{service.service_id}/edit"
-        end
+      it 'does not call the service updater' do
+        expect(ServiceUpdater).not_to receive(:new)
+        get "/services/#{service.service_id}/edit"
       end
     end
   end
