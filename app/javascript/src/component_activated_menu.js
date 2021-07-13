@@ -47,6 +47,7 @@ class ActivatedMenu {
 
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
+    this.container.$node.addClass("ActivatedMenu"); // Also add the main component class
 
     ActivatedMenu.bindMenuEventHandlers.call(this);
     ActivatedMenu.setMenuOpenPosition.call(this);
@@ -198,6 +199,7 @@ class ActivatedMenuContainer {
 class ActivatedMenuActivator {
   constructor(menu, config) {
     var $node = config.activator;
+
     if(!$node || $node.length < 1) {
       $node = $(createElement("button", config.activator_text, config.activator_classname));
     }
