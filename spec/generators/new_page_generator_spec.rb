@@ -49,7 +49,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when only start page exists' do
-      let(:latest_metadata) { metadata_fixture(:service) }
+      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
 
       it 'create valid update service metadata' do
         expect(
@@ -74,20 +74,24 @@ RSpec.describe NewPageGenerator do
           '_type' => component_type
         )
       end
-
-      it 'adds the new page to the steps' do
-        expect(generator.to_metadata['pages'][0]['steps']).to include("page.#{page_url}")
-      end
     end
 
     context 'when there is more than just a start page' do
-      let(:latest_metadata) { metadata_fixture(:version) }
+      let(:latest_metadata) { metadata_fixture(:version_with_flow) }
 
       context 'when inserting page after a given page' do
         # this is the third page so the new page should be the fourth page
         let(:add_page_after) do
           page = service.find_page_by_url('email-address')
           page.uuid
+        end
+        let(:expected_flow_metadata) do
+          {
+            '_type' => 'flow.page',
+            'next' => {
+              'default' => '4b8c6bf3-878a-4446-9198-48351b3e2185'
+            }
+          }
         end
 
         it 'adds new page after the given page' do
@@ -96,11 +100,23 @@ RSpec.describe NewPageGenerator do
           expect(pages[3]).to include(page_attributes)
         end
 
-        it 'adds the new page after given page steps' do
+        it 'adds the page flow object' do
+          flow = generator.to_metadata['flow']
+          expect(flow.keys).to include('mandalorian-123')
+          expect(flow['mandalorian-123']).to eq(expected_flow_metadata)
+        end
+
+        it 'links the previous page flow object to the new page flow object' do
+          previous_page = generator.to_metadata['flow'][add_page_after]
+          expect(previous_page['next']['default']).to eq('mandalorian-123')
+        end
+
+        it 'creates valid service flow metadata' do
           expect(
-            # the step index is 2 because 'steps' doesn't count the start page
-            generator.to_metadata['pages'][0]['steps'][2]
-          ).to include("page.#{page_url}")
+            MetadataPresenter::ValidateSchema.validate(
+              generator.to_metadata['flow'], 'flow.base'
+            )
+          ).to be(valid)
         end
       end
 
@@ -110,12 +126,6 @@ RSpec.describe NewPageGenerator do
         it 'adds new page in last position' do
           expect(generator.to_metadata['pages']).to_not be_blank
           expect(generator.to_metadata['pages'].last).to include(page_attributes)
-        end
-
-        it 'adds the new page to last step' do
-          expect(
-            generator.to_metadata['pages'][0]['steps'].last
-          ).to include("page.#{page_url}")
         end
       end
 
@@ -139,10 +149,24 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when adding a flow page' do
-      let(:latest_metadata) { metadata_fixture(:service) }
+      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
 
       it 'adds the page to the pages array' do
         expect(generator.to_metadata['pages'].count).to eq(2) # including start page
+      end
+
+      it 'adds the flow page object to service flow' do
+        metadata = generator.to_metadata
+        page_uuids = metadata['pages'].map { |page| page['_uuid'] }
+        flow_uuids = metadata['flow'].keys
+
+        expect(generator.to_metadata['flow'].count).to eq(2)
+        expect(flow_uuids).to eq(page_uuids)
+      end
+
+      it 'updates the previous pages flow object default next to the new page uuid' do
+        start_page_flow = generator.to_metadata['flow']['86ed04ac-1727-4172-8dd2-608009f1a656']
+        expect(start_page_flow['next']['default']).to eq('mandalorian-123')
       end
     end
 
@@ -154,12 +178,13 @@ RSpec.describe NewPageGenerator do
           page_url: page_url
         )
       end
-      let(:latest_metadata) { metadata_fixture(:service) }
+      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
 
       it 'adds the page to the standalone_pages array' do
         metadata = generator.to_metadata
         expect(metadata['standalone_pages'].count).to eq(4) # there are 3 pages generated there already by default
         expect(metadata['pages'].count).to eq(1)
+        expect(metadata['flow'].count).to eq(1)
       end
     end
   end
@@ -179,7 +204,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when valid metadata for start page' do
-      let(:latest_metadata) { metadata_fixture(:service) }
+      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
       let(:page_type) { 'start' }
       let(:component_type) { nil }
 
@@ -193,7 +218,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when valid metadata for all other pages' do
-      let(:latest_metadata) { metadata_fixture(:version) }
+      let(:latest_metadata) { metadata_fixture(:version_with_flow) }
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do
