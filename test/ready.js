@@ -2,7 +2,7 @@ require('./setup');
 
 const expect = require('chai').expect;
 const utilities = require('../app/javascript/src/utilities.js');
-//require('jquery-ui/ui/widgets/dialog');
+
 describe('Test', function () {
 
   describe('templates', function() {
