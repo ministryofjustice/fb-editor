@@ -25,7 +25,6 @@ const ActivatedMenu = require('./component_activated_menu');
 class QuestionMenu extends ActivatedMenu {
   constructor($node, config) {
     super($node, mergeObjects({
-      container_classname: "QuestionMenu",
       activator_text: "",
       $target: $(), // Used in placing the activator
       question: {}, // TODO: Not sure if we should do this way
@@ -42,6 +41,7 @@ class QuestionMenu extends ActivatedMenu {
       $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
     }
 
+    this.container.$node.addClass("QuestionMenu");
     this.question = config.question;
     this.setRequiredViewState();
   }
