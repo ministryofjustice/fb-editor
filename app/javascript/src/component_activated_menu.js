@@ -28,25 +28,27 @@ class ActivatedMenu {
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
 
-    this.position = mergeObjects({
+    this._position = mergeObjects({
       // Default position settings (can be set on instantiation or overide
       // on-the-fly by passing to component.open() function. Passing in a
-      // position object will set the temporary value this.state.position.
+      // position object will set the temporary value this._state.position.
       my: "left top",
       at: "left bottom",
       of: this.activator.$node
-    }, property(config, "menu.position") );
+    }, property(config, "menu._position") );
 
-    this.state = {
+    this._state = {
       open: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
-                     // See config.position (above) and jQueryUI documentation
+                     // See config._position (above) and jQueryUI documentation
                      // for what value(s) are required.
     }
 
+    this.container.$node.addClass("ActivatedMenu"); // Also add the main component class.
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
+    this.$node.data("instance", this); // Add reference for instance from original node.
 
     ActivatedMenu.bindMenuEventHandlers.call(this);
     ActivatedMenu.setMenuOpenPosition.call(this);
@@ -60,18 +62,18 @@ class ActivatedMenu {
     ActivatedMenu.setMenuOpenPosition.call(this, position);
     this.activator.$node.addClass("active");
     this.container.$node.show();
-    this.state.open = true;
     this.$node.find(".ui-menu-item:first > :first-child").focus();
+    this._state.open = true;
   }
 
   // Method
   close() {
-    this.activator.$node.removeClass("active");
+    this._state.open = false;
     this.container.$node.hide();
-    this.state.open = false;
+    this.activator.$node.removeClass("active");
 
     // Reset any externally/temporary setting of
-    // component.state.position back to default.
+    // component._state.position back to default.
     ActivatedMenu.resetMenuOpenPosition.call(this);
   }
 }
@@ -89,10 +91,10 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   this.$node.on("mouseout", (event) => {
     // event.currentTarget will be the menu (UL) element.
     // check if relatedTarget is not a child element.
-    component.state.close = true;
+    component._state.close = true;
     if(!$.contains(event.currentTarget, event.relatedTarget)) {
       setTimeout(function(e) {
-        if(component.state.close) {
+        if(component._state.close) {
           component.close();
         }
       }, 250);
@@ -100,7 +102,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   });
 
   this.$node.on("mouseover", (event) => {
-    component.state.close = false;
+    component._state.close = false;
   });
 
 
@@ -136,9 +138,9 @@ ActivatedMenu.bindMenuEventHandlers = function() {
 ActivatedMenu.setMenuOpenPosition = function(position) {
   var pos = position || {};
   this.container.$node.position({
-    my: (pos.my || this.position.my),
-    at: (pos.at || this.position.at),
-    of: (pos.of || this.position.of)
+    my: (pos.my || this._position.my),
+    at: (pos.at || this._position.at),
+    of: (pos.of || this._position.of)
   });
 }
 
@@ -162,7 +164,7 @@ ActivatedMenu.resetMenuOpenPosition = function() {
   node.style.top = "";
   node.style.bottom = "";
   node.style.position = "";
-  this.state.position = null; // Reset because this one is set on-the-fly
+  this._state.position = null; // Reset because this one is set on-the-fly
 }
 
 
@@ -191,6 +193,8 @@ class ActivatedMenuContainer {
     $(document.body).append($node);
 
     this.$node = $node;
+    this.$node.data("instance", this);
+    this.menu = menu;
   }
 }
 
@@ -198,12 +202,13 @@ class ActivatedMenuContainer {
 class ActivatedMenuActivator {
   constructor(menu, config) {
     var $node = config.activator;
+
     if(!$node || $node.length < 1) {
       $node = $(createElement("button", config.activator_text, config.activator_classname));
     }
 
     $node.on("click.ActivatedMenuActivator", (event) => {
-      menu.state.activator = event.currentTarget;
+      menu._state.activator = event.currentTarget;
       menu.open();
     });
 
@@ -212,7 +217,7 @@ class ActivatedMenuActivator {
     });
 
     $node.on("blur", (e) => {
-      if(!menu.state.open) {
+      if(!menu._state.open) {
         $node.removeClass("active");
       }
     });
@@ -238,6 +243,7 @@ class ActivatedMenuActivator {
     $node.attr("aria-haspopup", "menu");
 
     this.$node = $node;
+    this.$node.data("instance", this);
     this.menu = menu;
   }
 }
