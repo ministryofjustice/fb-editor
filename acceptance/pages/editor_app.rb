@@ -63,7 +63,7 @@ class EditorApp < SitePrism::Page
   element :add_a_component_button, :link, 'Add component'
   element :question_component,
           :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Question')]"
+          "//*[@role='menuitem' and contains(.,'Question')]"
   element :content_component,
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
