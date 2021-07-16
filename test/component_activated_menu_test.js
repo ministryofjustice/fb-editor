@@ -253,9 +253,11 @@ describe("ActivatedMenu", function() {
     });
 
     it("should open the menu when activator is clicked", function() {
-      // TODO... 
+      simulateClosed(menu);
+      expect(menu.container.$node.get(0).style.display).to.equal("none");
+
       menu.activator.$node.click();
-      //expect(1).to.equal(0); // Fail until done.
+      expect(menu.container.$node.get(0).style.display).to.equal("");
     });
   });
 
