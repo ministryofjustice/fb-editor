@@ -178,6 +178,14 @@ describe("ActivatedMenu", function() {
      **/
     it("should close the menu on mouseout (not sure if can test)");
 
+    it("should close the menu when an unrelated element is clicked", function() {
+      menu.open();
+
+      $(document).trigger('click');
+
+      expect(menu._state.open).to.be.false;
+    });
+
     it("should activate the config.selection_event on menu item selection", function() {
       var value = 1;
       $(document).on(TEST_SELECTION_EVENT_NAME, function() {
