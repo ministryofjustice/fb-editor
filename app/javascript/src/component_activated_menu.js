@@ -215,6 +215,7 @@ class ActivatedMenuActivator {
     }
 
     $node.on("click.ActivatedMenuActivator", (event) => {
+      event.stopPropagation();
       menu._state.activator = event.currentTarget;
       menu.open();
     });
