@@ -105,6 +105,13 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     component._state.close = false;
   });
 
+  // Add a listener to close menu once unrelated element is clicked
+  $(document).on("click", (event) => {
+    // Only close when the current target is not a child of the active menu.
+    if (this._state.open && !$.contains(this.$node, event.currentTarget)) {
+      component.close();
+    }
+  })
 
   // Add a trigger for any listening document event
   // to activate on menu item selection.
