@@ -37,6 +37,7 @@ class ContentMenu extends ActivatedMenu {
       component.$node.on("blur.contentmenu", () => this.activator.$node.removeClass("active"));
     }
 
+    this.container.$node.addClass("ContentMenu");
     this.component = component;
   }
 
