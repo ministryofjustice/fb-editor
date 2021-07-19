@@ -167,6 +167,7 @@ en:
         pdf_hint: All answers will be written in a pdf attached to the email
       page_creation:
         page_url: "What will be the URL for this page?"
+        page_url_hint: "This can not contain any space."
       publish_service_creation:
         allow_anonymous: 'Allow anyone with the link to view'
         require_authentication: 'Set a username and password'
