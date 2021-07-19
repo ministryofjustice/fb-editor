@@ -1,8 +1,9 @@
 require("./setup");
 const expect = require("chai").expect;
 
-describe("ActivatedMenu", function() {
-
+/* eslint no-unused-expressions: "off" */
+/* eslint camelcase: "off" */
+describe("ActivatedMenu", function () {
   const ActivatedMenu = require("../app/javascript/src/component_activated_menu");
   const COMPONENT_CLASSNAME = "ActivatedMenu";
   const CONTAINER_ID = "activated-menu-test-container-id";
@@ -11,20 +12,19 @@ describe("ActivatedMenu", function() {
   const ACTIVATOR_ID = "activated-menu-test-activator-id";
   const ACTIVATOR_TEXT = "activated menu activator";
   const MENU_ID = "activated-menu-test-menu-id";
-  const TEST_SELECTION_ELEMENT_ID = "component-activated-menu-test-selection-event-element";
   const TEST_SELECTION_EVENT_NAME = "ActivatedMenuTestSelectionEventName";
   var menu;
 
   /* Function to manually simulate closed state menu in
    * case any test leaves open when that is not required.
    **/
-  function simulateClosed(menu) {
+  function simulateClosed (menu) {
     menu._state.open = false;
     menu.container.$node.get(0).style.display = "none";
     menu.activator.$node.removeClass("active");
   }
 
-  before(function() {
+  before(function () {
     // jQuery is present in document because the
     // components use it so we can use it here.
 
@@ -47,7 +47,7 @@ describe("ActivatedMenu", function() {
     $(document.body).append($button);
 
     $ul.attr("id", MENU_ID);
-    menu = new ActivatedMenu ($ul, {
+    menu = new ActivatedMenu($ul, {
       activator: $button,
       activator_classname: ACTIVATOR_CLASSNAME,
       container_id: CONTAINER_ID,
@@ -58,7 +58,7 @@ describe("ActivatedMenu", function() {
     });
   });
 
-  after(function() {
+  after(function () {
     menu.$node.menu("destroy");
     menu.$node.remove();
     menu.activator.$node.remove();
@@ -66,40 +66,40 @@ describe("ActivatedMenu", function() {
     menu = null;
   });
 
-  describe("ActivatedMenu", function() {
-    it("should have the basic HTML in place", function() {
+  describe("ActivatedMenu", function () {
+    it("should have the basic HTML in place", function () {
       expect($("#" + MENU_ID).length).to.equal(1);
     });
 
-    it("should have the component class name present", function() {
+    it("should have the component class name present", function () {
       expect($("#" + MENU_ID).parent().hasClass(COMPONENT_CLASSNAME)).to.be.true;
     });
 
-    it("should make the $node public", function() {
+    it("should make the $node public", function () {
       expect(menu.$node).to.exist;
       expect(menu.$node.length).to.equal(1);
     });
 
-    it("should make the activator public", function() {
+    it("should make the activator public", function () {
       expect(menu.activator).to.exist;
     });
 
-    it("should make the container public", function() {
+    it("should make the container public", function () {
       expect(menu.container).to.exist;
     });
 
-    it("should make the instance available as data on the $node", function() {
+    it("should make the instance available as data on the $node", function () {
       expect(menu.$node.data("instance")).to.exist;
       expect(menu.$node.data("instance")).to.equal(menu);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
+    it("should make (public but indicated as) private reference to config", function () {
       expect(menu._config).to.exist;
       expect(menu._config.preventDefault).to.exist;
       expect(menu._config.activator_text).to.equal(ACTIVATOR_TEXT);
     });
 
-    it("should make (public but indicated as) private reference to position", function() {
+    it("should make (public but indicated as) private reference to position", function () {
       expect(menu._position).to.exist;
       expect(menu._position.my).to.exist;
       expect(menu._position.my).to.equal("left top");
@@ -108,12 +108,12 @@ describe("ActivatedMenu", function() {
       expect(menu._position.of).to.exist;
     });
 
-    it("should make (public but indicated as) private reference to state", function() {
+    it("should make (public but indicated as) private reference to state", function () {
       expect(menu._state).to.exist;
       expect(menu._state.open).to.exist;
     });
 
-    it("should open the menu by the open() method", function() {
+    it("should open the menu by the open() method", function () {
       simulateClosed(menu);
       expect(menu.container.$node.get(0).style.display).to.equal("none");
 
@@ -121,7 +121,7 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("");
     });
 
-    it("should set the state.open to true when open() is activated", function() {
+    it("should set the state.open to true when open() is activated", function () {
       simulateClosed(menu);
       expect(menu._state.open).to.be.false;
 
@@ -129,7 +129,7 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.be.true;
     });
 
-    it("should add the class 'active' to the activator on open()", function() {
+    it("should add the class 'active' to the activator on open()", function () {
       simulateClosed(menu);
 
       expect(menu._state.open).to.be.false;
@@ -144,7 +144,7 @@ describe("ActivatedMenu", function() {
      **/
     it("should set the position values passed in open()");
 
-    it("should close the menu by the close() method", function() {
+    it("should close the menu by the close() method", function () {
       menu.open();
       expect(menu.container.$node.get(0).style.display).to.equal("");
 
@@ -152,7 +152,7 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("none");
     });
 
-    it("should set the state.open to false when close() is activated", function() {
+    it("should set the state.open to false when close() is activated", function () {
       menu.open();
       expect(menu._state.open).to.be.true;
 
@@ -160,7 +160,7 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.be.false;
     });
 
-    it("should remove the class 'active' from the activator on close()", function() {
+    it("should remove the class 'active' from the activator on close()", function () {
       menu.open();
       expect(menu.activator.$node.hasClass("active")).to.be.true;
 
@@ -178,9 +178,9 @@ describe("ActivatedMenu", function() {
      **/
     it("should close the menu on mouseout (not sure if can test)");
 
-    it("should activate the config.selection_event on menu item selection", function() {
+    it("should activate the config.selection_event on menu item selection", function () {
       var value = 1;
-      $(document).on(TEST_SELECTION_EVENT_NAME, function() {
+      $(document).on(TEST_SELECTION_EVENT_NAME, function () {
         value++;
       });
 
@@ -191,68 +191,68 @@ describe("ActivatedMenu", function() {
     });
   });
 
-  describe("ActivatedMenuContainer", function() {
-    it("should apply the config.container_id to $node", function() {
+  describe("ActivatedMenuContainer", function () {
+    it("should apply the config.container_id to $node", function () {
       expect(menu.container.$node.attr("id")).to.equal(CONTAINER_ID);
     });
 
-    it("should apply the config.container_classname to $node", function() {
+    it("should apply the config.container_classname to $node", function () {
       var classes = CONTAINER_CLASSNAME.split(" ");
-      for(var i=0; i<classes.length; ++i) {
+      for (var i = 0; i < classes.length; ++i) {
         expect(menu.container.$node.hasClass(classes[i])).to.be.true;
       }
     });
 
-    it("should add the Container to the DOM", function() {
+    it("should add the Container to the DOM", function () {
       var $node = $("#" + CONTAINER_ID);
       expect($node).to.exist;
       expect($node.length).to.equal(1);
     });
 
-    it("should wrap the original menu element", function() {
+    it("should wrap the original menu element", function () {
       expect(menu.$node.parent().attr("id")).to.equal(CONTAINER_ID);
     });
 
-    it("should make the menu public", function() {
+    it("should make the menu public", function () {
       expect(menu.container.menu).to.exist;
       expect(menu.container.menu).to.equal(menu);
     });
 
-    it("should make the $node public", function() {
+    it("should make the $node public", function () {
       expect(menu.container.$node).to.exist;
       expect(menu.container.$node.length).to.equal(1);
     });
 
-    it("should make the instance available as data on the $node", function() {
+    it("should make the instance available as data on the $node", function () {
       expect(menu.container.$node.data("instance")).to.exist;
       expect(menu.container.$node.data("instance")).to.equal(menu.container);
     });
   });
 
-  describe("ActivatedMenuActivator (passed)", function() {
-    it("should use the passed activator when present in config", function() {
+  describe("ActivatedMenuActivator (passed)", function () {
+    it("should use the passed activator when present in config", function () {
       expect(menu.activator).to.exist;
       expect(menu.activator.$node).to.exist;
       expect(menu.activator.$node.length).to.equal(1);
       expect(menu.activator.$node.get(0)).to.equal($("#" + ACTIVATOR_ID).get(0));
     });
 
-    it("should make the $node public", function() {
+    it("should make the $node public", function () {
       expect(menu.activator.$node).to.exist;
       expect(menu.activator.$node.length).to.equal(1);
     });
 
-    it("should make the menu public", function() {
+    it("should make the menu public", function () {
       expect(menu.activator.menu).to.exist;
       expect(menu.activator.menu).to.equal(menu);
     });
 
-    it("should make the instance available as data on the $node", function() {
+    it("should make the instance available as data on the $node", function () {
       expect(menu.activator.$node.data("instance")).to.exist;
       expect(menu.activator.$node.data("instance")).to.equal(menu.activator);
     });
 
-    it("should open the menu when activator is clicked", function() {
+    it("should open the menu when activator is clicked", function () {
       simulateClosed(menu);
       expect(menu.container.$node.get(0).style.display).to.equal("none");
 
@@ -261,12 +261,12 @@ describe("ActivatedMenu", function() {
     });
   });
 
-  describe("ActivatedMenuActivator (created)", function() {
+  describe("ActivatedMenuActivator (created)", function () {
     const ACTIVATOR_CLASSNAME = "activated-menu-created-activator-classname";
     const ACTIVATOR_TEXT = "activated menu text here";
     var menu_creating_activator;
 
-    before(function() {
+    before(function () {
       var $ul = $(`<ul>
                      <li>
                        <span>Item 1a</span>
@@ -280,13 +280,13 @@ describe("ActivatedMenu", function() {
 
       $(document.body).append($ul);
 
-      menu_creating_activator = new ActivatedMenu ($ul, {
+      menu_creating_activator = new ActivatedMenu($ul, {
         activator_classname: ACTIVATOR_CLASSNAME,
         activator_text: ACTIVATOR_TEXT
       });
     });
 
-    after(function() {
+    after(function () {
       menu_creating_activator.$node.menu("destroy");
       menu_creating_activator.$node.remove();
       menu_creating_activator.activator.$node.remove();
@@ -294,31 +294,30 @@ describe("ActivatedMenu", function() {
       menu_creating_activator = null;
     });
 
-    it("should create an activator when none is passed in config", function() {
+    it("should create an activator when none is passed in config", function () {
       expect(menu_creating_activator._config.activator).to.not.exist;
       expect(menu_creating_activator.activator).to.exist;
       expect(menu_creating_activator.activator.$node).to.exist;
       expect(menu_creating_activator.activator.$node.length).to.equal(1);
     });
 
-    it("should use config.activator_text for any created activator", function() {
+    it("should use config.activator_text for any created activator", function () {
       expect(menu_creating_activator._config.activator_text).to.exist;
       expect(typeof menu_creating_activator._config.activator_text).to.equal("string");
       expect(menu_creating_activator._config.activator_text).to.equal(ACTIVATOR_TEXT);
       expect(menu_creating_activator.activator.$node.text()).to.equal(ACTIVATOR_TEXT);
     });
 
-    it("should apply config.activator_classname to any created activator", function() {
+    it("should apply config.activator_classname to any created activator", function () {
       var classes = ACTIVATOR_CLASSNAME.split(" ");
 
       expect(menu_creating_activator._config.activator_classname).to.exist;
       expect(typeof menu_creating_activator._config.activator_classname).to.equal("string");
       expect(menu_creating_activator._config.activator_classname).to.equal(ACTIVATOR_CLASSNAME);
 
-      for(var i=0; i<classes.length; ++i) {
+      for (var i = 0; i < classes.length; ++i) {
         expect(menu_creating_activator.activator.$node.hasClass(classes[i])).to.be.true;
       }
     });
   });
-
 });

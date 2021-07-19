@@ -1,16 +1,16 @@
-require('./setup');
-const expect = require('chai').expect;
+require("./setup");
+const expect = require("chai").expect;
 
-describe("Dialog", function() {
-
-  const Dialog = require('../app/javascript/src/component_dialog');
+/* eslint no-unused-expressions: "off" */
+describe("Dialog", function () {
+  const Dialog = require("../app/javascript/src/component_dialog");
   const OK_TEXT = "Dialog says Ok";
   const DIALOG_CLASSES = "dialog-classname and-something";
   const DIALOG_ID = "component-dialog-test-id";
   const CONTAINER_ID = "component-dialog-test-container";
   var dialog;
 
-  before(function() {
+  before(function () {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
 
@@ -34,54 +34,54 @@ describe("Dialog", function() {
     });
   });
 
-  after(function() {
+  after(function () {
     $("#" + DIALOG_ID).dialog("destroy");
     $("#" + CONTAINER_ID).remove();
   });
 
-  describe("HTML", function() {
-    it("should have the basic HTML in place", function() {
+  describe("HTML", function () {
+    it("should have the basic HTML in place", function () {
       expect($("#" + DIALOG_ID).length).to.equal(1);
     });
 
-    it("should have the Dialog class name present", function() {
+    it("should have the Dialog class name present", function () {
       expect($("#" + DIALOG_ID).parents(".Dialog").length).to.equal(1);
     });
 
-    it("should not have a default jQuery UI cancel button", function() {
-       var $buttons = $("[role='dialog']").find(".ui-dialog-buttonset button");
-       expect($buttons.length).to.equal(1);
-       expect($buttons.eq(0).text()).to.not.equal("Cancel");
+    it("should not have a default jQuery UI cancel button", function () {
+      var $buttons = $("[role='dialog']").find(".ui-dialog-buttonset button");
+      expect($buttons.length).to.equal(1);
+      expect($buttons.eq(0).text()).to.not.equal("Cancel");
     });
   });
 
-  describe("Config", function() {
-    it("should apply CSS classnames passed in config", function() {
-       var $parent = $("#" + DIALOG_ID).parents(".Dialog");
-       expect($parent.get(0).className).to.include(DIALOG_CLASSES);
+  describe("Config", function () {
+    it("should apply CSS classnames passed in config", function () {
+      var $parent = $("#" + DIALOG_ID).parents(".Dialog");
+      expect($parent.get(0).className).to.include(DIALOG_CLASSES);
     });
 
-    it("should use config.okText as button text", function() {
-       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
-       expect($button.text()).to.include(OK_TEXT);
+    it("should use config.okText as button text", function () {
+      var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+      expect($button.text()).to.include(OK_TEXT);
     });
   });
 
-  describe("Properties", function() {
-    it("should make the instance available as data on the $node", function() {
+  describe("Properties", function () {
+    it("should make the instance available as data on the $node", function () {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.data("instance")).to.eql(dialog);
     });
 
-    it("should make the $node public", function() {
+    it("should make the $node public", function () {
       var dialog = $("#" + DIALOG_ID).data("instance");
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.attr("id")).to.equal(DIALOG_ID);
     });
 
-    it("should make (public but indicated as) private reference to elements", function() {
+    it("should make (public but indicated as) private reference to elements", function () {
       expect(dialog._elements).to.exist;
       expect(dialog._elements.heading).to.exist;
       expect(dialog._elements.content).to.exist;
@@ -89,15 +89,14 @@ describe("Dialog", function() {
       expect(dialog._elements.content.length).to.equal(1);
     });
 
-
-    it("should make (public but indicated as) private reference to config", function() {
+    it("should make (public but indicated as) private reference to config", function () {
       expect(dialog._config).to.exist;
       expect(dialog._config.okText).to.equal(OK_TEXT);
     });
   });
 
-  describe("Open", function() {
-    it("should open the dialog with public open() method", function() {
+  describe("Open", function () {
+    it("should open the dialog with public open() method", function () {
       var $parent = dialog.$node.parents(".Dialog");
       expect($parent).to.exist;
       expect($parent.length).to.equal(1);
@@ -108,8 +107,8 @@ describe("Dialog", function() {
     });
   });
 
-  describe("Content", function() {
-    it("should return default text with content method", function() {
+  describe("Content", function () {
+    it("should return default text with content method", function () {
       var text = dialog.content;
 
       expect(text.heading).to.equal("General heading here");
@@ -117,7 +116,7 @@ describe("Dialog", function() {
       expect(text.ok).to.equal("Dialog says Ok");
     });
 
-    it("should set element text with content method", function() {
+    it("should set element text with content method", function () {
       var $heading = $("[data-node='heading']");
       var $content = $("[data-node='content']");
 
@@ -134,7 +133,7 @@ describe("Dialog", function() {
       expect($content.text()).to.equal("Updated content");
     });
 
-    it("should load passed text into the dialog through the open() method", function() {
+    it("should load passed text into the dialog through the open() method", function () {
       var $heading = $("[data-node='heading']");
       var $content = $("[data-node='content']");
 
@@ -154,8 +153,8 @@ describe("Dialog", function() {
     });
   });
 
-  describe("Close", function() {
-    it("should close dialog on click of 'X' (close) button", function() {
+  describe("Close", function () {
+    it("should close dialog on click of 'X' (close) button", function () {
       var $dialog = $(".Dialog");
       var $button = $(".ui-dialog-titlebar-close");
 
@@ -172,5 +171,4 @@ describe("Dialog", function() {
       expect($dialog.get(0).style.display).to.equal("none");
     });
   });
-
 });

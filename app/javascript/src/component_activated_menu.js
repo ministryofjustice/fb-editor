@@ -14,15 +14,13 @@
  *
  **/
 
-const utilities = require('./utilities');
+const utilities = require("./utilities");
 const property = utilities.property;
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
-const safelyActivateFunction = utilities.safelyActivateFunction;
-
 
 class ActivatedMenu {
-  constructor($menu, config) {
+  constructor ($menu, config) {
     this._config = mergeObjects({ menu: {} }, config);
     this.$node = $menu;
     this.activator = new ActivatedMenuActivator(this, config);
@@ -35,8 +33,9 @@ class ActivatedMenu {
       my: "left top",
       at: "left bottom",
       of: this.activator.$node
-    }, property(config, "menu._position") );
+    }, property(config, "menu._position"));
 
+    /* eslint indent: "off" */
     this._state = {
       open: false,
       position: null // Default is empty - update this dynamically by passing
@@ -58,7 +57,7 @@ class ActivatedMenu {
 
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
-  open(position) {
+  open (position) {
     ActivatedMenu.setMenuOpenPosition.call(this, position);
     this.activator.$node.addClass("active");
     this.container.$node.show();
@@ -67,7 +66,7 @@ class ActivatedMenu {
   }
 
   // Method
-  close() {
+  close () {
     this._state.open = false;
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
@@ -82,7 +81,7 @@ class ActivatedMenu {
  * All the event handlers that would otherwse clutter up the
  * constructor of ActivatedMenu.
  **/
-ActivatedMenu.bindMenuEventHandlers = function() {
+ActivatedMenu.bindMenuEventHandlers = function () {
   var component = this;
 
   // Main (generated) activator uses this event to
@@ -92,9 +91,9 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     // event.currentTarget will be the menu (UL) element.
     // check if relatedTarget is not a child element.
     component._state.close = true;
-    if(!$.contains(event.currentTarget, event.relatedTarget)) {
-      setTimeout(function(e) {
-        if(component._state.close) {
+    if (!$.contains(event.currentTarget, event.relatedTarget)) {
+      setTimeout(function (e) {
+        if (component._state.close) {
           component.close();
         }
       }, 250);
@@ -105,16 +104,15 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     component._state.close = false;
   });
 
-
   // Add a trigger for any listening document event
   // to activate on menu item selection.
-  if(this._config.selection_event) {
+  if (this._config.selection_event) {
     let component = this;
-    component.$node.on("menuselect", function(event, ui) {
+    component.$node.on("menuselect", function (event, ui) {
       var e = event.originalEvent;
 
-      if(component._config.preventDefault) {
-         e.preventDefault();
+      if (component._config.preventDefault) {
+        e.preventDefault();
       }
 
       $(document).trigger(component._config.selection_event, {
@@ -135,7 +133,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
  * a setting in passed configuration (this._config.position).
  * Uses the jQueryUI position() utility function to set the values.
  **/
-ActivatedMenu.setMenuOpenPosition = function(position) {
+ActivatedMenu.setMenuOpenPosition = function (position) {
   var pos = position || {};
   this.container.$node.position({
     my: (pos.my || this._position.my),
@@ -147,17 +145,17 @@ ActivatedMenu.setMenuOpenPosition = function(position) {
 /* Private function
  * Removes any position values that have occurred as a result of
  * calling the setMenuOpenPosition() function.
- * Note: This assumes that no external JS script is trying to 
+ * Note: This assumes that no external JS script is trying to
  * set values independently of the ActivatedMenu class functionality.
  * Clearing the values is required to stop jQueryUI position()
  * functionality adding to existing, each time it's called.
- * An alternative might be to set position once, and not on each 
+ * An alternative might be to set position once, and not on each
  * ActivatedMenu.open call. There is a minor performance gain that
- * could be claimed, but it would also be less flexible, if the 
+ * could be claimed, but it would also be less flexible, if the
  * activators (used for position reference) need to be dynamically
- * moved for any enhance or future design improvements. 
+ * moved for any enhance or future design improvements.
  **/
-ActivatedMenu.resetMenuOpenPosition = function() {
+ActivatedMenu.resetMenuOpenPosition = function () {
   var node = this.container.$node.get(0);
   node.style.left = "";
   node.style.right = "";
@@ -167,24 +165,23 @@ ActivatedMenu.resetMenuOpenPosition = function() {
   this._state.position = null; // Reset because this one is set on-the-fly
 }
 
-
 class ActivatedMenuContainer {
-  constructor(menu, config) {
+  constructor (menu, config) {
     var $node = $(createElement("div", "", "ActivatedMenu_Container"));
 
-    if(config.container_id) {
+    if (config.container_id) {
       $node.attr("id", config.container_id);
     }
 
-    if(config.container_classname) {
+    if (config.container_classname) {
       $node.addClass(config.container_classname);
     }
 
     // Allow component public functions to be triggered from the jQuery object without
     // jumping through all the hoops of creating/using a jQuery widget.
     // e.g. use  $("blah").trigger("component.open")
-    $node.on("component.open", (event, position) => menu.open(position) );
-    $node.on("component.close", (event, position) => menu.open(position) );
+    $node.on("component.open", (event, position) => menu.open(position));
+    $node.on("component.close", (event, position) => menu.open(position));
 
     // Add Container to DOM then put the menu inside it.
     // Lastly, move to just inside body for z-index reasons.
@@ -198,12 +195,11 @@ class ActivatedMenuContainer {
   }
 }
 
-
 class ActivatedMenuActivator {
-  constructor(menu, config) {
+  constructor (menu, config) {
     var $node = config.activator;
 
-    if(!$node || $node.length < 1) {
+    if (!$node || $node.length < 1) {
       $node = $(createElement("button", config.activator_text, config.activator_classname));
     }
 
@@ -217,7 +213,7 @@ class ActivatedMenuActivator {
     });
 
     $node.on("blur", (e) => {
-      if(!menu._state.open) {
+      if (!menu._state.open) {
         $node.removeClass("active");
       }
     });
@@ -227,15 +223,14 @@ class ActivatedMenuActivator {
       // console.log("e.which: , ", e.which);
 
       // ESC
-      if(e.which == 27) {
+      if (e.which === 27) {
         menu.close();
       }
 
       // DOWN
-      if(e.which == 40) {
+      if (e.which === 40) {
         menu.open();
       }
-
     });
 
     menu.$node.before($node);
@@ -248,7 +243,5 @@ class ActivatedMenuActivator {
   }
 }
 
-
 // Make available for importing.
 module.exports = ActivatedMenu;
-

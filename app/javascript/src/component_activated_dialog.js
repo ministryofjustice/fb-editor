@@ -14,10 +14,9 @@
  *
  **/
 
-const utilities = require('./utilities');
+const utilities = require("./utilities");
 const mergeObjects = utilities.mergeObjects;
 const safelyActivateFunction = utilities.safelyActivateFunction;
-
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -28,7 +27,7 @@ const safelyActivateFunction = utilities.safelyActivateFunction;
  * config.onClose takes a function to run after dialog is closed.
  **/
 class ActivatedDialog {
-  constructor($dialog, config) {
+  constructor ($dialog, config) {
     var conf = mergeObjects({}, config);
     var activator = new Activator($dialog, conf);
     var buttons = {};
@@ -63,25 +62,24 @@ class ActivatedDialog {
     this._config = conf;
   }
 
-  open() {
+  open () {
     this.$node.dialog("open");
   }
 
-  close() {
+  close () {
     this.$node.dialog("close");
   }
 }
 
-
 class Activator {
-  constructor($dialog, config) {
+  constructor ($dialog, config) {
     var $node = config.activator;
-    if(!$node || $node.length < 1) {
+    if (!$node || $node.length < 1) {
       $node = createActivator($dialog, config.activatorText, config.classes["ui-activator"]);
     }
 
-    $node.on( "click", () => {
-      $dialog.dialog( "open" );
+    $node.on("click", () => {
+      $dialog.dialog("open");
     });
 
     this.$dialog = $dialog;
@@ -94,15 +92,13 @@ class Activator {
  * @text    (String) Text that will show on the button.
  * @classes (String) Classes added to button.
  **/
-function createActivator($dialog, text, classes) {
-  var $activator = $("<button>\</button>");
-  $activator.text((text || "open dialog")); 
+function createActivator ($dialog, text, classes) {
+  var $activator = $("<button></button>");
+  $activator.text((text || "open dialog"));
   $activator.addClass(classes);
   $dialog.before($activator);
   return $activator;
 }
 
-
 // Make available for importing.
 module.exports = ActivatedDialog;
-
