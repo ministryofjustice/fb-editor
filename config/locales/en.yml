@@ -110,10 +110,10 @@ en:
     submission:
       name: 'Submission settings'
       hint: 'Set what happens when a user submits their data.'
-      sub_heading: 'Controls what will happen to the entered data when the form is submitted. This will take only effect when the form is filled while on Test or Live, not in the Editor preview.'
+      sub_heading: 'Use these settings to control what happens when a user submits the form on Test or Live.'
       email:
-        label: 'Send by email'
-        help: 'Sends the form data via email'
+        label: 'Send data by email'
+        help: ''
         configure_pdf_label: PDF attachment
   publish:
     name: 'Publishing'
@@ -128,17 +128,17 @@ en:
     test:
       button: Publish to Test
       heading: 'Test site'
-      description: 'Forms on Test can be shared with colleagues and protected by password. They will not be listed on search engines.'
+      description: 'Where you can check your form works and get feedback.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
-      hint: Where others can view your form and you can ensure everything works before you launch.
+      hint: 'Where you can check your form works and get feedback.'
     live:
       button: Publish to Live
       heading: 'Live site'
-      description: 'Forms on Live can be seen by anyone and can be listed on search engines if requested.'
+      description: 'Where the public can access and use your form.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
-      hint: Where your form is hosted publicly when your service is running.
+      hint: 'Where the public can access and use your form.'
   services:
     heading: 'Your forms'
     edit: 'Edit'
