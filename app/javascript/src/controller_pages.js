@@ -485,13 +485,28 @@ function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
   var $target = $("#new_answers input:submit");
   $target.before($button1);
+  accessibilityQuestionViewEnhancements(this);
 }
 
 
 function editPageSingleQuestionViewCustomisations() {
   // Hide menu options not required for SingleQuestion page
   $(".QuestionMenu [data-action=remove]").hide();
+  accessibilityQuestionViewEnhancements(this);
 }
 
+/* Aria accessibility view inclusions.
+ * These are being added using JS because the views are controlled by
+ * Metadata Presenter making direct changes more difficult and able to
+ * impact pre-approved accessibility results in the runner that already
+ * has sufficient level of accessibility support.
+ * The Editor already requires JS for correct functionality so we can
+ * safely assume full JS availability.
+ **/
+function accessibilityQuestionViewEnhancements(view) {
+  $(".fb-section_heading").attr("aria-label", view.text.aria.section_header);
+  $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
+  $(".govuk-hint").attr("aria-label", view.text.aria.hint);
+}
 
 module.exports = PagesController;
