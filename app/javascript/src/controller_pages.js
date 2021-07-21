@@ -376,6 +376,9 @@ function enhanceQuestions(view) {
         option: view.text.defaults.option,
         optionHint: view.text.defaults.option_hint,
         optionalFlag: view.text.question_optional_flag,
+        aria: {
+          answers: view.text.aria.answers
+        }
       },
 
       onItemRemoveConfirmation: function(item) {
@@ -403,7 +406,10 @@ function enhanceQuestions(view) {
         itemRemove: view.text.option_remove,
         option: view.text.defaults.option,
         optionHint: view.text.defaults.option_hint,
-        optionalFlag: view.text.question_optional_flag
+        optionalFlag: view.text.question_optional_flag,
+        aria: {
+          answers: view.text.aria.answers
+        }
       },
 
       onItemRemoveConfirmation: function(item) {
