@@ -15,14 +15,12 @@
  *
  **/
 
-
-const Dialog = require('./component_dialog');
-const DialogConfirmation = require('./component_dialog_confirmation');
-const post = require('./utilities').post;
-
+const Dialog = require("./component_dialog");
+const DialogConfirmation = require("./component_dialog_confirmation");
+const post = require("./utilities").post;
 
 class DefaultController {
-  constructor(app) {
+  constructor (app) {
     var view = this;
     var $document = $(document);
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
@@ -39,7 +37,7 @@ class DefaultController {
 
     // To support keyboard navigation, try to set focus
     // for tabbing back to last important point.
-    $document.on("DialogClose ActivatedDialogClose", function() {
+    $document.on("DialogClose ActivatedDialogClose", function () {
       view.$lastPoint.focus();
       view.$lastPoint = $(); // Reset in case it was never used after any setting.
     });
@@ -55,18 +53,17 @@ class DefaultController {
    *
    * Register the activator node  as a possible last point for tab focus support.
    **/
-  addLastPointHandler($node) {
+  addLastPointHandler ($node) {
     var view = this;
-    $node.on("keydown", function() {
+    $node.on("keydown", function () {
       view.$lastPoint = $node;
     });
   }
 }
 
-
 /* Create standard Dialog component with single 'ok' type button.
- **/ 
-function createDialog() {
+ **/
+function createDialog () {
   var $template = $("[data-component-template=Dialog]");
   var $node = $($template.text());
   return new Dialog($node, {
@@ -78,12 +75,11 @@ function createDialog() {
   });
 }
 
-
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
  * Component allows passing a function to it's 'open()' function so that actions
  * can be played out on whether user clicks 'ok' or 'cancel'.
  **/
-function createDialogConfirmation() {
+function createDialogConfirmation () {
   var $template = $("[data-component-template=DialogConfirmation]");
   var $node = $($template.text());
   return new DialogConfirmation($node, {
@@ -96,12 +92,11 @@ function createDialogConfirmation() {
   });
 }
 
-
 /* Dialog Confirmation Delete is simply a Dialog Confirmation with a different
  * class name (dialog-confirmation-delete) added to meet style requirements
  * of the 'delete' button.
  **/
-function createDialogConfirmationDelete() {
+function createDialogConfirmationDelete () {
   var $template = $("[data-component-template=DialogConfirmationDelete]");
   var $node = $($template.text());
   return new DialogConfirmation($node, {
@@ -119,12 +114,11 @@ function createDialogConfirmationDelete() {
  * that will work with Rails (default RailsJS versions messed
  * with other scripts wanting to use e.preventDefault().
  **/
-function isolatedMethodDeleteLinks() {
-  $("header [data-method=delete]").on("click", function(e) {
+function isolatedMethodDeleteLinks () {
+  $("header [data-method=delete]").on("click", function (e) {
     e.preventDefault();
     post(this.href, { _method: "delete" });
   });
 }
-
 
 module.exports = DefaultController;

@@ -1,9 +1,9 @@
-require('./setup');
-const expect = require('chai').expect;
+require("./setup");
+const expect = require("chai").expect;
 
-describe("DialogConfiguration", function() {
-
-  const DialogConfiguration = require('../app/javascript/src/component_dialog_configuration');
+/* eslint no-unused-expressions: "off" */
+describe("DialogConfiguration", function () {
+  const DialogConfiguration = require("../app/javascript/src/component_dialog_configuration");
   const TEXT_CANCEL = "Dialog says Cancel";
   const TEXT_OK = "Dialog says Ok";
   const COMPONENT_CLASS = "DialogConfiguration";
@@ -12,7 +12,7 @@ describe("DialogConfiguration", function() {
   const CONTAINER_ID = "component-dialog-test-container";
   var dialog;
 
-  before(function() {
+  before(function () {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
 
@@ -36,69 +36,69 @@ describe("DialogConfiguration", function() {
     });
   });
 
-  after(function() {
+  after(function () {
     $("#" + DIALOG_ID).dialog("destroy");
     $("#" + CONTAINER_ID).remove();
   });
 
-  describe("HTML", function() {
-    it("should have the basic HTML in place", function() {
+  describe("HTML", function () {
+    it("should have the basic HTML in place", function () {
       expect($("#" + DIALOG_ID).length).to.equal(1);
     });
 
-    it("should have the component class name present", function() {
+    it("should have the component class name present", function () {
       expect($("#" + DIALOG_ID).parents("." + COMPONENT_CLASS).length).to.equal(1);
     });
   });
 
-  describe("Config", function() {
-    it("should apply CSS classnames passed in config", function() {
-       var $parent = $("#" + DIALOG_ID).parents("." + COMPONENT_CLASS);
-       expect($parent.get(0).className).to.include(DIALOG_CLASSES);
+  describe("Config", function () {
+    it("should apply CSS classnames passed in config", function () {
+      var $parent = $("#" + DIALOG_ID).parents("." + COMPONENT_CLASS);
+      expect($parent.get(0).className).to.include(DIALOG_CLASSES);
     });
 
-    it("should use config.okText as button text", function() {
-       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
-       expect($button.length).to.equal(2);
-       expect($button.eq(0).text()).to.equal(TEXT_OK);
+    it("should use config.okText as button text", function () {
+      var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+      expect($button.length).to.equal(2);
+      expect($button.eq(0).text()).to.equal(TEXT_OK);
     });
 
-    it("should use config.cancelText as button text", function() {
-       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
-       expect($button.length).to.equal(2);
-       expect($button.eq(1).text()).to.equal(TEXT_CANCEL);
+    it("should use config.cancelText as button text", function () {
+      var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+      expect($button.length).to.equal(2);
+      expect($button.eq(1).text()).to.equal(TEXT_CANCEL);
     });
   });
 
-  describe("Properties", function() {
-    it("should make the instance available as data on the $node", function() {
+  describe("Properties", function () {
+    it("should make the instance available as data on the $node", function () {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.data("instance")).to.eql(dialog);
     });
 
-    it("should make the $node public", function() {
+    it("should make the $node public", function () {
       var dialog = $("#" + DIALOG_ID).data("instance");
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.attr("id")).to.equal(DIALOG_ID);
     });
 
-    it("should make (public but indicated as) private reference to elements", function() {
+    it("should make (public but indicated as) private reference to elements", function () {
       expect(dialog._elements).to.exist;
       expect(dialog._elements.content).to.exist;
       expect(dialog._elements.content.length).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
+    it("should make (public but indicated as) private reference to config", function () {
       expect(dialog._config).to.exist;
       expect(dialog._config.cancelText).to.equal(TEXT_CANCEL);
       expect(dialog._config.okText).to.equal(TEXT_OK);
     });
   });
 
-  describe("Open", function() {
-    it("should open the dialog with public open() method", function() {
+  describe("Open", function () {
+    it("should open the dialog with public open() method", function () {
       var $parent = dialog.$node.parents("." + COMPONENT_CLASS);
       expect($parent).to.exist;
       expect($parent.length).to.equal(1);
@@ -108,9 +108,9 @@ describe("DialogConfiguration", function() {
       expect($parent.get(0).style.display).to.equal("");
     });
 
-    it("should set the action passed as _saveAction", function() {
-      var original  = function() { 1 + 1 }
-      var something = function() { 2 + 2 }
+    it("should set the action passed as _saveAction", function () {
+      var original = function () { 1 + 1 }
+      var something = function () { 2 + 2 }
 
       // Setting directly but this is not how we'd expect to use it.
       dialog._saveAction = original;
@@ -126,8 +126,8 @@ describe("DialogConfiguration", function() {
     });
   });
 
-  describe("Content", function() {
-    it("should set element text with content method", function() {
+  describe("Content", function () {
+    it("should set element text with content method", function () {
       var $content = dialog.$node.find("[data-node='content']");
 
       expect($content).to.exist;
@@ -138,7 +138,7 @@ describe("DialogConfiguration", function() {
       expect($content.html()).to.equal("<p>Updated content</p>");
     });
 
-    it("should return element with get content method", function() {
+    it("should return element with get content method", function () {
       var html = "<p>This is some content</p>";
       var content = { content: html }
 
@@ -153,7 +153,7 @@ describe("DialogConfiguration", function() {
       expect(dialog.content.html()).to.equal(html);
     });
 
-    it("should load passed text into the dialog through the open() method", function() {
+    it("should load passed text into the dialog through the open() method", function () {
       var $content = $("[data-node='content']");
 
       // Make sure it's empty and $node exists.
@@ -171,8 +171,8 @@ describe("DialogConfiguration", function() {
     });
   });
 
-  describe("Close", function() {
-    it("should close dialog on click of 'X' (close) button", function() {
+  describe("Close", function () {
+    it("should close dialog on click of 'X' (close) button", function () {
       var $dialog = $("." + COMPONENT_CLASS);
       var $button = $(".ui-dialog-titlebar-close");
 
@@ -189,7 +189,7 @@ describe("DialogConfiguration", function() {
       expect($dialog.get(0).style.display).to.equal("none");
     });
 
-    it("should close the dialog on negative button press", function() {
+    it("should close the dialog on negative button press", function () {
       var $dialog = $("." + COMPONENT_CLASS);
       var $buttons = $("[role='dialog']").find(".ui-dialog-buttonset button");
 
@@ -203,7 +203,7 @@ describe("DialogConfiguration", function() {
       expect($dialog.get(0).style.display).to.equal("none");
     });
 
-    it("should close the dialog on affirmative button press", function() {
+    it("should close the dialog on affirmative button press", function () {
       var $dialog = $("." + COMPONENT_CLASS);
       var $buttons = $("[role='dialog']").find(".ui-dialog-buttonset button");
 
@@ -218,9 +218,8 @@ describe("DialogConfiguration", function() {
     });
   });
 
-  describe("Save", function() {
-    it("should run safely without passing action to open", function() {
-
+  describe("Save", function () {
+    it("should run safely without passing action to open", function () {
       // Open without passing a function should set action to blank function
       dialog.open({})
       expect(typeof dialog._saveAction).to.equal("function");
@@ -231,11 +230,11 @@ describe("DialogConfiguration", function() {
       expect(1).to.equal(1);
     });
 
-    it("should run the set action passed to open", function() {
+    it("should run the set action passed to open", function () {
       var value = 1;
 
       // Open with passed a function and check exists
-      dialog.open({}, function() { value++; });
+      dialog.open({}, function () { value++; });
       expect(dialog._saveAction).to.exist;
 
       dialog.save();

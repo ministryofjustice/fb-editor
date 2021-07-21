@@ -15,20 +15,14 @@
  *
  **/
 
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const safelyActivateFunction = utilities.isFunction;
-const post = utilities.post;
-const ActivatedFormDialog = require('./component_activated_form_dialog');
-const DefaultController = require('./controller_default');
-
+const ActivatedFormDialog = require("./component_activated_form_dialog");
+const DefaultController = require("./controller_default");
 
 class PublishController extends DefaultController {
-  constructor(app) {
+  constructor (app) {
     super(app);
 
-    switch(app.page.action) {
+    switch (app.page.action) {
       case "create":
         PublishController.create.call(this);
         break;
@@ -39,15 +33,14 @@ class PublishController extends DefaultController {
   }
 }
 
-
 /* Setup for the Index action
  **/
-PublishController.index = function() {
+PublishController.index = function () {
   var view = this;
   setupPublishForms.call(this);
 
   // When to show 15 minute message.
-  if(this.publishFormTest.firstTimePublish() || this.publishFormProd.firstTimePublish()) {
+  if (this.publishFormTest.firstTimePublish() || this.publishFormProd.firstTimePublish()) {
     this.dialog.content = {
       ok: view.text.dialogs.button_publish,
       heading: view.text.dialogs.heading_publish,
@@ -58,23 +51,22 @@ PublishController.index = function() {
   }
 }
 
-
 /* Set up for the Create action
  **/
-PublishController.create = function() {
+PublishController.create = function () {
   setupPublishForms.call(this);
 }
-
 
 /* Setup the Publish Form as an enhanced object.
  **/
 class PublishForm {
-  constructor($node) {
+  constructor ($node) {
     var $content = $node.find("fieldset");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
+      /* eslint no-undef: "off" */
       cancelText: app.text.dialogs.button_cancel,
       okText: $submit.val(),
       activator: $submit
@@ -84,15 +76,14 @@ class PublishForm {
     this.$errors = $(".govuk-error-message", $node);
   }
 
-  hasError() {
+  hasError () {
     return this.$errors.length > 0;
   }
 
-  firstTimePublish() {
+  firstTimePublish () {
     return this.$node.data("first_publish");
   }
 }
-
 
 /* Show/hide content based on a yes/no type of radio button control.
  * @content (jQuery node) Content area to be shown/hidden
@@ -104,7 +95,7 @@ class PublishForm {
  *       }
  **/
 class ContentVisibilityController {
-  constructor($content, $radios) {
+  constructor ($content, $radios) {
     // Set listener.
     $radios.eq(0).on("change", this.toggle.bind(this));
     $radios.eq(1).on("change", this.toggle.bind(this));
@@ -113,23 +104,21 @@ class ContentVisibilityController {
     this.toggle();
   }
 
-  toggle() {
+  toggle () {
     // Set initial state.
-    if(this.$radios.last().prop("checked") || this.$radios.last().get(0).checked) {
+    if (this.$radios.last().prop("checked") || this.$radios.last().get(0).checked) {
       this.$content.show();
-    }
-    else {
+    } else {
       this.$content.hide();
     }
   }
 }
 
-
 // Private
 
 /* Find and setup publish forms
  **/
-function setupPublishForms(page) {
+function setupPublishForms (page) {
   this.publishFormTest = new PublishForm($("#publish-form-dev"));
   this.publishFormProd = new PublishForm($("#publish-form-live"));
 }
