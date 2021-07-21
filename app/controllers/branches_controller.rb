@@ -8,7 +8,8 @@ class BranchesController < FormController
   end
 
   def create
-    branch_creation = BranchCreation.new(branch_params)
+    @branch = Branch.new(branch_params)
+    branch_creation = BranchCreation.new(branch: @branch, latest_metadata: service_metadata)
 
     if branch_creation.create
       redirect_to edit_branch_path(service.service_id, branch_creation.branch_uuid)
@@ -23,22 +24,12 @@ class BranchesController < FormController
 
   def branch_attributes
     {
-      previous_flow_object: previous_flow_object,
-      service: service
+      service: service,
+      previous_flow_uuid: params[:previous_flow_uuid] || params.require(:branch).permit(:previous_flow_uuid)
     }
-  end
-
-  def previous_flow_object
-    service.find_page_by_uuid(params[:flow_uuid]) ||
-      service.flow_object(params[:flow_uuid])
   end
 
   def branch_params
-    {
-      service_id: service.service_id,
-      latest_metadata: service_metadata,
-      previous_flow_uuid: params[:branch][:flow_uuid],
-      conditionals: params[:branch][:conditionals_attributes]
-    }
+    params.require(:branch).permit!.merge(branch_attributes)
   end
 end

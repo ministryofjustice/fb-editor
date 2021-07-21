@@ -1,17 +1,15 @@
 class Branch
   include ActiveModel::Model
-  attr_accessor :previous_flow_object, :service, :default_next
+  attr_accessor :previous_flow_uuid, :service, :default_next
 
   def conditionals
     @conditionals ||= []
   end
 
   def conditionals_attributes=(hash)
-    hash
-  end
-
-  def previous_flow_uuid
-    previous_flow_object.uuid
+    hash.each do |_index, conditional_hash|
+      conditionals.push(Conditional.new(conditional_hash))
+    end
   end
 
   def pages
@@ -40,5 +38,10 @@ class Branch
       {},
       previous_flow_object
     ).all.push(previous_flow_object)
+  end
+
+  def previous_flow_object
+    service.find_page_by_uuid(previous_flow_uuid) ||
+      service.flow_object(previous_flow_uuid)
   end
 end

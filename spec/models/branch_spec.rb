@@ -5,42 +5,47 @@ RSpec.describe Branch do
   let(:attributes) { {} }
   let(:branch_attributes) do
     {
-      previous_flow_object: previous_flow_object,
+      previous_flow_uuid: previous_flow_uuid,
       service: service
     }.merge(attributes)
   end
   let(:previous_flow_object) do
     service.find_page_by_url('holiday')
   end
+  let(:previous_flow_uuid) do
+    previous_flow_object.uuid
+  end
 
   describe '#conditionals_attributes=' do
     let(:attributes) do
       {
-        conditionals_attributes: [
-          {
+        'conditionals_attributes' => {
+          '0' => {
+            'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0',
+            'expressions_attributes' => {
+              '0' => { 'component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b' }
+            }
           }
-        ]
+        }
       }
-      # >> => params[:branch][:conditionals_attributes]
-      #   {
-      #     '0' =>
-      #       <ActionController::Parameters {
-      #         "page"=>"3bbf86fc-701f-4cb6-8083-12404b293da0",
-      #         "expressions_attributes" => {
-      #           '0' => {
-      #             "operator" => "is",
-      #             "question"=>"d1c04d9e-877f-4219-a96f-e21dde925f4b",
-      #             "field" => "some-uuid"
-      #           },
-      #           '1' => {
-      #             "operator" => "is",
-      #             "question"=>"d1c04d9e-877f-4219-a96f-e21dde925f4b",
-      #             "field" => "some-uuid"
-      #           }
-      #         }
-      #       } permitted: false>,
-      #     '1' => { ... } # another conditional
-      #   }
+    end
+    let(:conditional) do
+      object = Conditional.new(
+        'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0'
+      )
+      object.tap do
+        object.expressions.push(
+          Expression.new('component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b')
+        )
+      end
+    end
+
+    it 'assigns conditionals' do
+      expect(branch.conditionals).to eq(
+        [
+          conditional
+        ]
+      )
     end
   end
 
@@ -80,12 +85,6 @@ RSpec.describe Branch do
           "What is The Mandalorian's real name?"
         ]
       )
-    end
-  end
-
-  describe '#previous_flow_uuid' do
-    it 'returns the uuid of the previous flow object' do
-      expect(branch.previous_flow_uuid).to eq(previous_flow_object.uuid)
     end
   end
 

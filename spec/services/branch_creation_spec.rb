@@ -1,11 +1,12 @@
 RSpec.describe BranchCreation, type: :model do
   subject(:branch_creation) do
-    described_class.new(attributes)
+    described_class.new(branch: branch, latest_metadata: metadata)
   end
   let(:metadata) { metadata_fixture(:branching) }
 
   describe '#branch_uuid' do
     let(:uuid) { SecureRandom.uuid }
+    let(:branch) { Branch.new(attributes) }
     let(:new_flow_branch_generator) { double(uuid: uuid) }
     before do
       allow(NewFlowBranchGenerator).to receive(:new).and_return(new_flow_branch_generator)
@@ -18,17 +19,20 @@ RSpec.describe BranchCreation, type: :model do
   end
 
   describe '#metadata' do
+    let(:branch) { Branch.new(attributes) }
+    let(:default_next) { SecureRandom.uuid }
     let(:previous_flow_object) do
       metadata['pages'].find { |page| page['url'] == 'favourite-fruit' }
     end
     let(:conditionals_attributes) do
       {
         '0' => {
-          'page' => 'some-page-uuid',
+          'next' => 'some-page-uuid',
           'expressions_attributes' => {
             '0' => {
               'operator' => 'is',
-              'question' => 'some-component-uuid',
+              'page' => 'another-page-uuid',
+              'component' => 'some-component-uuid',
               'field' => 'some-field-uuid'
             }
           }
@@ -45,17 +49,47 @@ RSpec.describe BranchCreation, type: :model do
     end
     let(:attributes) do
       {
-        service_id: metadata['service_id'],
-        latest_metadata: metadata,
-        previous_flow_uuid: params[:branch][:flow_uuid],
-        conditionals: params[:branch][:conditionals_attributes]
+        service: service,
+        previous_flow_uuid: previous_flow_object['_uuid'],
+        conditionals_attributes: conditionals_attributes,
+        default_next: default_next
       }
     end
 
     context 'when metadata is valid' do
-      it 'updates the service flow with the correct metadata' do
-        flow_object = branch_creation.metadata['flow'][branch_creation.branch_uuid]
-        expect(flow_object['next']['conditionals']).to eq(conditionals_attributes)
+      let(:valid) { true }
+      let(:flow_object) { branch_creation.metadata['flow'][branch_creation.branch_uuid] }
+      let(:expected_conditionals) do
+        [
+          {
+            '_type' => 'if',
+            'next' => 'some-page-uuid',
+            'expressions' => [
+              {
+                'operator' => 'is',
+                'page' => 'another-page-uuid',
+                'component' => 'some-component-uuid',
+                'field' => 'some-field-uuid'
+              }
+            ]
+          }
+        ]
+      end
+
+      it 'creates valid service metadata' do
+        expect(
+          MetadataPresenter::ValidateSchema.validate(
+            branch_creation.metadata, 'service.base'
+          )
+        ).to be(valid)
+      end
+
+      it 'updates the service flow with the correct default next' do
+        expect(flow_object['next']['default']).to eq(default_next)
+      end
+
+      it 'updates the service flow with the correct conditionals' do
+        expect(flow_object['next']['conditionals']).to eq(expected_conditionals)
       end
     end
   end
