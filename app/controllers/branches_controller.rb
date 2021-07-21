@@ -9,7 +9,7 @@ class BranchesController < FormController
 
   def create
     @branch = Branch.new(branch_params)
-    branch_creation = BranchCreation.new(@branch)
+    branch_creation = BranchCreation.new(branch: @branch, latest_metadata: service_metadata)
 
     if branch_creation.create
       redirect_to edit_branch_path(service.service_id, branch_creation.branch_uuid)
@@ -33,10 +33,5 @@ class BranchesController < FormController
 
   def branch_params
     params.require(:branch).permit!.merge(branch_attributes)
-#    {
-#      service_id: service.service_id,
-#      latest_metadata: service_metadata,
-#      previous_flow_uuid: params[:branch][:flow_uuid],
-  #  }.merge(params.require(:branch).permit!)
   end
 end

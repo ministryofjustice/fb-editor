@@ -1,15 +1,16 @@
 class NewFlowBranchGenerator
+  include ActiveModel::Model
+  attr_accessor :default_next, :conditionals
+
   def to_metadata
-    { uuid => default_metadata }
+    metadata = DefaultMetadata['flow.branch']
+    metadata['next']['default'] = default_next
+    metadata['next']['conditionals'] = conditionals.map(&:to_metadata)
+
+    { uuid => metadata }
   end
 
   def uuid
     @uuid ||= SecureRandom.uuid
-  end
-
-  private
-
-  def default_metadata
-    DefaultMetadata['flow.branch']
   end
 end

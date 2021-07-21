@@ -31,7 +31,7 @@ RSpec.describe Branch do
     end
     let(:conditional) do
       object = Conditional.new(
-        'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0',
+        'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0'
       )
       object.tap do
         object.expressions.push(

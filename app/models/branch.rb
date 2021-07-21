@@ -7,7 +7,7 @@ class Branch
   end
 
   def conditionals_attributes=(hash)
-    hash.each do |index, conditional_hash|
+    hash.each do |_index, conditional_hash|
       conditionals.push(Conditional.new(conditional_hash))
     end
   end
