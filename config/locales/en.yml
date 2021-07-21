@@ -1,4 +1,9 @@
 en:
+  aria:
+    answers: Answers
+    hint: Querstion Hint
+    question: Question
+    section_heading: Section Heading
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'

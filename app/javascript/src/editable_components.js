@@ -101,6 +101,7 @@ class EditableElement extends EditableBase {
     $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e) );
 
     $node.attr("contentEditable", true);
+    $node.attr("role", "textbox"); // Accessibility helper.
     $node.addClass("EditableElement");
 
     this._content = $node.text().trim();

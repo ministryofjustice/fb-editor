@@ -96,7 +96,7 @@ class RadiosQuestion extends Question {
        activator_text: config.text.edit,
         classnames: "editableCollectionItemControls"
       });
-    });
+    }).parent().attr("aria-lable", config.text.aria.answers);
 
     this._preservedItemCount = 2;
   }
