@@ -15,31 +15,34 @@
  *
  **/
 
-const ActivatedDialog = require("./component_activated_dialog");
-const DefaultController = require("./controller_default");
+
+const ActivatedDialog = require('./component_activated_dialog');
+const DefaultController = require('./controller_default');
+
 
 class FormListPage extends DefaultController {
-  constructor (app) {
+  constructor(app) {
     super(app);
 
     // Create dialog for handling new form input and error reporting.
     new FormCreateDialog(this, $("[data-component='FormCreateDialog']"));
+
   }
 }
+
 
 /* Wrap the create form form in a dialog effect.
  * Errors will also show here on page return.
  **/
 class FormCreateDialog {
-  constructor (page, $node, config) {
+  constructor(page, $node, config) {
     var formCreateDialog = this;
     var $form = $node.find("form");
     var $submit = $form.find(":submit");
     var $errors = $node.find(".govuk-error-message");
 
     new ActivatedDialog($node, {
-      // eslint-disable-next-line no-unneeded-ternary
-      autoOpen: $errors.length ? true : false,
+      autoOpen: $errors.length ? true: false,
       cancelText: $node.data("cancel-text"),
       okText: $submit.val(),
       activatorText: $node.data("activator-text"),
@@ -63,10 +66,11 @@ class FormCreateDialog {
     this.$errors = $errors;
   }
 
-  clearErrors () {
+  clearErrors() {
     this.$errors.parents().removeClass("govuk-form-group--error");
     this.$errors.remove();
   }
 }
+
 
 module.exports = FormListPage;

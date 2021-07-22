@@ -1,9 +1,9 @@
-require("./setup");
-const expect = require("chai").expect;
+require('./setup');
+const expect = require('chai').expect;
 
-/* eslint no-unused-expressions: "off" */
-describe("Confirmation Dialog", function () {
-  const DialogConfirmation = require("../app/javascript/src/component_dialog_confirmation");
+describe("Confirmation Dialog", function() {
+
+  const DialogConfirmation = require('../app/javascript/src/component_dialog_confirmation');
   const CANCEL_TEXT = "Dialog says Cancel";
   const OK_TEXT = "Dialog says Ok";
   const DIALOG_CLASSES = "dialog-classname and-some-dialog";
@@ -11,7 +11,7 @@ describe("Confirmation Dialog", function () {
   const CONTAINER_ID = "component-dialog-confirmation-test-container";
   var dialog;
 
-  before(function () {
+  before(function() {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
 
@@ -36,62 +36,63 @@ describe("Confirmation Dialog", function () {
     });
   });
 
-  after(function () {
+  after(function() {
     $("#" + DIALOG_ID).dialog("destroy");
     $("#" + CONTAINER_ID).remove();
   });
 
-  describe("HTML", function () {
-    it("should have the basic HTML in place", function () {
+  describe("HTML", function() {
+    it("should have the basic HTML in place", function() {
       expect($("#" + DIALOG_ID).length).to.equal(1);
     });
 
-    it("should NOT have the Dialog class name present", function () {
+    it("should NOT have the Dialog class name present", function() {
       expect($("#" + DIALOG_ID).parents(".Dialog").length).to.equal(0);
     });
 
-    it("should have the DialogConfirmation class name present", function () {
+    it("should have the DialogConfirmation class name present", function() {
       expect($("#" + DIALOG_ID).parents(".DialogConfirmation").length).to.equal(1);
     });
 
-    it("should have action two buttons", function () {
+    it("should have action two buttons", function() {
       var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
       var $buttons = $parent.find(".ui-dialog-buttonset button");
       expect($buttons.length).to.equal(2);
     });
   });
 
-  describe("Config", function () {
-    it("should apply CSS classnames passed in config", function () {
-      var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
-      expect($parent.get(0).className).to.include(DIALOG_CLASSES);
+  describe("Config", function() {
+    it("should apply CSS classnames passed in config", function() {
+       var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
+       expect($parent.get(0).className).to.include(DIALOG_CLASSES);
     });
 
-    it("should use config.okText as OK button text", function () {
-      var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
-      expect($button.eq(0).text()).to.include(OK_TEXT);
+    it("should use config.okText as OK button text", function() {
+       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       expect($button.eq(0).text()).to.include(OK_TEXT);
     });
 
-    it("should use config.cancelText as Cancel button text", function () {
-      var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
-      expect($button.eq(1).text()).to.include(CANCEL_TEXT);
+    it("should use config.cancelText as Cancel button text", function() {
+       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       expect($button.eq(1).text()).to.include(CANCEL_TEXT);
     });
   });
 
-  describe("Properties", function () {
-    it("should make the $node public", function () {
+
+  describe("Properties", function() {
+    it("should make the $node public", function() {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
     });
 
-    it("should make the instance available as data on the $node", function () {
+    it("should make the instance available as data on the $node", function() {
       var $node = $("#" + DIALOG_ID);
       expect($node).to.exist;
       expect($node.length).to.equal(1);
       expect($node.data("instance")).to.equal(dialog);
     });
 
-    it("should make (public but indicated as) private reference to elements", function () {
+    it("should make (public but indicated as) private reference to elements", function() {
       expect(dialog._elements).to.exist;
 
       expect(dialog._elements.heading).to.exist;
@@ -107,19 +108,19 @@ describe("Confirmation Dialog", function () {
       expect(dialog._elements.cancel.length).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to config", function () {
+    it("should make (public but indicated as) private reference to config", function() {
       expect(dialog._config).to.exist;
       expect(dialog._config.okText).to.equal(OK_TEXT);
     });
 
-    it("should make (public but indicated as) private reference to action", function () {
+    it("should make (public but indicated as) private reference to action", function() {
       expect(dialog._action).to.exist;
       expect(typeof dialog._action).to.equal("function");
     });
   });
 
-  describe("Content", function () {
-    it("should return default text with content method", function () {
+  describe("Content", function() {
+    it("should return default text with content method", function() {
       var text = dialog.content;
 
       expect(text.heading).to.equal("General heading here");
@@ -127,7 +128,7 @@ describe("Confirmation Dialog", function () {
       expect(text.ok).to.equal("Dialog says Ok");
     });
 
-    it("should set element text with content method", function () {
+    it("should set element text with content method", function() {
       var $heading = $("[data-node='heading']");
       var $content = $("[data-node='content']");
 
@@ -144,7 +145,7 @@ describe("Confirmation Dialog", function () {
       expect($content.text()).to.equal("Updated content");
     });
 
-    it("should load passed text into the dialog through the open() method", function () {
+    it("should load passed text into the dialog through the open() method", function() {
       var $heading = $("[data-node='heading']");
       var $content = $("[data-node='content']");
       var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
@@ -183,9 +184,9 @@ describe("Confirmation Dialog", function () {
       expect($cancel.text()).to.equal("Updated cancel");
     });
 
-    it("should update passed action for dialog through the open() method", function () {
+    it("should update passed action for dialog through the open() method", function() {
       var originalAction = dialog._action;
-      var newAction = function () { return 1 + 1; };
+      var newAction = function() { return 1 + 1; };
 
       expect(dialog._action).to.exist;
       expect(typeof dialog._action).to.equal("function");
@@ -197,8 +198,8 @@ describe("Confirmation Dialog", function () {
     });
   });
 
-  describe("Actions", function () {
-    it("should run dialog._action on OK button click", function () {
+  describe("Actions", function() {
+    it("should run dialog._action on OK button click", function() {
       var $parent = $("#" + DIALOG_ID).parents(".DialogConfirmation");
       var $buttons = $parent.find(".ui-dialog-buttonset button");
       var $element = $("<p>Original text</p>");
@@ -207,7 +208,7 @@ describe("Confirmation Dialog", function () {
       expect($element.text()).to.equal("Original text");
 
       // Open and click OK
-      dialog.open({}, function () { $element.text("Updated text"); });
+      dialog.open({}, function() { $element.text("Updated text"); });
       $buttons.eq(0).click();
 
       expect($element.text()).to.equal("Updated text");
@@ -216,7 +217,7 @@ describe("Confirmation Dialog", function () {
       $element.remove();
     });
 
-    it("should NOT run dialog._action on Cancel click", function () {
+    it("should NOT run dialog._action on Cancel click", function() {
       var $parent = dialog.$node.parents(".DialogConfirmation");
       var $element = $("<p>Original text</p>");
       var $buttons = $parent.find(".ui-dialog-buttonset button");
@@ -230,7 +231,7 @@ describe("Confirmation Dialog", function () {
       expect($parent.get(0).style.display).to.equal("none");
 
       // ...so we open it.
-      dialog.open({}, function () { $element.text("Updated text"); });
+      dialog.open({}, function() { $element.text("Updated text"); });
       expect($parent.get(0).style.display).to.equal("");
 
       // Click the cancel button...
@@ -242,8 +243,8 @@ describe("Confirmation Dialog", function () {
     });
   });
 
-  describe("Buttons", function () {
-    it("should close the dialog on OK button click", function () {
+  describe("Buttons", function() {
+    it("should close the dialog on OK button click", function() {
       var $parent = dialog.$node.parents(".DialogConfirmation");
       var $buttons = $parent.find(".ui-dialog-buttonset button");
 
@@ -263,7 +264,7 @@ describe("Confirmation Dialog", function () {
       expect($parent.get(0).style.display).to.equal("none");
     });
 
-    it("should close the dialog on Cancel button click", function () {
+    it("should close the dialog on Cancel button click", function() {
       var $parent = dialog.$node.parents(".DialogConfirmation");
       var $buttons = $parent.find(".ui-dialog-buttonset button");
 
@@ -283,7 +284,7 @@ describe("Confirmation Dialog", function () {
       expect($parent.get(0).style.display).to.equal("none");
     });
 
-    it("should close the dialog on 'X' (Dialog closer) button click", function () {
+    it("should close the dialog on 'X' (Dialog closer) button click", function() {
       var $dialog = $(".DialogConfirmation");
       var $button = $(".ui-dialog-titlebar-close");
 

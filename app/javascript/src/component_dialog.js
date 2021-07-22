@@ -14,6 +14,10 @@
  *
  **/
 
+const utilities = require('./utilities');
+const safelyActivateFunction = utilities.safelyActivateFunction;
+
+
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
  * Extra config options specific to this enhancement
@@ -23,7 +27,7 @@
  * @config (Object) Configurable key/value pairs.
  **/
 class Dialog {
-  constructor ($node, config) {
+  constructor($node, config) {
     var conf = config || {};
     var classes = conf.classes || {};
     var buttons = conf.buttons || [
@@ -36,7 +40,7 @@ class Dialog {
 
     var $container = $(); // Prevent jQuery errors if does not get a value
 
-    if ($node && $node.length) {
+    if($node && $node.length) {
       $node.dialog({
         autoOpen: conf.autoOpen || false,
         buttons: buttons,
@@ -50,7 +54,7 @@ class Dialog {
       $container = $node.parents(".ui-dialog");
       $container.addClass("Dialog");
       $node.data("instance", this);
-      $node.on("dialogclose", function (event, ui) {
+      $node.on( "dialogclose", function( event, ui ) {
         $(document).trigger("DialogClose");
       });
 
@@ -63,21 +67,21 @@ class Dialog {
     this.$node = $node;
   }
 
-  get content () {
+  get content() {
     return this._defaultText;
   }
 
-  set content (text) {
+  set content(text) {
     this._elements.heading.text(text.heading || this._defaultText.heading);
     this._elements.content.text(text.content || this._defaultText.content);
     this._elements.ok.text(text.ok || this._defaultText.ok);
   }
 
-  open (text) {
+  open(text) {
     var $node = this.$node;
     this.content = text || {};
     this.$node.dialog("open");
-    window.setTimeout(function () {
+    window.setTimeout(function() {
       // Not great but works.
       // We want the focus put inside dialog as all functionality to trap tabbing is there already.
       // Because we sometimes open dialogs from other components, those other components may (like
@@ -92,7 +96,7 @@ class Dialog {
 /* Private
  * Finds required elements to populate this._elements property.
  **/
-Dialog.setElements = function ($node) {
+Dialog.setElements = function($node) {
   var elements = {};
   var $buttons = $node.parents(".Dialog").find(".ui-dialog-buttonset button");
 
@@ -101,7 +105,7 @@ Dialog.setElements = function ($node) {
 
   // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
-
+  
   // Don't want this button so hide it.
   $buttons.eq(1).hide();
 
@@ -111,13 +115,15 @@ Dialog.setElements = function ($node) {
 /* Private
  * Finds on-load text to use as default values.
  **/
-Dialog.setDefaultText = function ($node) {
+Dialog.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
     content: this._elements.content.text(),
-    ok: this._elements.ok.text()
+    ok: this._elements.ok.text(),
   };
 }
 
+
 // Make available for importing.
 module.exports = Dialog;
+

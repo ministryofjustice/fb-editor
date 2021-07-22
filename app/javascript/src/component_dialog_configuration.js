@@ -14,10 +14,11 @@
  *
  **/
 
-const utilities = require("./utilities");
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const safelyActivateFunction = utilities.safelyActivateFunction;
-const Dialog = require("./component_dialog");
+const Dialog = require('./component_dialog');
+
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -31,31 +32,31 @@ const Dialog = require("./component_dialog");
  * @config (Object) Configurable key/value pairs.
  **/
 class DialogConfiguration extends Dialog {
-  constructor ($node, config) {
-    super($node, mergeObjects(config, {
+  constructor($node, config) {
+    super($node, mergeObjects( config, {
       buttons: [
-        {
-          text: config.okText,
-          click: () => {
-            this.save();
-            $node.dialog("close");
-          }
-        },
-        {
-          text: config.cancelText,
-          click: () => {
-            var instance = $node.data("instance");
-            instance.content = instance._defaultText;
-            $node.dialog("close");
-          }
-        }]
+      {
+        text: config.okText,
+        click: () => {
+          this.save();
+          $node.dialog("close");
+        }
+      },
+      {
+        text: config.cancelText,
+        click: () => {
+          var instance = $node.data("instance");
+          instance.content = instance._defaultText;
+          $node.dialog("close");
+        }
+      }]
     }));
 
-    if ($node && $node.length) {
+    if($node && $node.length) {
       $node.parents(".ui-dialog").removeClass("Dialog");
       $node.parents(".ui-dialog").addClass("DialogConfiguration");
       $node.data("instance", this);
-      $node.on("dialogclose", function (event, ui) {
+      $node.on( "dialogclose", function( event, ui ) {
         $(document).trigger("DialogConfigurationClose");
       });
 
@@ -63,24 +64,24 @@ class DialogConfiguration extends Dialog {
       DialogConfiguration.setDefaultText.call(this, $node);
     }
 
-    this._saveAction = function () {} // Gets overwritten within open().
+    this._saveAction = function(){} // Gets overwritten within open().
   }
 
-  get content () {
+  get content() {
     return this._elements.content;
   }
 
-  set content (text) {
+  set content(text) {
     this._elements.content.empty();
     this._elements.content.html(text.content);
   }
 
-  open (text, action) {
-    this._saveAction = action || function () {};
+  open(text, action) {
+    this._saveAction = action || function() {};
     super.open(text);
   }
 
-  save () {
+  save() {
     safelyActivateFunction(this._saveAction, this.content)
   }
 }
@@ -89,7 +90,7 @@ class DialogConfiguration extends Dialog {
  * Replace inherited elements with those required for this dialog.
  * Finds required elements to populate this._elements property.
  **/
-DialogConfiguration.setElements = function ($node) {
+DialogConfiguration.setElements = function($node) {
   var elements = {};
   var $buttons = $node.parents(".DialogConfiguration").find(".ui-dialog-buttonset button");
   $buttons.eq(1).show(); // Reverse inherited state.
@@ -106,7 +107,7 @@ DialogConfiguration.setElements = function ($node) {
  * Replace inherited elements with those required for this dialog.
  * Finds on-load text to use as default values.
  **/
-DialogConfiguration.setDefaultText = function ($node) {
+DialogConfiguration.setDefaultText = function($node) {
   this._defaultText = {
     content: "",
     ok: this._elements.ok.text(),
@@ -114,5 +115,7 @@ DialogConfiguration.setDefaultText = function ($node) {
   };
 }
 
+
 // Make available for importing.
 module.exports = DialogConfiguration;
+

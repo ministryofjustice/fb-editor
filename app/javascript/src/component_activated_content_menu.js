@@ -14,21 +14,24 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require("./component_activated_menu");
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const ActivatedMenu = require('./component_activated_menu');
+
 
 class ContentMenu extends ActivatedMenu {
-  constructor (component, $node, config) {
+  constructor(component, $node, config) {
     super($node, mergeObjects({
       container_classname: "ContentMenu",
       activator_text: ""
     }, config));
 
-    $node.on("menuselect", ContentMenu.selection.bind(this));
+    $node.on("menuselect", ContentMenu.selection.bind(this) );
 
-    if (component.$node.length) {
+    if(component.$node.length) {
       component.$node.prepend(this.activator.$node);
       component.$node.on("focus.contentmenu", () => this.activator.$node.addClass("active"));
       component.$node.on("blur.contentmenu", () => this.activator.$node.removeClass("active"));
@@ -37,21 +40,21 @@ class ContentMenu extends ActivatedMenu {
     this.component = component;
   }
 
-  open (position) {
-    if (this.component) {
+  open(position) {
+    if(this.component) {
       this.component.$node.addClass("active");
     }
     super.open(position);
   }
 
-  close () {
-    if (this.component) {
+  close() {
+    if(this.component) {
       this.component.$node.removeClass("active");
     }
     super.close();
   }
 
-  remove () {
+  remove() {
     $(document).trigger("ContentMenuSelectionRemove", this.component);
   }
 }
@@ -60,9 +63,10 @@ class ContentMenu extends ActivatedMenu {
  * @event (jQuery Event Object) See jQuery docs for info.
  * @data  (Object) See ActivatedMenu and search for config.selection_event
  **/
-ContentMenu.selection = function (event, ui) {
+ContentMenu.selection = function(event, ui) {
   var action = $(event.originalEvent.currentTarget).data("action");
   safelyActivateFunction(this[action].bind(this));
 }
+
 
 module.exports = ContentMenu;
