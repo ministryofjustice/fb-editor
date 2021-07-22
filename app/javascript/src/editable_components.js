@@ -13,14 +13,15 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const showdown = require("showdown");
-/* eslint indent: "off" */
+const isBoolean = utilities.isBoolean;
+const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
                     strikethrough: true,
@@ -30,7 +31,7 @@ const converter = new showdown.Converter({
                     disableForced4SpacesIndentedSublists: true
                   });
 
-showdown.setFlavor("github");
+showdown.setFlavor('github');
 
 /* Editable Base:
  * Shared code across the editable component types.
@@ -45,7 +46,7 @@ showdown.setFlavor("github");
  *                  }
  **/
 class EditableBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     this._config = config || {};
     this.type = config.type;
     this.$node = $node;
@@ -55,29 +56,29 @@ class EditableBase {
     });
   }
 
-  get content () {
-    /* eslint no-undef: "off" */
+  get content() {
     return $node.text();
   }
 
-  remove () {
+  remove() {
     // 1. Remove any form element with target name.
     // 2. Add uuid of target component to delete_components array.
     var $input = $(this._config.form).find("[name='" + this._config.id + "']")
-    if ($input.length) {
+    if($input.length) {
       $input.remove();
     }
     addHiddenInpuElementToForm(this._config.form, "delete_components[]", this._config.data._uuid);
   }
 
-  save () {
+  save() {
     updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }
 
-  emitSaveRequired () {
+  emitSaveRequired() {
     $(document).trigger("SaveRequired");
   }
 }
+
 
 /* Editable Element:
  * Used for creating simple content control objects on HTML
@@ -88,16 +89,16 @@ class EditableBase {
  * @config (Object) Configurable options
  **/
 class EditableElement extends EditableBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
     var defaultContent = $node.data(config.attributeDefaultText);
     var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("focus.editablecomponent", this.edit.bind(this));
-    $node.on("paste.editablecomponent", e => pasteAsPlainText(e));
-    $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e));
+    $node.on("focus.editablecomponent", this.edit.bind(this) );
+    $node.on("paste.editablecomponent", e => pasteAsPlainText(e) );
+    $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e) );
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
@@ -108,23 +109,24 @@ class EditableElement extends EditableBase {
     this._required = required;
   }
 
-  get content () {
+  get content() {
     var content;
-    if (this._required) {
-      content = (this._content === "" ? this._originalContent : this._content);
-    } else {
-      content = (this._content === this._defaultContent ? "" : this._content);
+    if(this._required) {
+      content = (this._content == "" ? this._originalContent : this._content);
+    }
+    else {
+      content = (this._content == this._defaultContent ? "" : this._content);
     }
     return content;
   }
 
-  set content (content) {
+  set content(content) {
     var trimmedContent = content.trim();
-    if (this._content !== trimmedContent) {
+    if(this._content != trimmedContent) {
       this._content = trimmedContent;
 
       // If something change, let's make sure it's not
-      if (this._content !== "" && this._content !== this._defaultContent && this._content !== this._originalContent) {
+      if(this._content != "" && this._content != this._defaultContent && this._content != this._originalContent) {
         this.emitSaveRequired();
       }
     }
@@ -132,25 +134,26 @@ class EditableElement extends EditableBase {
     this.populate(content);
   }
 
-  edit () {
+  edit() {
     this.$node.addClass(this._config.editClassname);
   }
 
-  update () {
+  update() {
     this.content = this.$node.text().trim();
     this.$node.removeClass(this._config.editClassname);
   }
 
   // Expects content or blank string to show content or default text in view.
-  populate (content) {
+  populate(content) {
     var defaultContent = this._defaultContent || this._originalContent;
-    this.$node.text(content === "" ? defaultContent : content);
+    this.$node.text(content == "" ? defaultContent : content);
   }
 
-  focus () {
+  focus() {
     this.$node.focus();
   }
 }
+
 
 /* Editable Content:
  * Used for creating complex content control objects on HTML areas such as a <DIV>,
@@ -163,7 +166,7 @@ class EditableElement extends EditableBase {
  * @config (Object) Configurable options.
  **/
 class EditableContent extends EditableElement {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, config);
     var $input = $("<textarea class=\"input\"></textarea>");
     var $output = $("<div class=\"output\"></div>");
@@ -194,17 +197,17 @@ class EditableContent extends EditableElement {
     $node.off("keydown.editablecomponent");
 
     // Add event to required element
-    $output.on("click.editablecontent, focus.editablecontent", this.edit.bind(this));
-    $input.on("blur.editablecontent", this.update.bind(this));
+    $output.on("click.editablecontent, focus.editablecontent", this.edit.bind(this) );
+    $input.on("blur.editablecontent", this.update.bind(this) );
     // TODO: Experimental and not quite working properly auto-resizing effort.
     //       Disabled for MVP unless there is time to get it right.
-    // $input.on("keydown.editablecontent, paste.editablecontent", EditableContent.inputResizer.bind(this) );
+    //$input.on("keydown.editablecontent, paste.editablecontent", EditableContent.inputResizer.bind(this) );
 
     // Correct the class:
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
 
-    if (config.text.default_content) {
+    if(config.text.default_content) {
       this._defaultContent = config.text.default_content;
     }
 
@@ -216,17 +219,17 @@ class EditableContent extends EditableElement {
   }
 
   // Get content must always return Markdown because that's what we save.
-  get content () {
+  get content() {
     var content = this._content;
     var contentWithoutWhitespace = content.replace(/\s/mig, "");
     var defaultWithoutWhitespace = this._defaultContent.replace(/\s/mig, "");
 
     // Remove whitespace for better comparison
-    content = (contentWithoutWhitespace === defaultWithoutWhitespace ? "" : content);
+    content = (contentWithoutWhitespace == defaultWithoutWhitespace ? "" : content);
 
     // Bit hacky but we handle one type of content value as a string (see above),
     // and the other (component) content as a JSON string for all the component data.
-    if (this._config.data) {
+    if(this._config.data) {
       this._config.data.content = content;
       content = JSON.stringify(this._config.data);
     }
@@ -234,29 +237,29 @@ class EditableContent extends EditableElement {
     return content;
   }
 
-  set content (markdown) {
+  set content(markdown) {
     this._content = markdown;
     this.emitSaveRequired();
   }
 
-  edit () {
+  edit() {
     this.$node.addClass(this._config.editClassname);
     this.$input.val(this._content); // Adds latest stored content to input area
     this.$input.focus();
     this.$input.select();
   }
 
-  focus () {
+  focus() {
     this.edit();
   }
 
-  update () {
+  update() {
     this.content = sanitiseHtml(this.$input.val().trim()); // Get the latest markdown
     this.$node.removeClass(this._config.editClassname);
 
     // Figure out what content to show
     let defaultContent = this._defaultContent || this._originalContent;
-    let content = (this._content === "" ? defaultContent : this._content);
+    let content = (this._content == "" ? defaultContent : this._content);
 
     // Add latest content to output area
     this.$output.html(convertToHtml(content));
@@ -266,11 +269,12 @@ class EditableContent extends EditableElement {
 /* Experimental effort to auto-resize input area.
  * Currently not used as not working 100%.
  **/
-EditableContent.inputResizer = function (e) {
-  if (e.which === 13) {
+EditableContent.inputResizer = function(e) {
+  if(e.which == 13) {
     this.$input.height(this.$input.height() + this._lineHeight);
   }
 }
+
 
 /* Editable Component Base:
  * Share code across the editable component types.
@@ -283,7 +287,7 @@ EditableContent.inputResizer = function (e) {
  *
  **/
 class EditableComponentBase extends EditableBase {
-  constructor ($node, config, elements) {
+  constructor($node, config, elements) {
     super($node, config);
     this.data = config.data;
     $node.data("instance", this);
@@ -292,7 +296,6 @@ class EditableComponentBase extends EditableBase {
     //        something: new EditableElement($node.find("something"), config)
     //        and any others...
     //      }
-    /* eslint no-mixed-operators: "off" */
     this._elements = arguments.length > 2 && elements || {
       label: new EditableElement($node.find(config.selectorElementLabel), config),
       hint: new EditableElement($node.find(config.selectorElementHint), config)
@@ -301,11 +304,11 @@ class EditableComponentBase extends EditableBase {
     $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
   }
 
-  get content () {
+  get content() {
     return JSON.stringify(this.data);
   }
 
-  set content (elements) {
+  set content(elements) {
     // Expect this function to be overridden for each different type inheriting it.
     // e.g.
     // this.data.something = elements.something.content
@@ -313,7 +316,7 @@ class EditableComponentBase extends EditableBase {
     this.data.hint = elements.hint.content;
   }
 
-  save () {
+  save() {
     // e.g.
     // this.data.something = this._elements.something.content;
     this.content = this._elements;
@@ -321,16 +324,16 @@ class EditableComponentBase extends EditableBase {
   }
 
   // Focus on first editable element.
-  focus () {
-    for (var i in this._elements) {
-      /* eslint no-prototype-builtins: "off" */
-      if (this._elements.hasOwnProperty(i)) {
+  focus() {
+    for(var i in this._elements) {
+      if(this._elements.hasOwnProperty(i)) {
         this._elements[i].focus();
         break;
       }
     }
   }
 }
+
 
 /* Editable Text Field Component:
  * Structured editable component comprising of one or more elements.
@@ -360,7 +363,7 @@ class EditableComponentBase extends EditableBase {
  * </div>
  **/
 class EditableTextFieldComponent extends EditableComponentBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     // TODO: Potential future addition...
     //       Maybe make this EditableAttribute instance when class is
     //       ready so we can edit attribute values, such as placeholder.
@@ -372,6 +375,7 @@ class EditableTextFieldComponent extends EditableComponentBase {
     $node.addClass("EditableTextFieldComponent");
   }
 }
+
 
 /* Editable Textarea Field Component:
  * Structured editable component comprising of one or more elements.
@@ -401,7 +405,7 @@ class EditableTextFieldComponent extends EditableComponentBase {
  * </div>
  **/
 class EditableTextareaFieldComponent extends EditableComponentBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
       selectorElementHint: config.selectorHint
@@ -409,6 +413,7 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
     $node.addClass("EditableTextareaFieldComponent");
   }
 }
+
 
 /* Editable Group Field Component:
  * Structured editable component comprising of one or more fields wrapped in fieldset.
@@ -447,7 +452,7 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
  * </div>
  **/
 class EditableGroupFieldComponent extends EditableComponentBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
       selectorElementHint: config.selectorHint
@@ -456,15 +461,16 @@ class EditableGroupFieldComponent extends EditableComponentBase {
   }
 
   // Override get/set content only because we need to use data.legend instead of data.label
-  get content () {
+  get content() {
     return JSON.stringify(this.data);
   }
 
-  set content (elements) {
+  set content(elements) {
     this.data.legend = elements.label.content;
     this.data.hint = elements.hint.content;
   }
 }
+
 
 /* Editable Collection (Radios/Checkboxes) Field Component:
  * Structured editable component comprising of one or more elements.
@@ -519,13 +525,15 @@ class EditableGroupFieldComponent extends EditableComponentBase {
  * </div>
  **/
 class EditableCollectionFieldComponent extends EditableComponentBase {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
       selectorElementHint: config.selectorHint
     }, config));
 
-    this._preservedItemCount = (this.type === "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
+    var text = config.text || {}; // Make sure it exists to avoid errors later on.
+
+    this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
 
@@ -535,23 +543,23 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
 
   // If we override the set content, we obliterate relationship with the inherited get content.
   // This will retain the inherit functionality by explicitly calling it.
-  get content () {
+  get content() {
     return super.content;
   }
 
-  set content (elements) {
+  set content(elements) {
     this.data.legend = elements.label.content;
     this.data.hint = elements.hint.content;
 
     // Set data from items.
     this.data.items = [];
-    for (var i = 0; i < this.items.length; ++i) {
+    for(var i=0; i< this.items.length; ++i) {
       this.data.items.push(this.items[i].data);
     }
   }
 
   // Dynamically adds an item to the components collection
-  addItem () {
+  addItem() {
     // Component should always have at least one item, otherwise something is very wrong.
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
@@ -563,7 +571,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   }
 
   // Dynamically removes an item to the components collection
-  removeItem (item) {
+  removeItem(item) {
     var index = this.items.indexOf(item);
     safelyActivateFunction(this._config.onItemRemove, item);
     this.items.splice(index, 1);
@@ -572,9 +580,9 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this.emitSaveRequired();
   }
 
-  save () {
+  save() {
     // Trigger the save action on items before calling it's own.
-    for (var i = 0; i < this.items.length; ++i) {
+    for(var i=0; i<this.items.length; ++i) {
       this.items[i].save();
     }
     super.save();
@@ -590,7 +598,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  * exist and, if they do not, we want the script to throw an error
  * because it would alert us to something very wrong.
  **/
-EditableCollectionFieldComponent.createCollectionItemTemplate = function (config) {
+EditableCollectionFieldComponent.createCollectionItemTemplate = function(config) {
   var $clone = this.$node.find(config.selectorCollectionItem).eq(0).clone();
   var data = mergeObjects({}, config.data, ["items", "_uuid"]); // pt.1 Copy without items and component uuid.
   var itemConfig = mergeObjects({}, config, ["data"]); // pt.2 Copy without data.
@@ -615,9 +623,9 @@ EditableCollectionFieldComponent.createCollectionItemTemplate = function (config
  * Creates the initialising values for this.items
  * config (Object) key/value pairs for extra information.
  **/
-EditableCollectionFieldComponent.createEditableCollectionItems = function (config) {
+EditableCollectionFieldComponent.createEditableCollectionItems = function(config) {
   var component = this;
-  component.$node.find(config.selectorCollectionItem).each(function (i) {
+  component.$node.find(config.selectorCollectionItem).each(function(i) {
     // WARNING! DO NOT MOVE data or itemConfig OUTSIDE OF THIS LOOP
     // Due to JS reference handling of objects we need to make sure data and itemConfig are
     // inside the loop to instantiate two completely different variables. JS will not pass
@@ -627,7 +635,7 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function (confi
     itemConfig.data = mergeObjects(data, config.data.items[i]); // Bug fix response to JS reference handling.
 
     // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
-    if (this.className.indexOf("EditableComponentCollectionItem") < 0) {
+    if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
       EditableCollectionFieldComponent.addItem.call(component, $(this), itemConfig);
     }
   });
@@ -638,8 +646,8 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function (confi
  * $node (jQuery node) Should be a clone of this.itemTemplate
  * config (Object) key/value pairs for extra information.
  **/
-EditableCollectionFieldComponent.addItem = function ($node, config) {
-  if (!this.items) { this.items = []; } // Should be true on first call only.
+EditableCollectionFieldComponent.addItem = function($node, config) {
+  if(!this.items) { this.items = []; } // Should be true on first call only.
   this.items.push(new EditableComponentCollectionItem(this, $node, config));
 
   // TODO: need to update the data on each item so _id and value are different.
@@ -650,12 +658,13 @@ EditableCollectionFieldComponent.addItem = function ($node, config) {
  * either added a new item or removed one (e.g. makes sure to avoid clash
  * of data _id values.
  **/
-EditableCollectionFieldComponent.updateItems = function () {
+EditableCollectionFieldComponent.updateItems = function() {
   var filters = this._config.filters;
-  for (var i = 0; i < this.items.length; ++i) {
-    this.items[i].data = EditableCollectionFieldComponent.applyFilters(filters, i + 1, this.items[i].data);
+  for(var i=0; i < this.items.length; ++i) {
+    this.items[i].data = EditableCollectionFieldComponent.applyFilters(filters, i+1, this.items[i].data);
   }
 }
+
 
 /* Private function
  * Applies config.filters to the data passed in, with an index number, since this should
@@ -664,13 +673,13 @@ EditableCollectionFieldComponent.updateItems = function () {
  * @unique (Integer|String) Should be current loop number, or at least something unique.
  * @data   (Object) Collection item data.
  **/
-/* eslint camelcase: "off" */
-EditableCollectionFieldComponent.applyFilters = function (filters, unique, data) {
+EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) {
   var filtered_data = {};
-  for (var prop in data) {
-    if (filters && filters.hasOwnProperty(prop)) {
+  for(var prop in data) {
+    if(filters && filters.hasOwnProperty(prop)) {
       filtered_data[prop] = filters[prop].call(data[prop], unique);
-    } else {
+    }
+    else {
       filtered_data[prop] = data[prop];
     }
   }
@@ -692,21 +701,21 @@ EditableCollectionFieldComponent.applyFilters = function (filters, unique, data)
  *
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
-  constructor (editableCollectionFieldComponent, $node, config) {
+  constructor(editableCollectionFieldComponent, $node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorComponentCollectionItemLabel,
       selectorElementHint: config.selectorComponentCollectionItemHint
     }, config));
 
-    if (!config.preserveItem) {
+    if(!config.preserveItem) {
       new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
     }
 
-    $node.on("focus.EditableComponentCollectionItem", "*", function () {
+    $node.on("focus.EditableComponentCollectionItem", "*", function() {
       $node.addClass(config.editClassname);
     });
 
-    $node.on("blur.EditableComponentCollectionItem", "*", function () {
+    $node.on("blur.EditableComponentCollectionItem", "*", function() {
       $node.removeClass(config.editClassname);
     });
 
@@ -714,32 +723,34 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     $node.addClass("EditableComponentCollectionItem");
   }
 
-  remove () {
-    if (this._config.onItemRemoveConfirmation) {
+  remove() {
+    if(this._config.onItemRemoveConfirmation) {
       // If we have confirgured a way to confirm first...
       safelyActivateFunction(this._config.onItemRemoveConfirmation, this);
-    } else {
+    }
+    else {
       // or just run the remove function.
       this.component.removeItem(this);
     }
   }
 
-  save () {
+  save() {
     // Doesn't need super because we're not writing to hidden input.
     this.content = this._elements;
   }
 }
 
+
 class EditableCollectionItemInjector {
-  constructor (editableCollectionFieldComponent, config) {
+  constructor(editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ itemAdd: "add" }, config.text);
+    var text = mergeObjects({ itemAdd: 'add' }, config.text);
     var $node = $(createElement("button", text.itemAdd, conf.classes));
     editableCollectionFieldComponent.$node.append($node);
     $node.addClass("EditableCollectionItemInjector");
     $node.attr("type", "button");
     $node.data("instance", this);
-    $node.on("click", function (e) {
+    $node.on("click", function(e) {
       e.preventDefault();
       editableCollectionFieldComponent.addItem();
     });
@@ -749,24 +760,28 @@ class EditableCollectionItemInjector {
   }
 }
 
+
 class EditableCollectionItemRemover {
-  constructor (editableCollectionItem, editableCollectionFieldComponent, config) {
+  constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
-    var text = mergeObjects({ itemRemove: "remove" }, config.text);
+    var text = mergeObjects({ itemRemove: 'remove' }, config.text);
     var $node = $(createElement("button", text.itemRemove, conf.classes));
+    var removeCollectionItem = function() {
+      editableCollectionFieldComponent.remove(editableCollectionItem);
+    }
 
     $node.data("instance", this);
     $node.addClass("EditableCollectionItemRemover");
     $node.attr("type", "button");
-    $node.on("click.EditableCollectionItemRemover", function (e) {
+    $node.on("click.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       editableCollectionItem.remove();
     });
 
     // Close on ENTER || SPACE
-    $node.on("keydown.EditableCollectionItemRemover", function (e) {
+    $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
-      if (e.which === 13 || e.which === 32) {
+      if(e.which == 13 || e.which == 32) {
         editableCollectionItem.remove();
       }
     });
@@ -779,21 +794,22 @@ class EditableCollectionItemRemover {
   }
 }
 
+
 /* Convert HTML to Markdown by tapping into third-party code.
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
-function convertToMarkdown (html) {
+function convertToMarkdown(html) {
   html = sanitiseHtml(html);
   return converter.makeMarkdown(html);
 }
 
-/* Extremely simple function to safely convert target elements,
+/* Extremely simple function to safely convert target elements, 
  * such as <script>, so JS doesn't run in editor.
  * Note: Because we're converting from Markup, we need to be
  * careful about what is converted into entity or escaped form.
  * For that reason, we are trying to be minimalistic in approach.
- **/
-function sanitiseHtml (html) {
+ **/ 
+function sanitiseHtml(html) {
   html = html.replace("</script>", "&lt;/script&gt;");
   html = html.replace(/<script(.*?)>/, "&lt;script$1&gt;");
   return html;
@@ -802,11 +818,21 @@ function sanitiseHtml (html) {
 /* Convert Markdown to HTML by tapping into third-party code.
  * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
-function convertToHtml (markdown) {
+function convertToHtml(markdown) {
   var html = converter.makeHtml(markdown);
   html = sanitiseHtml(html);
   return html;
 }
+
+
+/* Multiple Line Input Restrictions
+ * Browser contentEditable mode means some pain in trying to prevent
+ * HTML being inserted (rich text attempts by browser). We're only
+ * editing as plain text and markdown for all elements so try to
+ * prevent unwanted entry with this function.
+ **/
+function multipleLineInputRestrictions(event) {}
+
 
 /* Single Line Input Restrictions
  *Browser contentEditable mode means some pain in trying to prevent
@@ -814,9 +840,10 @@ function convertToHtml (markdown) {
  * editing as plain text and markdown for all elements so try to
  * prevent unwanted entry with this function.
  **/
-function singleLineInputRestrictions (event) {
+function singleLineInputRestrictions(event) {
+
   // Prevent ENTER adding <div><br></div> nonsense.
-  if (event.which === 13) {
+  if(event.which == 13) {
     event.preventDefault();
   }
 }
@@ -827,23 +854,26 @@ function singleLineInputRestrictions (event) {
  *
  * Use like: $('something').on('paste', e => pasteAsPlainText(e) )}
  **/
-function pasteAsPlainText (event) {
+function pasteAsPlainText(event) {
   event.preventDefault();
   var content = "";
   if (event.clipboardData || event.originalEvent.clipboardData) {
-    content = (event.originalEvent || event).clipboardData.getData("text/plain");
-  } else {
+    content = (event.originalEvent || event).clipboardData.getData('text/plain');
+  }
+  else {
     if (window.clipboardData) {
-      content = window.clipboardData.getData("Text");
+      content = window.clipboardData.getData('Text');
     }
   }
 
   if (document.queryCommandSupported("insertText")) {
     document.execCommand("insertText", false, content);
-  } else {
+  }
+  else {
     document.execCommand("paste", false, content);
   }
 }
+
 
 /* Determin what type of node is passed and create editable content type
  * to match.
@@ -851,9 +881,9 @@ function pasteAsPlainText (event) {
  * @$node ($jQuery node) REQUIRED - jQuery wrapped HTML element to become editable content.
  * @config (Object) Properties passed for any configuration.
  **/
-function editableComponent ($node, config) {
+function editableComponent($node, config) {
   var klass;
-  switch (config.type) {
+  switch(config.type) {
     case "element":
       klass = EditableElement;
       break;
@@ -876,12 +906,12 @@ function editableComponent ($node, config) {
       klass = EditableCollectionFieldComponent;
       break;
   }
-  /* eslint new-cap: "off" */
   return new klass($node, config);
 }
 
+
 // Make available for importing.
-module.exports = {
+module.exports =  {
   editableComponent: editableComponent,
   EditableElement: EditableElement,
   EditableContent: EditableContent,

@@ -15,32 +15,33 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require("./component_activated_menu");
+const ActivatedMenu = require('./component_activated_menu');
 
-// eslint-disable-next-line camelcase
-const editable_components = require("./editable_components");
+const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
-const Content = require("./content");
+const Content = require('./content');
 
-const CheckboxesQuestion = require("./question_checkboxes");
-const RadiosQuestion = require("./question_radios");
-const DateQuestion = require("./question_date");
-const TextQuestion = require("./question_text");
-const TextareaQuestion = require("./question_text");
+const CheckboxesQuestion = require('./question_checkboxes');
+const RadiosQuestion = require('./question_radios');
+const DateQuestion = require('./question_date');
+const TextQuestion = require('./question_text');
+const TextareaQuestion = require('./question_text');
 
-const DialogConfiguration = require("./component_dialog_configuration");
-const DefaultController = require("./controller_default");
-const ServicesController = require("./controller_services");
+const DialogConfiguration = require('./component_dialog_configuration');
+const DefaultController = require('./controller_default');
+const ServicesController = require('./controller_services');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
+
 class PagesController extends DefaultController {
-  constructor (app) {
+  constructor(app) {
     super(app);
 
-    switch (app.page.action) {
+    switch(app.page.action) {
       case "edit":
         PagesController.edit.call(this);
         break;
@@ -54,7 +55,7 @@ class PagesController extends DefaultController {
 /* ------------------------------
  * Setup for the Edit action view
  * ------------------------------ */
-PagesController.edit = function () {
+PagesController.edit = function() {
   var view = this;
   var dataController = new DataController();
 
@@ -67,43 +68,44 @@ PagesController.edit = function () {
   enhanceQuestions(view);
 
   // Handle page-specific view customisations here.
-  switch (view.type) {
+  switch(view.type) {
     case "page.multiplequestions":
-      editPageMultipleQuestionsViewCustomisations.call(view);
-      break;
+         editPageMultipleQuestionsViewCustomisations.call(view);
+         break;
 
     case "page.singlequestion":
-      editPageSingleQuestionViewCustomisations.call(view);
-      break;
+         editPageSingleQuestionViewCustomisations.call(view);
+         break;
 
     case "page.content":
-      editPageContentViewCustomisations.call(view);
-      break;
+         editPageContentViewCustomisations.call(view);
+         break;
 
     case "page.confirmation":
-      // No customisations required for this view.
-      break;
+         // No customisations required for this view.
+         break;
 
     case "page.checkanswers":
-      editPageCheckAnswersViewCustomisations.call(view);
-      break;
+         editPageCheckAnswersViewCustomisations.call(view);
+         break;
   }
 
   // Enhance any Add Content buttons
-  $("[data-component=add-content]").each(function () {
+  $("[data-component=add-content]").each(function() {
     var $node = $(this);
     new AddContent($node, { $form: dataController.$form });
   });
 
   // Enhance any Add Component buttons.
-  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view));
-  $("[data-component=add-component]").each(function () {
+  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
+  $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { $form: dataController.$form });
   });
 
   // Setting focus for editing.
   focusOnEditableComponent.call(view);
+
 
   // Bind listeners
   // --------------
@@ -112,19 +114,21 @@ PagesController.edit = function () {
   addContentMenuListeners(view);
 
   dataController.saveRequired(false);
-  this.$document.on("SaveRequired", () => dataController.saveRequired(true));
+  this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
 }
+
 
 /* --------------------------------
  * Setup for the Create action view
  * -------------------------------- */
-PagesController.create = function () {
+PagesController.create = function() {
   // Actually uses the Services controller due to view redirect on server.
   ServicesController.edit.call(this);
 }
 
+
 class DataController {
-  constructor () {
+  constructor() {
     var controller = this;
     var $form = $("#editContentForm");
     $form.on("submit", controller.update);
@@ -132,28 +136,30 @@ class DataController {
     this.$form = $form;
   }
 
-  saveRequired (required) {
-    if (required) {
+  saveRequired(required) {
+    if(required) {
       this.$form.find(":submit").prop("disabled", false);
-    } else {
+    }
+    else {
       this.$form.find(":submit").prop("disabled", true);
     }
   }
 
-  update () {
-    $(".fb-editable").each(function () {
+  update() {
+    $(".fb-editable").each(function() {
       $(this).data("instance").save();
     });
   }
 }
 
+
 /* Gives add component buttons functionality to select a component type
- * from a drop menu, and update the 'save' form by activation of a
+ * from a drop menu, and update the 'save' form by activation of a 
  * global document event.
  * (see addComponentMenuSelection function)
  **/
 class AddComponent {
-  constructor ($node) {
+  constructor($node) {
     var $list = $node.find("> ul");
     var $button = $node.find("> a");
 
@@ -172,24 +178,26 @@ class AddComponent {
   }
 }
 
+
 /* Handle item selections on the AddComponent context menu elements.
  **/
-AddComponent.MenuSelection = function (event, data) {
+AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
   updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
   this.dataController.$form.submit();
 }
 
+
 /* Gives add content buttons functionality to update the 'save' form.
  **/
 class AddContent {
-  constructor ($node, config) {
+  constructor($node, config) {
     var $button = $node.find("> a");
     var fieldname = $node.data("fb-field-name") || "page[add_component]";
     this.$button = $button;
     this.$node = $node;
 
-    $button.on("click.AddContent", function () {
+    $button.on("click.AddContent", function() {
       updateHiddenInputOnForm(config.$form, fieldname, "content");
       config.$form.submit();
     });
@@ -198,20 +206,21 @@ class AddContent {
   }
 }
 
+
 /* Question Menu needs to interact with Dialog components before
  * running any action, so we need to work with listeners to coordinate
  * between different component/widgets/functionality, etc.
  **/
-function addQuestionMenuListeners (view) {
+function addQuestionMenuListeners(view) {
   var templateContent = $("[data-component-template=QuestionPropertyFields]").html();
 
   // QuestionMenuSelectionRemove
-  view.$document.on("QuestionMenuSelectionRemove", function (event, question) {
+  view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
     var html = $(templateContent).filter("[data-node=remove]").text();
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, question.$heading.text()),
       ok: view.text.dialogs.button_delete_option
-    }, function () {
+      }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
       question.$node.hide();
@@ -228,31 +237,32 @@ function addQuestionMenuListeners (view) {
   });
 
   // QuestionMenuSelectionRequired
-  view.$document.on("QuestionMenuSelectionRequired", function (event, question) {
+  view.$document.on("QuestionMenuSelectionRequired", function(event, question) {
     var html = $(templateContent).filter("[data-node=required]").get(0).outerHTML;
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
     view.dialogConfiguration.open({
       content: html
-    }, (content) => { question.required = content });
+    }, (content) => { question.required = content } );
   });
 }
+
 
 /* Content Menu needs to interact with Dialog components before
  * running any action, so we need to work with listeners to coordinate
  * between different component/widgets/functionality, etc.
  **/
-function addContentMenuListeners (view) {
+function addContentMenuListeners(view) {
   var templateContent = $("[data-component-template=ContentPropertyFields]").html();
 
   // ContentMenuSelectionRemove
-  view.$document.on("ContentMenuSelectionRemove", function (event, component) {
+  view.$document.on("ContentMenuSelectionRemove", function(event, component) {
     var html = $(templateContent).filter("[data-node=remove]").text();
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
       ok: view.text.dialogs.button_delete_option
-    }, function () {
+      }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
       component.$node.hide();
@@ -269,29 +279,32 @@ function addContentMenuListeners (view) {
   });
 }
 
+
 /* Set focus on first editable component or, if a new component has been
  * added, the first element with that new component.
  **/
-function focusOnEditableComponent () {
+function focusOnEditableComponent() {
   var target = location.hash;
-  if (target.match(/^[#\w\d_]+$/)) {
+  if(target.match(/^[#\w\d_]+$/)) {
     // Newly added component with fragment identifier so find first
     // first editable item of last component.
     let $newComponent = $(target);
-    if ($newComponent.length) {
+    if($newComponent.length) {
       $newComponent.data("instance").focus();
     }
-  } else {
+  }
+  else {
     // Standard editable page so find first editable item.
     $(".fb-editable").eq(0).focus();
   }
 }
 
+
 /* Add edit functionality and component enhancements to content.
  * Affects simple elements (e.g. Headings) and full text blocks.
  **/
-function enhanceContent (view) {
-  view.$editable.filter("[data-fb-content-type=element]").each(function (i, node) {
+function enhanceContent(view) {
+  view.$editable.filter("[data-fb-content-type=element]").each(function(i, node) {
     var $node = $(node);
     new EditableElement($node, {
       editClassname: "active",
@@ -307,7 +320,7 @@ function enhanceContent (view) {
     });
   });
 
-  view.$editable.filter("[data-fb-content-type=content]").each(function (i, node) {
+  view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
     var $node = $(node);
     new Content($node, {
       form: view.dataController.$form,
@@ -318,10 +331,11 @@ function enhanceContent (view) {
   });
 }
 
+
 /* Add edit functionality and component enhancements to questions.
  **/
-function enhanceQuestions (view) {
-  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function (i, node) {
+function enhanceQuestions(view) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
     var question = new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -332,7 +346,7 @@ function enhanceQuestions (view) {
     view.addLastPointHandler(question.menu.activator.$node);
   });
 
-  view.$editable.filter("[data-fb-content-type=date]").each(function (i, node) {
+  view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     var question = new DateQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -342,7 +356,7 @@ function enhanceQuestions (view) {
     view.addLastPointHandler(question.menu.activator.$node);
   });
 
-  view.$editable.filter("[data-fb-content-type=textarea]").each(function (i, node) {
+  view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
     var question = new TextareaQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -352,7 +366,7 @@ function enhanceQuestions (view) {
     view.addLastPointHandler(question.menu.activator.$node);
   });
 
-  view.$editable.filter("[data-fb-content-type=checkboxes]").each(function (i, node) {
+  view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     var question = new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -361,10 +375,10 @@ function enhanceQuestions (view) {
         itemRemove: view.text.option_remove,
         option: view.text.defaults.option,
         optionHint: view.text.defaults.option_hint,
-        optionalFlag: view.text.question_optional_flag
+        optionalFlag: view.text.question_optional_flag,
       },
 
-      onItemRemoveConfirmation: function (item) {
+      onItemRemoveConfirmation: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
@@ -372,7 +386,7 @@ function enhanceQuestions (view) {
         view.dialogConfirmationDelete.open({
           heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
           ok: view.text.dialogs.button_delete_option
-        }, function () {
+          }, function() {
           item.component.removeItem(item);
         });
       }
@@ -380,7 +394,7 @@ function enhanceQuestions (view) {
     view.addLastPointHandler(question.menu.activator.$node);
   });
 
-  view.$editable.filter("[data-fb-content-type=radios]").each(function (i, node) {
+  view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     var question = new RadiosQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -392,7 +406,7 @@ function enhanceQuestions (view) {
         optionalFlag: view.text.question_optional_flag
       },
 
-      onItemRemoveConfirmation: function (item) {
+      onItemRemoveConfirmation: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
@@ -400,7 +414,7 @@ function enhanceQuestions (view) {
         view.dialogConfirmationDelete.open({
           heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
           ok: view.text.dialogs.button_delete_option
-        }, function () {
+          }, function() {
           item.component.removeItem(item);
         });
       }
@@ -409,11 +423,12 @@ function enhanceQuestions (view) {
   });
 }
 
+
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
  * Component allows passing a function to it's 'open()' function so that actions
  * can be played out on whether user clicks 'ok' or 'cancel'.
  **/
-function createDialogConfiguration () {
+function createDialogConfiguration() {
   var $template = $("[data-component-template=DialogConfiguration]");
   var $node = $($template.text());
   return new DialogConfiguration($node, {
@@ -426,6 +441,7 @@ function createDialogConfiguration () {
   });
 }
 
+
 /* Due to limitations in using the GDS templates, we cannot
  * add appropriate HTML attributes to relevant elements in
  * both radio and checkbox hints. This is a workaround to
@@ -433,25 +449,28 @@ function createDialogConfiguration () {
  * the current method of finding them view fb-default-text
  * attribute.
  **/
-function workaroundForDefaultText (view) {
-  $(".govuk-radios__item, .govuk-checkboxes__item").each(function () {
+function workaroundForDefaultText(view) {
+  $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
     var $this = $(this);
     var $span = $this.find("span");
     $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
   });
 }
 
+
 /**************************************************************/
 /* View customisations for PageController.edit actions follow */
 /**************************************************************/
 
-function editPageContentViewCustomisations () {
+
+function editPageContentViewCustomisations() {
   var $button1 = $("[data-component=add-content]");
   var $target = $("#new_answers :submit");
   $target.before($button1);
 }
 
-function editPageCheckAnswersViewCustomisations () {
+
+function editPageCheckAnswersViewCustomisations() {
   var $button1 = $("[data-component=add-content]");
   var $target1 = $(".fb-editable").last();
   var $button2 = $button1.clone();
@@ -461,15 +480,18 @@ function editPageCheckAnswersViewCustomisations () {
   $button2.attr("data-fb-field-name", "page[add_extra_component]");
 }
 
-function editPageMultipleQuestionsViewCustomisations () {
+
+function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
   var $target = $("#new_answers input:submit");
   $target.before($button1);
 }
 
-function editPageSingleQuestionViewCustomisations () {
+
+function editPageSingleQuestionViewCustomisations() {
   // Hide menu options not required for SingleQuestion page
   $(".QuestionMenu [data-action=remove]").hide();
 }
+
 
 module.exports = PagesController;

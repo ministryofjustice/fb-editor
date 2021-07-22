@@ -15,17 +15,20 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const editableComponent = require("./editable_components").editableComponent;
-const QuestionMenu = require("./component_activated_question_menu");
+const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const editableComponent = require('./editable_components').editableComponent;
+const QuestionMenu = require('./component_activated_question_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
+
 class Question {
-  constructor ($node, config) {
+  constructor($node, config) {
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects({
       // Config defaults
@@ -54,33 +57,34 @@ class Question {
     this.setRequiredFlag();
   }
 
-  get required () {
+  get required() {
     return this.data.validation.required;
   }
 
-  set required (content) {
+  set required(content) {
     var arr = content.find("form").serializeArray();
-    for (var i = 0; i < arr.length; ++i) {
-      this.data.validation[arr[i].name] = (arr[i].value === "true");
+    for(var i=0; i < arr.length; ++i) {
+      this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
 
     this.menu.setRequiredViewState();
     this.setRequiredFlag();
   }
 
+
   /* The design calls for a visual indicator that the question is optional.
    * This function is to handle the adding the extra element.
    **/
-  setRequiredFlag () {
+  setRequiredFlag() {
     var $target = this.$heading;
     var text = this._config.text.optionalFlag;
     var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
-    var textWithSpace = " " + text;
+    var textWithSpace =  " " + text;
     var re = new RegExp(regExpTextWithSpace + "$");
 
     // Since we always remove first we can add knowing duplicates should not happen.
     $target.text($target.text().replace(re, ""));
-    if (!this.required) {
+    if(!this.required) {
       $target.text($target.text() + textWithSpace);
     }
 
@@ -89,24 +93,25 @@ class Question {
     $target.data("instance").update();
   }
 
-  focus () {
+  focus() {
     this.editable.focus();
   }
 
-  remove () {
+  remove() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.remove();
   }
 
-  save () {
+  save() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.save();
   }
 }
 
+
 /* Create a menu for Question property editing.
  **/
-function createQuestionMenu () {
+function createQuestionMenu() {
   var question = this;
   var template = $("[data-component-template=QuestionMenu]");
   var $ul = $(template.html());
@@ -120,5 +125,7 @@ function createQuestionMenu () {
     question: question
   });
 }
+
+
 
 module.exports = Question;

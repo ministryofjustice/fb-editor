@@ -15,15 +15,16 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const Question = require("./question");
+const Question = require('./question');
 
 const SELECTOR_HINT = ".govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
 
 class DateQuestion extends Question {
-  constructor ($node, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       // Add stuff here if you want to set defaults
       selectorLabel: SELECTOR_LABEL,
@@ -33,5 +34,6 @@ class DateQuestion extends Question {
     $node.addClass("DateQuestion");
   }
 }
+
 
 module.exports = DateQuestion;

@@ -15,19 +15,22 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const post = utilities.post;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require("./component_activated_menu");
-const ActivatedDialog = require("./component_activated_dialog");
-const DefaultController = require("./controller_default");
+const ActivatedMenu = require('./component_activated_menu');
+const ActivatedDialog = require('./component_activated_dialog');
+const DefaultController = require('./controller_default');
+
 
 class ServicesController extends DefaultController {
-  constructor (app) {
+  constructor(app) {
     super(app);
 
-    switch (app.page.action) {
+    switch(app.page.action) {
       case "edit":
         ServicesController.edit.call(this);
         break;
@@ -35,17 +38,19 @@ class ServicesController extends DefaultController {
   }
 }
 
+
 /* Setup for the Edit action
  **/
-ServicesController.edit = function () {
+ServicesController.edit = function() {
   var view = this;
   var $document = $(document);
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-  $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this));
+  $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this) );
 
   // Create dialog for handling new page input and error reporting.
   let pageCreateDialog = new PageCreateDialog(this, $("[data-component='PageCreateDialog']"));
+
 
   // Create the context menus for each page thumbnail.
   $("[data-component='PageActionMenu']").each((i, el) => {
@@ -61,8 +66,7 @@ ServicesController.edit = function () {
   });
 
   // Create the menu for Add Page functionality.
-  $("[data-component='PageAdditionMenu']").each(function (i) {
-    // eslint-disable-next-line camelcase
+  $("[data-component='PageAdditionMenu']").each(function(i) {
     var selection_event = "PageAdditionMenuSelection_" + i;
     var menu = new PageAdditionMenu($(this), pageCreateDialog, {
       selection_event: selection_event,
@@ -72,33 +76,33 @@ ServicesController.edit = function () {
     });
 
     view.addLastPointHandler(menu.activator.$node);
-    $document.on(selection_event, PageAdditionMenu.selection.bind(menu));
+    $document.on(selection_event, PageAdditionMenu.selection.bind(menu) );
   });
 
   // Fix for the scrolling of form overview.
   applyCustomOverviewWorkaround();
   let scrollTimeout;
-  $(window).on("resize", function () {
-    scrollTimeout = setTimeout(function () {
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
       clearTimeout(scrollTimeout);
       applyCustomOverviewWorkaround();
     }, 500);
   });
 }
 
+
 /* Wrap the create page form in a dialog effect.
  * Errors will also show here on page return.
  **/
 class PageCreateDialog {
-  constructor (page, $node, config) {
+  constructor(page, $node, config) {
     var pageCreateDialog = this;
     var $form = $node.find("form");
     var $submit = $form.find(":submit");
     var $errors = $node.find(".govuk-error-message");
 
     var dialog = new ActivatedDialog($node, {
-      /* eslint no-unneeded-ternary: "off", curly: "error" */
-      autoOpen: $errors.length ? true : false,
+      autoOpen: $errors.length ? true: false,
       cancelText: $node.data("cancel-text"),
       okText: $submit.val(),
       activatorText: $node.data("activator-text"),
@@ -122,16 +126,17 @@ class PageCreateDialog {
     this.$errors = $errors;
   }
 
-  clearErrors () {
+  clearErrors() {
     this.$errors.remove();
     this.$errors.parents().removeClass(".govuk-form-group--error");
   }
 }
 
+
 /* Controls form step add/edit/delete/preview controls
  **/
 class PageActionMenu extends ActivatedMenu {
-  constructor ($node, dialog, config) {
+  constructor($node, dialog, config) {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
@@ -143,66 +148,69 @@ class PageActionMenu extends ActivatedMenu {
   }
 }
 
+
 /* Handle item selections on the form step context
  * menu elements.
  * TODO: What are other actions?
  **/
-function pageActionMenuSelection (event, data) {
+function pageActionMenuSelection(event, data) {
   var element = data.original.element;
   var action = data.activator.data("action");
-  switch (action) {
+  switch(action) {
     case "edit":
-      location.href = element.href;
-      break;
+         location.href = element.href;
+         break;
 
     case "preview":
-      window.open(element.href);
-      break;
+         window.open(element.href);
+         break;
 
     case "add":
-      // Set the 'add_page_here' value in form.
-      // This should be a uuid value if from thumbnail context menu, of
-      // just set it to blank string if from the main 'Add page' button.
-      updateHiddenInputOnForm(data.component.dialog.$form, "page[add_page_after]", data.component.uuid);
+         // Set the 'add_page_here' value in form.
+         // This should be a uuid value if from thumbnail context menu, of
+         // just set it to blank string if from the main 'Add page' button.
+         updateHiddenInputOnForm(data.component.dialog.$form, "page[add_page_after]", data.component.uuid);
 
-      // Current menu option needs to activate the (separate entity)
-      // Add page menu to allow add page options to show.
-      $("#ActivatedMenu_AddPage").trigger("component.open", {
-        my: "left top",
-        at: "right top",
-        of: element
-      });
-      break;
+         // Current menu option needs to activate the (separate entity)
+         // Add page menu to allow add page options to show.
+         $("#ActivatedMenu_AddPage").trigger("component.open", {
+           my: "left top",
+           at: "right top",
+           of: element
+         });
+         break;
 
-    /* eslint no-undef: "off" */
     case "delete":
-      this.dialogConfirmationDelete.open({
-        heading: app.text.dialogs.heading_delete.replace(/%{label}/, data.component.$node.data("page-heading")),
-        ok: app.text.dialogs.button_delete_page
-      }, function () {
-        post(element.href, { _method: "delete" });
-      });
-      break;
+          this.dialogConfirmationDelete.open({
+            heading: app.text.dialogs.heading_delete.replace(/%{label}/, data.component.$node.data("page-heading")),
+            ok: app.text.dialogs.button_delete_page
+            }, function() {
+            post(element.href, { _method: "delete" });
+          });
+         break;
 
     default: console.log(data.activator.href);
   }
 }
 
+
 /* Controls form step Add page functionality
  **/
 class PageAdditionMenu extends ActivatedMenu {
-  constructor ($node, dialog, config) {
+  constructor($node, dialog, config) {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
       activator_text: $node.data("activator-text")
     }, config));
 
+
     this.dialog = dialog;
-    this.activator.$node.on("click.pageadditionmenu", function () {
+    this.activator.$node.on("click.pageadditionmenu", function() {
       // Add handler for main 'Add page' button to clear any add_page_after values.
       updateHiddenInputOnForm(dialog.$form, "page[add_page_after]", "");
     });
+
   }
 }
 
@@ -213,7 +221,7 @@ class PageAdditionMenu extends ActivatedMenu {
  * 3). Close the open menu
  * 4). Open the form URL input dialog.
  **/
-PageAdditionMenu.selection = function (event, data) {
+PageAdditionMenu.selection = function(event, data) {
   var $activator = data.activator.find("> a");
   var form = this.dialog.$form; // Form sending information back to server.
 
@@ -222,7 +230,7 @@ PageAdditionMenu.selection = function (event, data) {
   updateHiddenInputOnForm(form, "page[component_type]", "");
 
   // Then add any required values.
-  if ($activator.length) {
+  if($activator.length) {
     updateHiddenInputOnForm(form, "page[page_type]", $activator.data("page-type"));
     updateHiddenInputOnForm(form, "page[component_type]", $activator.data("component-type"));
 
@@ -231,12 +239,14 @@ PageAdditionMenu.selection = function (event, data) {
   }
 }
 
+
 /* Quickfix workaround to try and fix scrolling issues for the form overview
  * when there are too many thumbnails to fix on the one page view.
  **/
-function applyCustomOverviewWorkaround () {
+function applyCustomOverviewWorkaround() {
   var $overview = $("#form-overview");
   var $container = $overview.find(" > .container");
+  var $button = $(".form-overview_button")
   var containerWidth = $container.width();
   var overviewWidth = $overview.width();
   var offsetLeft = $overview.offset().left;
@@ -244,11 +254,12 @@ function applyCustomOverviewWorkaround () {
   var spacerForMenu = 250;
   var maxWidth = window.innerWidth - (margin * 2) - spacerForMenu;
 
-  if (containerWidth > overviewWidth) {
+  if(containerWidth > overviewWidth) {
     let left = ((containerWidth + spacerForMenu) - overviewWidth) / 2;
-    if (left < offsetLeft) {
+    if(left < offsetLeft) {
       $container.css("left", ~left);
-    } else {
+    }
+    else {
       $container.css("left", ~(offsetLeft - margin));
     }
   }
@@ -257,5 +268,6 @@ function applyCustomOverviewWorkaround () {
   $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
   $overview.height($container.outerHeight(true));
 }
+
 
 module.exports = ServicesController;

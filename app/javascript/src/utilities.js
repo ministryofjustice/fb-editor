@@ -13,6 +13,8 @@
  *
  **/
 
+
+
 /* Single level object merging.
  * Merges object b into object a.
  * Returns a new object without storing references
@@ -25,10 +27,10 @@
  * @b      (Object) Gives key/values, remaining unchanged.
  * @ignore (Array)  List of strings expected to match unwanted keys.
  **/
-function mergeObjects (a, b, ignore) {
-  for (var i in b) {
-    if (b.hasOwnProperty(i)) {
-      if (ignore && ignore.includes(i)) {
+function mergeObjects(a, b, ignore) {
+  for(var i in b) {
+    if(b.hasOwnProperty(i)) {
+      if(ignore && ignore.includes(i)) {
         continue;
       }
       a[i.toString()] = b[i]
@@ -46,14 +48,14 @@ function mergeObjects (a, b, ignore) {
  *   var $node = $(createElement("button", "Click me", "something"));
  * Hardly worth it, but makes code look pretty.
  **/
-function createElement (tag, text, classes) {
+function createElement(tag, text, classes) {
   var node = document.createElement(tag);
   if (arguments.length > 1) {
-    if (text !== "" && text !== undefined) {
+    if(text != '' && text != undefined) {
       node.appendChild(document.createTextNode(text));
     }
 
-    if (arguments.length > 2 && classes !== "" && classes !== undefined) {
+    if(arguments.length > 2 && classes != '' && classes != undefined) {
       node.className = classes;
     }
   }
@@ -73,25 +75,27 @@ function createElement (tag, text, classes) {
  *   run it only if that proves true.
  *
  * @func (Function) Expected to be required function.
- *
+ * 
  * Note: You can also pass in several other arguments (as is possible with
  * JavaScript functions, and these will be passed to the called function).
  **/
-function safelyActivateFunction (func) {
+function safelyActivateFunction(func) {
   var args = Array.from(arguments);
-  if (isFunction(func)) {
-    if (args.length) {
+  if(isFunction(func)) {
+    if(args.length) {
       func.apply(this, args.slice(1));
-    } else {
+    }
+    else {
       func();
     }
   }
 }
 
+
 /* Expects a function but returns true/false depending on valid passed argument.
  **/
-function isFunction (func) {
-  return typeof (func) === "function" || func instanceof Function;
+function isFunction(func) {
+  return typeof(func) === 'function' || func instanceof Function;
 }
 
 /* Generates randomised number to add onto a passed string.
@@ -99,9 +103,10 @@ function isFunction (func) {
  *
  * @str (String) Prefix for resulting unique string.
  **/
-function uniqueString (str) {
-  return str + Date.now() + String(Math.random()).replace(".", "");
+function uniqueString(str) {
+  return str + Date.now() + String(Math.random()).replace(".","");
 }
+
 
 /* Utility funciton
  * Return the fragment identifier value from a URL.
@@ -112,22 +117,24 @@ function uniqueString (str) {
  * "http://foo.com#something?else=here"
  * and get "something" in either case.
  **/
-function findFragmentIdentifier (url) {
+function findFragmentIdentifier(url) {
   return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
 }
 
+
 /* Gets value from <meta /> tag
  **/
-function meta (name) {
-  var meta = document.querySelector("meta[name=" + name + "]");
+function meta(name) {
+  var meta = document.querySelector('meta[name=' + name + ']');
   return meta && meta.content;
 }
+
 
 /* Send POST request with token.
  * Can be used for sending Rails style delete links.
  * e.g. post('/path/to/some/resource', { _method: 'delete' });
  **/
-function post (url, data) {
+function post(url, data) {
   var param = meta("csrf-param");
   var token = meta("csrf-token");
   var form = document.createElement("form");
@@ -141,10 +148,8 @@ function post (url, data) {
   document.body.appendChild(form);
 
   // Add params.
-  /* eslint no-redeclare: "off" */
-  /* eslint no-prototype-builtins: "off" */
-  for (var param in params) {
-    if (params.hasOwnProperty(param)) {
+  for(var param in params) {
+    if(params.hasOwnProperty(param)) {
       let input = document.createElement("input");
       input.setAttribute("type", "hidden");
       input.setAttribute("name", param);
@@ -155,6 +160,7 @@ function post (url, data) {
   form.submit();
 }
 
+
 /* Function used to update (or create if does not exist) a hidden
  * form input field that will be part of the submitted data
  * capture form (new content sent to server).
@@ -163,14 +169,15 @@ function post (url, data) {
  * @name    (String) Used as the name attribute on input[hidden] form elements.
  * @content (String) instance.content value added to input[hidden] field.
  **/
-function updateHiddenInputOnForm ($form, name, content) {
+function updateHiddenInputOnForm($form, name, content) {
   var $input = $form.find("input[name=\"" + name + "\"]");
-  if ($input.length === 0) {
+  if($input.length == 0) {
     $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
     $form.prepend($input);
   }
   $input.val(content);
 }
+
 
 /* Function used to add a hidden form input field to an existing form.
  * The function does not check to see if exists so duplicates can result.
@@ -179,12 +186,12 @@ function updateHiddenInputOnForm ($form, name, content) {
  * @name    (String) Used as the name attribute on input[hidden] form elements.
  * @content (String) instance.content value added to input[hidden] field.
  **/
-/* eslint no-undef: "off" */
-function addHiddenInpuElementToForm ($form, name, content) {
+function addHiddenInpuElementToForm($form, name, content) {
   $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
   $form.prepend($input);
   $input.val(content);
 }
+
 
 /* Function returns specified property or undefined.
  *
@@ -199,22 +206,24 @@ function addHiddenInpuElementToForm ($form, name, content) {
  * }
  *
  **/
-function property (context, props) {
-  var split = (props !== "" ? props.split(".") : []);
-  if (context && split.length > 0) {
+function property(context, props) {
+  var split = (props != "" ? props.split(".") : []);
+  if(context && split.length > 0) {
     context = property(context[split.shift()], split.join("."));
   }
   return context;
 }
 
+
 /* Determine if passed item is of Boolean origin.
  **/
-function isBoolean (thing) {
+function isBoolean(thing) {
   return thing.constructor === Boolean;
 }
 
+
 // Make available for importing.
-module.exports = {
+module.exports  = { 
   mergeObjects: mergeObjects,
   createElement: createElement,
   safelyActivateFunction: safelyActivateFunction,

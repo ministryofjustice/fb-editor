@@ -14,10 +14,11 @@
  *
  **/
 
-const utilities = require("./utilities");
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const safelyActivateFunction = utilities.safelyActivateFunction;
-const Dialog = require("./component_dialog");
+const Dialog = require('./component_dialog');
+
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -30,31 +31,31 @@ const Dialog = require("./component_dialog");
  * @config (Object) Configurable key/value pairs.
  **/
 class DialogConfirmation extends Dialog {
-  constructor ($node, config) {
-    super($node, mergeObjects(config, {
+  constructor($node, config) {
+    super($node, mergeObjects( config, {
       buttons: [
-        {
-          text: config.okText,
-          click: () => {
-            safelyActivateFunction($node.data("instance")._action);
-            $node.dialog("close");
-          }
-        },
-        {
-          text: config.cancelText,
-          click: () => {
-            var instance = $node.data("instance");
-            instance.content = instance._defaultText;
-            $node.dialog("close");
-          }
-        }]
+      {
+        text: config.okText,
+        click: () => {
+          safelyActivateFunction($node.data("instance")._action);
+          $node.dialog("close");
+        }
+      },
+      {
+        text: config.cancelText,
+        click: () => {
+          var instance = $node.data("instance");
+          instance.content = instance._defaultText;
+          $node.dialog("close");
+        }
+      }]
     }));
 
-    if ($node && $node.length) {
+    if($node && $node.length) {
       $node.parents(".ui-dialog").removeClass("Dialog");
       $node.parents(".ui-dialog").addClass("DialogConfirmation");
       $node.data("instance", this);
-      $node.on("dialogclose", function (event, ui) {
+      $node.on( "dialogclose", function( event, ui ) {
         $(document).trigger("DialogConfirmationClose");
       });
 
@@ -63,23 +64,23 @@ class DialogConfirmation extends Dialog {
     }
 
     this._config = config;
-    this._action = function () {} // Should be overwritten in open()
+    this._action = function() {} // Should be overwritten in open()
     this.$node = $node;
   }
 
-  get content () {
+  get content() {
     return this._defaultText;
   }
 
-  set content (text) {
+  set content(text) {
     this._elements.heading.text(text.heading || this._defaultText.heading);
     this._elements.content.text(text.content || this._defaultText.content);
     this._elements.ok.text(text.ok || this._defaultText.ok);
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
 
-  open (text, action) {
-    if (arguments.length > 1 && typeof action === "function") {
+  open(text, action) {
+    if(arguments.length > 1 && typeof action == "function") {
       this._action = action;
     }
     super.open(text);
@@ -89,7 +90,7 @@ class DialogConfirmation extends Dialog {
 /* Private
  * Finds required elements to populate this._elements property.
  **/
-DialogConfirmation.setElements = function ($node) {
+DialogConfirmation.setElements = function($node) {
   var elements = {};
   var $buttons = $node.parents(".DialogConfirmation").find(".ui-dialog-buttonset button");
   $buttons.eq(1).show(); // Reverse inherited state.
@@ -106,7 +107,7 @@ DialogConfirmation.setElements = function ($node) {
 /* Private
  * Finds on-load text to use as default values.
  **/
-DialogConfirmation.setDefaultText = function ($node) {
+DialogConfirmation.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
     content: this._elements.content.text(),
@@ -115,5 +116,7 @@ DialogConfirmation.setDefaultText = function ($node) {
   };
 }
 
+
 // Make available for importing.
 module.exports = DialogConfirmation;
+

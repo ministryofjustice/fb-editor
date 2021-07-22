@@ -1,16 +1,16 @@
-require("./setup");
-const expect = require("chai").expect;
+require('./setup');
+const expect = require('chai').expect;
 
-/* eslint no-unused-expressions: "off" */
-describe("ActivatedFormDialog", function () {
-  const ActivatedFormDialog = require("../app/javascript/src/component_activated_form_dialog");
+describe("ActivatedFormDialog", function() {
+
+  const ActivatedFormDialog = require('../app/javascript/src/component_activated_form_dialog');
   const COMPONENT_CLASS_NAME = "ActivatedFormDialog";
   const SUBMIT_BUTTON_ID = "submit-test-id";
   const FORM_ID = "form-test-id";
   const TEXT_CANCEL = "Dialog says Cancel";
   var dialog;
 
-  before(function () {
+  before(function() {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
 
@@ -31,62 +31,61 @@ describe("ActivatedFormDialog", function () {
     });
   });
 
-  describe("HTML", function () {
-    it("should have the basic HTML in place", function () {
+  describe("HTML", function() {
+    it("should have the basic HTML in place", function() {
       expect($("#" + FORM_ID).length).to.equal(1);
     });
 
-    it("should have the component class name present", function () {
+    it("should have the component class name present", function() {
       expect(dialog.$container.hasClass(COMPONENT_CLASS_NAME)).to.be.true;
     });
 
-    it("should have two buttons", function () {
-      var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
-      expect($buttons.length).to.equal(2);
+    it("should have two buttons", function() {
+       var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
+       expect($buttons.length).to.equal(2);
     });
   });
 
-  describe("Config", function () {
-    it("should use passed activator text as affirmative button text", function () {
-      var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
-      var $submit = $("#" + SUBMIT_BUTTON_ID);
-      expect($buttons.eq(0).text()).to.equal($submit.val());
+  describe("Config", function() {
+    it("should use passed activator text as affirmative button text", function() {
+       var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
+       var $submit = $("#" + SUBMIT_BUTTON_ID);
+       expect($buttons.eq(0).text()).to.equal($submit.val());
     });
 
-    it("should use config.cancelText as button text", function () {
-      var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
-      expect($buttons.eq(1).text()).to.equal(TEXT_CANCEL);
+    it("should use config.cancelText as button text", function() {
+       var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
+       expect($buttons.eq(1).text()).to.equal(TEXT_CANCEL);
     });
   });
 
-  describe("Properties", function () {
-    it("should make the $node public", function () {
+  describe("Properties", function() {
+    it("should make the $node public", function() {
       var $form = $("#" + FORM_ID);
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.get(0)).to.equal($form.get(0));
     });
 
-    it("should make the instance available as data on the $node", function () {
-      ;
+    it("should make the instance available as data on the $node", function() {;
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.data("instance")).to.eql(dialog);
     });
 
-    it("should make the $node public as $form variable name", function () {
+    it("should make the $node public as $form variable name", function() {
       expect(dialog.$form).to.exist;
       expect(dialog.$form.length).to.equal(1);
       expect(dialog.$node.get(0)).to.equal(dialog.$form.get(0));
     });
 
-    it("should make (public but indicated as) private reference to config", function () {
+    it("should make (public but indicated as) private reference to config", function() {
       var $submit = $("#" + SUBMIT_BUTTON_ID);
       expect(dialog._config).to.exist;
       expect(dialog._config.okText).to.equal($submit.val());
     });
 
-    it("should make the activator public", function () {
+    it("should make the activator public", function() {
       var $submit = $("#" + SUBMIT_BUTTON_ID);
       expect(dialog.activator).to.exist;
       expect(dialog.activator.$node).to.exist;
@@ -94,8 +93,8 @@ describe("ActivatedFormDialog", function () {
     });
   });
 
-  describe("Open", function () {
-    it("should open the dialog with public open() method", function () {
+  describe("Open", function() {
+    it("should open the dialog with public open() method", function() {
       var $form = $("#" + FORM_ID);
 
       // Make sure it's closed
@@ -108,7 +107,7 @@ describe("ActivatedFormDialog", function () {
       expect(dialog.$container.get(0).style.display).to.equal("");
     });
 
-    it("should open the dialog on activator button press", function () {
+    it("should open the dialog on activator button press", function() {
       var $form = $("#" + FORM_ID);
 
       // Make sure it's closed
@@ -122,15 +121,15 @@ describe("ActivatedFormDialog", function () {
     });
   });
 
-  describe("Submit", function () {
-    it("should submit the form when OK button is clicked", function () {
+  describe("Submit", function() {
+    it("should submit the form when OK button is clicked", function() {
       var $form = $("#" + FORM_ID);
       var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
       var value = 1;
 
       // Prevent the form from submitting but manipulate
       // scoped variable to make sure that submit event ran.
-      $form.on("submit", function (e) {
+      $form.on("submit", function(e) {
         e.preventDefault();
         value++;
       });
@@ -144,8 +143,8 @@ describe("ActivatedFormDialog", function () {
     });
   });
 
-  describe("Close", function () {
-    it("should close dialog on click of 'X' (close) button", function () {
+  describe("Close", function() {
+    it("should close dialog on click of 'X' (close) button", function() {
       var $button = $(".ui-dialog-titlebar-close");
 
       // Make sure it's open
@@ -161,7 +160,7 @@ describe("ActivatedFormDialog", function () {
       expect(dialog.$container.get(0).style.display).to.equal("none");
     });
 
-    it("should close the dialog on negative button press", function () {
+    it("should close the dialog on negative button press", function() {
       var $buttons = dialog.$container.find(".ui-dialog-buttonset button");
 
       // Make sure it's open
@@ -180,7 +179,7 @@ describe("ActivatedFormDialog", function () {
     // WARNING!
     // THIS NEEDS TO SIT HERE TO RUN AFTER EVERYTHING ABOVE IT.
     // See comment opening the (below) "With Errors" testing.
-    after(function () {
+    after(function() {
       $("#" + SUBMIT_BUTTON_ID).remove();
       $("#" + FORM_ID)
         .dialog("destroy")
@@ -196,12 +195,12 @@ describe("ActivatedFormDialog", function () {
    * because things get confusing (as did in initial attempt for these tests).
    **/
 
-  describe("With Errors", function () {
+  describe("With Errors", function() {
     var WITH_ERRORS_FORM_ID = "form-test-with-error";
     var WITH_ERRORS_SUBMIT_ID = "submit-test-with-error";
     var dialogWithErrors;
 
-    beforeEach(function () {
+    beforeEach(function() {
       var $form = $(`<form action="/" method="post">
                        <span class="govuk-error-message">This is an error</span>
                        <input type="text" value="some value here" name="some_input" />
@@ -220,21 +219,21 @@ describe("ActivatedFormDialog", function () {
       });
     });
 
-    afterEach(function () {
+    afterEach(function() {
       $("#" + WITH_ERRORS_SUBMIT_ID).remove();
       $("#" + WITH_ERRORS_FORM_ID)
         .dialog("destroy")
         .remove();
     });
 
-    it("should make any found errors available public property", function () {
+    it("should make any found errors available public property", function() {
       expect(dialogWithErrors).to.exist;
       expect(dialogWithErrors.$errors).to.exist;
       expect(dialogWithErrors.$errors.length).to.equal(1);
       expect(dialogWithErrors.$errors.eq(0).text()).to.equal("This is an error");
     });
 
-    it("should be open on page load when errors are present", function () {
+    it("should be open on page load when errors are present", function() {
       expect(dialogWithErrors.$errors.length).to.equal(1);
 
       expect(dialogWithErrors.$container).to.exist;
@@ -246,7 +245,7 @@ describe("ActivatedFormDialog", function () {
       expect(dialogWithErrors.$container.get(0).style.display).to.equal("none");
     });
 
-    it("should clear any stored errors with clearErrors() method", function () {
+    it("should clear any stored errors with clearErrors() method", function() {
       expect(dialogWithErrors.$errors).to.exist;
       expect(dialogWithErrors.$errors.length).to.equal(1);
 
@@ -254,7 +253,7 @@ describe("ActivatedFormDialog", function () {
       expect(dialogWithErrors.$errors.length).to.equal(0);
     });
 
-    it("should clear any stored errors when negative (cancel) button is clicked", function () {
+    it("should clear any stored errors when negative (cancel) button is clicked", function() {
       dialogWithErrors.open();
 
       expect(dialogWithErrors.$errors).to.exist;
@@ -264,7 +263,7 @@ describe("ActivatedFormDialog", function () {
       expect(dialogWithErrors.$errors.length).to.equal(0);
     });
 
-    it("should clear any stored errors when negative (cancel) button is clicked", function () {
+    it("should clear any stored errors when negative (cancel) button is clicked", function() {
       var $buttons = dialogWithErrors.$container.find(".ui-dialog-buttonset button");
 
       expect($buttons.length).to.equal(2);
@@ -278,12 +277,12 @@ describe("ActivatedFormDialog", function () {
     });
   });
 
-  describe("Without Errors", function () {
+  describe("Without Errors", function() {
     var WITHOUT_ERRORS_FORM_ID = "form-test-without-error";
     var WITHOUT_ERRORS_SUBMIT_ID = "submit-test-without-error";
     var dialogWithoutErrors;
 
-    beforeEach(function () {
+    beforeEach(function() {
       var $form = $(`<form action="/" method="post">
                        <input type="text" value="some value here" name="some_input" />
                        <input type="submit" value="Submit button" />
@@ -301,14 +300,14 @@ describe("ActivatedFormDialog", function () {
       });
     });
 
-    afterEach(function () {
+    afterEach(function() {
       $("#" + WITHOUT_ERRORS_SUBMIT_ID).remove();
       $("#" + WITHOUT_ERRORS_FORM_ID)
         .dialog("destroy")
         .remove();
     });
 
-    it("should be closed on page load when no errors are present", function () {
+    it("should be closed on page load when no errors are present", function() {
       expect(dialogWithoutErrors.$errors).to.exist;
       expect(dialogWithoutErrors.$errors.length).to.equal(0);
 

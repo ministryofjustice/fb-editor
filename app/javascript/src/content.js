@@ -15,15 +15,17 @@
  *
  **/
 
-const utilities = require("./utilities");
+
+const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const editableComponent = require("./editable_components").editableComponent;
-const ContentMenu = require("./component_activated_content_menu");
+const editableComponent = require('./editable_components').editableComponent;
+const ContentMenu = require('./component_activated_content_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
+
 class Content {
-  constructor ($node, config) {
+  constructor($node, config) {
     var conf = mergeObjects({
       // Config defaults
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
@@ -42,24 +44,25 @@ class Content {
     this.menu = this.data && createContentMenu.call(this); // Components with data are user added, others are templated
   }
 
-  focus () {
+  focus() {
     this.editable.focus();
   }
 
-  remove () {
+  remove() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.remove();
   }
 
-  save () {
+  save() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.save();
   }
 }
 
+
 /* Create a menu for Content property editing.
  **/
-function createContentMenu () {
+function createContentMenu() {
   var component = this;
   var template = $("[data-component-template=ContentMenu]");
   var $ul = $(template.html());
@@ -71,5 +74,7 @@ function createContentMenu () {
     activator_text: template.data("activator-text")
   });
 }
+
+
 
 module.exports = Content;
