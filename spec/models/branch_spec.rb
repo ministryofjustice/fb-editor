@@ -100,4 +100,59 @@ RSpec.describe Branch do
       expect(branch.previous_pages).to eq(expected_pages)
     end
   end
+
+  describe '#validations' do
+    before do
+      branch.valid?
+    end
+
+    context 'when blank conditionals' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'next' => '',
+              'expressions_attributes' => {
+                '0' => { 'component' => '' }
+              }
+            }
+          }
+        }
+      end
+
+      it 'does not accept blank conditionals' do
+        expect(branch.errors[:conditionals]).to be_present
+      end
+
+      it 'adds error to conditionals object' do
+        errors = branch.conditionals.first.errors
+        expect(errors).to be_present
+        expect(errors.of_kind?(:next, :blank)).to be_truthy
+      end
+    end
+
+    context 'when valid conditionals' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'next' => SecureRandom.uuid,
+              'expressions_attributes' => {
+                '0' => { 'component' => SecureRandom.uuid }
+              }
+            }
+          }
+        }
+      end
+
+      it 'no errors on branch' do
+        expect(branch.errors[:conditionals]).to be_blank
+      end
+
+      it 'no errors on conditionals' do
+        errors = branch.conditionals.first.errors
+        expect(errors).to be_blank
+      end
+    end
+  end
 end

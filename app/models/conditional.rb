@@ -2,6 +2,8 @@ class Conditional
   include ActiveModel::Model
   attr_accessor :next, :expressions
 
+  validates :next, presence: true
+
   IF = 'if'.freeze
   AND = 'and'.freeze
 

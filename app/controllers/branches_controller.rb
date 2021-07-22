@@ -25,7 +25,7 @@ class BranchesController < FormController
   def branch_attributes
     {
       service: service,
-      previous_flow_uuid: params[:previous_flow_uuid] || params.require(:branch).permit(:previous_flow_uuid)
+      previous_flow_uuid: params[:previous_flow_uuid] || params.require(:branch).permit(:previous_flow_uuid)[:previous_flow_uuid]
     }
   end
 

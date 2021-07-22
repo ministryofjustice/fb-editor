@@ -6,7 +6,7 @@ class BranchCreation
   attr_accessor :branch, :latest_metadata
 
   def create
-    return false if invalid?
+    return false if branch.invalid?
 
     version = MetadataApiClient::Version.create(
       service_id: service.service_id,

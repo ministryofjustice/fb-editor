@@ -2,6 +2,12 @@ class Branch
   include ActiveModel::Model
   attr_accessor :previous_flow_uuid, :service, :default_next
 
+  validate :conditionals_validations
+
+  def conditionals_validations
+    errors.add(:conditionals, 'Conditionals are not valid') if conditionals.map(&:invalid?).any?
+  end
+
   def conditionals
     @conditionals ||= []
   end

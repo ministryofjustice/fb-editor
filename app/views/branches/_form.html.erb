@@ -1,16 +1,7 @@
+
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 
-<%= f.fields_for :conditionals do |conditional| %>
-  <%= conditional.select :next,
-    @branch.pages,
-    include_blank: '--- Select a destination page ---' %>
-
-  <%= conditional.fields_for :expressions do |expression| %>
-    <%= expression.select :component,
-      @branch.previous_questions,
-      include_blank: '--Select a question--' %>
-  <% end %>
-<% end %>
+<%= render 'form_conditionals', f: f %>
 
 <%= f.select :default_next,
   @branch.pages,
