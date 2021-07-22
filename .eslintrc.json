@@ -1,0 +1,26 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true,
+        "es6": true,
+        "jquery": true,
+        "mocha": true
+    },
+    "extends": [
+        "standard"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 12
+    },
+    "rules": {
+        "quotes": [1, "double"],
+        "no-new": [0],
+        "semi": "off",
+        "no-var": "off",
+        "prefer-const": "off",
+        "no-new-object": "off",
+        "comma-dangle": "off"
+    }
+}

@@ -14,28 +14,25 @@
  *
  **/
 
-
-const utilities = require('./utilities');
+const utilities = require("./utilities");
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const mergeObjects = utilities.mergeObjects;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require('./component_activated_menu');
-
+const ActivatedMenu = require("./component_activated_menu");
 
 class QuestionMenu extends ActivatedMenu {
-  constructor($node, config) {
+  constructor ($node, config) {
     super($node, mergeObjects({
       activator_text: "",
       $target: $(), // Used in placing the activator
       question: {}, // TODO: Not sure if we should do this way
       view: {},
-      onSetRequired: function(){} // Called at end of set required function
+      onSetRequired: function () {} // Called at end of set required function
     }, config));
 
-    $node.on("menuselect", QuestionMenu.selection.bind(this) );
+    $node.on("menuselect", QuestionMenu.selection.bind(this));
 
     let $target = this._config.$target;
-    if($target.length) {
+    if ($target.length) {
       $target.before(this.activator.$node);
       $target.on("focus.questionmenu", () => this.activator.$node.addClass("active"));
       $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
@@ -46,21 +43,20 @@ class QuestionMenu extends ActivatedMenu {
     this.setRequiredViewState();
   }
 
-  remove() {
+  remove () {
     $(document).trigger("QuestionMenuSelectionRemove", this.question);
   }
 
-  required() {
+  required () {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
   }
 
   /* Change required option state for view purpose
    **/
-  setRequiredViewState = function() {
-    if(this.question.data.validation.required) {
+  setRequiredViewState = function () {
+    if (this.question.data.validation.required) {
       $("[data-action=required]").addClass("on");
-    }
-    else {
+    } else {
       $("[data-action=required]").removeClass("on");
     }
   }
@@ -70,10 +66,9 @@ class QuestionMenu extends ActivatedMenu {
  * @event (jQuery Event Object) See jQuery docs for info.
  * @data  (Object) See ActivatedMenu and search for config.selection_event
  **/
-QuestionMenu.selection = function(event, ui) {
+QuestionMenu.selection = function (event, ui) {
   var action = $(event.originalEvent.currentTarget).data("action");
   safelyActivateFunction(this[action].bind(this));
 }
-
 
 module.exports = QuestionMenu;
