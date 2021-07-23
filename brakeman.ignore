@@ -7,7 +7,7 @@
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/pages/edit.html.erb",
-      "line": 22,
+      "line": 23,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
       "code": "render(template => service.find_page_by_uuid(params[:page_uuid]).template, {})",
       "render_path": [
@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "PagesController",
           "method": "update",
-          "line": 26,
+          "line": 29,
           "file": "app/controllers/pages_controller.rb",
           "rendered": {
             "name": "pages/edit",
@@ -38,7 +38,7 @@
       "check_name": "MassAssignment",
       "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
       "file": "app/controllers/pages_controller.rb",
-      "line": 66,
+      "line": 81,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:page).permit!",
       "render_path": null,
@@ -50,8 +50,28 @@
       "user_input": null,
       "confidence": "Medium",
       "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "bf948bcefe8517f5a2128b39139499917369d009f47138f85b3d3dcca29624b9",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/branches_controller.rb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:branch).permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "BranchesController",
+        "method": "branch_params"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "note": ""
     }
   ],
-  "updated": "2021-04-09 14:15:50 -0300",
-  "brakeman_version": "5.0.0"
+  "updated": "2021-07-23 15:08:56 +0100",
+  "brakeman_version": "5.0.4"
 }
