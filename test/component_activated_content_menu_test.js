@@ -8,10 +8,8 @@ describe("ContentMenu", function() {
   const CONTAINER_ID = "activated-content-menu-test-container-id";
   const CONTAINER_CLASSNAME = "activated-content-menu-test-classname and-another-activated-menu-classname";
   const ACTIVATOR_CLASSNAME = "activated-content-menu-activator-test-classname";
-  const ACTIVATOR_ID = "activated-content-menu-test-activator-id";
   const ACTIVATOR_TEXT = "activated content menu activator";
   const MENU_ID = "activated-content-menu-test-menu-id";
-  const TEST_SELECTION_ELEMENT_ID = "component-activated-content-menu-test-selection-event-element";
   const TEST_SELECTION_EVENT_NAME = "ContentMenuTestSelectionEventName";
   var content;
 
