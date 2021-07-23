@@ -1,6 +1,7 @@
 class Conditional
   include ActiveModel::Model
-  attr_accessor :next, :expressions
+  attr_accessor :next
+  attr_writer :expressions
 
   validates :next, presence: true
 
