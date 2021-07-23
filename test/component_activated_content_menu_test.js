@@ -227,6 +227,23 @@ describe("ContentMenu", function() {
       $target.click();
       expect(value).to.equal(2);
     });
+
+    it("should trigger a selection event label on item selection", function() {
+      var value = 1;
+      var $target;
+
+      $(document).on(TEST_SELECTION_EVENT_NAME, function() {
+        value += 1;
+      });
+
+      expect(value).to.equal(1);
+
+      $target = content.menu.$node.find("li:first");
+      expect($target.length).to.equal(1);
+
+      $target.click();
+      expect(value).to.equal(2);
+    });
   });
 
   describe("ActivatedMenuContainer", function() {
