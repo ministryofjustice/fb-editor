@@ -37,7 +37,10 @@
           </li>
         </ul>
 
-        <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
+        <%= link_to edit_page_path(service.service_id, page.uuid), class: 'govuk-link' do %>
+           <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
+           <%= page.url %>
+        <% end %>
       </section>
     <% end %>
 
