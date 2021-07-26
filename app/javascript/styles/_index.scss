@@ -31,16 +31,6 @@ html {
   width: 1px;
 }
 
-#editContentForm {
-  position: absolute;
-  right: 0;
-  top: 3px;
-
-  @include govuk-media-query($until: tablet) {
-    position: static;
-  }
-}
-
 #header-logo-link {
   display: inline-block;
   margin-right: govuk-spacing(2);
@@ -99,6 +89,16 @@ html {
   .name {
     display: table-cell;
     width: 75%;
+  }
+}
+
+#fb-editor-save {
+  position: absolute;
+  right: 0;
+  top: 3px;
+
+  @include govuk-media-query($until: tablet) {
+    position: static;
   }
 }
 
