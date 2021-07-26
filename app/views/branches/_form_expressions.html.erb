@@ -1,0 +1,5 @@
+<%= conditional.fields_for :expressions do |expression| %>
+  <%= expression.select :component,
+    @branch.previous_questions,
+    include_blank: '--Select a question--' %>
+<% end %>
