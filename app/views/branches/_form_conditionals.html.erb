@@ -1,5 +1,5 @@
 <%= f.fields_for :conditionals do |conditional| %>
-  <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error'  %>">
+  <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error'  %>" data-index-conditional="<%= conditional.index %>">
     <% conditional.object.errors[:next].each do |message| %>
       <span class="govuk-error-message"><%= message %></span>
     <% end %>
