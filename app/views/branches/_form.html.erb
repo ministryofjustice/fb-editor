@@ -1,11 +1,14 @@
 
   <div class="branch">
+    <p>Branch ...</p>
     <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
     <%= render 'form_conditionals', f: f %>
   </div>
 
   <div class="destination">
     <div class="govuk-form-group">
+      <p>Otherwise</p>
+      <%= f.label :default_next, "Go to", { class: "govuk-label" } %>
       <%= f.select :default_next,
         @branch.pages,
         { include_blank: '--- Select a destination page ---' },
