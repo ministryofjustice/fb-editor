@@ -19,12 +19,17 @@ const property = utilities.property;
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
 const safelyActivateFunction = utilities.safelyActivateFunction;
+const uniqueString = utilities.uniqueString;
 
 
 class ActivatedMenu {
   constructor($menu, config) {
-    this._config = mergeObjects({ menu: {} }, config);
+    if(!config.container_id) {
+      config.container_id = uniqueString("menu");
+    }
+
     this.$node = $menu;
+    this._config = mergeObjects({ menu: {} }, config);
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
 
@@ -61,6 +66,7 @@ class ActivatedMenu {
   open(position) {
     ActivatedMenu.setMenuOpenPosition.call(this, position);
     this.activator.$node.addClass("active");
+    this.activator.$node.attr("aria-expanded", true);
     this.container.$node.show();
     this.$node.find(".ui-menu-item:first > :first-child").focus();
     this._state.open = true;
@@ -71,6 +77,7 @@ class ActivatedMenu {
     this._state.open = false;
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
+    this.activator.$node.attr("aria-expanded", false);
 
     // Reset any externally/temporary setting of
     // component._state.position back to default.
@@ -172,10 +179,7 @@ class ActivatedMenuContainer {
   constructor(menu, config) {
     var $node = $(createElement("div", "", "ActivatedMenu_Container"));
 
-    if(config.container_id) {
-      $node.attr("id", config.container_id);
-    }
-
+    $node.attr("id", config.container_id);
     if(config.container_classname) {
       $node.addClass(config.container_classname);
     }
@@ -241,6 +245,7 @@ class ActivatedMenuActivator {
     menu.$node.before($node);
     $node.addClass("ActivatedMenu_Activator");
     $node.attr("aria-haspopup", "menu");
+    $node.attr("aria-controls", config.container_id);
 
     this.$node = $node;
     this.$node.data("instance", this);
