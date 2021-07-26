@@ -29,7 +29,7 @@
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-dev', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
-      <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button fb-govuk-button' %>
+      <%= f.submit t('actions.publish_to_test'), class: 'govuk-button fb-govuk-button' %>
     <% end %>
   </dd>
 
@@ -51,7 +51,7 @@
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>
-      <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button fb-govuk-button' %>
+      <%= f.submit t('actions.publish_to_live'), class: 'govuk-button fb-govuk-button' %>
     <% end %>
   </dd>
 </dl>
