@@ -8,7 +8,7 @@
 <div id="form-overview">
   <div class="container">
     <% service.pages.each do |page| %>
-      <div class="form-step" aria-label="<%= t('aria.' + page.type) %>">
+      <section class="form-step" aria-label="<%= t('aria.' + page.type) %>">
 
         <%= flow_thumbnail(page, service.service_id) %>
 
@@ -38,7 +38,7 @@
         </ul>
 
         <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
-      </div>
+      </section>
     <% end %>
 
     <ul class="component-activated-menu govuk-navigation"
