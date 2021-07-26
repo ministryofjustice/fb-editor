@@ -1,10 +1,16 @@
 
-<%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
+  <div class="branch">
+    <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
+    <%= render 'form_conditionals', f: f %>
+  </div>
 
-<%= render 'form_conditionals', f: f %>
+  <div class="destination">
+    <div class="govuk-form-group">
+      <%= f.select :default_next,
+        @branch.pages,
+        { include_blank: '--- Select a destination page ---' },
+        { class: 'govuk-select' } %>
+    </div>
+  </div>
 
-<%= f.select :default_next,
-  @branch.pages,
-  include_blank: '--- Select a destination page ---' %>
-
-<%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>
+  <%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>

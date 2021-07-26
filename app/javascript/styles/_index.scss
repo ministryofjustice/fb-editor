@@ -137,6 +137,48 @@ html {
 }
 
 
+/* Branching
+ * ------------------- */
+.bob {
+  border: 5px solid pink;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.branch {
+  background-color: govuk-colour("light-grey");
+  border: 5px solid lightgreen;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.branches {
+  @include responsive_width("two-thirds");
+
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.destination {
+  border: 5px solid orange;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.expression {
+  border: 5px solid purple;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.statement {
+  border: 5px solid lightblue;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+
 /* Editable components
  * ------------------- */
 .AddComponent,
