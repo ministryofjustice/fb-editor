@@ -49,7 +49,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when only start page exists' do
-      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:service) }
 
       it 'create valid update service metadata' do
         expect(
@@ -77,7 +77,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when there is more than just a start page' do
-      let(:latest_metadata) { metadata_fixture(:version_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:version) }
 
       context 'when inserting page after a given page' do
         # this is the third page so the new page should be the fourth page
@@ -149,7 +149,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when adding a flow page' do
-      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:service) }
 
       it 'adds the page to the pages array' do
         expect(generator.to_metadata['pages'].count).to eq(2) # including start page
@@ -178,7 +178,7 @@ RSpec.describe NewPageGenerator do
           page_url: page_url
         )
       end
-      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:service) }
 
       it 'adds the page to the standalone_pages array' do
         metadata = generator.to_metadata
@@ -204,7 +204,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when valid metadata for start page' do
-      let(:latest_metadata) { metadata_fixture(:service_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:service) }
       let(:page_type) { 'start' }
       let(:component_type) { nil }
 
@@ -218,7 +218,7 @@ RSpec.describe NewPageGenerator do
     end
 
     context 'when valid metadata for all other pages' do
-      let(:latest_metadata) { metadata_fixture(:version_with_flow) }
+      let(:latest_metadata) { metadata_fixture(:version) }
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do

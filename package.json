@@ -2,7 +2,7 @@
   "name": "fb_editor",
   "private": true,
   "engines": {
-    "node": "14.17.2"
+    "node": "14.17.3"
   },
   "scripts": {
     "jstest": "mocha"
@@ -22,6 +22,6 @@
     "chai": "^4.3.4",
     "jquery-ui": "^1.12.1",
     "jsdom": "^16.6.0",
-    "mocha": "^9.0.2"
+    "mocha": "^9.0.3"
   }
 }

@@ -2,7 +2,7 @@ RSpec.describe PageCreation, type: :model do
   subject(:page_creation) do
     described_class.new(attributes)
   end
-  let(:attributes) { { latest_metadata: metadata_fixture(:version_with_flow) } }
+  let(:attributes) { { latest_metadata: metadata_fixture(:version) } }
 
   describe '#page_uuid' do
     it 'generates uuid' do
@@ -18,7 +18,7 @@ RSpec.describe PageCreation, type: :model do
         component_type: 'text',
         page_url: 'admiral-ackbar',
         service_id: 'it-is-a-trap',
-        latest_metadata: metadata_fixture(:version_with_flow)
+        latest_metadata: metadata_fixture(:version)
       }
     end
 
@@ -43,7 +43,7 @@ RSpec.describe PageCreation, type: :model do
     context 'when is invalid' do
       context 'when attributes invalid' do
         let(:attributes) do
-          { page_url: '/foo/bar/baz', latest_metadata: metadata_fixture(:version_with_flow) }
+          { page_url: '/foo/bar/baz', latest_metadata: metadata_fixture(:version) }
         end
 
         it 'returns false' do

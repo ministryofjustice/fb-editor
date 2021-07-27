@@ -14,7 +14,7 @@ gem 'delayed_job_active_record'
 #    github: 'ministryofjustice/fb-metadata-presenter',
 #    branch: 'feature/move-upload-to-gem'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '1.8.1'
+gem 'metadata_presenter', '2.1.0'
 
 gem 'faraday'
 gem 'faraday_middleware'
@@ -48,7 +48,7 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'listen', '~> 3.5'
+  gem 'listen', '~> 3.6'
   gem 'rubocop', '~> 1.15.0'
   gem 'rubocop-govuk'
   gem 'spring'
