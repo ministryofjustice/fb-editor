@@ -42,6 +42,10 @@ Rails.application.routes.draw do
   namespace :api do
     resources :services do
       resources :pages, only: [:show]
+
+      resources :branches, param: :previous_flow_uuid do
+        get '/conditionals/:conditional_index', to: 'branches#new_conditional'
+      end
     end
   end
 
