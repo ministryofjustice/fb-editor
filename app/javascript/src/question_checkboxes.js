@@ -95,7 +95,7 @@ class CheckboxesQuestion extends Question {
        activator_text: config.text.edit,
         classnames: "editableCollectionItemControls"
       });
-    }).parent().attr("aria-lable", config.text.aria.answers);
+    }).parent().attr("aria-label", config.text.aria.answers);
 
     $node.addClass("CheckboxesQuestion");
     this._preservedItemCount = 1;
