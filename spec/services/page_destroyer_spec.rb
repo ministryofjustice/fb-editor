@@ -1,7 +1,7 @@
 RSpec.describe PageDestroyer do
   subject(:page) { described_class.new(attributes) }
   let(:service_id) { fixture['service_id'] }
-  let(:fixture) { metadata_fixture(:version_with_flow) }
+  let(:fixture) { metadata_fixture(:version) }
   let(:version) do
     double(errors?: false, errors: [], metadata: updated_metadata)
   end

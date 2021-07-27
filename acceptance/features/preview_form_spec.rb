@@ -36,6 +36,9 @@ feature 'Preview form' do
   scenario 'preview the standalone pages' do
     preview_form = when_I_preview_the_form
     then_I_should_preview_the_cookies_page(preview_form)
+    within_window(preview_form) do
+      then_I_should_not_see_a_back_link
+    end
   end
 
   def then_I_should_preview_the_cookies_page(preview_form)
@@ -127,10 +130,12 @@ feature 'Preview form' do
   def then_I_can_navigate_until_the_end_of_the_form(preview_form)
     within_window(preview_form) do
       expect(page.text).to include('Service name goes here')
+      then_I_should_not_see_a_back_link
       page.click_button 'Start now'
 
       expect(page.text).to include('Full name')
       then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
       page.click_button 'Continue'
       then_I_should_see_an_error_message('Full name')
       page.fill_in 'Full name', with: 'Charmy Pappitson'
@@ -138,6 +143,7 @@ feature 'Preview form' do
 
       expect(page.text).to include(content_component)
       then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
       page.click_button 'Continue'
       then_I_should_see_an_error_message
       page.fill_in text_component_question, with: 'Car Car Binks'
@@ -146,10 +152,12 @@ feature 'Preview form' do
 
       expect(page.text).to include(content_page_heading)
       then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
       page.click_button 'Continue'
 
       expect(page.text).to include('Date of birth')
       then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
       page.click_button 'Continue'
       then_I_should_see_an_error_message('Date of birth')
       page.fill_in 'Day', with: '03'
@@ -158,10 +166,12 @@ feature 'Preview form' do
       page.click_button 'Continue'
 
       expect(page.text).to include('What is your favourite fruit?')
+      then_I_should_see_a_back_link
       and_I_select_an_option_item
       page.click_button 'Continue'
 
       expect(page.text).to include('Upload your file')
+      then_I_should_see_a_back_link
       page.click_button 'Continue'
 
       expect(page.text).to include('Check your answers')
@@ -172,6 +182,7 @@ feature 'Preview form' do
       expect(page.text).to include('Apples')
       expect(page.text).to include('Upload your file')
       then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
       then_I_should_not_see_content_page_in_check_your_answers(page)
       then_I_should_not_see_content_components_in_check_your_answers(page)
 
@@ -184,6 +195,7 @@ feature 'Preview form' do
       expect(page.text).not_to include('Apples')
 
       page.click_button 'Accept and send application'
+      then_I_should_not_see_a_back_link
       expect(page.text).to include('Application complete')
     end
   end
@@ -221,5 +233,13 @@ feature 'Preview form' do
 
   def and_I_unselect_an_option_item
     page.find(:css, '#answers-favourite-fruit-checkboxes-1-apples-field', visible: false).uncheck
+  end
+
+  def then_I_should_see_a_back_link
+    expect(page).to have_selector(:css, 'a[class="govuk-back-link"]')
+  end
+
+  def then_I_should_not_see_a_back_link
+    expect(page).not_to have_selector(:css, 'a[class="govuk-back-link"]')
   end
 end
