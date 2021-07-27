@@ -157,6 +157,7 @@ html {
 .branches {
   @include responsive_width("two-thirds");
 
+  border: 5px solid red;
   margin-bottom: 10px;
   padding: 10px;
 }
