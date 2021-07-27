@@ -20,7 +20,7 @@ feature 'Edit confirmation pages' do
     and_I_change_the_page_body(confirmation_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_edit_the_page(url: confirmation_url)
+    and_I_edit_the_confirmation_page
     then_I_should_see_the_confirmation_heading(confirmation_heading)
     then_I_should_see_the_confirmation_lede(confirmation_lede)
     then_I_should_see_the_confirmation_body(confirmation_body)
@@ -42,6 +42,10 @@ feature 'Edit confirmation pages' do
 
   def then_I_should_see_the_confirmation_lede(lede)
     expect(editor.page_lede.text).to eq(lede)
+  end
+
+  def and_I_edit_the_confirmation_page
+    editor.find('.form-step a.govuk-link', text: confirmation_url).click
   end
 
   def then_I_should_see_the_confirmation_body(body)

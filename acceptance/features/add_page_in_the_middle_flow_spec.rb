@@ -4,6 +4,15 @@ feature 'Add page in the middle flow' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'palpatine' }
+  let(:form_urls) do
+    # page url links have the word "Edit" as a visually hidden span element
+    # associated with them for added accessibility
+    [
+      "Edit\n/",
+      "Edit\nnew-page-url",
+      "Edit\npalpatine"
+    ]
+  end
 
   background do
     given_I_am_logged_in
@@ -15,7 +24,7 @@ feature 'Add page in the middle flow' do
     and_I_return_to_flow_page
     when_I_add_a_single_question_page_with_radio_after_start(url: 'new-page-url')
     and_I_return_to_flow_page
-    then_I_should_see_the_page_flow_in_order(order: ['/', 'new-page-url', 'palpatine'])
+    then_I_should_see_the_page_flow_in_order(order: form_urls)
   end
 
   def when_I_add_a_single_question_page_with_radio_after_start(url:)
