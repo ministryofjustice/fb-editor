@@ -139,6 +139,7 @@ html {
 
 /* Branching
  * ------------------- */
+.dev-colours-on {
 .bob {
   border: 5px solid pink;
   margin-bottom: 10px;
@@ -178,6 +179,12 @@ html {
   padding: 10px;
 }
 
+@keyframes blinker {
+  25% {
+    opacity: 0;
+  }
+}
+}
 
 /* Editable components
  * ------------------- */
