@@ -12,9 +12,9 @@ gem 'delayed_job_active_record'
 # one of these lines:
 # gem 'metadata_presenter',
 #    github: 'ministryofjustice/fb-metadata-presenter',
-#    branch: 'branching-pages'
+#    branch: 'feature/move-upload-to-gem'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.0.1'
+gem 'metadata_presenter', '2.1.0'
 
 gem 'faraday'
 gem 'faraday_middleware'
