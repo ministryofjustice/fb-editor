@@ -90,7 +90,7 @@ feature 'Update settings form information' do
 
   def then_I_should_see_a_validation_message_for_required
     expect(editor.text).to include(
-      'Your answer for ‘Form name’ can not be blank.'
+      'Your answer for ‘Form name’ cannot be blank.'
     )
   end
 

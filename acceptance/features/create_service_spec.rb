@@ -58,7 +58,7 @@ feature 'Create a service' do
 
   def then_I_should_see_a_validation_message_for_required
     expect(editor.text).to include(
-      'Your answer for ‘Give your form a name’ can not be blank.'
+      'Your answer for ‘Give your form a name’ cannot be blank.'
     )
   end
 

@@ -179,6 +179,7 @@ en:
         pdf_hint: All answers will be written in a pdf attached to the email
       page_creation:
         page_url: "What will be the URL for this page?"
+        page_url_hint: "This cannot contain any spaces."
       publish_service_creation:
         allow_anonymous: 'Allow anyone with the link to view'
         require_authentication: 'Set a username and password'
@@ -189,7 +190,7 @@ en:
         page_creation:
           taken: "Your answer for ‘%{attribute}' is already used by another page. Please modify it."
       messages:
-        blank: "Your answer for ‘%{attribute}’ can not be blank."
+        blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
         too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
