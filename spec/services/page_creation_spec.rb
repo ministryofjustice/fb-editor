@@ -91,18 +91,17 @@ RSpec.describe PageCreation, type: :model do
           end
         end
 
-        context 'when url already exists on the same metadata' do
-          it 'have errors' do
-            should_not allow_values(
-              '/',
-              'name',
-              '/name',
-              'email-address',
-              '/email-address',
-              'parent-name',
-              'confirmation',
-              'check-answers'
-            ).for(:page_url)
+        context 'when url already exists in the same metadata' do
+          let(:all_page_urls) do
+            page_urls = attributes[:latest_metadata]['pages'].map { |page| page['url'] }
+            standalone_urls = attributes[:latest_metadata]['standalone_pages'].map { |page| page['url'] }
+            page_urls + standalone_urls
+          end
+          let(:with_slash) { ['/name', '/email-address'] }
+          let(:existing_urls) { all_page_urls + with_slash }
+
+          it 'has errors' do
+            should_not allow_values(existing_urls).for(:page_url)
           end
         end
       end
