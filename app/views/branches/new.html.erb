@@ -1,6 +1,11 @@
 <div class="branches new">
-  <h1>Branching node 1 (what text here)</h1>
-  <p>After "<%= @branch.previous_flow_title %>"</p>
+  <h1 class="fb-editable govuk-heading-xl"
+      data-fb-content-id="page[heading]"
+      data-fb-content-type="element">
+    Branching node 1
+  </h1>
+
+  <p class="govuk-heading-m">After "<%= @branch.previous_flow_title %>"</p>
 
   <%= form_for @branch, url: branches_path(service.service_id), method: :post do |f| %>
     <%= render 'form', f: f %>
