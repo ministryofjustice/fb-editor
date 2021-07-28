@@ -112,6 +112,12 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     component._state.close = false;
   });
 
+  this.$node.on("keydown", (event) => {
+    // ESC
+    if(event.which == 27) {
+      component.close();
+    }
+  });
 
   // Add a trigger for any listening document event
   // to activate on menu item selection.
