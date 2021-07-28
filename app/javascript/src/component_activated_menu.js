@@ -117,6 +117,11 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     if(event.which == 27) {
       component.close();
     }
+
+    // TAB
+    if(event.which == 9) {
+      event.preventDefault();
+    }
   });
 
   // Add a trigger for any listening document event
