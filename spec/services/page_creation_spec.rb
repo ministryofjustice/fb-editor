@@ -98,7 +98,8 @@ RSpec.describe PageCreation, type: :model do
             page_urls + standalone_urls
           end
           let(:with_slash) { ['/name', '/email-address'] }
-          let(:existing_urls) { all_page_urls + with_slash }
+          let(:reserved_urls) { MetadataUrlValidator::RESERVED }
+          let(:existing_urls) { all_page_urls + with_slash + reserved_urls }
 
           it 'has errors' do
             should_not allow_values(existing_urls).for(:page_url)
