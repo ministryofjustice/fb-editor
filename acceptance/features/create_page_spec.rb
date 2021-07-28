@@ -73,13 +73,23 @@ feature 'Create page' do
     then_I_should_see_the_edit_confirmation_page
   end
 
-  scenario 'attempt to add a page with an existing url' do
+  scenario 'attempt to add a page with an existing url in the service flow' do
     given_I_have_a_single_question_page_with_text
     and_I_edit_the_service
     given_I_add_a_single_question_page_with_text
     and_I_add_an_existing_page_url
     when_I_add_the_page
     then_I_should_see_a_validation_error_message_that_page_url_exists
+  end
+
+  scenario 'attempt to add a page with an existing url in the standalone pages' do
+    service_standalone_pages.each do |url|
+      and_I_edit_the_service
+      given_I_add_a_single_question_page_with_text
+      and_I_add_a_page_url(url)
+      when_I_add_the_page
+      then_I_should_see_a_validation_error_message_that_page_url_exists
+    end
   end
 
   def and_I_add_an_existing_page_url
@@ -176,5 +186,9 @@ feature 'Create page' do
 
   def and_I_should_see_the_save_button_disabled
     expect(editor.save_page_button).to be_disabled
+  end
+
+  def service_standalone_pages
+    service.metadata['standalone_pages'].map { |page| page['url'] }
   end
 end
