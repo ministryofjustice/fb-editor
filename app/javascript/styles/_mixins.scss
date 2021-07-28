@@ -30,9 +30,13 @@
   width: auto;
 
   &:hover {
-    background-color: govuk-colour("blue");
-    color: govuk-colour("white");
+    @include button_type_link_reverse;
   }
+}
+
+@mixin button_type_link_reverse {
+  background-color: govuk-colour("blue");
+  color: govuk-colour("white");
 }
 
 @mixin focus {

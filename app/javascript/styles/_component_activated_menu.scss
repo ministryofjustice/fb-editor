@@ -59,6 +59,10 @@
     &:focus-visible {
       outline: none;
     }
+
+    &.ui-state-active {
+      @include button_type_link_reverse;
+    }
   }
 
   span {
