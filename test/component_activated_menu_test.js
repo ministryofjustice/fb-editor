@@ -11,7 +11,6 @@ describe("ActivatedMenu", function() {
   const ACTIVATOR_ID = "activated-menu-test-activator-id";
   const ACTIVATOR_TEXT = "activated menu activator";
   const MENU_ID = "activated-menu-test-menu-id";
-  const TEST_SELECTION_ELEMENT_ID = "component-activated-menu-test-selection-event-element";
   const TEST_SELECTION_EVENT_NAME = "ActivatedMenuTestSelectionEventName";
   var menu;
 

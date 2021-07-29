@@ -15,11 +15,6 @@
  *
  **/
 
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const safelyActivateFunction = utilities.isFunction;
-const post = utilities.post;
 const ActivatedFormDialog = require('./component_activated_form_dialog');
 const DefaultController = require('./controller_default');
 
@@ -75,6 +70,7 @@ class PublishForm {
     var $submit = $node.find("input[type=submit]");
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
+      // eslint-disable-next-line
       cancelText: app.text.dialogs.button_cancel,
       okText: $submit.val(),
       activator: $submit

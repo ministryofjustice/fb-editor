@@ -8,12 +8,10 @@ describe("QuestionMenu", function() {
   const CONTAINER_ID = "activated-question-menu-test-container-id";
   const CONTAINER_CLASSNAME = "activated-question-menu-test-classname and-another-activated-menu-classname";
   const ACTIVATOR_CLASSNAME = "activated-question-menu-activator-test-classname";
-  const ACTIVATOR_ID = "activated-question-menu-test-activator-id";
   const ACTIVATOR_TEXT = "activated question menu activator";
   const MENU_ID = "activated-question-menu-test-menu-id";
-  const TEST_SELECTION_ELEMENT_ID = "component-activated-question-menu-test-selection-event-element";
   const TEST_SELECTION_EVENT_NAME = "QuestionMenuTestSelectionEventName";
-  var menu, question;
+  var menu;
 
   /* Function to manually simulate closed state menu in
    * case any test leaves open when that is not required.
@@ -327,7 +325,7 @@ console.log($(document.body).html());
     });
 
     it("should open the menu when activator is clicked", function() {
-      // TODO... 
+      // TODO...
 //      menu.activator.$node.click();
       //expect(1).to.equal(0); // Fail until done.
     });

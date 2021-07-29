@@ -14,10 +14,6 @@
  *
  **/
 
-const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
-
-
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
  * Extra config options specific to this enhancement
@@ -105,7 +101,7 @@ Dialog.setElements = function($node) {
 
   // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
-  
+
   // Don't want this button so hide it.
   $buttons.eq(1).hide();
 

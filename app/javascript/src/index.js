@@ -7,7 +7,9 @@ const PublishController = require('./controller_publish');
 
 // Determine the controller we need to use
 function controllerAndAction() {
+  // eslint-disable-next-line
   var controller = app.page.controller.charAt(0).toUpperCase() + app.page.controller.slice(1);
+  // eslint-disable-next-line
   return controller + "Controller#" + app.page.action;
 }
 
@@ -43,6 +45,7 @@ switch(controllerAndAction()) {
   case "PagesController#edit":
   case "PagesController#create":
        Controller = PagesController;
+       // eslint-disable-next-line
        loadPageData(app);
   break;
 
@@ -56,5 +59,6 @@ switch(controllerAndAction()) {
        Controller = DefaultController;
 }
 
+// eslint-disable-next-line
 $(document).ready( () => new Controller(app) );
- 
+

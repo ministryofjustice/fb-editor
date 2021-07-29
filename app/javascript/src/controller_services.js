@@ -182,7 +182,9 @@ function pageActionMenuSelection(event, data) {
 
     case "delete":
           this.dialogConfirmationDelete.open({
+            // eslint-disable-next-line
             heading: app.text.dialogs.heading_delete.replace(/%{label}/, data.component.$node.data("page-heading")),
+            // eslint-disable-next-line
             ok: app.text.dialogs.button_delete_page
             }, function() {
             post(element.href, { _method: "delete" });
@@ -246,7 +248,6 @@ PageAdditionMenu.selection = function(event, data) {
 function applyCustomOverviewWorkaround() {
   var $overview = $("#form-overview");
   var $container = $overview.find(" > .container");
-  var $button = $(".form-overview_button")
   var containerWidth = $container.width();
   var overviewWidth = $overview.width();
   var offsetLeft = $overview.offset().left;

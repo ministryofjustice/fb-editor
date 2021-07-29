@@ -20,7 +20,6 @@ const createElement = utilities.createElement;
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const isBoolean = utilities.isBoolean;
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -57,6 +56,7 @@ class EditableBase {
   }
 
   get content() {
+    // eslint-disable-next-line
     return $node.text();
   }
 
@@ -327,6 +327,7 @@ class EditableComponentBase extends EditableBase {
   // Focus on first editable element.
   focus() {
     for(var i in this._elements) {
+      // eslint-disable-next-line
       if(this._elements.hasOwnProperty(i)) {
         this._elements[i].focus();
         break;
@@ -532,8 +533,6 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       selectorElementHint: config.selectorHint
     }, config));
 
-    var text = config.text || {}; // Make sure it exists to avoid errors later on.
-
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
@@ -677,6 +676,7 @@ EditableCollectionFieldComponent.updateItems = function() {
 EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) {
   var filtered_data = {};
   for(var prop in data) {
+    // eslint-disable-next-line
     if(filters && filters.hasOwnProperty(prop)) {
       filtered_data[prop] = filters[prop].call(data[prop], unique);
     }
@@ -767,9 +767,6 @@ class EditableCollectionItemRemover {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ itemRemove: 'remove' }, config.text);
     var $node = $(createElement("button", text.itemRemove, conf.classes));
-    var removeCollectionItem = function() {
-      editableCollectionFieldComponent.remove(editableCollectionItem);
-    }
 
     $node.data("instance", this);
     $node.addClass("EditableCollectionItemRemover");
@@ -804,12 +801,12 @@ function convertToMarkdown(html) {
   return converter.makeMarkdown(html);
 }
 
-/* Extremely simple function to safely convert target elements, 
+/* Extremely simple function to safely convert target elements,
  * such as <script>, so JS doesn't run in editor.
  * Note: Because we're converting from Markup, we need to be
  * careful about what is converted into entity or escaped form.
  * For that reason, we are trying to be minimalistic in approach.
- **/ 
+ **/
 function sanitiseHtml(html) {
   html = html.replace("</script>", "&lt;/script&gt;");
   html = html.replace(/<script(.*?)>/, "&lt;script$1&gt;");
@@ -824,16 +821,6 @@ function convertToHtml(markdown) {
   html = sanitiseHtml(html);
   return html;
 }
-
-
-/* Multiple Line Input Restrictions
- * Browser contentEditable mode means some pain in trying to prevent
- * HTML being inserted (rich text attempts by browser). We're only
- * editing as plain text and markdown for all elements so try to
- * prevent unwanted entry with this function.
- **/
-function multipleLineInputRestrictions(event) {}
-
 
 /* Single Line Input Restrictions
  *Browser contentEditable mode means some pain in trying to prevent

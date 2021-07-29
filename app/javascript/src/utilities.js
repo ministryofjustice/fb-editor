@@ -29,6 +29,7 @@
  **/
 function mergeObjects(a, b, ignore) {
   for(var i in b) {
+    // eslint-disable-next-line
     if(b.hasOwnProperty(i)) {
       if(ignore && ignore.includes(i)) {
         continue;
@@ -75,7 +76,7 @@ function createElement(tag, text, classes) {
  *   run it only if that proves true.
  *
  * @func (Function) Expected to be required function.
- * 
+ *
  * Note: You can also pass in several other arguments (as is possible with
  * JavaScript functions, and these will be passed to the called function).
  **/
@@ -148,12 +149,13 @@ function post(url, data) {
   document.body.appendChild(form);
 
   // Add params.
-  for(var param in params) {
-    if(params.hasOwnProperty(param)) {
+  for(var p in params) {
+    // eslint-disable-next-line
+    if(params.hasOwnProperty(p)) {
       let input = document.createElement("input");
       input.setAttribute("type", "hidden");
-      input.setAttribute("name", param);
-      input.setAttribute("value", params[param]);
+      input.setAttribute("name", p);
+      input.setAttribute("value", params[p]);
       form.appendChild(input);
     }
   }
@@ -186,11 +188,13 @@ function updateHiddenInputOnForm($form, name, content) {
  * @name    (String) Used as the name attribute on input[hidden] form elements.
  * @content (String) instance.content value added to input[hidden] field.
  **/
+/* eslint-disable */
 function addHiddenInpuElementToForm($form, name, content) {
   $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
   $form.prepend($input);
   $input.val(content);
 }
+/* eslint-enable */
 
 
 /* Function returns specified property or undefined.
@@ -223,7 +227,7 @@ function isBoolean(thing) {
 
 
 // Make available for importing.
-module.exports  = { 
+module.exports  = {
   mergeObjects: mergeObjects,
   createElement: createElement,
   safelyActivateFunction: safelyActivateFunction,

@@ -18,7 +18,6 @@ const utilities = require('./utilities');
 const property = utilities.property;
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
-const safelyActivateFunction = utilities.safelyActivateFunction;
 const uniqueString = utilities.uniqueString;
 
 
@@ -154,15 +153,15 @@ ActivatedMenu.setMenuOpenPosition = function(position) {
 /* Private function
  * Removes any position values that have occurred as a result of
  * calling the setMenuOpenPosition() function.
- * Note: This assumes that no external JS script is trying to 
+ * Note: This assumes that no external JS script is trying to
  * set values independently of the ActivatedMenu class functionality.
  * Clearing the values is required to stop jQueryUI position()
  * functionality adding to existing, each time it's called.
- * An alternative might be to set position once, and not on each 
+ * An alternative might be to set position once, and not on each
  * ActivatedMenu.open call. There is a minor performance gain that
- * could be claimed, but it would also be less flexible, if the 
+ * could be claimed, but it would also be less flexible, if the
  * activators (used for position reference) need to be dynamically
- * moved for any enhance or future design improvements. 
+ * moved for any enhance or future design improvements.
  **/
 ActivatedMenu.resetMenuOpenPosition = function() {
   var node = this.container.$node.get(0);

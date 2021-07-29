@@ -95,8 +95,8 @@ class Activator {
  * @classes (String) Classes added to button.
  **/
 function createActivator($dialog, text, classes) {
-  var $activator = $("<button>\</button>");
-  $activator.text((text || "open dialog")); 
+  var $activator = $("<button></button>");
+  $activator.text((text || "open dialog"));
   $activator.addClass(classes);
   $dialog.before($activator);
   return $activator;

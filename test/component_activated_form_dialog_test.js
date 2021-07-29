@@ -67,7 +67,7 @@ describe("ActivatedFormDialog", function() {
       expect(dialog.$node.get(0)).to.equal($form.get(0));
     });
 
-    it("should make the instance available as data on the $node", function() {;
+    it("should make the instance available as data on the $node", function() {
       expect(dialog.$node).to.exist;
       expect(dialog.$node.length).to.equal(1);
       expect(dialog.$node.data("instance")).to.eql(dialog);
