@@ -38,10 +38,14 @@ jobs:
       - image: 'cimg/ruby:2.7.3-node'
     steps:
       - checkout
+      - run: *node_version
+      - node/install-packages:
+          pkg-manager: yarn
       - ruby/install-deps
       - ruby/rubocop-check:
           format: progress
           label: running rubocop
+      - run: 'yarn run eslint app/javascript'
       - slack/status: *slack_status
   security:
     docker:
