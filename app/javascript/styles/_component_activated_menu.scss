@@ -60,7 +60,6 @@
       outline: none;
     }
 
-    &:focus,
     &.ui-state-active {
       @include button_type_link_reverse;
     }

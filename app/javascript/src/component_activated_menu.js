@@ -68,8 +68,14 @@ class ActivatedMenu {
     this.activator.$node.addClass("active");
     this.activator.$node.attr("aria-expanded", true);
     this.container.$node.show();
-    this.$node.find(".ui-menu-item:first > :first-child").focus();
     this._state.open = true;
+
+    // Using arbitrary delay because something is switching focus back to activator.
+    // TODO: Investigate this and remove timeout when can.
+    setTimeout(() => {
+      this.$node.menu("focus", null, this.$node.find("li:first"));
+      this.$node.focus();
+    }, 100);
   }
 
   // Method
