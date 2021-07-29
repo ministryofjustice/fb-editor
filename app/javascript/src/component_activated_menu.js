@@ -84,6 +84,7 @@ class ActivatedMenu {
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
     this.activator.$node.attr("aria-expanded", false);
+    this.activator.$node.focus();
 
     // Reset any externally/temporary setting of
     // component._state.position back to default.
