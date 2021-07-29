@@ -9,9 +9,12 @@ RSpec.describe 'Branch' do
       allow_any_instance_of(
         Api::BranchesController
       ).to receive(:require_user!).and_return(true)
-      allow_any_instance_of(
-        Api::BranchesController
-      ).to receive(:service).and_return(service)
+      allow(MetadataApiClient::Service).to receive(:latest_version).with(
+        service.service_id
+      )
+        .and_return(
+          metadata_fixture(:version)
+        )
       request
     end
 

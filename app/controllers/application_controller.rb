@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def service_metadata
-    @service_metadata ||= MetadataApiClient::Service.latest_version(params[:id])
+    @service_metadata ||= MetadataApiClient::Service.latest_version(service_id_param)
   end
 
   def user_name
@@ -48,4 +48,8 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :user_name
+
+  def service_id_param
+    params[:service_id] || params[:id]
+  end
 end
