@@ -16,6 +16,35 @@ RSpec.describe Branch do
     previous_flow_object.uuid
   end
 
+  describe '.from_metadata' do
+    let(:latest_metadata) { metadata_fixture(:branching) }
+    let(:service) do
+      MetadataPresenter::Service.new(latest_metadata)
+    end
+    let(:branch_id) { '09e91fd9-7a46-4840-adbc-244d545cfef7' }
+    let(:branch_metadata) { service.flow_object(branch_id) }
+    let(:expected_metadata) do
+      {
+        'conditionals_attributes' => {
+          '0' => {
+            'next' => 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+            'expressions_attributes' => {
+              '0' => {
+                'page' => '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                'component' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+                'field' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+              }
+            }
+          }
+        }
+      }
+    end
+
+    it 'serialises the branch objects metadata' do
+      expect(Branch.from_metadata(branch_metadata)).to eq(expected_metadata)
+    end
+  end
+
   describe '#conditionals_attributes=' do
     let(:attributes) do
       {
