@@ -1,7 +1,7 @@
 en:
   aria:
     answers: Answers
-    hint: Querstion Hint
+    hint: Question Hint
     question: Question
     section_heading: Section Heading
     flow_thumbnail: 'Form page'
@@ -178,8 +178,8 @@ en:
         service_email_body_hint: The email text that will be sent
         pdf_hint: All answers will be written in a pdf attached to the email
       page_creation:
-        page_url: "What will be the URL for this page?"
-        page_url_hint: "This cannot contain any spaces."
+        page_url: "Give your page a short name"
+        page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"
       publish_service_creation:
         allow_anonymous: 'Allow anyone with the link to view'
         require_authentication: 'Set a username and password'
@@ -188,7 +188,10 @@ en:
     errors:
       models:
         page_creation:
-          taken: "Your answer for ‘%{attribute}' is already used by another page. Please modify it."
+          taken: "You already have a page with that name"
+          restricted: "That name is used for something else"
+          has_space: "Your page name cannot include spaces"
+          has_special_chars:  "Your page name cannot include special characters other than hyphens (-)"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
@@ -196,6 +199,7 @@ en:
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
+        
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'
