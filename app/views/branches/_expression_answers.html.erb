@@ -1,0 +1,16 @@
+<div class="" data-expression-index="<%= expression_index %>" data-component-type="<%= component_type %>">
+  <%= f.select :operators, @expression.operators,
+    { include_blank: false },
+    {
+      class: 'govuk-select',
+      name: expression_name('operator'),
+      id: expression_id('operator')
+    }  %>
+  <%= f.select :answers, @expression.answers,
+    { include_blank: false },
+    {
+      class: 'govuk-select',
+      name: expression_name('answer'),
+      id: expression_id('answer')
+    } %>
+</div>

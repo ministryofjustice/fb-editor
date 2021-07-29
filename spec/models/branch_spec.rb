@@ -58,13 +58,17 @@ RSpec.describe Branch do
         }
       }
     end
-    let(:conditional) do
+    let(:expected_conditional) do
       object = Conditional.new(
-        'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0'
+        'next' => '3bbf86fc-701f-4cb6-8083-12404b293da0',
+        'service' => service
       )
       object.tap do
         object.expressions.push(
-          Expression.new('component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b')
+          Expression.new(
+            'component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b',
+            'page' => double(uuid: 'some-page-uuid')
+          )
         )
       end
     end
@@ -72,7 +76,7 @@ RSpec.describe Branch do
     it 'assigns conditionals' do
       expect(branch.conditionals).to eq(
         [
-          conditional
+          expected_conditional
         ]
       )
     end
