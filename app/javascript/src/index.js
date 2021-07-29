@@ -3,6 +3,7 @@ const PagesController = require('./controller_pages');
 const ServicesController = require('./controller_services');
 const FormListPage = require('./page_form_list');
 const PublishController = require('./controller_publish');
+const BranchesController = require('./controller_branches');
 
 
 // Determine the controller we need to use
@@ -31,6 +32,10 @@ function loadPageData(app) {
 var Controller;
 
 switch(controllerAndAction()) {
+  case "BranchesController#new":
+       Controller = BranchesController;
+  break;
+
   case "ServicesController#index":
   case "ServicesController#create":
        Controller = FormListPage;

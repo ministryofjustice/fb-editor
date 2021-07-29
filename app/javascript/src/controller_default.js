@@ -1,7 +1,8 @@
 /**
- * Default Page
+ * Default Controller
  * ----------------------------------------------------
  * Description:
+ * Default page controller to be inherited by all specific controllers.
  * Adds standard functionality required for common FB Editor pages.
  *
  * Documentation:

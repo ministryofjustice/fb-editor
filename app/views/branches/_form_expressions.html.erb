@@ -1,7 +1,13 @@
 <%= conditional.fields_for :expressions do |expression| %>
-  <div data-index-expression="<%= expression.index %>">
-    <%= expression.select :component,
-      @branch.previous_questions,
-      include_blank: '--Select a question--' %>
+  <div class="expression">
+    <div class="statement govuk-form-group" data-index-expression="<%= expression.index %>">
+      <%= expression.select :component,
+        @branch.previous_questions,
+        { include_blank: '--Select a question--' },
+        { class: 'govuk-select' } %>
+    </div>
+    <div class="bob">
+      [bob ?? goes here]
+    </div>
   </div>
 <% end %>

@@ -31,16 +31,6 @@ html {
   width: 1px;
 }
 
-#editContentForm {
-  position: absolute;
-  right: 0;
-  top: 3px;
-
-  @include govuk-media-query($until: tablet) {
-    position: static;
-  }
-}
-
 #header-logo-link {
   display: inline-block;
   margin-right: govuk-spacing(2);
@@ -102,6 +92,16 @@ html {
   }
 }
 
+#fb-editor-save {
+  position: absolute;
+  right: 0;
+  top: 3px;
+
+  @include govuk-media-query($until: tablet) {
+    position: static;
+  }
+}
+
 .fb-govuk-button {
   // govuk-button style is green but we want blue buttons on fb-editor.
   @include fb-govuk-button;
@@ -136,6 +136,56 @@ html {
   }
 }
 
+
+/* Branching
+ * ------------------- */
+.dev-colours-on {
+.bob {
+  border: 5px solid pink;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.branch {
+  background-color: govuk-colour("light-grey");
+  border: 5px solid lightgreen;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.branches {
+  @include responsive_width("two-thirds");
+
+  border: 5px solid red;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.destination {
+  border: 5px solid orange;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.expression {
+  border: 5px solid purple;
+  margin-bottom: 10px;
+  padding: 20px;
+}
+
+.statement {
+  border: 5px solid lightblue;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+@keyframes blinker {
+  25% {
+    opacity: 0;
+  }
+}
+}
 
 /* Editable components
  * ------------------- */

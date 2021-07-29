@@ -1,5 +1,8 @@
-<h1>After "<%= @branch.previous_flow_title %>"</h1>
+<div class="branches new">
+  <h1>Branching node 1 (what text here)</h1>
+  <p>After "<%= @branch.previous_flow_title %>"</p>
 
-<%= form_for @branch, url: branches_path(service.service_id), method: :post do |f| %>
-  <%= render 'form', f: f %>
-<% end %>
+  <%= form_for @branch, url: branches_path(service.service_id), method: :post do |f| %>
+    <%= render 'form', f: f %>
+  <% end %>
+</div>
