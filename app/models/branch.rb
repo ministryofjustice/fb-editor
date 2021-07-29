@@ -4,6 +4,32 @@ class Branch
 
   validate :conditionals_validations
 
+  def self.from_metadata(flow_object)
+    conditionals_hash = { 'conditionals_attributes' => {} }
+
+    flow_object.conditionals.each_with_index do |conditional, index|
+      conditionals_hash['conditionals_attributes'][index.to_s] = {
+        'next' => conditional.next
+      }.merge(expressions_attributes(conditional))
+    end
+
+    conditionals_hash
+  end
+
+  def self.expressions_attributes(conditional)
+    expressions_hash = { 'expressions_attributes' => {} }
+
+    conditional.expressions.each_with_index do |expression, expression_index|
+      expressions_hash['expressions_attributes'][expression_index.to_s] = {
+        'page' => expression.page,
+        'component' => expression.component,
+        'field' => expression.field
+      }
+    end
+
+    expressions_hash
+  end
+
   def conditionals_validations
     errors.add(:conditionals, 'Conditionals are not valid') if conditionals.map(&:invalid?).any?
   end

@@ -6,9 +6,12 @@ class BranchesController < FormController
 
   def create
     @branch = Branch.new(branch_params)
-    branch_creation = BranchCreation.new(branch: @branch, latest_metadata: service_metadata)
+    branch_creation = BranchCreation.new(
+      branch: @branch,
+      latest_metadata: service_metadata
+    )
 
-    if branch_creation.create
+    if branch_creation.save
       redirect_to edit_branch_path(service.service_id, branch_creation.branch_uuid)
     else
       render :new
@@ -16,7 +19,20 @@ class BranchesController < FormController
   end
 
   def edit
-    @branch = Branch.new(branch_attributes)
+    @branch = Branch.new(
+      branch_metadata.merge(service: service, previous_flow_uuid: params[:branch_id])
+    )
+  end
+
+  def update
+    @branch = Branch.new(branch_params)
+    branch_updater = BranchUpdater.new(
+      branch: @branch,
+      latest_metadata: service_metadata
+    )
+
+    branch_updater.save
+    render :edit
   end
 
   def conditional_index
@@ -25,6 +41,11 @@ class BranchesController < FormController
   helper_method :conditional_index
 
   private
+
+  def branch_metadata
+    branch_object = service.flow_object(params[:branch_id])
+    Branch.from_metadata(branch_object)
+  end
 
   def assign_branch
     @branch = Branch.new(branch_attributes)
