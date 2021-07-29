@@ -46,6 +46,8 @@ Rails.application.routes.draw do
       resources :branches, param: :previous_flow_uuid do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'
       end
+
+      get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
     end
   end
 

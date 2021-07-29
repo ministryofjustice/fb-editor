@@ -35,8 +35,8 @@ RSpec.describe BranchCreation, type: :model do
           'expressions_attributes' => {
             '0' => {
               'operator' => 'is',
-              'page' => 'another-page-uuid',
-              'component' => 'some-component-uuid',
+              'page' => page_uuid,
+              'component' => component_uuid,
               'field' => 'some-field-uuid'
             }
           }
@@ -59,6 +59,15 @@ RSpec.describe BranchCreation, type: :model do
         default_next: default_next
       }
     end
+    let(:component_uuid) { 'some-component-uuid' }
+    let(:page_uuid) { 'another-page-uuid'}
+
+    before do
+      allow_any_instance_of(MetadataPresenter::Service)
+        .to receive(:page_with_component)
+        .with(component_uuid)
+        .and_return(double(uuid: page_uuid))
+    end
 
     context 'when metadata is valid' do
       let(:valid) { true }
@@ -71,8 +80,8 @@ RSpec.describe BranchCreation, type: :model do
             'expressions' => [
               {
                 'operator' => 'is',
-                'page' => 'another-page-uuid',
-                'component' => 'some-component-uuid',
+                'page' => page_uuid,
+                'component' => component_uuid,
                 'field' => 'some-field-uuid'
               }
             ]

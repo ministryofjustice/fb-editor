@@ -40,7 +40,7 @@ class Branch
 
   def conditionals_attributes=(hash)
     hash.each do |_index, conditional_hash|
-      conditionals.push(Conditional.new(conditional_hash))
+      conditionals.push(Conditional.new(conditional_hash.merge(service: service)))
     end
   end
 
