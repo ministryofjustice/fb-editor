@@ -56,7 +56,7 @@ class QuestionMenu extends ActivatedMenu {
 
   /* Change required option state for view purpose
    **/
-  setRequiredViewState = function() {
+  setRequiredViewState() {
     if(this.question.data.validation.required) {
       $("[data-action=required]").addClass("on");
     }
