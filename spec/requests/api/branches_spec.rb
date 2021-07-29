@@ -20,7 +20,7 @@ RSpec.describe 'Branch' do
 
       it 'returns the next conditional' do
         expect(response.body).to include(
-          'select name="branch[conditionals_attributes][2][next]"'
+          'name="branch[conditionals_attributes][2][next]"'
         )
       end
     end
@@ -30,7 +30,7 @@ RSpec.describe 'Branch' do
 
       it 'returns the next conditional' do
         expect(response.body).to include(
-          'select name="branch[conditionals_attributes][3][next]"'
+          'name="branch[conditionals_attributes][3][next]"'
         )
       end
     end
