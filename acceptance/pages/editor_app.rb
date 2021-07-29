@@ -40,7 +40,7 @@ class EditorApp < SitePrism::Page
   element :submission_settings_link, :link, 'Submission settings'
   element :send_by_email_link, :link, 'Send by email'
 
-  element :page_url_field, :field, 'What will be the URL for this page?'
+  element :page_url_field, :field, 'Give your page a short name'
   element :new_page_form, '#new_page', visible: false
 
   element :add_page, :button, 'Add page'

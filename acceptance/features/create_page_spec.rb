@@ -97,9 +97,7 @@ feature 'Create page' do
   end
 
   def then_I_should_see_a_validation_error_message_that_page_url_exists
-    expect(editor.text).to include(
-      "Your answer for ‘What will be the URL for this page?' is already used by another page. Please modify it"
-    )
+    expect(editor.text).to include('You already have a page with that name')
   end
 
   def then_I_should_see_the_edit_single_question_text_page
