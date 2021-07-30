@@ -71,6 +71,13 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
+  branches:
+    after: After "%{page_title}"
+    goto: Go to
+    select_destination: '--- Select a destination page ---'
+    select_question: '--Select a question--'
+    title_branch: 'Branch ...'
+    title_otherwise: 'Otherwise'
   pages:
     flow:
       heading: 'Pages flow'
