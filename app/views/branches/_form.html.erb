@@ -1,12 +1,12 @@
 
   <div class="branch">
-    <p>Branch ...</p>
+    <p><%= t('branches.title_branch') %></p>
     <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
     <%= render 'form_conditionals', f: f %>
   </div>
 
   <div class="branch" id="branch-otherwise">
-    <p>Otherwise</p>
+    <p><%= t('branches.title_otherwise') %></p>
     <div class="destination">
       <div class="govuk-form-group">
         <%= f.label :default_next, "Go to", { class: "govuk-label" } %>

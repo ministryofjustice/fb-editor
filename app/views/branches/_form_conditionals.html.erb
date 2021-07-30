@@ -5,10 +5,10 @@
         <span class="govuk-error-message"><%= message %></span>
       <% end %>
 
-      <%= conditional.label :next, "Go to", { class: "govuk-label" } %>
+      <%= conditional.label :next, t('branches.goto'), { class: "govuk-label" } %>
       <%= conditional.select :next,
         @branch.pages,
-        { include_blank: '--- Select a destination page ---' },
+        { include_blank: t('branches.select_destination') },
         { class: 'govuk-select' } %>
     </div>
   </div>
