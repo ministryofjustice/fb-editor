@@ -154,6 +154,7 @@ class PageActionMenu extends ActivatedMenu {
  * TODO: What are other actions?
  **/
 function pageActionMenuSelection(event, data) {
+  var view = this;
   var element = data.original.element;
   var action = data.activator.data("action");
   switch(action) {
@@ -171,9 +172,21 @@ function pageActionMenuSelection(event, data) {
          // just set it to blank string if from the main 'Add page' button.
          updateHiddenInputOnForm(data.component.dialog.$form, "page[add_page_after]", data.component.uuid);
 
+         let $menu = $("#ActivatedMenu_AddPage");
+
+         // Bit scrappy but we need to talk across components and reset the
+         // focus back to the menu element that activated the other menu.
+         $menu.on("activatedmenuclosed", function() {
+           $menu.data("instance").menu.activator.$node.blur();
+           $(data.menu).menu("focus", null, data.activator);
+           $(data.menu).focus();
+
+           $menu.off("activatedmenuclosed"); // Remove to make it run once action.
+         });
+
          // Current menu option needs to activate the (separate entity)
-         // Add page menu to allow add page options to show.
-         $("#ActivatedMenu_AddPage").trigger("component.open", {
+         // Add page menu to allow add page options to show
+         $menu.trigger("component.open", {
            my: "left top",
            at: "right top",
            of: element
