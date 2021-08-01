@@ -89,6 +89,10 @@ class ActivatedMenu {
     // Reset any externally/temporary setting of
     // component._state.position back to default.
     ActivatedMenu.resetMenuOpenPosition.call(this);
+
+    // Announce close and trigger any set event.
+    // Useful when opening from external activator.
+    this.container.$node.trigger("activatedmenuclosed");
   }
 }
 
