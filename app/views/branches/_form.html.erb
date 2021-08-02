@@ -5,6 +5,10 @@
     <%= render 'form_conditionals', f: f %>
   </div>
 
+  <div class="branch-actions">
+    <a class="govuk-link" href="#" id="add-another-branch"><%= t('branches.add_branch') %></a>
+  </div>
+
   <div class="branch" id="branch-otherwise">
     <p><%= t('branches.title_otherwise') %></p>
     <div class="destination">
