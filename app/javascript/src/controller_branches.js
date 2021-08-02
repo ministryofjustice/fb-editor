@@ -16,16 +16,19 @@
  **/
 
 
+const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
 const Branch = require('./component_branch');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
 const BRANCH_DESTINATION_SELECTOR = ".destination";
+const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 
 
 class BranchesController extends DefaultController {
   constructor(app) {
     super(app);
+    this.branchCount = -2; // We start with 1 branch and 1 'otherwise' branch
 
     switch(app.page.action) {
       case "new":
@@ -34,6 +37,19 @@ class BranchesController extends DefaultController {
 
     addMattsButton(); // Dev only while branches is WIP
   }
+
+  /* Creates a new branch from a passed element and keeps
+   * track of number of branches
+   **/
+  createBranch($node) {
+    new Branch($node, {
+      condition_selector: BRANCH_CONDITION_SELECTOR,
+      destination_selector: BRANCH_DESTINATION_SELECTOR,
+      view: this
+    });
+
+    this.branchCount++;
+  }
 }
 
 
@@ -41,23 +57,61 @@ class BranchesController extends DefaultController {
  **/
 BranchesController.create = function() {
   BranchesController.enhanceCurrentBranches.call(this);
+  BranchesController.enhanceBranchInjectors.call(this);
 }
 
 
 /* Find and enhance all current branches.
  **/
 BranchesController.enhanceCurrentBranches = function() {
+  var view = this;
   $(BRANCH_SELECTOR).each(function() {
-    new Branch($(this), {
-      condition_selector: BRANCH_CONDITION_SELECTOR,
-      destination_selector: BRANCH_DESTINATION_SELECTOR
-    });
+    view.createBranch($(this));
   });
-
 }
 
 
+/* Find and enhance all elements that can add a new branch.
+ **/
+BranchesController.enhanceBranchInjectors = function() {
+  var view = this;
+  $(BRANCH_INJECTOR_SELECTOR).each(function() {
+    new BranchInjector($(this), {
+      view: view
+    });
+  });
+}
 
+
+/* Creates a BranchInjector object from passed $node.
+ * BranchInjectors fetch new HTML for a branch that will
+ * be added to the DOM and turned into a Branch object.
+ **/
+class BranchInjector {
+  constructor($node, config) {
+    var injector = this;
+    var conf = utilities.mergeObjects({}, config);
+    this.view = config.view;
+
+    $node.on("click", function(e) {
+      e.preventDefault();
+      injector.add();
+    });
+  }
+
+  /* Gets HTML for a new branch from api request
+   **/
+  add() {
+    var index = this.view.branchCount;
+    var url = "/api/services/f58b914b-f896-4848-bc1d-a2a60dba293a/branches/088dcdbe-be86-47e7-b472-3747e4b70c4f/conditionals/" + String(index);
+    utilities.updateDomByApiRequest(url, {
+      target: $(BRANCH_SELECTOR).eq(index),
+      type: "after" })
+      .done(function() {
+      console.log("done");
+    });
+  }
+}
 
 
 
