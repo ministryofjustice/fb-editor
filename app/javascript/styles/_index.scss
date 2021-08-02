@@ -139,53 +139,172 @@ html {
 
 /* Branching
  * ------------------- */
-.dev-colours-on {
-.bob {
-  border: 5px solid pink;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
 .branch {
   background-color: govuk-colour("light-grey");
-  border: 5px solid lightgreen;
   border-radius: 15px;
-  margin-bottom: 20px;
-  padding: 10px;
+  margin-bottom: govuk-spacing(5);
+  padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
+
+  p:first-child {
+    color: govuk-colour("dark-grey");
+    margin: 0;
+    position: relative;
+    top: -10px;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    padding-right: govuk-spacing(5);
+  }
 }
 
 .branches {
-  @include responsive_width("two-thirds");
+  @include responsive_width("three-quarters");
 
-  border: 5px solid red;
-  margin-bottom: 10px;
-  padding: 10px;
-}
+  label {
+    @include govuk-font($size: 24);
 
-.destination {
-  border: 5px solid orange;
-  margin-bottom: 10px;
-  padding: 10px;
-}
+    font-weight: bold;
+    display: inline;
+    left: 0;
+    margin-right: govuk-spacing(2);
+    position: absolute;
+    top: 4px;
+  }
 
-.expression {
-  border: 5px solid purple;
-  margin-bottom: 10px;
-  padding: 20px;
-}
+  @include govuk-media-query($until: tablet) {
+    label {
+      display: block;
+      position: static;
+    }
+  }
 
-.statement {
-  border: 5px solid lightblue;
-  margin-bottom: 10px;
-  padding: 10px;
-}
+  .answer {
+    clear: both;
+    float: right;
+    width: 85%;
 
-@keyframes blinker {
-  25% {
-    opacity: 0;
+    select {
+      width: 100%;
+    }
+
+    .govuk-form-group {
+      display: inline-block;
+
+      &:first-child {
+        width: 35%;
+      }
+
+      &:last-child {
+        float: right;
+        width: 60%;
+      }
+    }
+  }
+
+  .condition {
+    margin-left: 100px;
+    overflow: hidden;
+    position: relative;
+
+    @include govuk-media-query($until: tablet) {
+      & {
+        margin-left: 0;
+      }
+
+      select {
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+
+  .destination {
+    padding-left: 100px;
+    position: relative;
+
+    select {
+      float: right;
+      width: 100%;
+    }
+
+    @include govuk-media-query($until: tablet) {
+      & {
+        padding-left: 0;
+      }
+
+      select {
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+
+  .question {
+    float: right;
+    position: relative;
+    width: 85%;
+
+    select {
+      width: 100%;
+    }
+
+    @include govuk-media-query($until: tablet) {
+      & {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      select {
+        float: none;
+      }
+    }
   }
 }
+
+
+/**  Temporary  **
+ Start: dev-only branching styles
+ **  ---------  **/
+.dev-colours-on {
+  .answer {
+    border: 5px solid pink;
+    padding: 10px;
+  }
+
+  .branch {
+    border: 5px solid lightgreen;
+  }
+
+  .branches {
+    border: 5px solid red;
+    padding: 10px;
+  }
+
+  .condition {
+    border: 5px solid purple;
+    padding: 10px;
+  }
+
+  .destination {
+    border: 5px solid orange;
+    padding: 10px;
+  }
+
+  .question {
+    border: 5px solid lightblue;
+    padding: 10px;
+  }
+
+  @keyframes blinker {
+    25% {
+      opacity: 0;
+    }
+  }
 }
+/**  Temporary  **
+ End: dev-only branching styles
+ **  ---------  **/
+
 
 /* Editable components
  * ------------------- */
