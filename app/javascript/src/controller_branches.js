@@ -16,8 +16,11 @@
  **/
 
 
-
 const DefaultController = require('./controller_default');
+const Branch = require('./component_branch');
+const BRANCH_SELECTOR = ".branch";
+const BRANCH_CONDITION_SELECTOR = ".condition";
+const BRANCH_DESTINATION_SELECTOR = ".destination";
 
 
 class BranchesController extends DefaultController {
@@ -37,8 +40,43 @@ class BranchesController extends DefaultController {
 /* Setup for the create (new) action
  **/
 BranchesController.create = function() {
-  console.log("BranchesController.create is alive");
+  BranchesController.enhanceCurrentBranches.call(this);
 }
+
+
+/* Find and enhance all current branches.
+ **/
+BranchesController.enhanceCurrentBranches = function() {
+  $(BRANCH_SELECTOR).each(function() {
+    new Branch($(this), {
+      condition_selector: BRANCH_CONDITION_SELECTOR,
+      destination_selector: BRANCH_DESTINATION_SELECTOR
+    });
+  });
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* TO BE REMOVED
