@@ -140,9 +140,7 @@ html {
 /* Branching
  * ------------------- */
 .branch {
-  background-color: govuk-colour("light-grey");
-  border-radius: 15px;
-  margin-bottom: govuk-spacing(5);
+  @include container_panel;
   padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
 
   p:first-child {
@@ -155,6 +153,10 @@ html {
   @include govuk-media-query($until: tablet) {
     padding-right: govuk-spacing(5);
   }
+}
+
+.branch-actions {
+  @include container_panel;
 }
 
 .branches {
