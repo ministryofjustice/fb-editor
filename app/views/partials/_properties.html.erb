@@ -1,5 +1,8 @@
 <script>
   var app = {
+    api: {
+      new_conditional: "/api/services/#{service_id}/branches/#{branch_id}/conditionals/#{conditional_index}"
+    },
     page: {
       id: "<%= params[:page_uuid] %>",
       action: "<%= action_name %>",

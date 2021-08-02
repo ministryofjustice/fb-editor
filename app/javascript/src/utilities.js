@@ -239,6 +239,16 @@ function updateDomByApiRequest(url, placement) {
 }
 
 
+function stringInject(str, injections) {
+  for(var i in injections) {
+    if(injections.hasOwnProperty(i)) {
+      str = str.replace("#{" + i + "}", injections[i]);
+    }
+  }
+  return str;
+}
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -253,5 +263,6 @@ module.exports  = {
   updateHiddenInputOnForm: updateHiddenInputOnForm,
   property: property,
   isBoolean: isBoolean,
-  updateDomByApiRequest:updateDomByApiRequest
+  updateDomByApiRequest:updateDomByApiRequest,
+  stringInject: stringInject
 }

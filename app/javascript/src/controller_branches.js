@@ -29,12 +29,13 @@ class BranchesController extends DefaultController {
   constructor(app) {
     super(app);
     this.branchCount = -2; // We start with 1 branch and 1 'otherwise' branch
+    this.api = app.api;
 
     switch(app.page.action) {
       case "new":
         BranchesController.create.call(this);
     }
-
+console.log(this);
     addMattsButton(); // Dev only while branches is WIP
   }
 
@@ -103,7 +104,12 @@ class BranchInjector {
    **/
   add() {
     var index = this.view.branchCount;
-    var url = "/api/services/f58b914b-f896-4848-bc1d-a2a60dba293a/branches/088dcdbe-be86-47e7-b472-3747e4b70c4f/conditionals/" + String(index);
+    var url = utilities.stringInject(this.view.api.new_conditional, {
+      service_id: "f58b914b-f896-4848-bc1d-a2a60dba293a",
+      branch_id: "088dcdbe-be86-47e7-b472-3747e4b70c4f",
+      conditional_index: String(index)
+    });
+
     utilities.updateDomByApiRequest(url, {
       target: $(BRANCH_SELECTOR).eq(index),
       type: "after" })
