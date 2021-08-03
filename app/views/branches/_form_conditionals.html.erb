@@ -1,19 +1,19 @@
 <div class="branch">
   <p><%= t('branches.title_branch') %></p>
-<%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
-  <div class="destination">
-    <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error'  %>" data-conditional-index="<%= conditional.index %>">
-      <% conditional.object.errors[:next].each do |message| %>
-        <span class="govuk-error-message"><%= message %></span>
-      <% end %>
+  <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
+    <div class="destination">
+      <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>" data-conditional-index="<%= conditional.index %>">
+        <% conditional.object.errors[:next].each do |message| %>
+          <span class="govuk-error-message"><%= message %></span>
+        <% end %>
 
-      <%= conditional.label :next, t('branches.goto'), { class: "govuk-label" } %>
-      <%= conditional.select :next,
-        @branch.pages,
-        { include_blank: t('branches.select_destination') },
-        { class: 'govuk-select' } %>
+        <%= conditional.label :next, t('branches.goto'), { class: "govuk-label" } %>
+        <%= conditional.select :next,
+          @branch.pages,
+          { include_blank: t('branches.select_destination') },
+          { class: 'govuk-select' } %>
+      </div>
     </div>
-  </div>
-  <%= render 'form_expressions', conditional: conditional %>
-<% end %>
+    <%= render 'form_expressions', conditional: conditional %>
+  <% end %>
 </div>
