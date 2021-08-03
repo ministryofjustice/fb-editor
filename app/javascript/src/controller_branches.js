@@ -23,6 +23,7 @@ const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
 const BRANCH_DESTINATION_SELECTOR = ".destination";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
+const BRANCH_OTHERWISE_SELECTOR = "#branch-otherwise";
 
 
 class BranchesController extends DefaultController {
@@ -35,7 +36,7 @@ class BranchesController extends DefaultController {
       case "new":
         BranchesController.create.call(this);
     }
-console.log(this);
+
     addMattsButton(); // Dev only while branches is WIP
   }
 
@@ -49,7 +50,7 @@ console.log(this);
       view: this
     });
 
-    this.branchCount++;
+    this.branchCount += 1;
   }
 }
 
@@ -93,7 +94,6 @@ class BranchInjector {
     var injector = this;
     var conf = utilities.mergeObjects({}, config);
     this.view = config.view;
-
     $node.on("click", function(e) {
       e.preventDefault();
       injector.add();
@@ -105,8 +105,6 @@ class BranchInjector {
   add() {
     var index = this.view.branchCount;
     var url = utilities.stringInject(this.view.api.new_conditional, {
-      service_id: "f58b914b-f896-4848-bc1d-a2a60dba293a",
-      branch_id: "088dcdbe-be86-47e7-b472-3747e4b70c4f",
       conditional_index: String(index)
     });
 
@@ -114,8 +112,10 @@ class BranchInjector {
       target: $(BRANCH_SELECTOR).eq(index),
       type: "after" })
       .done(function() {
-      console.log("done");
+      console.log("TODO: Need to turn new HTML into Branch instance");
     });
+
+    this.view.createBranch($(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last());
   }
 }
 
