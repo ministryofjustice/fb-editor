@@ -1,25 +1,21 @@
+<%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
+<%= render 'form_conditionals', f: f %>
 
-  <div class="branch">
-    <p><%= t('branches.title_branch') %></p>
-    <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
-    <%= render 'form_conditionals', f: f %>
-  </div>
+<div class="branch-actions">
+  <a class="govuk-link" href="#" id="add-another-branch"><%= t('branches.add_branch') %></a>
+</div>
 
-  <div class="branch-actions">
-    <a class="govuk-link" href="#" id="add-another-branch"><%= t('branches.add_branch') %></a>
-  </div>
-
-  <div class="branch" id="branch-otherwise">
-    <p><%= t('branches.title_otherwise') %></p>
-    <div class="destination">
-      <div class="govuk-form-group">
-        <%= f.label :default_next, "Go to", { class: "govuk-label" } %>
-        <%= f.select :default_next,
-        @branch.pages,
-        { include_blank: '--- Select a destination page ---' },
-        { class: 'govuk-select' } %>
-      </div>
+<div class="branch" id="branch-otherwise">
+  <p><%= t('branches.title_otherwise') %></p>
+  <div class="destination">
+    <div class="govuk-form-group">
+      <%= f.label :default_next, "Go to", { class: "govuk-label" } %>
+      <%= f.select :default_next,
+      @branch.pages,
+      { include_blank: '--- Select a destination page ---' },
+      { class: 'govuk-select' } %>
     </div>
   </div>
+</div>
 
-  <%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>
+<%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>
