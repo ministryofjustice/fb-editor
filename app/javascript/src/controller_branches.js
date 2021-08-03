@@ -103,6 +103,7 @@ class BranchInjector {
   /* Gets HTML for a new branch from api request
    **/
   add() {
+    var view = this.view;
     var index = this.view.branchCount;
     var url = utilities.stringInject(this.view.api.new_conditional, {
       conditional_index: String(index)
@@ -110,9 +111,10 @@ class BranchInjector {
 
     utilities.updateDomByApiRequest(url, {
       target: $(BRANCH_SELECTOR).eq(index),
-      type: "after" })
-      .done(function() {
-      console.log("TODO: Need to turn new HTML into Branch instance");
+      type: "after",
+      done: function($node) {
+        view.createBranch($node);
+      }
     });
 
     this.view.createBranch($(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last());

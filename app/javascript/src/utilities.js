@@ -227,15 +227,18 @@ function isBoolean(thing) {
  * with other features but currently not needed.
  **/
 function updateDomByApiRequest(url, placement) {
-  return $.get(url, function(data) {
+  $.get(url, function(html) {
+    var $node = $(html);
     switch(placement.type) {
-      case "after": placement.target.after(data);
+      case "after": placement.target.after($node);
            break;
-      case "before": placement.target.before(data);
+      case "before": placement.target.before($node);
            break;
-      default: placement.target.append(data);
+      default: placement.target.append($node);
     }
-  }, "html");
+
+    safelyActivateFunction(placement.done, $node);
+  });
 }
 
 
