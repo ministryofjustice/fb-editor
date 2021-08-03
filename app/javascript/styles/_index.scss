@@ -225,7 +225,11 @@ html {
     position: relative;
 
     select {
+      @include govuk-font($size: 24);
+
+      font-weight: bold;
       float: right;
+      height: auto;
       width: 100%;
     }
 
