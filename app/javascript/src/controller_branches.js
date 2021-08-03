@@ -116,8 +116,6 @@ class BranchInjector {
         view.createBranch($node);
       }
     });
-
-    this.view.createBranch($(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last());
   }
 }
 
