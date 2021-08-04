@@ -110,12 +110,38 @@ RSpec.describe Branch do
       service.find_page_by_url('dog-picture')
     end
 
-    it 'returns previous questions (only radios and checkboxes)' do
+    it 'returns all questions for single and mulitiple questions pages' do
       expect(branch.previous_questions.map { |question| question[0] }).to eq(
         [
+          'Full name',
+          'Email address',
+          'Parent name',
+          'Your age',
+          'Family Hobbies',
           'Do you like Star Wars?',
+          'What is the day that you like to take holidays?',
           'What would you like on your burger?',
-          "What is The Mandalorian's real name?"
+          "What was the name of the band playing in Jabba's palace?",
+          "What is The Mandalorian's real name?",
+          'Upload your best dog photo'
+        ]
+      )
+    end
+
+    it 'injects the data-supports-branching attribute' do
+      expect(branch.previous_questions.map { |question| question[2] }).to eq(
+        [
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false }
         ]
       )
     end
@@ -200,7 +226,12 @@ RSpec.describe Branch do
             '0' => {
               'next' => SecureRandom.uuid,
               'expressions_attributes' => {
-                '0' => { 'component' => SecureRandom.uuid }
+                '0' => {
+                  'operator' => 'is',
+                  'component' => SecureRandom.uuid,
+                  'page' => double(uuid: 'some-page-uuid'),
+                  'field' => 'some-field-uuid'
+                }
               }
             }
           }
