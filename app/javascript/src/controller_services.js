@@ -176,6 +176,7 @@ function pageActionMenuSelection(event, data) {
 
          // Bit scrappy but we need to talk across components and reset the
          // focus back to the menu element that activated the other menu.
+         $menu.data("instance").menu._state.keyboard = true;
          $menu.on("activatedmenuclosed", function() {
            $menu.data("instance").menu.activator.$node.blur();
            $(data.menu).menu("focus", null, data.activator);
