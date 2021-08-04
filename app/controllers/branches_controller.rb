@@ -43,7 +43,7 @@ class BranchesController < FormController
   private
 
   def branch_metadata
-    branch_object = service.flow_object(params[:branch_id])
+    branch_object = service.flow_object(params[:branch_uuid])
     Branch.from_metadata(branch_object)
   end
 
