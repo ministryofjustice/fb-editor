@@ -34,7 +34,7 @@ class Conditional
       expressions.push(
         Expression.new(
           expression_hash.merge(
-            page: service.page_with_component(expression_hash["component"])
+            page: service.page_with_component(expression_hash['component'])
           )
         )
       )

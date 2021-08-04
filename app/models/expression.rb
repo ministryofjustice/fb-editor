@@ -3,7 +3,7 @@ class Expression
   attr_accessor :component, :operator, :field, :page
 
   OPERATORS = [
-    ['is', 'is'],
+    %w[is is],
     ['is not', 'is_not'],
     ['is answered', 'is_answered'],
     ['is not answered', 'is_not_answered']

@@ -7,31 +7,30 @@ RSpec.describe 'Expressions spec', type: :request do
     end
 
     context 'when authenticated' do
-      let(:page){ service.find_page_by_url('do-you-like-star-wars') }
+      let(:page) { service.find_page_by_url('do-you-like-star-wars') }
       let(:component_id) { page.components.first.uuid }
       let(:conditionals_index) { 0 }
       let(:expressions_index) { 1 }
       let(:expected_operators) do
         [
-          "<option value=\"is\">is</option>",
-          "<option value=\"is_not\">is not</option>",
-          "<option value=\"is_answered\">is answered</option>",
-          "<option value=\"is_not_answered\">is not answered</option>"
+          '<option value="is">is</option>',
+          '<option value="is_not">is not</option>',
+          '<option value="is_answered">is answered</option>',
+          '<option value="is_not_answered">is not answered</option>'
         ]
       end
       let(:expected_answers) do
         [
-          "<option value=\"c5571937-9388-4411-b5fa-34ddf9bc4ca0\">Only on weekends</option>",
-          "<option value=\"67160ff1-6f7c-43a8-8bf6-49b3d5f450f6\">Hell no!</option></select>"
+          '<option value="c5571937-9388-4411-b5fa-34ddf9bc4ca0">Only on weekends</option>',
+          '<option value="67160ff1-6f7c-43a8-8bf6-49b3d5f450f6">Hell no!</option></select>'
         ]
       end
       let(:expected_expression_index) do
-        "data-expression-index=\"1\""
+        'data-expression-index="1"'
       end
       let(:expected_conditional_index) do
-        "branch[conditionals_attributes][0]"
+        'branch[conditionals_attributes][0]'
       end
-
 
       before do
         allow_any_instance_of(
@@ -74,4 +73,3 @@ RSpec.describe 'Expressions spec', type: :request do
     end
   end
 end
-
