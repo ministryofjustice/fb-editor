@@ -1,7 +1,7 @@
 <%= conditional.fields_for :expressions do |expression| %>
   <div class="condition">
     <div class="question govuk-form-group" data-expression-index="<%= expression.index %>">
-      <%= expression.label :component, expression.index == 0 ? t('expression.if'): t('expression.and'), { class: "govuk-label" } %>
+      <%= expression.label :component, (expression.index == 0 ? t('branches.expression.if'): t('branches.expression.and')), { class: "govuk-label" } %>
       <%= expression.select :component,
         @branch.previous_questions,
         { include_blank: t('branches.select_question') },
