@@ -3,7 +3,7 @@ class Expression
   attr_accessor :component, :operator, :field, :page
 
   OPERATORS = [
-    %w[is is],
+    ['is', 'is'], # rubocop:disable Style/WordArray
     ['is not', 'is_not'],
     ['is answered', 'is_answered'],
     ['is not answered', 'is_not_answered']
