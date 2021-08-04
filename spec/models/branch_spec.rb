@@ -139,6 +139,35 @@ RSpec.describe Branch do
       branch.valid?
     end
 
+    context 'when there is no default next' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'next' => 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+              'expressions_attributes' => {
+                '0' => {
+                  'page' => '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                  'component' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+                  'field' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+                }
+              }
+            }
+          }
+        }
+      end
+
+      it 'does not accept blank default next' do
+        expect(branch.errors[:default_next]).to be_present
+      end
+
+      it 'adds an error to the branch object' do
+        errors = branch.errors
+        expect(errors).to be_present
+        expect(errors.of_kind?(:default_next, :blank)).to be_truthy
+      end
+    end
+
     context 'when blank conditionals' do
       let(:attributes) do
         {

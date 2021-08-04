@@ -49,7 +49,7 @@ class BranchesController < FormController
 
   def assign_branch
     @branch = Branch.new(branch_attributes)
-    @branch.conditionals << Conditional.new(expressions: [OpenStruct.new])
+    @branch.conditionals << Conditional.new(expressions: [Expression.new])
   end
 
   def branch_attributes

@@ -196,6 +196,12 @@ en:
         require_authentication: 'Set a username and password'
         username: 'Set username'
         password: 'Set password'
+      branch:
+        default_next: Otherwise
+      conditional:
+        next: Go to
+      expression:
+        component: Question
     errors:
       models:
         page_creation:
@@ -210,7 +216,6 @@ en:
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
-        
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'

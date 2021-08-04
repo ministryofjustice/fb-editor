@@ -3,6 +3,12 @@ class Branch
   attr_accessor :previous_flow_uuid, :service, :default_next
 
   validate :conditionals_validations
+  validates :default_next, presence: true
+
+  def initialize(attributes)
+    @service = attributes.delete(:service)
+    super
+  end
 
   def self.from_metadata(flow_object)
     conditionals_hash = { 'conditionals_attributes' => {} }
