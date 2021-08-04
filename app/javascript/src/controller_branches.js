@@ -23,7 +23,6 @@ const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
 const BRANCH_DESTINATION_SELECTOR = ".destination";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
-const BRANCH_OTHERWISE_SELECTOR = "#branch-otherwise";
 
 
 class BranchesController extends DefaultController {
@@ -93,7 +92,8 @@ class BranchInjector {
   constructor($node, config) {
     var injector = this;
     var conf = utilities.mergeObjects({}, config);
-    this.view = config.view;
+    this.view = conf.view;
+    this._config = conf;
     $node.on("click", function(e) {
       e.preventDefault();
       injector.add();
