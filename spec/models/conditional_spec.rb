@@ -10,12 +10,12 @@ RSpec.describe Conditional do
           {
             'operator' => 'is',
             'component' => '67890',
-            'page' => 'some=page-uuid',
+            'page' => double(uuid: 'some-page-uuid'),
             'field' => 'some-field-uuid'
           }
         )
       ]
-    }
+    }.merge(service: service)
   end
   let(:expected_conditional) do
     {
@@ -25,7 +25,7 @@ RSpec.describe Conditional do
         {
           'operator' => 'is',
           'component' => '67890',
-          'page' => 'some=page-uuid',
+          'page' => 'some-page-uuid',
           'field' => 'some-field-uuid'
         }
       ]
@@ -42,13 +42,38 @@ RSpec.describe Conditional do
     context 'with multiple expressions' do
       before do
         conditional_hash['expressions'].push(
-          Expression.new('component' => '0987')
+          Expression.new('component' => '0987', 'page' => double(uuid: 'some-page-uuid'))
         )
       end
 
       it 'returns and as the condition type' do
         expect(conditional.to_metadata['_type']).to eq('and')
       end
+    end
+  end
+
+  describe '#expressions' do
+    let(:page) { service.find_page_by_url('do-you-like-star-wars') }
+    let(:component) { page.components.first }
+    let(:conditional_hash) do
+      {
+        'next' => '12345',
+        'expressions' => [expression]
+      }.merge(service: service)
+    end
+    let(:expression) do
+      Expression.new(
+        {
+          'operator' => 'is',
+          'component' => component.uuid,
+          'page' => page,
+          'field' => 'some-field-id'
+        }
+      )
+    end
+
+    it 'returns an array of expressions' do
+      expect(conditional.expressions).to eq([expression])
     end
   end
 end

@@ -13,7 +13,7 @@ RSpec.describe NewFlowBranchGenerator do
     let(:expression) do
       {
         operator: 'is',
-        page: 'expression-page-uuid',
+        page: double(uuid: 'expression-page-uuid'),
         component: 'component-uuid',
         field: 'field-uuid'
       }

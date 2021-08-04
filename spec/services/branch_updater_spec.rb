@@ -44,6 +44,16 @@ RSpec.describe BranchUpdater, type: :model do
       }
     end
 
+    let(:component_uuid) { 'some-component-uuid' }
+    let(:page_uuid) { 'another-page-uuid' }
+
+    before do
+      allow_any_instance_of(MetadataPresenter::Service)
+        .to receive(:page_with_component)
+        .with(component_uuid)
+        .and_return(double(uuid: page_uuid))
+    end
+
     context 'when metadata is valid' do
       let(:valid) { true }
       let(:flow_object) { branch_updater.metadata['flow'][previous_flow_uuid] }
@@ -55,8 +65,8 @@ RSpec.describe BranchUpdater, type: :model do
             'expressions' => [
               {
                 'operator' => 'is',
-                'page' => 'another-page-uuid',
-                'component' => 'some-component-uuid',
+                'page' => page_uuid,
+                'component' => component_uuid,
                 'field' => 'some-field-uuid'
               }
             ]
