@@ -43,6 +43,7 @@ class ActivatedMenu {
     }, property(config, "menu._position") );
 
     this._state = {
+      keyboard: false, // Used for controlling some keyboard activation requirements.
       open: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
@@ -72,15 +73,18 @@ class ActivatedMenu {
 
     // Using arbitrary delay because something is switching focus back to activator.
     // TODO: Investigate this and remove timeout when can.
-    setTimeout(() => {
-      this.$node.menu("focus", null, this.$node.find("li:first"));
-      this.$node.focus();
-    }, 100);
+    if(this._state.keyboard) {
+      setTimeout(() => {
+        this.$node.menu("focus", null, this.$node.find("li:first"));
+        this.$node.focus();
+      }, 100);
+    }
   }
 
   // Method
   close() {
     this._state.open = false;
+    this._state.keyboard = false;
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
     this.activator.$node.attr("aria-expanded", false);
@@ -260,6 +264,12 @@ class ActivatedMenuActivator {
       // DOWN
       if(e.which == 40) {
         menu.open();
+      }
+
+      // ENTER (13)
+      // SPACE (32)
+      if(e.which == 13 || e.which == 32) {
+        menu._state.keyboard = true;
       }
 
     });
