@@ -1,6 +1,6 @@
 module Api
   class ExpressionsController < BranchesController
-    rescue_from(ArgumentError) do |exception|
+    rescue_from(ArgumentError) do |_exception|
       render json: { message: 'unprocessable entity' }, status: :unprocessable_entity
     end
     before_action :validate_params
@@ -27,9 +27,7 @@ module Api
       page_with_component.find_component_by_uuid(params[:component_id])
     end
 
-    def component_type
-      component.type
-    end
+    delegate :type, to: :component, prefix: true
     helper_method :component_type
 
     def expression_name(attribute)

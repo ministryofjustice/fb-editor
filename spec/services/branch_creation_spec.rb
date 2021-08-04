@@ -60,7 +60,7 @@ RSpec.describe BranchCreation, type: :model do
       }
     end
     let(:component_uuid) { 'some-component-uuid' }
-    let(:page_uuid) { 'another-page-uuid'}
+    let(:page_uuid) { 'another-page-uuid' }
 
     before do
       allow_any_instance_of(MetadataPresenter::Service)
