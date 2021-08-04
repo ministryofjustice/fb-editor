@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     member do
       resources :publish, only: [:index, :create]
       resources :pages, param: :page_uuid, only: [:create, :edit, :update, :destroy]
-      resources :branches, param: :branch_id, only: [:create, :edit, :update] do
+      resources :branches, param: :branch_uuid, only: [:create, :edit, :update] do
         collection do
           get '/:previous_flow_uuid/new', to: 'branches#new', as: 'new'
         end

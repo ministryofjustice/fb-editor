@@ -21,8 +21,8 @@ RSpec.describe Branch do
     let(:service) do
       MetadataPresenter::Service.new(latest_metadata)
     end
-    let(:branch_id) { '09e91fd9-7a46-4840-adbc-244d545cfef7' }
-    let(:branch_metadata) { service.flow_object(branch_id) }
+    let(:branch_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' }
+    let(:branch_metadata) { service.flow_object(branch_uuid) }
     let(:expected_metadata) do
       {
         'conditionals_attributes' => {
