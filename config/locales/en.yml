@@ -72,7 +72,11 @@ en:
     option_add: 'Add option'
     option_remove: 'Delete...'
   branches:
+    add_branch: 'Add another branch'
     after: After "%{page_title}"
+    expression:
+      if: 'If'
+      and: 'And'
     goto: Go to
     select_destination: '--- Select a destination page ---'
     select_question: '--Select a question--'

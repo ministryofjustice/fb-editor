@@ -1,5 +1,8 @@
 <script>
   var app = {
+    api: {
+      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= params[:previous_flow_uuid] %>/conditionals/#{conditional_index}"
+    },
     page: {
       id: "<%= params[:page_uuid] %>",
       action: "<%= action_name %>",
