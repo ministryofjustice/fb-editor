@@ -56,7 +56,7 @@ class Branch
 
   def previous_questions
     results = question_pages.map do |page|
-      input_components(page).map do |component|
+      page.input_components.map do |component|
         [
           component.humanised_title,
           component.uuid,
@@ -82,14 +82,8 @@ class Branch
 
   private
 
-  QUESTION_PAGES = %w[page.singlequestion page.multiplequestions].freeze
-
   def question_pages
-    previous_pages.select { |page| page.type.in?(QUESTION_PAGES) }
-  end
-
-  def input_components(page)
-    page.components.reject { |component| component.type == 'content' }
+    previous_pages.select(&:question_page?)
   end
 
   def previous_flow_object

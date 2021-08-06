@@ -1,11 +1,11 @@
 <% if ['multiplequestions'].include? @page._type.gsub('page.', '') %>
-  <% if @page.input_components.present? %>
+  <% if @page.supported_input_components.present? %>
     <div class="component add-component" data-component="add-component">
       <ul class="govuk-navigation">
         <li>
           <span><%= t('components.menu.question') %></span>
           <ul class="govuk-navigation">
-            <% @page.input_components.each do |component| %>
+            <% @page.supported_input_components.each do |component| %>
               <li data-action="<%= component %>">
                 <a href="#add_component">
                   <%= t("components.list.#{component.underscore}") %>
@@ -14,12 +14,12 @@
             <% end %>
           </ul>
         </li>
-        <% if @page.content_components.present? %>
+        <% if @page.supported_content_components.present? %>
           <%# TODO: This will be basis of v2 code %>
           <%#li %>
             <%# span>Content area</span %>
             <%# ul class="govuk-navigation" %>
-              <%# @page.content_components.each do |component| %>
+              <%# @page.supported_content_components.each do |component| %>
                 <%# li data-action="< component >"><a href="#add_component">< component.capitalize ></a></li %>
               <%# end %>
             <%# /ul %>
