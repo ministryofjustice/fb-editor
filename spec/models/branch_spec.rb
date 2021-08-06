@@ -110,12 +110,38 @@ RSpec.describe Branch do
       service.find_page_by_url('dog-picture')
     end
 
-    it 'returns previous questions (only radios and checkboxes)' do
+    it 'returns all questions for single and mulitiple questions pages' do
       expect(branch.previous_questions.map { |question| question[0] }).to eq(
         [
+          'Full name',
+          'Email address',
+          'Parent name',
+          'Your age',
+          'Family Hobbies',
           'Do you like Star Wars?',
+          'What is the day that you like to take holidays?',
           'What would you like on your burger?',
-          "What is The Mandalorian's real name?"
+          "What was the name of the band playing in Jabba's palace?",
+          "What is The Mandalorian's real name?",
+          'Upload your best dog photo'
+        ]
+      )
+    end
+
+    it 'injects the data-supports-branching attribute' do
+      expect(branch.previous_questions.map { |question| question[2] }).to eq(
+        [
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false }
         ]
       )
     end
@@ -137,6 +163,35 @@ RSpec.describe Branch do
   describe '#validations' do
     before do
       branch.valid?
+    end
+
+    context 'when there is no default next' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'next' => 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+              'expressions_attributes' => {
+                '0' => {
+                  'page' => '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                  'component' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+                  'field' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+                }
+              }
+            }
+          }
+        }
+      end
+
+      it 'does not accept blank default next' do
+        expect(branch.errors[:default_next]).to be_present
+      end
+
+      it 'adds an error to the branch object' do
+        errors = branch.errors
+        expect(errors).to be_present
+        expect(errors.of_kind?(:default_next, :blank)).to be_truthy
+      end
     end
 
     context 'when blank conditionals' do
@@ -171,7 +226,12 @@ RSpec.describe Branch do
             '0' => {
               'next' => SecureRandom.uuid,
               'expressions_attributes' => {
-                '0' => { 'component' => SecureRandom.uuid }
+                '0' => {
+                  'operator' => 'is',
+                  'component' => SecureRandom.uuid,
+                  'page' => double(uuid: 'some-page-uuid'),
+                  'field' => 'some-field-uuid'
+                }
               }
             }
           }

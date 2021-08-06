@@ -2,6 +2,8 @@ class Expression
   include ActiveModel::Model
   attr_accessor :component, :operator, :field, :page
 
+  validates :component, :operator, :field, presence: true
+
   OPERATORS = [
     ['is', 'is'], # rubocop:disable Style/WordArray
     ['is not', 'is_not'],

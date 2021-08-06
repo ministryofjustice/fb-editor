@@ -76,4 +76,38 @@ RSpec.describe Conditional do
       expect(conditional.expressions).to eq([expression])
     end
   end
+
+  describe '#component_expressions' do
+    before do
+      conditional.valid?
+    end
+
+    context 'when blank component expressions' do
+      let(:conditional_hash) do
+        {
+          'next' => '12345',
+          'expressions' => [
+            Expression.new(
+              {
+                'operator' => '',
+                'component' => '',
+                'page' => 'some-page-uuid',
+                'field' => ''
+              }
+            )
+          ]
+        }
+      end
+
+      it 'does not accept blank component expressions' do
+        expect(conditional.errors[:component]).to be_present
+      end
+
+      it 'adds an error to the expression object' do
+        errors = conditional.expressions.first.errors
+        expect(errors).to be_present
+        expect(errors.of_kind?(:component, :blank)).to be_truthy
+      end
+    end
+  end
 end

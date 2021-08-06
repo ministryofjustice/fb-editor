@@ -3,6 +3,12 @@ class Branch
   attr_accessor :previous_flow_uuid, :service, :default_next
 
   validate :conditionals_validations
+  validates :default_next, presence: true
+
+  def initialize(attributes)
+    @service = attributes.delete(:service)
+    super
+  end
 
   def self.from_metadata(flow_object)
     conditionals_hash = { 'conditionals_attributes' => {} }
@@ -49,11 +55,13 @@ class Branch
   end
 
   def previous_questions
-    results = previous_pages.map do |page|
-      components = Array(page.components).select(&:supports_branching?)
-
-      components.map do |component|
-        [component.humanised_title, component.uuid]
+    results = question_pages.map do |page|
+      input_components(page).map do |component|
+        [
+          component.humanised_title,
+          component.uuid,
+          { 'data-supports-branching': component.supports_branching? }
+        ]
       end
     end
 
@@ -70,6 +78,18 @@ class Branch
       {},
       previous_flow_object
     ).all.push(previous_flow_object)
+  end
+
+  private
+
+  QUESTION_PAGES = %w[page.singlequestion page.multiplequestions].freeze
+
+  def question_pages
+    previous_pages.select { |page| page.type.in?(QUESTION_PAGES) }
+  end
+
+  def input_components(page)
+    page.components.reject { |component| component.type == 'content' }
   end
 
   def previous_flow_object
