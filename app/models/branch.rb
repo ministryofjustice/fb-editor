@@ -11,15 +11,18 @@ class Branch
   end
 
   def self.from_metadata(flow_object)
-    conditionals_hash = { 'conditionals_attributes' => {} }
+    attributes_hash = {
+      'default_next' => flow_object['next']['default'],
+      'conditionals_attributes' => {}
+    }
 
     flow_object.conditionals.each_with_index do |conditional, index|
-      conditionals_hash['conditionals_attributes'][index.to_s] = {
+      attributes_hash['conditionals_attributes'][index.to_s] = {
         'next' => conditional.next
       }.merge(expressions_attributes(conditional))
     end
 
-    conditionals_hash
+    attributes_hash
   end
 
   def self.expressions_attributes(conditional)
