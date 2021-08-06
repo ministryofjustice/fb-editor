@@ -14,7 +14,7 @@ class BranchesController < FormController
     if branch_creation.save
       redirect_to edit_branch_path(service.service_id, branch_creation.branch_uuid)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
