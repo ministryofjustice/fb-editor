@@ -7,7 +7,7 @@ class FlowBranch
   attr_accessor :branch, :latest_metadata
 
   def save
-    return false if branch.invalid?
+    return false if branch.invalid? || branch.any_errors?
 
     create_version
   end

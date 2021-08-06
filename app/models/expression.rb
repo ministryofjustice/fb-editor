@@ -2,7 +2,7 @@ class Expression
   include ActiveModel::Model
   attr_accessor :component, :operator, :field, :page
 
-  validates :component, :operator, :field, presence: true
+  validates :component, :operator, :page, :field, presence: true
 
   OPERATORS = [
     ['is', 'is'], # rubocop:disable Style/WordArray
@@ -14,7 +14,7 @@ class Expression
   def to_metadata
     {
       'operator' => operator,
-      'page' => page.uuid,
+      'page' => page&.uuid,
       'component' => component,
       'field' => field
     }

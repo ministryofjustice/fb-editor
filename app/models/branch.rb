@@ -53,7 +53,7 @@ class Branch
   end
 
   def conditionals_validations
-    errors.add(:conditionals, 'Conditionals are not valid') if conditionals.map(&:invalid?).any?
+    conditionals.map(&:invalid?)
   end
 
   def conditionals
@@ -86,6 +86,29 @@ class Branch
 
   def previous_flow_title
     previous_flow_object.title
+  end
+
+  def previous_pages
+    service.pages
+  end
+
+  def any_errors?
+    conditional_errors? ||
+      expression_errors? ||
+      errors.present?
+  end
+
+  def conditional_errors?
+    conditionals.any? do |conditional|
+      conditional.errors.messages.present?
+    end
+  end
+
+  def expression_errors?
+    expression_collection = conditionals.map(&:expressions)
+    expression_collection.flatten.any? do |expression|
+      expression.errors.messages.present?
+    end
   end
 
   private

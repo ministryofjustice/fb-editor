@@ -4,7 +4,7 @@
     <div class="destination">
       <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>">
         <% conditional.object.errors[:next].each do |message| %>
-          <span class="govuk-error-message"><%= message %></span>
+          <span class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></span>
         <% end %>
 
         <%= conditional.label :next, t('branches.goto'), { class: "govuk-label" } %>
