@@ -50,7 +50,7 @@ class Branch
   end
 
   def conditionals_validations
-    errors.add(:conditionals, 'Conditionals are not valid') if conditionals.map(&:invalid?).any?
+    conditionals.map(&:invalid?)
   end
 
   def conditionals

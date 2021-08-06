@@ -100,7 +100,7 @@ RSpec.describe Conditional do
       end
 
       it 'does not accept blank component expressions' do
-        expect(conditional.errors[:component]).to be_present
+        expect(conditional.expressions_validations).to be_present
       end
 
       it 'adds an error to the expression object' do
