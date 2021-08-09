@@ -19,5 +19,17 @@
         }
       %>
     </div>
+
+    <%# When creating a new conditional object the component will not have been chosen yet %>
+    <% if expression.object.component.present? %>
+        <%= render partial: 'expression_answers',
+                  locals: {
+                    f: default_form_builder.new(:expression, expression.object, self, {}),
+                    expression: expression.object,
+                    conditional_index: conditional.index,
+                    expression_index: expression.index
+                  }
+        %>
+    <% end %>
   </div>
 <% end %>
