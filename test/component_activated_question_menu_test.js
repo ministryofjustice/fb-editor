@@ -63,8 +63,6 @@ describe("QuestionMenu", function() {
       container_classname: CONTAINER_CLASSNAME,
       selection_event: TEST_SELECTION_EVENT_NAME
     });
-
-console.log($(document.body).html());
   });
 
   after(function() {
