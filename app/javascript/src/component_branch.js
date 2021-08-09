@@ -62,11 +62,32 @@ class BranchCondition {
 
     $node.addClass("BranchCondition");
     $node.data("instance", this);
+
+    // Scoop up any question element
+    $node.find(conf.question_selector).each(function() {
+      new BranchQuestion($(this), conf);
+    });
+
     this._config = conf;
     this.$node = $node;
   }
 }
 
+
+/* BranchQuestion
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchQuestion {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({}, config);
+
+    $node.addClass("BranchQuestion");
+    $node.data("instance", this);
+    this._config = conf;
+    this.$node = $node;
+  }
+}
 
 // Make available for importing.
 module.exports = Branch;

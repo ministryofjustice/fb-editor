@@ -6,6 +6,7 @@ describe("Component", function () {
   const COMPONENT_ID = "testing-branch";
   const BRANCH_CONDITION_SELECTOR = ".condition";
   const BRANCH_DESTINATION_SELECTOR = ".destination";
+  const BRANCH_QUESTION_SELECTOR = ".question";
   var branch;
 
   before(function() {
@@ -37,6 +38,7 @@ describe("Component", function () {
     branch = new Branch($html, {
       condition_selector: BRANCH_CONDITION_SELECTOR,
       destination_selector: BRANCH_DESTINATION_SELECTOR,
+      question_selector: BRANCH_QUESTION_SELECTOR,
       view: {
         text: "Something, something, something... darkside."
       }
@@ -122,34 +124,34 @@ describe("Component", function () {
     });
   });
 
-  describe("BranchCondition", function() {
-    var $condition;
+  describe("BranchQuestion", function() {
+    var $question;
 
     beforeEach(function() {
-      $condition = $(BRANCH_CONDITION_SELECTOR);
+      $question = $(BRANCH_QUESTION_SELECTOR);
     });
 
     it("should have the basic HTML in place", function() {
       // Just adding something basic here but it might change.
-      expect($condition.length).to.equal(1);
-      expect($condition.get(0).nodeName.toLowerCase()).to.equal("div");
+      expect($question.length).to.equal(1);
+      expect($question.get(0).nodeName.toLowerCase()).to.equal("div");
     });
 
     it("should have the component class name present", function() {
-      expect($condition.hasClass("BranchCondition")).to.be.true;
+      expect($question.hasClass("BranchQuestion")).to.be.true;
     });
 
     it("should make the $node public", function() {
-      var instance = $condition.data("instance");
+      var instance = $question.data("instance");
       expect(instance.$node).to.exist;
       expect(instance.$node.length).to.equal(1);
-      expect(instance.$node.get(0)).to.equal($condition.get(0));
+      expect(instance.$node.get(0)).to.equal($question.get(0));
     });
 
     it("should make (public but indicated as) private reference to config", function() {
-      var instance = $condition.data("instance");
+      var instance = $question.data("instance");
       expect(instance._config).to.exist;
-      expect(instance._config.condition_selector).to.equal(BRANCH_CONDITION_SELECTOR);
+      expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
     });
   });
 });

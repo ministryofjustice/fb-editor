@@ -22,6 +22,7 @@ const Branch = require('./component_branch');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
 const BRANCH_DESTINATION_SELECTOR = ".destination";
+const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 
 
@@ -46,6 +47,7 @@ class BranchesController extends DefaultController {
     new Branch($node, {
       condition_selector: BRANCH_CONDITION_SELECTOR,
       destination_selector: BRANCH_DESTINATION_SELECTOR,
+      question_selector: BRANCH_QUESTION_SELECTOR,
       view: this
     });
 
