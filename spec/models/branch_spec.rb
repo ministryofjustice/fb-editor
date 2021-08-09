@@ -212,13 +212,6 @@ RSpec.describe Branch do
     end
   end
 
-  describe '#previous_pages' do
-    it 'returns all previously visited pages including the previous flow object' do
-      expected_pages = service.pages[0..service.pages.index(previous_flow_object)]
-      expect(branch.previous_pages).to eq(expected_pages)
-    end
-  end
-
   describe '#validations' do
     before do
       branch.valid?
