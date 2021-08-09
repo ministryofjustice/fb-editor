@@ -25,6 +25,7 @@ class Branch {
   constructor($node, config) {
     var conf = utilities.mergeObjects({}, config);
     $node.addClass("Branch");
+    $node.data("instance", this);
 
     this._config = conf;
     this.view = conf.view;
@@ -44,6 +45,7 @@ class BranchDestination {
     var conf = utilities.mergeObjects({}, config);
 
     $node.addClass("BranchDestination");
+    $node.data("instance", this);
     this._config = conf;
     this.$node = $node;
   }
@@ -59,6 +61,7 @@ class BranchCondition {
     var conf = utilities.mergeObjects({}, config);
 
     $node.addClass("BranchCondition");
+    $node.data("instance", this);
     this._config = conf;
     this.$node = $node;
   }
