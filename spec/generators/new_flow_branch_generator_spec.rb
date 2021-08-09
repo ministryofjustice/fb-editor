@@ -31,6 +31,7 @@ RSpec.describe NewFlowBranchGenerator do
         {
           uuid => {
             '_type' => 'flow.branch',
+            'title' => '',
             'next' => {
               'default' => 'default-next-uuid',
               'conditionals' => [

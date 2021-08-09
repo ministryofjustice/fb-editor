@@ -1,7 +1,7 @@
 class FlowBranch
   include MetadataVersion
   include ActiveModel::Model
-  delegate :previous_flow_uuid, :version, :service, :conditionals,
+  delegate :title, :previous_flow_uuid, :version, :service, :conditionals,
            :default_next, to: :branch
 
   attr_accessor :branch, :latest_metadata
@@ -18,12 +18,17 @@ class FlowBranch
 
   def metadata
     flow_branch_metadata = flow_branch.to_metadata
+    before_create(flow_branch_metadata)
     latest_metadata['flow'].merge!(flow_branch_metadata)
-    update_previous_page
+    after_create
     latest_metadata
   end
 
   # Method signature to be implemented on the subclass if needed.
   #
-  def update_previous_page; end
+  def before_create(flow_branch_metadata); end
+
+  # Method signature to be implemented on the subclass if needed.
+  #
+  def after_create; end
 end

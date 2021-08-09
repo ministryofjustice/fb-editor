@@ -1,12 +1,22 @@
 class Branch
   include ActiveModel::Model
+  include BranchTitleGenerator
   attr_accessor :previous_flow_uuid, :service, :default_next
+  attr_writer :title
+
+  delegate :branches, to: :service
 
   validate :conditionals_validations
   validates :default_next, presence: true
 
   def initialize(attributes)
     @service = attributes.delete(:service)
+    super
+  end
+
+  def title
+    return @title if @title
+
     super
   end
 

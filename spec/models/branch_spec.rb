@@ -16,6 +16,64 @@ RSpec.describe Branch do
     previous_flow_object.uuid
   end
 
+  describe '#title' do
+    subject(:branch) { described_class.new(service: service) }
+    let(:service) do
+      MetadataPresenter::Service.new(metadata_fixture(:branching))
+    end
+
+    before do
+      allow(service).to receive(:branches).and_return(branches)
+    end
+
+    context 'when branch has a title' do
+      let(:branches) { [] }
+      before do
+        branch.title = 'Branch Variance Authority'
+      end
+
+      it 'returns title' do
+        expect(branch.title).to eq('Branch Variance Authority')
+      end
+    end
+
+    context 'when first branch' do
+      let(:branches) { [] }
+
+      it 'returns title' do
+        expect(branch.title).to eq('Branching node 1')
+      end
+    end
+
+    context 'when branches size met' do
+      let(:branches) do
+        [
+          double(title: 'Branching node 1'),
+          double(title: 'Branching node 2'),
+          double(title: 'Branching node 3')
+        ]
+      end
+
+      it 'returns next branching title' do
+        expect(branch.title).to eq('Branching node 4')
+      end
+    end
+
+    context 'when branches were deleted before' do
+      let(:branches) do
+        [
+          double(title: 'Branching node 1'),
+          double(title: 'Branching node 3'),
+          double(title: 'Branching node 4')
+        ]
+      end
+
+      it 'returns next branching title' do
+        expect(branch.title).to eq('Branching node 5')
+      end
+    end
+  end
+
   describe '.from_metadata' do
     let(:latest_metadata) { metadata_fixture(:branching) }
     let(:service) do
