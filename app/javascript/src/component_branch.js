@@ -76,7 +76,7 @@ class BranchCondition {
     if(component) {
       url = utilities.stringInject(this._config.expression_url, {
         component_id: component,
-        conditionals_index: "0",
+        conditionals_index: this._config.branch.index,
         expressions_index: this.index
       });
 
