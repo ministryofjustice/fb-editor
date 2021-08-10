@@ -30,6 +30,7 @@ class Branch {
     this._config = conf;
     this.view = conf.view;
     this.$node = $node;
+    this.index = $node.data(conf.attribute_branch_index);
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
     this.condition = new BranchCondition($node.find(config.condition_selector), conf);
   }

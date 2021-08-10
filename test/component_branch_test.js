@@ -9,11 +9,12 @@ describe("Branch", function () {
   const BRANCH_QUESTION_SELECTOR = ".question";
   const BRANCH_ANSWER_SELECTOR = ".answer";
   const EXPRESSION_URL = "something/goes/here";
+  const INDEX_BRANCH = 4;
   const INDEX_QUESTION = 2;
   var branch;
 
   before(function() {
-    var $html = $(`<div class="branch" id="` + COMPONENT_ID + `" data-branch-index="0">
+    var $html = $(`<div class="branch" id="` + COMPONENT_ID + `" data-branch-index="` + INDEX_BRANCH  + `">
       <p>Branch ...</p>
       <div class="destination">
         <div class="form-group">
@@ -43,6 +44,7 @@ describe("Branch", function () {
       destination_selector: BRANCH_DESTINATION_SELECTOR,
       question_selector: BRANCH_QUESTION_SELECTOR,
       expression_url: EXPRESSION_URL,
+      attribute_branch_index: "branch-index",
       attribute_question_index: "question-index",
       view: {
         text: "Something, something, something... darkside."
@@ -88,6 +90,11 @@ describe("Branch", function () {
     it("should make (public but indicated as) private reference to config", function() {
       expect(branch._config).to.exist;
       expect(branch._config.condition_selector).to.equal(BRANCH_CONDITION_SELECTOR);
+    });
+
+    it("should assign an index value and make public", function() {
+      var instance = branch.$node.data("instance");
+      expect(instance.index).to.equal(INDEX_BRANCH);
     });
   });
 
