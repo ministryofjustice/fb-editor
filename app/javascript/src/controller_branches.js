@@ -88,7 +88,7 @@ BranchesController.createBranch = function($node) {
     question_selector: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
     attribute_branch_index: "conditional-index",
-    attribute_question_index: "expression-index",
+    attribute_condition_index: "expression-index",
     view: this
   });
 }

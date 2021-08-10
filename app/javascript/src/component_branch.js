@@ -70,6 +70,7 @@ class BranchCondition {
     });
 
     this._config = conf;
+    this.index = $node.data(conf.attribute_condition_index);
     this.$node = $node;
   }
 }
@@ -90,7 +91,6 @@ class BranchQuestion {
     });
 
     this._config = conf;
-    this.index = $node.data(conf.attribute_question_index);
     this.$node = $node;
   }
 

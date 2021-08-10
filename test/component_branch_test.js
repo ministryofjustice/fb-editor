@@ -4,13 +4,13 @@ describe("Branch", function () {
 
   const Branch = require('../app/javascript/src/component_branch.js');
   const COMPONENT_ID = "testing-branch";
-  const BRANCH_CONDITION_SELECTOR = ".condition";
   const BRANCH_DESTINATION_SELECTOR = ".destination";
+  const BRANCH_CONDITION_SELECTOR = ".condition";
   const BRANCH_QUESTION_SELECTOR = ".question";
   const BRANCH_ANSWER_SELECTOR = ".answer";
   const EXPRESSION_URL = "something/goes/here";
   const INDEX_BRANCH = 4;
-  const INDEX_QUESTION = 2;
+  const INDEX_CONDITION = 2;
   var branch;
 
   before(function() {
@@ -27,8 +27,8 @@ describe("Branch", function () {
           </select>
         </div>
       </div>
-      <div class="condition">
-        <div class="question" data-question-index="` + INDEX_QUESTION  + `">
+      <div class="condition" data-condition-index="` + INDEX_CONDITION  + `">
+        <div class="question">
           <label for="branch_1">If</label>
           <select id="branch_1">
             <option value="">--Select a question--</option>
@@ -45,7 +45,7 @@ describe("Branch", function () {
       question_selector: BRANCH_QUESTION_SELECTOR,
       expression_url: EXPRESSION_URL,
       attribute_branch_index: "branch-index",
-      attribute_question_index: "question-index",
+      attribute_condition_index: "condition-index",
       view: {
         text: "Something, something, something... darkside."
       }
@@ -136,6 +136,42 @@ describe("Branch", function () {
     });
   });
 
+  describe("BranchCondition", function() {
+    var $condition;
+
+    beforeEach(function() {
+      $condition = $(BRANCH_CONDITION_SELECTOR);
+    });
+
+    it("should have the basic HTML in place", function() {
+      // Just adding something basic here but it might change.
+      expect($condition.length).to.equal(1);
+      expect($condition.get(0).nodeName.toLowerCase()).to.equal("div");
+    });
+
+    it("should have the component class name present", function() {
+      expect($condition.hasClass("BranchCondition")).to.be.true;
+    });
+
+    it("should make the $node public", function() {
+      var instance = $condition.data("instance");
+      expect(instance.$node).to.exist;
+      expect(instance.$node.length).to.equal(1);
+      expect(instance.$node.get(0)).to.equal($condition.get(0));
+    });
+
+    it("should make (public but indicated as) private reference to config", function() {
+      var instance = $condition.data("instance");
+      expect(instance._config).to.exist;
+      expect(instance._config.condition_selector).to.equal(BRANCH_CONDITION_SELECTOR);
+    });
+
+    it("should assign an index value and make public", function() {
+      var instance = $condition.data("instance");
+      expect(instance.index).to.equal(INDEX_CONDITION);
+    });
+  });
+
   describe("BranchQuestion", function() {
     var $question;
 
@@ -164,11 +200,6 @@ describe("Branch", function () {
       var instance = $question.data("instance");
       expect(instance._config).to.exist;
       expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
-    });
-
-    it("should assign an index value and make public", function() {
-      var instance = $question.data("instance");
-      expect(instance.index).to.equal(INDEX_QUESTION);
     });
 
     describe("update", function() {
