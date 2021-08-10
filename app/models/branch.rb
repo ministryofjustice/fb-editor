@@ -80,7 +80,9 @@ class Branch
       service,
       {},
       previous_flow_object
-    ).all.push(previous_flow_object)
+    ).all
+     .uniq
+     .push(previous_flow_object)
   end
 
   private
