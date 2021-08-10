@@ -170,6 +170,56 @@ describe("Branch", function () {
       var instance = $condition.data("instance");
       expect(instance.index).to.equal(INDEX_CONDITION);
     });
+
+    describe("update", function() {
+      var get;
+      beforeEach(function() {
+        // Hijack $.get to fake a response
+        get = $.get;
+        $.get = function(urlNotNeeded, response) {
+          response(`<div class="answer">
+            <select><option>is</option></select>
+            <select><option>This answer value</option></select>
+          </div>`);
+        }
+      });
+
+      afterEach(function() {
+         // Reset to original function
+         branch.condition.$node.find(BRANCH_ANSWER_SELECTOR).remove();
+         $.get = get;
+      });
+
+      it("should add html for answer on selected question", function() {
+        var condition = $condition.data("instance");
+
+        expect($condition).to.exist;
+        expect($condition.length).to.equal(1);
+        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
+
+        expect(condition).to.exist;
+        condition.update("component-id-here");
+        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
+      });
+
+      it("should remove html for answer on deselected question", function() {
+        var condition = $condition.data("instance");
+        expect(condition).to.exist;
+        expect($condition).to.exist;
+        expect($condition.length).to.equal(1);
+
+        // Fake an existing Answer element.
+        condition.answer = {
+          $node: $("<div class=\"answer BranchAnswer\"></div>")
+        }
+
+        $condition.append(condition.answer.$node);
+        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
+
+        condition.update();
+        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
+      });
+    });
   });
 
   describe("BranchQuestion", function() {
@@ -201,58 +251,6 @@ describe("Branch", function () {
       expect(instance._config).to.exist;
       expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
     });
-
-    describe("update", function() {
-      var get;
-      beforeEach(function() {
-        // Hijack $.get to fake a response
-        get = $.get;
-        $.get = function(urlNotNeeded, response) {
-          response(`<div class="answer">
-            <select><option>is</option></select>
-            <select><option>This answer value</option></select>
-          </div>`);
-        }
-      });
-
-      afterEach(function() {
-         // Reset to original function
-         branch.condition.$node.find(BRANCH_ANSWER_SELECTOR).remove();
-         $.get = get;
-      });
-
-      it("should add html for answer on selected question", function() {
-        var question = $question.data("instance");
-        var $condition = branch.condition.$node;
-
-        expect($condition).to.exist;
-        expect($condition.length).to.equal(1);
-        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
-
-        expect(question).to.exist;
-        question.update("component-id-here");
-        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
-      });
-
-      it("should remove html for answer on deselected question", function() {
-        var question = $question.data("instance");
-        var $condition = branch.condition.$node;
-        expect(question).to.exist;
-        expect($condition).to.exist;
-        expect($condition.length).to.equal(1);
-
-        // Fake an existing Answer element.
-        question._answer = {
-          $node: $("<div class=\"answer BranchAnswer\"></div>")
-        }
-
-        $condition.append(question._answer.$node);
-        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
-
-        question.update();
-        expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
-      });
-    });
   });
 
   describe("BranchAnswer", function() {
@@ -270,7 +268,7 @@ describe("Branch", function () {
       }
 
       // Set the answer node and create a BranchAnswer by calling update() function
-      $(BRANCH_QUESTION_SELECTOR).data("instance").update("asdfdfa");
+      $(BRANCH_CONDITION_SELECTOR).data("instance").update("asdfdfa");
       $answer = branch.$node.find(BRANCH_ANSWER_SELECTOR);
     });
 

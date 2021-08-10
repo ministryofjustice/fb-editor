@@ -23,7 +23,7 @@ const utilities = require('./utilities');
  **/
 class Branch {
   constructor($node, config) {
-    var conf = utilities.mergeObjects({}, config);
+    var conf = utilities.mergeObjects({ branch: this }, config);
     $node.addClass("Branch");
     $node.data("instance", this);
 
@@ -59,19 +59,41 @@ class BranchDestination {
  **/
 class BranchCondition {
   constructor($node, config) {
-    var conf = utilities.mergeObjects({}, config);
+    var condition = this;
+    var conf = utilities.mergeObjects({ condition: this }, config);
 
     $node.addClass("BranchCondition");
     $node.data("instance", this);
 
-    // Scoop up any question element
-    $node.find(conf.question_selector).each(function() {
-      new BranchQuestion($(this), conf);
-    });
-
     this._config = conf;
+    this.question = new BranchQuestion($node.find(conf.question_selector), conf);
     this.index = $node.data(conf.attribute_condition_index);
     this.$node = $node;
+  }
+
+  update(component) {
+    var url;
+    if(component) {
+      url = utilities.stringInject(this._config.expression_url, {
+        component_id: component,
+        conditionals_index: "0",
+        expressions_index: this.index
+      });
+
+      utilities.updateDomByApiRequest(url, {
+        target: this.$node,
+        done: ($node) => {
+          this.answer = new BranchAnswer($node, this._config);
+        }
+      });
+    }
+    else {
+      // Clear any existing
+      if(this.answer) {
+        this.answer.$node.remove();
+        this.answer = null;
+      }
+    }
   }
 }
 
@@ -87,36 +109,12 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      this.update(e.currentTarget.value);
+      this.condition.update(e.currentTarget.value);
     });
 
     this._config = conf;
+    this.condition = conf.condition;
     this.$node = $node;
-  }
-
-  update(component) {
-    var url;
-    if(component) {
-      url = utilities.stringInject(this._config.expression_url, {
-        component_id: component,
-        conditionals_index: "0",
-        expressions_index: this.index
-      });
-
-      utilities.updateDomByApiRequest(url, {
-        target: this.$node.parent(),
-        done: ($node) => {
-          this._answer = new BranchAnswer($node, this._config);
-        }
-      });
-    }
-    else {
-      // Clear any existing
-      if(this._answer) {
-        this._answer.$node.remove();
-        this._answer = null;
-      }
-    }
   }
 }
 
