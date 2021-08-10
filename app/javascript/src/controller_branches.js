@@ -48,6 +48,8 @@ class BranchesController extends DefaultController {
       condition_selector: BRANCH_CONDITION_SELECTOR,
       destination_selector: BRANCH_DESTINATION_SELECTOR,
       question_selector: BRANCH_QUESTION_SELECTOR,
+      expression_url: this.api.get_expression,
+      attribute_question_index: "expression-index",
       view: this
     });
 

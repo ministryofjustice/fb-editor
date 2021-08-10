@@ -84,10 +84,57 @@ class BranchQuestion {
 
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
+    $node.find("select").on("change.branchquestion", (e) => {
+      this.update(e.currentTarget.value);
+    });
+
+    this._config = conf;
+    this.index = $node.data(conf.attribute_question_index);
+    this.$node = $node;
+  }
+
+  update(component) {
+    var url;
+    if(component) {
+      url = utilities.stringInject(this._config.expression_url, {
+        component_id: component,
+        conditionals_index: "0",
+        expressions_index: this.index
+      });
+
+      utilities.updateDomByApiRequest(url, {
+        target: this.$node.parent(),
+        done: ($node) => {
+          this._answer = new BranchAnswer($node, this._config);
+        }
+      });
+    }
+    else {
+      // Clear any existing
+      if(this._answer) {
+        this._answer.$node.remove();
+        this._answer = null;
+      }
+    }
+  }
+}
+
+
+/* BranchAnswer
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchAnswer {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({}, config);
+
+    $node.addClass("BranchAnswer");
+    $node.data("instance", this);
     this._config = conf;
     this.$node = $node;
   }
 }
+
 
 // Make available for importing.
 module.exports = Branch;
