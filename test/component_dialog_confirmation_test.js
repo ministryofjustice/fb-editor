@@ -1,5 +1,4 @@
 require('./setup');
-const expect = require('chai').expect;
 
 describe("Confirmation Dialog", function() {
 

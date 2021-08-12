@@ -1,9 +1,7 @@
 <%= conditional.fields_for :expressions do |expression| %>
-  <div class="condition">
+  <div class="condition" data-expression-index="<%= expression.index %>">
     <div class="question govuk-form-group
-      <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>"
-      data-expression-index="<%= expression.index %>">
-
+      <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>">
       <%= expression.label :component, (expression.index == 0 ? t('branches.expression.if') : t('branches.expression.and')), { class: "govuk-label" } %>
 
       <% expression.object.errors[:component].each do |message| %>

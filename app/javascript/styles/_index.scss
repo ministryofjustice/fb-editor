@@ -162,7 +162,6 @@ html {
 .branches {
   @include responsive_width("three-quarters");
 
-
   @include govuk-media-query($until: tablet) {
     label {
       display: block !important;
@@ -174,15 +173,10 @@ html {
   .answer {
     clear: both;
     float: right;
+    margin-bottom: govuk-spacing(6);
     width: 85%;
 
     select {
-      width: 100%;
-    }
-
-    .govuk-form-group {
-      display: inline-block;
-
       &:first-child {
         width: 35%;
       }
@@ -192,6 +186,12 @@ html {
         width: 60%;
       }
     }
+
+    @include govuk-media-query($until: tablet) {
+      & {
+        width: 100%;
+      }
+    }
   }
 
   .condition {
@@ -199,9 +199,24 @@ html {
     overflow: hidden;
     position: relative;
 
+    &:after {
+      background-color: $govuk-border-colour;
+      content: "";
+      display: block;
+      height: calc(100% - #{govuk-spacing(6)});
+      right: calc(85% + #{govuk-spacing(4)});
+      position: absolute;
+      top: 0;
+      width: 2px;
+    }
+
     @include govuk-media-query($until: tablet) {
       & {
         margin-left: 0;
+      }
+
+      &:after {
+        display: none;
       }
 
       select {
