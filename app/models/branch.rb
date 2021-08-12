@@ -86,13 +86,26 @@ class Branch
   end
 
   def previous_pages
-    MetadataPresenter::TraversedPages.new(
-      service,
-      {},
-      previous_flow_object
-    ).all
-     .uniq
-     .push(previous_flow_object)
+    service.pages
+  end
+
+  def any_errors?
+    errors.present? || conditional_errors? ||
+      expression_errors?
+  end
+
+  def conditional_errors?
+    conditionals.any? do |conditional|
+      conditional.errors.messages.present?
+    end
+  end
+
+  def expression_errors?
+    conditionals.map do |conditional|
+      conditional.expressions.any? do |expression|
+        expression.errors.messages.present?
+      end
+    end
   end
 
   private
