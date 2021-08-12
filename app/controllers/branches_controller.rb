@@ -14,13 +14,13 @@ class BranchesController < FormController
     if branch_creation.save
       redirect_to edit_branch_path(service.service_id, branch_creation.branch_uuid)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     @branch = Branch.new(
-      branch_metadata.merge(service: service, previous_flow_uuid: params[:branch_id])
+      branch_metadata.merge(service: service, previous_flow_uuid: params[:branch_uuid])
     )
   end
 
@@ -49,7 +49,7 @@ class BranchesController < FormController
 
   def assign_branch
     @branch = Branch.new(branch_attributes)
-    @branch.conditionals << Conditional.new(expressions: [OpenStruct.new])
+    @branch.conditionals << Conditional.new(expressions: [Expression.new])
   end
 
   def branch_attributes

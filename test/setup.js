@@ -1,3 +1,4 @@
+const expect = require("chai").expect;
 const jsdom = require("jsdom");
 const jquery = require('jquery');
 const { JSDOM } = jsdom;
@@ -9,6 +10,9 @@ const dom = new JSDOM(`<html>
       <h1>Testing document</h1>
     </body>
   </html>`);
+
+// Setup globals
+global.expect = expect;
 
 // Setup environment
 global.window = dom.window;

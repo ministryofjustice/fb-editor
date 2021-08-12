@@ -4,6 +4,7 @@ class Conditional
   attr_writer :expressions
 
   validates :next, presence: true
+  validate :conditional_expressions
 
   IF = 'if'.freeze
   AND = 'and'.freeze
@@ -39,6 +40,10 @@ class Conditional
         )
       )
     end
+  end
+
+  def conditional_expressions
+    errors.add(:component, 'Expressions are not valid') if expressions.map(&:invalid?).any?
   end
 
   private

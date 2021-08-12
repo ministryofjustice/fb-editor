@@ -97,6 +97,10 @@ RSpec.describe BranchCreation, type: :model do
         ).to be(valid)
       end
 
+      it 'updates the service flow with the title' do
+        expect(flow_object['title']).to eq('Branching node 8')
+      end
+
       it 'updates previous page adding the branch as default next' do
         allow(SecureRandom).to receive(:uuid).and_return(
           '2db31ab2-8238-4545-8a81-dd4874b940f2'

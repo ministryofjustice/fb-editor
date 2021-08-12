@@ -1,9 +1,9 @@
 <% if ['checkanswers', 'confirmation', 'content'].include? @page._type.gsub('page.', '') %>
-  <% if @page.content_components.present? %>
+  <% if @page.supported_content_components.present? %>
     <div class="component add-content" data-component="add-content">
       <%# TODO: This will be basis of v2 code %>
       <%# ul class="govuk-navigation" %>
-        <%# @page.content_components.each do |component| %>
+        <%# @page.supported_content_components.each do |component| %>
           <%# li data-action="< component >"><a href="#add_component">< component.capitalize ></a></li %>
         <%# end %>
       <%# /ul %>

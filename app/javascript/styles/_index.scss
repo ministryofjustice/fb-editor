@@ -140,9 +140,7 @@ html {
 /* Branching
  * ------------------- */
 .branch {
-  background-color: govuk-colour("light-grey");
-  border-radius: 15px;
-  margin-bottom: govuk-spacing(5);
+  @include container_panel;
   padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
 
   p:first-child {
@@ -157,39 +155,28 @@ html {
   }
 }
 
+.branch-actions {
+  @include container_panel;
+}
+
 .branches {
   @include responsive_width("three-quarters");
 
-  label {
-    @include govuk-font($size: 24);
-
-    font-weight: bold;
-    display: inline;
-    left: 0;
-    margin-right: govuk-spacing(2);
-    position: absolute;
-    top: 4px;
-  }
-
   @include govuk-media-query($until: tablet) {
     label {
-      display: block;
-      position: static;
+      display: block !important;
+      line-height: 1.2em !important;
+      position: static !important;
     }
   }
 
   .answer {
     clear: both;
     float: right;
+    margin-bottom: govuk-spacing(6);
     width: 85%;
 
     select {
-      width: 100%;
-    }
-
-    .govuk-form-group {
-      display: inline-block;
-
       &:first-child {
         width: 35%;
       }
@@ -199,6 +186,12 @@ html {
         width: 60%;
       }
     }
+
+    @include govuk-media-query($until: tablet) {
+      & {
+        width: 100%;
+      }
+    }
   }
 
   .condition {
@@ -206,9 +199,24 @@ html {
     overflow: hidden;
     position: relative;
 
+    &:after {
+      background-color: $govuk-border-colour;
+      content: "";
+      display: block;
+      height: calc(100% - #{govuk-spacing(6)});
+      right: calc(85% + #{govuk-spacing(4)});
+      position: absolute;
+      top: 0;
+      width: 2px;
+    }
+
     @include govuk-media-query($until: tablet) {
       & {
         margin-left: 0;
+      }
+
+      &:after {
+        display: none;
       }
 
       select {
@@ -222,8 +230,23 @@ html {
     padding-left: 100px;
     position: relative;
 
+    label {
+      @include govuk-font($size: 24);
+
+      font-weight: bold;
+      display: inline;
+      left: 0;
+      margin-right: govuk-spacing(2);
+      position: absolute;
+      top: 4px;
+    }
+
     select {
+      @include govuk-font($size: 24);
+
+      font-weight: bold;
       float: right;
+      height: auto;
       width: 100%;
     }
 
@@ -241,8 +264,18 @@ html {
 
   .question {
     float: right;
-    position: relative;
     width: 85%;
+
+    label {
+      display: inline;
+      font-weight: bold;
+      left: 0;
+      line-height: 40px;
+      margin-right: govuk-spacing(2);
+      position: absolute;
+      top: 0;
+      vertical-align: middle;
+    }
 
     select {
       width: 100%;

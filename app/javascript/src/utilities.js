@@ -222,6 +222,36 @@ function isBoolean(thing) {
 }
 
 
+/* Simple AJAX wrapper to use a GET request and pass
+ * response into a callback function. Maybe extend
+ * with other features but currently not needed.
+ **/
+function updateDomByApiRequest(url, placement) {
+  $.get(url, function(html) {
+    var $node = $(html);
+    switch(placement.type) {
+      case "after": placement.target.after($node);
+           break;
+      case "before": placement.target.before($node);
+           break;
+      default: placement.target.append($node);
+    }
+
+    safelyActivateFunction(placement.done, $node);
+  });
+}
+
+
+function stringInject(str, injections) {
+  for(var i in injections) {
+    if(injections.hasOwnProperty(i)) {
+      str = str.replace("#{" + i + "}", injections[i]);
+    }
+  }
+  return str;
+}
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -235,5 +265,7 @@ module.exports  = {
   addHiddenInpuElementToForm: addHiddenInpuElementToForm,
   updateHiddenInputOnForm: updateHiddenInputOnForm,
   property: property,
-  isBoolean: isBoolean
+  isBoolean: isBoolean,
+  updateDomByApiRequest:updateDomByApiRequest,
+  stringInject: stringInject
 }

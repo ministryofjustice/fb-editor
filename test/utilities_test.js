@@ -231,4 +231,109 @@ describe('Utilities', function () {
       assert.isTrue(utilities.isBoolean(true));
     });
   });
+
+  describe('updateDomByApiRequest', function() {
+    var targetId = "update-dom-by-api-request-target-element";
+    var insertId = "update-dom-by-api-request-insert-element";
+    var get;
+
+    before(function() {
+      get = $.get;
+      $(document.body).append("<p id=\"" + targetId + "\"></p>");
+      $.get = function(urlNotNeeded, response) {
+        response("<span id=\"" + insertId + "\">Luke</span>");
+      }
+    });
+
+    afterEach(function() {
+       $(document.body).find("#" + insertId).remove();
+    });
+
+    after(function() {
+       $(document.body).find("#" + targetId).remove();
+       $.get = get;
+    });
+
+    it('should place new element after target node', function() {
+      var $targetNode = $(document.body).find("#" + targetId);
+
+      // First check inserted node is not there.
+      assert.isFalse($(document.body).find("#" + insertId).length > 0);
+
+      utilities.updateDomByApiRequest("", {
+        target: $targetNode,
+        done: function() {
+          var $insertedNode = $targetNode.find("#" + insertId);
+          assert.exists($targetNode);
+          assert.equal($targetNode.length, 1);
+          assert.exists($insertedNode);
+          assert.equal($insertedNode.length, 1);
+          assert.isTrue($targetNode.find($insertedNode).length > 0);
+        }
+      });
+    });
+
+    it('should place new element before target node', function() {
+      var $targetNode = $(document.body).find("#" + targetId);
+
+      // First check inserted node is not there.
+      assert.isFalse($(document.body).find("#" + insertId).length > 0);
+
+      utilities.updateDomByApiRequest("", {
+        type: "after",
+        target: $targetNode,
+        done: function() {
+          var $insertedNode = $(document.body).find("#" + insertId);
+          assert.exists($targetNode);
+          assert.equal($targetNode.length, 1);
+          assert.exists($insertedNode);
+          assert.equal($insertedNode.length, 1);
+          assert.isTrue($targetNode.next().is($insertedNode));
+        }
+      });
+    });
+
+    it('should append new element before target node', function() {
+      var $targetNode = $(document.body).find("#" + targetId);
+
+      // First check inserted node is not there.
+      assert.isFalse($(document.body).find("#" + insertId).length > 0);
+
+      utilities.updateDomByApiRequest("", {
+        type: "before",
+        target: $targetNode,
+        done: function() {
+          var $insertedNode = $(document.body).find("#" + insertId);
+          assert.exists($targetNode);
+          assert.equal($targetNode.length, 1);
+          assert.exists($insertedNode);
+          assert.equal($insertedNode.length, 1);
+          assert.isTrue($targetNode.prev().is($insertedNode));
+        }
+      });
+    });
+
+  });
+
+  describe('stringInject', function() {
+    it('should inject matching strings', function() {
+      var text = "These are not the #{noun} you are #{verb} for.";
+      var words = {
+        noun: "droids",
+        verb: "looking"
+      }
+
+      assert.equal(utilities.stringInject(text, words), "These are not the droids you are looking for.");
+    });
+
+    it('should not inject unmated strings', function() {
+      var text = "These are not the #{noun} you are #{verb} for.";
+      var words = {
+        noun: "droids",
+        adjective: "metallic"
+      }
+
+      assert.equal(utilities.stringInject(text, words), "These are not the droids you are #{verb} for.");
+    });
+  });
 });

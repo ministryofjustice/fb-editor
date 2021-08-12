@@ -1,16 +1,35 @@
-<div class="" data-expression-index="<%= expression_index %>" data-component-type="<%= component_type %>">
-  <%= f.select :operators, @expression.operators,
+<div class="answer" data-expression-index="<%= expression_index %>" data-component-type="<%= expression.component_type %>">
+  <%= f.select :operators, expression.operators,
     { include_blank: false },
     {
       class: 'govuk-select',
-      name: expression_name('operator'),
-      id: expression_id('operator')
-    }  %>
-  <%= f.select :answers, @expression.answers,
+      name: expression.name_attr(
+        conditional_index: conditional_index,
+        expression_index: expression_index,
+        attribute: 'operator'
+      ),
+      id: expression.id_attr(
+        conditional_index: conditional_index,
+        expression_index: expression_index,
+        attribute: 'operator'
+      )
+    }
+  %>
+
+  <%= f.select :answers, expression.answers,
     { include_blank: false },
     {
       class: 'govuk-select',
-      name: expression_name('answer'),
-      id: expression_id('answer')
-    } %>
+      name: expression.name_attr(
+        conditional_index: conditional_index,
+        expression_index: expression_index,
+        attribute: 'answer'
+      ),
+      id: expression.id_attr(
+        conditional_index: conditional_index,
+        expression_index: expression_index,
+        attribute: 'answer'
+      )
+    }
+  %>
 </div>
