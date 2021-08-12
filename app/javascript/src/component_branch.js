@@ -59,7 +59,6 @@ class BranchDestination {
  **/
 class BranchCondition {
   constructor($node, config) {
-    var condition = this;
     var conf = utilities.mergeObjects({ condition: this }, config);
 
     $node.addClass("BranchCondition");
