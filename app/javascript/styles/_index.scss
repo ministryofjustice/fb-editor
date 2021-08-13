@@ -139,7 +139,8 @@ html {
 
 /* Branching
  * ------------------- */
-.Branch {
+.Branch,
+#branch-otherwise {
   @include container_panel;
   padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
 
@@ -231,7 +232,8 @@ html {
   }
 }
 
-.BranchDestination {
+.BranchDestination,
+#branch-otherwise .destination {
   padding-left: 100px;
   position: relative;
 
