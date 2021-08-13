@@ -23,7 +23,8 @@ class Branch
   def self.from_metadata(flow_object)
     attributes_hash = {
       'default_next' => flow_object['next']['default'],
-      'conditionals_attributes' => {}
+      'conditionals_attributes' => {},
+      'title' => flow_object['title']
     }
 
     flow_object.conditionals.each_with_index do |conditional, index|
