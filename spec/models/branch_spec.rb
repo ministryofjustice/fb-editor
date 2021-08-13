@@ -83,6 +83,7 @@ RSpec.describe Branch do
     let(:branch_metadata) { service.flow_object(branch_uuid) }
     let(:expected_metadata) do
       {
+        'title' => branch_metadata['title'],
         'default_next' => '0b297048-aa4d-49b6-ac74-18e069118185',
         'conditionals_attributes' => {
           '0' => {
