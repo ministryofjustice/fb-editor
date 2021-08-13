@@ -3,6 +3,7 @@ class Branch
   include BranchTitleGenerator
   attr_accessor :previous_flow_uuid, :service, :default_next
   attr_writer :title
+  attr_reader :traversable
 
   delegate :branches, to: :service
 
@@ -11,6 +12,7 @@ class Branch
 
   def initialize(attributes)
     @service = attributes.delete(:service)
+    @traversable = Traversable.new(service: service, flow_uuid: previous_flow_uuid)
     super
   end
 
@@ -69,7 +71,7 @@ class Branch
   end
 
   def previous_questions
-    results = question_pages.map do |page|
+    results = traversable.question_pages.map do |page|
       page.input_components.map do |component|
         [
           component.humanised_title,
@@ -86,21 +88,7 @@ class Branch
     previous_flow_object.title
   end
 
-  def previous_pages
-    MetadataPresenter::TraversedPages.new(
-      service,
-      {},
-      previous_flow_object
-    ).all
-     .uniq
-     .push(previous_flow_object)
-  end
-
   private
-
-  def question_pages
-    previous_pages.select(&:question_page?)
-  end
 
   def previous_flow_object
     service.find_page_by_uuid(previous_flow_uuid) ||

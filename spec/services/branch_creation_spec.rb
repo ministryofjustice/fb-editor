@@ -14,7 +14,7 @@ RSpec.describe BranchCreation, type: :model do
     before do
       allow(NewFlowBranchGenerator).to receive(:new).and_return(new_flow_branch_generator)
     end
-    let(:attributes) { {} }
+    let(:attributes) { { service: service } }
 
     it 'should return the uuid of the new flow branch object' do
       expect(branch_creation.branch_uuid).to eq(uuid)
