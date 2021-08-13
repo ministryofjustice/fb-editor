@@ -109,15 +109,7 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      var supported = $(e.currentTarget.selectedOptions).data("supports-branching");
-
-      this.condition.clear();
-      if(!supported) {
-        this.error("unsupported");
-      }
-      else {
-        this.condition.update(e.currentTarget.value);
-      }
+      this.change(e.currentTarget);
     });
 
     this._config = conf;
@@ -125,8 +117,39 @@ class BranchQuestion {
     this.$node = $node;
   }
 
+  change(select) {
+    var supported = $(select.selectedOptions).data("supports-branching");
+    this.clear();
+    this.condition.clear();
+    switch(supported) {
+      case true: this.condition.update(select.value);
+           break;
+      case false: this.error("unsupported");
+           break;
+      default: // Nothing to see here. Probably on the initial option without support attribute.
+    }
+  }
+
+  clear() {
+    if(this._$error && this._$error.length > 0) {
+      this._$error.remove();
+      this._$error = null;
+      this.condition.$node.removeClass("error");
+    }
+  }
+
   error(type) {
-    console.log("show unsupported error message");
+    var $error = $("<p class=\"error-message\"></p>");
+    var errors = this._config.view.text.errors.branches;
+    switch(type) {
+      case "unsupported": $error.text(errors.unsupported_question);
+        break;
+      default: $error.text("An error occured");
+    }
+
+    this._$error = $error;
+    this.$node.append($error);
+    this.condition.$node.addClass("error");
   }
 }
 
