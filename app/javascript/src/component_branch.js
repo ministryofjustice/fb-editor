@@ -86,12 +86,13 @@ class BranchCondition {
         }
       });
     }
-    else {
-      // Clear any existing
-      if(this.answer) {
-        this.answer.$node.remove();
-        this.answer = null;
-      }
+  }
+
+  clear() {
+    // Clear any existing
+    if(this.answer) {
+      this.answer.$node.remove();
+      this.answer = null;
     }
   }
 }
@@ -109,6 +110,8 @@ class BranchQuestion {
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
       var supported = $(e.currentTarget.selectedOptions).data("supports-branching");
+
+      this.condition.clear();
       if(!supported) {
         this.error("unsupported");
       }
