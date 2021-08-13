@@ -108,12 +108,22 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      this.condition.update(e.currentTarget.value);
+      var supported = $(e.currentTarget.selectedOptions).data("supports-branching");
+      if(!supported) {
+        this.error("unsupported");
+      }
+      else {
+        this.condition.update(e.currentTarget.value);
+      }
     });
 
     this._config = conf;
     this.condition = conf.condition;
     this.$node = $node;
+  }
+
+  error(type) {
+    console.log("show unsupported error message");
   }
 }
 
