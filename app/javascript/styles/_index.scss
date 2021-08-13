@@ -139,7 +139,7 @@ html {
 
 /* Branching
  * ------------------- */
-.branch {
+.Branch {
   @include container_panel;
   padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
 
@@ -155,6 +155,149 @@ html {
   }
 }
 
+.BranchAnswer {
+  clear: both;
+  float: right;
+  margin-bottom: govuk-spacing(6);
+  width: 85%;
+
+  select {
+    &:first-child {
+      width: 35%;
+    }
+
+    &:last-child {
+      float: right;
+      width: 60%;
+    }
+  }
+
+  @include govuk-media-query($until: tablet) {
+    & {
+      width: 100%;
+    }
+  }
+}
+
+.BranchCondition {
+  margin-left: 100px;
+  overflow: hidden;
+  position: relative;
+
+  &:after {
+    background-color: $govuk-border-colour;
+    content: "";
+    display: block;
+    height: calc(100% - #{govuk-spacing(6)});
+    right: calc(85% + #{govuk-spacing(4)});
+    position: absolute;
+    top: 0;
+    width: 5px;
+  }
+
+  &.error {
+    option {
+      color: $govuk-text-colour;
+    }
+
+    select {
+      border-color: $govuk-error-colour;
+      color: $govuk-error-colour;
+    }
+
+    &:after {
+      background-color: $govuk-error-colour;
+    }
+  }
+
+  .error-message {
+    color: $govuk-error-colour;
+    font-weight: bold;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    & {
+      margin-left: 0;
+    }
+
+    &:after {
+      display: none;
+    }
+
+    select {
+      float: none;
+      width: 100%;
+    }
+  }
+}
+
+.BranchDestination {
+  padding-left: 100px;
+  position: relative;
+
+  label {
+    @include govuk-font($size: 24);
+
+    font-weight: bold;
+    display: inline;
+    left: 0;
+    margin-right: govuk-spacing(2);
+    position: absolute;
+    top: 4px;
+  }
+
+  select {
+    @include govuk-font($size: 24);
+
+    font-weight: bold;
+    float: right;
+    height: auto;
+    width: 100%;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    & {
+      padding-left: 0;
+    }
+
+    select {
+      float: none;
+      width: 100%;
+    }
+  }
+}
+
+.BranchQuestion {
+  float: right;
+  width: 85%;
+
+  label {
+    display: inline;
+    font-weight: bold;
+    left: 0;
+    line-height: 40px;
+    margin-right: govuk-spacing(2);
+    position: absolute;
+    top: 0;
+    vertical-align: middle;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    & {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    select {
+      float: none;
+    }
+  }
+}
+
 .branch-actions {
   @include container_panel;
 }
@@ -164,132 +307,9 @@ html {
 
   @include govuk-media-query($until: tablet) {
     label {
-      display: block !important;
-      line-height: 1.2em !important;
-      position: static !important;
-    }
-  }
-
-  .answer {
-    clear: both;
-    float: right;
-    margin-bottom: govuk-spacing(6);
-    width: 85%;
-
-    select {
-      &:first-child {
-        width: 35%;
-      }
-
-      &:last-child {
-        float: right;
-        width: 60%;
-      }
-    }
-
-    @include govuk-media-query($until: tablet) {
-      & {
-        width: 100%;
-      }
-    }
-  }
-
-  .condition {
-    margin-left: 100px;
-    overflow: hidden;
-    position: relative;
-
-    &:after {
-      background-color: $govuk-border-colour;
-      content: "";
       display: block;
-      height: calc(100% - #{govuk-spacing(6)});
-      right: calc(85% + #{govuk-spacing(4)});
-      position: absolute;
-      top: 0;
-      width: 2px;
-    }
-
-    @include govuk-media-query($until: tablet) {
-      & {
-        margin-left: 0;
-      }
-
-      &:after {
-        display: none;
-      }
-
-      select {
-        float: none;
-        width: 100%;
-      }
-    }
-  }
-
-  .destination {
-    padding-left: 100px;
-    position: relative;
-
-    label {
-      @include govuk-font($size: 24);
-
-      font-weight: bold;
-      display: inline;
-      left: 0;
-      margin-right: govuk-spacing(2);
-      position: absolute;
-      top: 4px;
-    }
-
-    select {
-      @include govuk-font($size: 24);
-
-      font-weight: bold;
-      float: right;
-      height: auto;
-      width: 100%;
-    }
-
-    @include govuk-media-query($until: tablet) {
-      & {
-        padding-left: 0;
-      }
-
-      select {
-        float: none;
-        width: 100%;
-      }
-    }
-  }
-
-  .question {
-    float: right;
-    width: 85%;
-
-    label {
-      display: inline;
-      font-weight: bold;
-      left: 0;
-      line-height: 40px;
-      margin-right: govuk-spacing(2);
-      position: absolute;
-      top: 0;
-      vertical-align: middle;
-    }
-
-    select {
-      width: 100%;
-    }
-
-    @include govuk-media-query($until: tablet) {
-      & {
-        margin-left: 0;
-        width: 100%;
-      }
-
-      select {
-        float: none;
-      }
+      line-height: 1.2em;
+      position: static;
     }
   }
 }
