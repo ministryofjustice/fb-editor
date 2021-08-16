@@ -81,7 +81,7 @@ en:
     goto: Go to
     select_destination: '--- Select a destination page ---'
     select_question: '--Select a question--'
-    title_branch: 'Branch ...'
+    conditional_title: 'Branch '
     title_otherwise: 'Otherwise'
   pages:
     flow:
