@@ -199,10 +199,6 @@ en:
         password: 'Set password'
       branch:
         default_next: Otherwise
-      conditional:
-        next: Go to
-      expression:
-        component: Question
     errors:
       models:
         page_creation:
@@ -210,6 +206,12 @@ en:
           restricted: "That name is used for something else"
           has_space: "Your page name cannot include spaces"
           has_special_chars:  "Your page name cannot include special characters other than hyphens (-)"
+        branch:
+          blank: "Select a destination for '%{attribute}'"
+        conditional:
+          blank: "Select a destination for Branch "
+        expression:
+          blank: "Select a question for the condition for Branch "
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

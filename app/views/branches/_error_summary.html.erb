@@ -1,0 +1,38 @@
+<% if @branch.any_errors? %>
+  <div class="govuk-grid-column-two-thirds govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+    <h2 class="govuk-error-summary__title" id="error-summary-title">
+      There is a problem
+    </h2>
+    <div class="govuk-error-summary__body">
+       <ul class="govuk-list govuk-error-summary__list">
+        <% @branch.conditionals.each_with_index do |conditional, conditional_index| %>
+          <% conditional.errors.each do |error| %>
+            <li class="govuk-error-message">
+              <a href="#branch_conditionals_attributes_<%= conditional_index %>_<%= error.attribute %>"><%= error.message + (conditional_index + 1).to_s %></a>
+            </li>
+          <% end %>
+          <% conditional.expressions.each_with_index do |expression, expression_index| %>
+            <% expression.errors.each do |error| %>
+              <% if error.attribute == :component %>
+                <li class="govuk-error-message">
+                  <a href="#<%= expression.id_attr(
+                      conditional_index: conditional_index,
+                      expression_index: expression_index,
+                      attribute: error.attribute
+                    ) %>">
+                    <%= error.message + (conditional_index + 1).to_s %>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% @branch.errors.each do |error| %>
+          <li class="govuk-error-message">
+            <a href="#branch_<%= error.attribute %>"><%= error.message %></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

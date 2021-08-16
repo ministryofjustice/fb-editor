@@ -6,10 +6,10 @@ RSpec.describe BranchCreation, type: :model do
   let(:service) do
     MetadataPresenter::Service.new(metadata)
   end
+  let(:branch) { Branch.new(attributes) }
 
   describe '#branch_uuid' do
     let(:uuid) { SecureRandom.uuid }
-    let(:branch) { Branch.new(attributes) }
     let(:new_flow_branch_generator) { double(uuid: uuid) }
     before do
       allow(NewFlowBranchGenerator).to receive(:new).and_return(new_flow_branch_generator)
@@ -22,7 +22,6 @@ RSpec.describe BranchCreation, type: :model do
   end
 
   describe '#metadata' do
-    let(:branch) { Branch.new(attributes) }
     let(:default_next) { SecureRandom.uuid }
     let(:previous_flow_object) do
       metadata['pages'].find { |page| page['url'] == 'favourite-fruit' }
@@ -117,6 +116,86 @@ RSpec.describe BranchCreation, type: :model do
 
       it 'updates the service flow with the correct conditionals' do
         expect(flow_object['next']['conditionals']).to eq(expected_conditionals)
+      end
+    end
+  end
+
+  describe '#save' do
+    let(:attributes) do
+      {
+        service: service,
+        conditionals_attributes: conditionals_attributes,
+        default_next: default_next
+      }
+    end
+    let(:conditionals_attributes) do
+      {
+        '0' => {
+          'next' => 'some-uuid',
+          'expressions_attributes' => {
+            '0' => {
+              'component' => 'some-uuid'
+            }
+          }
+        }
+      }
+    end
+    let(:default_next) { 'some-uuid' }
+
+    context 'when default_next is empty' do
+      let(:default_next) { '' }
+
+      it 'should not create_version' do
+        expect(branch_creation).not_to receive(:create_version)
+      end
+
+      it 'should not save' do
+        expect(branch_creation.save).to be_falsey
+      end
+    end
+
+    context 'when conditionals are empty' do
+      let(:conditionals_attributes) do
+        {
+          '0' => {
+            'next' => '',
+            'expressions_attributes' => {
+              '0' => {
+                'component' => 'some-uuid'
+              }
+            }
+          }
+        }
+      end
+
+      it 'should not create_version' do
+        expect(branch_creation).not_to receive(:create_version)
+      end
+
+      it 'should not save' do
+        expect(branch_creation.save).to be_falsey
+      end
+    end
+
+    context 'when expressions are invalid' do
+      let(:expression_attributes) do
+        {
+          '0' => {
+            'next' => 'some-uuid',
+            'expressions_attributes' => {
+              '0' => {
+                'component' => ''
+              }
+            }
+          }
+        }
+      end
+      it 'should not create_version' do
+        expect(branch_creation).not_to receive(:create_version)
+      end
+
+      it 'should not save' do
+        expect(branch_creation.save).to be_falsey
       end
     end
   end

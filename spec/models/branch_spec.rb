@@ -262,7 +262,7 @@ RSpec.describe Branch do
       end
 
       it 'does not accept blank conditionals' do
-        expect(branch.errors[:conditionals]).to be_present
+        expect(branch.conditionals_validations).to be_present
       end
 
       it 'adds error to conditionals object' do
