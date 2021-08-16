@@ -139,7 +139,7 @@ describe("Branch", function () {
   describe("BranchCondition", function() {
     var $condition;
 
-    beforeEach(function() {
+    before(function() {
       $condition = $(BRANCH_CONDITION_SELECTOR);
     });
 
@@ -201,8 +201,10 @@ describe("Branch", function () {
         condition.update("component-id-here");
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
       });
+    });
 
-      it("should remove html for answer on deselected question", function() {
+    describe("clear", function() {
+      it("should remove html for answer", function() {
         var condition = $condition.data("instance");
         expect(condition).to.exist;
         expect($condition).to.exist;
@@ -216,7 +218,7 @@ describe("Branch", function () {
         $condition.append(condition.answer.$node);
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
 
-        condition.update();
+        condition.clear();
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
       });
     });
@@ -251,6 +253,9 @@ describe("Branch", function () {
       expect(instance._config).to.exist;
       expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
     });
+
+    it("should show an error for unsupported questions");
+    it("should clear error on change of question");
   });
 
   describe("BranchAnswer", function() {
