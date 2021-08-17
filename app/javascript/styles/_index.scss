@@ -232,6 +232,16 @@ html {
   }
 }
 
+.BranchConditionInjector {
+  @include button_as_link;
+  margin-bottom: govuk-spacing(5);
+  margin-left: 100px;
+
+  @include govuk-media-query($until: tablet) {
+    margin-left: 0;
+  }
+}
+
 .BranchDestination,
 #branch-otherwise .destination {
   padding-left: 100px;
