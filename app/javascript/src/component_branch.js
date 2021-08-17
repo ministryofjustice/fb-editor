@@ -24,8 +24,12 @@ const utilities = require('./utilities');
 class Branch {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ branch: this }, config);
+    var $injector = $("<button></button>");
+    $injector.text(conf.view.text.add_branch_condition);
+
     $node.addClass("Branch");
     $node.data("instance", this);
+    $node.append($injector);
 
     this._config = conf;
     this.view = conf.view;
