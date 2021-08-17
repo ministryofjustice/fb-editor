@@ -27,7 +27,7 @@ en:
     service_email_body: 'Please find attached a submission sent from %{service_name}'
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
-    branching_title: 'Branching node %{branching_number}'
+    branching_title: 'Branching point %{branching_number}'
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'

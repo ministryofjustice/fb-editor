@@ -41,35 +41,35 @@ RSpec.describe Branch do
       let(:branches) { [] }
 
       it 'returns title' do
-        expect(branch.title).to eq('Branching node 1')
+        expect(branch.title).to eq('Branching point 1')
       end
     end
 
     context 'when branches size met' do
       let(:branches) do
         [
-          double(title: 'Branching node 1'),
-          double(title: 'Branching node 2'),
-          double(title: 'Branching node 3')
+          double(title: 'Branching point 1'),
+          double(title: 'Branching point 2'),
+          double(title: 'Branching point 3')
         ]
       end
 
       it 'returns next branching title' do
-        expect(branch.title).to eq('Branching node 4')
+        expect(branch.title).to eq('Branching point 4')
       end
     end
 
     context 'when branches were deleted before' do
       let(:branches) do
         [
-          double(title: 'Branching node 1'),
-          double(title: 'Branching node 3'),
-          double(title: 'Branching node 4')
+          double(title: 'Branching point 1'),
+          double(title: 'Branching point 3'),
+          double(title: 'Branching point 4')
         ]
       end
 
       it 'returns next branching title' do
-        expect(branch.title).to eq('Branching node 5')
+        expect(branch.title).to eq('Branching point 5')
       end
     end
   end

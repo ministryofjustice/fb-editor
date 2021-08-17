@@ -97,7 +97,7 @@ RSpec.describe BranchCreation, type: :model do
       end
 
       it 'updates the service flow with the title' do
-        expect(flow_object['title']).to eq('Branching node 8')
+        expect(flow_object['title']).to eq('Branching point 8')
       end
 
       it 'updates previous page adding the branch as default next' do
