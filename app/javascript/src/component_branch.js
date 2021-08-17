@@ -24,8 +24,7 @@ const utilities = require('./utilities');
 class Branch {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ branch: this }, config);
-    var $injector = $("<button></button>");
-    $injector.text(conf.view.text.add_branch_condition);
+    var $injector = $("<button />");
 
     $node.addClass("Branch");
     $node.data("instance", this);
@@ -37,6 +36,7 @@ class Branch {
     this.index = $node.data(conf.attribute_branch_index);
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
     this.condition = new BranchCondition($node.find(config.condition_selector), conf);
+    this.conditionInjector = new BranchConditionInjector($injector, conf);
   }
 }
 
@@ -98,6 +98,25 @@ class BranchCondition {
       this.answer.$node.remove();
       this.answer = null;
     }
+  }
+}
+
+
+/* BranchConditionInjector
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchConditionInjector {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({ condition: this }, config);
+
+    $node.text(conf.view.text.add_branch_condition);
+    $node.addClass("BranchConditionInjector");
+    $node.data("instance", this);
+
+    this._config = conf;
+    this.branch = conf.branch;
+    this.$node = $node;
   }
 }
 
