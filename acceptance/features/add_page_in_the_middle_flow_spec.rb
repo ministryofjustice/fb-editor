@@ -30,6 +30,7 @@ feature 'Add page in the middle flow' do
   def when_I_add_a_single_question_page_with_radio_after_start(url:)
     editor.preview_page_images.first.hover
     editor.three_dots_button.click
+    and_I_should_not_see_the_add_branch_link # temporary until branching is released
     editor.add_page_here_link.click
     editor.add_single_question.hover
     editor.add_radio.click
@@ -41,5 +42,13 @@ feature 'Add page in the middle flow' do
 
   def then_I_should_see_the_page_flow_in_order(order:)
     expect(editor.form_urls.map(&:text)).to eq(order)
+  end
+
+  # remove once branching is released
+  def and_I_should_not_see_the_add_branch_link
+    if Rails.env.test? && editor.url.include?('fb-editor-test')
+      links = page.all('a').map { |a| a['href'] }
+      expect(links.none? { |link| link.include?('branches') }).to be_truthy
+    end
   end
 end
