@@ -86,12 +86,13 @@ class BranchCondition {
         }
       });
     }
-    else {
-      // Clear any existing
-      if(this.answer) {
-        this.answer.$node.remove();
-        this.answer = null;
-      }
+  }
+
+  clear() {
+    // Clear any existing
+    if(this.answer) {
+      this.answer.$node.remove();
+      this.answer = null;
     }
   }
 }
@@ -108,12 +109,47 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      this.condition.update(e.currentTarget.value);
+      this.change(e.currentTarget);
     });
 
     this._config = conf;
     this.condition = conf.condition;
     this.$node = $node;
+  }
+
+  change(select) {
+    var supported = $(select.selectedOptions).data("supports-branching");
+    this.clear();
+    this.condition.clear();
+    switch(supported) {
+      case true: this.condition.update(select.value);
+           break;
+      case false: this.error("unsupported");
+           break;
+      default: // Nothing to see here. Probably on the initial option without support attribute.
+    }
+  }
+
+  clear() {
+    if(this._$error && this._$error.length > 0) {
+      this._$error.remove();
+      this._$error = null;
+      this.condition.$node.removeClass("error");
+    }
+  }
+
+  error(type) {
+    var $error = $("<p class=\"error-message\"></p>");
+    var errors = this._config.view.text.errors.branches;
+    switch(type) {
+      case "unsupported": $error.text(errors.unsupported_question);
+        break;
+      default: $error.text("An error occured");
+    }
+
+    this._$error = $error;
+    this.$node.append($error);
+    this.condition.$node.addClass("error");
   }
 }
 

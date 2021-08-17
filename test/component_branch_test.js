@@ -32,7 +32,8 @@ describe("Branch", function () {
           <label for="branch_1">If</label>
           <select id="branch_1">
             <option value="">--Select a question--</option>
-            <option value="a24f492b">Question</option>
+            <option value="a24f492b" data-supports-branching="true">Supported Question</option>
+            <option value="b34f593a" data-supports-branching="false">Unsupported Question</option>
           </select>
         </div>
       </div>
@@ -51,6 +52,7 @@ describe("Branch", function () {
       }
     });
   });
+
 
   describe("Component", function() {
     it("should have the basic HTML in place", function() {
@@ -139,7 +141,7 @@ describe("Branch", function () {
   describe("BranchCondition", function() {
     var $condition;
 
-    beforeEach(function() {
+    before(function() {
       $condition = $(BRANCH_CONDITION_SELECTOR);
     });
 
@@ -201,8 +203,10 @@ describe("Branch", function () {
         condition.update("component-id-here");
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
       });
+    });
 
-      it("should remove html for answer on deselected question", function() {
+    describe("clear", function() {
+      it("should remove html for answer", function() {
         var condition = $condition.data("instance");
         expect(condition).to.exist;
         expect($condition).to.exist;
@@ -216,7 +220,7 @@ describe("Branch", function () {
         $condition.append(condition.answer.$node);
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(1);
 
-        condition.update();
+        condition.clear();
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
       });
     });
@@ -250,6 +254,113 @@ describe("Branch", function () {
       var instance = $question.data("instance");
       expect(instance._config).to.exist;
       expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
+    });
+
+    it("should clear error on change of question", function() {
+      var instance = $question.data("instance");
+      var $error = $("<p class=\"error-message\"></p>");
+      instance._$error = $error;
+      $question.append($error);
+
+      // Check it's all there...
+      expect($question.find(".error-message").length).to.equal(1);
+      expect(instance._$error).to.exist;
+      expect(instance._$error).to.equal($error);
+
+      // now activate the method...
+      instance.clear();
+
+      // and check it's all gone.
+      expect(instance._$error).to.not.equal($error);
+      expect(instance._$error).to.not.exist;
+      expect($question.find(".error-message").length).to.equal(0);
+    });
+
+    it("should call condition.update on selectiom of supported question", function() {
+      var $branch =  $(`<div class="branch" data-branch-index="3">
+        <div class="destination">
+        </div>
+        <div class="condition" data-condition-index="5">
+          <div class="question">
+            <select>
+              <option value="b34f593a" data-supports-branching="true">Unsupported Question</option>
+            </select>
+          </div>
+        </div>
+      </div>`);
+
+      var branch = new Branch($branch, {
+        destination_selector: ".destination",
+        condition_selector: ".condition",
+        question_selector: ".question",
+        attribute_branch_index: "data-branch-index",
+        attribute_condition_index: "data-condition-index",
+        expression_url: "/not/needed"
+      });
+
+      var check = 1;
+
+      expect(check).to.equal(1);
+
+      // Overwrite the method on instance to easily detect activation in a test.
+      branch.condition.update = function() {
+        check += 1;
+      }
+
+      // This line doesn't work...
+      // branch.condition.$node.find("option").click();
+      // ...so calling change() method directly with passed select node.
+      branch.condition.question.change(branch.$node.find("select").get(0));
+      expect(check).to.equal(2);
+    });
+
+    it("should show an error on selection of unsupported question", function() {
+      var $branch =  $(`<div class="branch" data-branch-index="3">
+        <div class="destination">
+        </div>
+        <div class="condition" data-condition-index="5">
+          <div class="question">
+            <select>
+              <option value="b34f593a" data-supports-branching="false">Unsupported Question</option>
+            </select>
+          </div>
+        </div>
+      </div>`);
+
+      var errorMessage = "This is an error message";
+      var branch = new Branch($branch, {
+        destination_selector: ".destination",
+        condition_selector: ".condition",
+        question_selector: ".question",
+        attribute_branch_index: "data-branch-index",
+        attribute_condition_index: "data-condition-index",
+        expression_url: "/not/needed",
+        view: {
+          text: {
+            errors: {
+              branches: {
+                unsupported_question: errorMessage
+              }
+            }
+          }
+        }
+      });
+
+      // First check error does not exist
+      expect(branch.condition.question._$error).to.not.exist;
+      expect(branch.condition.$node.find(".error-message").length).to.equal(0);
+      expect(branch.condition.$node.hasClass("error")).to.be.false;
+
+      branch.condition.question.change(branch.$node.find("select").get(0));
+      let $error = $branch.find(".error-message");
+
+      // Now check error stuff is where it needs to be.
+      expect($error).to.exist;
+      expect($error.length).to.equal(1);
+      expect($error.text()).to.equal(errorMessage);
+      expect(branch.condition.question._$error).to.exist;
+      expect(branch.condition.question._$error.length).to.equal(1);
+      expect(branch.condition.$node.hasClass("error")).to.be.true;
     });
   });
 
