@@ -35,6 +35,9 @@ class BranchesController extends DefaultController {
 
     switch(app.page.action) {
       case "new":
+      case "create":
+      case "edit":
+      case "update":
         BranchesController.create.call(this);
     }
 

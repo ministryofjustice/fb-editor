@@ -31,8 +31,11 @@ class BranchesController < FormController
       latest_metadata: service_metadata
     )
 
-    branch_updater.save
-    render :edit
+    if branch_updater.save
+      redirect_to edit_branch_path(service.service_id, params[:branch_uuid])
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def conditional_index
