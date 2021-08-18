@@ -5,10 +5,10 @@ class Expression
   validates :component, :operator, :page, :field, presence: true
 
   OPERATORS = [
-    ['is', 'is'], # rubocop:disable Style/WordArray
-    ['is not', 'is_not'],
-    ['is answered', 'is_answered'],
-    ['is not answered', 'is_not_answered']
+    [I18n.t('operators.is'), 'is'],
+    [I18n.t('operators.is_not'), 'is_not'],
+    [I18n.t('operators.is_answered'), 'is_answered'],
+    [I18n.t('operators.is_not_answered'), 'is_not_answered']
   ].freeze
 
   def to_metadata
