@@ -35,12 +35,22 @@ class Branch {
     });
 
     this._config = conf;
+    this._conditionTemplate = $node.find(".condition").clone();
     this.$node = $node;
     this.view = conf.view;
     this.index = $node.data(conf.attribute_branch_index);
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
-    this.condition = new BranchCondition($node.find(config.condition_selector), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
+
+    // Add the default Condition
+    //this.addCondition(this.$node.find(this._config.condition_selector));
+    new BranchCondition(this.$node.find(this._config.condition_selector), this._config);
+  }
+
+  addCondition() {
+    var $condition = this._conditionTemplate.clone();
+    new BranchCondition($condition, this._config);
+    this.conditionInjector.$node.before($condition);
   }
 }
 
@@ -119,6 +129,10 @@ class BranchConditionInjector {
     $node.text(conf.view.text.add_branch_condition);
     $node.addClass("BranchConditionInjector");
     $node.data("instance", this);
+    $node.on("click", (e) => {
+      e.preventDefault();
+      conf.branch.addCondition();
+    });
 
     this._config = conf;
     this.branch = conf.branch;
