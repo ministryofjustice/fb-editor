@@ -18,6 +18,7 @@
 const utilities = require('./utilities');
 const EVENT_CONDITION_UPDATE = "branchconditionupdate";
 
+
 /* Branch component
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
  * @config (Object) Configurable key/value pairs.
@@ -35,7 +36,7 @@ class Branch {
     });
 
     this._config = conf;
-    this._conditionTemplate = $node.find(".condition").clone();
+    this._conditionIndex = 0;
     this.$node = $node;
     this.view = conf.view;
     this.index = $node.data(conf.attribute_branch_index);
@@ -48,9 +49,10 @@ class Branch {
   }
 
   addCondition() {
-    var $condition = this._conditionTemplate.clone();
-    new BranchCondition($condition, this._config);
+    var $condition = $(this._config.template_condition);
+    var condition = new BranchCondition($condition, this._config);
     this.conditionInjector.$node.before($condition);
+    this._conditionIndex += 1;
   }
 }
 

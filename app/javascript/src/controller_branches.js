@@ -92,6 +92,7 @@ BranchesController.createBranch = function($node) {
     expression_url: this.api.get_expression,
     attribute_branch_index: "conditional-index",
     attribute_condition_index: "expression-index",
+    template_condition: createBranchConditionTemplate($node),
     view: this
   });
 }
@@ -134,11 +135,26 @@ class BranchInjector {
 }
 
 
-
-
-
-
-
+/* We are creating new BranchCondition instances based on the original
+ * HTML found. So that we can make each inserted component unique, we
+ * need to alter the values that refer to the name attributes, etc.
+ * This function takes the initial found jQuery node of original
+ * Conditional component, served by the page, and copies the HTML.
+ * It also alters the HTML by swapping in target points for adding
+ * the required information in the right places.
+ *
+ * @$node (jQuery Node) HTML that will form the Branch
+ **/
+function createBranchConditionTemplate($node) {
+  var html = $node.find(".condition").get(0).outerHTML;
+  html = html.replace(
+          /branch_conditionals_attributes_0_expressions_attributes_0_component/mig,
+          "branch_conditionals_attributes_#{conditional_index}_expressions_attributes_#{expression_index}_component");
+  html = html.replace(
+          /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[component\]/mig,
+          "branch[conditionals_attributes][#{conditional_index}][expressions_attributes][#{expression_index}][component]");
+  return html;
+}
 
 
 
