@@ -16,6 +16,7 @@
  **/
 
 const utilities = require('./utilities');
+const EVENT_CONDITION_UPDATE = "branchconditionupdate";
 
 /* Branch component
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
@@ -29,10 +30,13 @@ class Branch {
     $node.addClass("Branch");
     $node.data("instance", this);
     $node.append($injector);
+    $node.on(EVENT_CONDITION_UPDATE, () => {
+      console.log("BranchCondition updated");
+    });
 
     this._config = conf;
-    this.view = conf.view;
     this.$node = $node;
+    this.view = conf.view;
     this.index = $node.data(conf.attribute_branch_index);
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
     this.condition = new BranchCondition($node.find(config.condition_selector), conf);
@@ -69,6 +73,7 @@ class BranchCondition {
     $node.data("instance", this);
 
     this._config = conf;
+    this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.question_selector), conf);
     this.index = $node.data(conf.attribute_condition_index);
     this.$node = $node;
@@ -87,6 +92,7 @@ class BranchCondition {
         target: this.$node,
         done: ($node) => {
           this.answer = new BranchAnswer($node, this._config);
+          this.branch.$node.trigger(EVENT_CONDITION_UPDATE);
         }
       });
     }
