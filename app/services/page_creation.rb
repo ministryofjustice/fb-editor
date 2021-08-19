@@ -1,5 +1,6 @@
 class PageCreation
   include ActiveModel::Model
+  include ApplicationHelper
   attr_accessor :page_url,
                 :page_type,
                 :component_type,
@@ -38,7 +39,7 @@ class PageCreation
   def metadata
     NewPageGenerator.new(
       page_type: page_type,
-      page_url: page_url.strip,
+      page_url: strip_url(page_url),
       component_type: component_type,
       latest_metadata: latest_metadata,
       add_page_after: add_page_after,

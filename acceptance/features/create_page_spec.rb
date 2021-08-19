@@ -73,31 +73,29 @@ feature 'Create page' do
     then_I_should_see_the_edit_confirmation_page
   end
 
-  scenario 'attempt to add a page with an existing url in the service flow' do
-    given_I_have_a_single_question_page_with_text
-    and_I_edit_the_service
-    given_I_add_a_single_question_page_with_text
-    and_I_add_an_existing_page_url
-    when_I_add_the_page
-    then_I_should_see_a_validation_error_message_that_page_url_exists
-  end
+  context 'existing urls' do
+    let(:error_message) { 'You already have a page with that name' }
 
-  scenario 'attempt to add a page with an existing url in the standalone pages' do
-    service_standalone_pages.each do |url|
-      and_I_edit_the_service
-      given_I_add_a_single_question_page_with_text
-      and_I_add_a_page_url(url)
-      when_I_add_the_page
-      then_I_should_see_a_validation_error_message_that_page_url_exists
+    scenario 'attempt to add a page with an existing url in the service flow' do
+      given_I_have_a_single_question_page_with_text
+      add_existing_url
+    end
+
+    scenario 'attempt to add a page with an existing url' do
+      all_page_urls.each { |url| add_existing_url(url) }
     end
   end
 
-  def and_I_add_an_existing_page_url
-    and_I_add_a_page_url
+  context 'reserved urls' do
+    let(:error_message) { 'That name is used for something else' }
+
+    scenario 'attempt to add a page with a reserved url' do
+      reserved_urls.each { |url| add_existing_url(url) }
+    end
   end
 
   def then_I_should_see_a_validation_error_message_that_page_url_exists
-    expect(editor.text).to include('You already have a page with that name')
+    expect(editor.text).to include(error_message)
   end
 
   def then_I_should_see_the_edit_single_question_text_page
@@ -186,7 +184,20 @@ feature 'Create page' do
     expect(editor.save_page_button).to be_disabled
   end
 
-  def service_standalone_pages
-    service.metadata['standalone_pages'].map { |page| page['url'] }
+  def add_existing_url(url = nil)
+    and_I_edit_the_service
+    given_I_add_a_single_question_page_with_text
+    and_I_add_a_page_url(url)
+    when_I_add_the_page
+    then_I_should_see_a_validation_error_message_that_page_url_exists
+  end
+
+  def all_page_urls
+    page_urls = service.metadata['pages'].map { |page| page['url'] }
+    standalone_urls = service.metadata['standalone_pages'].map { |page| page['url'] }
+  end
+
+  def reserved_urls
+    MetadataUrlValidator::RESERVED
   end
 end

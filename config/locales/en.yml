@@ -203,7 +203,7 @@ en:
       models:
         page_creation:
           taken: "You already have a page with that name"
-          restricted: "That name is used for something else"
+          reserved: "That name is used for something else"
           has_space: "Your page name cannot include spaces"
           has_special_chars:  "Your page name cannot include special characters other than hyphens (-)"
         branch:
