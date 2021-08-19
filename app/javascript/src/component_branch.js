@@ -33,6 +33,7 @@ class Branch {
     $node.append($injector);
     $node.on(EVENT_CONDITION_UPDATE, () => {
       console.log("BranchCondition updated");
+      this.conditionInjector.$node.show();
     });
 
     this._config = conf;
@@ -42,6 +43,7 @@ class Branch {
     this.view = conf.view;
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
+    this.conditionInjector.$node.hide();
 
     // Create BranchCondition instance found in Branch.
     this.$node.find(this._config.condition_selector).each(function() {
