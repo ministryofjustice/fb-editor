@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def strip_url(url)
-    url.to_s.chomp('/').reverse.chomp('/').reverse
+    url.to_s.chomp('/').reverse.chomp('/').reverse.strip.downcase
   end
 
   # Remove once hotjar testing is complete
