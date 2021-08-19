@@ -88,10 +88,11 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
 BranchesController.createBranch = function($node) {
   var branch = new Branch($node, {
     branch_index: this._branchCount,
-    condition_selector: BRANCH_CONDITION_SELECTOR,
-    destination_selector: BRANCH_DESTINATION_SELECTOR,
-    question_selector: BRANCH_QUESTION_SELECTOR,
+    selector_condition: BRANCH_CONDITION_SELECTOR,
+    selector_destination: BRANCH_DESTINATION_SELECTOR,
+    selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
+    question_label: this.text.branches.label_question_and,
     template_condition: this._branchConditionTemplate,
     view: this
   });

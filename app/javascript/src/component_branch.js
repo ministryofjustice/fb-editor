@@ -135,7 +135,7 @@ class BranchConditionInjector {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
-    $node.text(conf.view.text.add_branch_condition);
+    $node.text(conf.view.text.branches.add_condition);
     $node.addClass("BranchConditionInjector");
     $node.data("instance", this);
     $node.on("click", (e) => {
@@ -163,6 +163,10 @@ class BranchQuestion {
     $node.find("select").on("change.branchquestion", (e) => {
       this.change(e.currentTarget);
     });
+
+    if(conf.condition._index > 0) {
+      $node.find("label").text(config.question_label);
+    }
 
     this._config = conf;
     this.condition = conf.condition;
