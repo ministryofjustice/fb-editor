@@ -33,6 +33,9 @@ var Controller;
 
 switch(controllerAndAction()) {
   case "BranchesController#new":
+  case "BranchesController#create":
+  case "BranchesController#edit":
+  case "BranchesController#update":
        Controller = BranchesController;
   break;
 
@@ -62,4 +65,3 @@ switch(controllerAndAction()) {
 }
 
 $(document).ready( () => new Controller(app) );
- 
