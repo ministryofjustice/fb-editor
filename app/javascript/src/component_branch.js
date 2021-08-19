@@ -41,12 +41,12 @@ class Branch {
     this._conditionCount = 0;
     this.$node = $node;
     this.view = conf.view;
-    this.destination = new BranchDestination($node.find(config.destination_selector), conf);
+    this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.conditionInjector.$node.hide();
 
     // Create BranchCondition instance found in Branch.
-    this.$node.find(this._config.condition_selector).each(function() {
+    this.$node.find(this._config.selector_condition).each(function() {
       new BranchCondition($(this), conf);
       this._conditionCount++;
     });
@@ -94,7 +94,7 @@ class BranchCondition {
     this._config = conf;
     this._index = conf.branch._conditionCount;
     this.branch = conf.branch;
-    this.question = new BranchQuestion($node.find(conf.question_selector), conf);
+    this.question = new BranchQuestion($node.find(conf.selector_question), conf);
     this.$node = $node;
   }
 
