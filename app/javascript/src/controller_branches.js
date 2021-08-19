@@ -31,7 +31,6 @@ class BranchesController extends DefaultController {
   constructor(app) {
     super(app);
     this.api = app.api;
-    this._branches = [];
 
     switch(app.page.action) {
       case "new":
@@ -39,41 +38,43 @@ class BranchesController extends DefaultController {
       case "edit":
       case "update":
         BranchesController.create.call(this);
+        this.create();
     }
-
-    addMattsButton(); // Dev only while branches is WIP
   }
 
-  // Create a new branch and record in views branches array.
-  addBranch($node) {
-    this._branches.push(BranchesController.createBranch.call(this, $node));
+   /* Setup view for the create (new) action
+   **/
+  create() {
+    var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+    var $injectors = $(BRANCH_INJECTOR_SELECTOR);
+
+    this._branchCount = 0;
+    this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
+
+    BranchesController.enhanceCurrentBranches.call(this, $branches);
+    BranchesController.enhanceBranchInjectors.call(this, $injectors);
+
+    // NEXT LINE DEV ONLY: while branches is WIP
+    addMattsButton();
   }
-}
-
-
-/* Setup for the create (new) action
- **/
-BranchesController.create = function() {
-  BranchesController.enhanceCurrentBranches.call(this);
-  BranchesController.enhanceBranchInjectors.call(this);
 }
 
 
 /* Find and enhance all current branches.
  **/
-BranchesController.enhanceCurrentBranches = function() {
+BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
-  $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).each(function() {
-    view.addBranch($(this));
+  $branches.each(function() {
+    BranchesController.createBranch.call(view, $(this));
   });
 }
 
 
 /* Find and enhance all elements that can add a new branch.
  **/
-BranchesController.enhanceBranchInjectors = function() {
+BranchesController.enhanceBranchInjectors = function($injectors) {
   var view = this;
-  $(BRANCH_INJECTOR_SELECTOR).each(function() {
+  $injectors.each(function() {
     new BranchInjector($(this), {
       view: view
     });
@@ -85,16 +86,18 @@ BranchesController.enhanceBranchInjectors = function() {
  * track of number of branches
  **/
 BranchesController.createBranch = function($node) {
-  return new Branch($node, {
+  var branch = new Branch($node, {
+    branch_index: this._branchCount,
     condition_selector: BRANCH_CONDITION_SELECTOR,
     destination_selector: BRANCH_DESTINATION_SELECTOR,
     question_selector: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
-    attribute_branch_index: "conditional-index",
-    attribute_condition_index: "expression-index",
-    template_condition: createBranchConditionTemplate($node),
+    template_condition: this._branchConditionTemplate,
     view: this
   });
+
+  this._branchCount++;
+  return branch;
 }
 
 
@@ -118,17 +121,15 @@ class BranchInjector {
    **/
   add() {
     var view = this.view;
-    var branches = this.view._branches;
-    var index = branches.length > 0 ? branches[branches.length - 1].index : 0;
     var url = utilities.stringInject(this.view.api.new_conditional, {
-      conditional_index: String(index)
+      conditional_index: String(this.view._branchCount - 1) // Because BE adds +1
     });
 
     utilities.updateDomByApiRequest(url, {
-      target: $(BRANCH_SELECTOR).eq(index),
+      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
       type: "after",
-      done: function($node) {
-        view.addBranch($node);
+      done: function ($node) {
+        BranchesController.createBranch.call(view, $node);
       }
     });
   }
@@ -149,10 +150,10 @@ function createBranchConditionTemplate($node) {
   var html = $node.find(".condition").get(0).outerHTML;
   html = html.replace(
           /branch_conditionals_attributes_0_expressions_attributes_0_component/mig,
-          "branch_conditionals_attributes_#{conditional_index}_expressions_attributes_#{expression_index}_component");
+          "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_component");
   html = html.replace(
           /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[component\]/mig,
-          "branch[conditionals_attributes][#{conditional_index}][expressions_attributes][#{expression_index}][component]");
+          "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][component]");
   return html;
 }
 

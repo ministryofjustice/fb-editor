@@ -36,23 +36,28 @@ class Branch {
     });
 
     this._config = conf;
-    this._conditionIndex = 0;
+    this._index = Number(conf.branch_index);
+    this._conditionCount = 0;
     this.$node = $node;
     this.view = conf.view;
-    this.index = $node.data(conf.attribute_branch_index);
     this.destination = new BranchDestination($node.find(config.destination_selector), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
 
-    // Add the default Condition
-    //this.addCondition(this.$node.find(this._config.condition_selector));
-    new BranchCondition(this.$node.find(this._config.condition_selector), this._config);
+    // Create BranchCondition instance found in Branch.
+    this.$node.find(this._config.condition_selector).each(function() {
+      new BranchCondition($(this), conf);
+      this._conditionCount++;
+    });
   }
 
   addCondition() {
-    var $condition = $(this._config.template_condition);
-    var condition = new BranchCondition($condition, this._config);
+    var template = utilities.stringInject(this._config.template_condition, {
+      branch_index: this._index,
+      condition_index: ++this._conditionCount
+    });
+    var $condition = $(template);
+    new BranchCondition($condition, this._config);
     this.conditionInjector.$node.before($condition);
-    this._conditionIndex += 1;
   }
 }
 
@@ -85,9 +90,9 @@ class BranchCondition {
     $node.data("instance", this);
 
     this._config = conf;
+    this._index = conf.branch._conditionCount;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.question_selector), conf);
-    this.index = $node.data(conf.attribute_condition_index);
     this.$node = $node;
   }
 
@@ -96,8 +101,8 @@ class BranchCondition {
     if(component) {
       url = utilities.stringInject(this._config.expression_url, {
         component_id: component,
-        conditionals_index: this._config.branch.index,
-        expressions_index: this.index
+        conditionals_index: this._config.branch._index,
+        expressions_index: this._index
       });
 
       utilities.updateDomByApiRequest(url, {
