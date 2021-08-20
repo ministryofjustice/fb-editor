@@ -24,6 +24,30 @@ class PagesFlow
 
   attr_reader :service
 
+  def ordered_flow
+    next_uuid = service.start_page.uuid
+    ordered = []
+
+    service.flow.size.times do
+      # confirmation page, and in the future exit pages
+      next if next_uuid.empty?
+
+      flow_object = service.flow_object(next_uuid)
+      ordered.append(flow_object)
+
+      if flow_object.branch?
+        flow_object.conditionals.each do |conditional|
+          next_object = service.flow_object(conditional.next)
+          ordered.append(next_object)
+        end
+      end
+
+      next_uuid = flow_object.default_next
+    end
+
+    ordered
+  end
+
   def base_props(obj)
     {
       type: obj.type,
