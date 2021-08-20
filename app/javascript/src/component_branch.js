@@ -32,7 +32,6 @@ class Branch {
     $node.data("instance", this);
     $node.append($injector);
     $node.on(EVENT_CONDITION_UPDATE, () => {
-      console.log("BranchCondition updated");
       this.conditionInjector.$node.show();
     });
 
