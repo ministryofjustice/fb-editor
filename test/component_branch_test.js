@@ -9,12 +9,13 @@ describe("Branch", function () {
   const BRANCH_QUESTION_SELECTOR = ".question";
   const BRANCH_ANSWER_SELECTOR = ".answer";
   const EXPRESSION_URL = "something/goes/here";
+  const LABEL_QUESTION_AND = "And";
+  const TEXT_ADD_CONDITION = "add condition text";
   const INDEX_BRANCH = 4;
-  const INDEX_CONDITION = 2;
   var branch;
 
   before(function() {
-    var $html = $(`<div class="branch" id="` + COMPONENT_ID + `" data-branch-index="` + INDEX_BRANCH  + `">
+    var $html = $(`<div class="branch" id="` + COMPONENT_ID + `">
       <p>Branch ...</p>
       <div class="destination">
         <div class="form-group">
@@ -27,7 +28,7 @@ describe("Branch", function () {
           </select>
         </div>
       </div>
-      <div class="condition" data-condition-index="` + INDEX_CONDITION  + `">
+      <div class="condition">
         <div class="question">
           <label for="branch_1">If</label>
           <select id="branch_1">
@@ -41,14 +42,18 @@ describe("Branch", function () {
 
     $(document.body).append($html);
     branch = new Branch($html, {
-      condition_selector: BRANCH_CONDITION_SELECTOR,
-      destination_selector: BRANCH_DESTINATION_SELECTOR,
-      question_selector: BRANCH_QUESTION_SELECTOR,
+      branch_index: INDEX_BRANCH,
+      selector_condition: BRANCH_CONDITION_SELECTOR,
+      selector_destination: BRANCH_DESTINATION_SELECTOR,
+      selector_question: BRANCH_QUESTION_SELECTOR,
       expression_url: EXPRESSION_URL,
-      attribute_branch_index: "branch-index",
-      attribute_condition_index: "condition-index",
+      question_label: LABEL_QUESTION_AND,
       view: {
-        text: "Something, something, something... darkside."
+        text: {
+          branches: {
+            add_condition: TEXT_ADD_CONDITION
+          }
+        }
       }
     });
   });
@@ -78,25 +83,21 @@ describe("Branch", function () {
 
     it("should make the view public", function() {
       expect(branch.view).to.exist;
-      expect(branch.view.text).to.equal("Something, something, something... darkside.");
+      expect(branch.view.text.branches.add_condition).to.equal(TEXT_ADD_CONDITION);
     });
 
     it("should make the destination public", function() {
       expect(branch.destination).to.exist;
     });
 
-    it("should make the condition public", function() {
-      expect(branch.condition).to.exist;
-    });
-
     it("should make (public but indicated as) private reference to config", function() {
       expect(branch._config).to.exist;
-      expect(branch._config.condition_selector).to.equal(BRANCH_CONDITION_SELECTOR);
+      expect(branch._config.selector_condition).to.equal(BRANCH_CONDITION_SELECTOR);
     });
 
-    it("should assign an index value and make public", function() {
+    it("should make (public but indicated as) private reference to  index value", function() {
       var instance = branch.$node.data("instance");
-      expect(instance.index).to.equal(INDEX_BRANCH);
+      expect(instance._index).to.equal(INDEX_BRANCH);
     });
   });
 
@@ -134,7 +135,7 @@ describe("Branch", function () {
     it("should make (public but indicated as) private reference to config", function() {
       var instance = $destination.data("instance");
       expect(instance._config).to.exist;
-      expect(instance._config.destination_selector).to.equal(BRANCH_DESTINATION_SELECTOR);
+      expect(instance._config.selector_destination).to.equal(BRANCH_DESTINATION_SELECTOR);
     });
   });
 
@@ -165,12 +166,12 @@ describe("Branch", function () {
     it("should make (public but indicated as) private reference to config", function() {
       var instance = $condition.data("instance");
       expect(instance._config).to.exist;
-      expect(instance._config.condition_selector).to.equal(BRANCH_CONDITION_SELECTOR);
+      expect(instance._config.selector_condition).to.equal(BRANCH_CONDITION_SELECTOR);
     });
 
-    it("should assign an index value and make public", function() {
+    it("should make (public but indicated as) private reference to index value", function() {
       var instance = $condition.data("instance");
-      expect(instance.index).to.equal(INDEX_CONDITION);
+      expect(instance._index).to.equal(0);
     });
 
     describe("update", function() {
@@ -187,8 +188,8 @@ describe("Branch", function () {
       });
 
       afterEach(function() {
+         branch.$node.find(BRANCH_ANSWER_SELECTOR).remove();
          // Reset to original function
-         branch.condition.$node.find(BRANCH_ANSWER_SELECTOR).remove();
          $.get = get;
       });
 
@@ -253,7 +254,7 @@ describe("Branch", function () {
     it("should make (public but indicated as) private reference to config", function() {
       var instance = $question.data("instance");
       expect(instance._config).to.exist;
-      expect(instance._config.question_selector).to.equal(BRANCH_QUESTION_SELECTOR);
+      expect(instance._config.selector_question).to.equal(BRANCH_QUESTION_SELECTOR);
     });
 
     it("should clear error on change of question", function() {
@@ -277,10 +278,10 @@ describe("Branch", function () {
     });
 
     it("should call condition.update on selectiom of supported question", function() {
-      var $branch =  $(`<div class="branch" data-branch-index="3">
+      var $branch =  $(`<div class="branch">
         <div class="destination">
         </div>
-        <div class="condition" data-condition-index="5">
+        <div class="condition">
           <div class="question">
             <select>
               <option value="b34f593a" data-supports-branching="true">Unsupported Question</option>
@@ -290,35 +291,43 @@ describe("Branch", function () {
       </div>`);
 
       var branch = new Branch($branch, {
-        destination_selector: ".destination",
-        condition_selector: ".condition",
-        question_selector: ".question",
-        attribute_branch_index: "data-branch-index",
-        attribute_condition_index: "data-condition-index",
-        expression_url: "/not/needed"
+        branch_index: INDEX_BRANCH,
+        selector_condition: BRANCH_CONDITION_SELECTOR,
+        selector_destination: BRANCH_DESTINATION_SELECTOR,
+        selector_question: BRANCH_QUESTION_SELECTOR,
+        expression_url: EXPRESSION_URL,
+        question_label: LABEL_QUESTION_AND,
+        view: {
+          text: {
+            branches: {
+              add_condition: TEXT_ADD_CONDITION
+            }
+          }
+        }
       });
 
       var check = 1;
+      var condition = $(BRANCH_CONDITION_SELECTOR, branch.$node).data("instance");
 
       expect(check).to.equal(1);
 
       // Overwrite the method on instance to easily detect activation in a test.
-      branch.condition.update = function() {
+      condition.update = function() {
         check += 1;
       }
 
       // This line doesn't work...
       // branch.condition.$node.find("option").click();
       // ...so calling change() method directly with passed select node.
-      branch.condition.question.change(branch.$node.find("select").get(0));
+      condition.question.change(branch.$node.find("select").get(0));
       expect(check).to.equal(2);
     });
 
     it("should show an error on selection of unsupported question", function() {
-      var $branch =  $(`<div class="branch" data-branch-index="3">
+      var $branch =  $(`<div class="branch">
         <div class="destination">
         </div>
-        <div class="condition" data-condition-index="5">
+        <div class="condition">
           <div class="question">
             <select>
               <option value="b34f593a" data-supports-branching="false">Unsupported Question</option>
@@ -329,14 +338,17 @@ describe("Branch", function () {
 
       var errorMessage = "This is an error message";
       var branch = new Branch($branch, {
-        destination_selector: ".destination",
-        condition_selector: ".condition",
-        question_selector: ".question",
-        attribute_branch_index: "data-branch-index",
-        attribute_condition_index: "data-condition-index",
-        expression_url: "/not/needed",
+        branch_index: INDEX_BRANCH,
+        selector_condition: BRANCH_CONDITION_SELECTOR,
+        selector_destination: BRANCH_DESTINATION_SELECTOR,
+        selector_question: BRANCH_QUESTION_SELECTOR,
+        expression_url: "/not/needed/",
+        question_label: LABEL_QUESTION_AND,
         view: {
           text: {
+            branches: {
+              add_condition: TEXT_ADD_CONDITION
+            },
             errors: {
               branches: {
                 unsupported_question: errorMessage
@@ -346,21 +358,23 @@ describe("Branch", function () {
         }
       });
 
-      // First check error does not exist
-      expect(branch.condition.question._$error).to.not.exist;
-      expect(branch.condition.$node.find(".error-message").length).to.equal(0);
-      expect(branch.condition.$node.hasClass("error")).to.be.false;
+      var condition = $(BRANCH_CONDITION_SELECTOR, branch.$node).data("instance");
 
-      branch.condition.question.change(branch.$node.find("select").get(0));
+      // First check error does not exist
+      expect(condition.question._$error).to.not.exist;
+      expect(condition.$node.find(".error-message").length).to.equal(0);
+      expect(condition.$node.hasClass("error")).to.be.false;
+
+      condition.question.change(branch.$node.find("select").get(0));
       let $error = $branch.find(".error-message");
 
       // Now check error stuff is where it needs to be.
       expect($error).to.exist;
       expect($error.length).to.equal(1);
       expect($error.text()).to.equal(errorMessage);
-      expect(branch.condition.question._$error).to.exist;
-      expect(branch.condition.question._$error.length).to.equal(1);
-      expect(branch.condition.$node.hasClass("error")).to.be.true;
+      expect(condition.question._$error).to.exist;
+      expect(condition.question._$error.length).to.equal(1);
+      expect(condition.$node.hasClass("error")).to.be.true;
     });
   });
 
