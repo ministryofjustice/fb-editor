@@ -160,7 +160,9 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      this.change(e.currentTarget);
+      var select = e.currentTarget;
+      var supported = $(select.selectedOptions).data("supports-branching");
+      this.change(supported, select.value);
     });
 
     if(conf.condition._index > 0) {
@@ -172,12 +174,11 @@ class BranchQuestion {
     this.$node = $node;
   }
 
-  change(select) {
-    var supported = $(select.selectedOptions).data("supports-branching");
+  change(supported, value) {
     this.clear();
     this.condition.clear();
     switch(supported) {
-      case true: this.condition.update(select.value);
+      case true: this.condition.update(value);
            break;
       case false: this.error("unsupported");
            break;
