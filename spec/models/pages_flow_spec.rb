@@ -3,6 +3,132 @@ RSpec.describe PagesFlow do
   let(:metadata) { metadata_fixture(:branching) }
   let(:service) { MetadataPresenter::Service.new(metadata) }
 
+  describe '#build' do
+    context 'service with no branching' do
+      let(:metadata) { metadata_fixture(:version) }
+      let(:expected_flow) do
+        [
+          [
+            {
+              type: 'page.start',
+              title: 'Service name goes here',
+              uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+              next: '9e1ba77f-f1e5-42f4-b090-437aa9af7f73'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Full name',
+              uuid: '9e1ba77f-f1e5-42f4-b090-437aa9af7f73',
+              next: 'df1ba645-f748-46d0-ad75-f34112653e37'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Email address',
+              uuid: 'df1ba645-f748-46d0-ad75-f34112653e37',
+              next: '4b8c6bf3-878a-4446-9198-48351b3e2185'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Parent name',
+              uuid: '4b8c6bf3-878a-4446-9198-48351b3e2185',
+              next: '54ccc6cd-60c0-4749-947b-a97af1bc0aa2'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Your age',
+              uuid: '54ccc6cd-60c0-4749-947b-a97af1bc0aa2',
+              next: 'b8335af2-6642-4e2f-8192-0dd12279eec7'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Family Hobbies',
+              uuid: 'b8335af2-6642-4e2f-8192-0dd12279eec7',
+              next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Do you like Star Wars?',
+              uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+              next: '7806cd64-0c05-450e-ba6f-2325c8b22d46'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'What is the day that you like to take holidays?',
+              uuid: '7806cd64-0c05-450e-ba6f-2325c8b22d46',
+              next: '0c022e95-0748-4dda-8ba5-12fd1d2f596b'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'What would you like on your burger?',
+              uuid: '0c022e95-0748-4dda-8ba5-12fd1d2f596b',
+              next: 'e8708909-922e-4eaf-87a5-096f7a713fcb'
+            }
+          ],
+          [
+            {
+              type: 'page.multiplequestions',
+              title: 'How well do you know Star Wars?',
+              uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+              next: '80420693-d6f2-4fce-a860-777ca774a6f5'
+            }
+          ],
+          [
+            {
+              type: 'page.content',
+              title: 'Tell me how many lights you see',
+              uuid: '80420693-d6f2-4fce-a860-777ca774a6f5',
+              next: '2ef7d11e-0307-49e9-9fe2-345dc528dd66'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Upload your best dog photo',
+              uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd66',
+              next: 'e337070b-f636-49a3-a65c-f506675265f0'
+            }
+          ],
+          [
+            {
+              type: 'page.checkanswers',
+              title: 'Check your answers',
+              uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+              next: '778e364b-9a7f-4829-8eb2-510e08f156a3'
+            }
+          ],
+          [
+            {
+              type: 'page.confirmation',
+              title: 'Complaint sent',
+              uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+              next: ''
+            }
+          ]
+        ]
+      end
+
+      it 'builds the service flow in the correct order and structure' do
+        expect(pages_flow.build).to eq(expected_flow)
+      end
+    end
+  end
+
   describe '#page' do
     let(:flow) { service.flow_object('ef2cafe3-37e2-4533-9b0c-09a970cd38d4') }
     let(:expected_page) do

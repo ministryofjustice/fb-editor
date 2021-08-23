@@ -4,7 +4,9 @@ class PagesFlow
   end
 
   def build
-    service.flow.map { |flow| flow.type == 'flow.page' ? page(flow) : branch(flow) }
+    ordered_flow.map do |flow|
+      flow.type == 'flow.page' ? [page(flow)] : [branch(flow)]
+    end
   end
 
   def page(flow)
@@ -23,6 +25,23 @@ class PagesFlow
   private
 
   attr_reader :service
+
+  def ordered_flow
+    next_uuid = service.start_page.uuid
+    ordered = []
+
+    service.flow.size.times do
+      # confirmation page, and in the future exit pages
+      next if next_uuid.empty?
+
+      flow_object = service.flow_object(next_uuid)
+      ordered.append(flow_object)
+
+      next_uuid = flow_object.default_next
+    end
+
+    ordered
+  end
 
   def base_props(obj)
     {
