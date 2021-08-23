@@ -64,15 +64,16 @@ class PagesFlow
   end
 
   def question_and_answer(expression)
-    page = service.find_page_by_uuid(expression.page)
-    component = page.find_component_by_uuid(expression.component)
-    item = component.find_item_by_uuid(expression.field) if expression.field.present?
-    operator = I18n.t("operators.#{expression.operator}")
-
+    expression.service = service
     {
-      question: component.humanised_title,
-      answer: "#{operator} #{item&.label || ''}".strip
+      question: expression.expression_component.humanised_title,
+      answer: answer(expression)
     }
+  end
+
+  def answer(expression)
+    operator = I18n.t("operators.#{expression.operator}")
+    "#{operator} #{expression.field_label}".strip
   end
 
   def otherwise(default_next)
