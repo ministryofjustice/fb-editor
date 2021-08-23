@@ -16,7 +16,7 @@
  **/
 
 const utilities = require('./utilities');
-const EVENT_CONDITION_UPDATE = "branchconditionupdate";
+const EVENT_QUESTION_CHANGE = "branchquestionchange";
 
 
 /* Branch component
@@ -31,8 +31,8 @@ class Branch {
     $node.addClass("Branch");
     $node.data("instance", this);
     $node.append($injector);
-    $node.on(EVENT_CONDITION_UPDATE, () => {
-      this.conditionInjector.$node.show();
+    $node.on(EVENT_QUESTION_CHANGE, () => {
+      utilities.safelyActivateFunction.call(this, conf.event_question_change);
     });
 
     this._config = conf;
@@ -42,7 +42,6 @@ class Branch {
     this.view = conf.view;
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
-    this.conditionInjector.$node.hide();
 
     // Create BranchCondition instance found in Branch.
     this.$node.find(this._config.selector_condition).each(function() {
@@ -97,7 +96,7 @@ class BranchCondition {
     this.$node = $node;
   }
 
-  update(component) {
+  update(component, callback) {
     var url;
     if(component) {
       url = utilities.stringInject(this._config.expression_url, {
@@ -110,7 +109,7 @@ class BranchCondition {
         target: this.$node,
         done: ($node) => {
           this.answer = new BranchAnswer($node, this._config);
-          this.branch.$node.trigger(EVENT_CONDITION_UPDATE);
+          utilities.safelyActivateFunction(callback);
         }
       });
     }
@@ -175,14 +174,21 @@ class BranchQuestion {
   }
 
   change(supported, value) {
+    var branch = this.condition.branch;
     this.clear();
     this.condition.clear();
     switch(supported) {
-      case true: this.condition.update(value);
+      case true:
+           this.condition.update(value, function() {
+             branch.$node.trigger(EVENT_QUESTION_CHANGE);
+           });
            break;
-      case false: this.error("unsupported");
+      case false:
+           this.error("unsupported");
            break;
-      default: // Nothing to see here. Probably on the initial option without support attribute.
+      default:
+           // Just trigger an event
+           this.condition.branch.$node.trigger(EVENT_QUESTION_CHANGE);
     }
   }
 

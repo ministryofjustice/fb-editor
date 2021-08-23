@@ -37,7 +37,6 @@ class BranchesController extends DefaultController {
       case "create":
       case "edit":
       case "update":
-        BranchesController.create.call(this);
         this.create();
     }
   }
@@ -94,9 +93,18 @@ BranchesController.createBranch = function($node) {
     expression_url: this.api.get_expression,
     question_label: this.text.branches.label_question_and,
     template_condition: this._branchConditionTemplate,
+    event_question_change: function() {
+      if(this.$node.find(".BranchAnswer").length > 0) {
+        this.$node.find(".BranchConditionInjector").show();
+      }
+      else {
+        this.$node.find(".BranchConditionInjector").hide();
+      }
+    },
     view: this
   });
 
+  branch.$node.find(".BranchConditionInjector").hide();
   this._branchCount++;
   return branch;
 }
