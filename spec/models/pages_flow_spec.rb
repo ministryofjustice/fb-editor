@@ -250,5 +250,38 @@ RSpec.describe PagesFlow do
         expect(pages_flow.branch(flow)).to eq(expected_branch)
       end
     end
+
+    context 'conditional type not implemented' do
+      let(:invalid_type) { 'until' }
+      let(:branch_metadata) do
+        {
+          '1079b5b8-abd0-4bf6-aaac-1f01e69e3b39' => {
+            '_type' => 'flow.branch',
+            'title' => 'Branching point 1 billion',
+            'next' => {
+              'default' => '941137d7-a1da-43fd-994a-98a4f9ea6d46',
+              'conditionals' => [
+                {
+                  '_type' => invalid_type,
+                  'next' => '56e80942-d0a4-405a-85cd-bd1b100013d6',
+                  'expressions' => []
+                }
+              ]
+            }
+          }
+        }
+      end
+      let(:flow) do
+        MetadataPresenter::Flow.new(
+          '1079b5b8-abd0-4bf6-aaac-1f01e69e3b39',
+          branch_metadata['1079b5b8-abd0-4bf6-aaac-1f01e69e3b39']
+        )
+      end
+      it 'should raise NotImplementedError' do
+        expect { pages_flow.branch(flow) }.to raise_error(
+          NotImplementedError, "'#{invalid_type}' method not implemented"
+        )
+      end
+    end
   end
 end
