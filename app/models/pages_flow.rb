@@ -1,12 +1,16 @@
 class PagesFlow
   def initialize(service)
     @service = service
+    @ordered = []
+    @traversed = []
   end
 
   def build
-    ordered_flow.map do |flow|
-      flow.type == 'flow.page' ? [page(flow)] : [branch(flow)]
+    flow_groups = ordered_flow.map do |stack|
+      stack.grouped_flow_objects.map { |group| convert_flow_objects(group).compact }
     end
+
+    flow_groups.flatten(1).reject(&:empty?)
   end
 
   def page(flow)
@@ -25,22 +29,50 @@ class PagesFlow
   private
 
   attr_reader :service
+  attr_accessor :ordered, :traversed
 
   def ordered_flow
+    previous_uuid = ''
     next_uuid = service.start_page.uuid
-    ordered = []
 
     service.flow.size.times do
       # confirmation page, and in the future exit pages
       next if next_uuid.empty?
 
       flow_object = service.flow_object(next_uuid)
-      ordered.append(flow_object)
+      add_flow_stack(service.flow_object(previous_uuid), flow_object)
 
+      if flow_object.branch?
+        flow_object.conditionals.each do |conditional|
+          next_object = service.flow_object(conditional.next)
+          add_flow_stack(flow_object, next_object)
+        end
+      end
+
+      previous_uuid = flow_object.uuid
       next_uuid = flow_object.default_next
     end
 
-    ordered
+    @ordered
+  end
+
+  def add_flow_stack(previous, current)
+    @ordered.append(
+      FlowStack.new(
+        service: service,
+        previous: previous,
+        current: current
+      )
+    )
+  end
+
+  def convert_flow_objects(group)
+    group.map do |flow|
+      next if @traversed.include?(flow.uuid)
+
+      @traversed.push(flow.uuid)
+      flow.type == 'flow.page' ? page(flow) : branch(flow)
+    end
   end
 
   def base_props(obj)
