@@ -58,10 +58,12 @@ class PagesFlow
 
   def branch_conditionals(conditionals)
     conditionals.map { |conditional|
-      send("#{conditional.type}_conditional", conditional)
+      begin
+        send("#{conditional.type}_conditional", conditional)
+      rescue NoMethodError
+        raise NotImplementedError, "'#{conditional.type}' method not implemented"
+      end
     }.flatten
-  rescue NoMethodError
-    # do something here
   end
 
   def if_conditional(conditional)
