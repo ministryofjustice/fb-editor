@@ -73,7 +73,9 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(3)
-    then_I_should_see_all_branching_error_messages
+    then_I_should_see_branching_error_message('Select a destination for Branch 1')
+    then_I_should_see_branching_error_message('Select a question for the condition for Branch 1')
+    then_I_should_see_branching_error_message("Select a destination for 'Otherwise'")
   end
 
   scenario 'when the "Go to" field is not filled in' do
@@ -119,6 +121,7 @@ feature 'Branching errors' do
     )
 
     when_I_save_my_changes
+    then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(1)
     then_I_should_see_branching_error_message('Select a destination for Branch 1')
   end
@@ -227,16 +230,13 @@ feature 'Branching errors' do
     )
 
     when_I_save_my_changes
+    then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(2)
     then_I_should_see_branching_error_message('Select a destination for Branch 2')
     then_I_should_see_branching_error_message('Select a question for the condition for Branch 2')
   end
 
   # Errors
-  def then_I_should_see_all_branching_error_messages
-    expect(page).to have_selector('.govuk-form-group--error', count: 3)
-  end
-
   def then_I_should_see_an_error_summary
     expect(page).to have_selector('.govuk-error-summary')
   end
