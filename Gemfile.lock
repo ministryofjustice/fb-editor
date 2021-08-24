@@ -172,7 +172,7 @@ GEM
       kramdown (>= 2.3.0)
       rails (>= 6.0.3.4, < 6.2.0)
     method_source (1.0.0)
-    mini_mime (1.1.0)
+    mini_mime (1.1.1)
     mini_portile2 (2.6.1)
     minitest (5.14.4)
     msgpack (1.4.2)
@@ -325,7 +325,7 @@ GEM
       faraday
     shoulda-matchers (5.0.0)
       activesupport (>= 5.2.0)
-    site_prism (3.7.1)
+    site_prism (3.7.2)
       addressable (~> 2.5)
       capybara (~> 3.8)
       site_prism-all_there (>= 0.3.1, < 1.0)
