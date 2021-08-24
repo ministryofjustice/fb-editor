@@ -53,7 +53,7 @@ describe("Branch", function () {
       view: {
         text: {
           branches: {
-            add_condition: TEXT_ADD_CONDITION
+            condition_add: TEXT_ADD_CONDITION
           },
           errors: {
             branches: {
@@ -102,7 +102,7 @@ describe("Branch", function () {
 
     it("should make the view public", function() {
       expect(global_test_branch.view).to.exist;
-      expect(global_test_branch.view.text.branches.add_condition).to.equal(TEXT_ADD_CONDITION);
+      expect(global_test_branch.view.text.branches.condition_add).to.equal(TEXT_ADD_CONDITION);
     });
 
     it("should make the destination public", function() {
@@ -125,7 +125,7 @@ describe("Branch", function () {
 
     it("should make (public but indicated as) private reference to condition counter value", function() {
       expect(global_test_branch._conditionCount).to.exist;
-      expect(global_test_branch._conditionCount).to.equal(0);
+      expect(global_test_branch._conditionCount).to.equal(1);
     });
   });
 
@@ -292,8 +292,8 @@ describe("Branch", function () {
       expect(instance._config.view).to.exist;
       expect(instance._config.view.text).to.exist;
       expect(instance._config.view.text.branches).to.exist;
-      expect(instance._config.view.text.branches.add_condition).to.exist;
-      expect(instance._config.view.text.branches.add_condition).to.equal(TEXT_ADD_CONDITION);
+      expect(instance._config.view.text.branches.condition_add).to.exist;
+      expect(instance._config.view.text.branches.condition_add).to.equal(TEXT_ADD_CONDITION);
     });
 
     it("should make the branch public", function() {
@@ -310,7 +310,7 @@ describe("Branch", function () {
   });
 
 
-  describe.only("BranchQuestion", function() {
+  describe("BranchQuestion", function() {
     var $question, question;
 
     before(function() {
