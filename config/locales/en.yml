@@ -74,7 +74,8 @@ en:
     option_remove: 'Delete...'
   branches:
     add_branch: 'Add another branch'
-    add_condition: 'Add condition'
+    condition_add: 'Add condition'
+    condition_remove: 'Remove condition'
     after: After "%{page_title}"
     expression:
       if: 'If'

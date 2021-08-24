@@ -76,3 +76,19 @@
   margin-bottom: govuk-spacing(5);
   padding: govuk-spacing(5);
 }
+
+@mixin icon_button {
+  @include button_type_link;
+  border: govuk-colour("blue") solid 2px;
+  border-radius: 25px;
+  height: 35px;
+  padding: 0;
+  text-indent: -10000px;
+  width: 35px;
+
+  &:focus {
+    @include focus;
+    border: none;
+    outline: none;
+  }
+}

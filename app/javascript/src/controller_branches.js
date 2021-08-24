@@ -63,8 +63,13 @@ class BranchesController extends DefaultController {
  **/
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
-  $branches.each(function() {
-    BranchesController.createBranch.call(view, $(this));
+  $branches.each(function(index) {
+    var branch = BranchesController.createBranch.call(view, $(this));
+
+    // Remove the delete button to ensure we always have a default condition.
+    if(index == 0) {
+      branch.$node.find(".BranchConditionRemover").remove();
+    }
   });
 }
 

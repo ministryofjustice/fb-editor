@@ -142,7 +142,7 @@ html {
 .Branch,
 #branch-otherwise {
   @include container_panel;
-  padding: govuk-spacing(5) 100px 1px govuk-spacing(5);
+  padding: govuk-spacing(5) govuk-spacing(5) 1px govuk-spacing(5);
 
   p:first-child {
     color: govuk-colour("dark-grey");
@@ -183,13 +183,14 @@ html {
 .BranchCondition {
   margin-left: 100px;
   overflow: hidden;
+  padding-right: 75px;
   position: relative;
 
   &:after {
     background-color: $govuk-border-colour;
     content: "";
     display: block;
-    height: calc(100% - #{govuk-spacing(6)});
+    height: calc(100% - (#{govuk-spacing(6)} + 75px));
     right: calc(85% + #{govuk-spacing(4)});
     position: absolute;
     top: 0;
@@ -242,8 +243,23 @@ html {
   }
 }
 
+.BranchConditionRemover {
+  @include icon_button;
+  background-image: url("../images/trash_can_icon_blue.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: govuk-spacing(5);
+  top: 0;
+
+  &:hover {
+    background-image: url("../images/trash_can_icon_white.svg");
+  }
+}
+
 .BranchDestination,
 #branch-otherwise .destination {
+  margin-right: 75px;
   padding-left: 100px;
   position: relative;
 

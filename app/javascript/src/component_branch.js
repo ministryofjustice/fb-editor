@@ -25,6 +25,7 @@ const EVENT_QUESTION_CHANGE = "branchquestionchange";
  **/
 class Branch {
   constructor($node, config) {
+    var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
     var $injector = $("<button />");
 
@@ -38,6 +39,7 @@ class Branch {
     this._config = conf;
     this._index = Number(conf.branch_index);
     this._conditionCount = 0;
+    this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
     this.view = conf.view;
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
@@ -45,8 +47,9 @@ class Branch {
 
     // Create BranchCondition instance found in Branch.
     this.$node.find(this._config.selector_condition).each(function() {
-      new BranchCondition($(this), conf);
-      this._conditionCount++;
+      var condition = new BranchCondition($(this), conf);
+      branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
+      branch._conditionCount++;
     });
   }
 
@@ -55,9 +58,17 @@ class Branch {
       branch_index: this._index,
       condition_index: ++this._conditionCount
     });
+
     var $condition = $(template);
-    new BranchCondition($condition, this._config);
+    var condition = new BranchCondition($condition, this._config);
+    this._conditions[$condition.attr("id")] = condition;
     this.conditionInjector.$node.before($condition);
+  }
+
+  removeCondition(id) {
+    var $condition = this.$node.find("#" + id);
+    delete this._conditions[id];
+    $condition.remove();
   }
 }
 
@@ -85,15 +96,22 @@ class BranchDestination {
 class BranchCondition {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
+    var $remover = $("<button />");
+
+    if($node.attr("id") == "" || $node.attr("id") == undefined) {
+      $node.attr("id", utilities.uniqueString("branch-condition_"));
+    }
 
     $node.addClass("BranchCondition");
     $node.data("instance", this);
+    $node.append($remover);
 
     this._config = conf;
     this._index = conf.branch._conditionCount;
+    this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
-    this.$node = $node;
+    this.remover = new BranchConditionRemover($remover, conf);
   }
 
   update(component, callback) {
@@ -133,7 +151,7 @@ class BranchConditionInjector {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
-    $node.text(conf.view.text.branches.add_condition);
+    $node.text(conf.view.text.branches.condition_add);
     $node.addClass("BranchConditionInjector");
     $node.data("instance", this);
     $node.on("click", (e) => {
@@ -143,6 +161,30 @@ class BranchConditionInjector {
 
     this._config = conf;
     this.branch = conf.branch;
+    this.$node = $node;
+  }
+}
+
+
+/* BranchConditionRemover
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchConditionRemover {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({ condition: this }, config);
+
+    $node.text(conf.view.text.branches.condition_remove);
+    $node.addClass("BranchConditionRemover");
+    $node.data("instance", this);
+    $node.attr("aria-controls", conf.condition.$node.attr("id"));
+    $node.on("click", (e) => {
+      e.preventDefault();
+      conf.branch.removeCondition(this.$node.attr("aria-controls"));
+    });
+
+    this._config = conf;
+    this.condition = conf.condition;
     this.$node = $node;
   }
 }
