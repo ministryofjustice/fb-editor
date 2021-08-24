@@ -310,7 +310,7 @@ describe("Branch", function () {
   });
 
 
-  describe("BranchQuestion", function() {
+  describe.only("BranchQuestion", function() {
     var $question, question;
 
     before(function() {
@@ -418,6 +418,34 @@ describe("Branch", function () {
         expect(typeof instance.change).to.equal("function");
       });
 
+      it("should call BranchQuestion.clear", function() {
+         var instance = $question.data("instance");
+         var check = 1;
+         instance.clear = function() {
+           check += 1;
+         }
+
+         instance.change(); // Doesn't matter what we pass in.
+         expect(check).to.equal(2);
+
+         // Reset to original
+         instance.clear = instance.constructor.prototype.clear;
+      });
+
+      it("should call BranchCondition.clear", function() {
+        var instance = $question.data("instance");
+        var check = 1;
+        instance.condition.clear = function() {
+          check += 1;
+        }
+
+        instance.change(); // Doean't matter what we pass in (again).
+        expect(check).to.equal(2);
+
+        // Reset to original
+        instance.condition.clear = instance.constructor.prototype.clear;
+      });
+
       it("should call condition.update on selection of supported question", function() {
         var condition = $(BRANCH_CONDITION_SELECTOR).data("instance");
         var question = $question.data("instance");
@@ -456,28 +484,6 @@ describe("Branch", function () {
         // Remove to clean up
         $(".error-message").remove();
         expect($(".error-message").length).to.equal(0);
-      });
-
-      it("should clear error on change of question", function() {
-/*
-        var instance = $question.data("instance");
-        var $error = $("<p class=\"error-message\"></p>");
-      instance._$error = $error;
-      $question.append($error);
-
-      // Check it's all there...
-      expect($question.find(".error-message").length).to.equal(1);
-      expect(instance._$error).to.exist;
-      expect(instance._$error).to.equal($error);
-
-      // now activate the method...
-      instance.clear();
-
-      // and check it's all gone.
-      expect(instance._$error).to.not.equal($error);
-      expect(instance._$error).to.not.exist;
-      expect($question.find(".error-message").length).to.equal(0);
-*/
       });
     });
   });
