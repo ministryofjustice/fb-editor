@@ -62,11 +62,22 @@ feature 'Branching errors' do
     )
 
     when_I_save_my_changes
-    there_should_be_no_errors
+    then_I_should_see_no_errors
   end
 
-  # scenario 'when no required fields are filled in' do
-  # end
+  scenario 'when no required fields are filled in' do
+    given_I_add_all_pages_for_a_form_with_branching
+    and_I_return_to_flow_page
+    and_I_want_to_add_branching
+
+    when_I_save_my_changes
+    then_I_should_see_an_error_summary
+    then_I_should_see_all_error_summary_errors(
+      'ul.govuk-error-summary__list',
+      3
+    )
+    then_I_should_see_all_branching_error_messages
+  end
 
   # scenario 'when the branch field is not filled in' do
   # end
@@ -80,7 +91,19 @@ feature 'Branching errors' do
   # scenario 'when there are two branch objects' do
   # end
 
-  def there_should_be_no_errors
+  def then_I_should_see_all_branching_error_messages
+    expect(page).to have_selector('.govuk-form-group--error', count: 3)
+  end
+
+  def then_I_should_see_an_error_summary
+    expect(page).to have_selector('.govuk-error-summary')
+  end
+
+  def then_I_should_see_all_error_summary_errors(selector, count)
+    expect(find(selector)).to have_selector('li', count: count)
+  end
+
+  def then_I_should_see_no_errors
     expect(page).not_to have_selector('.govuk-error-summary')
   end
 
