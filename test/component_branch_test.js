@@ -191,6 +191,11 @@ describe("Branch", function () {
       expect(instance.$node.get(0)).to.equal($condition.get(0));
     });
 
+    it("should make the remover public", function() {
+      var instance = $condition.data("instance");
+      expect(instance.remover).to.exist;
+    });
+
     it("should make (public but indicated as) private reference to config", function() {
       var instance = $condition.data("instance");
       expect(instance._config).to.exist;
