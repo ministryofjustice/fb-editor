@@ -91,6 +91,7 @@ feature 'Branching errors' do
   # scenario 'when there are two branch objects' do
   # end
 
+  # Errors
   def then_I_should_see_all_branching_error_messages
     expect(page).to have_selector('.govuk-form-group--error', count: 3)
   end
@@ -107,8 +108,18 @@ feature 'Branching errors' do
     expect(page).not_to have_selector('.govuk-error-summary')
   end
 
-  def and_I_select_the_otherwise_dropdown
-    editor.otherwise_options.click
+  # Branching options / selections
+  def and_I_select_the_destination_page_dropdown
+    editor.destination_options.click
+  end
+
+  def and_I_select_the_condition_dropdown
+    editor.conditional_options.click
+  end
+
+  def then_I_should_see_statement_answers
+    expect(editor).to have_operator_options
+    expect(editor).to have_field_options
   end
 
   def and_I_select_the_field_dropdown
@@ -119,25 +130,8 @@ feature 'Branching errors' do
     editor.operator_options.click
   end
 
-  def then_I_should_see_statement_answers
-    expect(page).to have_selector(
-      '#branch_conditionals_attributes_0_expressions_attributes_0_operator'
-    )
-    expect(page).to have_selector(
-      '#branch_conditionals_attributes_0_expressions_attributes_0_field'
-    )
-  end
-
-  def and_I_select_the_condition_dropdown
-    editor.conditional_options.click
-  end
-
-  def and_I_choose_an_option(name, option)
-    select(option, from: name)
-  end
-
-  def and_I_select_the_destination_page_dropdown
-    editor.destination_options.click
+  def and_I_select_the_otherwise_dropdown
+    editor.otherwise_options.click
   end
 
   def then_I_should_see_the_correct_number_of_options(id, amount)
@@ -145,13 +139,11 @@ feature 'Branching errors' do
     expect(options.length).to eq(amount)
   end
 
-  def and_I_want_to_add_branching
-    editor.preview_page_images[1].hover # favourite-hobby page
-    editor.three_dots_button.click
-    editor.branching_link.click
-    then_I_should_see_the_branching_page
+  def and_I_choose_an_option(name, option)
+    select(option, from: name)
   end
 
+  # Branching page set up
   def given_I_add_all_pages_for_a_form_with_branching
     given_I_add_a_single_question_page_with_radio
     and_I_add_a_page_url('favourite-hobby')
@@ -189,10 +181,6 @@ feature 'Branching errors' do
     when_I_add_the_page
   end
 
-  def then_I_should_see_the_branching_page
-    expect(editor.question_heading.first.text).to eq('Branching point 1')
-  end
-
   def when_I_update_the_question_name(question_name)
     editor.question_heading.first.set(question_name)
     when_I_save_my_changes
@@ -204,5 +192,16 @@ feature 'Branching errors' do
     editor.editable_options.last.set(item[1])
     editor.service_name.click
     when_I_save_my_changes
+  end
+
+  def and_I_want_to_add_branching
+    editor.preview_page_images[1].hover # favourite-hobby page
+    editor.three_dots_button.click
+    editor.branching_link.click
+    then_I_should_see_the_branching_page
+  end
+
+  def then_I_should_see_the_branching_page
+    expect(editor.question_heading.first.text).to eq('Branching point 1')
   end
 end
