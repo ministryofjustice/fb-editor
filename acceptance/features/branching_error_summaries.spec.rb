@@ -123,11 +123,53 @@ feature 'Branching errors' do
     then_I_should_see_branching_error_message('Select a destination for Branch 1')
   end
 
-  # scenario 'when the conditional field is not filled in' do
-  # end
+  scenario 'when the Otherwise/default next field is not filled in' do
+    given_I_add_all_pages_for_a_form_with_branching
+    and_I_return_to_flow_page
+    and_I_want_to_add_branching
 
-  # scenario 'when the expression field is not filled in' do
-  # end
+    and_I_select_the_destination_page_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_next',
+      8
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][next]',
+      'Favourite hiking destination'
+    )
+
+    and_I_select_the_condition_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_expressions_attributes_0_component',
+      5
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
+      'What is your favourite hobby?'
+    )
+    then_I_should_see_statement_answers
+
+    and_I_select_the_operator_dropdown
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is'
+    )
+
+    and_I_select_the_field_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_expressions_attributes_0_field',
+      2
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
+      'Hiking'
+    )
+
+    when_I_save_my_changes
+    then_I_should_see_an_error_summary
+    then_I_should_see_error_summary_errors(1)
+    then_I_should_see_branching_error_message("Select a destination for 'Otherwise'")
+  end
 
   scenario 'when there are two branch objects' do
     given_I_add_all_pages_for_a_form_with_branching
