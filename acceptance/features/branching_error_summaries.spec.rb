@@ -120,7 +120,7 @@ feature 'Branching errors' do
 
     when_I_save_my_changes
     then_I_should_see_error_summary_errors(1)
-    then_I_should_see_error_for_go_to_destination('Select a destination for Branch 1')
+    then_I_should_see_branching_error_message('Select a destination for Branch 1')
   end
 
   # scenario 'when the conditional field is not filled in' do
@@ -129,8 +129,66 @@ feature 'Branching errors' do
   # scenario 'when the expression field is not filled in' do
   # end
 
-  # scenario 'when there are two branch objects' do
-  # end
+  scenario 'when there are two branch objects' do
+    given_I_add_all_pages_for_a_form_with_branching
+    and_I_return_to_flow_page
+    and_I_want_to_add_branching
+
+    and_I_want_to_add_another_branch
+    then_I_should_see_another_branch
+
+    and_I_select_the_destination_page_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_next',
+      8
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][next]',
+      'Favourite hiking destination'
+    )
+
+    and_I_select_the_condition_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_expressions_attributes_0_component',
+      5
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
+      'What is your favourite hobby?'
+    )
+    then_I_should_see_statement_answers
+
+    and_I_select_the_operator_dropdown
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is'
+    )
+
+    and_I_select_the_field_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_conditionals_attributes_0_expressions_attributes_0_field',
+      2
+    )
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
+      'Hiking'
+    )
+
+    and_I_select_the_otherwise_dropdown
+    then_I_should_see_the_correct_number_of_options(
+      '#branch_default_next',
+      8
+    )
+    and_I_choose_an_option(
+      'branch[default_next]',
+      'Which flavours of ice cream have you eaten?'
+    )
+
+    when_I_save_my_changes
+    then_I_should_see_error_summary_errors(2)
+    then_I_should_see_branching_error_message('Select a destination for Branch 2')
+    then_I_should_see_branching_error_message('Select a question for the condition for Branch 2')
+  end
 
   # Errors
   def then_I_should_see_all_branching_error_messages
@@ -149,11 +207,19 @@ feature 'Branching errors' do
     expect(page).not_to have_selector('.govuk-error-summary')
   end
 
-  def then_I_should_see_error_for_go_to_destination(text)
+  def then_I_should_see_branching_error_message(text)
     expect(page).to have_selector('.govuk-form-group--error', text: text)
   end
 
   # Branching options / selections
+  def and_I_want_to_add_another_branch
+    editor.add_another_branch.click
+  end
+
+  def then_I_should_see_another_branch
+    expect(page).to have_selector('.Branch', count: 2)
+  end
+
   def and_I_select_the_destination_page_dropdown
     editor.destination_options.click
   end
