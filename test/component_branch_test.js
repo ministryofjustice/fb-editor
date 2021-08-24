@@ -11,6 +11,7 @@ describe("Branch", function () {
   const EXPRESSION_URL = "/not/needed";
   const LABEL_QUESTION_AND = "And";
   const TEXT_ADD_CONDITION = "add condition text";
+  const TEXT_REMOVE_CONDITION = "remove condition text";
   const ERROR_MESSAGE = "This is an error message";
   const INDEX_BRANCH = 4;
   var global_test_branch;
@@ -53,7 +54,8 @@ describe("Branch", function () {
       view: {
         text: {
           branches: {
-            condition_add: TEXT_ADD_CONDITION
+            condition_add: TEXT_ADD_CONDITION,
+            condition_remove: TEXT_REMOVE_CONDITION
           },
           errors: {
             branches: {
@@ -191,6 +193,12 @@ describe("Branch", function () {
       expect(instance.$node.get(0)).to.equal($condition.get(0));
     });
 
+    it("should make the instance available as data on the $node", function() {
+      var instance = $condition.data("instance");
+      expect(instance).to.exist;
+      expect(instance.$node.length).to.equal(1);
+    });
+
     it("should make the remover public", function() {
       var instance = $condition.data("instance");
       expect(instance.remover).to.exist;
@@ -314,6 +322,44 @@ describe("Branch", function () {
     });
   });
 
+  describe("BranchConditionRemover", function() {
+    var $remover, remover;
+
+    before(function() {
+      var $condition = $(BRANCH_CONDITION_SELECTOR);
+      $remover = $condition.find("button").eq(0);
+      remover = $remover.data("instance");
+    });
+
+    it("should have basic HTML in place", function() {
+      expect($remover.text()).equal(TEXT_REMOVE_CONDITION);
+    });
+
+    it("should have the component class name present", function() {
+      expect($remover.hasClass("BranchConditionRemover")).to.be.true;
+    });
+
+    it("should make the $node public", function() {
+      expect(remover.$node).to.exist;
+      expect(remover.$node.length).to.equal(1);
+      expect(remover.$node.get(0)).to.equal($remover.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      expect(remover).to.exist;
+      expect(remover.$node.length).to.equal(1);
+    });
+
+    it("should make a public reference to connected condition", function() {
+      expect(remover.condition).to.exist;
+      expect(remover.condition.$node.length).to.equal(1);
+    });
+
+    it("should make (public but indicated as) private reference to config", function() {
+      expect(remover._config).to.exist;
+      expect(remover._config.view.text.branches.condition_remove).to.equal(TEXT_REMOVE_CONDITION);
+    });
+  });
 
   describe("BranchQuestion", function() {
     var $question, question;
@@ -337,6 +383,12 @@ describe("Branch", function () {
       expect(question.$node).to.exist;
       expect(question.$node.length).to.equal(1);
       expect(question.$node.get(0)).to.equal($question.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      var instance = $question.data("instance");
+      expect(instance).to.exist;
+      expect(instance.$node.length).to.equal(1);
     });
 
     it("should make (public but indicated as) private reference to config", function() {
@@ -533,6 +585,12 @@ describe("Branch", function () {
       expect(instance.$node).to.exist;
       expect(instance.$node.length).to.equal(1);
       expect(instance.$node.get(0)).to.equal($answer.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      var instance = $answer.data("instance");
+      expect(instance).to.exist;
+      expect(instance.$node.length).to.equal(1);
     });
 
     it("should make (public but indicated as) private reference to config", function() {
