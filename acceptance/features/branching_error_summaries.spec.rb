@@ -348,9 +348,12 @@ feature 'Branching errors' do
   end
 
   def and_I_want_to_add_branching
-    editor.preview_page_images[1].hover # favourite-hobby page
-    editor.three_dots_button.click
-    editor.branching_link.click
+    editor.preview_page_images[1].click # favourite-hobby page
+
+    ## temporary branch link work around until we have the service flow page
+    url = page.current_url.gsub('pages', 'branches').gsub('edit', 'new')
+    visit url
+
     then_I_should_see_the_branching_page
   end
 
