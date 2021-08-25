@@ -2,7 +2,7 @@
   <div class="condition" data-expression-index="<%= expression.index %>">
     <div class="question govuk-form-group
       <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>">
-      <%= expression.label :component, (expression.index == 0 ? t('branches.expression.if') : t('branches.expression.and')), { class: "govuk-label" } %>
+      <%= expression.label :component, t('branches.expression.if'), { class: "govuk-label" } %>
 
       <% expression.object.errors[:component].each do |message| %>
         <span class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></span>

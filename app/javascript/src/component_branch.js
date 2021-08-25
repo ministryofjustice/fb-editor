@@ -16,6 +16,8 @@
  **/
 
 const utilities = require('./utilities');
+const EVENT_QUESTION_CHANGE = "branchquestionchange";
+
 
 /* Branch component
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
@@ -23,16 +25,50 @@ const utilities = require('./utilities');
  **/
 class Branch {
   constructor($node, config) {
+    var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
+    var $injector = $("<button />");
+
     $node.addClass("Branch");
     $node.data("instance", this);
+    $node.append($injector);
+    $node.on(EVENT_QUESTION_CHANGE, () => {
+      utilities.safelyActivateFunction.call(this, conf.event_question_change);
+    });
 
     this._config = conf;
-    this.view = conf.view;
+    this._index = Number(conf.branch_index);
+    this._conditionCount = 0;
+    this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
-    this.index = $node.data(conf.attribute_branch_index);
-    this.destination = new BranchDestination($node.find(config.destination_selector), conf);
-    this.condition = new BranchCondition($node.find(config.condition_selector), conf);
+    this.view = conf.view;
+    this.destination = new BranchDestination($node.find(config.selector_destination), conf);
+    this.conditionInjector = new BranchConditionInjector($injector, conf);
+
+    // Create BranchCondition instance found in Branch.
+    this.$node.find(this._config.selector_condition).each(function() {
+      var condition = new BranchCondition($(this), conf);
+      branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
+      branch._conditionCount++;
+    });
+  }
+
+  addCondition() {
+    var template = utilities.stringInject(this._config.template_condition, {
+      branch_index: this._index,
+      condition_index: ++this._conditionCount
+    });
+
+    var $condition = $(template);
+    var condition = new BranchCondition($condition, this._config);
+    this._conditions[$condition.attr("id")] = condition;
+    this.conditionInjector.$node.before($condition);
+  }
+
+  removeCondition(id) {
+    var $condition = this.$node.find("#" + id);
+    delete this._conditions[id];
+    $condition.remove();
   }
 }
 
@@ -60,29 +96,38 @@ class BranchDestination {
 class BranchCondition {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
+    var $remover = $("<button />");
+
+    if($node.attr("id") == "" || $node.attr("id") == undefined) {
+      $node.attr("id", utilities.uniqueString("branch-condition_"));
+    }
 
     $node.addClass("BranchCondition");
     $node.data("instance", this);
+    $node.append($remover);
 
     this._config = conf;
-    this.question = new BranchQuestion($node.find(conf.question_selector), conf);
-    this.index = $node.data(conf.attribute_condition_index);
+    this._index = conf.branch._conditionCount;
     this.$node = $node;
+    this.branch = conf.branch;
+    this.question = new BranchQuestion($node.find(conf.selector_question), conf);
+    this.remover = new BranchConditionRemover($remover, conf);
   }
 
-  update(component) {
+  update(component, callback) {
     var url;
     if(component) {
       url = utilities.stringInject(this._config.expression_url, {
         component_id: component,
-        conditionals_index: this._config.branch.index,
-        expressions_index: this.index
+        conditionals_index: this._config.branch._index,
+        expressions_index: this._index
       });
 
       utilities.updateDomByApiRequest(url, {
         target: this.$node,
         done: ($node) => {
           this.answer = new BranchAnswer($node, this._config);
+          utilities.safelyActivateFunction(callback);
         }
       });
     }
@@ -98,6 +143,53 @@ class BranchCondition {
 }
 
 
+/* BranchConditionInjector
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchConditionInjector {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({ condition: this }, config);
+
+    $node.text(conf.view.text.branches.condition_add);
+    $node.addClass("BranchConditionInjector");
+    $node.data("instance", this);
+    $node.on("click", (e) => {
+      e.preventDefault();
+      conf.branch.addCondition();
+    });
+
+    this._config = conf;
+    this.branch = conf.branch;
+    this.$node = $node;
+  }
+}
+
+
+/* BranchConditionRemover
+ * @$node  (jQuery node) Element found in DOM that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class BranchConditionRemover {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({ condition: this }, config);
+
+    $node.text(conf.view.text.branches.condition_remove);
+    $node.addClass("BranchConditionRemover");
+    $node.data("instance", this);
+    $node.attr("aria-controls", conf.condition.$node.attr("id"));
+    $node.on("click", (e) => {
+      e.preventDefault();
+      conf.branch.removeCondition(this.$node.attr("aria-controls"));
+    });
+
+    this._config = conf;
+    this.condition = conf.condition;
+    this.$node = $node;
+  }
+}
+
+
 /* BranchQuestion
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
  * @config (Object) Configurable key/value pairs.
@@ -109,24 +201,36 @@ class BranchQuestion {
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
     $node.find("select").on("change.branchquestion", (e) => {
-      this.change(e.currentTarget);
+      var select = e.currentTarget;
+      var supported = $(select.selectedOptions).data("supports-branching");
+      this.change(supported, select.value);
     });
+
+    if(conf.condition._index > 0) {
+      $node.find("label").text(config.question_label);
+    }
 
     this._config = conf;
     this.condition = conf.condition;
     this.$node = $node;
   }
 
-  change(select) {
-    var supported = $(select.selectedOptions).data("supports-branching");
+  change(supported, value) {
+    var branch = this.condition.branch;
     this.clear();
     this.condition.clear();
     switch(supported) {
-      case true: this.condition.update(select.value);
+      case true:
+           this.condition.update(value, function() {
+             branch.$node.trigger(EVENT_QUESTION_CHANGE);
+           });
            break;
-      case false: this.error("unsupported");
+      case false:
+           this.error("unsupported");
            break;
-      default: // Nothing to see here. Probably on the initial option without support attribute.
+      default:
+           // Just trigger an event
+           this.condition.branch.$node.trigger(EVENT_QUESTION_CHANGE);
     }
   }
 

@@ -245,7 +245,8 @@ function updateDomByApiRequest(url, placement) {
 function stringInject(str, injections) {
   for(var i in injections) {
     if(injections.hasOwnProperty(i)) {
-      str = str.replace("#{" + i + "}", injections[i]);
+      let re = new RegExp("#{" + i + "}", "mig");
+      str = str.replace(re, injections[i]);
     }
   }
   return str;

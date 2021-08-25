@@ -31,49 +31,54 @@ class BranchesController extends DefaultController {
   constructor(app) {
     super(app);
     this.api = app.api;
-    this._branches = [];
 
     switch(app.page.action) {
       case "new":
       case "create":
       case "edit":
       case "update":
-        BranchesController.create.call(this);
+        this.create();
     }
-
-    addMattsButton(); // Dev only while branches is WIP
   }
 
-  // Create a new branch and record in views branches array.
-  addBranch($node) {
-    this._branches.push(BranchesController.createBranch.call(this, $node));
+   /* Setup view for the create (new) action
+   **/
+  create() {
+    var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+    var $injectors = $(BRANCH_INJECTOR_SELECTOR);
+
+    this._branchCount = 0;
+    this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
+
+    BranchesController.enhanceCurrentBranches.call(this, $branches);
+    BranchesController.enhanceBranchInjectors.call(this, $injectors);
+
+    // NEXT LINE DEV ONLY: while branches is WIP
+    addMattsButton();
   }
-}
-
-
-/* Setup for the create (new) action
- **/
-BranchesController.create = function() {
-  BranchesController.enhanceCurrentBranches.call(this);
-  BranchesController.enhanceBranchInjectors.call(this);
 }
 
 
 /* Find and enhance all current branches.
  **/
-BranchesController.enhanceCurrentBranches = function() {
+BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
-  $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).each(function() {
-    view.addBranch($(this));
+  $branches.each(function(index) {
+    var branch = BranchesController.createBranch.call(view, $(this));
+
+    // Remove the delete button to ensure we always have a default condition.
+    if(index == 0) {
+      branch.$node.find(".BranchConditionRemover").remove();
+    }
   });
 }
 
 
 /* Find and enhance all elements that can add a new branch.
  **/
-BranchesController.enhanceBranchInjectors = function() {
+BranchesController.enhanceBranchInjectors = function($injectors) {
   var view = this;
-  $(BRANCH_INJECTOR_SELECTOR).each(function() {
+  $injectors.each(function() {
     new BranchInjector($(this), {
       view: view
     });
@@ -85,15 +90,28 @@ BranchesController.enhanceBranchInjectors = function() {
  * track of number of branches
  **/
 BranchesController.createBranch = function($node) {
-  return new Branch($node, {
-    condition_selector: BRANCH_CONDITION_SELECTOR,
-    destination_selector: BRANCH_DESTINATION_SELECTOR,
-    question_selector: BRANCH_QUESTION_SELECTOR,
+  var branch = new Branch($node, {
+    branch_index: this._branchCount,
+    selector_condition: BRANCH_CONDITION_SELECTOR,
+    selector_destination: BRANCH_DESTINATION_SELECTOR,
+    selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
-    attribute_branch_index: "conditional-index",
-    attribute_condition_index: "expression-index",
+    question_label: this.text.branches.label_question_and,
+    template_condition: this._branchConditionTemplate,
+    event_question_change: function() {
+      if(this.$node.find(".BranchAnswer").length > 0) {
+        this.$node.find(".BranchConditionInjector").show();
+      }
+      else {
+        this.$node.find(".BranchConditionInjector").hide();
+      }
+    },
     view: this
   });
+
+  branch.$node.find(".BranchConditionInjector").hide();
+  this._branchCount++;
+  return branch;
 }
 
 
@@ -117,28 +135,41 @@ class BranchInjector {
    **/
   add() {
     var view = this.view;
-    var branches = this.view._branches;
-    var index = branches.length > 0 ? branches[branches.length - 1].index : 0;
     var url = utilities.stringInject(this.view.api.new_conditional, {
-      conditional_index: String(index)
+      conditional_index: String(this.view._branchCount - 1) // Because BE adds +1
     });
 
     utilities.updateDomByApiRequest(url, {
-      target: $(BRANCH_SELECTOR).eq(index),
+      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
       type: "after",
-      done: function($node) {
-        view.addBranch($node);
+      done: function ($node) {
+        BranchesController.createBranch.call(view, $node);
       }
     });
   }
 }
 
 
-
-
-
-
-
+/* We are creating new BranchCondition instances based on the original
+ * HTML found. So that we can make each inserted component unique, we
+ * need to alter the values that refer to the name attributes, etc.
+ * This function takes the initial found jQuery node of original
+ * Conditional component, served by the page, and copies the HTML.
+ * It also alters the HTML by swapping in target points for adding
+ * the required information in the right places.
+ *
+ * @$node (jQuery Node) HTML that will form the Branch
+ **/
+function createBranchConditionTemplate($node) {
+  var html = $node.find(".condition").get(0).outerHTML;
+  html = html.replace(
+          /branch_conditionals_attributes_0_expressions_attributes_0_component/mig,
+          "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_component");
+  html = html.replace(
+          /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[component\]/mig,
+          "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][component]");
+  return html;
+}
 
 
 
