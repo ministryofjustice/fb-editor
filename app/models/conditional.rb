@@ -49,6 +49,8 @@ class Conditional
   private
 
   def conditional_type
+    # The UI currently only supports IF and AND. The runner can also cater for
+    # an OR but for the moment we have not surfaced that functionality
     expressions.count == 1 ? IF : AND
   end
 end
