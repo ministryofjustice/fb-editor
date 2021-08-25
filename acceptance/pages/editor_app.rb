@@ -113,6 +113,14 @@ class EditorApp < SitePrism::Page
   element :add_page_here_link, :link, 'Add page here'
   element :delete_page_link, :link, 'Delete page...'
   element :delete_page_modal_button, :button, 'Delete page'
+  element :branching_link, :link, 'Branching'
+  element :add_another_branch, :link, 'Add another branch'
+
+  element :destination_options, '#branch_conditionals_attributes_0_next'
+  element :conditional_options, '#branch_conditionals_attributes_0_expressions_attributes_0_component'
+  element :operator_options, '#branch_conditionals_attributes_0_expressions_attributes_0_operator'
+  element :field_options, '#branch_conditionals_attributes_0_expressions_attributes_0_field'
+  element :otherwise_options, '#branch_default_next'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
