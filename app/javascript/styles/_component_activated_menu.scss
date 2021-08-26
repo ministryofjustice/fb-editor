@@ -47,6 +47,10 @@
     &:focus-visible {
       outline: none;
     }
+
+    &:focus {
+      box-shadow: none;
+    }
   }
 
   span {
