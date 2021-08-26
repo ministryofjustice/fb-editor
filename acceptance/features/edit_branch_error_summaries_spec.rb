@@ -174,13 +174,13 @@ feature 'Branching errors' do
     then_I_should_see_branching_error_message("Select a destination for 'Otherwise'")
   end
 
-  scenario 'when there are two branch objects' do
+  scenario 'when there are two conditional objects to a branching point' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
     and_I_want_to_add_branching
 
-    and_I_want_to_add_another_branch
-    then_I_should_see_another_branch
+    and_I_want_to_add_another_conditional
+    then_I_should_see_another_conditional
 
     and_I_select_the_destination_page_dropdown
     then_I_should_see_the_correct_number_of_options(
@@ -254,11 +254,12 @@ feature 'Branching errors' do
   end
 
   # Branching options / selections
-  def and_I_want_to_add_another_branch
+  def and_I_want_to_add_another_conditional
+    # the UI says 'Add another branch' even though it's a conditional
     editor.add_another_branch.click
   end
 
-  def then_I_should_see_another_branch
+  def then_I_should_see_another_conditional
     expect(page).to have_selector('.Branch', count: 2)
   end
 
