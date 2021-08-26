@@ -38,6 +38,7 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
+  gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '3.142.7'
   gem 'shoulda-matchers'
