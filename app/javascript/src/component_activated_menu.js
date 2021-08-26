@@ -209,6 +209,7 @@ class ActivatedMenuActivator {
 
     if(!$node || $node.length < 1) {
       $node = $(createElement("button", config.activator_text, config.activator_classname));
+      $node.attr("type", "button");
     }
 
     $node.on("click.ActivatedMenuActivator", (event) => {
