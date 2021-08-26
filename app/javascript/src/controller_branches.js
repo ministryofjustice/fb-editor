@@ -21,6 +21,9 @@ const DefaultController = require('./controller_default');
 const Branch = require('./component_branch');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
+const BRANCH_REMOVE_SELECTOR = ".branch-remover";
+const BRANCH_CONDITION_ADD_SELECTOR = ".condition-injector";
+const BRANCH_CONDITION_REMOVE_SELECTOR = ".condition-remover";
 const BRANCH_DESTINATION_SELECTOR = ".destination";
 const BRANCH_OTHERWISE_SELECTOR = "#branch-otherwise";
 const BRANCH_QUESTION_SELECTOR = ".question";
@@ -66,9 +69,10 @@ BranchesController.enhanceCurrentBranches = function($branches) {
   $branches.each(function(index) {
     var branch = BranchesController.createBranch.call(view, $(this));
 
-    // Remove the delete button to ensure we always have a default condition.
+    // Remove the delete button to ensure we always have a default
+    // branch with one condition.
     if(index == 0) {
-      branch.$node.find(".BranchConditionRemover").remove();
+      branch.$node.find(".BranchRemover").eq(0).hide();
     }
   });
 }
@@ -92,7 +96,10 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
 BranchesController.createBranch = function($node) {
   var branch = new Branch($node, {
     branch_index: this._branchCount,
+    selector_branch_remove: BRANCH_REMOVE_SELECTOR,
     selector_condition: BRANCH_CONDITION_SELECTOR,
+    selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
+    selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
     selector_destination: BRANCH_DESTINATION_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
@@ -149,6 +156,9 @@ class BranchInjector {
   }
 }
 
+
+/* Creates a menu to control options for branches in the view
+ **/
 
 /* We are creating new BranchCondition instances based on the original
  * HTML found. So that we can make each inserted component unique, we

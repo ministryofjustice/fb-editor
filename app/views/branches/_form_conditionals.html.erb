@@ -1,6 +1,8 @@
 <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
   <div class="branch" data-conditional-index="<%= conditional.index %>">
     <p><%= t('branches.conditional_title') + (conditional.index + 1).to_s %></p>
+    <button class="govuk-link branch-remover"><%= t('branches.branch_remove') %></button>
+    <button class="govuk-link condition-injector"><%= t('branches.condition_add') %></button>
     <div class="destination">
       <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>">
         <% conditional.object.errors[:next].each do |message| %>

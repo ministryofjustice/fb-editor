@@ -27,11 +27,15 @@ class Branch {
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
-    var $injector = $("<button />");
+    var $injector = $(conf.selector_condition_add, $node);
+    var $remover = $(conf.selector_branch_remove, $node);
+
+    if($node.attr("id") == "" || $node.attr("id") == undefined) {
+      $node.attr("id", utilities.uniqueString("branch_"));
+    }
 
     $node.addClass("Branch");
     $node.data("instance", this);
-    $node.append($injector);
     $node.on(EVENT_QUESTION_CHANGE, () => {
       utilities.safelyActivateFunction.call(this, conf.event_question_change);
     });
@@ -44,10 +48,14 @@ class Branch {
     this.view = conf.view;
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
+    this.remover = new BranchRemover($remover, conf);
 
     // Create BranchCondition instance found in Branch.
-    this.$node.find(this._config.selector_condition).each(function() {
+    this.$node.find(this._config.selector_condition).each(function(index) {
       var condition = new BranchCondition($(this), conf);
+      if(index == 0) {
+        condition.$node.find(".BranchConditionRemover").hide(); // So we always have one condition.
+      }
       branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
       branch._conditionCount++;
     });
@@ -69,6 +77,10 @@ class Branch {
     var $condition = this.$node.find("#" + id);
     delete this._conditions[id];
     $condition.remove();
+  }
+
+  destroy() {
+    this.$node.remove();
   }
 }
 
@@ -96,7 +108,7 @@ class BranchDestination {
 class BranchCondition {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
-    var $remover = $("<button />");
+    var $remover = $(conf.selector_condition_remove, $node);
 
     if($node.attr("id") == "" || $node.attr("id") == undefined) {
       $node.attr("id", utilities.uniqueString("branch-condition_"));
@@ -151,7 +163,6 @@ class BranchConditionInjector {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
-    $node.text(conf.view.text.branches.condition_add);
     $node.addClass("BranchConditionInjector");
     $node.data("instance", this);
     $node.on("click", (e) => {
@@ -174,7 +185,6 @@ class BranchConditionRemover {
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
-    $node.text(conf.view.text.branches.condition_remove);
     $node.addClass("BranchConditionRemover");
     $node.data("instance", this);
     $node.attr("aria-controls", conf.condition.$node.attr("id"));
@@ -273,6 +283,29 @@ class BranchAnswer {
   }
 }
 
+
+/* Create a BranchRemover object from pass $node.
+ * BranchRemover will adjust the view by removing
+ * a specified branch node from the DOM.
+ **/
+class BranchRemover {
+  constructor($node, config) {
+    var conf = utilities.mergeObjects({}, config);
+    var branch = conf.branch;
+
+    $node.addClass("BranchRemover");;
+    $node.data("instance", this);
+    $node.attr("aria-controls", conf.branch.$node.attr("id"));
+    $node.on("click", (e) => {
+      e.preventDefault();
+      branch.destroy();
+    });
+
+    this._config = conf;
+    this.branch = branch;
+    this.$node = $node;
+  }
+}
 
 // Make available for importing.
 module.exports = Branch;
