@@ -352,7 +352,7 @@ feature 'Branching errors' do
     editor.preview_page_images[1].click # favourite-hobby page
 
     ## temporary branch link work around until we have the service flow page
-    url = page.current_url.gsub('pages', 'branches').gsub('edit', 'new')
+    url = page.current_url.gsub('/pages/', '/branches/').gsub('/edit', '/new')
     visit url
 
     then_I_should_see_the_branching_page
