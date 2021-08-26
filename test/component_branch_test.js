@@ -23,8 +23,11 @@ describe("Branch", function () {
   function createBranch(id) {
     var html = `<div class="branch" id="` + id + `">
         <p>Branch ...</p>
-        <button class="branch-remover">` + TEXT_REMOVE_BRANCH + `</button>
-        <button class="condition-injector">` + TEXT_ADD_CONDITION + `</button>
+        <ul class="govuk-navigation component-activated-menu">
+          <li>
+            <a class="branch-remover">` + TEXT_REMOVE_BRANCH + `</a>
+          </li>
+        </ul>
         <div class="destination">
           <div class="form-group">
             <label for="branch_next">Go to</label>
@@ -47,6 +50,7 @@ describe("Branch", function () {
           </div>
           <button class="condition-remover">` + TEXT_REMOVE_BRANCH + `</button>
         </div>
+        <button class="condition-injector">` + TEXT_ADD_CONDITION + `</button>
       </div>`;
 
     var $node = $(html);
@@ -621,7 +625,7 @@ describe("Branch", function () {
 
     it("should have the basic HTML in place", function() {
       expect($remover.length).to.equal(1);
-      expect($remover.get(0).nodeName.toLowerCase()).to.equal("button");
+      expect($remover.get(0).nodeName.toLowerCase()).to.equal("a");
       expect($remover.text()).to.equal(TEXT_REMOVE_BRANCH);
     });
 
