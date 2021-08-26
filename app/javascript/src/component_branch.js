@@ -59,6 +59,8 @@ class Branch {
       branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
       branch._conditionCount++;
     });
+
+    utilities.safelyActivateFunction(this._config.event_on_create, [this]);
   }
 
   addCondition() {

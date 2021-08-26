@@ -18,6 +18,7 @@
 
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
+const ActivatedMenu = require('./component_activated_menu');
 const Branch = require('./component_branch');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_CONDITION_SELECTOR = ".condition";
@@ -90,6 +91,27 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
 }
 
 
+/* Find branch menu element and wrap with ActivatedMenu
+ * functionality.
+ **/
+BranchesController.addBranchMenu = function(args) {
+  var branch = args[0];
+  var $form = branch.$node.parent("form");
+  var $ul = branch.$node.find(".component-activated-menu");
+  var first = $(".Branch", $form).get(0) == branch.$node.get(0);
+  if(!first) {
+    new ActivatedMenu($ul, {
+      activator_text: "Activator text here",
+      container_classname: "SomeClassName",
+      container_id: utilities.uniqueString("activated-menu-"),
+      menu: {
+        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
+      }
+    });
+  }
+}
+
+
 /* Creates a new branch from a passed element and keeps
  * track of number of branches
  **/
@@ -105,6 +127,9 @@ BranchesController.createBranch = function($node) {
     expression_url: this.api.get_expression,
     question_label: this.text.branches.label_question_and,
     template_condition: this._branchConditionTemplate,
+    event_on_create: function(branch) {
+      BranchesController.addBranchMenu(branch);
+    },
     event_question_change: function() {
       if(this.$node.find(".BranchAnswer").length > 0) {
         this.$node.find(".BranchConditionInjector").show();
