@@ -143,6 +143,7 @@ html {
 #branch-otherwise {
   @include container_panel;
   padding: govuk-spacing(5) govuk-spacing(5) 1px govuk-spacing(5);
+  position: relative;
 
   p:first-child {
     color: govuk-colour("dark-grey");
@@ -153,6 +154,12 @@ html {
 
   @include govuk-media-query($until: tablet) {
     padding-right: govuk-spacing(5);
+  }
+
+  .ActivatedMenu_Activator {
+    position: absolute;
+    right: govuk-spacing(5);
+    top: govuk-spacing(5);
   }
 }
 
@@ -190,8 +197,8 @@ html {
     background-color: $govuk-border-colour;
     content: "";
     display: block;
-    height: calc(100% - (#{govuk-spacing(6)} + 75px));
-    right: calc(85% + #{govuk-spacing(4)});
+    height: calc(100% - #{govuk-spacing(6)});
+    right: calc(85% + #{govuk-spacing(6)});
     position: absolute;
     top: 0;
     width: 5px;

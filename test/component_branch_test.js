@@ -6,11 +6,15 @@ describe("Branch", function () {
   const COMPONENT_ID = "testing-branch";
   const BRANCH_DESTINATION_SELECTOR = ".destination";
   const BRANCH_CONDITION_SELECTOR = ".condition";
+  const BRANCH_CONDITION_ADD_SELECTOR = ".condition-injector";
+  const BRANCH_CONDITION_REMOVE_SELECTOR = ".condition-remover";
   const BRANCH_QUESTION_SELECTOR = ".question";
   const BRANCH_ANSWER_SELECTOR = ".answer";
+  const BRANCH_REMOVE_SELECTOR = ".branch-remover";
   const EXPRESSION_URL = "/not/needed";
   const LABEL_QUESTION_AND = "And";
   const TEXT_ADD_CONDITION = "add condition text";
+  const TEXT_REMOVE_BRANCH = "remove branch text";
   const TEXT_REMOVE_CONDITION = "remove condition text";
   const ERROR_MESSAGE = "This is an error message";
   const INDEX_BRANCH = 4;
@@ -19,6 +23,11 @@ describe("Branch", function () {
   function createBranch(id) {
     var html = `<div class="branch" id="` + id + `">
         <p>Branch ...</p>
+        <ul class="govuk-navigation component-activated-menu">
+          <li>
+            <a class="branch-remover">` + TEXT_REMOVE_BRANCH + `</a>
+          </li>
+        </ul>
         <div class="destination">
           <div class="form-group">
             <label for="branch_next">Go to</label>
@@ -39,13 +48,18 @@ describe("Branch", function () {
               <option value="b34f593a" data-supports-branching="false">Unsupported Question</option>
             </select>
           </div>
+          <button class="condition-remover">` + TEXT_REMOVE_BRANCH + `</button>
         </div>
+        <button class="condition-injector">` + TEXT_ADD_CONDITION + `</button>
       </div>`;
 
     var $node = $(html);
     var branch = new Branch($node, {
       branch_index: INDEX_BRANCH,
+      selector_branch_remove: BRANCH_REMOVE_SELECTOR,
       selector_condition: BRANCH_CONDITION_SELECTOR,
+      selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
+      selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
       selector_destination: BRANCH_DESTINATION_SELECTOR,
       selector_question: BRANCH_QUESTION_SELECTOR,
       expression_url: EXPRESSION_URL,
@@ -273,7 +287,7 @@ describe("Branch", function () {
     var $injector;
 
     before(function() {
-      $injector = global_test_branch.$node.find("button:last");
+      $injector = global_test_branch.$node.find(".BranchConditionInjector");
     });
 
     it("should have the basic HTML in place", function() {
@@ -332,7 +346,8 @@ describe("Branch", function () {
     });
 
     it("should have basic HTML in place", function() {
-      expect($remover.text()).equal(TEXT_REMOVE_CONDITION);
+      expect($remover.length).to.equal(1);
+      expect($remover.get(0).nodeName.toLowerCase()).to.equal("button");
     });
 
     it("should have the component class name present", function() {
@@ -597,6 +612,59 @@ describe("Branch", function () {
       var instance = $answer.data("instance");
       expect(instance._config).to.exist;
       expect(instance._config.expression_url).to.equal(EXPRESSION_URL);
+    });
+  });
+
+  describe("BranchRemover", function() {
+    var $remover, created;
+    before(function() {
+      created = createBranch("for-testing-branch-remover");
+      global_test_branch.$node.after(created.branch.$node);
+      $remover = created.branch.$node.find(BRANCH_REMOVE_SELECTOR);
+    });
+
+    it("should have the basic HTML in place", function() {
+      expect($remover.length).to.equal(1);
+      expect($remover.get(0).nodeName.toLowerCase()).to.equal("a");
+      expect($remover.text()).to.equal(TEXT_REMOVE_BRANCH);
+    });
+
+    it("should have the component class name present", function() {
+      expect($remover.hasClass("BranchRemover")).to.be.true;
+    });
+
+    it("should make the $node public", function() {
+      var instance = $remover.data("instance");
+      expect(instance.$node).to.exist;
+      expect(instance.$node.length).to.equal(1);
+      expect(instance.$node.get(0)).to.equal($remover.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      var instance = $remover.data("instance");
+      expect(instance).to.exist;
+      expect(instance.$node.length).to.equal(1);
+    });
+
+    it("should make (public but indicated as) private reference to config", function() {
+      var instance = $remover.data("instance");
+      expect(instance._config).to.exist;
+      expect(instance._config.selector_branch_remove).to.exist;
+      expect(instance._config.selector_branch_remove).to.equal(BRANCH_REMOVE_SELECTOR);
+    });
+
+    it("should call the branch.destroy method", function() {
+      var check = 1;
+      created.branch.destroy = function() {
+        check += 1;
+      }
+
+      expect(check).to.equal(1);
+
+      $remover.click();
+      expect(check).to.equal(2);
+
+      created.branch.destroy = created.branch.constructor.prototype.destroy;
     });
   });
 });
