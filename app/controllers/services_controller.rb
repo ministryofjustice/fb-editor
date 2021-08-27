@@ -16,8 +16,7 @@ class ServicesController < PermissionsController
   end
 
   def edit
-    # uncomment line below when building the service flow frontend
-    # @pages_flow = PagesFlow.new(service).build
+    @pages_flow = PagesFlow.new(service).build
     @page_creation = PageCreation.new
   end
 

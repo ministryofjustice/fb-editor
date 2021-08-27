@@ -113,7 +113,7 @@ class EditorApp < SitePrism::Page
   element :add_page_here_link, :link, 'Add page here'
   element :delete_page_link, :link, 'Delete page...'
   element :delete_page_modal_button, :button, 'Delete page'
-  element :branching_link, :link, 'Branching'
+  element :branching_link, :link, 'Add branching'
   element :add_another_branch, :link, 'Add another branch'
 
   element :destination_options, '#branch_conditionals_attributes_0_next'

@@ -171,6 +171,7 @@ en:
     preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
+    branch: 'Add branching'
   activemodel:
     models:
       service_creation: 'Form'
