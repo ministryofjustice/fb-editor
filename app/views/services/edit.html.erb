@@ -5,6 +5,16 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
+  <% if ENV['BRANCHING'] == 'enabled' %>
+  <div class='govuk-!-margin-bottom-10'>
+    <% service.flow.each do |uuid, flow| %>
+      <% if flow['_type'] == 'flow.branch' %>
+        | <%= link_to flow['title'] || 'Untitled Branch', edit_branch_path(service.service_id, uuid) %> |
+      <% end %>
+    <% end %>
+  </div>
+  <% end %>
+
 <div id="form-overview">
   <div class="container">
     <% service.pages.each do |page| %>
@@ -35,6 +45,12 @@
               method: :delete, class: 'destructive delete' %>
             <% end %>
           </li>
+          <% if ENV['BRANCHING'] == 'enabled' %>
+          <li data-action="edit">
+            <%= link_to t('services.branch'),
+              new_branches_path(service.service_id, page.uuid) %>
+          </li>
+          <% end %>
         </ul>
 
         <%= link_to edit_page_path(service.service_id, page.uuid), class: 'govuk-link' do %>
