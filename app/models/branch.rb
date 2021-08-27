@@ -43,6 +43,7 @@ class Branch
 
     conditional.expressions.each_with_index do |expression, expression_index|
       expressions_hash['expressions_attributes'][expression_index.to_s] = {
+        'operator' => expression.operator,
         'page' => expression.page,
         'component' => expression.component,
         'field' => expression.field
