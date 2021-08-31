@@ -126,6 +126,7 @@ class BranchCondition {
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
     this.remover = new BranchConditionRemover($remover, conf);
+    this.answer = new BranchAnswer($node.find(conf.selector_answer), conf);
   }
 
   update(component, callback) {
