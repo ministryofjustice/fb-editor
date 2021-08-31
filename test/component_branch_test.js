@@ -48,6 +48,10 @@ describe("Branch", function () {
               <option value="b34f593a" data-supports-branching="false">Unsupported Question</option>
             </select>
           </div>
+          <div class="answer">
+            <select><option>is</option></select>
+            <select><option>This answer value</option></select>
+          </div>
           <button class="condition-remover">` + TEXT_REMOVE_BRANCH + `</button>
         </div>
         <button class="condition-injector">` + TEXT_ADD_CONDITION + `</button>
@@ -56,6 +60,7 @@ describe("Branch", function () {
     var $node = $(html);
     var branch = new Branch($node, {
       branch_index: INDEX_BRANCH,
+      selector_answer: BRANCH_ANSWER_SELECTOR,
       selector_branch_remove: BRANCH_REMOVE_SELECTOR,
       selector_condition: BRANCH_CONDITION_SELECTOR,
       selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
@@ -225,7 +230,11 @@ describe("Branch", function () {
       expect(instance.question.$node.length).to.equal(1);
     });
 
-    it("should make the answer public");
+    it("should make the answer public", function() {
+      var instance = $condition.data("instance");
+      expect(instance.answer).to.exist;
+      expect(instance.answer.$node.length).to.equal(1);
+    });
 
     it("should make (public but indicated as) private reference to config", function() {
       var instance = $condition.data("instance");
@@ -260,6 +269,7 @@ describe("Branch", function () {
       it("should add html for answer on selected question", function() {
         var condition = $condition.data("instance");
 
+        $condition.find(BRANCH_ANSWER_SELECTOR).remove(); // First remove the hardcoded .answer element.
         expect($condition).to.exist;
         expect($condition.length).to.equal(1);
         expect($condition.find(BRANCH_ANSWER_SELECTOR).length).to.equal(0);
