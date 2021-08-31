@@ -3,6 +3,9 @@ require_relative '../spec_helper'
 feature 'Branching errors' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
+  let(:unsupported_type_error) do
+    'This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.'
+  end
 
   background do
     given_I_am_logged_in
@@ -141,6 +144,13 @@ feature 'Branching errors' do
       '#branch_conditionals_attributes_0_expressions_attributes_0_component',
       5
     )
+
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
+      'Favourite hiking destination'
+    )
+    then_I_should_see_unsupported_type_error
+
     and_I_choose_an_option(
       'branch[conditionals_attributes][0][expressions_attributes][0][component]',
       'What is your favourite hobby?'
@@ -191,6 +201,10 @@ feature 'Branching errors' do
 
   def then_I_should_see_branching_error_message(text)
     expect(page).to have_selector('.govuk-form-group--error', text: text)
+  end
+
+  def then_I_should_see_unsupported_type_error
+    expect(page).to have_selector('p.error-message', text: unsupported_type_error)
   end
 
   # Branching options / selections
