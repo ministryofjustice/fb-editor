@@ -149,6 +149,6 @@ feature 'Edit single question page' do
   end
 
   def and_I_have_optional_section_heading_text
-    expect(page.text).to include('[Optional section heading]')
+    expect(page.text).to include(I18n.t('default_text.section_heading'))
   end
 end

@@ -25,7 +25,7 @@ feature 'Edit multiple questions page' do
     'You underestimate the power of the Dark Side.'
   end
   let(:optional_content) do
-    '[Optional content]'
+    I18n.t('default_text.content')
   end
 
   background do

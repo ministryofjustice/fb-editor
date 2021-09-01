@@ -60,15 +60,15 @@ feature 'Default text' do
   end
 
   def then_I_should_see_default_text
-    expect(editor.question_hint.text).to eq('[Optional hint text]')
+    expect(editor.question_hint.text).to eq(I18n.t('default_text.hint'))
   end
 
   def and_I_should_not_see_the_default_text
-    expect(page.text).to_not include('[Optional hint text]')
+    expect(page.text).to_not include(I18n.t('default_text.hint'))
   end
 
   def and_I_should_not_see_the_optional_section_heading_text
-    expect(page.text).to_not include('[Optional section heading]')
+    expect(page.text).to_not include(I18n.t('default_text.section_heading'))
   end
 
   def when_I_customise_hint
@@ -80,7 +80,13 @@ feature 'Default text' do
   end
 
   def then_I_should_see_default_text_in_label_and_options
-    expect(editor.all_hints.map(&:text)).to eq(['[Optional hint text]', '[Optional hint text]', '[Optional hint text]'])
+    expect(editor.all_hints.map(&:text)).to eq(
+      [
+        I18n.t('default_text.hint'),
+        I18n.t('default_text.hint'),
+        I18n.t('default_text.hint')
+      ]
+    )
   end
 
   def when_I_customise_all_hints
