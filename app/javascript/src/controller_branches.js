@@ -21,6 +21,7 @@ const DefaultController = require('./controller_default');
 const ActivatedMenu = require('./component_activated_menu');
 const Branch = require('./component_branch');
 const BRANCH_SELECTOR = ".branch";
+const BRANCH_ANSWER_SELECTOR = ".answer";
 const BRANCH_CONDITION_SELECTOR = ".condition";
 const BRANCH_REMOVE_SELECTOR = ".branch-remover";
 const BRANCH_CONDITION_ADD_SELECTOR = ".condition-injector";
@@ -118,6 +119,7 @@ BranchesController.addBranchMenu = function(args) {
 BranchesController.createBranch = function($node) {
   var branch = new Branch($node, {
     branch_index: this._branchCount,
+    selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
     selector_condition: BRANCH_CONDITION_SELECTOR,
     selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
