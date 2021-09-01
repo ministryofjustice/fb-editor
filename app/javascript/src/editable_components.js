@@ -196,6 +196,7 @@ class EditableContent extends EditableElement {
     $node.off("focus.editablecomponent");
     $node.off("paste.editablecomponent");
     $node.off("keydown.editablecomponent");
+    $node.attr("contentEditable", false);
 
     // Add event to required element
     $output.on("click.editablecontent, focus.editablecontent", this.edit.bind(this) );
