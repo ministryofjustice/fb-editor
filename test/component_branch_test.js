@@ -186,6 +186,11 @@ describe("Branch", function () {
       expect(instance._config).to.exist;
       expect(instance._config.selector_destination).to.equal(BRANCH_DESTINATION_SELECTOR);
     });
+
+    describe("clearErrorState", function() {
+      it("should clear any injected error messages");
+      it("should clear any added class names for error styles");
+    });
   });
 
   describe("BranchCondition", function() {

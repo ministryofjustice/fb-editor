@@ -30,6 +30,8 @@ const BRANCH_DESTINATION_SELECTOR = ".destination";
 const BRANCH_OTHERWISE_SELECTOR = "#branch-otherwise";
 const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
+const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
+const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
 
 
 class BranchesController extends DefaultController {
@@ -119,12 +121,14 @@ BranchesController.addBranchMenu = function(args) {
 BranchesController.createBranch = function($node) {
   var branch = new Branch($node, {
     branch_index: this._branchCount,
+    css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
     selector_condition: BRANCH_CONDITION_SELECTOR,
     selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
     selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
     selector_destination: BRANCH_DESTINATION_SELECTOR,
+    selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
     question_label: this.text.branches.label_question_and,
