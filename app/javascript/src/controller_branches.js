@@ -54,7 +54,7 @@ class BranchesController extends DefaultController {
   create() {
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
-    var $otherwise = $(BRANCH_OTHERWISE_SELECTOR);
+    var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
     this._branchCount = 0;
     this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
