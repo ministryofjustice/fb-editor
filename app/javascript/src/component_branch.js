@@ -194,7 +194,9 @@ class BranchConditionRemover {
  **/
 class BranchQuestion {
   constructor($node, config) {
-    var conf = utilities.mergeObjects({}, config);
+    var conf = utilities.mergeObjects({
+      css_classes_error: ""
+    }, config);
 
     $node.addClass("BranchQuestion");
     $node.data("instance", this);
@@ -247,8 +249,10 @@ class BranchQuestion {
 
     // Lastley remove any template injected error message classes identified by config.
     for(var i=0; i < classes.length; ++i) {
-      this.$node.removeClass(classes[i]);
-      this.$node.find("." + classes[i]).removeClass(classes[i]);
+      if(classes[i].length > 0) {
+        this.$node.removeClass(classes[i]);
+        this.$node.find("." + classes[i]).removeClass(classes[i]);
+      }
     }
   }
 

@@ -27,7 +27,9 @@ const utilities = require('./utilities');
  **/
 class BranchDestination {
   constructor($node, config) {
-    var conf = utilities.mergeObjects({}, config);
+    var conf = utilities.mergeObjects({
+      css_classes_error: ""
+    }, config);
 
     $node.addClass("BranchDestination");
     $node.data("instance", this);
