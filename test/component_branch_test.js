@@ -150,49 +150,6 @@ describe("Branch", function () {
     });
   });
 
-  describe("BranchDestination", function() {
-    var $destination;
-
-    beforeEach(function() {
-      $destination = $(BRANCH_DESTINATION_SELECTOR);
-    });
-
-    it("should have the basic HTML in place", function() {
-      // TODO: Not sure if this is useful at this point but complexity
-      // may develop with a greater need for increased checks over time.
-      expect($destination.length).to.equal(1);
-      expect($destination.get(0).nodeName.toLowerCase()).to.equal("div");
-    });
-
-    it("should have the component class name present", function() {
-      expect($destination.hasClass("BranchDestination")).to.be.true;
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      var instance = $destination.data("instance");
-      expect(instance).to.exist;
-      expect(global_test_branch.destination).to.equal(instance);
-    });
-
-    it("should make the $node public", function() {
-      var instance = $destination.data("instance");
-      expect(instance.$node).to.exist;
-      expect(instance.$node.length).to.equal(1);
-      expect(instance.$node.get(0)).to.equal($destination.get(0));
-    });
-
-    it("should make (public but indicated as) private reference to config", function() {
-      var instance = $destination.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.selector_destination).to.equal(BRANCH_DESTINATION_SELECTOR);
-    });
-
-    describe("clearErrorState", function() {
-      it("should clear any injected error messages");
-      it("should clear any added class names for error styles");
-    });
-  });
-
   describe("BranchCondition", function() {
     var $condition;
 

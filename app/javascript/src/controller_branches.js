@@ -20,6 +20,7 @@ const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
 const ActivatedMenu = require('./component_activated_menu');
 const Branch = require('./component_branch');
+const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_ANSWER_SELECTOR = ".answer";
 const BRANCH_CONDITION_SELECTOR = ".condition";
@@ -53,12 +54,14 @@ class BranchesController extends DefaultController {
   create() {
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
+    var $otherwise = $(BRANCH_OTHERWISE_SELECTOR);
 
     this._branchCount = 0;
     this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
 
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
+    BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
 
     // NEXT LINE DEV ONLY: while branches is WIP
     addMattsButton();
@@ -88,6 +91,21 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
   var view = this;
   $injectors.each(function() {
     new BranchInjector($(this), {
+      view: view
+    });
+  });
+}
+
+
+/* Find and enhance 'otherwise' destination with same/similar functionality
+ * to destination elmements found within Branch elements.
+ **/
+BranchesController.enhanceBranchOtherwise = function($otherwise) {
+  var view = this;
+  $otherwise.each(function() {
+    new BranchDestination($(this), {
+      css_classes_error: CSS_CLASS_ERRORS,
+      selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
       view: view
     });
   });

@@ -16,6 +16,7 @@
  **/
 
 const utilities = require('./utilities');
+const BranchDestination = require('./component_branch_destination');
 const EVENT_QUESTION_CHANGE = "branchquestionchange";
 
 
@@ -83,39 +84,6 @@ class Branch {
 
   destroy() {
     this.$node.remove();
-  }
-}
-
-
-/* BranchDestination
- * @$node  (jQuery node) Element found in DOM that should be enhanced.
- * @config (Object) Configurable key/value pairs.
- **/
-class BranchDestination {
-  constructor($node, config) {
-    var conf = utilities.mergeObjects({}, config);
-
-    $node.addClass("BranchDestination");
-    $node.data("instance", this);
-
-    $node.on("change", () => {
-      this.clearErrorState();
-    });
-
-    this._config = conf;
-    this.$node = $node;
-  }
-
-  clearErrorState() {
-    var classes = this._config.css_classes_error.split(" ");
-
-    // First remove any injected error messages.
-    this.$node.find(this._config.selector_error_messsage).remove();
-
-    // Next clear any added error classes designed to pick up error css.
-    for(var i=0; i < classes.length; ++i) {
-      this.$node.find("." + classes[i]).removeClass(classes[i]);
-    }
   }
 }
 
