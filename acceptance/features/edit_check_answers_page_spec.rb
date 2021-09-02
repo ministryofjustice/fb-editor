@@ -16,7 +16,7 @@ feature 'Edit check your answers page' do
     'If you only knew the power of the dark side'
   end
   let(:optional_content) do
-    '[Optional content]'
+    I18n.t('default_text.content')
   end
 
   background do

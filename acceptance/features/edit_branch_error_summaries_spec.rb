@@ -3,9 +3,7 @@ require_relative '../spec_helper'
 feature 'Branching errors' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
-  let(:unsupported_type_error) do
-    'This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.'
-  end
+  let(:unsupported_type_error) { I18n.t('activemodel.errors.messages.unsupported') }
 
   background do
     given_I_am_logged_in
@@ -20,9 +18,9 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(3)
-    then_I_should_see_branching_error_message('Select a destination for Branch 1')
-    then_I_should_see_branching_error_message('Select a question for the condition for Branch 1')
-    then_I_should_see_branching_error_message("Select a destination for 'Otherwise'")
+    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
+    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}1")
+    then_I_should_see_branching_error_message(I18n.t('activemodel.errors.models.branch.blank', attribute: 'Otherwise'))
   end
 
   scenario 'when the "Go to" field is not filled in' do
@@ -70,7 +68,7 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(1)
-    then_I_should_see_branching_error_message('Select a destination for Branch 1')
+    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
   end
 
   scenario 'when the Otherwise/default next field is not filled in' do
@@ -118,7 +116,7 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(1)
-    then_I_should_see_branching_error_message("Select a destination for 'Otherwise'")
+    then_I_should_see_branching_error_message(I18n.t('activemodel.errors.models.branch.blank', attribute: 'Otherwise'))
   end
 
   scenario 'when there are two conditional objects to a branching point' do
@@ -186,8 +184,8 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(2)
-    then_I_should_see_branching_error_message('Select a destination for Branch 2')
-    then_I_should_see_branching_error_message('Select a question for the condition for Branch 2')
+    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}2")
+    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}2")
   end
 
   # Errors

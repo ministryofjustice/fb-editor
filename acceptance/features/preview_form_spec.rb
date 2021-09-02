@@ -7,7 +7,7 @@ feature 'Preview form' do
     'Multiple Page'
   end
   let(:optional_content) do
-    '[Optional content]'
+    I18n.t('default_text.content')
   end
   let(:content_component) do
     "I am a doctor not a doorstop"
