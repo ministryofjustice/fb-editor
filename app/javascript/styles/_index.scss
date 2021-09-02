@@ -321,6 +321,10 @@ html {
     width: 100%;
   }
 
+  &.govuk-form-group--error {
+    border-left: none;
+  }
+
   @include govuk-media-query($until: tablet) {
     & {
       margin-left: 0;
