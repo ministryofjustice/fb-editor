@@ -205,15 +205,6 @@ html {
   }
 
   &.error {
-    option {
-      color: $govuk-text-colour;
-    }
-
-    select {
-      border-color: $govuk-error-colour;
-      color: $govuk-error-colour;
-    }
-
     &:after {
       background-color: $govuk-error-colour;
     }
@@ -809,9 +800,19 @@ html {
   }
 }
 
-/* Override GovUK styles
- * --------------------- */
+/* Override or enhance GovUK styles
+ * -------------------------------- */
 .govuk-form-group--error {
+
+  option {
+    color: $govuk-text-colour;
+  }
+
+  select {
+    border-color: $govuk-error-colour;
+    color: $govuk-error-colour;
+  }
+
   .govuk-input {
     border: $govuk-border-width-form-element-error solid $govuk-error-colour;
 
