@@ -215,7 +215,7 @@ class BranchQuestion {
 
   change(supported, value) {
     var branch = this.condition.branch;
-    this.clear();
+    this.clearErrorState();
     this.condition.clear();
     switch(supported) {
       case true:
@@ -232,11 +232,23 @@ class BranchQuestion {
     }
   }
 
-  clear() {
+  clearErrorState() {
+    var classes = this._config.css_classes_error.split(" ");
+
+    // First clear anything added by error() method.
+    this.condition.$node.removeClass("error");
     if(this._$error && this._$error.length > 0) {
       this._$error.remove();
       this._$error = null;
-      this.condition.$node.removeClass("error");
+    }
+
+    // Second remove any template injected error messages identified by config.
+    this.$node.find(this._config.selector_error_messsage).remove();
+
+    // Lastley remove any template injected error message classes identified by config.
+    for(var i=0; i < classes.length; ++i) {
+      this.$node.removeClass(classes[i]);
+      this.$node.find("." + classes[i]).removeClass(classes[i]);
     }
   }
 
