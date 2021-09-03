@@ -20,6 +20,7 @@ const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
 const ActivatedMenu = require('./component_activated_menu');
 const Branch = require('./component_branch');
+const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_ANSWER_SELECTOR = ".answer";
 const BRANCH_CONDITION_SELECTOR = ".condition";
@@ -30,6 +31,8 @@ const BRANCH_DESTINATION_SELECTOR = ".destination";
 const BRANCH_OTHERWISE_SELECTOR = "#branch-otherwise";
 const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
+const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
+const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
 
 
 class BranchesController extends DefaultController {
@@ -51,12 +54,14 @@ class BranchesController extends DefaultController {
   create() {
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
+    var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
     this._branchCount = 0;
     this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
 
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
+    BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
 
     // NEXT LINE DEV ONLY: while branches is WIP
     addMattsButton();
@@ -92,6 +97,21 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
 }
 
 
+/* Find and enhance 'otherwise' destination with same/similar functionality
+ * to destination elmements found within Branch elements.
+ **/
+BranchesController.enhanceBranchOtherwise = function($otherwise) {
+  var view = this;
+  $otherwise.each(function() {
+    new BranchDestination($(this), {
+      css_classes_error: CSS_CLASS_ERRORS,
+      selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
+      view: view
+    });
+  });
+}
+
+
 /* Find branch menu element and wrap with ActivatedMenu
  * functionality.
  **/
@@ -119,12 +139,14 @@ BranchesController.addBranchMenu = function(args) {
 BranchesController.createBranch = function($node) {
   var branch = new Branch($node, {
     branch_index: this._branchCount,
+    css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
     selector_condition: BRANCH_CONDITION_SELECTOR,
     selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
     selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
     selector_destination: BRANCH_DESTINATION_SELECTOR,
+    selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: this.api.get_expression,
     question_label: this.text.branches.label_question_and,

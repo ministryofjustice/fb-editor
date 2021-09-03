@@ -8,6 +8,7 @@ describe("Branch", function () {
   const BRANCH_CONDITION_SELECTOR = ".condition";
   const BRANCH_CONDITION_ADD_SELECTOR = ".condition-injector";
   const BRANCH_CONDITION_REMOVE_SELECTOR = ".condition-remover";
+  const BRANCH_ERROR_MESSAGE_CLASSNAME = "test-error-message";
   const BRANCH_QUESTION_SELECTOR = ".question";
   const BRANCH_ANSWER_SELECTOR = ".answer";
   const BRANCH_REMOVE_SELECTOR = ".branch-remover";
@@ -17,6 +18,9 @@ describe("Branch", function () {
   const TEXT_REMOVE_BRANCH = "remove branch text";
   const TEXT_REMOVE_CONDITION = "remove condition text";
   const ERROR_MESSAGE = "This is an error message";
+  const ERROR_CLASSNAME_1 = "error-classname-1";
+  const ERROR_CLASSNAME_2 = "error-classname-2";
+
   const INDEX_BRANCH = 4;
   var global_test_branch;
 
@@ -60,6 +64,7 @@ describe("Branch", function () {
     var $node = $(html);
     var branch = new Branch($node, {
       branch_index: INDEX_BRANCH,
+      css_classes_error: ERROR_CLASSNAME_1 + " " + ERROR_CLASSNAME_2,
       selector_answer: BRANCH_ANSWER_SELECTOR,
       selector_branch_remove: BRANCH_REMOVE_SELECTOR,
       selector_condition: BRANCH_CONDITION_SELECTOR,
@@ -67,6 +72,7 @@ describe("Branch", function () {
       selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
       selector_destination: BRANCH_DESTINATION_SELECTOR,
       selector_question: BRANCH_QUESTION_SELECTOR,
+      selector_error_messsage: "." + BRANCH_ERROR_MESSAGE_CLASSNAME,
       expression_url: EXPRESSION_URL,
       question_label: LABEL_QUESTION_AND,
       template_condition: "<div class=\"condition\">dummy</div>",
@@ -147,44 +153,6 @@ describe("Branch", function () {
     it("should make (public but indicated as) private reference to condition counter value", function() {
       expect(global_test_branch._conditionCount).to.exist;
       expect(global_test_branch._conditionCount).to.equal(1);
-    });
-  });
-
-  describe("BranchDestination", function() {
-    var $destination;
-
-    beforeEach(function() {
-      $destination = $(BRANCH_DESTINATION_SELECTOR);
-    });
-
-    it("should have the basic HTML in place", function() {
-      // TODO: Not sure if this is useful at this point but complexity
-      // may develop with a greater need for increased checks over time.
-      expect($destination.length).to.equal(1);
-      expect($destination.get(0).nodeName.toLowerCase()).to.equal("div");
-    });
-
-    it("should have the component class name present", function() {
-      expect($destination.hasClass("BranchDestination")).to.be.true;
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      var instance = $destination.data("instance");
-      expect(instance).to.exist;
-      expect(global_test_branch.destination).to.equal(instance);
-    });
-
-    it("should make the $node public", function() {
-      var instance = $destination.data("instance");
-      expect(instance.$node).to.exist;
-      expect(instance.$node.length).to.equal(1);
-      expect(instance.$node.get(0)).to.equal($destination.get(0));
-    });
-
-    it("should make (public but indicated as) private reference to config", function() {
-      var instance = $destination.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.selector_destination).to.equal(BRANCH_DESTINATION_SELECTOR);
     });
   });
 
@@ -430,7 +398,7 @@ describe("Branch", function () {
       expect(question._config.selector_question).to.equal(BRANCH_QUESTION_SELECTOR);
     });
 
-    describe("Clear", function() {
+    describe("clearErrorState", function() {
       var $condition;
 
       beforeEach(function() {
@@ -439,22 +407,59 @@ describe("Branch", function () {
         $condition = $(BRANCH_CONDITION_SELECTOR);
       });
 
+      afterEach(function() {
+        $question.find(".error-message").remove();
+        question._$error = null;
+      });
+
+      it("should find configured error message selector", function() {
+        expect(question._config.selector_error_messsage).to.exist;
+        expect(question._config.selector_error_messsage).to.equal("." + BRANCH_ERROR_MESSAGE_CLASSNAME);
+      });
+
+      it("should find configured error classes", function() {
+        expect(question._config.css_classes_error).to.exist;
+        expect(question._config.css_classes_error).to.equal(ERROR_CLASSNAME_1 + " " + ERROR_CLASSNAME_2);
+      });
+
       it("should remove the inserted error node", function() {
         expect($question.find(".error-message").length).to.equal(1);
-        question.clear();
+        question.clearErrorState();
         expect($question.find(".error-message").length).to.equal(0);
       });
 
       it("should nullify the private reference to error node", function() {
         expect(question._$error).to.exist;
-        question.clear();
+        question.clearErrorState();
         expect(question._$error).to.not.exist;
       });
 
       it("should remove the error class from condition node", function() {
         expect($condition.find(".error-message").length).to.equal(1);
-        question.clear();
+        question.clearErrorState();
         expect($condition.find(".error-message").length).to.equal(0);
+      });
+
+      it("should remove template injected error message identified in config", function() {
+        // Insert a test error message
+        $question.append("<p class=\"" + BRANCH_ERROR_MESSAGE_CLASSNAME + "\">" + ERROR_MESSAGE  + "</p>");
+
+        // Check it's there
+        expect($question.find("." + BRANCH_ERROR_MESSAGE_CLASSNAME).length).to.equal(1);
+
+        // Call the method and recheck for existence
+        question.clearErrorState();
+        expect($question.find("." + BRANCH_ERROR_MESSAGE_CLASSNAME).length).to.equal(0);
+      });
+
+      it("should remove template injected error class identified in config", function() {
+        // First add some classes
+        $question.addClass(ERROR_CLASSNAME_1);
+        $question.find("select").addClass(ERROR_CLASSNAME_2);
+
+        // Then check they exist
+        expect($question.hasClass(ERROR_CLASSNAME_1)).to.be.true;
+        expect($question.find("select").hasClass(ERROR_CLASSNAME_2)).to.be.true;
       });
     });
 
@@ -509,10 +514,10 @@ describe("Branch", function () {
         expect(typeof instance.change).to.equal("function");
       });
 
-      it("should call BranchQuestion.clear", function() {
+      it("should call BranchQuestion.clearErrorState", function() {
          var instance = $question.data("instance");
          var check = 1;
-         instance.clear = function() {
+         instance.clearErrorState = function() {
            check += 1;
          }
 
@@ -520,7 +525,7 @@ describe("Branch", function () {
          expect(check).to.equal(2);
 
          // Reset to original
-         instance.clear = instance.constructor.prototype.clear;
+         instance.clearErrorState = instance.constructor.prototype.clearErrorState;
       });
 
       it("should call BranchCondition.clear", function() {
@@ -534,7 +539,7 @@ describe("Branch", function () {
         expect(check).to.equal(2);
 
         // Reset to original
-        instance.condition.clear = instance.constructor.prototype.clear;
+        instance.condition.clear = instance.condition.constructor.prototype.clear;
       });
 
       it("should call condition.update on selection of supported question", function() {

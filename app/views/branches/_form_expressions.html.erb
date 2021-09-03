@@ -1,5 +1,5 @@
 <%= conditional.fields_for :expressions do |expression| %>
-  <div class="condition" data-expression-index="<%= expression.index %>">
+  <div class="condition <%= expression.object.errors[:component].empty? ? '' : 'error' %>" data-expression-index="<%= expression.index %>">
     <div class="question govuk-form-group
       <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>">
       <%= expression.label :component, t('branches.expression.if'), { class: "govuk-label" } %>
