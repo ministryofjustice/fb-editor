@@ -63,6 +63,8 @@ feature 'New branch page' do
       'Which flavours of ice cream have you eaten?'
     )
 
+    then_I_can_add_and_delete_conditionals_and_expressions
+
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')
     then_I_should_see_previous_saved_choices(
@@ -76,15 +78,7 @@ feature 'New branch page' do
     then_I_should_see_no_errors
   end
 
-  def then_I_should_be_on_the_correct_branch_page(path)
-    expect(URI(current_url).path.split('/').last).to eq(path)
-  end
-
   def then_I_should_see_previous_saved_choices(attribute, selected)
     expect(page).to have_select(attribute, selected: selected)
-  end
-
-  def then_I_should_see_no_errors
-    expect(page).not_to have_selector('.govuk-error-summary')
   end
 end
