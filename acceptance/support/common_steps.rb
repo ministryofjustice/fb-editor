@@ -1,9 +1,9 @@
 module CommonSteps
   OPTIONAL_TEXT = [
-    '[Optional section heading]',
-    '[Optional lede paragraph]',
-    '[Optional content]',
-    '[Optional hint text]'
+    I18n.t('default_text.section_heading'),
+    I18n.t('default_text.lede'),
+    I18n.t('default_text.content'),
+    I18n.t('default_text.option_hint')
   ].freeze
   ERROR_MESSAGE = 'There is a problem'.freeze
 
@@ -183,7 +183,7 @@ module CommonSteps
   def when_I_want_to_select_question_properties
     editor.question_heading.first.click
     editor.question_three_dots_button.click
-    editor.should_not have_css('span', text: 'Delete...')
+    expect(editor).not_to have_css('span', text: I18n.t('question.menu.remove'))
   end
 
   def and_I_want_to_set_a_question_optional
