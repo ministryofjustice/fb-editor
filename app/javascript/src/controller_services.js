@@ -42,52 +42,20 @@ class ServicesController extends DefaultController {
 /* Setup for the Edit action
  **/
 ServicesController.edit = function() {
-  var view = this;
-  var $document = $(document);
+  var view = this; // Just making it easlier to understand the context.
+
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-  $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this) );
+  $(document).on("PageActionMenuSelection", pageActionMenuSelection.bind(view) );
 
   // Create dialog for handling new page input and error reporting.
-  let pageCreateDialog = new PageCreateDialog(this, $("[data-component='PageCreateDialog']"));
+  view.pageCreateDialog = new PageCreateDialog(view, $("[data-component='PageCreateDialog']"));
 
+  createMenusForThumbnails(view);
+  createMenuForAddPage(view);
+  fixFormOverviewScroll();
 
-  // Create the context menus for each page thumbnail.
-  $("[data-component='PageActionMenu']").each((i, el) => {
-    var menu = new PageActionMenu($(el), pageCreateDialog, {
-      selection_event: "PageActionMenuSelection",
-      preventDefault: true, // Stops the default action of triggering element.
-      menu: {
-        position: { at: "right+2 top-2" }
-      }
-    });
-
-    view.addLastPointHandler(menu.activator.$node);
-  });
-
-  // Create the menu for Add Page functionality.
-  $("[data-component='PageAdditionMenu']").each(function(i) {
-    var selection_event = "PageAdditionMenuSelection_" + i;
-    var menu = new PageAdditionMenu($(this), pageCreateDialog, {
-      selection_event: selection_event,
-      menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-      }
-    });
-
-    view.addLastPointHandler(menu.activator.$node);
-    $document.on(selection_event, PageAdditionMenu.selection.bind(menu) );
-  });
-
-  // Fix for the scrolling of form overview.
-  applyCustomOverviewWorkaround();
-  let scrollTimeout;
-  $(window).on("resize", function() {
-    scrollTimeout = setTimeout(function() {
-      clearTimeout(scrollTimeout);
-      applyCustomOverviewWorkaround();
-    }, 500);
-  });
+  positionFlowItems();
 }
 
 
@@ -240,6 +208,58 @@ PageAdditionMenu.selection = function(event, data) {
 }
 
 
+/* Form item context menus.
+ * Create the context menus for each page thumbnail.
+ **/
+function createMenusForThumbnails(view) {
+  $("[data-component='PageActionMenu']").each((i, el) => {
+    var menu = new PageActionMenu($(el), view.pageCreateDialog, {
+      selection_event: "PageActionMenuSelection",
+      preventDefault: true, // Stops the default action of triggering element.
+      menu: {
+        position: { at: "right+2 top-2" }
+      }
+    });
+
+    view.addLastPointHandler(menu.activator.$node);
+  });
+}
+
+
+/* Form overview Add page support.
+ * Create the menu for Add Page functionality.
+ **/
+function createMenuForAddPage(view) {
+  $("[data-component='PageAdditionMenu']").each(function(i) {
+    var selection_event = "PageAdditionMenuSelection_" + i;
+    var menu = new PageAdditionMenu($(this), view.pageCreateDialog, {
+      selection_event: selection_event,
+      menu: {
+        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+      }
+    });
+
+    view.addLastPointHandler(menu.activator.$node);
+    $(document).on(selection_event, PageAdditionMenu.selection.bind(menu) );
+  });
+}
+
+
+/* Temporary fix for form overview scrolling and reactivation on resize.
+ **/ 
+function fixFormOverviewScroll() {
+  // Fix for the scrolling of form overview.
+  applyCustomOverviewWorkaround();
+  let scrollTimeout;
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
+      clearTimeout(scrollTimeout);
+      applyCustomOverviewWorkaround();
+    }, 500);
+  });
+}
+
+
 /* Quickfix workaround to try and fix scrolling issues for the form overview
  * when there are too many thumbnails to fix on the one page view.
  **/
@@ -267,6 +287,13 @@ function applyCustomOverviewWorkaround() {
   $container.css("max-width", maxWidth); // Make sure to limit so a scrollbar can kick in, if necessary.
   $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
   $overview.height($container.outerHeight(true));
+}
+
+
+/* Flow view positioning for design.
+ **/
+function positionFlowItems() {
+  console.log($(".flow-item"));
 }
 
 
