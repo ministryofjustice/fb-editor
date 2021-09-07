@@ -37,6 +37,23 @@ module BranchingSteps
     when_I_add_the_page
   end
 
+  def then_I_can_add_and_delete_conditionals_and_expressions
+    and_I_add_another_condition
+    then_I_should_see_the_operator(I18n.t('branches.expression.and'))
+    then_I_should_see_another_question_list
+    then_I_should_see_the_delete_condition_button
+
+    and_I_delete_the_condition
+    then_I_should_not_see_the_operator(I18n.t('branches.expression.and'))
+    then_I_should_not_see_text(I18n.t('branches.condition_remove'))
+
+    and_I_add_another_branch
+    then_I_should_see_the_branch_title(index: 1, title: 'Branch 2')
+
+    and_I_delete_the_conditional(1)
+    then_I_should_not_see_text('Branch 2')
+  end
+
   def when_I_update_the_question_name(question_name)
     editor.question_heading.first.set(question_name)
     when_I_save_my_changes
@@ -94,5 +111,77 @@ module BranchingSteps
 
   def and_I_select_the_otherwise_dropdown
     editor.otherwise_options.click
+  end
+
+  def then_I_should_see_no_errors
+    expect(page).not_to have_selector('.govuk-error-summary')
+  end
+
+  def then_I_should_be_on_the_correct_branch_page(path)
+    expect(URI(current_url).path.split('/').last).to eq(path)
+  end
+
+  def and_I_add_another_condition
+    editor.add_condition.click
+  end
+
+  def and_I_delete_the_condition
+    editor.remove_condition.click
+  end
+
+  def and_I_add_another_branch
+    editor.add_another_branch.click
+  end
+
+  def and_I_delete_the_conditional(index)
+    editor.find("div[data-conditional-index='#{index}'] button").click
+    editor.find('a.branch-remover').click
+  end
+
+  def then_I_should_see_the_operator(text)
+    page_with_css('div.question label.govuk-label', text)
+  end
+
+  def page_with_css(element, text)
+    expect(page).to have_css(element, text: text)
+  end
+
+  def page_without_css(element, text)
+    expect(page).not_to have_css(element, text: text)
+  end
+
+  def then_I_should_see_another_question_list
+    then_I_should_see_text(I18n.t('branches.expression.and'))
+    then_I_should_see_text(I18n.t('branches.select_question'))
+  end
+
+  def then_I_should_not_see_text(text)
+    expect(page).not_to have_text(text)
+  end
+
+  def then_I_should_see_text(text)
+    expect(page).to have_text(text)
+  end
+
+  def then_I_should_see_the_add_condition_link
+    # wait for the api call to get the operators and answers
+    sleep(2)
+    expect(page).to have_text(I18n.t('branches.condition_add'))
+  end
+
+  def then_I_should_not_see_the_delete_condition_button
+    page_without_css('button.condition-remove', I18n.t('branches.condition_remove'))
+  end
+
+  def then_I_should_see_the_delete_condition_button
+    page_with_css('button.condition-remover', I18n.t('branches.condition_remove'))
+  end
+
+  def then_I_should_not_see_the_operator(text)
+    page_without_css('div.question label.govuk-label', text)
+  end
+
+  def then_I_should_see_the_branch_title(index:, title:)
+    expect(editor.branch_title(index).text).to eq(title)
   end
 end

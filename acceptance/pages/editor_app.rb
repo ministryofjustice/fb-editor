@@ -60,7 +60,7 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Content page')]"
 
-  element :add_a_component_button, :link, 'Add component'
+  element :add_a_component_button, :link, I18n.t('components.actions.add_component')
   element :question_component,
           :xpath,
           "//*[@role='menuitem' and contains(.,'Question')]"
@@ -73,16 +73,16 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"
 
-  element :add_text, :link, 'Text', visible: false
-  element :add_text_area, :link, 'Textarea', visible: false
-  element :add_number, :link, 'Number', visible: false
-  element :add_file_upload, :link, 'File upload', visible: false
-  element :add_date, :link, 'Date', visible: false
-  element :add_radio, :link, 'Radio buttons', visible: false
-  element :add_checkboxes, :link, 'Checkboxes', visible: false
-  element :add_content, :link, 'Content area', visible: false
+  element :add_text, :link, I18n.t('components.list.text'), visible: false
+  element :add_text_area, :link, I18n.t('components.list.textarea'), visible: false
+  element :add_number, :link, I18n.t('components.list.number'), visible: false
+  element :add_file_upload, :link, I18n.t('components.list.upload'), visible: false
+  element :add_date, :link, I18n.t('components.list.date'), visible: false
+  element :add_radio, :link, I18n.t('components.list.radios'), visible: false
+  element :add_checkboxes, :link, I18n.t('components.list.checkboxes'), visible: false
+  element :add_content, :link, I18n.t('components.menu.content_area'), visible: false
 
-  elements :add_page_submit_button, :button, 'Add page'
+  elements :add_page_submit_button, :button, I18n.t('pages.create')
   element :save_page_button, :xpath, '//input[@value="Save"]'
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
@@ -109,12 +109,16 @@ class EditorApp < SitePrism::Page
   elements :form_urls, '.form-step a.govuk-link'
   elements :preview_page_images, '.form-step img.body'
   element :three_dots_button, '.form-step_button'
-  element :preview_page_link, :link, 'Preview page'
-  element :add_page_here_link, :link, 'Add page here'
-  element :delete_page_link, :link, 'Delete page...'
-  element :delete_page_modal_button, :button, 'Delete page'
-  element :branching_link, :link, 'Add branching'
-  element :add_another_branch, :link, 'Add another branch'
+  element :preview_page_link, :link, I18n.t('actions.preview_page')
+  element :add_page_here_link, :link, I18n.t('actions.add_page')
+  element :delete_page_link, :link, I18n.t('actions.delete_page')
+  element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete_page')
+  element :branching_link, :link, I18n.t('services.branch')
+
+  element :add_condition, :button, I18n.t('branches.condition_add')
+  element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
+  element :add_another_branch, :link, I18n.t('branches.branch_add')
+  element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
 
   element :destination_options, '#branch_conditionals_attributes_0_next'
   element :conditional_options, '#branch_conditionals_attributes_0_expressions_attributes_0_component'
@@ -128,5 +132,9 @@ class EditorApp < SitePrism::Page
 
   def modal_create_service_button
     all('.ui-dialog-buttonpane button').first
+  end
+
+  def branch_title(index)
+    find("div[data-conditional-index='#{index}'] p")
   end
 end

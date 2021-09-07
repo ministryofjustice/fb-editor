@@ -73,7 +73,7 @@ module MultipleQuestionsPageHelper
   end
 
   def and_I_want_to_delete_a_component
-    editor.find('span', text: 'Delete...').click
-    editor.find('button', text: 'Delete option').click
+    editor.find('span', text: I18n.t('question.menu.remove')).click
+    editor.find('button', text: I18n.t('dialogs.button_delete_option')).click
   end
 end
