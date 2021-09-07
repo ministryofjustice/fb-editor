@@ -5,20 +5,53 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
-  <% if ENV['BRANCHING'] == 'enabled' %>
-  <div class='govuk-!-margin-bottom-10'>
-    <% service.flow.each do |uuid, flow| %>
-      <% if flow['_type'] == 'flow.branch' %>
-        | <%= link_to flow['title'] || 'Untitled Branch', edit_branch_path(service.service_id, uuid) %> |
+<%#= debug @pages_flow %>
+<div id="flow-overview">
+  <% @pages_flow.each do |collection| %>
+    <% collection.each do |item| %>
+      <% if item[:type] == 'flow.branch' %>
+        <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+          <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
+             <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
+             <span><%= item[:title] || 'Untitled Branch' %></span>
+          <% end %>
+        </section>
+      <% else %>
+        <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
+          <%#= debug item[:obj] %>
+          <%= flow_thumbnail(item[:obj], service.service_id) %>
+        </section>
       <% end %>
     <% end %>
-  </div>
   <% end %>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <div id="form-overview">
+
+  <% if ENV['BRANCHING'] == 'enabled' %>
+    <div id="workaround-links">
+      <% service.flow.each do |uuid, flow| %>
+        <% if flow['_type'] == 'flow.branch' %>
+          | <%= link_to flow['title'] || 'Untitled Branch', edit_branch_path(service.service_id, uuid) %> |
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="container">
     <% service.pages.each do |page| %>
-      <section class="form-step" aria-label="<%= t('aria.' + page.type) %>">
+      <section class="form-overview-step" aria-label="<%= t('aria.' + page.type) %>">
 
         <%= flow_thumbnail(page) %>
 

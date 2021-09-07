@@ -520,28 +520,13 @@ html {
 }
 
 
-/* Navigation: Pages
- * URLs: /services/.../edit
- * ------------------------ */
-.form-overview_button {
-  // This element is injected by JS
-  @include button_type_link;
-  @include addition_icon;
-  opacity: 1;
-  position: relative;
-  top: -10px;
-
-  &:after {
-    display: none;
-  }
-}
-
-.form-step {
+/* OLD FORM OVERVIEW CSS
+ * DELETE THIS WHEN FORM FLOW IS COMPLETE
+ * -------------------------------------- */
+.form-overview-step {
   display: inline-block;
-  padding-right: 100px;
-  overflow: hidden;
   position: relative;
-  vertical-align: middle;
+  padding-right: 100px;
 
   &:after {
     border-top: govuk-colour("black") solid 2px;
@@ -570,6 +555,74 @@ html {
   }
 }
 
+.form-overview_button {
+  // This element is injected by JS
+  @include button_type_link;
+  @include addition_icon;
+  opacity: 1;
+  position: relative;
+  top: -82px;
+
+  &:after {
+    display: none;
+  }
+}
+
+#form-overview {
+margin-top: 300px;
+  overflow: visible;
+
+  .container {
+    overflow: scroll;
+    padding: 60px 0px;
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+  }
+
+  .govuk-button {
+    display: none; // JS injected element, not required.
+  }
+}
+
+
+/* NEW FORM FLOW CSS
+ * ------------------------ */
+.flow-branch {
+  a {
+    border:  $govuk-link-colour solid 2px;
+	  display: inline-block;
+	  height: 100px;
+	  margin-left: 35px;
+	  rotate: 45deg;
+	  width: 100px;
+  }
+
+  span {
+	  display: inline-block;
+	  left: 5px;
+	  position: relative;
+	  rotate: -45deg;
+	  text-align: center;
+	  top: 25px;
+	  width: 90%;
+  }
+}
+
+.flow-item {
+
+  &:hover {
+    .ActivatedMenu_Activator {
+      opacity: 1;
+    }
+  }
+}
+
+.flow-page {
+  overflow: hidden;
+  vertical-align: middle;
+}
+
 .standalone-pages {
   display: inline;
   float: left;
@@ -584,7 +637,7 @@ html {
   position: absolute;
 }
 
-.form-step_thumbnail {
+.flow-thumbnail {
   border:  $govuk-link-colour solid 2px;
   display: block;
   height: 145px;
@@ -623,22 +676,6 @@ html {
     .body {
       display: none;
     }
-  }
-}
-
-#form-overview {
-  overflow: visible;
-
-  .container {
-    overflow: scroll;
-    padding: 60px 0px;
-    position: absolute;
-    left: 0;
-    white-space: nowrap;
-  }
-
-  .govuk-button {
-    display: none; // JS injected element, not required.
   }
 }
 
