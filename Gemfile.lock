@@ -180,7 +180,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     nio4r (2.5.8)
-    nokogiri (1.12.3)
+    nokogiri (1.12.4)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     oauth2 (1.4.7)
@@ -312,17 +312,17 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
-    sentry-delayed_job (4.6.5)
+    sentry-delayed_job (4.7.1)
       delayed_job (>= 4.0)
-      sentry-ruby-core (~> 4.6.0)
-    sentry-rails (4.6.5)
+      sentry-ruby-core (~> 4.7.0)
+    sentry-rails (4.7.1)
       railties (>= 5.0)
-      sentry-ruby-core (~> 4.6.0)
-    sentry-ruby (4.6.5)
+      sentry-ruby-core (~> 4.7.0)
+    sentry-ruby (4.7.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       faraday (>= 1.0)
-      sentry-ruby-core (= 4.6.5)
-    sentry-ruby-core (4.6.5)
+      sentry-ruby-core (= 4.7.1)
+    sentry-ruby-core (4.7.1)
       concurrent-ruby
       faraday
     shoulda-matchers (5.0.0)
@@ -403,9 +403,9 @@ DEPENDENCIES
   rubocop-govuk
   sass-rails (>= 6)
   selenium-webdriver (= 3.142.7)
-  sentry-delayed_job (~> 4.6.5)
-  sentry-rails (~> 4.6.5)
-  sentry-ruby (~> 4.6.5)
+  sentry-delayed_job (~> 4.7.1)
+  sentry-rails (~> 4.7.1)
+  sentry-ruby (~> 4.7.1)
   shoulda-matchers
   site_prism
   spring
