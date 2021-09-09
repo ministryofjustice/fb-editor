@@ -1,31 +1,25 @@
 module ApplicationHelper
   include MetadataPresenter::ApplicationHelper
 
-  # Used to display a thumbnail on form page with dynamic heading.
-  # Due to complexity have created this helper to keep logic out
-  # of the template.
-  def flow_thumbnail(page, parent_id)
-    heading = flow_thumbnail_heading(page)
+  # Remove once new service flow page is finished
+  def flow_thumbnail(page)
     type = if page.components.blank?
-             page._type.gsub('page.', '')
+             page.type.gsub('page.', '')
            else
-             page.components[0]._type
+             page.components.first.type
            end
-    link_to edit_page_path(parent_id, page.uuid), class: "form-step_thumbnail #{type}", 'aria-hidden': true do
+    thumbnail_link(uuid: page.uuid, thumbnail: type, title: page.title)
+  end
+  # Remove once new service flow page is finished
+
+  def thumbnail_link(args)
+    link_to edit_page_path(
+      service.service_id, args[:uuid]
+    ), class: "form-step_thumbnail #{args[:thumbnail]}", 'aria-hidden': true do
       concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
       concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(heading, class: 'text')
-      concat image_pack_tag("thumbnails/thumbs_#{type}.jpg", class: 'body', alt: '')
-    end
-  end
-
-  def flow_thumbnail_heading(page)
-    if page.components.blank?
-      page.heading
-    elsif page._type == 'page.multiplequestions'
-      page.heading
-    else
-      page.components[0].label || page.components[0].legend
+      concat tag.span(args[:title], class: 'text')
+      concat image_pack_tag("thumbnails/thumbs_#{args[:thumbnail]}.jpg", class: 'body', alt: '')
     end
   end
 

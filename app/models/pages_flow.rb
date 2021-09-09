@@ -79,8 +79,23 @@ class PagesFlow
     {
       type: obj.type,
       title: obj.title,
-      uuid: obj.uuid
+      uuid: obj.uuid,
+      thumbnail: thumbnail_type(obj)
     }
+  end
+
+  def thumbnail_type(obj)
+    if use_flow_type?(obj)
+      obj.type.gsub(/(flow|page)./, '')
+    else
+      obj.components.first.type
+    end
+  end
+
+  def use_flow_type?(obj)
+    obj.components.blank? ||
+      obj.branch? ||
+      obj.type =~ /page.(start|checkanswers|confirmation)/
   end
 
   def branch_conditionals(conditionals)

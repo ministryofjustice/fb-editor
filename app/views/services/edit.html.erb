@@ -20,13 +20,13 @@
     <% service.pages.each do |page| %>
       <section class="form-step" aria-label="<%= t('aria.' + page.type) %>">
 
-        <%= flow_thumbnail(page, service.service_id) %>
+        <%= flow_thumbnail(page) %>
 
         <ul class="govuk-navigation component-activated-menu"
             data-activator-text="<%= t('pages.actions') %>"
             data-activator-classname="form-step_button"
             data-component="PageActionMenu"
-            data-page-heading="<%= flow_thumbnail_heading(page) %>"
+            data-page-heading="<%= page.title %>"
             data-uuid="<%= page._uuid %>">
           <li data-action="edit">
             <%= link_to t('actions.edit_page'),
