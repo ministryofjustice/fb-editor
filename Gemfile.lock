@@ -315,7 +315,7 @@ GEM
     sentry-delayed_job (4.7.1)
       delayed_job (>= 4.0)
       sentry-ruby-core (~> 4.7.0)
-    sentry-rails (4.7.1)
+    sentry-rails (4.7.2)
       railties (>= 5.0)
       sentry-ruby-core (~> 4.7.0)
     sentry-ruby (4.7.2)
@@ -404,7 +404,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver (= 3.142.7)
   sentry-delayed_job (~> 4.7.1)
-  sentry-rails (~> 4.7.1)
+  sentry-rails (~> 4.7.2)
   sentry-ruby (~> 4.7.2)
   shoulda-matchers
   site_prism
