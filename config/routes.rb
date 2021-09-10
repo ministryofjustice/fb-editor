@@ -41,6 +41,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :services do
+      resources :flow, param: :uuid, only: [] do
+        resources :destinations, only: [:new, :create]
+      end
+
       resources :pages, only: [:show]
 
       resources :branches, param: :previous_flow_uuid do

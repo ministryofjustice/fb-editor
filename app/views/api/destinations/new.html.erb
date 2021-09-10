@@ -1,0 +1,5 @@
+<%= form_for @destination, url: api_service_flow_destinations_path(service.service_id, @destination.flow_uuid) do |f| %>
+  <%= f.select(:destination_uuid, []) %>
+
+  <%= f.submit t('actions.change_destination') %>
+<% end %>

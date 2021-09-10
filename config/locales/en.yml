@@ -73,6 +73,7 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
+    change_destination: 'Change destination'
   branches:
     branch_add: 'Add another branch'
     branch_remove: 'Delete'
