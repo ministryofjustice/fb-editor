@@ -59,11 +59,7 @@ ServicesController.edit = function() {
   fixFormOverviewScroll();
 
   positionFlowItems($flowOverview);
-  positionFlowItems($flowOverviewHardcoded_1);
-  positionFlowItems($flowOverviewHardcoded_2);
   applyFlowOverviewWidthWorkaround($flowOverview);
-  applyFlowOverviewWidthWorkaround($flowOverviewHardcoded_1);
-  applyFlowOverviewWidthWorkaround($flowOverviewHardcoded_2);
 }
 
 
@@ -373,7 +369,6 @@ function positionFlowItems($overview) {
       $column.before($item);
 
       // Positions boxes and diamonds
-      console.log("LEFT: ", left);
       $item.css({
         left: left + "px",
         position: "absolute",
