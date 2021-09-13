@@ -334,11 +334,13 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_EXPRESSIONS = ".flow-expression";
+  const SELECTOR_FLOW_THUMBNAIL = ".flow-thumbnail";
   const SELECTOR_FLOW_ITEM = ".flow-item";
   const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
+  const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).width();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
-  const CONDITIONS_LEFT_SPACING = 110 + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
+  const CONDITIONS_LEFT_SPACING = THUMBNAIL_WIDTH + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
   var $container = $("> .container", $overview);
   var containerWidth = $container.width();
   var overviewWidth = $overview.width();
@@ -348,7 +350,7 @@ function positionFlowItems($overview) {
   var left = 0;
 
   // Loop over found columns created from the flow
-  $columns.each(function() {
+  $columns.each(function(index) {
     var $column = $(this);
     var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
     var $expressions = $(SELECTOR_FLOW_EXPRESSIONS, $conditions);
@@ -371,6 +373,7 @@ function positionFlowItems($overview) {
       $column.before($item);
 
       // Positions boxes and diamonds
+      console.log("LEFT: ", left);
       $item.css({
         left: left + "px",
         position: "absolute",
@@ -381,7 +384,6 @@ function positionFlowItems($overview) {
       $(SELECTOR_FLOW_CONDITION, this).each(function() {
         var $condition = $(this);
         $condition.css({
-          border: "1px solid green", // TODO: Development only
           left: 0,
           position: "absolute",
           top: (conditionY - $condition.height()) + "px"
@@ -396,7 +398,6 @@ function positionFlowItems($overview) {
     if($conditions.length > 0) {
       // Positions bubble container relative to diamond.
       $conditions.css({
-        border: "1px solid blue", // TODO: Development only
         left: CONDITIONS_LEFT_SPACING + "px",
         position: "absolute",
         top: "0px"
