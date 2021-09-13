@@ -50,6 +50,10 @@
       </div>
       <div class="column">
           <section class="flow-item flow-branch">
+              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-1" %>
+              <map name="thumbnail-1" aria-hidden="true">
+                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="#">
+              </map>
               <a href="#">
                 <span class="govuk-visually-hidden">Edit</span>
                 <span>Branching node 1</span>
@@ -145,6 +149,10 @@
       </div>
       <div class="column">
           <section class="flow-item flow-branch">
+              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-2" %>
+              <map name="thumbnail-2" aria-hidden="true">
+                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="#">
+              </map>
               <a href="#">
                 <span class="govuk-visually-hidden">Edit</span>
                 <span>Branching node 1</span>
@@ -213,6 +221,10 @@
       </div>
       <div class="column">
           <section class="flow-item flow-branch">
+              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-3" %>
+              <map name="thumbnail-3" aria-hidden="true">
+                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="#">
+              </map>
               <a href="#">
                 <span class="govuk-visually-hidden">Edit</span>
                 <span>Branching node 2</span>
@@ -293,6 +305,10 @@
       </div>
       <div class="column">
           <section class="flow-item flow-branch">
+              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-4" %>
+              <map name="thumbnail-4" aria-hidden="true">
+                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="#">
+              </map>
               <a href="#">
                 <span class="govuk-visually-hidden">Edit</span>
                 <span>Branching node 3</span>
@@ -349,23 +365,25 @@
 
     <% @pages_flow.each do |collection| %>
       <div class="column">
-        <% collection.each do |item| %>
+        <% collection.each_with_index do |item, index| %>
           <% if item[:type] == 'flow.branch' %>
             <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
+              <map name="thumbnail-<%= index %>" aria-hidden="true">
+                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+              </map>
               <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
                 <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
                 <span><%= item[:title] || 'Untitled Branch' %></span>
               <% end %>
             </section>
           <% else %>
-            <%#= debug item[:obj] %>
             <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
               <a class="flow-thumbnail text" href="#" aria-hidden="true">
                 <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
                 <span class="text"><%= item[:title] %></span>
                 <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
               </a>
-              <%#= flow_thumbnail(item[:obj], service.service_id) %>
             </section>
           <% end %>
         <% end %>
