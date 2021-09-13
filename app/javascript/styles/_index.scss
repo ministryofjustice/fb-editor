@@ -589,24 +589,27 @@ margin-top: 300px;
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .flow-branch {
+  height: 145px;
+  overflow: visible;
+  width: 200px;
+
   a {
-    border:  $govuk-link-colour solid 2px;
+    box-sizing: border-box;
     color: govuk-colour("black");
 	  display: inline-block;
-	  height: 100px;
-    margin-top: 25px;
-	  rotate: 45deg;
-	  width: 100px;
+    margin-top: 45px;
+    padding: 0 40px;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
   }
 
-  span {
-	  display: inline-block;
-	  left: 5px;
-	  position: relative;
-	  rotate: -45deg;
-	  text-align: center;
-	  top: 25px;
-	  width: 90%;
+  img {
+    height: 145px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 200px
   }
 }
 
@@ -618,7 +621,6 @@ margin-top: 300px;
   a, span {
     display: inline;
     position: static;
-    rotate: 0deg;
     width: auto;
   }
 
@@ -715,7 +717,7 @@ margin-top: 300px;
 }
 
 #flow-overview {
-  border: 2px solid blue; // TEMPORARY
+  border: 2px solid #eee; // TEMPORARY
   height: 700px; // TEMPORARY
   overflow: auto; // TEMPORARY
   position: relative;
@@ -725,7 +727,7 @@ margin-top: 300px;
 #flow-overview-hardcoded-1,
 #flow-overview-hardcoded-2 {
   // DEVELOPMENT ONLY TEMPORARY AREA
-  border: 2px solid blue;
+  border: 2px solid #eee;
   height: 700px;
   margin-bottom: 200px;
   overflow: auto;
