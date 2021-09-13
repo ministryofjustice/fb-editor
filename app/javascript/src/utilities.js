@@ -253,6 +253,20 @@ function stringInject(str, injections) {
 }
 
 
+/* Return the largest width found from items within a jQuery collection
+ **/
+function maxWidth($collection) {
+  var max = 0;
+  $collection.each(function() {
+    var width = $(this).width();
+    if(width > max) {
+      max = width;
+    }
+  });
+  return max;
+}
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -268,5 +282,6 @@ module.exports  = {
   property: property,
   isBoolean: isBoolean,
   updateDomByApiRequest:updateDomByApiRequest,
-  stringInject: stringInject
+  stringInject: stringInject,
+  maxWidth: maxWidth
 }
