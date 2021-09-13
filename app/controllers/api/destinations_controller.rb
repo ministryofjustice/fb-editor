@@ -7,13 +7,10 @@ module Api
     end
 
     def create
-      @destination = build_destination
+      destination = build_destination
 
-      if @destination.change
-        redirect_to edit_service_path(service.service_id)
-      else
-        render :new, status: :unprocessable_entity
-      end
+      destination.change
+      redirect_to edit_service_path(service.service_id)
     end
 
     private
