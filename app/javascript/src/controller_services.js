@@ -43,6 +43,9 @@ class ServicesController extends DefaultController {
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
+  var $flowOverview = $("#flow-overview");
+  var $flowOverviewHardcoded_1 = $("#flow-overview-hardcoded-1");
+  var $flowOverviewHardcoded_2 = $("#flow-overview-hardcoded-2");
 
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
@@ -55,7 +58,12 @@ ServicesController.edit = function() {
   createMenuForAddPage(view);
   fixFormOverviewScroll();
 
-  positionFlowItems();
+  positionFlowItems($flowOverview);
+  positionFlowItems($flowOverviewHardcoded_1);
+  positionFlowItems($flowOverviewHardcoded_2);
+  applyFlowOverviewWidthWorkaround($flowOverview);
+  applyFlowOverviewWidthWorkaround($flowOverviewHardcoded_1);
+  applyFlowOverviewWidthWorkaround($flowOverviewHardcoded_2);
 }
 
 
@@ -290,10 +298,123 @@ function applyCustomOverviewWorkaround() {
 }
 
 
-/* Flow view positioning for design.
+// TODO; Temporary resizing of frame (will be improved with ticket regarding scroll implementation
+
+/* Quickfix workaround to try and adjust the width of available view
+ * area on the flow overview (otherwise restricted by container css).
  **/
-function positionFlowItems() {
-  console.log($(".flow-item"));
+function applyFlowOverviewWidthWorkaround($overview) {
+  const SELECTOR_FLOW_ITEM = ".flow-item";
+  var $container = $overview.find(" > .container");
+  var containerWidth = $container.width();
+  var overviewWidth = $overview.width();
+  var offsetLeft = $overview.offset().left;
+  var $items = $(SELECTOR_FLOW_ITEM, $overview);
+  var right = $items.last().position().left + $items.first().width();
+  var margin = 30; // Arbitrary number based on common
+  var maxWidth = window.innerWidth - (margin * 2);
+
+  // Adjust the overview height.
+  let lowestPoint = 0;
+  $items.each(function() {
+    var $current = $(this);
+    var bottom = ($current.position().top + $current.height());
+    if(bottom > lowestPoint) {
+      lowestPoint = bottom;
+    }
+  });
+  $overview.css("height", lowestPoint + "px");
+}
+
+
+
+/* Flow view positioning for design.
+**/
+function positionFlowItems($overview) {
+  const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
+  const SELECTOR_FLOW_CONDITION = ".flow-condition";
+  const SELECTOR_FLOW_EXPRESSIONS = ".flow-expression";
+  const SELECTOR_FLOW_ITEM = ".flow-item";
+  const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
+  const SPACING_X = 100;
+  const SPACING_Y = THUMBNAIL_HEIGHT / 2;
+  const CONDITIONS_LEFT_SPACING = 110 + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
+  var $container = $("> .container", $overview);
+  var containerWidth = $container.width();
+  var overviewWidth = $overview.width();
+  var margin = 30; // Arbitrary number based on common
+  var maxWidth = window.innerWidth - (margin * 2);
+  var $columns = $(".column", $overview);
+  var left = 0;
+
+  // Loop over found columns created from the flow
+  $columns.each(function() {
+    var $column = $(this);
+    var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
+    var $expressions = $(SELECTOR_FLOW_EXPRESSIONS, $conditions);
+    var $items = $(SELECTOR_FLOW_ITEM, this);
+    var maxExpressionWidth = utilities.maxWidth($expressions);
+    var addjustedConditionLeft = 0;
+    var top = 0;
+
+    // Reduce any conditions columns, if required.
+    if(maxExpressionWidth < $conditions.width()) {
+      $conditions.css("width", maxExpressionWidth + "px");
+    }
+
+    $items.each(function() {
+      var conditionY = THUMBNAIL_HEIGHT / 2;
+      var $item = $(this);
+
+      // First, bring it out of the column because we don't need it.
+      // We will remove the columns later.
+      $column.before($item);
+
+      // Positions boxes and diamonds
+      $item.css({
+        left: left + "px",
+        position: "absolute",
+        top: top + "px"
+      });
+
+      // Positions bubbles
+      $(SELECTOR_FLOW_CONDITION, this).each(function() {
+        var $condition = $(this);
+        $condition.css({
+          border: "1px solid green", // TODO: Development only
+          left: 0,
+          position: "absolute",
+          top: (conditionY - $condition.height()) + "px"
+        });
+
+        conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
+      });
+
+      top += THUMBNAIL_HEIGHT + SPACING_Y; // TODO: This might need some thinking to line things up.
+    });
+
+    if($conditions.length > 0) {
+      // Positions bubble container relative to diamond.
+      $conditions.css({
+        border: "1px solid blue", // TODO: Development only
+        left: CONDITIONS_LEFT_SPACING + "px",
+        position: "absolute",
+        top: "0px"
+      });
+
+      // Adjust distance based on finding some conditions
+      left += (CONDITIONS_LEFT_SPACING + $conditions.width());
+    }
+    else {
+      // Adjust distance based just on column width
+      left += utilities.maxWidth($items);
+    }
+
+    left += SPACING_X; // Use same spacing regardless of condition found, or not.
+  });
+
+  // Ditch the columns.
+  $columns.remove();
 }
 
 
