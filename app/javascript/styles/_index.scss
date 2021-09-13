@@ -569,7 +569,6 @@ html {
 }
 
 #form-overview {
-margin-top: 300px;
   overflow: visible;
 
   .container {
@@ -719,21 +718,12 @@ margin-top: 300px;
 #flow-overview {
   border: 2px solid #eee; // TEMPORARY
   height: 700px; // TEMPORARY
+  margin-bottom: 100px; // TEMPORARY
   overflow: auto; // TEMPORARY
   position: relative;
   width: 100%; // TEMPORARY
 }
 
-#flow-overview-hardcoded-1,
-#flow-overview-hardcoded-2 {
-  // DEVELOPMENT ONLY TEMPORARY AREA
-  border: 2px solid #eee;
-  height: 700px;
-  margin-bottom: 200px;
-  overflow: auto;
-  position: relative;
-  width: 100%;
-}
 
 
 /* Question Menu
