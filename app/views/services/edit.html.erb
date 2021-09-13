@@ -5,38 +5,379 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
-<%#= debug @pages_flow %>
-<div id="flow-overview">
-  <% @pages_flow.each do |collection| %>
-    <% collection.each do |item| %>
-      <% if item[:type] == 'flow.branch' %>
-        <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
-          <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
-             <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
-             <span><%= item[:title] || 'Untitled Branch' %></span>
-          <% end %>
-        </section>
-      <% else %>
-        <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
-          <%#= debug item[:obj] %>
-          <%= flow_thumbnail(item[:obj], service.service_id) %>
-        </section>
-      <% end %>
-    <% end %>
-  <% end %>
+<%# ----------------------------------------------------------------------------------------------------- %>
+<%# TEMPORARY HARDCODED HTML IN FORM EXPECTED %>
+<div id="flow-overview-hardcoded-1">
+  <div class="container">
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                  <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                  <span class="text">Apply for a juggling licence</span>
+                  <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Apply for a juggling licence
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">How many balls can you juggle with?</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                How many balls can you juggle with?
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">What else can you juggle with?</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                What else can you juggle with
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-branch">
+              <a href="#">
+                <span class="govuk-visually-hidden">Edit</span>
+                <span>Branching node 1</span>
+              </a>
+              <ul class="flow-conditions">
+                <li class="flow-condition" data-fb-next="b3afdc4c-9fc6-4293-8972-037a1ba712c2">
+                  <div class="flow-expression">
+                    <span class="question">How many balls can you juggle with?</span>
+                    <span class="match">is</span>
+                    <span class="answer">3 or more</span>
+                  </div>
+                </li>
+                <li class="flow-condition" data-fb-next="265785ed-6e3e-415a-874b-0fac4a1d7611">
+                  <div class="flow-expression">
+                    <span class="question">Otherwise</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+              </ul>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">What's your best juggling trick? (optional)</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                What's your best juggling trick? (optional)
+              </a>
+          </section>
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">You don't need a licence</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                You don't need a licence
+              </a>
+          </section>
+      </div>
+
+  </div>
+</div>
+
+<!-- ===================================================================================================== -->
+
+
+<div id="flow-overview-hardcoded-2">
+  <div class="container">
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                  <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                  <span class="text">Start</span>
+                  <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Start
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Long label for question 1</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Long label for question 1
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Long label for question 2</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Long label for question 2
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-branch">
+              <a href="#">
+                <span class="govuk-visually-hidden">Edit</span>
+                <span>Branching node 1</span>
+              </a>
+              <ul class="flow-conditions">
+                <li class="flow-condition" data-fb-next="b3afdc4c-9fc6-4293-8972-037a1ba712c2">
+                  <div class="flow-expression">
+                    <span class="question">Question 1</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer 1</span>
+                  </div>
+                  <div class="flow-expression">
+                    <span class="match">AND</span>
+                    <span class="question">Question 2</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer 2</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+                <li class="flow-condition" data-fb-next="96e8c505-85a0-4592-9c9f-8794ab454d22">
+                  <div class="flow-expression">
+                    <span class="question">Question 1</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer 1</span>
+                  </div>
+                  <div class="flow-expression">
+                    <span class="match">AND</span>
+                    <span class="question">Question 2</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer 3</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+                <li class="flow-condition" data-fb-next="265785ed-6e3e-415a-874b-0fac4a1d7611">
+                  <div class="flow-expression">
+                    <span class="question">Otherwise</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+              </ul>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 3</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 3
+              </a>
+          </section>
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 4</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 4
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-branch">
+              <a href="#">
+                <span class="govuk-visually-hidden">Edit</span>
+                <span>Branching node 2</span>
+              </a>
+              <ul class="flow-conditions">
+                <li class="flow-condition" data-fb-next="b3afdc4c-9fc6-4293-8972-037a1ba712c2--AAA">
+                  <div class="flow-expression">
+                    <span class="question">Question 4</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer B</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+                <li class="flow-condition" data-fb-next="96e8c505-85a0-4592-9c9f-8794ab454d22--BBB">
+                  <div class="flow-expression">
+                    <span class="question">Question 4</span>
+                    <span class="match">is</span>
+                    <span class="answer">Answer C</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+                <li class="flow-condition" data-fb-next="265785ed-6e3e-415a-874b-0fac4a1d7611--CCC">
+                  <div class="flow-expression">
+                    <span class="question">Otherwise</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+              </ul>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 6</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 6
+              </a>
+          </section>
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 5a</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 5a
+              </a>
+          </section>
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 5b</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 5b
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Title for question 7</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Title for question 7
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-branch">
+              <a href="#">
+                <span class="govuk-visually-hidden">Edit</span>
+                <span>Branching node 3</span>
+              </a>
+              <ul class="flow-conditions">
+                <li class="flow-condition" data-fb-next="265785ed-6e3e-415a-874b-0fac4a1d7611">
+                  <div class="flow-expression">
+                    <span class="question">Otherwise</span>
+                  </div>
+                  <a class="govuk-visually-hidden">Go to: [next page title here]</a>
+                </li>
+              </ul>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Change Your Answers</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Change Your Answers
+              </a>
+          </section>
+      </div>
+      <div class="column">
+          <section class="flow-item flow-page">
+              <a class="flow-thumbnail text" aria-hidden="true" href="#">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text">Confirmation</span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <a class="flow-link">
+                <span class="govuk-visually-hidden">Edit: </span>
+                Confirmation
+              </a>
+          </section>
+      </div>
+
+  </div>
 </div>
 
 
 
+<%# ----------------------------------------------------------------------------------------------------- %>
+<%# THE REAL FLOW VIEW CODE HERE %>
+
+<%#= debug @pages_flow %>
+
+<div id="flow-overview">
+  <div class="container">
+
+    <% @pages_flow.each do |collection| %>
+      <div class="column">
+        <% collection.each do |item| %>
+          <% if item[:type] == 'flow.branch' %>
+            <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+              <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
+                <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
+                <span><%= item[:title] || 'Untitled Branch' %></span>
+              <% end %>
+            </section>
+          <% else %>
+            <%#= debug item[:obj] %>
+            <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
+              <a class="flow-thumbnail text" href="#" aria-hidden="true">
+                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                <span class="text"><%= item[:title] %></span>
+                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+              </a>
+              <%#= flow_thumbnail(item[:obj], service.service_id) %>
+            </section>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
 
 
-
-
-
-
-
-
-
+<%# ----------------------------------------------------------------------------------------------------- %>
+<%# OLD FORM OVERVIEW PAGE HERE %>
 <div id="form-overview">
 
   <% if ENV['BRANCHING'] == 'enabled' %>
