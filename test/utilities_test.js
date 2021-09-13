@@ -336,4 +336,8 @@ describe('Utilities', function () {
       assert.equal(utilities.stringInject(text, words), "These are not the droids you are #{verb} for.");
     });
   });
+
+  describe('mazWidth', function() {
+    it('should return the maxWidth found in a collection');
+  });
 });
