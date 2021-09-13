@@ -100,3 +100,9 @@
     color: govuk-colour("white");
   }
 }
+
+@mixin list_reset {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
