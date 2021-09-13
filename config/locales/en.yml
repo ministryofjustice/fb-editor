@@ -73,7 +73,7 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
-    change_destination: 'Change destination'
+    change_destination: 'Change destination...'
   branches:
     branch_add: 'Add another branch'
     branch_remove: 'Delete'
@@ -96,6 +96,12 @@ en:
     cancel: 'Cancel'
     actions: 'Actions'
     footer: 'Form footer'
+    destination:
+      heading: 'Change destination'
+      lede: 'Update this connection to lead to the following page:'
+      hint: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
+      submit: 'Change destination'
+      cancel: 'Cancel'
   components:
     list:
       text: 'Text'
