@@ -89,6 +89,10 @@ class Branch
     previous_flow_object.title
   end
 
+  def previous_flow_default_next
+    service.flow_object(previous_flow_uuid).default_next
+  end
+
   def previous_pages
     service.pages
   end
