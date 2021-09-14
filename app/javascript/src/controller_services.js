@@ -304,13 +304,13 @@ function applyCustomOverviewWorkaround() {
  **/
 function applyFlowOverviewWidthWorkaround($overview) {
   const SELECTOR_FLOW_ITEM = ".flow-item";
-  var $container = $overview.find(" > .container");
+  //var $container = $overview.find(" > .container");
   //var containerWidth = $container.width();
   //var overviewWidth = $overview.width();
   //var offsetLeft = $overview.offset().left;
   var $items = $(SELECTOR_FLOW_ITEM, $overview);
   //var right = $items.last().position().left + $items.first().width();
-  var margin = 30; // Arbitrary number based on common
+  //var margin = 30; // Arbitrary number based on common
   //var maxWidth = window.innerWidth - (margin * 2);
 
   // Adjust the overview height.
@@ -340,8 +340,6 @@ function positionFlowItems($overview) {
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = THUMBNAIL_WIDTH + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
-  var $container = $("> .container", $overview);
-  var margin = 30; // Arbitrary number based on common
   var $columns = $(".column", $overview);
   var left = 0;
 
