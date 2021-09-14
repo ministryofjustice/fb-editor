@@ -9,7 +9,7 @@ module MetadataVersion
       errors.add(:base, :invalid, message: version.errors)
       false
     else
-      @version = version
+      version.metadata
     end
   end
 end

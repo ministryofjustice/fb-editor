@@ -1,7 +1,5 @@
-require 'rails_helper'
-
 RSpec.describe 'Expressions spec', type: :request do
-  describe 'GET /components/:component_id/conditionals/:conditionals_index/expressions/:expressions_index' do
+  describe 'GET /api/services/:service_id/components/:component_id/conditionals/:conditionals_index/expressions/:expressions_index' do
     let(:request) do
       get "/api/services/#{service.service_id}/components/#{component_id}/conditionals/#{conditionals_index}/expressions/#{expressions_index}"
     end

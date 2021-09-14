@@ -50,6 +50,10 @@
             <%= link_to t('services.branch'),
               new_branches_path(service.service_id, page.uuid) %>
           </li>
+          <li data-action="edit">
+            <%= link_to t('actions.change_destination'),
+              new_api_service_flow_destination_path(service.service_id, page.uuid) %>
+          </li>
           <% end %>
         </ul>
 
