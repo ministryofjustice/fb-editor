@@ -50,7 +50,7 @@ module BranchingSteps
     and_I_add_another_branch
     then_I_should_see_the_branch_title(index: 1, title: 'Branch 2')
 
-    and_I_delete_the_conditional(1)
+    and_I_delete_the_branch(1)
     then_I_should_not_see_text('Branch 2')
   end
 
@@ -76,7 +76,9 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_branching_page
-    expect(editor.question_heading.first.text).to eq('Branching point 1')
+    expect(editor.question_heading.first.text).to eq(
+      I18n.t('default_values.branching_title', branching_number: 1)
+    )
   end
 
   def and_I_select_the_destination_page_dropdown
@@ -133,7 +135,7 @@ module BranchingSteps
     editor.add_another_branch.click
   end
 
-  def and_I_delete_the_conditional(index)
+  def and_I_delete_the_branch(index)
     editor.find("div[data-conditional-index='#{index}'] button").click
     editor.find('a.branch-remover').click
   end

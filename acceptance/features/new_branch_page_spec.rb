@@ -21,7 +21,7 @@ feature 'New branch page' do
     and_I_select_the_destination_page_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_next',
-      8
+      6
     )
     and_I_choose_an_option(
       'branch[conditionals_attributes][0][next]',
@@ -58,7 +58,7 @@ feature 'New branch page' do
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_default_next',
-      7
+      5
     )
     and_I_choose_an_option(
       'branch[default_next]',
