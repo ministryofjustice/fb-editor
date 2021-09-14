@@ -16,9 +16,9 @@
 
       <%= f.label :default_next, t('branches.goto'), { class: "govuk-label" } %>
       <%= f.select :default_next,
-      @branch.pages,
-      { selected: @branch.previous_flow_default_next},
-      { class: 'govuk-select' } %>
+          @branch.destinations,
+          { selected: @branch.previous_flow_default_next },
+          { class: 'govuk-select' } %>
     </div>
     <p class="govuk-!-font-weight-bold"><%= t('branches.hint_otherwise') %></p>
   </div>

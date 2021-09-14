@@ -4,7 +4,7 @@ module DestinationsList
       next if invalid_destination?(flow.uuid, current_uuid)
 
       [flow_title(flow), flow.uuid]
-    }.compact
+    }.compact.uniq
   end
 
   def flow_title(flow_object)

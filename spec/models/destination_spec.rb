@@ -86,4 +86,46 @@ RSpec.describe Destination do
       end
     end
   end
+
+  context 'when there are different branches point to the same page' do
+    let(:page_flow) do
+      service.flow_object(service.find_page_by_url('name').uuid)
+    end
+    let(:flow_objects) { [page_flow, page_flow] }
+    let(:expected_destination_list) do
+      [['Full name', '9e1ba77f-f1e5-42f4-b090-437aa9af7f73']]
+    end
+
+    before do
+      allow_any_instance_of(Destination).to receive(:service).and_return(service)
+    end
+
+    it 'does not allow duplicate list items' do
+      expect(
+        destination.destinations_list(flow_objects: flow_objects)
+      ).to eq(expected_destination_list)
+    end
+  end
+
+  context 'when pages have the same titles' do
+    let(:wrong_answers_page) do
+      service.flow_object('6324cca4-7770-4765-89b9-1cdc41f49c8b')
+    end
+    let(:incomplete_answers_page) do
+      service.flow_object('941137d7-a1da-43fd-994a-98a4f9ea6d46')
+    end
+    let(:flow_objects) { [wrong_answers_page, incomplete_answers_page] }
+    let(:expected_destination_list) do
+      [
+        ['You are wrong', '6324cca4-7770-4765-89b9-1cdc41f49c8b'],
+        ['You are wrong', '941137d7-a1da-43fd-994a-98a4f9ea6d46']
+      ]
+    end
+
+    it 'will list both pages' do
+      expect(
+        destination.destinations_list(flow_objects: flow_objects)
+      ).to eq(expected_destination_list)
+    end
+  end
 end

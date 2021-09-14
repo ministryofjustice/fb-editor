@@ -143,26 +143,40 @@ RSpec.describe Branch do
     end
   end
 
-  describe '#pages' do
-    it 'returns all pages' do
-      expect(branch.pages.map { |page| page[0] }).to eq(
-        [
-          'Service name goes here',
-          'Full name',
-          'Email address',
-          'Parent name',
-          'Your age',
-          'Family Hobbies',
-          'Do you like Star Wars?',
-          'What is the day that you like to take holidays?',
-          'What would you like on your burger?',
-          'How well do you know Star Wars?',
-          'Tell me how many lights you see',
-          'Upload your best dog photo',
-          'Check your answers',
-          'Complaint sent'
-        ]
-      )
+  describe '#destinations' do
+    let(:latest_metadata) { metadata_fixture(:branching) }
+    let(:service) { MetadataPresenter::Service.new(latest_metadata) }
+    let(:previous_page) do
+      service.find_page_by_url('name')
+    end
+    let(:expected_destination_pages) do
+      [
+        'Full name',
+        'Do you like Star Wars?',
+        'How well do you know Star Wars?',
+        'What is your favourite fruit?',
+        'Do you like apple juice?',
+        'Do you like orange juice?',
+        'What is your favourite band?',
+        'Which app do you use to listen music?',
+        'What is the best form builder?',
+        'Which Formbuilder is the best?',
+        'What would you like on your burger?',
+        'Global warming',
+        'We love chickens',
+        'What is the best marvel series?',
+        'Loki',
+        'Other quotes',
+        'Select all Arnold Schwarzenegger quotes',
+        'You are right',
+        'You are wrong',
+        'You are wrong',
+        'Check your answers'
+      ]
+    end
+
+    it 'returns valid destinations without branches' do
+      expect(branch.destinations.map(&:first)).to eq(expected_destination_pages)
     end
   end
 

@@ -36,6 +36,8 @@ class OrderedFlow
   attr_accessor :service, :exclude_branches, :pages_flow, :ordered
 
   def add_flow_object(previous, current)
+    return if current.branch? && exclude_branches
+
     if pages_flow
       @ordered.append(
         FlowStack.new(
