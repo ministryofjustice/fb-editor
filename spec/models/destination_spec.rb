@@ -41,36 +41,36 @@ RSpec.describe Destination do
       let(:expected_destinations) do
         [
           'Do you like Star Wars?',
+          'Branching point 1',
           'How well do you know Star Wars?',
           'What is your favourite fruit?',
+          'Branching point 2',
           'Do you like apple juice?',
           'Do you like orange juice?',
           'What is your favourite band?',
+          'Branching point 3',
           'Which app do you use to listen music?',
           'What is the best form builder?',
+          'Branching point 4',
           'Which Formbuilder is the best?',
           'What would you like on your burger?',
+          'Branching point 5',
           'Global warming',
           'We love chickens',
           'What is the best marvel series?',
+          'Branching point 6',
           'Loki',
           'Other quotes',
           'Select all Arnold Schwarzenegger quotes',
+          'Branching point 7',
           'You are right',
           'You are wrong',
           'You are wrong',
-          'Check your answers',
-          'Branching point 1',
-          'Branching point 2',
-          'Branching point 3',
-          'Branching point 4',
-          'Branching point 5',
-          'Branching point 6',
-          'Branching point 7'
+          'Check your answers'
         ]
       end
 
-      it 'returns branches and pages without start, confirmation and the page that is being changed' do
+      it 'returns branches and pages in flow order without start, confirmation and the page that is being changed' do
         destinations = destination.destinations.map { |d| d[0] }
         expect(destinations).to eq(expected_destinations)
       end
