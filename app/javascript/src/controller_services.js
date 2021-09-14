@@ -44,8 +44,6 @@ class ServicesController extends DefaultController {
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   var $flowOverview = $("#flow-overview");
-  var $flowOverviewHardcoded_1 = $("#flow-overview-hardcoded-1");
-  var $flowOverviewHardcoded_2 = $("#flow-overview-hardcoded-2");
 
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
@@ -294,21 +292,26 @@ function applyCustomOverviewWorkaround() {
 }
 
 
-// TODO; Temporary resizing of frame (will be improved with ticket regarding scroll implementation
-
-/* Quickfix workaround to try and adjust the width of available view
+/* TODO; Temporary resizing of frame (will be improved with ticket regarding scroll implementation
+ *
+ * Quickfix workaround to try and adjust the width of available view
  * area on the flow overview (otherwise restricted by container css).
+ * --------------------------------------------------------------------------
+ * THIS IS WIP AND BASED ON applyCustomOverviewWorkaround() SO CONTAINS SOME
+ * VARIABLES THAT COULD BE USEFUL BUT, DUE TO LGTM SCRIPTS POINTING OUT THEIR
+ * CURRENT LACK OF USE, THEY HAVE BEEN TEMPORARILY COMMENTED OUT.
+ * --------------------------------------------------------------------------
  **/
 function applyFlowOverviewWidthWorkaround($overview) {
   const SELECTOR_FLOW_ITEM = ".flow-item";
   var $container = $overview.find(" > .container");
-  var containerWidth = $container.width();
-  var overviewWidth = $overview.width();
-  var offsetLeft = $overview.offset().left;
+  //var containerWidth = $container.width();
+  //var overviewWidth = $overview.width();
+  //var offsetLeft = $overview.offset().left;
   var $items = $(SELECTOR_FLOW_ITEM, $overview);
-  var right = $items.last().position().left + $items.first().width();
+  //var right = $items.last().position().left + $items.first().width();
   var margin = 30; // Arbitrary number based on common
-  var maxWidth = window.innerWidth - (margin * 2);
+  //var maxWidth = window.innerWidth - (margin * 2);
 
   // Adjust the overview height.
   let lowestPoint = 0;
@@ -338,10 +341,7 @@ function positionFlowItems($overview) {
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = THUMBNAIL_WIDTH + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
   var $container = $("> .container", $overview);
-  var containerWidth = $container.width();
-  var overviewWidth = $overview.width();
   var margin = 30; // Arbitrary number based on common
-  var maxWidth = window.innerWidth - (margin * 2);
   var $columns = $(".column", $overview);
   var left = 0;
 
@@ -352,7 +352,6 @@ function positionFlowItems($overview) {
     var $expressions = $(SELECTOR_FLOW_EXPRESSIONS, $conditions);
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var maxExpressionWidth = utilities.maxWidth($expressions);
-    var addjustedConditionLeft = 0;
     var top = 0;
 
     // Reduce any conditions columns, if required.
