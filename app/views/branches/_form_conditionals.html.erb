@@ -14,7 +14,7 @@
 
         <%= conditional.label :next, t('branches.goto'), { class: "govuk-label" } %>
         <%= conditional.select :next,
-          @branch.pages,
+          @branch.destinations,
           { include_blank: t('branches.select_destination') },
           { class: 'govuk-select' } %>
       </div>

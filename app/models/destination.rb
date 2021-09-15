@@ -1,9 +1,8 @@
 class Destination
   include ActiveModel::Model
+  include DestinationsList
   include MetadataVersion
   attr_accessor :service, :flow_uuid, :destination_uuid
-
-  INVALID_DESTINATIONS = %w[page.start page.confirmation].freeze
 
   alias_method :change, :create_version
 
@@ -13,7 +12,7 @@ class Destination
   end
 
   def destinations
-    (pages + branches).map { |item| [item.title, item.uuid] }
+    destinations_list(flow_objects: ordered_flow, current_uuid: flow_uuid)
   end
 
   def current_destination
@@ -22,13 +21,7 @@ class Destination
 
   private
 
-  def pages
-    service.pages.reject do |page|
-      page.type.in?(INVALID_DESTINATIONS) || page.uuid == flow_uuid
-    end
-  end
-
-  def branches
-    service.branches.sort_by(&:title)
+  def ordered_flow
+    OrderedFlow.new(service: service).build
   end
 end

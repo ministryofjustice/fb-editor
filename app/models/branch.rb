@@ -1,5 +1,6 @@
 class Branch
   include ActiveModel::Model
+  include DestinationsList
   include BranchTitleGenerator
   attr_accessor :previous_flow_uuid, :service, :default_next
   attr_writer :title
@@ -67,8 +68,8 @@ class Branch
     end
   end
 
-  def pages
-    service.pages.map { |page| [page.title, page.uuid] }
+  def destinations
+    destinations_list(flow_objects: ordered_flow)
   end
 
   def previous_questions
@@ -117,6 +118,10 @@ class Branch
   end
 
   private
+
+  def ordered_flow
+    OrderedFlow.new(service: service, exclude_branches: true).build
+  end
 
   def previous_flow_object
     service.find_page_by_uuid(previous_flow_uuid) ||
