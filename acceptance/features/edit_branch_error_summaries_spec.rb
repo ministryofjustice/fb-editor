@@ -17,10 +17,9 @@ feature 'Branching errors' do
 
     when_I_save_my_changes
     then_I_should_see_an_error_summary
-    then_I_should_see_error_summary_errors(3)
+    then_I_should_see_error_summary_errors(2)
     then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
     then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}1")
-    then_I_should_see_branching_error_message(I18n.t('activemodel.errors.models.branch.blank', attribute: 'Otherwise'))
   end
 
   scenario 'when the "Go to" field is not filled in' do
@@ -58,7 +57,7 @@ feature 'Branching errors' do
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_default_next',
-      8
+      7
     )
     and_I_choose_an_option(
       'branch[default_next]',
@@ -69,54 +68,6 @@ feature 'Branching errors' do
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(1)
     then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
-  end
-
-  scenario 'when the Otherwise/default next field is not filled in' do
-    given_I_add_all_pages_for_a_form_with_branching
-    and_I_return_to_flow_page
-    and_I_want_to_add_branching(1)
-
-    and_I_select_the_destination_page_dropdown
-    then_I_should_see_the_correct_number_of_options(
-      '#branch_conditionals_attributes_0_next',
-      8
-    )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][next]',
-      'Favourite hiking destination'
-    )
-
-    and_I_select_the_condition_dropdown
-    then_I_should_see_the_correct_number_of_options(
-      '#branch_conditionals_attributes_0_expressions_attributes_0_component',
-      5
-    )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
-    then_I_should_see_statement_answers
-
-    and_I_select_the_operator_dropdown
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
-      'is'
-    )
-
-    and_I_select_the_field_dropdown
-    then_I_should_see_the_correct_number_of_options(
-      '#branch_conditionals_attributes_0_expressions_attributes_0_field',
-      2
-    )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
-      'Hiking'
-    )
-
-    when_I_save_my_changes
-    then_I_should_see_an_error_summary
-    then_I_should_see_error_summary_errors(1)
-    then_I_should_see_branching_error_message(I18n.t('activemodel.errors.models.branch.blank', attribute: 'Otherwise'))
   end
 
   scenario 'when there are two conditional objects to a branching point' do
@@ -174,7 +125,7 @@ feature 'Branching errors' do
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_default_next',
-      8
+      7
     )
     and_I_choose_an_option(
       'branch[default_next]',

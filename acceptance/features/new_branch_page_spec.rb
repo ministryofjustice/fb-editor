@@ -15,6 +15,8 @@ feature 'New branch page' do
     and_I_want_to_add_branching(1)
 
     then_I_should_be_on_the_correct_branch_page('new')
+    then_I_should_see_text(I18n.t('branches.title_otherwise'))
+    then_I_should_see_text(I18n.t('branches.hint_otherwise'))
 
     and_I_select_the_destination_page_dropdown
     then_I_should_see_the_correct_number_of_options(
@@ -56,7 +58,7 @@ feature 'New branch page' do
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_default_next',
-      8
+      7
     )
     and_I_choose_an_option(
       'branch[default_next]',

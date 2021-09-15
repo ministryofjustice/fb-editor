@@ -9,11 +9,11 @@ RSpec.describe Branch do
       service: service
     }.merge(attributes)
   end
-  let(:previous_flow_object) do
+  let(:previous_page) do
     service.find_page_by_url('holiday')
   end
   let(:previous_flow_uuid) do
-    previous_flow_object.uuid
+    previous_page.uuid
   end
 
   describe '#title' do
@@ -167,7 +167,7 @@ RSpec.describe Branch do
   end
 
   describe '#previous_questions' do
-    let(:previous_flow_object) do
+    let(:previous_page) do
       service.find_page_by_url('dog-picture')
     end
 
@@ -210,7 +210,7 @@ RSpec.describe Branch do
 
   describe '#previous_flow_title' do
     it 'returns the title of the previous flow object' do
-      expect(branch.previous_flow_title).to eq(previous_flow_object.title)
+      expect(branch.previous_flow_title).to eq(previous_page.title)
     end
   end
 
@@ -300,6 +300,14 @@ RSpec.describe Branch do
         errors = branch.conditionals.first.errors
         expect(errors).to be_blank
       end
+    end
+  end
+
+  describe '#previous_flow_default_next' do
+    let(:previous_flow_object) { service.flow_object(previous_flow_uuid) }
+
+    it 'returns the default next uuid for the previous flow object' do
+      expect(branch.previous_flow_default_next).to eq(previous_flow_object.default_next)
     end
   end
 end

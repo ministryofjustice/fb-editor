@@ -88,6 +88,7 @@ en:
     select_question: '--Select a question--'
     conditional_title: 'Branch '
     title_otherwise: 'Otherwise'
+    hint_otherwise: 'In any other case'
   pages:
     flow:
       heading: 'Pages flow'
