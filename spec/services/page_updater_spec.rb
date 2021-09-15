@@ -301,6 +301,78 @@ RSpec.describe PageUpdater do
       end
     end
 
+    context 'when receiving component with items without UUID' do
+      let(:page_url) { 'do-you-like-star-wars' }
+      let(:attributes) do
+        {
+          uuid: find_page_uuid('do-you-like-star-wars', service_metadata),
+          service_id: service.service_id,
+          latest_metadata: service_metadata
+        }.merge(attributes_to_update)
+      end
+      let(:attributes_to_update) do
+        {
+          'components' => [
+            '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+            'items' => [
+              {
+                '_uuid' => ''
+              },
+              {
+                '_uuid' => ''
+              },
+              {
+                '_uuid' => ''
+              },
+              {
+                '_uuid' => nil
+              },
+              {
+                '_uuid' => nil
+              }
+            ]
+          ]
+        }.stringify_keys
+      end
+
+      before do
+        # we just want to test the metadata generated
+        RSpec::Mocks.space.proxy_for(MetadataApiClient::Version).reset
+
+        RSpec::Mocks.space.proxy_for(SecureRandom).reset
+
+        allow(SecureRandom).to receive(:uuid).and_return(
+          'Captain Insano shows no mercy',
+          'No, You are wrong Colonel Sanders',
+          'Now thats what I call high quality H2O',
+          'Once again, I am not quite sure what that means',
+          'You can do it'
+        )
+      end
+      let(:updated_page) do
+        MetadataPresenter::Service.new(
+          page.metadata
+        ).find_page_by_url(page_url)
+      end
+      let(:uuids) do
+        updated_page.to_h[:components][0]['items'].map do |item|
+          item['_uuid']
+        end
+      end
+
+      it 'updates the page metadata inserting new UUIDs' do
+        expect(uuids).to eq(
+          [
+            'Captain Insano shows no mercy',
+            'No, You are wrong Colonel Sanders',
+            'Now thats what I call high quality H2O',
+            'Once again, I am not quite sure what that means',
+            'You can do it'
+          ]
+        )
+      end
+    end
+
     context 'when receiving component / items with duplicated UUID' do
       let(:page_url) { 'do-you-like-star-wars' }
       let(:attributes) do
