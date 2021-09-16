@@ -46,14 +46,16 @@
             <% end %>
           </li>
           <% if ENV['BRANCHING'] == 'enabled' %>
-          <li data-action="edit">
-            <%= link_to t('services.branch'),
-              new_branches_path(service.service_id, page.uuid) %>
-          </li>
-          <li data-action="edit">
-            <%= link_to t('actions.change_destination'),
-              new_api_service_flow_destination_path(service.service_id, page.uuid) %>
-          </li>
+            <li data-action="edit">
+              <%= link_to t('services.branch'),
+                new_branches_path(service.service_id, page.uuid) %>
+            </li>
+            <% unless (page.type =~ /page.(checkanswers|confirmation)/) %>
+              <li data-action="edit">
+                <%= link_to t('actions.change_destination'),
+                  new_api_service_flow_destination_path(service.service_id, page.uuid) %>
+              </li>
+            <% end %>
           <% end %>
         </ul>
 
@@ -128,5 +130,16 @@
 
   </div>
 </div>
+
+  <% if ENV['BRANCHING'] == 'enabled' %>
+  <div class="govuk-!-margin-top-10">
+    <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
+    <% @detached_objects.each do |flow| %>
+      <ul class="govuk-navigation">
+        <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
+      </ul>
+    <% end %>
+  </div>
+  <% end %>
 
 <%= render partial: 'partials/standalone' %>

@@ -25,22 +25,36 @@ class PagesFlow
     )
   end
 
+  def ordered_flow
+    @ordered_flow ||=
+      OrderedFlow.new(service: service, pages_flow: true).build
+  end
+
+  def detached_objects
+    Detached.new(
+      service: service,
+      ordered_flow: ordered_flow
+    ).flow_objects.map do |flow|
+      convert_flow_object(flow)
+    end
+  end
+
   private
 
   attr_reader :service
   attr_accessor :traversed
-
-  def ordered_flow
-    OrderedFlow.new(service: service, pages_flow: true).build
-  end
 
   def convert_flow_objects(group)
     group.map do |flow|
       next if @traversed.include?(flow.uuid)
 
       @traversed.push(flow.uuid)
-      flow.type == 'flow.page' ? page(flow) : branch(flow)
+      convert_flow_object(flow)
     end
+  end
+
+  def convert_flow_object(flow)
+    flow.type == 'flow.page' ? page(flow) : branch(flow)
   end
 
   def base_props(obj)

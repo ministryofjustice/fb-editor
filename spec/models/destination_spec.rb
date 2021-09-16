@@ -75,6 +75,52 @@ RSpec.describe Destination do
         expect(destinations).to eq(expected_destinations)
       end
     end
+
+    context 'with detached objects' do
+      let(:latest_metadata) do
+        metadata = metadata_fixture('branching')
+        checkanswers = metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+        obj = metadata['flow']['48357db5-7c06-4e85-94b1-5e1c9d8f39eb'] # select all arnie quotes
+        obj['next']['default'] = checkanswers['_uuid']
+        metadata
+      end
+      let(:expected_destinations) do
+        [
+          'Do you like Star Wars?',
+          'Branching point 1',
+          'How well do you know Star Wars?',
+          'What is your favourite fruit?',
+          'Branching point 2',
+          'Do you like apple juice?',
+          'Do you like orange juice?',
+          'What is your favourite band?',
+          'Branching point 3',
+          'Which app do you use to listen music?',
+          'What is the best form builder?',
+          'Branching point 4',
+          'Which Formbuilder is the best?',
+          'What would you like on your burger?',
+          'Branching point 5',
+          'Global warming',
+          'We love chickens',
+          'What is the best marvel series?',
+          'Branching point 6',
+          'Loki',
+          'Other quotes',
+          'Select all Arnold Schwarzenegger quotes',
+          'Check your answers',
+          'Branching point 7',
+          'You are wrong',
+          'You are right',
+          'You are wrong'
+        ]
+      end
+
+      it 'places the detached objects last in the list' do
+        destinations = destination.destinations.map { |d| d[0] }
+        expect(destinations).to eq(expected_destinations)
+      end
+    end
   end
 
   describe '#current_destination' do
@@ -87,17 +133,13 @@ RSpec.describe Destination do
     end
   end
 
-  context 'when there are different branches point to the same page' do
+  context 'when there are different branches pointing to the same page' do
     let(:page_flow) do
       service.flow_object(service.find_page_by_url('name').uuid)
     end
     let(:flow_objects) { [page_flow, page_flow] }
     let(:expected_destination_list) do
       [['Full name', '9e1ba77f-f1e5-42f4-b090-437aa9af7f73']]
-    end
-
-    before do
-      allow_any_instance_of(Destination).to receive(:service).and_return(service)
     end
 
     it 'does not allow duplicate list items' do

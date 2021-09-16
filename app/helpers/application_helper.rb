@@ -27,6 +27,14 @@ module ApplicationHelper
     url.to_s.chomp('/').reverse.chomp('/').reverse.strip.downcase
   end
 
+  def detached_edit_link(flow)
+    if flow[:type] == 'flow.branch'
+      edit_branch_path(service.service_id, flow[:uuid])
+    else
+      edit_page_path(service.service_id, flow[:uuid])
+    end
+  end
+
   # Remove once hotjar testing is complete
   def live_platform?
     ENV['PLATFORM_ENV'] == 'live'
