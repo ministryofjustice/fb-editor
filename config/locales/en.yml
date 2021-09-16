@@ -40,6 +40,11 @@ en:
     heading_delete_option: Delete the option \"%{option label}\"?
     message: General message here
     message_delete: 'This cannot be undone'
+    destination:
+      button_change: Change destination
+      label: 'Change destination'
+      hint: 'Update this connection to lead to the following page:'
+      text: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -97,12 +102,6 @@ en:
     cancel: 'Cancel'
     actions: 'Actions'
     footer: 'Form footer'
-    destination:
-      heading: 'Change destination'
-      lede: 'Update this connection to lead to the following page:'
-      hint: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
-      submit: 'Change destination'
-      cancel: 'Cancel'
   components:
     list:
       text: 'Text'

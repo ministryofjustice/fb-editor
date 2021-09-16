@@ -73,7 +73,7 @@
             data-component="PageActionMenu"
             data-page-heading="<%= page.title %>"
             data-uuid="<%= page._uuid %>">
-          <li data-action="edit">
+          <li data-action="none">
             <%= link_to t('actions.edit_page'),
             edit_page_path(service.service_id, page.uuid) %>
           </li>
@@ -91,11 +91,11 @@
             <% end %>
           </li>
           <% if ENV['BRANCHING'] == 'enabled' %>
-          <li data-action="edit">
+          <li data-action="none">
             <%= link_to t('services.branch'),
               new_branches_path(service.service_id, page.uuid) %>
           </li>
-          <li data-action="edit">
+          <li data-action="destination">
             <%= link_to t('actions.change_destination'),
               new_api_service_flow_destination_path(service.service_id, page.uuid) %>
           </li>
