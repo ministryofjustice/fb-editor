@@ -23,6 +23,7 @@ const post = utilities.post;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const ActivatedDialog = require('./component_activated_dialog');
+const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 
 
@@ -121,16 +122,13 @@ class PageActionMenu extends ActivatedMenu {
 
 /* Handle item selections on the form step context
  * menu elements.
- * TODO: What are other actions?
  **/
 function pageActionMenuSelection(event, data) {
   var element = data.original.element;
   var action = data.activator.data("action");
-  switch(action) {
-    case "edit":
-         location.href = element.href;
-         break;
+  var view = this;
 
+  switch(action) {
     case "preview":
          window.open(element.href);
          break;
@@ -150,6 +148,21 @@ function pageActionMenuSelection(event, data) {
          });
          break;
 
+    case "destination":
+         event.preventDefault();
+         new DialogApiRequest(element.href, {
+           activator: element,
+           buttons: [{
+             text: view.text.dialogs.button_change_destination,
+             click: function(dialog) {
+               dialog.$node.find("form").submit();
+             }
+           }, {
+             text: view.text.dialogs.button_cancel
+           }]
+         });
+         break;
+
     case "delete":
           this.dialogConfirmationDelete.open({
             heading: app.text.dialogs.heading_delete.replace(/%{label}/, data.component.$node.data("page-heading")),
@@ -159,7 +172,7 @@ function pageActionMenuSelection(event, data) {
           });
          break;
 
-    default: console.log(data.activator.href);
+    default: location.href = element.href;
   }
 }
 
