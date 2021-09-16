@@ -40,13 +40,18 @@ en:
     button_update: 'Update'
     heading: General heading here
     heading_delete: Delete \"%{label}\"?
+    heading_delete_branch: Delete branch?
     heading_delete_condtition: Delete condition?
     heading_delete_option: Delete the option \"%{option label}\"?
     message: General message here
     message_delete: 'This cannot be undone'
-    message_delete_condition: 'This cannot be undone'
-    heading_delete_branch: Delete branch?
     message_delete_branch: 'This cannot be undone'
+    message_delete_condition: 'This cannot be undone'
+    destination:
+      button_change: Change destination
+      label: 'Change destination'
+      hint: 'Update this connection to lead to the following page:'
+      text: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
