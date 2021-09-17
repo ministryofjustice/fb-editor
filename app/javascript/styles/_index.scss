@@ -139,6 +139,11 @@ html {
 
 /* Branching
  * ------------------- */
+.branch-or {
+  font-weight: bold;
+  text-align: center;
+}
+
 .Branch,
 #branch-otherwise {
   @include container_panel;

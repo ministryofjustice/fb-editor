@@ -1,9 +1,11 @@
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 <%= render 'form_conditionals', f: f %>
+<p class="branch-or">or</p>
 
 <div class="branch-actions">
   <a class="govuk-link" href="#" id="add-another-branch"><%= t('branches.branch_add') %></a>
 </div>
+<p class="branch-or">or</p>
 
 <div class="branch" id="branch-otherwise">
   <p><%= t('branches.title_otherwise') %></p>
