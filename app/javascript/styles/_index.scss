@@ -822,6 +822,13 @@ html {
   }
 }
 
+.govuk-link {
+  &.destructive:focus {
+    background-color: govuk-colour("red");
+    color: govuk-colour("white");
+  }
+}
+
 .govuk-header {
   // Try to get consistency between with/without page navigation bars
   // and even update space above/below main headings.
