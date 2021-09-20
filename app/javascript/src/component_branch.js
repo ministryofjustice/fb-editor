@@ -168,9 +168,13 @@ class BranchConditionInjector {
 /* BranchConditionRemover
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
  * @config (Object) Configurable key/value pairs.
+ *                  e.g. {
+ *                         onConditionRemove: function() {} // Set an action to happen, if required.
+ *                       }
  **/
 class BranchConditionRemover {
   constructor($node, config) {
+    var remover = this;
     var conf = utilities.mergeObjects({ condition: this }, config);
 
     $node.addClass("BranchConditionRemover");
@@ -178,12 +182,33 @@ class BranchConditionRemover {
     $node.attr("aria-controls", conf.condition.$node.attr("id"));
     $node.on("click", (e) => {
       e.preventDefault();
-      conf.branch.removeCondition(this.$node.attr("aria-controls"));
+      remover.confirm();
     });
 
     this._config = conf;
     this.condition = conf.condition;
     this.$node = $node;
+  }
+
+  confirm() {
+    var dialog = this._config.dialog_delete;
+    var text = this._config.view.text;
+    if(dialog) {
+      // If we have set a confirmation dialog, use it...
+      this._config.dialog_delete.open({
+        heading: text.dialogs.heading_delete_condition,
+        content: text.dialogs.message_delete_condition,
+        ok: text.dialogs.button_delete_condition
+      }, this.activate.bind(this));
+    }
+    else {
+      // ... otherwise just activate the functionality.
+      this.activate();
+    }
+  }
+
+  activate() {
+    this._config.branch.removeCondition(this._config.condition.$node.attr("id"));
   }
 }
 

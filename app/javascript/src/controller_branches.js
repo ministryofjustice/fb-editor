@@ -137,6 +137,7 @@ BranchesController.addBranchMenu = function(args) {
  * track of number of branches
  **/
 BranchesController.createBranch = function($node) {
+  var view = this;
   var branch = new Branch($node, {
     branch_index: this._branchCount,
     css_classes_error: CSS_CLASS_ERRORS,
@@ -162,7 +163,8 @@ BranchesController.createBranch = function($node) {
         this.$node.find(".BranchConditionInjector").hide();
       }
     },
-    view: this
+    dialog_delete: view.dialogConfirmationDelete,
+    view: view
   });
 
   if(branch.$node.find(".BranchAnswer").length < 1) {
