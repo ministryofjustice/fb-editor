@@ -62,9 +62,6 @@ class BranchesController extends DefaultController {
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
     BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
-
-    // NEXT LINE DEV ONLY: while branches is WIP
-    addMattsButton();
   }
 }
 
@@ -233,59 +230,6 @@ function createBranchConditionTemplate($node) {
           /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[component\]/mig,
           "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][component]");
   return html;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* TO BE REMOVED
- * Only here during early stages of development
- * for developer aid and humour value :-)
- **/
-function addMattsButton() {
-  var $mattsButton = $("<button>Matt's button</button>");
-  $mattsButton.css({
-    "animation": "blinker 0.5s linear infinite",
-    "background-color": "red",
-    "color": "white",
-    "display": "none",
-    "font-size": "30px",
-    "font-weight": "bold",
-    "padding": "10px",
-    "position": "absolute",
-    "right": "50px",
-    "top": "200px"
-  });
-
-  $(document.body).append($mattsButton);
-  $("#form-navigation-heading").on("click", function(event) {
-    $mattsButton.toggle();
-  });
-
-  if(document.cookie.search("colours=on") == 0) {
-    $(document.body).addClass("dev-colours-on");
-  }
-
-  $mattsButton.on("click", function() {
-    if(document.cookie.search("colours=on") == 0) {
-      document.cookie = "colours=off";
-      $(document.body).removeClass("dev-colours-on");
-    }
-    else {
-      document.cookie = "colours=on";
-      $(document.body).addClass("dev-colours-on");
-    }
-  });
 }
 
 
