@@ -250,6 +250,7 @@ html {
   right: govuk-spacing(5);
   top: 0;
 
+  &:focus,
   &:hover {
     background-image: url("../images/trash_can_icon_white.svg");
   }

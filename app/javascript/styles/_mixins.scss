@@ -86,9 +86,17 @@
   text-indent: -10000px;
   width: 35px;
 
-  &:focus {
+  &:focus,
+  &:hover {
     @include focus;
     border: none;
     outline: none;
+  }
+
+  &.destructive:focus,
+  &.destructive:hover {
+    background-color: govuk-colour("red");
+    border-color: govuk-colour("red");
+    color: govuk-colour("white");
   }
 }
