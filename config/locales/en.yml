@@ -31,15 +31,18 @@ en:
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'
+    button_delete_branch: 'Delete branch'
     button_delete_option: 'Delete option'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
     button_update: 'Update'
     heading: General heading here
     heading_delete: Delete \"%{label}\"?
+    heading_delete_branch: Delete branch?
     heading_delete_option: Delete the option \"%{option label}\"?
     message: General message here
     message_delete: 'This cannot be undone'
+    message_delete_branch: 'This cannot be undone'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -76,7 +79,7 @@ en:
     change_destination: 'Change destination...'
   branches:
     branch_add: 'Add another branch'
-    branch_remove: 'Delete'
+    branch_remove: 'Delete...'
     condition_add: 'Add condition'
     condition_remove: 'Remove condition'
     after: After "%{page_title}"
