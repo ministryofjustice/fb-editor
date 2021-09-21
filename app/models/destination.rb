@@ -12,7 +12,8 @@ class Destination
   end
 
   def destinations
-    destinations_list(flow_objects: ordered_flow, current_uuid: flow_uuid)
+    all_flow_objects = ordered_flow + detached
+    destinations_list(flow_objects: all_flow_objects, current_uuid: flow_uuid)
   end
 
   def current_destination
@@ -22,6 +23,10 @@ class Destination
   private
 
   def ordered_flow
-    OrderedFlow.new(service: service).build
+    @ordered_flow ||= OrderedFlow.new(service: service).build
+  end
+
+  def detached
+    Detached.new(service: service, ordered_flow: ordered_flow).flow_objects
   end
 end

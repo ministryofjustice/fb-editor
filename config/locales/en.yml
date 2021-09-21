@@ -92,6 +92,7 @@ en:
   pages:
     flow:
       heading: 'Pages flow'
+      detached: 'Detached'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'

@@ -9,6 +9,8 @@ class FlowStack
     previous.branch? ? grouped_by_next : [[current]]
   end
 
+  delegate :uuid, to: :current
+
   private
 
   attr_reader :service, :previous, :current

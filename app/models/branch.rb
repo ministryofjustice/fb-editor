@@ -69,7 +69,8 @@ class Branch
   end
 
   def destinations
-    destinations_list(flow_objects: ordered_flow)
+    all_flow_objects = ordered_flow + detached
+    destinations_list(flow_objects: all_flow_objects)
   end
 
   def previous_questions
@@ -120,7 +121,15 @@ class Branch
   private
 
   def ordered_flow
-    OrderedFlow.new(service: service, exclude_branches: true).build
+    @ordered_flow ||= OrderedFlow.new(service: service, exclude_branches: true).build
+  end
+
+  def detached
+    Detached.new(
+      service: service,
+      ordered_flow: ordered_flow,
+      exclude_branches: true
+    ).flow_objects
   end
 
   def previous_flow_object

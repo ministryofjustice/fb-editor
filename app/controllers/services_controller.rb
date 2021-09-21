@@ -16,7 +16,9 @@ class ServicesController < PermissionsController
   end
 
   def edit
-    @pages_flow = PagesFlow.new(service).build
+    flow = PagesFlow.new(service)
+    @pages_flow = flow.build
+    @detached_objects = flow.detached_objects
     @page_creation = PageCreation.new
   end
 
