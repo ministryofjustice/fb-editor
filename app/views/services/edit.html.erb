@@ -131,7 +131,7 @@
   </div>
 </div>
 
-  <% if ENV['BRANCHING'] == 'enabled' %>
+  <% if ENV['BRANCHING'] == 'enabled' && @detached_objects.present? %>
   <div class="govuk-!-margin-top-10">
     <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
     <% @detached_objects.each do |flow| %>
