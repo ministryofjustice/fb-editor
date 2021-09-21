@@ -165,7 +165,9 @@ BranchesController.createBranch = function($node) {
     view: this
   });
 
-  branch.$node.find(".BranchConditionInjector").hide();
+  if(branch.$node.find(".BranchAnswer").length < 1) {
+    branch.$node.find(".BranchConditionInjector").hide();
+  }
   this._branchCount++;
   return branch;
 }
