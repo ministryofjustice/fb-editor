@@ -202,6 +202,7 @@ class BranchInjector {
       type: "after",
       done: function ($node) {
         BranchesController.createBranch.call(view, $node);
+        $node.before("<p class=\"branch-or\">or</p>");
       }
     });
   }
