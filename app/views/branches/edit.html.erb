@@ -7,9 +7,14 @@
       data-fb-content-type="element">
     <%= @branch.title %>
   </h1>
+  <%
+=begin%>
+ <p class="govuk-heading-m"><%= t('branches.after', page_title: @branch.foo) %></p>
+<%
+=end%>
 
   <%= form_for @branch,
-    url: branch_path(service.service_id, @branch.previous_flow_uuid),
+    url: branch_path(service.service_id, @branch.branch_uuid),
     method: :put do |f| %>
     <%= render 'form', f: f %>
   <% end %>
