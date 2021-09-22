@@ -1,15 +1,12 @@
 class PagesFlow
   def initialize(service)
     @service = service
+    @grid = Grid.new(service)
     @traversed = []
   end
 
   def build
-    flow_groups = ordered_flow.map do |stack|
-      stack.grouped_flow_objects.map { |group| convert_flow_objects(group).compact }
-    end
-
-    flow_groups.flatten(1).reject(&:empty?)
+    grid.build.map { |column| convert_flow_objects(column).compact }
   end
 
   def page(flow)
@@ -25,15 +22,10 @@ class PagesFlow
     )
   end
 
-  def ordered_flow
-    @ordered_flow ||=
-      OrderedFlow.new(service: service, pages_flow: true).build
-  end
-
   def detached_objects
     Detached.new(
       service: service,
-      ordered_flow: ordered_flow
+      ordered_flow: grid.ordered_flow
     ).flow_objects.map do |flow|
       convert_flow_object(flow)
     end
@@ -41,11 +33,11 @@ class PagesFlow
 
   private
 
-  attr_reader :service
+  attr_reader :service, :grid
   attr_accessor :traversed
 
-  def convert_flow_objects(group)
-    group.map do |flow|
+  def convert_flow_objects(column)
+    column.map do |flow|
       next if @traversed.include?(flow.uuid)
 
       @traversed.push(flow.uuid)
