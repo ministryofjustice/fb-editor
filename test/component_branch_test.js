@@ -82,6 +82,11 @@ describe("Branch", function () {
             condition_add: TEXT_ADD_CONDITION,
             condition_remove: TEXT_REMOVE_CONDITION
           },
+          dialogs: {
+            heading_delete_branch: "Heading delete branch",
+            message_delete_branch: "Message delete branch",
+            button_delete_branch: "Button delete branch"
+          },
           errors: {
             branches: {
               unsupported_question: ERROR_MESSAGE
@@ -640,11 +645,12 @@ describe("Branch", function () {
   });
 
   describe("BranchRemover", function() {
-    var $remover, created;
+    var $remover, created, remover;
     before(function() {
       created = createBranch("for-testing-branch-remover");
       global_test_branch.$node.after(created.branch.$node);
       $remover = created.branch.$node.find(BRANCH_REMOVE_SELECTOR);
+      remover = $remover.data("instance");
     });
 
     it("should have the basic HTML in place", function() {
@@ -690,5 +696,64 @@ describe("Branch", function () {
 
       created.branch.destroy = created.branch.constructor.prototype.destroy;
     });
+
+    describe("confirm", function() {
+      it("should run the activate function if no dialog exists in config", function() {
+        var check = 1;
+        var originalActivateMethod = remover.activate;
+        remover.activate = function() {
+          check += 1;
+        }
+
+        expect(check).to.equal(1);
+        remover.confirm();
+        expect(check).to.equal(2);
+
+        remover.activate = originalActivateMethod;
+      });
+
+      it("should open a dialog if one exists in config", function() {
+        var check = 1;
+        var dialog = {
+          open: function() {
+            check += 1;
+          }
+        }
+
+        expect(check).to.equal(1);
+
+        remover._config.dialog_delete = dialog;
+        remover.confirm();
+        expect(check).to.equal(2);
+      });
+    });
+
+    describe("activate", function() {
+      var check, branch, originalDestroy;
+
+      before(function() {
+        branch = remover._config.branch;
+        originalDestroy = branch.destroy;
+        branch.destroy = function() {
+          check += 1;
+        }
+      });
+
+      after(function() {
+        branch.destroy = originalDestroy;
+      });
+
+      it("should call branch.destroy() method", function() {
+        check = 1;
+
+        // First check value is correct...
+        expect(check).to.equal(1);
+
+        // Activate method and check value has increased.
+        remover.activate();
+        expect(check).to.equal(2);
+      });
+    });
+
   });
 });
