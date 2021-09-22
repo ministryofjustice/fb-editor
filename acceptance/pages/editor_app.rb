@@ -117,6 +117,7 @@ class EditorApp < SitePrism::Page
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
+  element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
   element :add_another_branch, :link, I18n.t('branches.branch_add')
   element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
 

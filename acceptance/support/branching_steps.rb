@@ -129,6 +129,7 @@ module BranchingSteps
 
   def and_I_delete_the_condition
     editor.remove_condition.click
+    editor.remove_condition_button.click
   end
 
   def and_I_add_another_branch
