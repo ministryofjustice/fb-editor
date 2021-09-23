@@ -124,16 +124,17 @@ class Branch
     end
   end
 
-  def foo
-    # returns a single uuid
-    # find the flow objects (array) that have the branch_uuid as their next. Pull out the first uuid
-    byebug
-
-  end
-
   def previous_page_title
-    page = service.find_page_by_uuid(foo)
-    page.title
+    @previous_page_title ||= begin
+      return previous_flow_object.title if previous_flow_uuid.present?
+
+      titles = service.flow_objects.map do |flow|
+        if flow.all_destination_uuids.include?(branch_uuid)
+          flow.title || service.find_page_by_uuid(flow.uuid).title
+        end
+      end
+      titles.compact.first
+    end
   end
 
   private

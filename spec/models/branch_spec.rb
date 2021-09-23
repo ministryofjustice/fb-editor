@@ -324,4 +324,49 @@ RSpec.describe Branch do
       expect(branch.previous_flow_default_next).to eq(previous_flow_object.default_next)
     end
   end
+
+  describe '#branch_attached?' do
+    subject(:branch) { described_class.new(service: service) }
+    let(:latest_metadata) { metadata_fixture(:branching) }
+    let(:service) do
+      MetadataPresenter::Service.new(latest_metadata)
+    end
+    let(:branch_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' }
+    let(:branch_metadata) { service.flow_object(branch_uuid) }
+
+    context 'when branching point has been detached' do
+      it 'should return false' do
+        expect(branch.branch_attached?).to eq(false)
+      end
+    end
+
+    # context 'when branching point is attached' do
+    #   it 'should return true' do
+    #     expect(branch.branch_attached?).to eq(true)
+    #   end
+    # end
+  end
+
+  # describe '#previous_page_title' do
+  #   context 'when there is a single uuid' do
+  #     it 'returns the title of the previous page' do
+  #       expect(branch.foo).to eq('')
+  #     end
+  #   end
+
+  # context 'when dealing with pages containing collections' do
+  #   it 'returns the correct title' do
+  #   end
+  # end
+
+  #   context 'when there are multiple uuids' do
+  #     it 'returns the title from the first uuid' do
+  #     end
+  #   end
+
+  #   context 'when there is no uuid' do
+  #     it 'branch is detached' do
+  #     end
+  #   end
+  # end
 end
