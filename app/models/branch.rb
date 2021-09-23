@@ -121,7 +121,7 @@ class Branch
   private
 
   def ordered_pages
-    @ordered_pages ||= Grid.new(service).ordered_pages
+    @ordered_pages ||= MetadataPresenter::Grid.new(service).ordered_pages
   end
 
   def detached

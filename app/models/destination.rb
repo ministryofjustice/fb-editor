@@ -23,7 +23,7 @@ class Destination
   private
 
   def ordered_flow
-    @ordered_flow ||= Grid.new(service).ordered_flow
+    @ordered_flow ||= MetadataPresenter::Grid.new(service).ordered_flow
   end
 
   def detached

@@ -4,7 +4,7 @@ end
 class PagesFlow
   def initialize(service)
     @service = service
-    @grid = Grid.new(service)
+    @grid = MetadataPresenter::Grid.new(service)
     @traversed = []
   end
 
@@ -43,12 +43,14 @@ class PagesFlow
     column.map do |flow|
       next if @traversed.include?(flow.uuid)
 
-      @traversed.push(flow.uuid)
+      @traversed.push(flow.uuid) unless flow.is_a?(MetadataPresenter::Spacer)
       convert_flow_object(flow)
     end
   end
 
   def convert_flow_object(flow)
+    return spacer if flow.is_a?(MetadataPresenter::Spacer)
+
     flow.type == 'flow.page' ? page(flow) : branch(flow)
   end
 
@@ -67,6 +69,10 @@ class PagesFlow
     else
       obj.components.first.type
     end
+  end
+
+  def spacer
+    { type: 'spacer' }
   end
 
   def use_flow_type?(obj)
