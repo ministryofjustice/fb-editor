@@ -86,6 +86,7 @@
 <% end %>
 
 
+
 <%# ----------------------------------------------------------------------------------------------------- %>
 <%# OLD FORM OVERVIEW PAGE HERE %>
 <div id="form-overview">
@@ -143,10 +144,12 @@
   <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
 </ul>
 
+
 <%# Add page component dialog template %>
 <div class="component-dialog-form"
      data-component="PageAdditionDialog"
      data-cancel-text="<%= t('pages.cancel') %>">
+
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
     <%= f.hidden_field :add_page_after, value: "" %>
     <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
@@ -159,9 +162,9 @@
       <% end %>
       <%= f.text_field :page_url, class: "govuk-input"  %>
     </div>
-
     <%= f.submit t('pages.create'), class: "govuk-button fb-govuk-button" %>
   <% end %>
+
 </div>
 
 <%# Section for static/standalone pages (e.g. T&Cs) %>
