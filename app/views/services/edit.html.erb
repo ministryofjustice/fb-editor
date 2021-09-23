@@ -9,42 +9,59 @@
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
 
-<% if ENV['BRANCHING'] == 'enabled' %>
 <%# ----------------------------------------------------------------------------------------------------- %>
 <%# THE NEW FLOW VIEW CODE HERE %>
-<div id="flow-overview">
-  <div class="container">
+<% if ENV['BRANCHING'] == 'enabled' %>
+  <div id="flow-overview">
+    <div class="container">
 
-    <% @pages_flow.each do |collection| %>
-      <div class="column">
-        <% collection.each_with_index do |item, index| %>
-          <% if item[:type] == 'flow.branch' %>
-            <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
-              <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
-              <map name="thumbnail-<%= index %>" aria-hidden="true">
-                <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
-              </map>
-              <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
-                <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
-                <span><%= item[:title] || 'Untitled Branch' %></span>
-              <% end %>
-            </section>
-          <% else %>
-            <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
-              <a class="flow-thumbnail text" href="#" aria-hidden="true">
-                <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
-                <span class="text"><%= item[:title] %></span>
-                <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
-              </a>
-            </section>
+      <% @pages_flow.each do |collection| %>
+        <div class="column">
+          <% collection.each_with_index do |item, index| %>
+            <% if item[:type] == 'flow.branch' %>
+              <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+                <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
+                <map name="thumbnail-<%= index %>" aria-hidden="true">
+                  <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+                </map>
+                <%= link_to edit_branch_path(service.service_id, item[:uuid]) do %>
+                  <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
+                  <span><%= item[:title] || 'Untitled Branch' %></span>
+                <% end %>
+              </section>
+            <% else %>
+              <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
+                <a class="flow-thumbnail text" href="#" aria-hidden="true">
+                  <img class="header" alt="" src="/packs/media/images/thumbnails/thumbs_header-ffca2e0b48bb1f9188336053369a721a.png">
+                  <span class="text"><%= item[:title] %></span>
+                  <img class="body" alt="" src="/packs/media/images/thumbnails/thumbs_text-dfa624ab84ea3a94a18f95d90c11f576.jpg">
+                </a>
+              </section>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <% if @detached_flows.present? %>
+    <div id="flow-detached">
+      <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
+      <% @detached_flows.each do |detached_flow| %>
+        <% detached_flow.each do |column| %>
+          <% column.each do |flow| %>
+            <ul class="govuk-navigation">
+              <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
+            </ul>
           <% end %>
         <% end %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
+  <% end %>
 
-  </div>
-</div>
 <% end %>
+
 
 
 <%# ----------------------------------------------------------------------------------------------------- %>
@@ -180,20 +197,5 @@
     </div>
   </div>
 </div>
-
-  <% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
-  <div class="govuk-!-margin-top-10">
-    <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
-    <% @detached_flows.each do |detached_flow| %>
-      <% detached_flow.each do |column| %>
-        <% column.each do |flow| %>
-          <ul class="govuk-navigation">
-            <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
-          </ul>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
-  <% end %>
 
 <%= render partial: 'partials/standalone' %>
