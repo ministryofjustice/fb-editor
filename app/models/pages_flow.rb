@@ -1,3 +1,6 @@
+class PageMissingComponentError < StandardError
+end
+
 class PagesFlow
   def initialize(service)
     @service = service
@@ -107,8 +110,11 @@ class PagesFlow
 
   def question_and_answer(expression)
     expression.service = service
+    component = expression.expression_component
+    alert_missing_component(expression) if component.nil?
+
     {
-      question: expression.expression_component.humanised_title,
+      question: component.humanised_title,
       answer: answer(expression)
     }
   end
@@ -128,5 +134,16 @@ class PagesFlow
         }
       ]
     }
+  end
+
+  def alert_missing_component(expression)
+    page_uuid = expression.expression_page.uuid
+    component_uuid = expression.component
+
+    error = PageMissingComponentError.new(
+      "Page #{page_uuid} does not contain component #{component_uuid}"
+    )
+    Sentry.capture_exception(error)
+    raise error
   end
 end
