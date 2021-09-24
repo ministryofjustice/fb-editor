@@ -325,48 +325,59 @@ RSpec.describe Branch do
     end
   end
 
-  describe '#branch_attached?' do
-    subject(:branch) { described_class.new(service: service) }
+  describe '#previous_page_title' do
+    let(:branch_attributes) do
+      {
+        branch_uuid: branch_uuid,
+        service: service
+      }.merge(attributes)
+    end
     let(:latest_metadata) { metadata_fixture(:branching) }
     let(:service) do
       MetadataPresenter::Service.new(latest_metadata)
     end
-    let(:branch_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' }
-    let(:branch_metadata) { service.flow_object(branch_uuid) }
+    let(:branch_uuid) { 'ffadeb22-063b-4e4f-9502-bd753c706b1d' } # Branching Point 2
 
-    context 'when branching point has been detached' do
-      it 'should return false' do
-        expect(branch.branch_attached?).to eq(false)
+    context 'when there are multiple uuids' do
+      let(:metadata) { metadata_fixture(:branching) }
+      let(:latest_metadata) do
+        text_page = metadata['flow']['9e1ba77f-f1e5-42f4-b090-437aa9af7f73'] # Full name
+        text_page['next']['default'] = branch_uuid
+
+        star_wars_page = metadata['flow']['68fbb180-9a2a-48f6-9da6-545e28b8d35a']
+        star_wars_page['next']['default'] = branch_uuid
+
+        content_page = metadata['flow']['2cc66e51-2c14-4023-86bf-ded49887cdb2'] # Loki
+        content_page['next']['default'] = branch_uuid
+
+        metadata
+      end
+
+      it 'returns the title from the first uuid' do
+        expect(branch.previous_page_title).to eq('Full name')
       end
     end
 
-    # context 'when branching point is attached' do
-    #   it 'should return true' do
-    #     expect(branch.branch_attached?).to eq(true)
-    #   end
-    # end
+    context 'when the branch is unconnected' do
+      let(:branch_attributes) do
+        {
+          branch_uuid: branch_uuid,
+          service: service
+        }.merge(attributes)
+      end
+      let(:metadata) { metadata_fixture(:branching) }
+      let(:checkanswers) do
+        metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+      end
+      let(:latest_metadata) do
+        obj = metadata['flow']['0b297048-aa4d-49b6-ac74-18e069118185'] # what is your favourite fruit
+        obj['next']['default'] = checkanswers['_uuid']
+        metadata
+      end
+
+      it 'returns nil' do
+        expect(branch.previous_page_title).to be_nil
+      end
+    end
   end
-
-  # describe '#previous_page_title' do
-  #   context 'when there is a single uuid' do
-  #     it 'returns the title of the previous page' do
-  #       expect(branch.foo).to eq('')
-  #     end
-  #   end
-
-  # context 'when dealing with pages containing collections' do
-  #   it 'returns the correct title' do
-  #   end
-  # end
-
-  #   context 'when there are multiple uuids' do
-  #     it 'returns the title from the first uuid' do
-  #     end
-  #   end
-
-  #   context 'when there is no uuid' do
-  #     it 'branch is detached' do
-  #     end
-  #   end
-  # end
 end
