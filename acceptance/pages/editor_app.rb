@@ -120,6 +120,7 @@ class EditorApp < SitePrism::Page
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
   element :add_another_branch, :link, I18n.t('branches.branch_add')
   element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
+  element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
 
   element :destination_options, '#branch_conditionals_attributes_0_next'
   element :conditional_options, '#branch_conditionals_attributes_0_expressions_attributes_0_component'

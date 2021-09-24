@@ -319,20 +319,41 @@ class BranchAnswer {
  **/
 class BranchRemover {
   constructor($node, config) {
+    var remover = this;
     var conf = utilities.mergeObjects({}, config);
-    var branch = conf.branch;
 
-    $node.addClass("BranchRemover");;
+    $node.addClass("BranchRemover");
     $node.data("instance", this);
     $node.attr("aria-controls", conf.branch.$node.attr("id"));
     $node.on("click", (e) => {
       e.preventDefault();
-      branch.destroy();
+      remover.confirm();
     });
 
     this._config = conf;
-    this.branch = branch;
+    this.branch = conf.branch;
     this.$node = $node;
+  }
+
+  confirm() {
+    var dialog = this._config.dialog_delete;
+    var text = this._config.view.text;
+    if(dialog) {
+      // If we have set a confirmation dialog, use it...
+      this._config.dialog_delete.open({
+        heading: text.dialogs.heading_delete_branch,
+        content: text.dialogs.message_delete_branch,
+        ok: text.dialogs.button_delete_branch
+      }, this.activate.bind(this));
+    }
+    else {
+      // ... otherwise just activate the functionality.
+      this.activate();
+    }
+  }
+
+  activate() {
+    this._config.branch.destroy();
   }
 }
 

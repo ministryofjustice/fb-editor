@@ -139,6 +139,7 @@ module BranchingSteps
   def and_I_delete_the_branch(index)
     editor.find("div[data-conditional-index='#{index}'] button").click
     editor.find('a.branch-remover').click
+    editor.remove_branch_button.click
   end
 
   def then_I_should_see_the_operator(text)
