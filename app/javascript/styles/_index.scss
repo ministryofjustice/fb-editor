@@ -561,13 +561,13 @@ html {
   }
 }
 
-.form-overview_button {
+.form-overview-button {
   // This element is injected by JS
   @include button_type_link;
   @include addition_icon;
   opacity: 1;
   position: relative;
-  top: -82px;
+  top: -89px;
 
   &:after {
     display: none;
@@ -598,11 +598,11 @@ html {
   overflow: visible;
   width: 200px;
 
-  a {
+  & > a {
     box-sizing: border-box;
     color: govuk-colour("black");
 	  display: inline-block;
-    margin-top: 45px;
+    margin-top: 35px;
     padding: 0 40px;
     text-align: center;
     text-decoration: none;
@@ -615,6 +615,11 @@ html {
     position: absolute;
     top: 0;
     width: 200px
+  }
+
+  .flow-menu-activator {
+    bottom: 15px;
+    left: 82px;
   }
 }
 
@@ -654,6 +659,15 @@ html {
   }
 }
 
+.flow-menu-activator {
+  bottom: calc(25px + #{govuk-spacing(4)});
+  display: inline-block;
+  left: 158px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
 .flow-link {
   display: inline-block;
   margin-top: govuk-spacing(2);
@@ -670,19 +684,11 @@ html {
   float: left;
 }
 
-.form-step_button {
-  bottom: calc(25px + #{govuk-spacing(2)});
-  display: inline-block;
-  left: 158px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-}
-
 .flow-thumbnail {
   border:  $govuk-link-colour solid 2px;
   display: block;
   height: 145px;
+  margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
   width: 200px;
