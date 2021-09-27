@@ -45,6 +45,7 @@ class ServicesController extends DefaultController {
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   var $flowOverview = $("#flow-overview");
+  var $pageCreateForm = $("#page-create-dialog");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
