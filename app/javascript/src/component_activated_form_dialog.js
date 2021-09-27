@@ -21,18 +21,26 @@ const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 
 
+/* See jQueryUI Dialog for config options (all are passed straight in).
+ *
+ * Extra config options specific to this enhancement
+ * config.onOk takes a function to run when 'Ok' button is activated.
+ *
+ * @$node  (jQuery node) Form element found in template that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
 class ActivatedFormDialog extends ActivatedDialog {
-  constructor($form, config) {
-    var $errors = $form.find(".govuk-error-message");
-    $form.before(config.activator); // We need to move before invoking any jQueryUI dialog.
+  constructor($node, config) {
+    var $errors = $node.find(".govuk-error-message");
+    $node.before(config.activator); // We need to move before invoking any jQueryUI dialog.
 
-    super($form, mergeObjects( config, {
+    super($node, mergeObjects( config, {
       autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
       okText: config.activator.val(),
       activator: config.activator,
       onOk: () => {
-        this.$form.submit();
+        this.$node.submit();
       },
       onClose: () => {
         this.clearErrors();
@@ -40,11 +48,11 @@ class ActivatedFormDialog extends ActivatedDialog {
     }));
 
     // Change inherited class name to reflect this Class
-    $form.parents(".ActivatedDialog")
+    $node.parents(".ActivatedDialog")
       .removeClass("ActivatedDialog")
       .addClass("ActivatedFormDialog");
 
-    this.$form = $form;
+    this.$node = $node;
     this.$errors = $errors;
   }
 
