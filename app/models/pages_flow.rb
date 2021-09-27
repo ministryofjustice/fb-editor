@@ -61,7 +61,8 @@ class PagesFlow
       type: obj.type,
       title: obj.title,
       uuid: obj.uuid,
-      thumbnail: thumbnail_type(obj)
+      thumbnail: thumbnail_type(obj),
+      url: obj.url
     }
   end
 
