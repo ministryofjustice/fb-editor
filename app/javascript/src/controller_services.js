@@ -18,11 +18,11 @@
 
 
 const utilities = require('./utilities');
+const FormDialog = require('./component_dialog_form');
 const mergeObjects = utilities.mergeObjects;
 const post = utilities.post;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
-const ActivatedDialog = require('./component_activated_dialog');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 
@@ -45,16 +45,23 @@ class ServicesController extends DefaultController {
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   var $flowOverview = $("#flow-overview");
+  var $pageCreateForm = $("#page-create-dialog");
 
   // Bind document event listeners to control functionality not specific to a single component or where
   // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
   $(document).on("PageActionMenuSelection", pageActionMenuSelection.bind(view) );
 
   // Create dialog for handling new page input and error reporting.
-  view.pageCreateDialog = new PageCreateDialog(view, $("[data-component='PageCreateDialog']"));
+  //view.pageCreateDialog = new PageCreateDialog(view, $("[data-component='PageCreateDialog']"));
+  view.pageCreateDialog = new FormDialog($pageCreateForm, {
+    cancelText: $pageCreateForm.attr("data-cancel-text"),
+    selectorErrors: ".govuk-error-message",
+    removeErrorClasses: ".govuk-form-group--error"
+  });
 
   createMenusForThumbnails(view);
   createMenuForAddPage(view);
+  fixAddPageButtonPosition();
   fixFormOverviewScroll();
 
   positionFlowItems($flowOverview);
@@ -62,49 +69,7 @@ ServicesController.edit = function() {
 }
 
 
-/* Wrap the create page form in a dialog effect.
- * Errors will also show here on page return.
- **/
-class PageCreateDialog {
-  constructor(page, $node, config) {
-    var pageCreateDialog = this;
-    var $form = $node.find("form");
-    var $submit = $form.find(":submit");
-    var $errors = $node.find(".govuk-error-message");
-
-    var dialog = new ActivatedDialog($node, {
-      autoOpen: $errors.length ? true: false,
-      cancelText: $node.data("cancel-text"),
-      okText: $submit.val(),
-      activatorText: $node.data("activator-text"),
-      classes: {
-        "ui-button": "govuk-button",
-        "ui-activator": "govuk-button fb-govuk-button"
-      },
-      onOk: () => {
-        pageCreateDialog.$form.submit();
-      },
-      onClose: () => {
-        pageCreateDialog.clearErrors();
-      }
-    });
-
-    // Disable button as we're replacing it.
-    $submit.attr("disabled", true);
-    this.dialog = dialog;
-    this.$form = $form;
-    this.$submit = $submit;
-    this.$errors = $errors;
-  }
-
-  clearErrors() {
-    this.$errors.remove();
-    this.$errors.parents().removeClass(".govuk-form-group--error");
-  }
-}
-
-
-/* Controls form step add/edit/delete/preview controls
+/* Control form step (add/edit/delete/preview...) menus
  **/
 class PageActionMenu extends ActivatedMenu {
   constructor($node, dialog, config) {
@@ -137,7 +102,7 @@ function pageActionMenuSelection(event, data) {
          // Set the 'add_page_here' value in form.
          // This should be a uuid value if from thumbnail context menu, of
          // just set it to blank string if from the main 'Add page' button.
-         updateHiddenInputOnForm(data.component.dialog.$form, "page[add_page_after]", data.component.uuid);
+         updateHiddenInputOnForm(data.component.dialog.$node, "page[add_page_after]", data.component.uuid);
 
          // Current menu option needs to activate the (separate entity)
          // Add page menu to allow add page options to show.
@@ -187,11 +152,10 @@ class PageAdditionMenu extends ActivatedMenu {
       activator_text: $node.data("activator-text")
     }, config));
 
-
     this.dialog = dialog;
     this.activator.$node.on("click.pageadditionmenu", function() {
       // Add handler for main 'Add page' button to clear any add_page_after values.
-      updateHiddenInputOnForm(dialog.$form, "page[add_page_after]", "");
+      updateHiddenInputOnForm(dialog.$node, "page[add_page_after]", "");
     });
 
   }
@@ -206,20 +170,16 @@ class PageAdditionMenu extends ActivatedMenu {
  **/
 PageAdditionMenu.selection = function(event, data) {
   var $activator = data.activator.find("> a");
-  var form = this.dialog.$form; // Form sending information back to server.
+  var $form = this.dialog.$node; // Form sending information back to server.
 
   // First reset to remove any lingering values.
-  updateHiddenInputOnForm(form, "page[page_type]", "");
-  updateHiddenInputOnForm(form, "page[component_type]", "");
+  updateHiddenInputOnForm($form, "page[page_type]", "");
+  updateHiddenInputOnForm($form, "page[component_type]", "");
 
   // Then add any required values.
-  if($activator.length) {
-    updateHiddenInputOnForm(form, "page[page_type]", $activator.data("page-type"));
-    updateHiddenInputOnForm(form, "page[component_type]", $activator.data("component-type"));
-
-    data.component.close();
-    $("#new-page-create-dialog").dialog("open");
-  }
+  updateHiddenInputOnForm($form, "page[page_type]", $activator.data("page-type"));
+  updateHiddenInputOnForm($form, "page[component_type]", $activator.data("component-type"));
+  data.component.close();
 }
 
 
@@ -227,7 +187,7 @@ PageAdditionMenu.selection = function(event, data) {
  * Create the context menus for each page thumbnail.
  **/
 function createMenusForThumbnails(view) {
-  $("[data-component='PageActionMenu']").each((i, el) => {
+  $("[data-component='ItemActionMenu']").each((i, el) => {
     var menu = new PageActionMenu($(el), view.pageCreateDialog, {
       selection_event: "PageActionMenuSelection",
       preventDefault: true, // Stops the default action of triggering element.
@@ -255,8 +215,27 @@ function createMenuForAddPage(view) {
     });
 
     view.addLastPointHandler(menu.activator.$node);
-    $(document).on(selection_event, PageAdditionMenu.selection.bind(menu) );
+
+    // Register event handler for selection of menu item.
+    $(document).on(selection_event, function() {
+      PageAdditionMenu.selection.bind(menu)
+      view.pageCreateDialog.open();
+    });
   });
+}
+
+
+/* Temporary fix for form overview Add Page button location.
+ * Due to changes required for the updated Flow Overview
+ * layout, the Add Page menu HTML has been relocated outside
+ * of the original DIV.form-overview element. This move has
+ * affected the location of the dynamically inserted menu
+ * activator and resulting CSS positioning. To correct this
+ * the function here moves the element back to the original
+ * location, leaving the menu in it's new position.
+ **/
+function fixAddPageButtonPosition() {
+  $("#form-overview .container").append($(".form-overview-button"));
 }
 
 
@@ -281,7 +260,6 @@ function fixFormOverviewScroll() {
 function applyCustomOverviewWorkaround() {
   var $overview = $("#form-overview");
   var $container = $overview.find(" > .container");
-  var $button = $(".form-overview_button")
   var containerWidth = $container.width();
   var overviewWidth = $overview.width();
   var offsetLeft = $overview.offset().left;
