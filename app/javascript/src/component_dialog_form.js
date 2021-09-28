@@ -39,6 +39,8 @@ class FormDialog {
       selectorAffirmativeButton: "[type='submit']:first",
     }, config);
 
+    var nodeName = $node.get(0).nodeName.toLowerCase();
+    var $form = nodeName != "form" ? $node.find("form") : $node;
     var $button = $(conf.selectorAffirmativeButton, $node);
     var $errors = $node.find(conf.selectorErrors);
     var $container;
@@ -49,7 +51,7 @@ class FormDialog {
       {
         text: $button.text() || $button.val(),
         click: () => {
-          $node.submit();
+          $form.submit();
           dialog.close();
         }
       },
@@ -72,6 +74,7 @@ class FormDialog {
     this._config = conf;
     this.$container = $container;
     this.$node = $node;
+    this.$form = $form;
     this.$errors = $errors;
   }
 
