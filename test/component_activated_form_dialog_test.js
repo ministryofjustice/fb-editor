@@ -26,7 +26,7 @@ describe("ActivatedFormDialog", function() {
     dialog = new ActivatedFormDialog($form, {
       cancelText: TEXT_CANCEL,
       okText: $submit.val(),
-      activator: $submit
+      $activator: $submit
     });
   });
 
@@ -214,7 +214,9 @@ describe("ActivatedFormDialog", function() {
       dialogWithErrors = new ActivatedFormDialog($form, {
         cancelText: TEXT_CANCEL,
         okText: $submit.val(),
-        activator: $submit
+        $activator: $submit,
+        selectorErrors: ".govuk-error-message",
+        removeErrorClasses: "govuk-error-message"
       });
     });
 
