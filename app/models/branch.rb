@@ -69,7 +69,7 @@ class Branch
   end
 
   def destinations
-    all_flow_objects = ordered_flow + detached
+    all_flow_objects = ordered_pages + detached
     destinations_list(flow_objects: all_flow_objects)
   end
 
@@ -120,14 +120,14 @@ class Branch
 
   private
 
-  def ordered_flow
-    @ordered_flow ||= OrderedFlow.new(service: service, exclude_branches: true).build
+  def ordered_pages
+    @ordered_pages ||= MetadataPresenter::Grid.new(service).ordered_pages
   end
 
   def detached
     Detached.new(
       service: service,
-      ordered_flow: ordered_flow,
+      ordered_flow: ordered_pages,
       exclude_branches: true
     ).flow_objects
   end

@@ -1,15 +1,15 @@
+class PageMissingComponentError < StandardError
+end
+
 class PagesFlow
   def initialize(service)
     @service = service
+    @grid = MetadataPresenter::Grid.new(service)
     @traversed = []
   end
 
   def build
-    flow_groups = ordered_flow.map do |stack|
-      stack.grouped_flow_objects.map { |group| convert_flow_objects(group).compact }
-    end
-
-    flow_groups.flatten(1).reject(&:empty?)
+    grid.build.map { |column| convert_flow_objects(column).compact }
   end
 
   def page(flow)
@@ -25,15 +25,10 @@ class PagesFlow
     )
   end
 
-  def ordered_flow
-    @ordered_flow ||=
-      OrderedFlow.new(service: service, pages_flow: true).build
-  end
-
   def detached_objects
     Detached.new(
       service: service,
-      ordered_flow: ordered_flow
+      ordered_flow: grid.ordered_flow
     ).flow_objects.map do |flow|
       convert_flow_object(flow)
     end
@@ -41,19 +36,21 @@ class PagesFlow
 
   private
 
-  attr_reader :service
+  attr_reader :service, :grid
   attr_accessor :traversed
 
-  def convert_flow_objects(group)
-    group.map do |flow|
+  def convert_flow_objects(column)
+    column.map do |flow|
       next if @traversed.include?(flow.uuid)
 
-      @traversed.push(flow.uuid)
+      @traversed.push(flow.uuid) unless flow.is_a?(MetadataPresenter::Spacer)
       convert_flow_object(flow)
     end
   end
 
   def convert_flow_object(flow)
+    return spacer if flow.is_a?(MetadataPresenter::Spacer)
+
     flow.type == 'flow.page' ? page(flow) : branch(flow)
   end
 
@@ -72,6 +69,10 @@ class PagesFlow
     else
       obj.components.first.type
     end
+  end
+
+  def spacer
+    { type: 'spacer' }
   end
 
   def use_flow_type?(obj)
@@ -115,8 +116,11 @@ class PagesFlow
 
   def question_and_answer(expression)
     expression.service = service
+    component = expression.expression_component
+    alert_missing_component(expression) if component.nil?
+
     {
-      question: expression.expression_component.humanised_title,
+      question: component.humanised_title,
       answer: answer(expression)
     }
   end
@@ -136,5 +140,16 @@ class PagesFlow
         }
       ]
     }
+  end
+
+  def alert_missing_component(expression)
+    page_uuid = expression.expression_page.uuid
+    component_uuid = expression.component
+
+    error = PageMissingComponentError.new(
+      "Page #{page_uuid} does not contain component #{component_uuid}"
+    )
+    Sentry.capture_exception(error)
+    raise error
   end
 end

@@ -13,7 +13,7 @@ RSpec.describe Detached do
   end
   let(:exclude_branches) { false }
   let(:ordered_flow) do
-    OrderedFlow.new(service: service).build
+    MetadataPresenter::Grid.new(service).ordered_flow
   end
 
   describe '#flow_objects' do
@@ -42,7 +42,7 @@ RSpec.describe Detached do
       context 'exclude branches is true' do
         let(:exclude_branches) { true }
         let(:ordered_flow) do
-          OrderedFlow.new(service: service, exclude_branches: exclude_branches).build
+          MetadataPresenter::Grid.new(service).ordered_pages
         end
         let(:expected_uuids) do
           %w[

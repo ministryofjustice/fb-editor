@@ -505,6 +505,9 @@ RSpec.describe PagesFlow do
               thumbnail: 'content'
             },
             {
+              type: 'spacer'
+            },
+            {
               type: 'page.content',
               title: 'Other quotes',
               uuid: 'f6c51f88-7be8-4cb7-bbfc-6c905727a051',
@@ -591,6 +594,9 @@ RSpec.describe PagesFlow do
               thumbnail: 'content'
             },
             {
+              type: 'spacer'
+            },
+            {
               type: 'page.content',
               title: 'You are wrong', # incomplete answers, Otherwise
               uuid: '941137d7-a1da-43fd-994a-98a4f9ea6d46',
@@ -624,8 +630,1074 @@ RSpec.describe PagesFlow do
       end
 
       it 'does not duplicate any flow objects' do
-        flow_uuids = pages_flow.build.flatten.map { |flow| flow[:uuid] }
+        # Spacers don't have uuids
+        flow_uuids = pages_flow.build.flatten.map { |flow| flow[:uuid] }.compact
         expect(flow_uuids.uniq.size).to eq(service.flow.size)
+      end
+
+      context 'with branching fixture 2' do
+        let(:metadata) { metadata_fixture(:branching_2) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 2',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 2'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page J',
+                uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'flow.branch',
+                title: 'Branching point 2',
+                uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                    expressions: [
+                      {
+                        question: 'Page J',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'd80a2225-63c3-4944-873f-504b61311a15',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page M',
+                uuid: 'd80a2225-63c3-4944-873f-504b61311a15',
+                next: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page N',
+                uuid: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'with branching fixture 3' do
+        let(:metadata) { metadata_fixture(:branching_3) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 3',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 2'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'with branching fixture 4' do
+        let(:metadata) { metadata_fixture(:branching_4) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 4',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                    expressions: [
+                      {
+                        question: 'Page D',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page J',
+                uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'with branching fixture 5' do
+        let(:metadata) { metadata_fixture(:branching_5) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 5',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                    expressions: [
+                      {
+                        question: 'Page B',
+                        answer: 'is Item 2'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page J',
+                uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                thumbnail: 'text'
+              },
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'flow.branch',
+                title: 'Branching point 2',
+                uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                    expressions: [
+                      {
+                        question: 'Page J',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'd80a2225-63c3-4944-873f-504b61311a15',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                thumbnail: 'text'
+              },
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page M',
+                uuid: 'd80a2225-63c3-4944-873f-504b61311a15',
+                next: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page N',
+                uuid: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'with branching fixture 6' do
+        let(:metadata) { metadata_fixture(:branching_6) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 6',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                    expressions: [
+                      {
+                        question: 'Page D',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page J',
+                uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'with branching fixture 7' do
+        let(:metadata) { metadata_fixture(:branching_7) }
+        let(:expected_flow) do
+          [
+            [
+              {
+                type: 'page.start',
+                title: 'Branching Fixture 4',
+                uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
+                next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                thumbnail: 'start'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page B',
+                uuid: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
+                next: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page C',
+                uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
+                next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page D',
+                uuid: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
+                next: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 1',
+                uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: '37a94466-97fa-427f-88b2-09b369435d0d',
+                    expressions: [
+                      {
+                        question: 'Page D',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page E',
+                uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
+                next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'flow.branch',
+                title: 'Branching point 2',
+                uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                    expressions: [
+                      {
+                        question: 'Page D',
+                        answer: 'is Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                    expressions: [
+                      {
+                        question: 'Page D',
+                        answer: 'is Item 2'
+                      }
+                    ]
+                  },
+                  {
+                    next: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: '',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.checkanswers',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
+                next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                thumbnail: 'checkanswers'
+              }
+            ],
+            [
+              {
+                type: 'page.confirmation',
+                title: 'Complaint sent',
+                uuid: '778e364b-9a7f-4829-8eb2-510e08f156a3',
+                next: '',
+                thumbnail: 'confirmation'
+              }
+            ]
+          ]
+        end
+
+        it 'builds the service flow in the correct order and structure' do
+          expect(pages_flow.build).to eq(expected_flow)
+        end
+      end
+
+      context 'when page does not contain the component id referenced in a branch conditional' do
+        let(:random_uuid) { SecureRandom.uuid }
+        let(:metadata) do
+          meta = metadata_fixture(:branching)
+          meta['flow']['09e91fd9-7a46-4840-adbc-244d545cfef7']['next']['conditionals'][0]['expressions'][0]['component'] = random_uuid
+          meta
+        end
+        let(:expected_message) do
+          "Page 68fbb180-9a2a-48f6-9da6-545e28b8d35a does not contain component #{random_uuid}"
+        end
+
+        it 'raises a PageMissingComponentError' do
+          expect { pages_flow.build }.to raise_error(PageMissingComponentError, expected_message)
+        end
       end
     end
   end
