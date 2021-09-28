@@ -1502,7 +1502,7 @@ RSpec.describe PagesFlow do
             [
               {
                 type: 'page.start',
-                title: 'Branching Fixture 4',
+                title: 'Branching Fixture 7',
                 uuid: 'cf6dc32f-502c-4215-8c27-1151a45735bb',
                 next: '68fbb180-9a2a-48f6-9da6-545e28b8d35a',
                 thumbnail: 'start'
