@@ -33,6 +33,7 @@ const mergeObjects = utilities.mergeObjects;
 class ActivatedFormDialog extends FormDialog {
   constructor($node, config) {
     var conf = mergeObjects({
+      classes: {},
       selectorErrors: ".error"
     }, config);
 
@@ -60,6 +61,8 @@ class ActivatedFormDialog extends FormDialog {
     $node.parents(".FormDialog")
       .removeClass("FormDialog")
       .addClass("ActivatedFormDialog");
+
+    this.activator = activator;
   }
 }
 
