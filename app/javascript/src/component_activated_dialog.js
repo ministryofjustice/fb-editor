@@ -14,6 +14,7 @@
  *
  **/
 
+const DialogActivator = require('./component_dialog_activator');
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const safelyActivateFunction = utilities.safelyActivateFunction;
@@ -28,9 +29,19 @@ const safelyActivateFunction = utilities.safelyActivateFunction;
  * config.onClose takes a function to run after dialog is closed.
  **/
 class ActivatedDialog {
-  constructor($dialog, config) {
-    var conf = mergeObjects({}, config);
-    var activator = new Activator($dialog, conf);
+  constructor($node, config) {
+    var conf = mergeObjects({
+      $activator: $(),
+      $target: $node
+    }, config);
+
+    var activator = new DialogActivator(conf.$activator, {
+      dialog: this,
+      activatorText: conf.activatorText,
+      classes: conf.classes["ui-activator"],
+      $target: $node
+    });
+
     var buttons = {};
 
     // Make sure classes is an object even if nothing passed.
@@ -45,7 +56,8 @@ class ActivatedDialog {
       this.close();
     }
 
-    $dialog.dialog({
+    $node.data("instance", this);
+    $node.dialog({
       autoOpen: conf.autoOpen || false,
       buttons: buttons,
       classes: conf.classes,
@@ -56,11 +68,10 @@ class ActivatedDialog {
       close: conf.onClose
     });
 
-    this.$container = $dialog.parents(".ui-dialog").addClass(" ActivatedDialog");
-    this.$node = $dialog;
-    this.$node.data("instance", this);
-    this.activator = activator;
     this._config = conf;
+    this.$container = $node.parents(".ui-dialog").addClass(" ActivatedDialog");
+    this.$node = $node;
+    this.activator = activator;
   }
 
   open() {
@@ -70,36 +81,6 @@ class ActivatedDialog {
   close() {
     this.$node.dialog("close");
   }
-}
-
-
-class Activator {
-  constructor($dialog, config) {
-    var $node = config.activator;
-    if(!$node || $node.length < 1) {
-      $node = createActivator($dialog, config.activatorText, config.classes["ui-activator"]);
-    }
-
-    $node.on( "click", () => {
-      $dialog.dialog( "open" );
-    });
-
-    this.$dialog = $dialog;
-    this.$node = $node;
-  }
-}
-
-/* Creates a button and links with the passed dialog element.
- * @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
- * @text    (String) Text that will show on the button.
- * @classes (String) Classes added to button.
- **/
-function createActivator($dialog, text, classes) {
-  var $activator = $("<button>\</button>");
-  $activator.text((text || "open dialog")); 
-  $activator.addClass(classes);
-  $dialog.before($activator);
-  return $activator;
 }
 
 
