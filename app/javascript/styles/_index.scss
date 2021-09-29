@@ -351,50 +351,6 @@ html {
 }
 
 
-/**  Temporary  **
- Start: dev-only branching styles
- **  ---------  **/
-.dev-colours-on {
-  .answer {
-    border: 5px solid pink;
-    padding: 10px;
-  }
-
-  .branch {
-    border: 5px solid lightgreen;
-  }
-
-  .branches {
-    border: 5px solid red;
-    padding: 10px;
-  }
-
-  .condition {
-    border: 5px solid purple;
-    padding: 10px;
-  }
-
-  .destination {
-    border: 5px solid orange;
-    padding: 10px;
-  }
-
-  .question {
-    border: 5px solid lightblue;
-    padding: 10px;
-  }
-
-  @keyframes blinker {
-    25% {
-      opacity: 0;
-    }
-  }
-}
-/**  Temporary  **
- End: dev-only branching styles
- **  ---------  **/
-
-
 /* Editable components
  * ------------------- */
 .AddComponent,
