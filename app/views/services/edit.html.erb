@@ -16,22 +16,29 @@
       <% @pages_flow.each do |collection| %>
         <div class="column">
           <% collection.each_with_index do |item, index| %>
-            <% if item[:type] == 'flow.branch' %>
-              <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
-                <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
-                <map name="thumbnail-<%= index %>" aria-hidden="true">
-                  <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
-                </map>
-                <%= flow_text_link(item) %>
-                <%= render partial: 'flow_branch_menu', locals: { item: item } %>
 
+            <% if item[:type] == 'spacer' %>
+              <section class="flow-item flow-spacer" aria-hidden="true">
               </section>
             <% else %>
-              <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
-                <%= flow_thumbnail_link(item) %>
-                <%= flow_text_link(item) %>
-                <%= render partial: 'flow_page_menu', locals: { item: item } %>
-              </section>
+
+              <% if item[:type] == 'flow.branch' %>
+                <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+                  <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
+                  <map name="thumbnail-<%= index %>" aria-hidden="true">
+                    <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+                  </map>
+                  <%= flow_text_link(item) %>
+                  <%= render partial: 'flow_branch_menu', locals: { item: item } %>
+                </section>
+              <% else %>
+                <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
+                  <%= flow_thumbnail_link(item) %>
+                  <%= flow_text_link(item) %>
+                  <%= render partial: 'flow_page_menu', locals: { item: item } %>
+                </section>
+              <% end %>
+
             <% end %>
           <% end %>
         </div>
