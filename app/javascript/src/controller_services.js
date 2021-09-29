@@ -321,6 +321,7 @@ function applyFlowOverviewWidthWorkaround($overview) {
 /* Flow view positioning for design.
 **/
 function positionFlowItems($overview) {
+  const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_EXPRESSIONS = ".flow-expression";
@@ -330,7 +331,7 @@ function positionFlowItems($overview) {
   const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).width();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
-  const CONDITIONS_LEFT_SPACING = THUMBNAIL_WIDTH + SPACING_X; // 110 allows for diamond edge difference (due to CSS in play)
+  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).width() + SPACING_X;
   var $columns = $(".column", $overview);
   var left = 0;
 
