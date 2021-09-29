@@ -29,6 +29,26 @@
                     <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
                   </map>
                   <%= flow_text_link(item) %>
+
+                  <ul class="flow-conditions">
+                    <% item[:conditionals].each_with_index do |condition, index| %>
+                      <li class="flow-condition" data-fb-next="<%= item[:next] %>">
+                        <% condition[:expressions].each do |expression| %>
+                          <div class="flow-expression">
+                            <span class="question"><%= expression[:question] %></span>
+                            <span class="match"><%= expression[:match] %></span>
+                            <span class="answer"><%= expression[:answer] %></span>
+                          </div>
+                        <% end %>
+                        <!--div class="flow-expression">
+                          <span class="question">How many balls can you juggle with?</span>
+                          <span class="match">is</span>
+                          <span class="answer">3 or more</span>
+                        </div-->
+                      </li>
+                    <% end %>
+                  </ul>
+
                   <%= render partial: 'flow_branch_menu', locals: { item: item } %>
                 </section>
               <% else %>
