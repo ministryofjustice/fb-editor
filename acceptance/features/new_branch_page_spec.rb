@@ -15,6 +15,7 @@ feature 'New branch page' do
     and_I_want_to_add_branching(1)
 
     then_I_should_be_on_the_correct_branch_page('new')
+    then_I_should_see_the_previous_page_title('What is your favourite hobby?')
     then_I_should_see_text(I18n.t('branches.title_otherwise'))
     then_I_should_see_text(I18n.t('branches.hint_otherwise'))
 
