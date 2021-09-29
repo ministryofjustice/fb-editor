@@ -550,32 +550,32 @@ html {
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .flow-branch {
-  height: 145px;
+  height: 125px;
   overflow: visible;
-  width: 200px;
+  width: 170px;
 
   & > a {
     box-sizing: border-box;
     color: govuk-colour("black");
 	  display: inline-block;
-    margin-top: 35px;
+    margin-top: 30px;
     padding: 0 40px;
     text-align: center;
     text-decoration: none;
-    width: 200px;
+    width: inherit;
   }
 
   img {
-    height: 145px;
+    height: 125px;
     left: 0;
     position: absolute;
     top: 0;
-    width: 200px
+    width: inherit;
   }
 
   .flow-menu-activator {
-    bottom: 15px;
-    left: 82px;
+    bottom: 10px;
+    left: 68px;
   }
 }
 
@@ -597,8 +597,8 @@ html {
 
 .flow-conditions {
   @include list_reset;
-  max-width: 265px;
-  width: 265px;
+  max-width: 269px;
+  width: 269px;
 }
 
 .flow-expression {
@@ -643,7 +643,7 @@ html {
 .flow-thumbnail {
   border:  $govuk-link-colour solid 2px;
   display: block;
-  height: 145px;
+  height: 125px;
   margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
