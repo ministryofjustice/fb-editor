@@ -32,24 +32,33 @@ const Dialog = require('./component_dialog');
  **/
 class DialogConfirmation extends Dialog {
   constructor($node, config) {
-    super($node, mergeObjects( config, {
+    var conf = mergeObjects( {
+      // Configurable
+      okText: "ok",
+      cancelText: "cancel"
+    }, config);
+
+    conf = mergeObjects( conf, {
+      // Not configurable
       buttons: [
       {
-        text: config.okText,
+        text: conf.okText,
         click: () => {
           safelyActivateFunction($node.data("instance")._action);
           $node.dialog("close");
         }
       },
       {
-        text: config.cancelText,
+        text: conf.cancelText,
         click: () => {
           var instance = $node.data("instance");
           instance.content = instance._defaultText;
           $node.dialog("close");
         }
       }]
-    }));
+    });
+
+    super($node, conf);
 
     if($node && $node.length) {
       $node.parents(".ui-dialog").removeClass("Dialog");
@@ -63,7 +72,7 @@ class DialogConfirmation extends Dialog {
       DialogConfirmation.setDefaultText.call(this, $node);
     }
 
-    this._config = config;
+    this._config = conf;
     this._action = function() {} // Should be overwritten in open()
     this.$node = $node;
   }
@@ -73,9 +82,7 @@ class DialogConfirmation extends Dialog {
   }
 
   set content(text) {
-    this._elements.heading.text(text.heading || this._defaultText.heading);
-    this._elements.content.text(text.content || this._defaultText.content);
-    this._elements.ok.text(text.ok || this._defaultText.ok);
+    super.content = text;
     this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
 
