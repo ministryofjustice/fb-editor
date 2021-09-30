@@ -1,0 +1,16 @@
+<div class="component-dialog-form"
+     data-component="PageCreateDialog">
+  <div class="govuk-form-group ">
+    <h2 class="govuk-heading-m">
+      <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
+    </h2>
+
+    <span class="govuk-hint">
+      <%= t('pages.delete_modal.delete_page_used_for_branching_not_supported_message') %>
+    </span>
+
+    <div class="govuk-form-group ">
+      <%= link_to t('actions.ok'), '#' %>
+    </div>
+  </div>
+</div>

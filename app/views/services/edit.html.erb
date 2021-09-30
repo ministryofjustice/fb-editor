@@ -43,8 +43,9 @@
           <li data-action="delete">
             <% unless page.type == 'page.start' %>
               <%= link_to t('actions.delete_page'),
-              page_path(service.service_id, page.uuid),
-              method: :delete, class: 'destructive delete' %>
+                page_path(service.service_id, page.uuid),
+                method: :delete,
+              class: 'destructive delete' %>
             <% end %>
           </li>
           <% if ENV['BRANCHING'] == 'enabled' %>
@@ -132,7 +133,6 @@
         <%= f.submit 'Add page', class: "govuk-button fb-govuk-button" %>
       <% end %>
     </div>
-
   </div>
 </div>
 

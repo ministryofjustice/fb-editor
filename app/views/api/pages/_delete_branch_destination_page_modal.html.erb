@@ -1,0 +1,20 @@
+<div class="component-dialog-form"
+     data-component="PageCreateDialog">
+  <div class="govuk-form-group ">
+    <h2 class="govuk-heading-m">
+      <%= t('pages.delete_modal.delete_page', title: @page.title) %>
+    </h2>
+
+    <span class="govuk-hint">
+      <%= t('pages.delete_modal.delete_branch_destination_page_message') %>
+    </span>
+
+    <div class="govuk-form-group ">
+      <%= link_to t('pages.delete_modal.delete_and_update_branching'),
+              page_path(service.service_id, @page.uuid),
+              method: :delete, class: 'govuk-button destructive delete' %>
+
+      <%= link_to t('pages.cancel'), class: 'govuk-button' %>
+    </div>
+  </div>
+</div>
