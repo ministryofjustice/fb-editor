@@ -58,7 +58,8 @@ class BranchesController < FormController
   def branch_attributes
     {
       service: service,
-      previous_flow_uuid: previous_flow_uuid
+      previous_flow_uuid: previous_flow_uuid,
+      branch_uuid: params[:branch_uuid]
     }
   end
 

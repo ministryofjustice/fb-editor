@@ -1,7 +1,7 @@
 <script>
   var app = {
     api: {
-      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.previous_flow_uuid %>/conditionals/#{conditional_index}",
+      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{conditional_index}",
       get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{conditionals_index}/expressions/#{expressions_index}"
     },
     page: {
