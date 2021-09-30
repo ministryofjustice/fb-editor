@@ -119,7 +119,7 @@ Dialog.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
     content: this._elements.content.text(),
-    ok: this._elements.ok.text(),
+    ok: this._elements.ok.text()
   };
 }
 
