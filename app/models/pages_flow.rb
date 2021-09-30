@@ -121,13 +121,9 @@ class PagesFlow
 
     {
       question: component.humanised_title,
-      answer: answer(expression)
+      operator: I18n.t("operators.#{expression.operator}"),
+      answer: expression.field_label || ''
     }
-  end
-
-  def answer(expression)
-    operator = I18n.t("operators.#{expression.operator}")
-    "#{operator} #{expression.field_label}".strip
   end
 
   def otherwise(default_next)
@@ -136,6 +132,7 @@ class PagesFlow
       expressions: [
         {
           question: I18n.t('activemodel.attributes.branch.default_next'),
+          operator: '',
           answer: ''
         }
       ]

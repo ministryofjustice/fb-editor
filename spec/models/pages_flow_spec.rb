@@ -196,7 +196,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Do you like Star Wars?',
-                      answer: 'is Only on weekends'
+                      operator: 'is',
+                      answer: 'Only on weekends'
                     }
                   ]
                 },
@@ -205,6 +206,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -242,7 +244,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is your favourite fruit?',
-                      answer: 'is Apples'
+                      operator: 'is',
+                      answer: 'Apples'
                     }
                   ]
                 },
@@ -251,7 +254,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is your favourite fruit?',
-                      answer: 'is Oranges'
+                      operator: 'is',
+                      answer: 'Oranges'
                     }
                   ]
                 },
@@ -260,6 +264,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -304,7 +309,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is your favourite band?',
-                      answer: 'is answered'
+                      operator: 'is answered',
+                      answer: ''
                     }
                   ]
                 },
@@ -313,6 +319,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -350,7 +357,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is the best form builder?',
-                      answer: 'is not MoJ'
+                      operator: 'is not',
+                      answer: 'MoJ'
                     }
                   ]
                 },
@@ -359,6 +367,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -396,7 +405,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What would you like on your burger?',
-                      answer: 'is Beef, cheese, tomato'
+                      operator: 'is',
+                      answer: 'Beef, cheese, tomato'
                     }
                   ]
                 },
@@ -405,7 +415,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What would you like on your burger?',
-                      answer: 'is not Beef, cheese, tomato'
+                      operator: 'is not',
+                      answer: 'Beef, cheese, tomato'
                     }
                   ]
                 },
@@ -414,6 +425,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -458,7 +470,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is the best marvel series?',
-                      answer: 'is The Falcon and the Winter Soldier'
+                      operator: 'is',
+                      answer: 'The Falcon and the Winter Soldier'
                     }
                   ]
                 },
@@ -467,7 +480,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'What is the best marvel series?',
-                      answer: 'is Loki'
+                      operator: 'is',
+                      answer: 'Loki'
                     }
                   ]
                 },
@@ -476,11 +490,13 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Do you like Star Wars?',
-                      answer: 'is Only on weekends'
+                      operator: 'is',
+                      answer: 'Only on weekends'
                     },
                     {
                       question: 'What is the best marvel series?',
-                      answer: 'is WandaVision'
+                      operator: 'is',
+                      answer: 'WandaVision'
                     }
                   ]
                 },
@@ -489,6 +505,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -536,15 +553,18 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Select all Arnold Schwarzenegger quotes',
-                      answer: 'is You are not you. You are me'
+                      operator: 'is',
+                      answer: 'You are not you. You are me'
                     },
                     {
                       question: 'Select all Arnold Schwarzenegger quotes',
-                      answer: 'is Get to the chopper'
+                      operator: 'is',
+                      answer: 'Get to the chopper'
                     },
                     {
                       question: 'Select all Arnold Schwarzenegger quotes',
-                      answer: 'is You have been terminated'
+                      operator: 'is',
+                      answer: 'You have been terminated'
                     }
                   ]
                 },
@@ -553,7 +573,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Select all Arnold Schwarzenegger quotes',
-                      answer: 'is I am GROOT'
+                      operator: 'is',
+                      answer: 'I am GROOT'
                     }
                   ]
                 },
@@ -562,7 +583,8 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Select all Arnold Schwarzenegger quotes',
-                      answer: 'is Dance Off, Bro.'
+                      operator: 'is',
+                      answer: 'Dance Off, Bro.'
                     }
                   ]
                 },
@@ -571,6 +593,7 @@ RSpec.describe PagesFlow do
                   expressions: [
                     {
                       question: 'Otherwise',
+                      operator: '',
                       answer: ''
                     }
                   ]
@@ -669,7 +692,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -678,7 +702,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 2'
+                        operator: 'is',
+                        answer: 'Item 2'
                       }
                     ]
                   },
@@ -687,6 +712,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -743,7 +769,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page J',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -752,6 +779,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -875,7 +903,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -884,7 +913,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 2'
+                        operator: 'is',
+                        answer: 'Item 2'
                       }
                     ]
                   },
@@ -893,6 +923,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1049,7 +1080,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page D',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1058,6 +1090,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1185,7 +1218,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1194,7 +1228,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page B',
-                        answer: 'is Item 2'
+                        operator: 'is',
+                        answer: 'Item 2'
                       }
                     ]
                   },
@@ -1203,6 +1238,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1255,7 +1291,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page J',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1264,6 +1301,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1401,7 +1439,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page D',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1410,6 +1449,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1547,7 +1587,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page D',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1556,6 +1597,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1594,7 +1636,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page D',
-                        answer: 'is Item 1'
+                        operator: 'is',
+                        answer: 'Item 1'
                       }
                     ]
                   },
@@ -1603,7 +1646,8 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Page D',
-                        answer: 'is Item 2'
+                        operator: 'is',
+                        answer: 'Item 2'
                       }
                     ]
                   },
@@ -1612,6 +1656,7 @@ RSpec.describe PagesFlow do
                     expressions: [
                       {
                         question: 'Otherwise',
+                        operator: '',
                         answer: ''
                       }
                     ]
@@ -1734,7 +1779,8 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Do you like Star Wars?',
-                  answer: 'is Only on weekends'
+                  operator: 'is',
+                  answer: 'Only on weekends'
                 }
               ]
             },
@@ -1743,6 +1789,7 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Otherwise',
+                  operator: '',
                   answer: ''
                 }
               ]
@@ -1770,7 +1817,8 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'What would you like on your burger?',
-                  answer: 'is Beef, cheese, tomato'
+                  operator: 'is',
+                  answer: 'Beef, cheese, tomato'
                 }
               ]
             },
@@ -1779,7 +1827,8 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'What would you like on your burger?',
-                  answer: 'is not Beef, cheese, tomato'
+                  operator: 'is not',
+                  answer: 'Beef, cheese, tomato'
                 }
               ]
             },
@@ -1788,6 +1837,7 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Otherwise',
+                  operator: '',
                   answer: ''
                 }
               ]
@@ -1857,15 +1907,18 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is You are not you. You are me'
+                  operator: 'is',
+                  answer: 'You are not you. You are me'
                 },
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is Get to the chopper'
+                  operator: 'is',
+                  answer: 'Get to the chopper'
                 },
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is You have been terminated'
+                  operator: 'is',
+                  answer: 'You have been terminated'
                 }
               ]
             },
@@ -1874,6 +1927,7 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Otherwise',
+                  operator: '',
                   answer: ''
                 }
               ]
@@ -1907,15 +1961,18 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is You are not you. You are me'
+                  operator: 'is',
+                  answer: 'You are not you. You are me'
                 },
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is Get to the chopper'
+                  operator: 'is',
+                  answer: 'Get to the chopper'
                 },
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is You have been terminated'
+                  operator: 'is',
+                  answer: 'You have been terminated'
                 }
               ]
             },
@@ -1924,7 +1981,8 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is I am GROOT'
+                  operator: 'is',
+                  answer: 'I am GROOT'
                 }
               ]
             },
@@ -1933,7 +1991,8 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Select all Arnold Schwarzenegger quotes',
-                  answer: 'is Dance Off, Bro.'
+                  operator: 'is',
+                  answer: 'Dance Off, Bro.'
                 }
               ]
             },
@@ -1942,6 +2001,7 @@ RSpec.describe PagesFlow do
               expressions: [
                 {
                   question: 'Otherwise',
+                  operator: '',
                   answer: ''
                 }
               ]
