@@ -45,6 +45,7 @@ feature 'New branch page' do
     then_I_can_add_and_delete_conditionals_and_expressions
 
     when_I_save_my_changes
+    then_I_should_see_the_previous_page_title('What is your favourite hobby?')
     then_I_should_see_no_errors
   end
 end

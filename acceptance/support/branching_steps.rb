@@ -188,4 +188,8 @@ module BranchingSteps
   def then_I_should_see_the_branch_title(index:, title:)
     expect(editor.branch_title(index).text).to eq(title)
   end
+
+  def then_I_should_see_the_previous_page_title(page_title)
+    expect(editor).to have_text(page_title)
+  end
 end

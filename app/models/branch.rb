@@ -2,7 +2,7 @@ class Branch
   include ActiveModel::Model
   include DestinationsList
   include BranchTitleGenerator
-  attr_accessor :previous_flow_uuid, :service, :default_next
+  attr_accessor :previous_flow_uuid, :service, :default_next, :branch_uuid
   attr_writer :title
   attr_reader :traversable
 
@@ -14,6 +14,8 @@ class Branch
   def initialize(attributes)
     @service = attributes.delete(:service)
     @traversable = Traversable.new(service: service, flow_uuid: previous_flow_uuid)
+    @branch_uuid = attributes.delete(:branch_uuid)
+    @previous_flow_uuid = attributes.delete(:previous_flow_uuid)
     super
   end
 
@@ -91,8 +93,12 @@ class Branch
     previous_flow_object.title
   end
 
+  def flow_uuid
+    previous_flow_uuid || branch_uuid
+  end
+
   def previous_flow_default_next
-    service.flow_object(previous_flow_uuid).default_next
+    service.flow_object(flow_uuid).default_next
   end
 
   def previous_pages
@@ -115,6 +121,19 @@ class Branch
     expression_collection = conditionals.map(&:expressions)
     expression_collection.flatten.any? do |expression|
       expression.errors.messages.present?
+    end
+  end
+
+  def previous_page_title
+    @previous_page_title ||= begin
+      return previous_flow_object.title if previous_flow_uuid.present?
+
+      titles = service.flow_objects.map do |flow|
+        if flow.all_destination_uuids.include?(branch_uuid)
+          flow.title || service.find_page_by_uuid(flow.uuid).title
+        end
+      end
+      titles.compact.first
     end
   end
 

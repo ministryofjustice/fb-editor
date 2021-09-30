@@ -20,7 +20,7 @@ class BranchesController < FormController
 
   def edit
     @branch = Branch.new(
-      branch_metadata.merge(service: service, previous_flow_uuid: params[:branch_uuid])
+      branch_metadata.merge(service: service, branch_uuid: params[:branch_uuid])
     )
   end
 
