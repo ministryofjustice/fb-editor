@@ -35,7 +35,9 @@ class DialogConfirmation extends Dialog {
     var conf = mergeObjects( {
       // Configurable
       okText: "ok",
-      cancelText: "cancel"
+      cancelText: "cancel",
+      onOk: function() {},
+      onCancel: function() {}
     }, config);
 
     conf = mergeObjects( conf, {
@@ -45,7 +47,7 @@ class DialogConfirmation extends Dialog {
         text: conf.okText,
         click: () => {
           safelyActivateFunction($node.data("instance")._action);
-          $node.dialog("close");
+          this.close(true);
         }
       },
       {
@@ -53,7 +55,7 @@ class DialogConfirmation extends Dialog {
         click: () => {
           var instance = $node.data("instance");
           instance.content = instance._defaultText;
-          $node.dialog("close");
+          this.close(false);
         }
       }]
     });
@@ -91,6 +93,16 @@ class DialogConfirmation extends Dialog {
       this._action = action;
     }
     super.open(text);
+  }
+
+  close(value) {
+    if(value) {
+      this._config.onOk(this);
+    }
+    else {
+      this._config.onCancel(this);
+    }
+    this.$node.dialog("close");
   }
 }
 
