@@ -36,15 +36,10 @@
                         <% condition[:expressions].each do |expression| %>
                           <div class="flow-expression">
                             <span class="question"><%= expression[:question] %></span>
-                            <span class="match"><%= expression[:match] %></span>
+                            <span class="operator"><%= expression[:operator] %></span>
                             <span class="answer"><%= expression[:answer] %></span>
                           </div>
                         <% end %>
-                        <!--div class="flow-expression">
-                          <span class="question">How many balls can you juggle with?</span>
-                          <span class="match">is</span>
-                          <span class="answer">3 or more</span>
-                        </div-->
                       </li>
                     <% end %>
                   </ul>
