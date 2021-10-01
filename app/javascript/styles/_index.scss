@@ -585,12 +585,13 @@ html {
   width: inherit;
 
   a, span {
+    @include govuk-font($size: 16);
     display: inline;
     position: static;
     width: auto;
   }
 
-  .match {
+  .operator {
     color: $govuk-secondary-text-colour;
   }
 }

@@ -487,7 +487,7 @@ function addTemporaryLayoutTestAbility(view) {
                   let expression = condition.expressions[ex];
                   $li.append("<div class=\"flow-expression\"> \
                                 <span class=\"question\">" + expression.question + "</span> \
-                                <span class=\"match\">" + expression.operator + "</span> \
+                                <span class=\"operator\">" + expression.operator + "</span> \
                                 <span class=\"answer\">" + expression.answer + "</span> \
                               </div>");
                 }
