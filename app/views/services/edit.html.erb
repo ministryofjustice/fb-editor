@@ -23,7 +23,7 @@
             <% else %>
 
               <% if item[:type] == 'flow.branch' %>
-                <section class="flow-item flow-branch" aria-label="TODO-need-editable-label">
+                <section class="flow-item flow-branch" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
                   <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
                   <map name="thumbnail-<%= index %>" aria-hidden="true">
                     <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
@@ -47,7 +47,7 @@
                   <%= render partial: 'flow_branch_menu', locals: { item: item } %>
                 </section>
               <% else %>
-                <section class="flow-item flow-page" aria-label="TODO-need-editable-label">
+                <section class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
                   <%= flow_thumbnail_link(item) %>
                   <%= flow_text_link(item) %>
                   <%= render partial: 'flow_page_menu', locals: { item: item } %>
