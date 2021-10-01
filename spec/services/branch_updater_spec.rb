@@ -17,8 +17,8 @@ RSpec.describe BranchUpdater, type: :model do
   describe '#metadata' do
     let(:branch) { Branch.new(attributes) }
     let(:default_next) { SecureRandom.uuid }
-    let(:previous_flow_uuid) do
-      '09e91fd9-7a46-4840-adbc-244d545cfef7'
+    let(:branch_uuid) do
+      '09e91fd9-7a46-4840-adbc-244d545cfef7' # Branching point 1
     end
     let(:conditionals_attributes) do
       {
@@ -38,7 +38,7 @@ RSpec.describe BranchUpdater, type: :model do
     let(:attributes) do
       {
         service: service,
-        previous_flow_uuid: previous_flow_uuid,
+        branch_uuid: branch_uuid,
         conditionals_attributes: conditionals_attributes,
         default_next: default_next
       }
@@ -56,7 +56,7 @@ RSpec.describe BranchUpdater, type: :model do
 
     context 'when metadata is valid' do
       let(:valid) { true }
-      let(:flow_object) { branch_updater.metadata['flow'][previous_flow_uuid] }
+      let(:flow_object) { branch_updater.metadata['flow'][branch_uuid] }
       let(:expected_conditionals) do
         [
           {

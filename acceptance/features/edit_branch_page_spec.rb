@@ -38,9 +38,8 @@ feature 'New branch page' do
       'Which flavours of ice cream have you eaten?'
     )
 
-    # uncomment once missing 'Add condition' on edit pages bug is fixed
-    # when_I_save_my_changes
-    # then_I_should_be_on_the_correct_branch_page('edit')
+    when_I_save_my_changes
+    then_I_should_be_on_the_correct_branch_page('edit')
 
     then_I_can_add_and_delete_conditionals_and_expressions
 
