@@ -38,19 +38,32 @@ class NewPageGenerator
   end
 
   def add_flow_page
+    default_next = previous_default_next
     latest_metadata.tap do
       latest_metadata['flow'][previous_page_uuid]['next']['default'] = page_metadata['_uuid']
-      latest_metadata['flow'].merge!(new_flow_page_metadata)
+      latest_metadata['flow'].merge!(new_flow_page_metadata(default_next))
       latest_metadata['pages'].insert(pages_index, page_metadata)
     end
   end
 
-  def new_flow_page_metadata
+  def new_flow_page_metadata(default_next)
     NewFlowPageGenerator.new(
       page_uuid: page_metadata['_uuid'],
-      page_index: index_to_be_inserted_after,
+      default_next: default_next,
       latest_metadata: latest_metadata
     ).to_metadata
+  end
+
+  def previous_default_next
+    flow_uuid = add_page_after.presence || previous_page_uuid
+    return '' if flow_uuid.nil?
+
+    latest_metadata['flow'][flow_uuid]['next']['default']
+  rescue NoMethodError
+    Sentry.capture_message(
+      "Unable to set default next. #{flow_uuid} does not exist in service flow"
+    )
+    ''
   end
 
   def add_standalone_page

@@ -28,7 +28,6 @@ class NewServiceGenerator
   def start_page_flow_object(metadata)
     NewFlowPageGenerator.new(
       page_uuid: metadata['pages'][0]['_uuid'],
-      page_index: 0,
       latest_metadata: metadata
     ).to_metadata
   end

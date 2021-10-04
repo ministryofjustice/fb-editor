@@ -2,10 +2,11 @@ RSpec.describe NewFlowPageGenerator do
   subject(:generator) do
     described_class.new(
       page_uuid: page_uuid,
-      page_index: page_index,
+      default_next: default_next,
       latest_metadata: latest_metadata
     )
   end
+  let(:page_uuid) { SecureRandom.uuid }
   let(:latest_metadata) { metadata_fixture('branching') }
   let(:valid) { true }
 
@@ -34,14 +35,13 @@ RSpec.describe NewFlowPageGenerator do
 
     context 'when there is a next page' do
       it_behaves_like 'a flow page generator' do
-        let(:page_uuid) { latest_metadata['pages'][0]['_uuid'] }
-        let(:page_index) { 0 }
+        let(:default_next) { 'some-uuid' }
         let(:expected_metadata) do
           {
             page_uuid => {
               '_type' => 'flow.page',
               'next' => {
-                'default' => latest_metadata['pages'][1]['_uuid']
+                'default' => default_next
               }
             }
           }
@@ -51,8 +51,7 @@ RSpec.describe NewFlowPageGenerator do
 
     context 'when there is no next page' do
       it_behaves_like 'a flow page generator' do
-        let(:page_uuid) { latest_metadata['pages'].last['_uuid'] }
-        let(:page_index) { nil }
+        let(:default_next) { nil }
         let(:expected_metadata) do
           {
             page_uuid => {

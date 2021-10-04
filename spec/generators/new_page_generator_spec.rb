@@ -85,11 +85,15 @@ RSpec.describe NewPageGenerator do
           page = service.find_page_by_url('email-address')
           page.uuid
         end
+        let(:expected_default_next) do
+          # parent-name. email-address's page old default next
+          '4b8c6bf3-878a-4446-9198-48351b3e2185'
+        end
         let(:expected_flow_metadata) do
           {
             '_type' => 'flow.page',
             'next' => {
-              'default' => '4b8c6bf3-878a-4446-9198-48351b3e2185'
+              'default' => expected_default_next
             }
           }
         end
@@ -126,6 +130,13 @@ RSpec.describe NewPageGenerator do
         it 'adds new page in last position' do
           expect(generator.to_metadata['pages']).to_not be_blank
           expect(generator.to_metadata['pages'].last).to include(page_attributes)
+        end
+
+        it 'sends a message to Sentry' do
+          expect(Sentry).to receive(:capture_message).with(
+            "Unable to set default next. #{add_page_after} does not exist in service flow"
+          )
+          generator.to_metadata
         end
       end
 
