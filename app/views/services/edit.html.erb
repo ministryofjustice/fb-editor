@@ -32,7 +32,7 @@
 
                   <ul class="flow-conditions">
                     <% item[:conditionals].each_with_index do |condition, index| %>
-                      <li class="flow-condition" data-fb-next="<%= item[:next] %>">
+                      <li class="flow-condition" data-fb-next="<%= condition[:next] %>">
                         <% condition[:expressions].each do |expression| %>
                           <div class="flow-expression">
                             <span class="question"><%= expression[:question] %></span>
