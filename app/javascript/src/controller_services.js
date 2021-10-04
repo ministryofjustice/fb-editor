@@ -373,7 +373,7 @@ function positionFlowItems($overview) {
         $condition.css({
           left: 0,
           position: "absolute",
-          top: (conditionY - $condition.height()) + "px"
+          bottom: ($condition.height() - conditionY) + "px"
         });
 
         conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
@@ -403,8 +403,43 @@ function positionFlowItems($overview) {
 
   // Ditch the columns.
   $columns.remove();
+
+  // Adjustments for Condition text elements.
+  positionConditionsByDestination($overview);
 }
 
+
+
+/* After initial positionFlowItems() method has finished, we need to revisit
+ * the Conditional text items to try and align them better with their actual
+ * destination items. To ignore this step can result in condition items
+ * aligning with an incorrect row or even, being placed on an entirely new
+ * and unpopulated row.
+ *
+ * Note: initial problem was highlighted by a 3-row layout that had a branch
+ * on the 2nd row, with three conditions showing, each one on a separate row.
+ * The first lined up with the branch node, and the others followed beneath.
+ * This meant, the first condition, which had a destination page sitting on
+ * the row above, essentially positioned all three Condition text elements
+ * exactly one row beneath a more correct row position.)
+ *
+ *
+ **/
+function positionConditionsByDestination($overview) {
+  const SELECTOR_FLOW_BRANCH = ".flow-branch";
+  const SELECTOR_FLOW_CONDITION = ".flow-condition";
+
+  $(SELECTOR_FLOW_CONDITION, $overview).each(function(index) {
+    var $node = $(this);
+    var $parent = $node.parents(SELECTOR_FLOW_BRANCH);
+    var parentTop = $parent.position().top;
+    var next = $node.data("fb-next");
+    var $destination = $("#" + next, $overview);
+    var destinationTop = $destination.position().top;
+
+    $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
+  });
+}
 
 
 
