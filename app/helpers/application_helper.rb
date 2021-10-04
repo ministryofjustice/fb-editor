@@ -16,10 +16,10 @@ module ApplicationHelper
   # Used on service flow page
   def flow_text_link(item)
     link_to (if item[:type] == 'flow.branch'
-              edit_branch_path(service.service_id, item[:uuid])
-            else
-              edit_page_path(service.service_id, item[:uuid])
-            end), class: 'govuk-link' do
+               edit_branch_path(service.service_id, item[:uuid])
+             else
+               edit_page_path(service.service_id, item[:uuid])
+             end), class: 'govuk-link' do
       concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
       concat tag.span(item[:title], class: 'text')
     end
