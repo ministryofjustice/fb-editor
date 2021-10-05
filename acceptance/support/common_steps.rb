@@ -47,6 +47,7 @@ module CommonSteps
   end
 
   def given_I_want_to_create_a_service
+    expect(page).to have_content(I18n.t('services.create'))
     editor.create_service_button.click
   end
 
