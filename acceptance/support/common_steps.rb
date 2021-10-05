@@ -27,7 +27,14 @@ module CommonSteps
       editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
-    sleep(1)
+
+    begin
+      retries ||= 0
+      sleep(1)
+      expect(page).to have_content(I18n.t('services.create'))
+    rescue
+      retry if (retries += 1) < 3
+    end
   end
 
   def given_I_have_a_service(service = service_name)
@@ -47,7 +54,6 @@ module CommonSteps
   end
 
   def given_I_want_to_create_a_service
-    expect(page).to have_content(I18n.t('services.create'))
     editor.create_service_button.click
   end
 
