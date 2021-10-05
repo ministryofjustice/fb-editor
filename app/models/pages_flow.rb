@@ -25,7 +25,10 @@ class PagesFlow
 
   def page(flow)
     page = service.find_page_by_uuid(flow.uuid)
-    base_props(page).merge(next: flow.default_next)
+    base_props(page).merge(
+      url: page.url,
+      next: flow.default_next
+    )
   end
 
   def branch(flow)
@@ -61,8 +64,7 @@ class PagesFlow
       type: obj.type,
       title: obj.title,
       uuid: obj.uuid,
-      thumbnail: thumbnail_type(obj),
-      url: obj.url
+      thumbnail: thumbnail_type(obj)
     }
   end
 
