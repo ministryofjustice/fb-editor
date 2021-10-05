@@ -250,7 +250,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'pages without components when first generated' do
-          %w[multiplequestions checkanswers confirmation].each do |page|
+          %w[multiplequestions checkanswers confirmation exit].each do |page|
             context "when #{page} page" do
               let(:page_type) { page }
               let(:component_type) { nil }
@@ -267,7 +267,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'pages that allow only content components' do
-          %w[content checkanswers confirmation].each do |page|
+          %w[content checkanswers confirmation exit].each do |page|
             context "when #{page} page" do
               let(:page_type) { page }
               let(:component_type) { 'content' }
@@ -316,7 +316,7 @@ RSpec.describe NewPageGenerator do
 
       context 'when metadata is invalid' do
         context 'pages that only allow content components' do
-          %w[content checkanswers confirmation].each do |page|
+          %w[content checkanswers confirmation exit].each do |page|
             %w[checkboxes date number radios text textarea].each do |type|
               context "#{page} page and #{type} component" do
                 let(:page_type) { page }

@@ -1680,11 +1680,11 @@ RSpec.describe PagesFlow do
                 thumbnail: 'text'
               },
               {
-                type: 'page.singlequestion',
+                type: 'page.exit',
                 title: 'Page G',
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '',
-                thumbnail: 'text'
+                thumbnail: 'content'
               }
             ],
             [

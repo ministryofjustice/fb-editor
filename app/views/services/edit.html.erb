@@ -37,7 +37,9 @@
             File.join(preview_service_path(service.service_id), page.url),
             target: '_blank' %>
           </li>
+          <% unless (page.type =~ /page.(checkanswers|confirmation|exit)/) %>
           <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
+          <% end %>
           <li data-action="delete">
             <% unless page.type == 'page.start' %>
               <%= link_to t('actions.delete_page'),
@@ -50,7 +52,7 @@
               <%= link_to t('services.branch'),
                 new_branches_path(service.service_id, page.uuid) %>
             </li>
-            <% unless (page.type =~ /page.(checkanswers|confirmation)/) %>
+            <% unless (page.type =~ /page.(checkanswers|confirmation|exit)/) %>
               <li data-action="edit">
                 <%= link_to t('actions.change_destination'),
                   new_api_service_flow_destination_path(service.service_id, page.uuid) %>
@@ -105,6 +107,7 @@
       <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
       <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
       <li><a href="#add-page" data-page-type="content">Content page</a></li>
+      <li><a href="#add-page" data-page-type="exit">Exit page</a></li>
     </ul>
 
     <div class="component-dialog-form"

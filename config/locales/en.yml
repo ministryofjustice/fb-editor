@@ -12,6 +12,7 @@ en:
       checkanswers: Check your answers page
       confirmation: Confirmation page
       content: Content page
+      exit: Exit page
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
