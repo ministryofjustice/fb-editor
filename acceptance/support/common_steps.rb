@@ -12,6 +12,9 @@ module CommonSteps
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
+      sleep(3)
+      expect(page).to have_content('Please select the log in option that matches your work email')
+
       # Executing javascript directly as the fields and button are hidden on the
       # login page for the moment
       editor.execute_script(
@@ -28,13 +31,8 @@ module CommonSteps
       editor.sign_in_submit.click
     end
 
-    begin
-      retries ||= 0
-      sleep(1)
-      expect(page).to have_content(I18n.t('services.create'))
-    rescue
-      retry if (retries += 1) < 3
-    end
+    sleep(3)
+    expect(page).to have_content(I18n.t('services.create'))
   end
 
   def given_I_have_a_service(service = service_name)
