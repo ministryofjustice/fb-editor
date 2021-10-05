@@ -139,14 +139,18 @@ class Branch
 
   private
 
+  def grid
+    @grid ||= MetadataPresenter::Grid.new(service)
+  end
+
   def ordered_pages
-    @ordered_pages ||= MetadataPresenter::Grid.new(service).ordered_pages
+    @ordered_pages ||= grid.ordered_pages
   end
 
   def detached
     Detached.new(
       service: service,
-      ordered_flow: ordered_pages,
+      main_flow_uuids: grid.page_uuids,
       exclude_branches: true
     ).flow_objects
   end
