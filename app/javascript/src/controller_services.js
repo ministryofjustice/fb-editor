@@ -41,25 +41,14 @@ class ServicesController extends DefaultController {
 }
 
 
-/* Setup for the Edit action
+/* CONTROLLER VIEW ACTION:
+ * Setup for the Edit action
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   var $flowOverview = $("#flow-overview");
-  var $pageCreateForm = $("#page-create-dialog");
 
-  // Bind document event listeners to control functionality not specific to a single component or where
-  // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-  $(document).on("PageActionMenuSelection", pageActionMenuSelection.bind(view) );
-
-  // Create dialog for handling new page input and error reporting.
-  //view.pageCreateDialog = new PageCreateDialog(view, $("[data-component='PageCreateDialog']"));
-  view.pageCreateDialog = new FormDialog($pageCreateForm, {
-    cancelText: $pageCreateForm.attr("data-cancel-text"),
-    selectorErrors: ".govuk-error-message",
-    removeErrorClasses: ".govuk-form-group--error"
-  });
-
+  enhancePageCreateDialog(view);
   createMenusForThumbnails(view);
   createMenuForAddPage(view);
   fixAddPageButtonPosition();
@@ -72,7 +61,10 @@ ServicesController.edit = function() {
 }
 
 
-/* Control form step (add/edit/delete/preview...) menus
+
+
+/* PAGE SPECIFIC COMPONENT:
+ * Control form step (add/edit/delete/preview...) menus
  **/
 class PageActionMenu extends ActivatedMenu {
   constructor($node, dialog, config) {
@@ -87,11 +79,10 @@ class PageActionMenu extends ActivatedMenu {
   }
 }
 
-
 /* Handle item selections on the form step context
  * menu elements.
  **/
-function pageActionMenuSelection(event, data) {
+PageActionMenu.selection = function(event, data) {
   var element = data.original.element;
   var action = data.activator.data("action");
   var view = this;
@@ -145,7 +136,10 @@ function pageActionMenuSelection(event, data) {
 }
 
 
-/* Controls form step Add page functionality
+
+
+/* PAGE SPECIFIC COMPONENT:
+ * Controls form step Add page functionality
  **/
 class PageAdditionMenu extends ActivatedMenu {
   constructor($node, dialog, config) {
@@ -182,30 +176,35 @@ PageAdditionMenu.selection = function(event, data) {
   // Then add any required values.
   updateHiddenInputOnForm($form, "page[page_type]", $activator.data("page-type"));
   updateHiddenInputOnForm($form, "page[component_type]", $activator.data("component-type"));
-  data.component.close();
+  //data.component.close();
 }
 
 
-/* Form item context menus.
- * Create the context menus for each page thumbnail.
- **/
-function createMenusForThumbnails(view) {
-  $("[data-component='ItemActionMenu']").each((i, el) => {
-    var menu = new PageActionMenu($(el), view.pageCreateDialog, {
-      selection_event: "PageActionMenuSelection",
-      preventDefault: true, // Stops the default action of triggering element.
-      menu: {
-        position: { at: "right+2 top-2" }
-      }
-    });
 
-    view.addLastPointHandler(menu.activator.$node);
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Finds the (in page) form that can add a new page and enhances with Dialog component
+ * effect and necessary type selection (with error handling) functionality.
+ **/
+function enhancePageCreateDialog(view) {
+  var $pageCreateForm = $("#page-create-dialog");
+
+  // Bind document event listeners to control functionality not specific to a single component or where
+  // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
+  $(document).on("PageActionMenuSelection", PageActionMenu.selection.bind(view) );
+
+  // Create dialog for handling new page input and error reporting.
+  view.pageCreateDialog = new FormDialog($pageCreateForm, {
+    cancelText: $pageCreateForm.attr("data-cancel-text"),
+    selectorErrors: ".govuk-error-message",
+    removeErrorClasses: ".govuk-form-group--error"
   });
 }
 
 
-/* Form overview Add page support.
- * Create the menu for Add Page functionality.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Create the menu effect and required functionality for controlling and selecting new page types.
  **/
 function createMenuForAddPage(view) {
   $("[data-component='PageAdditionMenu']").each(function(i) {
@@ -228,7 +227,26 @@ function createMenuForAddPage(view) {
 }
 
 
-/* Temporary fix for form overview Add Page button location.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Create the context menus for each page thumbnail within an overview layout.
+ **/
+function createMenusForThumbnails(view) {
+  $("[data-component='ItemActionMenu']").each((i, el) => {
+    var menu = new PageActionMenu($(el), view.pageCreateDialog, {
+      selection_event: "PageActionMenuSelection",
+      preventDefault: true, // Stops the default action of triggering element.
+      menu: {
+        position: { at: "right+2 top-2" }
+      }
+    });
+
+    view.addLastPointHandler(menu.activator.$node);
+  });
+}
+
+
+/* TEMPORARY FIX for form overview Add Page button location.
  * Due to changes required for the updated Flow Overview
  * layout, the Add Page menu HTML has been relocated outside
  * of the original DIV.form-overview element. This move has
@@ -242,7 +260,7 @@ function fixAddPageButtonPosition() {
 }
 
 
-/* Temporary fix for form overview scrolling and reactivation on resize.
+/* TEMPORARY FIX for form overview scrolling and reactivation on resize.
  **/ 
 function fixFormOverviewScroll() {
   // Fix for the scrolling of form overview.
@@ -257,7 +275,7 @@ function fixFormOverviewScroll() {
 }
 
 
-/* Quickfix workaround to try and fix scrolling issues for the form overview
+/* QUICKFIX WORKAROUND to try and fix scrolling issues for the form overview
  * when there are too many thumbnails to fix on the one page view.
  **/
 function applyCustomOverviewWorkaround() {
@@ -286,7 +304,7 @@ function applyCustomOverviewWorkaround() {
 }
 
 
-/* TODO; Temporary resizing of frame (will be improved with ticket regarding scroll implementation
+/* TEMPORARY resizing of frame (will be improved with ticket regarding scroll implementation
  *
  * Quickfix workaround to try and adjust the width of available view
  * area on the flow overview (otherwise restricted by container css).
@@ -321,7 +339,10 @@ function applyFlowOverviewWidthWorkaround($overview) {
 
 
 
-/* Flow view positioning for design.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Main function to find and position Flow items (pages/branches/spacers) within
+ * and overview layout, to get the required design.
 **/
 function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
