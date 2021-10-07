@@ -15,4 +15,11 @@ class DestroyQuestionModal
   def can_not_be_deleted?
     expressions.map(&:component).include?(question.uuid)
   end
-end
+
+  def expressions
+    conditionals.map(&:expressions).flatten
+  end
+
+  def conditionals
+    @conditionals ||= service.branches.map(&:conditionals).flatten
+  end
