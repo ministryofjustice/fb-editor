@@ -440,14 +440,16 @@ function positionFlowItems($overview) {
  * aligning with an incorrect row or even, being placed on an entirely new
  * and unpopulated row.
  *
- * Note: initial problem was highlighted by a 3-row layout that had a branch
+ * Note 1: initial problem was highlighted by a 3-row layout that had a branch
  * on the 2nd row, with three conditions showing, each one on a separate row.
  * The first lined up with the branch node, and the others followed beneath.
  * This meant, the first condition, which had a destination page sitting on
  * the row above, essentially positioned all three Condition text elements
  * exactly one row beneath a more correct row position.)
  *
- *
+ * Note 2: have adjusted to ignore 'Otherwise' expression which can end up on
+ * the top row in some configurations (e.g. Just points to CYA page), which
+ * means it sits incorrectly flow of what would be the top path.
  **/
 function positionConditionsByDestination($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
@@ -461,7 +463,7 @@ function positionConditionsByDestination($overview) {
     var $destination = $overview.find("#" + next);
     var destinationTop = $destination.length ? $destination.position().top : -1; // Didn't find a destination ??
 
-    if(destinationTop >= 0) {
+    if(destinationTop >= 0 && $node.data("otherwise") == "false") {
       $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
     }
   });
