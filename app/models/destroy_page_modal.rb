@@ -3,7 +3,7 @@ class DestroyPageModal
   attr_accessor :service, :page
 
   PARTIALS = {
-    potential_stack_branch?: 'stack_branches_not_supported',
+    potential_stacked_branches?: 'stack_branches_not_supported',
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
     branch_destination?: 'delete_branch_destination_page',
     default?: 'delete'
@@ -21,7 +21,7 @@ class DestroyPageModal
     page.uuid.in?(expressions.map(&:page))
   end
 
-  def potential_stack_branch?
+  def potential_stacked_branches?
     next_flow_is_a_branch? && previous_flow_is_a_branch?
   end
 
