@@ -84,6 +84,7 @@ class FlowItemMenu extends ActivatedMenu {
   selection(event, item) {
     var action = item.data("action");
     var view = this._config.view;
+
     switch(action) {
       case "preview":
            window.open(item.attr("href"));
