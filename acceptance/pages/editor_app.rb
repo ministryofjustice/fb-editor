@@ -59,6 +59,9 @@ class EditorApp < SitePrism::Page
   element :add_content_page,
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Content page')]"
+  element :add_exit,
+          :xpath,
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'Exit page')]"
 
   element :add_a_component_button, :link, I18n.t('components.actions.add_component')
   element :question_component,
