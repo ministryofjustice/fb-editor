@@ -97,7 +97,7 @@
       <section class="form-overview-step" aria-label="<%= t('aria.' + page.type) %>">
         <%= flow_thumbnail(page) %>
         <%= flow_text_link({ type: 'page', uuid: page.uuid, title: page.url }) %>
-        <%= render partial: 'flow_page_menu', locals: { item: { uuid: page.uuid, url: page.url, type: page.type  } } %>
+        <%= render partial: 'flow_page_menu', locals: { item: { title: page.title, uuid: page.uuid, url: page.url, type: page.type  } } %>
       </section>
     <% end %>
   </div>
@@ -108,50 +108,38 @@
 
 <%# statically written menu template used for each item menu %>
 <ul class="component-activated-menu govuk-navigation"
-    data-activated-menu-container-id="ActivatedMenu_AddPage"
     data-activator-classname="form-overview-button"
     data-activator-text="<%= t('pages.create') %>"
     data-component="PageAdditionMenu">
   <li>
     <span>Single question page</span>
     <ul class="govuk-navigation">
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="text">Text</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="textarea">Textarea</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="number">Number</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="date">Date</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="radios">Radio buttons</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="checkboxes">Checkboxes</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="upload">File upload</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="text"><a href="#add-page">Text</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="number"><a href="#add-page">Number</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="date"><a href="#add-page">Date</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="upload"><a href="#add-page">File upload</a></li>
     </ul>
   </li>
-  <li>
-    <a href="#add-page" data-page-type="multiplequestions">
-      Multiple question page
-    </a>
-  </li>
-  <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
-  <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
-  <li><a href="#add-page" data-page-type="content">Content page</a></li>
-  <li><a href="#add-page" data-page-type="exit">Exit page</a></li>
+  <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
+  <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
+  <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
+  <li data-page-type="content"><a href="#add-page">Content page</a></li>
+  <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
 </ul>
 
 <%# Add page component dialog template %>
 <div class="component-dialog-form"
-     id="page-create-dialog"
+     data-component="PageAdditionDialog"
      data-cancel-text="<%= t('pages.cancel') %>">
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
     <%= f.hidden_field :add_page_after, value: "" %>
