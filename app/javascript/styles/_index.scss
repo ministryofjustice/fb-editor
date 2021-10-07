@@ -552,7 +552,7 @@ html {
 .flow-branch {
   height: 125px;
   overflow: visible;
-  width: 170px;
+  width: 200px;
 
   & > a {
     box-sizing: border-box;
@@ -575,7 +575,7 @@ html {
 
   .flow-menu-activator {
     bottom: 10px;
-    left: 68px;
+    left: 82px;
   }
 }
 
@@ -598,8 +598,7 @@ html {
 
 .flow-conditions {
   @include list_reset;
-  max-width: 269px;
-  width: 269px;
+  width: 300px;
 }
 
 .flow-expression {

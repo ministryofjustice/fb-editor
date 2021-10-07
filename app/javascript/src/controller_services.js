@@ -363,7 +363,7 @@ function positionFlowItems($overview) {
   const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).width();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
-  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).width() + SPACING_X;
+  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).width();
   var $columns = $(".column", $overview);
   var left = 0;
 
@@ -375,11 +375,6 @@ function positionFlowItems($overview) {
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var maxExpressionWidth = utilities.maxWidth($expressions);
     var top = 0;
-
-    // Reduce any conditions columns, if required.
-    if(maxExpressionWidth < $conditions.width()) {
-      $conditions.css("width", maxExpressionWidth + "px");
-    }
 
     $items.each(function() {
       var conditionY = THUMBNAIL_HEIGHT / 2;
@@ -420,7 +415,7 @@ function positionFlowItems($overview) {
       });
 
       // Adjust distance based on finding some conditions
-      left += (CONDITIONS_LEFT_SPACING + $conditions.width());
+      left += ($conditions.width() + SPACING_X);
     }
     else {
       // Adjust distance based just on column width
