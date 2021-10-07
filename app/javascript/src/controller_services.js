@@ -21,7 +21,6 @@ const utilities = require('./utilities');
 const FormDialog = require('./component_dialog_form');
 const mergeObjects = utilities.mergeObjects;
 const post = utilities.post;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DialogConfirmation = require('./component_dialog_confirmation');
@@ -48,9 +47,9 @@ ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   var $flowOverview = $("#flow-overview");
 
-  enhancePageCreateDialog(view);
-  createMenusForThumbnails(view);
-  createMenuForAddPage(view);
+  createPageAdditionDialog(view);
+  createPageAdditionMenu(view);
+  createFlowItemMenus(view);
   fixAddPageButtonPosition();
   fixFormOverviewScroll();
 
@@ -63,122 +62,138 @@ ServicesController.edit = function() {
 
 
 
-/* PAGE SPECIFIC COMPONENT:
+/* VIEW SPECIFIC COMPONENT:
  * Control form step (add/edit/delete/preview...) menus
  **/
-class PageActionMenu extends ActivatedMenu {
-  constructor($node, dialog, config) {
+class FlowItemMenu extends ActivatedMenu {
+  constructor($node, config) {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
       activator_text: $node.data("activator-text")
     }, config));
 
+    $node.on("menuselect", (event, ui) => {
+      this.selection(event, ui.item);
+    });
+
+    this.container.$node.addClass("FlowItemMenu");
     this.uuid = $node.data("uuid");
-    this.dialog = dialog;
+    this.title = $node.data("title");
+  }
+
+   // Handle item selections on the form step context menu elements.
+  selection(event, item) {
+    var action = item.data("action");
+    var view = this._config.view;
+
+    switch(action) {
+      case "preview":
+           window.open(item.attr("href"));
+           break;
+
+      case "add":
+           event.preventDefault();
+           this.addPage(item);
+           break;
+
+      case "destination":
+           event.preventDefault();
+           this.changeDestination(item);
+           break;
+
+      case "delete":
+           event.preventDefault();
+           this.deleteItem(item);
+           break;
+
+      default: location.href = item("href");
+    }
+  }
+
+  // Open the views Page Addition Menu
+  addPage($activator) {
+    var menu = this._config.view.pageAdditionMenu;
+    menu.addPageAfter = this.uuid;
+    menu.open({
+      my: "left top",
+      at: "right top",
+      of: $activator
+    });
+  }
+
+  // Open an API request dialog to change destination
+  changeDestination($activator) {
+    var view = this._config.view;
+    var $link = $activator.find("> a");
+    new DialogApiRequest($link.attr("href"), {
+      activator: $link,
+      buttons: [{
+        text: view.text.dialogs.button_change_destination,
+        click: function(dialog) {
+          dialog.$node.find("form").submit();
+        }
+      }, {
+        text: view.text.dialogs.button_cancel
+      }]
+    });
+  }
+
+  deleteItem($activator) {
+    var view = this._config.view;
+    var $link = $activator.find("> a");
+    view.dialogConfirmationDelete.open({
+      heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
+      ok: view.text.dialogs.button_delete_page
+      }, function() {
+        post($link.attr("href"), { _method: "delete" });
+    });
   }
 }
 
-/* Handle item selections on the form step context
- * menu elements.
- **/
-PageActionMenu.selection = function(event, data) {
-  var element = data.original.element;
-  var action = data.activator.data("action");
-  var view = this;
 
-  switch(action) {
-    case "preview":
-         window.open(element.href);
-         break;
-
-    case "add":
-         // Set the 'add_page_here' value in form.
-         // This should be a uuid value if from thumbnail context menu, of
-         // just set it to blank string if from the main 'Add page' button.
-         updateHiddenInputOnForm(data.component.dialog.$node, "page[add_page_after]", data.component.uuid);
-
-         // Current menu option needs to activate the (separate entity)
-         // Add page menu to allow add page options to show.
-         $("#ActivatedMenu_AddPage").trigger("component.open", {
-           my: "left top",
-           at: "right top",
-           of: element
-         });
-         break;
-
-    case "destination":
-         event.preventDefault();
-         new DialogApiRequest(element.href, {
-           activator: element,
-           buttons: [{
-             text: view.text.dialogs.button_change_destination,
-             click: function(dialog) {
-               dialog.$node.find("form").submit();
-             }
-           }, {
-             text: view.text.dialogs.button_cancel
-           }]
-         });
-         break;
-
-    case "delete":
-          this.dialogConfirmationDelete.open({
-            heading: app.text.dialogs.heading_delete.replace(/%{label}/, data.component.$node.data("page-heading")),
-            ok: app.text.dialogs.button_delete_page
-            }, function() {
-            post(element.href, { _method: "delete" });
-          });
-         break;
-
-    default: location.href = element.href;
-  }
-}
-
-
-
-
-/* PAGE SPECIFIC COMPONENT:
+/* VIEW SPECIFIC COMPONENT:
  * Controls form step Add page functionality
  **/
 class PageAdditionMenu extends ActivatedMenu {
-  constructor($node, dialog, config) {
+  constructor($node, config) {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
       activator_text: $node.data("activator-text")
     }, config));
 
-    this.dialog = dialog;
-    this.activator.$node.on("click.pageadditionmenu", function() {
-      // Add handler for main 'Add page' button to clear any add_page_after values.
-      updateHiddenInputOnForm(dialog.$node, "page[add_page_after]", "");
-    });
+    this.container.$node.addClass("PageAdditionMenu");
 
+    // Register event handler for selection of menu item.
+    $node.on("menuselect", (event, ui) => {
+      this.selection(event, ui.item);
+    });
+  }
+
+  set addPageAfter(uuid) {
+    this._uuid = uuid;
+  }
+
+  get addPageAfter() {
+    return this._uuid;
+  }
+
+  selection(event, item) {
+    var dialog = this._config.view.pageAdditionDialog;
+    var $form = dialog.$form;
+
+    // Set the 'add_page_here' value to mark point of new page inclusion.
+    // Should be a uuid of previous page or blank if at end of form.
+    utilities.updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
+
+    // Then add any required values.
+    utilities.updateHiddenInputOnForm($form, "page[page_type]", item.data("page-type"));
+    utilities.updateHiddenInputOnForm($form, "page[component_type]", item.data("component-type"));
+
+    this._config.view.pageAdditionDialog.open();
   }
 }
-
-/* Controls what happens when user selects a page type.
- * 1). Clear page_type & component_type values in hidden form.
- * (if we then have new values):
- * 2). Set new page_type & component_type in hidden form.
- * 3). Close the open menu
- * 4). Open the form URL input dialog.
- **/
-PageAdditionMenu.selection = function(event, data) {
-  var $activator = data.activator.find("> a");
-  var $form = this.dialog.$node; // Form sending information back to server.
-
-  // First reset to remove any lingering values.
-  updateHiddenInputOnForm($form, "page[page_type]", "");
-  updateHiddenInputOnForm($form, "page[component_type]", "");
-
-  // Then add any required values.
-  updateHiddenInputOnForm($form, "page[page_type]", $activator.data("page-type"));
-  updateHiddenInputOnForm($form, "page[component_type]", $activator.data("component-type"));
-  //data.component.close();
-}
-
 
 
 /* VIEW SETUP FUNCTION:
@@ -186,18 +201,19 @@ PageAdditionMenu.selection = function(event, data) {
  * Finds the (in page) form that can add a new page and enhances with Dialog component
  * effect and necessary type selection (with error handling) functionality.
  **/
-function enhancePageCreateDialog(view) {
-  var $pageCreateForm = $("#page-create-dialog");
-
-  // Bind document event listeners to control functionality not specific to a single component or where
-  // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-  $(document).on("PageActionMenuSelection", PageActionMenu.selection.bind(view) );
-
-  // Create dialog for handling new page input and error reporting.
-  view.pageCreateDialog = new FormDialog($pageCreateForm, {
-    cancelText: $pageCreateForm.attr("data-cancel-text"),
+function createPageAdditionDialog(view) {
+  var $dialog = $("[data-component='PageAdditionDialog']"); // Expect only one
+  var $form = $dialog.find("form");
+  view.pageAdditionDialog = new FormDialog($dialog, {
+    view: view,
+    cancelText: $dialog.attr("data-cancel-text"),
     selectorErrors: ".govuk-error-message",
-    removeErrorClasses: ".govuk-form-group--error"
+    removeErrorClasses: ".govuk-form-group--error",
+    close: function() {
+      // Reset to remove any lingering values.
+      utilities.updateHiddenInputOnForm($form, "page[page_type]", "");
+      utilities.updateHiddenInputOnForm($form, "page[component_type]", "");
+    }
   });
 }
 
@@ -206,35 +222,27 @@ function enhancePageCreateDialog(view) {
  * --------------------
  * Create the menu effect and required functionality for controlling and selecting new page types.
  **/
-function createMenuForAddPage(view) {
-  $("[data-component='PageAdditionMenu']").each(function(i) {
-    var selection_event = "PageAdditionMenuSelection_" + i;
-    var menu = new PageAdditionMenu($(this), view.pageCreateDialog, {
-      selection_event: selection_event,
-      menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-      }
-    });
+function createPageAdditionMenu(view) {
+  var $menu = $("[data-component='PageAdditionMenu']"); // Expect only one
 
-    view.addLastPointHandler(menu.activator.$node);
-
-    // Register event handler for selection of menu item.
-    $(document).on(selection_event, function() {
-      PageAdditionMenu.selection.bind(menu)
-      view.pageCreateDialog.open();
-    });
+  view.pageAdditionMenu = new PageAdditionMenu($menu, {
+    view: view,
+    selection_event: "PageAdditionMenuSelection",
+    menu: {
+      position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+    }
   });
 }
 
 
 /* VIEW SETUP FUNCTION:
  * --------------------
- * Create the context menus for each page thumbnail within an overview layout.
+ * Create the context menus for each flow item within an overview layout.
  **/
-function createMenusForThumbnails(view) {
+function createFlowItemMenus(view) {
   $("[data-component='ItemActionMenu']").each((i, el) => {
-    var menu = new PageActionMenu($(el), view.pageCreateDialog, {
-      selection_event: "PageActionMenuSelection",
+    var menu = new FlowItemMenu($(el), {
+      view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
