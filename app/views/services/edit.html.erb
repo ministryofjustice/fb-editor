@@ -69,7 +69,7 @@
         <% detached_flow.each do |column| %>
           <% column.each do |flow| %>
             <ul class="govuk-navigation">
-              <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
+              <li id="<%= item[:next] %>"><%= link_to flow[:title], detached_edit_link(flow) %></li>
             </ul>
           <% end %>
         <% end %>
