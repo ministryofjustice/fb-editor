@@ -86,9 +86,13 @@
   text-indent: -10000px;
   width: 35px;
 
-  &:focus,
-  &:hover {
+  &:focus {
     @include focus;
+    border: none;
+    outline: none;
+  }
+
+  &:hover {
     border: none;
     outline: none;
   }
