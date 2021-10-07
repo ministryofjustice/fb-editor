@@ -453,15 +453,17 @@ function positionConditionsByDestination($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
 
-  $(SELECTOR_FLOW_CONDITION, $overview).each(function(index) {
+  $overview.find(SELECTOR_FLOW_CONDITION).each(function() {
     var $node = $(this);
     var $parent = $node.parents(SELECTOR_FLOW_BRANCH);
     var parentTop = $parent.position().top;
     var next = $node.data("fb-next");
-    var $destination = $("#" + next, $overview);
-    var destinationTop = $destination.position().top;
+    var $destination = $overview.find("#" + next);
+    var destinationTop = $destination.length ? $destination.position().top : -1; // Didn't find a destination ??
 
-    $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
+    if(destinationTop >= 0) {
+      $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
+    }
   });
 }
 
