@@ -5,6 +5,13 @@ RSpec.describe PageDestroyer do
   let(:version) do
     double(errors?: false, errors: [], metadata: updated_metadata)
   end
+  let(:attributes) do
+    {
+      uuid: uuid,
+      service_id: service_id,
+      latest_metadata: fixture
+    }
+  end
 
   before do
     expect(
@@ -20,12 +27,8 @@ RSpec.describe PageDestroyer do
       let(:updated_metadata) do
         fixture.deep_dup
       end
-      let(:attributes) do
-        {
-          uuid: fixture['pages'][0]['_uuid'],
-          service_id: service_id,
-          latest_metadata: fixture
-        }
+      let(:uuid) do
+        fixture['pages'][0]['_uuid']
       end
       before do
         expect(
@@ -50,13 +53,7 @@ RSpec.describe PageDestroyer do
           metadata['flow'][start_page_uuid]['next']['default'] = third_page_uuid
           metadata
         end
-        let(:attributes) do
-          {
-            uuid: page_to_delete_uuid,
-            service_id: service_id,
-            latest_metadata: fixture
-          }
-        end
+        let(:uuid) { page_to_delete_uuid }
 
         it 'creates new version with page deleted and the page flow object deleted' do
           expect(page.destroy).to eq(updated_metadata)
@@ -78,17 +75,31 @@ RSpec.describe PageDestroyer do
           metadata['flow'][check_answers_uuid]['next']['default'] = ''
           metadata
         end
-        let(:attributes) do
-          {
-            uuid: last_page_uuid,
-            service_id: service_id,
-            latest_metadata: fixture
-          }
-        end
+        let(:uuid) { last_page_uuid }
 
         it 'updates the previous pages default next to empty string' do
           expect(page.destroy).to eq(updated_metadata)
         end
+      end
+    end
+
+    context 'when deleting a page after a branch condition' do
+      let(:service_metadata) { metadata_fixture(:branching_2) }
+      let(:fixture) { service_metadata }
+      let(:uuid) { service.find_page_by_url('page-c').uuid }
+      let(:next_page_uuid_after_the_deleted_page) do
+        service.find_page_by_url('page-d').uuid
+      end
+      let(:updated_metadata) do
+        metadata = service_metadata.deep_dup
+        metadata['pages'].delete_at(2)
+        metadata['flow'].delete(uuid)
+        metadata['flow']['09e91fd9-7a46-4840-adbc-244d545cfef7']['next']['conditionals'][0]['next'] = next_page_uuid_after_the_deleted_page
+        metadata
+      end
+
+      it 'updates all objects to points to what deleted page is pointing to' do
+        expect(page.destroy).to eq(updated_metadata)
       end
     end
 
@@ -99,13 +110,7 @@ RSpec.describe PageDestroyer do
         metadata['standalone_pages'].delete_at(1)
         metadata
       end
-      let(:attributes) do
-        {
-          uuid: fixture['standalone_pages'][1]['_uuid'],
-          service_id: service_id,
-          latest_metadata: fixture
-        }
-      end
+      let(:uuid) { fixture['standalone_pages'][1]['_uuid'] }
 
       it 'creates new version with page deleted' do
         expect(page.destroy).to eq(updated_metadata)

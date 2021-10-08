@@ -45,7 +45,13 @@ Rails.application.routes.draw do
         resources :destinations, only: [:new, :create]
       end
 
-      resources :pages, only: [:show]
+      resources :pages, only: [:show] do
+        get '/destroy-message', to: 'pages#destroy_message', as: :destroy_message
+
+        resources :questions, only: [] do
+          get '/destroy-message', to: 'questions#destroy_message', as: :destroy_message
+        end
+      end
 
       resources :branches, param: :previous_flow_uuid do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'

@@ -85,6 +85,7 @@ en:
     option_add: 'Add option'
     option_remove: 'Delete...'
     change_destination: 'Change destination...'
+    ok: 'Ok'
   branches:
     branch_add: 'Add another branch'
     branch_remove: 'Delete...'
@@ -100,6 +101,10 @@ en:
     conditional_title: 'Branch '
     title_otherwise: 'Otherwise'
     hint_otherwise: 'In any other case'
+  questions:
+    delete_modal:
+      can_not_delete_heading: 'You cannot delete this question yet'
+      can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first, then try again.'
   pages:
     flow:
       heading: 'Pages flow'
@@ -109,6 +114,13 @@ en:
     cancel: 'Cancel'
     actions: 'Actions'
     footer: 'Form footer'
+    delete_modal:
+      delete_page: 'Delete "%{title}"'
+      delete_branch_destination_page_message: 'One of your branches leads to this page. We will update the branching point to lead to the next page in your flow.'
+      delete_and_update_branching: 'Delete and update branching'
+      you_cannot_delete_this_page: 'You cannot delete this page yet'
+      delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first, then try again.'
+      stack_branches_not_supported_message: 'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
     destination:
       heading: 'Change destination'
       lede: 'Update this connection to lead to the following page:'

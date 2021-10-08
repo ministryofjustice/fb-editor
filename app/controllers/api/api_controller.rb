@@ -1,5 +1,5 @@
 module Api
-  class ApiController < ActionController::API
+  class ApiController < ApplicationController
     include Auth0Helper
     before_action :require_user!
 
