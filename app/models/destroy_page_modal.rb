@@ -2,6 +2,8 @@ class DestroyPageModal
   include ActiveModel::Model
   attr_accessor :service, :page
 
+  delegate :expressions, :conditionals, to: :service
+
   PARTIALS = {
     potential_stacked_branches?: 'stack_branches_not_supported',
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
@@ -57,13 +59,5 @@ class DestroyPageModal
 
   def branch_destinations
     conditionals.map(&:next)
-  end
-
-  def expressions
-    conditionals.map(&:expressions).flatten
-  end
-
-  def conditionals
-    @conditionals ||= service.branches.map(&:conditionals).flatten
   end
 end
