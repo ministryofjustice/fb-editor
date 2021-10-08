@@ -122,6 +122,11 @@ module CommonSteps
     editor.add_confirmation.click
   end
 
+  def given_I_add_an_exit_page
+    given_I_want_to_add_a_page
+    editor.add_exit.click
+  end
+
   def given_I_want_to_add_a_single_question_page
     given_I_want_to_add_a_page
     editor.add_single_question.hover
@@ -146,6 +151,26 @@ module CommonSteps
 
   def and_I_change_the_page_heading(heading)
     editor.page_heading.set(heading)
+  end
+
+  def then_I_see_the_updated_page_heading(heading)
+    expect(editor.page_heading.text).to eq(heading)
+  end
+
+  def and_I_change_the_page_section_heading(section_heading)
+    editor.section_heading.set(section_heading)
+  end
+
+  def then_I_see_the_updated_page_section_heading(section_heading)
+    editor.section_heading.set(section_heading)
+  end
+
+  def and_I_change_the_page_lede(lede)
+    editor.page_lede.set(lede)
+  end
+
+  def then_I_see_the_updated_page_lede(lede)
+    editor.page_lede.set(lede)
   end
 
   def when_I_create_the_service

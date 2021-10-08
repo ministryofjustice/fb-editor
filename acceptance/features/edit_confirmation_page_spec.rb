@@ -32,10 +32,6 @@ feature 'Edit confirmation pages' do
     when_I_add_the_page
   end
 
-  def and_I_change_the_page_lede(lede)
-    editor.page_lede.set(lede)
-  end
-
   def and_I_change_the_page_body(body)
     when_I_change_editable_content(editor.page_body, content: body)
   end
