@@ -2,7 +2,7 @@ class DestroyPageModal
   include ActiveModel::Model
   attr_accessor :service, :page
 
-  delegate :expressions, :conditionals, to: :service
+  delegate :expressions, :branches, to: :service
 
   PARTIALS = {
     potential_stacked_branches?: 'stack_branches_not_supported',
@@ -52,12 +52,11 @@ class DestroyPageModal
 
   def previous_flow_objects
     service.flow_objects.select do |flow|
-      flow.default_next == page.uuid ||
-        flow.conditionals.map(&:next).include?(page.uuid)
+      flow.all_destination_uuids.include?(page.uuid)
     end
   end
 
   def branch_destinations
-    conditionals.map(&:next)
+    branches.map(&:all_destination_uuids).flatten
   end
 end
