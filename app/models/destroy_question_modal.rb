@@ -23,3 +23,4 @@ class DestroyQuestionModal
   def conditionals
     @conditionals ||= service.branches.map(&:conditionals).flatten
   end
+end
