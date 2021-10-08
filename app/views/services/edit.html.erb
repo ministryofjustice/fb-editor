@@ -37,8 +37,8 @@
             File.join(preview_service_path(service.service_id), page.url),
             target: '_blank' %>
           </li>
-          <% unless (page.type =~ /page.(checkanswers|confirmation|exit)/) %>
-          <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
+          <% unless page.end_of_route? %>
+            <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
           <% end %>
           <li data-action="delete">
             <% unless page.type == 'page.start' %>
@@ -49,11 +49,13 @@
             <% end %>
           </li>
           <% if ENV['BRANCHING'] == 'enabled' %>
-            <li data-action="edit">
-              <%= link_to t('services.branch'),
-                new_branches_path(service.service_id, page.uuid) %>
-            </li>
-            <% unless (page.type =~ /page.(checkanswers|confirmation|exit)/) %>
+            <% unless page.end_of_route? %>
+              <li data-action="edit">
+                <%= link_to t('services.branch'),
+                  new_branches_path(service.service_id, page.uuid) %>
+              </li>
+            <% end %>
+            <% unless page.end_of_route? %>
               <li data-action="edit">
                 <%= link_to t('actions.change_destination'),
                   new_api_service_flow_destination_path(service.service_id, page.uuid) %>
