@@ -107,7 +107,9 @@
       <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
       <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
       <li><a href="#add-page" data-page-type="content">Content page</a></li>
-      <li><a href="#add-page" data-page-type="exit">Exit page</a></li>
+      <% if ENV['BRANCHING'] == 'enabled' %>
+        <li><a href="#add-page" data-page-type="exit">Exit page</a></li>
+      <% end %>
     </ul>
 
     <div class="component-dialog-form"
