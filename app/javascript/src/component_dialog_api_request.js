@@ -37,63 +37,75 @@ const utilities = require('./utilities');
  *                 // an action to run on click that receives the DialogApiRequest instance as an argument.
  *               }
  *            }
+ *   closeOnClickSelector: jQuery selector to find elements that will close the dialog on their click event.
  * }
  **/
 class DialogApiRequest {
   constructor(url, config) {
-    var conf = config || {};
     var dialog = this;
+    var conf = utilities.mergeObjects({
+      buttons: []
+    }, config);
 
-
-    this.$node = $(); // Should be overwritten on successful GET
-    this._config = conf;
-
-    $.get(url, function(response) {
+    var jxhr = $.get(url, function(response) {
       dialog.$node = $(response);
 
       // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction(dialog._config.build, dialog.$node, dialog._config);
+      utilities.safelyActivateFunction(dialog._config.build, dialog);
 
       dialog.$node.addClass("DialogApiRequest");
       dialog.$node.data("instance", this);
       dialog.$node.dialog({
-        buttons: [
-        {
-          text: dialog._config.buttons.length > 0 && dialog._config.buttons[0].text || "ok",
-          click: () => {
-            console.log("CLICKED THE AFFIRMATIVE");
-
-            // Attempt to run any passed button.click action.
-            if(dialog._config.buttons.length > 0) {
-              utilities.safelyActivateFunction(dialog._config.buttons[0].click, dialog);
-            }
-
-            // Make sure the dialog closes
-            dialog.close();
-          }
-        },
-        {
-          text: dialog._config.buttons.length > 0 && dialog._config.buttons[1].text || "cancel",
-          click: () => {
-            console.log("CLICKED THE NEGATIVE");
-
-            // Attempt to run any passed button.click action.
-            if(dialog._config.buttons.length > 1) {
-              utilities.safelyActivateFunction(dialog._config.buttons[1].click, dialog);
-            }
-
-            // Make sure the dialog closes
-            dialog.close();
-          }
-        }],
-
-        classes: dialog._config.classes,
+        classes: conf.classes,
         closeOnEscape: true,
         height: "auto",
         modal: true,
         resizable: false
       });
     });
+
+    jxhr.done(function() {
+      if(conf.closeOnClickSelector) {
+        let $buttons = $(conf.closeOnClickSelector);
+        $buttons.eq(0).focus();
+        $buttons.on("click", function() {
+          dialog.close();
+        });
+      }
+      else {
+        dialog.$node.dialog("option", "buttons",
+          [
+            {
+              text: dialog._config.buttons.length > 0 && dialog._config.buttons[0].text || "ok",
+              click: () => {
+                // Attempt to run any passed button.click action.
+                if(dialog._config.buttons.length > 0) {
+                  utilities.safelyActivateFunction(dialog._config.buttons[0].click, dialog);
+                }
+
+                // Make sure the dialog closes
+                dialog.close();
+              }
+            },
+            {
+              text: dialog._config.buttons.length > 0 && dialog._config.buttons[1].text || "cancel",
+              click: () => {
+                // Attempt to run any passed button.click action.
+                if(dialog._config.buttons.length > 1) {
+                  utilities.safelyActivateFunction(dialog._config.buttons[1].click, dialog);
+                }
+
+                // Make sure the dialog closes
+                dialog.close();
+              }
+            }
+          ]
+        );
+      }
+    });
+
+    this.$node = $(); // Should be overwritten on successful GET
+    this._config = conf;
   }
 
   open() {
