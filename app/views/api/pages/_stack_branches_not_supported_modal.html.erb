@@ -1,8 +1,14 @@
- <div class="component component-dialog component-dialog-delete" id="dialog-confirmation-delete">
-   <h3 data-node="heading" class="govuk-label govuk-label--m">
-     <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
-   </h3>
-   <p data-node="content">
-     <%= t('pages.delete_modal.stack_branches_not_supported_message') %>
-   </p>
+<div class="component component-dialog component-dialog-api=request"
+     data-component="DialogApiRequest">
+
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
+  </h3>
+  <p data-node="content">
+    <%= t('pages.delete_modal.stack_branches_not_supported_message') %>
+  </p>
+
+  <div class="ui-dialog-buttonset">
+    <button class="govuk-button ui-button"><%= t('dialogs.button_understood') %></button>
+  </div>
 </div>
