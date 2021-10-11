@@ -35,6 +35,10 @@ module ApplicationHelper
     end
   end
 
+  def flow_title(flow_object)
+    flow_object.title || service.find_page_by_uuid(flow_object.uuid).title
+  end
+
   # Remove once hotjar testing is complete
   def live_platform?
     ENV['PLATFORM_ENV'] == 'live'

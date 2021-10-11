@@ -1,5 +1,6 @@
 class Branch
   include ActiveModel::Model
+  include ApplicationHelper
   include DestinationsList
   include BranchTitleGenerator
   attr_accessor :previous_flow_uuid, :service, :default_next, :branch_uuid
@@ -129,9 +130,7 @@ class Branch
       return previous_flow_object.title if previous_flow_uuid.present?
 
       titles = service.flow_objects.map do |flow|
-        if flow.all_destination_uuids.include?(branch_uuid)
-          flow.title || service.find_page_by_uuid(flow.uuid).title
-        end
+        flow_title(flow) if flow.all_destination_uuids.include?(branch_uuid)
       end
       titles.compact.first
     end

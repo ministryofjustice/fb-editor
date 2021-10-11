@@ -1,5 +1,6 @@
 class Destination
   include ActiveModel::Model
+  include ApplicationHelper
   include DestinationsList
   include MetadataVersion
   attr_accessor :service, :flow_uuid, :destination_uuid

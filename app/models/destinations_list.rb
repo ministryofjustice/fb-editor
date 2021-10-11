@@ -7,13 +7,6 @@ module DestinationsList
     }.compact.uniq
   end
 
-  def flow_title(flow_object)
-    return flow_object.title if flow_object.branch?
-
-    page = service.find_page_by_uuid(flow_object.uuid)
-    page.title
-  end
-
   def invalid_destination?(flow_uuid, current_uuid)
     flow_uuid == start_uuid ||
       flow_uuid == confirmation_uuid ||

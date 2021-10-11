@@ -2,6 +2,8 @@ class PageMissingComponentError < StandardError
 end
 
 class PagesFlow
+  include ApplicationHelper
+
   def initialize(service)
     @service = service
     @grid = MetadataPresenter::Grid.new(service)
@@ -79,7 +81,7 @@ class PagesFlow
     {
       type: 'pointer',
       uuid: flow.uuid,
-      title: service.flow_object(flow.uuid).title || service.find_page_by_uuid(flow.uuid).title
+      title: flow_title(service.flow_object(flow.uuid))
     }
   end
 
