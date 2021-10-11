@@ -31,6 +31,8 @@ feature 'Edit check your answers page' do
     and_I_change_the_send_body(send_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
+    and_I_click_on_the_three_dots
+    then_I_should_only_see_three_options_on_page_menu
     and_I_edit_the_page(url: url)
     then_I_should_see_the_page_heading(heading)
     then_I_should_see_the_page_send_heading(send_heading)
