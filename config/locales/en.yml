@@ -37,12 +37,13 @@ en:
     button_delete_option: 'Delete option'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
+    button_understood: 'Understood'
     button_update: 'Update'
     heading: General heading here
-    heading_delete: Delete \"%{label}\"?
+    heading_delete: 'Delete "%{label}"?'
     heading_delete_branch: Delete branch?
     heading_delete_condtition: Delete condition?
-    heading_delete_option: Delete the option \"%{option label}\"?
+    heading_delete_option: 'Delete the option "%{option label}"?'
     message: General message here
     message_delete: 'This cannot be undone'
     message_delete_branch: 'This cannot be undone'
@@ -126,7 +127,7 @@ en:
     actions: 'Actions'
     footer: 'Form footer'
     delete_modal:
-      delete_page: 'Delete "%{title}"'
+      delete_page: 'Deletes "%{title}"'
       delete_branch_destination_page_message: 'One of your branches leads to this page. We will update the branching point to lead to the next page in your flow.'
       delete_and_update_branching: 'Delete and update branching'
       you_cannot_delete_this_page: 'You cannot delete this page yet'
