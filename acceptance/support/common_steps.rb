@@ -310,4 +310,18 @@ module CommonSteps
     page.find(attribute, text: text).click
     page.first('.ActivatedMenu_Activator').click
   end
+
+  def and_I_click_on_the_three_dots
+    editor.preview_page_images.last.hover
+    editor.three_dots_button.click
+  end
+
+  def then_I_should_only_see_three_options_on_page_menu
+    options = all('.ui-menu-item').map(&:text)
+    expect(options).to eq([
+      I18n.t('actions.edit_page'),
+      I18n.t('actions.preview_page'),
+      I18n.t('actions.delete_page')
+    ])
+  end
 end

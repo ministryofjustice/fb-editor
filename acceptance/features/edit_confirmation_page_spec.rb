@@ -20,6 +20,8 @@ feature 'Edit confirmation pages' do
     and_I_change_the_page_body(confirmation_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
+    and_I_click_on_the_three_dots
+    then_I_should_only_see_three_options_on_page_menu
     and_I_edit_the_confirmation_page
     then_I_should_see_the_confirmation_heading(confirmation_heading)
     then_I_should_see_the_confirmation_lede(confirmation_lede)
@@ -46,5 +48,10 @@ feature 'Edit confirmation pages' do
 
   def then_I_should_see_the_confirmation_body(body)
     expect(editor.page_body.text).to eq(body)
+  end
+
+  def and_I_click_on_the_three_dots
+    page.find('.form-step a.govuk-link', text: confirmation_url).hover
+    editor.three_dots_button.click
   end
 end
