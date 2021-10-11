@@ -39,6 +39,10 @@ module ApplicationHelper
     flow_object.title || service.find_page_by_uuid(flow_object.uuid).title
   end
 
+  def moj_forms_team_member?
+    Rails.application.config.moj_forms_team.include?(current_user.email)
+  end
+
   # Remove once hotjar testing is complete
   def live_platform?
     ENV['PLATFORM_ENV'] == 'live'

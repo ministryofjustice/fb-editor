@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.3'
 
 gem 'activerecord-session_store'
+gem 'administrate'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
