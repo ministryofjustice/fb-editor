@@ -2,6 +2,8 @@ class PageMissingComponentError < StandardError
 end
 
 class PagesFlow
+  include ApplicationHelper
+
   def initialize(service)
     @service = service
     @grid = MetadataPresenter::Grid.new(service)
@@ -10,6 +12,15 @@ class PagesFlow
 
   def build
     grid.build.map { |column| convert_flow_objects(column).compact }
+  end
+
+  def detached_flows
+    detached = Detached.new(service: service, main_flow_uuids: grid.flow_uuids)
+    detached.detached_flows.map do |detached_flow|
+      detached_flow.map do |column|
+        column.map { |flow| convert_flow_object(flow) }
+      end
+    end
   end
 
   def page(flow)
@@ -23,15 +34,6 @@ class PagesFlow
         flow.conditionals
       ).push(otherwise(flow.default_next))
     )
-  end
-
-  def detached_objects
-    Detached.new(
-      service: service,
-      ordered_flow: grid.ordered_flow
-    ).flow_objects.map do |flow|
-      convert_flow_object(flow)
-    end
   end
 
   private
@@ -49,9 +51,9 @@ class PagesFlow
   end
 
   def convert_flow_object(flow)
-    return spacer if flow.is_a?(MetadataPresenter::Spacer)
-
-    flow.type == 'flow.page' ? page(flow) : branch(flow)
+    send(flow.type.gsub('flow.', ''), flow)
+  rescue NoMethodError
+    raise NotImplementedError, "'#{flow.type}' method not implemented"
   end
 
   def base_props(obj)
@@ -71,8 +73,16 @@ class PagesFlow
     end
   end
 
-  def spacer
+  def spacer(_)
     { type: 'spacer' }
+  end
+
+  def pointer(flow)
+    {
+      type: 'pointer',
+      uuid: flow.uuid,
+      title: flow_title(service.flow_object(flow.uuid))
+    }
   end
 
   def use_flow_type?(obj)

@@ -1747,6 +1747,259 @@ RSpec.describe PagesFlow do
     end
   end
 
+  describe '#detached_flows' do
+    context 'detaching a branch - branching fixture' do
+      let(:metadata) do
+        meta = metadata_fixture(:branching)
+        # select all arnie quotes
+        meta['flow']['48357db5-7c06-4e85-94b1-5e1c9d8f39eb']['next']['default'] = check_answers_uuid
+        meta
+      end
+      let(:check_answers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
+      let(:expected_detached_flows) do
+        [
+          [
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 7',
+                uuid: '1079b5b8-abd0-4bf6-aaac-1f01e69e3b39',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: '56e80942-d0a4-405a-85cd-bd1b100013d6',
+                    expressions: [
+                      {
+                        question: 'Select all Arnold Schwarzenegger quotes',
+                        operator: 'is',
+                        answer: 'You are not you. You are me'
+                      },
+                      {
+                        question: 'Select all Arnold Schwarzenegger quotes',
+                        operator: 'is',
+                        answer: 'Get to the chopper'
+                      },
+                      {
+                        question: 'Select all Arnold Schwarzenegger quotes',
+                        operator: 'is',
+                        answer: 'You have been terminated'
+                      }
+                    ]
+                  },
+                  {
+                    next: '6324cca4-7770-4765-89b9-1cdc41f49c8b',
+                    expressions: [
+                      {
+                        question: 'Select all Arnold Schwarzenegger quotes',
+                        operator: 'is',
+                        answer: 'I am GROOT'
+                      }
+                    ]
+                  },
+                  {
+                    next: '6324cca4-7770-4765-89b9-1cdc41f49c8b',
+                    expressions: [
+                      {
+                        question: 'Select all Arnold Schwarzenegger quotes',
+                        operator: 'is',
+                        answer: 'Dance Off, Bro.'
+                      }
+                    ]
+                  },
+                  {
+                    next: '941137d7-a1da-43fd-994a-98a4f9ea6d46',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        operator: '',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.content',
+                title: 'You are right',
+                uuid: '56e80942-d0a4-405a-85cd-bd1b100013d6',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'content'
+              },
+              {
+                type: 'page.content',
+                title: 'You are wrong', # wrong answers, GOTG quotes
+                uuid: '6324cca4-7770-4765-89b9-1cdc41f49c8b',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'content'
+              },
+              {
+                type: 'spacer'
+              },
+              {
+                type: 'page.content',
+                title: 'You are wrong', # incomplete answers, Otherwise
+                uuid: '941137d7-a1da-43fd-994a-98a4f9ea6d46',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'content'
+              }
+            ],
+            [
+              {
+                type: 'pointer',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0'
+              }
+            ]
+          ]
+        ]
+      end
+
+      it 'generates the correct detached flows objects' do
+        expect(pages_flow.detached_flows).to eq(expected_detached_flows)
+      end
+    end
+
+    context 'detaching multiple flows - branching fixture 2' do
+      let(:metadata) do
+        meta = metadata_fixture(:branching_2)
+        obj = meta['flow']['09e91fd9-7a46-4840-adbc-244d545cfef7'] # Branching Point 1
+        # Detach Page G
+        obj['next']['conditionals'] = [obj['next']['conditionals'].shift]
+        # Detach Page J
+        obj['next']['default'] = 'e337070b-f636-49a3-a65c-f506675265f0' # Check answers
+        meta['flow']['09e91fd9-7a46-4840-adbc-244d545cfef7'] = obj
+        meta
+      end
+      let(:check_answers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
+      let(:expected_detached_flows) do
+        [
+          [
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'pointer',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0'
+              }
+            ]
+          ],
+          [
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page J',
+                uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
+                next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'radios'
+              }
+            ],
+            [
+              {
+                type: 'flow.branch',
+                title: 'Branching point 2',
+                uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
+                thumbnail: 'branch',
+                conditionals: [
+                  {
+                    next: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                    expressions: [
+                      {
+                        question: 'Page J',
+                        operator: 'is',
+                        answer: 'Item 1'
+                      }
+                    ]
+                  },
+                  {
+                    next: 'd80a2225-63c3-4944-873f-504b61311a15',
+                    expressions: [
+                      {
+                        question: 'Otherwise',
+                        operator: '',
+                        answer: ''
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page K',
+                uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
+                next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page M',
+                uuid: 'd80a2225-63c3-4944-873f-504b61311a15',
+                next: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page L',
+                uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              },
+              {
+                type: 'page.singlequestion',
+                title: 'Page N',
+                uuid: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'pointer',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0'
+              }
+            ]
+          ]
+        ]
+      end
+
+      it 'generates the correct detached flows objects' do
+        expect(pages_flow.detached_flows).to eq(expected_detached_flows)
+      end
+    end
+  end
+
   describe '#page' do
     let(:flow) { service.flow_object('ef2cafe3-37e2-4533-9b0c-09a970cd38d4') }
     let(:expected_page) do

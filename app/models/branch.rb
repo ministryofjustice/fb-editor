@@ -1,5 +1,6 @@
 class Branch
   include ActiveModel::Model
+  include ApplicationHelper
   include DestinationsList
   include BranchTitleGenerator
   attr_accessor :previous_flow_uuid, :service, :default_next, :branch_uuid
@@ -129,9 +130,7 @@ class Branch
       return previous_flow_object.title if previous_flow_uuid.present?
 
       titles = service.flow_objects.map do |flow|
-        if flow.all_destination_uuids.include?(branch_uuid)
-          flow.title || service.find_page_by_uuid(flow.uuid).title
-        end
+        flow_title(flow) if flow.all_destination_uuids.include?(branch_uuid)
       end
       titles.compact.first
     end
@@ -139,14 +138,18 @@ class Branch
 
   private
 
+  def grid
+    @grid ||= MetadataPresenter::Grid.new(service)
+  end
+
   def ordered_pages
-    @ordered_pages ||= MetadataPresenter::Grid.new(service).ordered_pages
+    @ordered_pages ||= grid.ordered_pages
   end
 
   def detached
     Detached.new(
       service: service,
-      ordered_flow: ordered_pages,
+      main_flow_uuids: grid.page_uuids,
       exclude_branches: true
     ).flow_objects
   end

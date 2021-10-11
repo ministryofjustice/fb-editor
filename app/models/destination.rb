@@ -1,5 +1,6 @@
 class Destination
   include ActiveModel::Model
+  include ApplicationHelper
   include DestinationsList
   include MetadataVersion
   attr_accessor :service, :flow_uuid, :destination_uuid
@@ -12,7 +13,7 @@ class Destination
   end
 
   def destinations
-    all_flow_objects = ordered_flow + detached
+    all_flow_objects = grid.ordered_flow + detached_objects
     destinations_list(flow_objects: all_flow_objects, current_uuid: flow_uuid)
   end
 
@@ -22,11 +23,11 @@ class Destination
 
   private
 
-  def ordered_flow
-    @ordered_flow ||= MetadataPresenter::Grid.new(service).ordered_flow
+  def grid
+    @grid ||= MetadataPresenter::Grid.new(service)
   end
 
-  def detached
-    Detached.new(service: service, ordered_flow: ordered_flow).flow_objects
+  def detached_objects
+    Detached.new(service: service, main_flow_uuids: grid.flow_uuids).flow_objects
   end
 end

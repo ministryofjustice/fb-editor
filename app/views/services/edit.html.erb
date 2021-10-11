@@ -122,7 +122,7 @@
         <%= f.hidden_field :add_page_after, value: "" %>
         <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
         <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
-        <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+        <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
           <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
           <span class="govuk-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>
           <% f.object.errors.each do |error|  %>
@@ -136,13 +136,17 @@
   </div>
 </div>
 
-  <% if ENV['BRANCHING'] == 'enabled' && @detached_objects.present? %>
+  <% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
   <div class="govuk-!-margin-top-10">
     <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
-    <% @detached_objects.each do |flow| %>
-      <ul class="govuk-navigation">
-        <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
-      </ul>
+    <% @detached_flows.each do |detached_flow| %>
+      <% detached_flow.each do |column| %>
+        <% column.each do |flow| %>
+          <ul class="govuk-navigation">
+            <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
+          </ul>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
   <% end %>
