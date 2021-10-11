@@ -108,11 +108,6 @@ en:
     hint_otherwise: 'In any other case'
   questions:
     delete_modal:
-<<<<<<< HEAD
-=======
-      delete_heading: ''
-      delete_message: ''
->>>>>>> Add delete modal message for questions
       can_not_delete_heading: 'You cannot delete this question yet'
       can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first, then try again.'
   pages:
