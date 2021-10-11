@@ -107,25 +107,30 @@ class FlowItemMenu extends ActivatedMenu {
            this.deleteItem(item);
            break;
 
+      case "delete-api":
+           event.preventDefault();
+           this.deleteItemApi(item);
+           break;
+
       default: location.href = item("href");
     }
   }
 
   // Open the views Page Addition Menu
-  addPage($activator) {
+  addPage(element) {
     var menu = this._config.view.pageAdditionMenu;
     menu.addPageAfter = this.uuid;
     menu.open({
       my: "left top",
       at: "right top",
-      of: $activator
+      of: element
     });
   }
 
   // Open an API request dialog to change destination
-  changeDestination($activator) {
+  changeDestination(element) {
     var view = this._config.view;
-    var $link = $activator.find("> a");
+    var $link = element.find("> a");
     new DialogApiRequest($link.attr("href"), {
       activator: $link,
       buttons: [{
@@ -139,14 +144,31 @@ class FlowItemMenu extends ActivatedMenu {
     });
   }
 
-  deleteItem($activator) {
+  // Use standard delete modal to remove
+  deleteItem(element) {
     var view = this._config.view;
-    var $link = $activator.find("> a");
+    var $link = element.find("> a");
     view.dialogConfirmationDelete.open({
       heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
       ok: view.text.dialogs.button_delete_page
       }, function() {
         post($link.attr("href"), { _method: "delete" });
+    });
+  }
+
+  deleteItemApi(element) {
+    var view = this._config.view;
+    var $link = element.find("> a");
+    var dialog = new DialogApiRequest($link.attr("href"), {
+      activator: $link,
+      closeOnClickSelector: ".govuk-button",
+      build: function(dialog) {
+        // Find and correct (make work!) any method:delete links
+        dialog.$node.find("[data-method=delete]").on("click", function(e) {
+          e.preventDefault();
+          utilities.post(this.href, { _method: "delete" });
+        });
+      }
     });
   }
 }
