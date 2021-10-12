@@ -4,4 +4,13 @@ class Api::BranchesController < BranchesController
   def new_conditional
     render layout: false
   end
+
+  def destroy_message
+    @branch = BranchDestroyer.new(
+      service: service,
+      branch_uuid: params[:branch_previous_flow_uuid]
+    )
+
+    render layout: false
+  end
 end
