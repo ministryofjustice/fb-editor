@@ -3,6 +3,7 @@ class Branch
   include ApplicationHelper
   include DestinationsList
   include BranchTitleGenerator
+  include PreviousPageTitle
   attr_accessor :previous_flow_uuid, :service, :default_next, :branch_uuid
   attr_writer :title
   attr_reader :traversable
@@ -122,17 +123,6 @@ class Branch
     expression_collection = conditionals.map(&:expressions)
     expression_collection.flatten.any? do |expression|
       expression.errors.messages.present?
-    end
-  end
-
-  def previous_page_title
-    @previous_page_title ||= begin
-      return previous_flow_object.title if previous_flow_uuid.present?
-
-      titles = service.flow_objects.map do |flow|
-        flow_title(flow) if flow.all_destination_uuids.include?(branch_uuid)
-      end
-      titles.compact.first
     end
   end
 
