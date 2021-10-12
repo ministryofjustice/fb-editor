@@ -1,6 +1,7 @@
 class BranchDestroyer
   include ActiveModel::Model
   include PreviousPageTitle
+  include ApplicationHelper
   attr_accessor :service, :branch_uuid
 
   delegate :branches, to: :service
@@ -10,10 +11,6 @@ class BranchDestroyer
     flow.all_destination_uuids.map do |uuid|
       service.find_page_by_uuid(uuid)
     end
-  end
-
-  def flow_title(flow_object)
-    service.find_page_by_uuid(flow_object.uuid).title
   end
 
   private
