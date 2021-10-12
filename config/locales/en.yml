@@ -46,9 +46,6 @@ en:
     message_delete: 'This cannot be undone'
     message_delete_condition: 'This cannot be undone'
     heading_delete_branch: Delete branch?
-    heading_delete_option: Delete the option \"%{option label}\"?
-    message: General message here
-    message_delete: 'This cannot be undone'
     message_delete_branch: 'This cannot be undone'
   header:
     service_name: "MoJ Forms"
