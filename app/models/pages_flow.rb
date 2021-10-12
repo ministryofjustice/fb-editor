@@ -88,7 +88,7 @@ class PagesFlow
   def use_flow_type?(obj)
     obj.components.blank? ||
       obj.branch? ||
-      obj.type =~ /page.(start|checkanswers|confirmation)/
+      %w[start checkanswers confirmation exit].any? { |type| obj.type.include?(type) }
   end
 
   def branch_conditionals(conditionals)
