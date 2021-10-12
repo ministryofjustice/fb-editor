@@ -29,6 +29,14 @@ module ApplicationHelper
     url.to_s.chomp('/').reverse.chomp('/').reverse.strip.downcase
   end
 
+  def detached_edit_link(flow)
+    if flow[:type] == 'flow.branch'
+      edit_branch_path(service.service_id, flow[:uuid])
+    else
+      edit_page_path(service.service_id, flow[:uuid])
+    end
+  end
+
   # START: Remove once new service flow page is finished
   def flow_thumbnail(page)
     type = if page.components.blank?
