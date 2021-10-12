@@ -1,12 +1,10 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :publish_services
-    resources :identities
-    resources :submission_settings
-    resources :service_configurations
+    resources :overviews, only: [:index]
+    resources :services, only: [:index]
     resources :users
 
-    root to: "publish_services#index"
+    root to: "overviews#index"
   end
 
   get '/health', to: 'health#show'

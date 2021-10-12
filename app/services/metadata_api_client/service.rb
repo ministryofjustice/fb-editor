@@ -1,5 +1,20 @@
 module MetadataApiClient
   class Service < Resource
+    def self.all_services(page:, per_page:)
+      response = connection.get(
+        '/services',
+        {
+          page: page,
+          per_page: per_page
+        }
+      ).body
+
+      {
+        total_services: response['total_services'],
+        services: Array(response['services']).map { |service| new(service) }
+      }
+    end
+
     def self.all(user_id:)
       response = connection.get("/services/users/#{user_id}").body['services']
       Array(response).map { |service| new(service) }

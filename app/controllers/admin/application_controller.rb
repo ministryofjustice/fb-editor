@@ -12,11 +12,7 @@ module Admin
     before_action :authenticate_admin
 
     def authenticate_admin
-      redirect_to login_path unless moj_forms_team_member?
-    end
-
-    def moj_forms_dev?
-      Rails.application.config.moj_forms_devs.include?(current_user.email)
+      redirect_to login_path unless moj_forms_dev?
     end
 
     # Override this value to specify the number of elements to display at a time
