@@ -1684,7 +1684,7 @@ RSpec.describe PagesFlow do
                 title: 'Page G',
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '',
-                thumbnail: 'content'
+                thumbnail: 'exit'
               }
             ],
             [
