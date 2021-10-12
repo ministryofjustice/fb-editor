@@ -16,7 +16,6 @@
  **/
 
 
-
 const utilities = require('./utilities');
 const FormDialog = require('./component_dialog_form');
 const mergeObjects = utilities.mergeObjects;
@@ -60,8 +59,6 @@ ServicesController.edit = function() {
 }
 
 
-
-
 /* VIEW SPECIFIC COMPONENT:
  * Control form step (add/edit/delete/preview...) menus
  **/
@@ -82,7 +79,7 @@ class FlowItemMenu extends ActivatedMenu {
     this.title = $node.data("title");
   }
 
-   // Handle item selections on the form step context menu elements.
+  // Handle item selections on the form step context menu elements.
   selection(event, item) {
     var action = item.data("action");
     var view = this._config.view;
@@ -139,6 +136,7 @@ class FlowItemMenu extends ActivatedMenu {
     });
   }
 
+  // Use standard delete modal to remove
   deleteItem($activator) {
     var view = this._config.view;
     var $link = $activator.find("> a");
