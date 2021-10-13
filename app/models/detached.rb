@@ -11,13 +11,7 @@ class Detached
 
   def detached_flows
     traversed = []
-
-    detached_uuids.each_with_object([]) do |uuid, flows|
-      grid = MetadataPresenter::Grid.new(
-        service,
-        start_from: uuid,
-        main_flow: main_flow_uuids
-      )
+    ordered_grids.each_with_object([]) do |grid, flows|
       flows.push(grid.build) unless traversed.include?(grid.start_from)
       traversed |= grid.flow_uuids
     end
@@ -30,6 +24,24 @@ class Detached
   def detached_uuids
     (service.flow.keys - main_flow_uuids).reject do |uuid|
       service.flow_object(uuid).branch? && exclude_branches
+    end
+  end
+
+  def ordered_grids
+    grids = detached_grids.sort_by do |grid|
+      grid.build
+      grid.flow_uuids.count
+    end
+    grids.reverse
+  end
+
+  def detached_grids
+    detached_uuids.map do |uuid|
+      MetadataPresenter::Grid.new(
+        service,
+        start_from: uuid,
+        main_flow: main_flow_uuids
+      )
     end
   end
 end
