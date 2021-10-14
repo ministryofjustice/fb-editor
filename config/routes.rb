@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :overviews, only: [:index]
+    resources :services, only: [:index]
+    resources :users
+
+    root to: "overviews#index"
+  end
+
   get '/health', to: 'health#show'
   get '/metrics', to: 'metrics#show'
 

@@ -16,8 +16,13 @@
           <%= link_to t('.forms'), services_path %>
         </li>
         <li>
-         <%= link_to t('.support'), t('.supportURL'), target: :_blank %>
+          <%= link_to t('.support'), t('.supportURL'), target: :_blank %>
         </li>
+        <% if moj_forms_dev? %>
+        <li>
+          <%= link_to t('.admin'), admin_root_path %>
+        </li>
+        <% end %>
         <li>
           <%= link_to t('.sign_out', user_name: user_name), user_session_path, method: :delete %>
         </li>
