@@ -37,6 +37,13 @@ module Admin
       end
     end
 
+    def published(service_id, environment)
+      PublishService.where(
+        service_id: service_id,
+        deployment_environment: environment
+      ).completed.desc.first
+    end
+
     def page
       @page ||= params[:page] || 1
     end

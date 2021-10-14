@@ -46,6 +46,9 @@
           Published at
         </dt>
         <dd class="govuk-summary-list__value">
+          <% if @published_to_live.present? %>
+            <%= l(@published_to_live.created_at.to_time) %>
+          <% end %>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
