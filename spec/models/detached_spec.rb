@@ -114,20 +114,6 @@ RSpec.describe Detached do
         [
           [
             [
-              service.flow_object('3a584d15-6805-4a21-bc05-b61c3be47857') # Page G
-            ],
-            [
-              service.flow_object('7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c') # Page H
-            ],
-            [
-              service.flow_object('520fde26-8124-4c67-a550-cd38d2ef304d') # Page I
-            ],
-            [
-              MetadataPresenter::Pointer.new(uuid: check_answers_uuid) # Check answers
-            ]
-          ],
-          [
-            [
               service.flow_object('f475d6fd-0ea4-45d5-985e-e1a7c7a5b992') # Page J
             ],
             [
@@ -140,6 +126,20 @@ RSpec.describe Detached do
             [
               service.flow_object('2c7deb33-19eb-4569-86d6-462e3d828d87'), # Page L
               service.flow_object('393645a4-f037-4e75-8359-51f9b0e360fb') # Page N
+            ],
+            [
+              MetadataPresenter::Pointer.new(uuid: check_answers_uuid) # Check answers
+            ]
+          ],
+          [
+            [
+              service.flow_object('3a584d15-6805-4a21-bc05-b61c3be47857') # Page G
+            ],
+            [
+              service.flow_object('7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c') # Page H
+            ],
+            [
+              service.flow_object('520fde26-8124-4c67-a550-cd38d2ef304d') # Page I
             ],
             [
               MetadataPresenter::Pointer.new(uuid: check_answers_uuid) # Check answers

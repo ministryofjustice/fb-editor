@@ -1879,42 +1879,6 @@ RSpec.describe PagesFlow do
             [
               {
                 type: 'page.singlequestion',
-                title: 'Page G',
-                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
-                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
-                thumbnail: 'text'
-              }
-            ],
-            [
-              {
-                type: 'page.singlequestion',
-                title: 'Page H',
-                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
-                next: '520fde26-8124-4c67-a550-cd38d2ef304d',
-                thumbnail: 'text'
-              }
-            ],
-            [
-              {
-                type: 'page.singlequestion',
-                title: 'Page I',
-                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
-                next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'text'
-              }
-            ],
-            [
-              {
-                type: 'pointer',
-                title: 'Check your answers',
-                uuid: 'e337070b-f636-49a3-a65c-f506675265f0'
-              }
-            ]
-          ],
-          [
-            [
-              {
-                type: 'page.singlequestion',
                 title: 'Page J',
                 uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
                 next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
@@ -1979,6 +1943,42 @@ RSpec.describe PagesFlow do
                 type: 'page.singlequestion',
                 title: 'Page N',
                 uuid: '393645a4-f037-4e75-8359-51f9b0e360fb',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'pointer',
+                title: 'Check your answers',
+                uuid: 'e337070b-f636-49a3-a65c-f506675265f0'
+              }
+            ]
+          ],
+          [
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page G',
+                uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: '520fde26-8124-4c67-a550-cd38d2ef304d',
+                thumbnail: 'text'
+              }
+            ],
+            [
+              {
+                type: 'page.singlequestion',
+                title: 'Page I',
+                uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
                 thumbnail: 'text'
               }
