@@ -19,6 +19,34 @@ RSpec.describe MetadataApiClient::Service do
     allow(ENV).to receive(:[]).with('METADATA_API_URL').and_return(metadata_api_url)
   end
 
+  describe '.all_services' do
+    let(:expected_url) { "#{metadata_api_url}/services?page=1&per_page=20" }
+    let(:expected_body) do
+      {
+        "services": [service_attributes],
+        "total_services": '1'
+      }
+    end
+    let(:expected_result) do
+      {
+        total_services: '1',
+        services: [
+          MetadataApiClient::Service.new(service_attributes.stringify_keys)
+        ]
+      }
+    end
+
+    before do
+      stub_request(:get, expected_url)
+        .to_return(status: 200, body: expected_body.to_json, headers: {})
+    end
+
+    it 'returns a list of all the services' do
+      services = described_class.all_services(page: 1, per_page: 20)
+      expect(services).to eq(expected_result)
+    end
+  end
+
   describe '.all' do
     let(:expected_url) { "#{metadata_api_url}/services/users/12345" }
 

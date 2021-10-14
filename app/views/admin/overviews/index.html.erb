@@ -34,9 +34,16 @@ It renders the `_table` partial to display details about the resources.
 </header>
 
 <section class="main-content__body">
-  <div>
+  <dl class="govuk-summary-list">
     <% @stats.each do |stat| %>
-      <p><strong><%= stat[:name] %>:</strong> <%= stat[:value] %></p>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          <%= stat[:name] %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <%= stat[:value] %>
+        </dd>
+      </div>
     <% end %>
-  </div>
+  </dl>
 </section>

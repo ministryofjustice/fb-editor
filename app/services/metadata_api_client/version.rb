@@ -9,5 +9,32 @@ module MetadataApiClient
     rescue Faraday::UnprocessableEntityError => e
       error_messages(e)
     end
+
+    def self.all(service_id)
+      response = connection.get(
+        "/services/#{service_id}/versions"
+      )
+
+      Array(response.body['versions']).map { |version| new(version) }
+    rescue Faraday::UnprocessableEntityError => e
+      error_messages(e)
+    end
+
+    def self.find(service_id:, version_id:)
+      response = connection.get(
+        "/services/#{service_id}/versions/#{version_id}"
+      )
+      new(response.body)
+    rescue Faraday::UnprocessableEntityError => e
+      error_messages(e)
+    end
+
+    def version_id
+      metadata['version_id']
+    end
+
+    def created_at
+      metadata['created_at']
+    end
   end
 end
