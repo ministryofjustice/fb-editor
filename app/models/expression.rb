@@ -3,6 +3,7 @@ class Expression
   attr_accessor :component, :operator, :field, :page
 
   validates :component, :operator, :page, :field, presence: true
+  validate :unsupported_component
 
   OPERATORS = [
     [I18n.t('operators.is'), 'is'],
@@ -50,5 +51,13 @@ class Expression
 
   def component_object
     @component_object ||= page.find_component_by_uuid(component)
+  end
+
+  def unsupported_component
+    if page.present? && component.present? && !component_object.supports_branching?
+      errors.add(:component, message: I18n.t(
+        'activemodel.errors.messages.unsupported_component'
+      ))
+    end
   end
 end
