@@ -16,6 +16,7 @@ module Admin
 
       if version
         flash[:success] = 'Successfully updated metadata version'
+        notify_of_update(params[:service_id])
         redirect_to admin_service_path(params[:service_id])
       else
         flash[:error] = 'Unable to update metadata version'
@@ -31,6 +32,14 @@ module Admin
         version_id: params[:id]
       )
       @version_creator = User.find(@version.metadata['created_by'])
+    end
+
+    def notify_of_update(service_id)
+      if ENV['PLATFORM_ENV'] == 'live'
+        NotificationService.notify(
+          "Service ID #{service_id} has been updated using the Admin dashboard by #{current_user.name}"
+        )
+      end
     end
   end
 end
