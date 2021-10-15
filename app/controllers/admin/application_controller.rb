@@ -5,6 +5,12 @@
 # If you want to add pagination or other controller-level concerns,
 # you're free to overwrite the RESTful controller actions.
 module Admin
+  class AdminMetadataVersion
+    include ActiveModel::Model
+    include MetadataVersion
+    attr_accessor :service, :metadata
+  end
+
   class ApplicationController < Administrate::ApplicationController
     include ApplicationHelper
     include Auth0Helper

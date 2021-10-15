@@ -1,10 +1,4 @@
 module Admin
-  class AdminMetadataVersion
-    include ActiveModel::Model
-    include MetadataVersion
-    attr_accessor :service, :metadata
-  end
-
   class VersionsController < Admin::ApplicationController
     before_action :version_and_user, except: [:update]
 
@@ -16,7 +10,7 @@ module Admin
 
     def update
       version = AdminMetadataVersion.new(
-        service: service,
+        service: OpenStruct.new(service_id: params[:service_id]),
         metadata: JSON.parse(params[:version])
       ).create_version
 
@@ -37,12 +31,6 @@ module Admin
         version_id: params[:id]
       )
       @version_creator = User.find(@version.metadata['created_by'])
-    end
-
-    def service
-      # :P
-      # Coz we are including MetadataVersion
-      OpenStruct.new(service_id: params[:service_id])
     end
   end
 end

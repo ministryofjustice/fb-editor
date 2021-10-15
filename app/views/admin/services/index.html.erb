@@ -47,6 +47,7 @@ It renders the `_table` partial to display details about the resources.
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header">Name</th>
         <th scope="col" class="govuk-table__header">Service ID</th>
+        <th scope="col" class="govuk-table__header"></th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -55,9 +56,16 @@ It renders the `_table` partial to display details about the resources.
           <td class="govuk-table__cell">
             <%= link_to service.name, admin_service_path(service.id) %>
           </td>
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell" id="service-id">
             <%= link_to service.id, admin_service_path(service.id) %>
           </td>
+          <% if Rails.env.development? %>
+          <td class="govuk-table__cell">
+            <%= link_to 'Duplicate',
+                admin_services_path(service.id, service_id: service.id),
+                method: :post %>
+          </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
