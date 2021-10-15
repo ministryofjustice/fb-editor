@@ -22,11 +22,11 @@ module Admin
 
       if version
         flash[:success] = 'Successfully updated metadata version'
+        redirect_to admin_service_path(params[:service_id])
       else
         flash[:error] = 'Unable to update metadata version'
+        redirect_to edit_admin_service_version_path(params[:service_id], params[:id])
       end
-
-      redirect_to edit_admin_service_version_path(params[:service_id], params[:id])
     end
 
     private
