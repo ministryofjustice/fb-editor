@@ -100,7 +100,7 @@
   <% end %>
   <div class="container">
     <% service.pages.each do |page| %>
-      <section class="form-overview-step" aria-label="<%= t('aria.' + page.type) %>">
+      <section class="form-overview-step form-step" aria-label="<%= t('aria.' + page.type) %>">
         <%= flow_thumbnail(page) %>
         <%= flow_text_link({ type: 'page', uuid: page.uuid, title: page.url }) %>
         <%= render partial: 'flow_page_menu', locals: { item: { title: page.title, uuid: page.uuid, url: page.url, type: page.type  } } %>
