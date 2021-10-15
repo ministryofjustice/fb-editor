@@ -33,7 +33,8 @@
 
     <%= form_with(
         url: admin_service_version_path(@service_id, @version.version_id),
-        method: :put) do |f| %>
+        method: :put,
+        local: true) do |f| %>
       <%= f.submit 'Save', class: 'govuk-button fb-govuk-button', id: 'version-save' %>
       <div class="govuk-form-group">
         <textarea class="govuk-textarea" id="version" name="version" rows="100" aria-describedby="version-hint">
