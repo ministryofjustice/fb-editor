@@ -50,13 +50,13 @@
                     <% end %>
                   </ul>
 
-                  <%= render partial: 'flow_branch_menu', locals: { item: item } %>
+                  <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
                 </section>
               <% else %>
                 <section class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
                   <%= flow_thumbnail_link(item) %>
                   <%= flow_text_link(item) %>
-                  <%= render partial: 'flow_page_menu', locals: { item: item } %>
+                  <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
                 </section>
               <% end %>
 
@@ -103,7 +103,7 @@
       <section class="form-overview-step form-step" aria-label="<%= t('aria.' + page.type) %>">
         <%= flow_thumbnail(page) %>
         <%= flow_text_link({ type: 'page', uuid: page.uuid, title: page.url }) %>
-        <%= render partial: 'flow_page_menu', locals: { item: { title: page.title, uuid: page.uuid, url: page.url, type: page.type  } } %>
+        <%= render partial: 'services/flow_page_menu', locals: { item: { title: page.title, uuid: page.uuid, url: page.url, type: page.type  } } %>
       </section>
     <% end %>
   </div>
