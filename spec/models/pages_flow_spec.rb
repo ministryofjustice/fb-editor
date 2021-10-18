@@ -1796,7 +1796,7 @@ RSpec.describe PagesFlow do
                 title: 'Page G',
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '',
-                thumbnail: 'exit'
+                thumbnail: 'exit',
                 url: 'page-g'
               }
             ],
@@ -1942,14 +1942,16 @@ RSpec.describe PagesFlow do
                 title: 'You are right',
                 uuid: '56e80942-d0a4-405a-85cd-bd1b100013d6',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'content'
+                thumbnail: 'content',
+                url: 'arnold-right-answers'
               },
               {
                 type: 'page.content',
                 title: 'You are wrong', # wrong answers, GOTG quotes
                 uuid: '6324cca4-7770-4765-89b9-1cdc41f49c8b',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'content'
+                thumbnail: 'content',
+                url: 'arnold-wrong-answers'
               },
               {
                 type: 'spacer'
@@ -1959,7 +1961,8 @@ RSpec.describe PagesFlow do
                 title: 'You are wrong', # incomplete answers, Otherwise
                 uuid: '941137d7-a1da-43fd-994a-98a4f9ea6d46',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'content'
+                thumbnail: 'content',
+                url: 'arnold-incomplete-answers'
               }
             ],
             [
@@ -1999,7 +2002,8 @@ RSpec.describe PagesFlow do
                 title: 'Page J',
                 uuid: 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992',
                 next: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-                thumbnail: 'radios'
+                thumbnail: 'radios',
+                url: 'page-j'
               }
             ],
             [
@@ -2038,14 +2042,16 @@ RSpec.describe PagesFlow do
                 title: 'Page K',
                 uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
                 next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-k'
               },
               {
                 type: 'page.singlequestion',
                 title: 'Page M',
                 uuid: 'd80a2225-63c3-4944-873f-504b61311a15',
                 next: '393645a4-f037-4e75-8359-51f9b0e360fb',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-m'
               }
             ],
             [
@@ -2054,14 +2060,16 @@ RSpec.describe PagesFlow do
                 title: 'Page L',
                 uuid: '2c7deb33-19eb-4569-86d6-462e3d828d87',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-l'
               },
               {
                 type: 'page.singlequestion',
                 title: 'Page N',
                 uuid: '393645a4-f037-4e75-8359-51f9b0e360fb',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-n'
               }
             ],
             [
@@ -2079,7 +2087,8 @@ RSpec.describe PagesFlow do
                 title: 'Page G',
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-g'
               }
             ],
             [
@@ -2088,7 +2097,8 @@ RSpec.describe PagesFlow do
                 title: 'Page H',
                 uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
                 next: '520fde26-8124-4c67-a550-cd38d2ef304d',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-h'
               }
             ],
             [
@@ -2097,7 +2107,8 @@ RSpec.describe PagesFlow do
                 title: 'Page I',
                 uuid: '520fde26-8124-4c67-a550-cd38d2ef304d',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'text'
+                thumbnail: 'text',
+                url: 'page-i'
               }
             ],
             [
