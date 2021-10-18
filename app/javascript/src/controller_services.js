@@ -226,11 +226,14 @@ class PageAdditionMenu extends ActivatedMenu {
 function createPageAdditionDialog(view) {
   var $dialog = $("[data-component='PageAdditionDialog']"); // Expect only one
   var $form = $dialog.find("form");
+  var $errors = $dialog.find(".govuk-error-message");
+
   view.pageAdditionDialog = new FormDialog($dialog, {
+    autoOpen: $errors.length ? true: false,
     view: view,
     cancelText: $dialog.attr("data-cancel-text"),
     selectorErrors: ".govuk-error-message",
-    removeErrorClasses: ".govuk-form-group--error",
+    removeErrorClasses: "govuk-form-group--error",
     close: function() {
       // Reset to remove any lingering values.
       utilities.updateHiddenInputOnForm($form, "page[page_type]", "");
