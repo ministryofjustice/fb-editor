@@ -4,9 +4,9 @@ RSpec.describe MetadataApiClient::Version do
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with('METADATA_API_URL').and_return(metadata_api_url)
   end
+  let(:service_id) { SecureRandom.uuid }
 
   describe '.create' do
-    let(:service_id) { SecureRandom.uuid }
     let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions" }
 
     context 'when is created' do
@@ -51,6 +51,77 @@ RSpec.describe MetadataApiClient::Version do
           described_class.create(service_id: service_id, payload: {}).errors?
         ).to be_truthy
       end
+    end
+  end
+
+  describe '.all' do
+    let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions" }
+    let(:version_attributes) do
+      {
+        version_id: 'some-id',
+        created_at: '10:00am'
+      }
+    end
+    let(:version) do
+      MetadataApiClient::Version.new(version_attributes.stringify_keys)
+    end
+    let(:expected_body) do
+      {
+        service_name: 'Asohka Tano',
+        service_id: service_id,
+        versions: [version]
+      }
+    end
+    let(:expected_result) { [version] }
+
+    before do
+      stub_request(:get, expected_url)
+        .to_return(status: 200, body: expected_body.to_json, headers: {})
+    end
+
+    it 'returns all the versions for a service' do
+      expect(described_class.all(service_id)).to eq(expected_result)
+    end
+  end
+
+  describe '.find' do
+    let(:version_id) { SecureRandom.uuid }
+    let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions/#{version_id}" }
+    let(:version_attributes) do
+      {
+        version_id: version_id,
+        created_at: '10:00am'
+      }
+    end
+    let(:version) do
+      MetadataApiClient::Version.new(version_attributes.stringify_keys)
+    end
+
+    before do
+      stub_request(:get, expected_url)
+        .to_return(status: 200, body: version_attributes.to_json, headers: {})
+    end
+
+    it 'returns the requested version of a service' do
+      result = described_class.find(service_id: service_id, version_id: version_id)
+      expect(result).to eq(version)
+    end
+  end
+
+  describe '#version_id' do
+    let(:version_id) { SecureRandom.uuid }
+    let(:version_attributes) { { version_id: version_id } }
+
+    it 'returns the version id' do
+      expect(described_class.new(version_attributes.stringify_keys).version_id).to eq(version_id)
+    end
+  end
+
+  describe '#created_at' do
+    let(:version_attributes) { { created_at: 'sometime' } }
+
+    it 'returns the version id' do
+      expect(described_class.new(version_attributes.stringify_keys).created_at).to eq('sometime')
     end
   end
 end

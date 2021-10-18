@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :overviews, only: [:index]
-    resources :services, only: [:index]
+    resources :services, only: [:index, :show, :create] do
+      resources :versions, only: [:update, :edit, :show]
+    end
     resources :users
 
     root to: "overviews#index"

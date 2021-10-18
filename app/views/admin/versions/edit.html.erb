@@ -1,0 +1,50 @@
+<% content_for(:title) do %>
+  <%= display_resource_name('Service') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= @version.name %>
+  </h1>
+
+  <h2>Version ID: <%= @version.id %></h2>
+</header>
+
+<section class="main-content__body main-content__body--flush">
+  <div class="govuk-!-margin-left-5">
+    <a href="<%= admin_service_path(@service_id) %>" class="govuk-back-link">
+      Back to service
+    </a>
+
+    <dl class="govuk-summary-list">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Created by
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <%= @version_creator.name %>
+        </dd>
+      </div>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          Created at
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <%= l(@version.metadata['created_at'].to_time) %>
+        </dd>
+      </div>
+    </dl>
+
+    <%= form_with(
+        url: admin_service_version_path(@service_id, @version.version_id),
+        method: :put,
+        local: true) do |f| %>
+      <%= f.submit 'Save', class: 'govuk-button fb-govuk-button', id: 'version-save' %>
+      <div class="govuk-form-group">
+        <textarea class="govuk-textarea" id="version" name="version" rows="100" aria-describedby="version-hint">
+          <%= JSON.pretty_generate(@version.metadata) %>
+        </textarea>
+      </div>
+    <% end %>
+  </div>
+</section>
