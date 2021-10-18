@@ -82,6 +82,7 @@ en:
     add_page: 'Add page here'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
+    add_branch: 'Add branching'
     edit_branch: 'Edit branching'
     edit_page: 'Edit page'
     preview_page: 'Preview page'
