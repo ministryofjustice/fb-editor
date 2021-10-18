@@ -549,6 +549,15 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
+.FlowItemMenuActivator {
+  bottom: calc(25px + #{govuk-spacing(4)});
+  display: inline-block;
+  left: 158px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
 .flow-branch {
   height: 125px;
   overflow: visible;
@@ -573,7 +582,7 @@ html {
     width: inherit;
   }
 
-  .flow-menu-activator {
+  .FlowItemMenuActivator {
     bottom: 10px;
     left: 82px;
   }
@@ -613,15 +622,6 @@ html {
       opacity: 1;
     }
   }
-}
-
-.flow-menu-activator {
-  bottom: calc(25px + #{govuk-spacing(4)});
-  display: inline-block;
-  left: 158px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
 }
 
 .flow-link {

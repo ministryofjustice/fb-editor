@@ -77,6 +77,7 @@ class FlowItemMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
+    this.activator.$node.addClass("FlowItemMenuActivator");
     this.container.$node.addClass("FlowItemMenu");
     this.uuid = $node.data("uuid");
     this.title = $node.data("title");
