@@ -3,13 +3,15 @@ class PublishServiceCreation
   REQUIRE_AUTHENTICATION = '1'.freeze
 
   attr_accessor :service_id,
+                :version_id,
+                :user_id,
                 :deployment_environment,
                 :require_authentication,
                 :username,
                 :password,
                 :publish_service_id
 
-  validates :service_id, presence: true
+  validates :service_id, :version_id, :user_id, presence: true
   validates :username,
             :password,
             presence: true,
@@ -79,6 +81,8 @@ class PublishServiceCreation
   def publish_service
     @publish_service ||= PublishService.new(
       service_id: service_id,
+      user_id: user_id,
+      version_id: version_id,
       deployment_environment: deployment_environment,
       status: :queued
     )

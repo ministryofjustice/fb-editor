@@ -23,7 +23,11 @@ class PublishController < FormController
       :username,
       :password,
       :deployment_environment
-    ).merge(service_id: service.service_id)
+    ).merge(
+      service_id: service.service_id,
+      user_id: current_user.id,
+      version_id: service.version_id
+    )
   end
 
   def assign_form_objects

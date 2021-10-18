@@ -1,5 +1,17 @@
 RSpec.describe PublishService, type: :model do
   describe 'validations' do
+    context 'user id' do
+      it 'do not allow blank' do
+        should_not allow_values('').for(:user_id)
+      end
+    end
+
+    context 'version id' do
+      it 'do not allow blank' do
+        should_not allow_values('').for(:version_id)
+      end
+    end
+
     context 'deployment environment' do
       it 'allow dev and production' do
         should allow_values('dev', 'production').for(:deployment_environment)

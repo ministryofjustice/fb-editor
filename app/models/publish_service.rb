@@ -1,4 +1,6 @@
 class PublishService < ApplicationRecord
+  belongs_to :user
+
   STATUS = %w[
     queued
     pre_publishing
@@ -8,6 +10,7 @@ class PublishService < ApplicationRecord
   ].freeze
 
   validates :deployment_environment, :status, :service_id, presence: true
+  validates :version_id, :user_id, presence: true
   validates :deployment_environment, inclusion: {
     in: Rails.application.config.deployment_environments
   }

@@ -22,8 +22,9 @@ RSpec.describe Publisher do
   describe '#call' do
     let(:fake_adapter_instance) { double(publishing: true) }
     let(:publish_service) do
-      PublishService.create!(
-        deployment_environment: 'dev',
+      create(
+        :publish_service,
+        :dev,
         service_id: SecureRandom.uuid,
         status: 'queued'
       )

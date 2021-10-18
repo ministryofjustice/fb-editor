@@ -1,15 +1,29 @@
 RSpec.describe PublishServiceCreation, type: :model do
   subject(:publish_service_creation) do
-    described_class.new(attributes.merge(service_id: service_id))
+    described_class.new(
+      attributes.merge(
+        service_id: service_id,
+        version_id: version_id,
+        user_id: user_id
+      )
+    )
   end
   let(:service_id) { service.service_id }
+  let(:version_id) { SecureRandom.uuid }
+  let!(:user_id) { create(:user).id }
 
   describe '#service_configuration' do
     let(:attributes) { {} }
 
     context 'when configuration exists' do
       let!(:username_config) do
-        create(:service_configuration, :dev, :username, value: 'x-wing', service_id: service_id)
+        create(
+          :service_configuration,
+          :dev,
+          :username,
+          value: 'x-wing',
+          service_id: service_id
+        )
       end
 
       it 'returns the value decoded' do
@@ -77,6 +91,7 @@ RSpec.describe PublishServiceCreation, type: :model do
       end
     end
   end
+
   describe '#save' do
     context 'when invalid' do
       context 'when require authentication' do
@@ -141,10 +156,22 @@ RSpec.describe PublishServiceCreation, type: :model do
     context 'when require authentication' do
       context 'when existing username and password' do
         let!(:username_config) do
-          create(:service_configuration, :dev, :username, value: 'executor', service_id: service_id)
+          create(
+            :service_configuration,
+            :dev,
+            :username,
+            value: 'executor',
+            service_id: service_id
+          )
         end
         let!(:password_config) do
-          create(:service_configuration, :dev, :password, value: 'vader-ship', service_id: service_id)
+          create(
+            :service_configuration,
+            :dev,
+            :password,
+            value: 'vader-ship',
+            service_id: service_id
+          )
         end
         let(:attributes) do
           {
