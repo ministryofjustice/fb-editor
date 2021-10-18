@@ -108,4 +108,51 @@ RSpec.describe Expression do
       ).to eq(expected_id)
     end
   end
+
+  describe '#branching_support' do
+    before do
+      expression.valid?
+    end
+
+    context 'supported component' do
+      let(:metadata) { metadata_fixture(:branching) }
+      let(:service) { MetadataPresenter::Service.new(metadata) }
+      let(:page) { service.find_page_by_url('do-you-like-star-wars') }
+
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': page,
+          'component': page.components.first.uuid,
+          'field': 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+        }
+      end
+
+      it 'saves the metadata' do
+        expect(expression.errors.messages).to be_empty
+      end
+    end
+
+    context 'unsupported component' do
+      let(:page) { service.find_page_by_url('name') }
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': page,
+          'component': page.components.first.uuid,
+          'field': '27d377a2-6828-44ca-87d1-b83ddac98284'
+        }
+      end
+
+      it 'returns the error message' do
+        errors = expression.errors.messages
+        expect(errors).to be_present
+        expect(errors.values.first).to include(
+          I18n.t(
+            'activemodel.errors.messages.unsupported_component'
+          )
+        )
+      end
+    end
+  end
 end

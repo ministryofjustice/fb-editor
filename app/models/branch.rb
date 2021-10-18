@@ -96,7 +96,9 @@ class Branch
   end
 
   def flow_uuid
-    previous_flow_uuid || branch_uuid
+    return branch_uuid if previous_flow_uuid.blank?
+
+    previous_flow_uuid
   end
 
   def previous_flow_default_next
