@@ -39,6 +39,7 @@
           Published by
         </dt>
         <dd class="govuk-summary-list__value">
+          <%= @published_to_live[:published_by] %>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -47,7 +48,7 @@
         </dt>
         <dd class="govuk-summary-list__value">
           <% if @published_to_live.present? %>
-            <%= l(@published_to_live.created_at.to_time) %>
+            <%= l(@published_to_live[:created_at].to_time) %>
           <% end %>
         </dd>
       </div>
@@ -56,6 +57,13 @@
           Version ID
         </dt>
         <dd class="govuk-summary-list__value">
+          <% if @published_to_live[:version_id] == 'N/A' %>
+            <%= @published_to_live[:version_id] %>
+          <% else %>
+            <%= link_to @published_to_live[:version_id],
+                admin_service_version_path(@service.service_id, @published_to_live[:version_id] )
+            %>
+          <% end %>
         </dd>
       </div>
     </dl>
@@ -69,6 +77,7 @@
           Published by
         </dt>
         <dd class="govuk-summary-list__value">
+          <%= @published_to_test[:published_by] %>
         </dd>
       </div>
       <div class="govuk-summary-list__row">
@@ -77,7 +86,7 @@
         </dt>
         <dd class="govuk-summary-list__value">
           <% if @published_to_test.present? %>
-            <%= l(@published_to_test.created_at.to_time) %>
+            <%= l(@published_to_test[:created_at].to_time) %>
           <% end %>
         </dd>
       </div>
@@ -86,6 +95,13 @@
           Version ID
         </dt>
         <dd class="govuk-summary-list__value">
+          <% if @published_to_test[:version_id] == 'N/A' %>
+            <%= @published_to_test[:version_id] %>
+          <% else %>
+            <%= link_to @published_to_test[:version_id],
+                admin_service_version_path(@service.service_id, @published_to_test[:version_id])
+            %>
+          <% end %>
         </dd>
       </div>
     </dl>

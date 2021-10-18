@@ -16,9 +16,9 @@ module Admin
       @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
       @service_creator = User.find(@service.created_by)
-      @version_creator = version_creator(@service_creator, @latest_metadata)
-      @published_to_live = published(@service.service_id, 'production')
-      @published_to_test = published(@service.service_id, 'dev')
+      @version_creator = version_creator
+      @published_to_live = published('production')
+      @published_to_test = published('dev')
       @versions = MetadataApiClient::Version.all(@service.service_id)
     end
 
@@ -59,19 +59,37 @@ module Admin
 
     private
 
-    def version_creator(service_creator, latest_metadata)
-      if service_creator.id == latest_metadata['created_by']
-        service_creator
+    def version_creator
+      if @service_creator.id == @latest_metadata['created_by']
+        @service_creator
       else
-        User.find(latest_metadata['created_by'])
+        User.find(@latest_metadata['created_by'])
       end
     end
 
-    def published(service_id, environment)
-      PublishService.where(
-        service_id: service_id,
+    def published(environment)
+      publish_service = PublishService.where(
+        service_id: @service.service_id,
         deployment_environment: environment
       ).completed.desc.first
+
+      return {} if publish_service.nil?
+
+      {
+        published_by: published_by(publish_service.user_id).name,
+        created_at: publish_service.created_at,
+        version_id: publish_service.version_id || 'N/A'
+      }
+    end
+
+    def published_by(user_id)
+      return @service_creator if user_id == @service_creator.id
+
+      return @version_creator if user_id == @version_creator.id
+
+      User.find(user_id)
+    rescue ActiveRecord::RecordNotFound
+      OpenStruct.new(name: 'N/A')
     end
 
     def latest_version(service_id)

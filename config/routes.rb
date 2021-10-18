@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :versions, only: [:update, :edit, :show]
     end
     resources :users
+    resources :publish_services
 
     root to: "overviews#index"
   end
