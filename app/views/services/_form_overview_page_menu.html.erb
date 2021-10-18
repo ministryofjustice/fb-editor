@@ -1,0 +1,42 @@
+<%# ------------------------------------------------------- %>
+<%# OLD VIEW ONLY - DELETE TEMPLATE WHEN NO LONGER REQUIRED %>
+<%# ------------------------------------------------------- %>
+<ul class="govuk-navigation component-activated-menu"
+    data-activator-text="<%= t('pages.actions') %>"
+    data-activator-classname="form-step_button"
+    data-component="ItemActionMenu"
+    data-title="<%= item[:title] %>"
+    data-uuid="<%= item[:uuid] %>">
+  <li data-action="none">
+    <%= link_to t('actions.edit_page'),
+    edit_page_path(service.service_id, item[:uuid]) %>
+  </li>
+  <% if item[:url] %>
+    <li data-action="preview">
+      <%= link_to t('actions.preview_page'),
+      File.join(preview_service_path(service.service_id), item[:url]),
+      target: '_blank' %>
+    </li>
+  <% end %>
+  <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
+    <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
+  <% end %>
+  <% unless item[:type] == 'page.start' %>
+    <li data-action="delete">
+      <%= link_to t('actions.delete_page'),
+        page_path(service.service_id, item[:uuid]),
+        method: :delete,
+        class: 'destructive delete' %>
+    </li>
+  <% end %>
+  <li data-action="none">
+    <%= link_to t('services.branch'),
+    new_branches_path(service.service_id, item[:uuid]) %>
+  </li>
+  <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
+    <li data-action="destination">
+      <%= link_to t('actions.change_destination'),
+      new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
+    </li>
+  <% end %>
+</ul>
