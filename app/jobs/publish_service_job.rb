@@ -10,6 +10,7 @@ class PublishServiceJob < ApplicationJob
 
     service_provisioner = Publisher::ServiceProvisioner.new(
       service_id: publish_service.service_id,
+      version_id: publish_service.version_id,
       deployment_environment: publish_service.deployment_environment,
       platform_environment: ENV['PLATFORM_ENV'],
       service_configuration: service_configuration

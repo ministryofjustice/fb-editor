@@ -6,11 +6,13 @@ class Publisher
     include ::Publisher::Utils::Hostname
 
     attr_accessor :service_id,
+                  :version_id,
                   :platform_environment,
                   :deployment_environment,
                   :service_configuration
 
     validates :service_id,
+              :version_id,
               :platform_environment,
               :deployment_environment,
               :service_configuration,
@@ -125,7 +127,10 @@ class Publisher
 
     def service
       @service ||= MetadataPresenter::Service.new(
-        MetadataApiClient::Service.latest_version(service_id)
+        MetadataApiClient::Version.find(
+          service_id: service_id,
+          version_id: version_id
+        ).metadata
       )
     end
 
