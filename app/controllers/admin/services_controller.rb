@@ -76,9 +76,9 @@ module Admin
       return {} if publish_service.nil?
 
       {
-        published_by: published_by(publish_service.user_id).name,
+        published_by: published_by(publish_service.user_id)&.name,
         created_at: publish_service.created_at,
-        version_id: publish_service.version_id || 'N/A'
+        version_id: publish_service.version_id
       }
     end
 
@@ -87,9 +87,7 @@ module Admin
 
       return @version_creator if user_id == @version_creator.id
 
-      User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
-      OpenStruct.new(name: 'N/A')
+      User.find_by(id: user_id)
     end
 
     def latest_version(service_id)
