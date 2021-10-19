@@ -4,13 +4,31 @@ RSpec.describe Publisher::ServiceProvisioner do
   let(:service_metadata) { metadata_fixture(:version) }
   include Shoulda::Matchers::ActiveModel
 
+  describe '#service_metadata' do
+    let(:attributes) do
+      { service_id: SecureRandom.uuid, version_id: SecureRandom.uuid }
+    end
+
+    before do
+      expect(MetadataApiClient::Version).to receive(:find)
+        .with(service_id: attributes[:service_id], version_id: attributes[:version_id])
+        .and_return(MetadataApiClient::Version.new(service_metadata))
+    end
+
+    it 'returns slug using the service name' do
+      expect(service_provisioner.service_metadata).to eq(
+        JSON.generate(service_metadata).inspect
+      )
+    end
+  end
+
   describe '#service_slug' do
     let(:attributes) { { service_id: SecureRandom.uuid } }
 
     before do
-      expect(MetadataApiClient::Service).to receive(:latest_version)
-        .with(attributes[:service_id])
-        .and_return(service_metadata)
+      expect(MetadataApiClient::Version).to receive(:find)
+        .with(service_id: attributes[:service_id], version_id: attributes[:version_id])
+        .and_return(MetadataApiClient::Version.new(service_metadata))
     end
 
     it 'returns slug using the service name' do
@@ -203,6 +221,12 @@ RSpec.describe Publisher::ServiceProvisioner do
     context 'blank services' do
       it 'does not allow blank services' do
         should_not allow_values(nil, '').for(:service_id)
+      end
+    end
+
+    context 'blank version' do
+      it 'does not allow blank version' do
+        should_not allow_values(nil, '').for(:version_id)
       end
     end
 

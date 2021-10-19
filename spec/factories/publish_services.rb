@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :publish_service do
     service_id { SecureRandom.uuid }
+    version_id { SecureRandom.uuid }
+    user
 
     trait :queued do
       status { 'queued' }
