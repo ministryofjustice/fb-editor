@@ -710,10 +710,16 @@ html {
   // FOR SURFACING PAGES THAT WOULD
   // OTHERWISE BE LOST WITHOUT IT.
   border: 2px solid #eee;
+  height: 700px;
   margin-bottom: 100px;
   overflow: auto;
   padding: 40px;
   width: 100%;
+
+  .flow-detached-group {
+    margin-bottom: 125px;
+    position: relative;
+  }
 }
 
 
