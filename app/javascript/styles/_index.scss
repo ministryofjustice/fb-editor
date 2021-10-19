@@ -635,6 +635,16 @@ html {
   vertical-align: middle;
 }
 
+.flow-pointer {
+  width: 200px;
+
+  span {
+    display: table-cell;
+    height: 125px;
+    vertical-align: middle;
+  }
+}
+
 .standalone-pages {
   display: inline;
   float: left;
