@@ -57,9 +57,7 @@
           Version ID
         </dt>
         <dd class="govuk-summary-list__value">
-          <% if @published_to_live[:version_id] == 'N/A' %>
-            <%= @published_to_live[:version_id] %>
-          <% else %>
+          <% if @published_to_live[:version_id].present? %>
             <%= link_to @published_to_live[:version_id],
                 admin_service_version_path(@service.service_id, @published_to_live[:version_id] )
             %>
@@ -95,9 +93,7 @@
           Version ID
         </dt>
         <dd class="govuk-summary-list__value">
-          <% if @published_to_test[:version_id] == 'N/A' %>
-            <%= @published_to_test[:version_id] %>
-          <% else %>
+          <% if @published_to_test[:version_id].present? %>
             <%= link_to @published_to_test[:version_id],
                 admin_service_version_path(@service.service_id, @published_to_test[:version_id])
             %>

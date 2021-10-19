@@ -25,7 +25,7 @@ feature 'Visiting admin pages' do
     then_I_should_not_see_the_admin_link
     admin_pages.each do |path|
       given_I_visit_an_admin_page(path)
-      then_I_should_be_redirected_to_the_home_page
+      then_I_should_be_redirected_to_the_services_page
     end
   end
 
@@ -34,7 +34,7 @@ feature 'Visiting admin pages' do
   end
 
   def then_I_should_be_redirected_to_login
-    expect(page.current_url).to eq(ENV['ACCEPTANCE_TESTS_EDITOR_APP'])
+    expect(page.current_path).to eq('/')
     expect(page.title).to eq(I18n.t('home.show.title'))
     expect(page.text).to include(I18n.t('home.show.sign_in'))
   end
@@ -43,8 +43,8 @@ feature 'Visiting admin pages' do
     expect(page.text).not_to include(I18n.t('home.show.admin'))
   end
 
-  def then_I_should_be_redirected_to_the_home_page
-    expect(page.current_url).to eq(File.join(ENV['ACCEPTANCE_TESTS_EDITOR_APP'], 'services'))
+  def then_I_should_be_redirected_to_the_services_page
+    expect(page.current_path).to eq('/services')
     expect(editor.question_heading.first.text).to eq(I18n.t('services.heading'))
   end
 end
