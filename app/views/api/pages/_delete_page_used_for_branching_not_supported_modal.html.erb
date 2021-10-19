@@ -1,16 +1,14 @@
-<div class="component-dialog-form"
-     data-component="PageCreateDialog">
-  <div class="govuk-form-group ">
-    <h2 class="govuk-heading-m">
-      <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
-    </h2>
+<div class="component component-dialog component-dialog-api=request"
+     data-component="DialogApiRequest">
 
-    <span class="govuk-hint">
-      <%= t('pages.delete_modal.delete_page_used_for_branching_not_supported_message') %>
-    </span>
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
+  </h3>
+  <p data-node="content">
+    <%= t('pages.delete_modal.delete_page_used_for_branching_not_supported_message') %>
+  </p>
 
-    <div class="govuk-form-group ">
-      <%= link_to t('actions.ok'), '#' %>
-    </div>
+  <div class="ui-dialog-buttonset">
+    <button class="govuk-button ui-button"><%= t('dialogs.button_understood') %></button>
   </div>
 </div>

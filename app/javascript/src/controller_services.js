@@ -77,6 +77,7 @@ class FlowItemMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
+    this.activator.$node.addClass("FlowItemMenuActivator");
     this.container.$node.addClass("FlowItemMenu");
     this.uuid = $node.data("uuid");
     this.title = $node.data("title");
@@ -87,45 +88,57 @@ class FlowItemMenu extends ActivatedMenu {
     var action = item.data("action");
     var view = this._config.view;
 
+    event.preventDefault();
     switch(action) {
       case "preview":
-           window.open(item.attr("href"));
+           this.previewPage(item);
            break;
 
       case "add":
-           event.preventDefault();
            this.addPage(item);
            break;
 
       case "destination":
-           event.preventDefault();
            this.changeDestination(item);
            break;
 
       case "delete":
-           event.preventDefault();
            this.deleteItem(item);
            break;
 
-      default: location.href = item("href");
+      case "delete-api":
+           this.deleteItemApi(item);
+           break;
+
+      default: this.link(item);
     }
   }
 
+  link(element) {
+    var $link = element.find("> a");
+    location.href = $link.attr("href");
+  }
+
+  previewPage(element) {
+    var $link = element.find("> a");
+    window.open($link.attr("href"));
+  }
+
   // Open the views Page Addition Menu
-  addPage($activator) {
+  addPage(element) {
     var menu = this._config.view.pageAdditionMenu;
     menu.addPageAfter = this.uuid;
     menu.open({
       my: "left top",
       at: "right top",
-      of: $activator
+      of: element
     });
   }
 
   // Open an API request dialog to change destination
-  changeDestination($activator) {
+  changeDestination(element) {
     var view = this._config.view;
-    var $link = $activator.find("> a");
+    var $link = element.find("> a");
     new DialogApiRequest($link.attr("href"), {
       activator: $link,
       buttons: [{
@@ -139,14 +152,31 @@ class FlowItemMenu extends ActivatedMenu {
     });
   }
 
-  deleteItem($activator) {
+  // Use standard delete modal to remove
+  deleteItem(element) {
     var view = this._config.view;
-    var $link = $activator.find("> a");
+    var $link = element.find("> a");
     view.dialogConfirmationDelete.open({
       heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
       ok: view.text.dialogs.button_delete_page
       }, function() {
         post($link.attr("href"), { _method: "delete" });
+    });
+  }
+
+  deleteItemApi(element) {
+    var view = this._config.view;
+    var $link = element.find("> a");
+    var dialog = new DialogApiRequest($link.attr("href"), {
+      activator: $link,
+      closeOnClickSelector: ".govuk-button",
+      build: function(dialog) {
+        // Find and correct (make work!) any method:delete links
+        dialog.$node.find("[data-method=delete]").on("click", function(e) {
+          e.preventDefault();
+          utilities.post(this.href, { _method: "delete" });
+        });
+      }
     });
   }
 }
@@ -204,11 +234,14 @@ class PageAdditionMenu extends ActivatedMenu {
 function createPageAdditionDialog(view) {
   var $dialog = $("[data-component='PageAdditionDialog']"); // Expect only one
   var $form = $dialog.find("form");
+  var $errors = $dialog.find(".govuk-error-message");
+
   view.pageAdditionDialog = new FormDialog($dialog, {
+    autoOpen: $errors.length ? true: false,
     view: view,
     cancelText: $dialog.attr("data-cancel-text"),
     selectorErrors: ".govuk-error-message",
-    removeErrorClasses: ".govuk-form-group--error",
+    removeErrorClasses: "govuk-form-group--error",
     close: function() {
       // Reset to remove any lingering values.
       utilities.updateHiddenInputOnForm($form, "page[page_type]", "");

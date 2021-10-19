@@ -8,9 +8,9 @@ feature 'Add page in the middle flow' do
     # page url links have the word "Edit" as a visually hidden span element
     # associated with them for added accessibility
     [
-      "Edit\n/",
-      "Edit\nnew-page-url",
-      "Edit\npalpatine"
+      "Edit:\n/",
+      "Edit:\nnew-page-url",
+      "Edit:\npalpatine"
     ]
   end
 

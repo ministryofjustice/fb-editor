@@ -116,7 +116,7 @@ class EditorApp < SitePrism::Page
   element :add_page_here_link, :link, I18n.t('actions.add_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete_page')
-  element :branching_link, :link, I18n.t('services.branch')
+  element :branching_link, :link, I18n.t('actions.add_branch')
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon

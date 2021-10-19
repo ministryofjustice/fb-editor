@@ -1,6 +1,9 @@
+<%# ------------------------------------------------------- %>
+<%# OLD VIEW ONLY - DELETE TEMPLATE WHEN NO LONGER REQUIRED %>
+<%# ------------------------------------------------------- %>
 <ul class="govuk-navigation component-activated-menu"
     data-activator-text="<%= t('pages.actions') %>"
-    data-activator-classname="flow-menu-activator"
+    data-activator-classname="form-step_button"
     data-component="ItemActionMenu"
     data-title="<%= item[:title] %>"
     data-uuid="<%= item[:uuid] %>">
@@ -19,9 +22,9 @@
     <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
   <% end %>
   <% unless item[:type] == 'page.start' %>
-    <li data-action="delete-api">
+    <li data-action="delete">
       <%= link_to t('actions.delete_page'),
-        api_service_page_destroy_message_path(service.service_id, item[:uuid]),
+        page_path(service.service_id, item[:uuid]),
         method: :delete,
         class: 'destructive delete' %>
     </li>
