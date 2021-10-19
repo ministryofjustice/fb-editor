@@ -88,33 +88,40 @@ class FlowItemMenu extends ActivatedMenu {
     var action = item.data("action");
     var view = this._config.view;
 
+    event.preventDefault();
     switch(action) {
       case "preview":
-           window.open(item.attr("href"));
+           this.previewPage(item);
            break;
 
       case "add":
-           event.preventDefault();
            this.addPage(item);
            break;
 
       case "destination":
-           event.preventDefault();
            this.changeDestination(item);
            break;
 
       case "delete":
-           event.preventDefault();
            this.deleteItem(item);
            break;
 
       case "delete-api":
-           event.preventDefault();
            this.deleteItemApi(item);
            break;
 
-      default: location.href = item("href");
+      default: this.link(item);
     }
+  }
+
+  link(element) {
+    var $link = element.find("> a");
+    location.href = $link.attr("href");
+  }
+
+  previewPage(element) {
+    var $link = element.find("> a");
+    window.open($link.attr("href"));
   }
 
   // Open the views Page Addition Menu
