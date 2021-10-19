@@ -54,6 +54,7 @@ ServicesController.edit = function() {
   fixFormOverviewScroll();
 
   positionFlowItems($flowOverview);
+  positionDetachedFlowItems();
   applyFlowOverviewWidthWorkaround($flowOverview);
 
   addTemporaryLayoutTestAbility(view);
@@ -465,6 +466,17 @@ function positionFlowItems($overview) {
   positionConditionsByDestination($overview);
 }
 
+
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and position Detached Flow items (pages/branches/spacers) within
+ * the detached flow overview layouts, to get the required design.
+**/
+function positionDetachedFlowItems() {
+  $(".flow-detached-group").each(function() {
+    positionFlowItems($(this));
+  });
+}
 
 
 /* After initial positionFlowItems() method has finished, we need to revisit
