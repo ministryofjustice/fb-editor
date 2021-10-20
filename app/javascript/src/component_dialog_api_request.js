@@ -66,7 +66,7 @@ class DialogApiRequest {
 
     jxhr.done(function() {
       if(conf.closeOnClickSelector) {
-        let $buttons = $(conf.closeOnClickSelector);
+        let $buttons = $(conf.closeOnClickSelector, dialog.$node);
         $buttons.eq(0).focus();
         $buttons.on("click", function() {
           dialog.close();
