@@ -1,0 +1,39 @@
+/**
+ * Expander Component
+ * ----------------------------------------------------
+ * Description:
+ * Enhanced area that expands and collapses.
+ *
+ * Documentation:
+ *
+ *     - TODO:
+ *       (steven.burnell@digital.justice.gov.uk to add).
+ *
+ **/
+
+
+.Expander {
+  &.open .Expander_Activator {
+    &:before {
+      position: relative;
+      top: 0.5ex;
+      transform: rotate(90deg);
+    }
+  }
+}
+
+.Expander_Activator {
+  @include govuk-link-common;
+  @include govuk-link-style-default;
+  color: $govuk-link-colour;
+
+  &:before {
+    border-color: govuk-colour("white");
+    border-left-color: $govuk-link-colour;
+    border-style: solid;
+    border-width: 0.75ex;
+    content: "";
+    display: inline-block;
+    margin: 0 0.5ex 0 0;
+  }
+}
