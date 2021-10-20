@@ -534,10 +534,10 @@ html {
   overflow: visible;
 
   .container {
+    left: 0;
     overflow: scroll;
     padding: 60px 0px;
-    position: absolute;
-    left: 0;
+    position: relative;
     white-space: nowrap;
   }
 
@@ -720,14 +720,13 @@ html {
   // FOR SURFACING PAGES THAT WOULD
   // OTHERWISE BE LOST WITHOUT IT.
   border: 2px solid #eee;
-  height: 700px;
   margin-bottom: 100px;
   overflow: auto;
   padding: 40px;
   width: 100%;
 
   .flow-detached-group {
-    margin-bottom: 125px;
+    margin-bottom: 250px;
     position: relative;
   }
 }
