@@ -27,7 +27,7 @@ class EditorApp < SitePrism::Page
   element :name_field, :field, 'Give your form a name'
   element :create_service_button, :button, 'Create a new form'
 
-  element :footer_pages_links, 'summary'
+  element :footer_pages_link, 'h2', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'cookies'
 
   element :pages_link, :link, 'Pages'
