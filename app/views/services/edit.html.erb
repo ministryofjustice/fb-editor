@@ -26,7 +26,7 @@
 
   <% if @detached_flows.present? %>
     <section id="flow-detached">
-      <div class="container">
+      <div class="container" data-component="Expander">
         <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
         <% @detached_flows.each do |detached_flow| %>
           <div class="flow-detached-group">
