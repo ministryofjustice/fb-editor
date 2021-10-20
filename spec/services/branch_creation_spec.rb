@@ -66,6 +66,7 @@ RSpec.describe BranchCreation, type: :model do
         .to receive(:page_with_component)
         .with(component_uuid)
         .and_return(double(uuid: page_uuid))
+      allow_any_instance_of(Conditional).to receive(:generate_uuid).and_return('you-can-do-it')
     end
 
     context 'when metadata is valid' do
@@ -74,6 +75,7 @@ RSpec.describe BranchCreation, type: :model do
       let(:expected_conditionals) do
         [
           {
+            '_uuid' => 'you-can-do-it',
             '_type' => 'if',
             'next' => 'some-page-uuid',
             'expressions' => [

@@ -35,6 +35,7 @@ RSpec.describe NewFlowBranchGenerator do
             'next' => {
               'default' => 'default-next-uuid',
               'conditionals' => [
+                '_uuid' => 'you-can-do-it',
                 '_type' => 'if',
                 'next' => 'another-page-uuid',
                 'expressions' => [
@@ -53,6 +54,9 @@ RSpec.describe NewFlowBranchGenerator do
 
       before do
         allow(SecureRandom).to receive(:uuid).and_return(uuid)
+        allow(conditional).to receive(
+          :generate_uuid
+        ).and_return('you-can-do-it')
       end
 
       it 'creates valid flow branch object metadata' do

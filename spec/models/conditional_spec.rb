@@ -19,6 +19,7 @@ RSpec.describe Conditional do
   end
   let(:expected_conditional) do
     {
+      '_uuid' => 'you-can-do-it',
       '_type' => 'if',
       'next' => '12345',
       'expressions' => [
@@ -33,6 +34,10 @@ RSpec.describe Conditional do
   end
 
   describe '#to_metadata' do
+    before do
+      allow(conditional).to receive(:generate_uuid).and_return('you-can-do-it')
+    end
+
     context 'with a single expression' do
       it 'returns the correct metadata' do
         expect(conditional.to_metadata).to eq(expected_conditional)
