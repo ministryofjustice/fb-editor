@@ -8,9 +8,10 @@
     <%= link_to t('actions.edit_branch'),
     edit_branch_path(service.service_id, item[:uuid]) %>
   </li>
-  <li data-action="delete">
+  <li data-action="delete-api">
     <%= link_to t('actions.delete_branch'),
-    branch_path(service.service_id, item[:uuid]),
-    method: :delete, class: 'destructive delete' %>
+        api_service_branch_destroy_message_path(service.service_id, item[:uuid]),
+        method: :delete,
+        class: 'destructive delete' %>
   </li>
 </ul>
