@@ -38,10 +38,11 @@ class NewPageGenerator
   end
 
   def add_flow_page
-    default_next = previous_default_next
+    next_flow_object = default_next
+
     latest_metadata.tap do
       latest_metadata['flow'][previous_page_uuid]['next']['default'] = page_metadata['_uuid']
-      latest_metadata['flow'].merge!(new_flow_page_metadata(default_next))
+      latest_metadata['flow'].merge!(new_flow_page_metadata(next_flow_object))
       latest_metadata['pages'].insert(pages_index, page_metadata)
     end
   end
@@ -112,6 +113,14 @@ class NewPageGenerator
       latest_metadata['pages'].last['_uuid']
     else
       page_to_be_inserted_after['_uuid']
+    end
+  end
+
+  def default_next
+    if page_metadata['_type'] == 'page.exit'
+      ''
+    else
+      previous_default_next
     end
   end
 end

@@ -9,6 +9,7 @@ RSpec.describe NewPageGenerator do
       page_uuid: page_uuid
     )
   end
+  let(:service_metadata) { latest_metadata }
   let(:add_page_after) { nil }
   let(:page_uuid) { SecureRandom.uuid }
   let(:valid) { true }
@@ -156,6 +157,19 @@ RSpec.describe NewPageGenerator do
 
       it 'should return just the page metadata' do
         expect(generator.to_metadata['_type']).to eq('page.standalone')
+      end
+    end
+
+    context 'when adding an exit page into the middle of the flow' do
+      let(:latest_metadata) { metadata_fixture(:branching_2) }
+      let(:page_type) { 'exit' }
+      let(:component_type) { '' }
+      let(:add_page_after) { service.find_page_by_url('page-d').uuid }
+
+      it 'saves exit page with the next default as empty' do
+        expect(
+          generator.to_metadata['flow']['mandalorian-123']['next']['default']
+        ).to eq('')
       end
     end
 
