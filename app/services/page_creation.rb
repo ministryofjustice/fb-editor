@@ -7,7 +7,8 @@ class PageCreation
                 :latest_metadata,
                 :service_id,
                 :version,
-                :add_page_after
+                :add_page_after,
+                :conditional_uuid
 
   validates :page_url, :page_type, presence: true
   validates :page_url, format: { with: /\A[\sa-zA-Z0-9-]*\z/ }
@@ -43,7 +44,8 @@ class PageCreation
       component_type: component_type,
       latest_metadata: latest_metadata,
       add_page_after: add_page_after,
-      page_uuid: page_uuid
+      page_uuid: page_uuid,
+      conditional_uuid: conditional_uuid
     ).to_metadata
   end
 end

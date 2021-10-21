@@ -6,11 +6,13 @@ RSpec.describe NewPageGenerator do
       component_type: component_type,
       latest_metadata: latest_metadata,
       add_page_after: add_page_after,
-      page_uuid: page_uuid
+      page_uuid: page_uuid,
+      conditional_uuid: conditional_uuid
     )
   end
   let(:service_metadata) { latest_metadata }
   let(:add_page_after) { nil }
+  let(:conditional_uuid) { nil }
   let(:page_uuid) { SecureRandom.uuid }
   let(:valid) { true }
 
@@ -170,6 +172,76 @@ RSpec.describe NewPageGenerator do
         expect(
           generator.to_metadata['flow']['mandalorian-123']['next']['default']
         ).to eq('')
+      end
+    end
+
+    context 'when adding an page after a branch' do
+      let(:latest_metadata) { metadata_fixture(:branching_2) }
+      let(:add_page_after) do
+        # Branching point 1
+        '09e91fd9-7a46-4840-adbc-244d545cfef7'
+      end
+      let(:branch) do
+        generator.to_metadata['flow'][add_page_after]
+      end
+      let(:flow) do
+        MetadataPresenter::Flow.new(add_page_after, branch)
+      end
+      let(:updated_conditional) do
+        flow.conditionals.find do |conditional|
+          conditional.uuid == conditional_uuid
+        end
+      end
+
+      context 'when adding an exit page' do
+        let(:page_type) { 'exit' }
+        let(:component_type) { '' }
+        let(:conditional_uuid) { 'b753b3f0-188e-4435-a84d-894557ba2007' }
+
+        it 'change branch condition destination to the new page' do
+          expect(updated_conditional).to_not be_nil
+          expect(updated_conditional.next).to eq('mandalorian-123')
+        end
+
+        it 'saves exit page with the next default as empty' do
+          expect(
+            generator.to_metadata['flow']['mandalorian-123']['next']['default']
+          ).to eq('')
+        end
+      end
+
+      context 'when adding a page to the otherwise condition' do
+        # adding after a branch with no conditional leads towards the otherwise
+        let(:conditional_uuid) { nil }
+        let(:page_type) { 'singlequestion' }
+        let(:component_type) { 'text' }
+
+        it 'change branch otherwise destination to the new page' do
+          expect(branch['next']['default']).to eq('mandalorian-123')
+        end
+
+        it 'makes new page point to what the otherwise condition was pointing at' do
+          expect(
+            generator.to_metadata['flow']['mandalorian-123']['next']['default']
+          ).to eq(service.find_page_by_url('page-j').uuid)
+        end
+      end
+
+      context 'when adding a page' do
+        let(:page_type) { 'singlequestion' }
+        let(:component_type) { 'text' }
+        let(:conditional_uuid) { 'b753b3f0-188e-4435-a84d-894557ba2007' }
+
+        it 'change branch condition destination to the new page' do
+          expect(updated_conditional).to_not be_nil
+          expect(updated_conditional.next).to eq('mandalorian-123')
+        end
+
+        it 'makes new page point to what the branching condition was pointing at' do
+          expect(
+            generator.to_metadata['flow']['mandalorian-123']['next']['default']
+          ).to eq(service.find_page_by_url('page-c').uuid)
+        end
       end
     end
 

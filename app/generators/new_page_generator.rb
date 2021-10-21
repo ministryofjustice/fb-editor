@@ -6,7 +6,8 @@ class NewPageGenerator
                 :component_type,
                 :latest_metadata,
                 :add_page_after,
-                :page_uuid
+                :page_uuid,
+                :conditional_uuid
 
   STANDALONE = 'standalone'.freeze
 
@@ -41,7 +42,13 @@ class NewPageGenerator
     next_flow_object = default_next
 
     latest_metadata.tap do
-      latest_metadata['flow'][previous_page_uuid]['next']['default'] = page_metadata['_uuid']
+      if adding_after_branch? && conditional_to_be_updated.present?
+        conditional_to_be_updated['next'] = page_uuid
+      elsif adding_after_branch?
+        previous_flow_object['next']['default'] = page_uuid
+      else
+        latest_metadata['flow'][previous_page_uuid]['next']['default'] = page_metadata['_uuid']
+      end
       latest_metadata['flow'].merge!(new_flow_page_metadata(next_flow_object))
       latest_metadata['pages'].insert(pages_index, page_metadata)
     end
@@ -59,7 +66,13 @@ class NewPageGenerator
     flow_uuid = add_page_after.presence || previous_page_uuid
     return '' if flow_uuid.nil?
 
-    latest_metadata['flow'][flow_uuid]['next']['default']
+    if adding_after_branch? && conditional_to_be_updated.present?
+      conditional_to_be_updated['next']
+    elsif adding_after_branch?
+      previous_flow_object['next']['default']
+    else
+      latest_metadata['flow'][flow_uuid]['next']['default']
+    end
   rescue NoMethodError
     Sentry.capture_message(
       "Unable to set default next. #{flow_uuid} does not exist in service flow"
@@ -121,6 +134,22 @@ class NewPageGenerator
       ''
     else
       previous_default_next
+    end
+  end
+
+  def adding_after_branch?
+    previous_flow_object && previous_flow_object['_type'] == 'flow.branch'
+  end
+
+  def previous_flow_object
+    latest_metadata['flow'][add_page_after]
+  end
+
+  def conditional_to_be_updated
+    conditionals = previous_flow_object['next']['conditionals']
+
+    conditionals.find do |conditional|
+      conditional['_uuid'] == conditional_uuid
     end
   end
 end
