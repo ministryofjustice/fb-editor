@@ -380,4 +380,71 @@ RSpec.describe Branch do
       end
     end
   end
+
+  describe '#main_destinations' do
+    let(:metadata) { metadata_fixture(:branching) }
+    let(:service) { MetadataPresenter::Service.new(latest_metadata) }
+    let(:checkanswers) do
+      metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+    end
+    let(:latest_metadata) do
+      obj = metadata['flow']['0b297048-aa4d-49b6-ac74-18e069118185'] # what is your favourite fruit
+      obj['next']['default'] = checkanswers['_uuid']
+      metadata
+    end
+    let(:previous_page) do
+      service.find_page_by_url('name')
+    end
+    let(:expected_destination_pages) do
+      ['Full name',
+       'Do you like Star Wars?',
+       'How well do you know Star Wars?',
+       'What is your favourite fruit?',
+       'Check your answers']
+    end
+
+    it 'returns destinations without detached pages' do
+      expect(branch.main_destinations.map(&:first)).to eq(expected_destination_pages)
+    end
+  end
+
+  describe '#detached_destinations' do
+    let(:metadata) { metadata_fixture(:branching) }
+    let(:service) { MetadataPresenter::Service.new(latest_metadata) }
+    let(:checkanswers) do
+      metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+    end
+    let(:latest_metadata) do
+      obj = metadata['flow']['0b297048-aa4d-49b6-ac74-18e069118185'] # what is your favourite fruit
+      obj['next']['default'] = checkanswers['_uuid']
+      metadata
+    end
+    let(:previous_page) do
+      service.find_page_by_url('name')
+    end
+    let(:detached_destination_pages) do
+      [
+        'Do you like apple juice?',
+        'Do you like orange juice?',
+        'What is your favourite band?',
+        'Which app do you use to listen music?',
+        'What is the best form builder?',
+        'Which Formbuilder is the best?',
+        'What would you like on your burger?',
+        'Global warming',
+        'We love chickens',
+        'What is the best marvel series?',
+        'Loki',
+        'Other quotes',
+        'Select all Arnold Schwarzenegger quotes',
+        'You are wrong',
+        'You are right',
+        'You are wrong'
+      ]
+    end
+
+    it 'returns destinations that are detached pages' do
+      expect(branch.detached_destinations.map(&:first)).to eq(detached_destination_pages)
+    end
+  end
 end
