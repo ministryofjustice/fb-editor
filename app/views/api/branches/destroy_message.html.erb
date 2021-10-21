@@ -6,18 +6,19 @@
   </h3>
 
   <%= form_for @branch, url: '/some-url-to-destroy-the-branch-which-does-not-exist-yet', method: :delete do |f| %>
-    <div data-node="content"><%= t('branches.delete_modal.lede') %>
+    <div data-node="content">
+      <p><%= t('branches.delete_modal.lede') %></p>
       <p><%= t('branches.after', page_title: @branch.previous_page_title) %></p>
       <%= f.govuk_collection_radio_buttons :destinations, @branch.destinations,
         :uuid,
         :title,
         legend: { text: t('branches.delete_modal.destinations'), class: 'govuk-fieldset__legend' }
       %>
-      <p data-node="content"><%= t('branches.delete_modal.before_submit') %></p>
+      <p><%= t('branches.delete_modal.before_submit') %></p>
     </div>
     <div class="ui-dialog-buttonset">
       <%= f.submit t('branches.delete_modal.submit'), class: 'govuk-button govuk-button--warning' %>
-      <button type="button" class="govuk-button govuk-button--secondary"><%= t('dialogs.cancel') %></button>
+      <button type="button" class="govuk-button govuk-button--secondary"><%= t('dialogs.button_cancel') %></button>
     </div>
   <% end %>
 </div>
