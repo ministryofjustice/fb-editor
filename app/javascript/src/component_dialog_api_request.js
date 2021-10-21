@@ -1,9 +1,8 @@
 /**
- * Dialog API Form Request Component
+ * Dialog API Request Component
  * ----------------------------------------------------
  * Description:
- * Expects a form response from an API request, which it can wrap in a Dialog effect.
- * Clears errors on close/cancel, if they are shown.
+ * Expects response content from an API request, which it can wrap in a Dialog effect.
  *
  * Documentation:
  *
