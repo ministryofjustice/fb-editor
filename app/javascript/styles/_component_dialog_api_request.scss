@@ -22,7 +22,10 @@
     position: static;
 
     &::before {
-      position: static;
+      // Fixes a bug caused by GDS css
+      left: auto;
+      position: relative;
+      right: auto;
     }
   }
 
