@@ -20,6 +20,10 @@
     @include govuk-responsive-margin(7, "right");
     margin-bottom: 0;
     position: static;
+
+    &::before {
+      position: static;
+    }
   }
 
   form {
