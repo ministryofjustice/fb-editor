@@ -532,12 +532,13 @@ html {
 
 #form-overview {
   overflow: visible;
+  padding-top: 200px;
 
   .container {
+    left: 0;
     overflow: scroll;
     padding: 60px 0px;
-    position: absolute;
-    left: 0;
+    position: relative;
     white-space: nowrap;
   }
 
@@ -635,9 +636,14 @@ html {
   vertical-align: middle;
 }
 
-.standalone-pages {
-  display: inline;
-  float: left;
+.flow-pointer {
+  width: 200px;
+
+  span {
+    display: table-cell;
+    height: 125px;
+    vertical-align: middle;
+  }
 }
 
 .flow-thumbnail {
@@ -683,6 +689,26 @@ html {
   }
 }
 
+
+#flow-detached {
+  // THIS IS ALL TEMPORARY STUFF AND WIP.
+  // THERE IS CURRENTLYNO DEFINED VIEW FOR
+  // THE DETACHED PAGES SO THIS AREA IS
+  // FOR SURFACING PAGES THAT WOULD
+  // OTHERWISE BE LOST WITHOUT IT.
+  border: 2px solid #eee;
+  margin-bottom: 100px;
+  overflow: auto;
+  padding: 40px;
+  width: 100%;
+
+  .flow-detached-group {
+    margin-bottom: 250px;
+    position: relative;
+  }
+}
+
+
 #flow-overview {
   // THIS IS ALL TEMPORARY STUFF AND WIP.
   // THERE IS A SEPARATE TICKET TO ADJUST
@@ -703,17 +729,12 @@ html {
 }
 
 
-#flow-detached {
-  // THIS IS ALL TEMPORARY STUFF AND WIP.
-  // THERE IS CURRENTLYNO DEFINED VIEW FOR
-  // THE DETACHED PAGES SO THIS AREA IS
-  // FOR SURFACING PAGES THAT WOULD
-  // OTHERWISE BE LOST WITHOUT IT.
-  border: 2px solid #eee;
-  margin-bottom: 100px;
-  overflow: auto;
-  padding: 40px;
-  width: 100%;
+#flow-standalone-pages {
+  li {
+    display: inline-block;
+    margin-bottom: govuk-spacing(9);
+    margin-right: govuk-spacing(9);
+  }
 }
 
 

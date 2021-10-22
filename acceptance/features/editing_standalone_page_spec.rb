@@ -19,7 +19,7 @@ feature 'Edit standalone pages' do
   end
 
   def given_I_have_footer_pages
-    editor.footer_pages_links.click
+    editor.footer_pages_link.click
   end
 
   def and_I_edit_the_cookies_page

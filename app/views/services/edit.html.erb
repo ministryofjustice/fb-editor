@@ -10,80 +10,44 @@
 
 <%# Flow overview layout for pages, branchs, and conditions %>
 <% if ENV['BRANCHING'] == 'enabled' %>
-  <div id="flow-overview">
+  <section id="flow-overview">
     <div class="container">
 
       <% @pages_flow.each do |collection| %>
         <div class="column">
           <% collection.each_with_index do |item, index| %>
-
-            <% if item[:type] == 'spacer' %>
-              <section class="flow-item flow-spacer" aria-hidden="true">
-              </section>
-            <% else %>
-
-              <% if item[:type] == 'flow.branch' %>
-                <section class="flow-item flow-branch" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
-                  <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
-                  <map name="thumbnail-<%= index %>" aria-hidden="true">
-                    <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
-                  </map>
-                  <%= flow_text_link(item) %>
-
-                  <ul class="flow-conditions">
-                    <% item[:conditionals].each_with_index do |condition, index| %>
-                      <li class="flow-condition" data-fb-next="<%= condition[:next] %>">
-                        <% condition[:expressions].each do |expression| %>
-                          <% if expression[:operator].empty? && expression[:answer].empty? %>
-                            <div class="flow-expression" data-otherwise="true">
-                              <span class="question"><%= expression[:question] %></span>
-                            </div>
-                          <% else %>
-                            <div class="flow-expression" data-otherwise="false">
-                              <span class="question"><%= expression[:question] %></span>
-                              <span class="operator"><%= expression[:operator] %></span>
-                              <span class="answer"><%= expression[:answer] %></span>
-                            </div>
-                          <% end %>
-                        <% end %>
-                      </li>
-                    <% end %>
-                  </ul>
-
-                  <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
-                </section>
-              <% else %>
-                <section class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
-                  <%= flow_thumbnail_link(item) %>
-                  <%= flow_text_link(item) %>
-                  <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
-                </section>
-              <% end %>
-
-            <% end %>
+            <%= render partial: 'flow_layout', locals: { item: item, index: index } %>
           <% end %>
         </div>
       <% end %>
 
     </div>
-  </div>
+  </section>
 
   <% if @detached_flows.present? %>
-    <div id="flow-detached">
-      <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
-      <% @detached_flows.each do |detached_flow| %>
-        <% detached_flow.each do |column| %>
-          <% column.each do |flow| %>
-            <ul class="govuk-navigation">
-              <li id="<%= flow[:next] %>"><%= link_to flow[:title], detached_edit_link(flow) %></li>
-            </ul>
-          <% end %>
+    <section id="flow-detached">
+      <div class="container" data-component="Expander">
+        <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
+        <% @detached_flows.each do |detached_flow| %>
+          <div class="flow-detached-group">
+            <% detached_flow.each do |column| %>
+              <div class="column">
+                <% column.each_with_index do |flow, index| %>
+                  <%= render partial: 'flow_layout', locals: { item: flow, index: index } %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         <% end %>
-      <% end %>
-    </div>
+      </div>
+    </section>
   <% end %>
 
 <% end %>
+
+
+<%# Section for static/standalone pages (e.g. T&Cs) %>
+<%= render partial: 'partials/standalone' %>
 
 
 <%# ----------------------------------------------------------------------------------------------------- %>
@@ -163,6 +127,3 @@
     <%= f.submit t('pages.create'), class: "govuk-button fb-govuk-button" %>
   <% end %>
 </div>
-
-<%# Section for static/standalone pages (e.g. T&Cs) %>
-<%= render partial: 'partials/standalone' %>

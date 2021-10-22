@@ -45,7 +45,6 @@ class ServicesController extends DefaultController {
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
-  var $flowOverview = $("#flow-overview");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
@@ -53,8 +52,8 @@ ServicesController.edit = function() {
   fixAddPageButtonPosition();
   fixFormOverviewScroll();
 
-  positionFlowItems($flowOverview);
-  applyFlowOverviewWidthWorkaround($flowOverview);
+  layoutFormFlowOverview();
+  layoutDetachedItemsOveriew();
 
   addTemporaryLayoutTestAbility(view);
 }
@@ -287,103 +286,36 @@ function createFlowItemMenus(view) {
 }
 
 
-/* TEMPORARY FIX for form overview Add Page button location.
- * Due to changes required for the updated Flow Overview
- * layout, the Add Page menu HTML has been relocated outside
- * of the original DIV.form-overview element. This move has
- * affected the location of the dynamically inserted menu
- * activator and resulting CSS positioning. To correct this
- * the function here moves the element back to the original
- * location, leaving the menu in it's new position.
- **/
-function fixAddPageButtonPosition() {
-  $("#form-overview .container").append($(".form-overview-button"));
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Create the main overview layout for form to get the required design.
+**/
+function layoutFormFlowOverview() {
+  var $overview = $("#flow-overview");
+  positionFlowItems($overview);
+  positionConditionsByDestination($overview);
+  applyFlowOverviewDimensionWorkaround($overview);
 }
-
-
-/* TEMPORARY FIX for form overview scrolling and reactivation on resize.
- **/ 
-function fixFormOverviewScroll() {
-  // Fix for the scrolling of form overview.
-  applyCustomOverviewWorkaround();
-  let scrollTimeout;
-  $(window).on("resize", function() {
-    scrollTimeout = setTimeout(function() {
-      clearTimeout(scrollTimeout);
-      applyCustomOverviewWorkaround();
-    }, 500);
-  });
-}
-
-
-/* QUICKFIX WORKAROUND to try and fix scrolling issues for the form overview
- * when there are too many thumbnails to fix on the one page view.
- **/
-function applyCustomOverviewWorkaround() {
-  var $overview = $("#form-overview");
-  var $container = $overview.find(" > .container");
-  var containerWidth = $container.width();
-  var overviewWidth = $overview.width();
-  var offsetLeft = $overview.offset().left;
-  var margin = 30; // Arbitrary number based on common
-  var spacerForMenu = 250;
-  var maxWidth = window.innerWidth - (margin * 2) - spacerForMenu;
-
-  if(containerWidth > overviewWidth) {
-    let left = ((containerWidth + spacerForMenu) - overviewWidth) / 2;
-    if(left < offsetLeft) {
-      $container.css("left", ~left);
-    }
-    else {
-      $container.css("left", ~(offsetLeft - margin));
-    }
-  }
-
-  $container.css("max-width", maxWidth); // Make sure to limit so a scrollbar can kick in, if necessary.
-  $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
-  $overview.height($container.outerHeight(true));
-}
-
-
-/* TEMPORARY resizing of frame (will be improved with ticket regarding scroll implementation
- *
- * Quickfix workaround to try and adjust the width of available view
- * area on the flow overview (otherwise restricted by container css).
- * --------------------------------------------------------------------------
- * THIS IS WIP AND BASED ON applyCustomOverviewWorkaround() SO CONTAINS SOME
- * VARIABLES THAT COULD BE USEFUL BUT, DUE TO LGTM SCRIPTS POINTING OUT THEIR
- * CURRENT LACK OF USE, THEY HAVE BEEN TEMPORARILY COMMENTED OUT.
- * --------------------------------------------------------------------------
- **/
-function applyFlowOverviewWidthWorkaround($overview) {
-  const SELECTOR_FLOW_ITEM = ".flow-item";
-  //var $container = $overview.find(" > .container");
-  //var containerWidth = $container.width();
-  //var overviewWidth = $overview.width();
-  //var offsetLeft = $overview.offset().left;
-  var $items = $(SELECTOR_FLOW_ITEM, $overview);
-  //var right = $items.last().position().left + $items.first().width();
-  //var margin = 30; // Arbitrary number based on common
-  //var maxWidth = window.innerWidth - (margin * 2);
-
-  // Adjust the overview height.
-  let lowestPoint = 0;
-  $items.each(function() {
-    var $current = $(this);
-    var bottom = ($current.position().top + $current.height());
-    if(bottom > lowestPoint) {
-      lowestPoint = bottom;
-    }
-  });
-  $overview.css("height", lowestPoint + "px");
-}
-
 
 
 /* VIEW SETUP FUNCTION:
  * --------------------
- * Main function to find and position Flow items (pages/branches/spacers) within
- * and overview layout, to get the required design.
+ * Create the detatched overview layout to get the required design.
+**/
+function layoutDetachedItemsOveriew() {
+  $(".flow-detached-group").each(function() {
+    var $overview = $(this);
+    positionFlowItems($overview);
+    positionConditionsByDestination($overview);
+    applyFlowOverviewDimensionWorkaround($overview);
+  });
+}
+
+
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Main function to find and position flow items (pages/branches/spacers)
+ * within an overview layout.
 **/
 function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
@@ -460,11 +392,7 @@ function positionFlowItems($overview) {
 
   // Ditch the columns.
   $columns.remove();
-
-  // Adjustments for Condition text elements.
-  positionConditionsByDestination($overview);
 }
-
 
 
 /* After initial positionFlowItems() method has finished, we need to revisit
@@ -502,6 +430,105 @@ function positionConditionsByDestination($overview) {
   });
 }
 
+
+/* TEMPORARY FIX
+ * -------------
+ * For form overview Add Page button location.
+ * Due to changes required for the updated Flow Overview
+ * layout, the Add Page menu HTML has been relocated outside
+ * of the original DIV.form-overview element. This move has
+ * affected the location of the dynamically inserted menu
+ * activator and resulting CSS positioning. To correct this
+ * the function here moves the element back to the original
+ * location, leaving the menu in it's new position.
+ **/
+function fixAddPageButtonPosition() {
+  $("#form-overview .container").append($(".form-overview-button"));
+}
+
+
+/* TEMPORARY FIX
+ * -------------
+ * For form overview scrolling and reactivation on resize.
+ **/
+function fixFormOverviewScroll() {
+  // Fix for the scrolling of form overview.
+  applyCustomOverviewWorkaround();
+  let scrollTimeout;
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
+      clearTimeout(scrollTimeout);
+      applyCustomOverviewWorkaround();
+    }, 500);
+  });
+}
+
+
+/* QUICKFIX WORKAROUND
+ * -------------------
+ * To try and fix scrolling issues for the form overview
+ * when there are too many thumbnails to fix on the one page view.
+ **/
+function applyCustomOverviewWorkaround() {
+  var $overview = $("#form-overview");
+  var $container = $overview.find(" > .container");
+  var containerWidth = $container.width();
+  var overviewWidth = $overview.width();
+  var offsetLeft = $overview.offset().left;
+  var margin = 30; // Arbitrary number based on common
+  var spacerForMenu = 250;
+  var maxWidth = window.innerWidth - (margin * 2) - spacerForMenu;
+
+  if(containerWidth > overviewWidth) {
+    let left = ((containerWidth + spacerForMenu) - overviewWidth) / 2;
+    if(left < offsetLeft) {
+      $container.css("left", ~left);
+    }
+    else {
+      $container.css("left", ~(offsetLeft - margin));
+    }
+  }
+
+  $container.css("max-width", maxWidth); // Make sure to limit so a scrollbar can kick in, if necessary.
+  $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
+  $overview.height($container.outerHeight(true));
+}
+
+
+/* QUICKFIX WORKAROUND
+ * -------------------
+ * Resizing of frame (will be improved with ticket regarding scroll implementation
+ *
+ * Quickfix workaround to try and adjust the width of available view
+ * area on the flow overview (otherwise restricted by container css).
+ * --------------------------------------------------------------------------
+ * THIS IS WIP AND BASED ON applyCustomOverviewWorkaround() SO CONTAINS SOME
+ * VARIABLES THAT COULD BE USEFUL BUT, DUE TO LGTM SCRIPTS POINTING OUT THEIR
+ * CURRENT LACK OF USE, THEY HAVE BEEN TEMPORARILY COMMENTED OUT.
+ * --------------------------------------------------------------------------
+ **/
+function applyFlowOverviewDimensionWorkaround($overview) {
+  const SELECTOR_FLOW_ITEM = ".flow-item";
+  //var $container = $overview.find(" > .container");
+  //var containerWidth = $container.width();
+  //var overviewWidth = $overview.width();
+  //var offsetLeft = $overview.offset().left;
+  var $items = $(SELECTOR_FLOW_ITEM, $overview);
+  //var right = $items.last().position().left + $items.first().width();
+  //var margin = 30; // Arbitrary number based on common
+  //var maxWidth = window.innerWidth - (margin * 2);
+
+  // Adjust the overview height.
+  let lowestPoint = 0;
+  $items.each(function() {
+    var $current = $(this);
+    var bottom = ($current.position().top + $current.height());
+    if(bottom > lowestPoint) {
+      lowestPoint = bottom;
+    }
+  });
+  $overview.css("height", lowestPoint + "px");
+}
 
 
 /*
