@@ -26,7 +26,7 @@
                   }
         %>
         <% if @branch.detached_destinations.present? %>
-          <optgroup label="<%= t('branches.detached_list') %>">
+          <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
             <%= render partial: "destinations_list",
                       locals: {
                         destinations: @branch.detached_destinations,

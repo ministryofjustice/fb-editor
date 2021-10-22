@@ -20,6 +20,7 @@ feature 'New branch page' do
     then_I_should_see_text(I18n.t('branches.hint_otherwise'))
 
     and_I_select_the_destination_page_dropdown
+    then_I_should_not_see_unconnected_pages
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_next',
       6
@@ -57,6 +58,7 @@ feature 'New branch page' do
     )
 
     and_I_select_the_otherwise_dropdown
+    then_I_should_not_see_unconnected_pages
     then_I_should_see_the_correct_number_of_options(
       '#branch_default_next',
       5

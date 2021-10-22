@@ -85,6 +85,14 @@ module BranchingSteps
     editor.destination_options.click
   end
 
+  def then_I_should_not_see_unconnected_pages
+    expect(editor).not_to have_selector('.branch-optgroup')
+  end
+
+  def then_I_should_have_unconnected_pages
+    expect(editor.find('#branch_default_next .branch-optgroup').visible?).to be_truthy
+  end
+
   def then_I_should_see_the_correct_number_of_options(id, amount)
     options = find(id).all('option')
     expect(options.length).to eq(amount)
