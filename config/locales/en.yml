@@ -52,7 +52,7 @@ en:
       button_change: Change destination
       label: 'Change destination'
       hint: 'Update this connection to lead to the following page:'
-      text: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
+      text: 'The page that was previously following (and attached to it) will be moved to the unconnected pages'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -137,7 +137,7 @@ en:
     destination:
       heading: 'Change destination'
       lede: 'Update this connection to lead to the following page:'
-      hint: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
+      hint: 'The page that was previously following (and attached to it) will be moved to the unconnected pages'
       submit: 'Change destination'
       cancel: 'Cancel'
   components:
