@@ -17,11 +17,25 @@
         <span class="govuk-error-message"><%= message %></span>
       <% end %>
 
-      <%= f.label :default_next, t('branches.goto'), { class: "govuk-label" } %>
-      <%= f.select :default_next,
-          @branch.destinations,
-          { selected: @branch.previous_flow_default_next },
-          { class: 'govuk-select' } %>
+      <label class="govuk-label" for="branch_default_next"><%= t('branches.goto') %></label>
+      <select class="govuk-select" name="branch[default_next]" id="branch_default_next">
+        <%= render partial: "destinations_list",
+                  locals: {
+                    destinations: @branch.main_destinations,
+                    selected: @branch.previous_flow_default_next
+                  }
+        %>
+        <% if @branch.detached_destinations.present? %>
+          <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
+            <%= render partial: "destinations_list",
+                      locals: {
+                        destinations: @branch.detached_destinations,
+                        selected: @branch.previous_flow_default_next
+                      }
+            %>
+          </optgroup>
+        <% end %>
+      </select>
     </div>
     <p class="govuk-!-font-weight-bold"><%= t('branches.hint_otherwise') %></p>
   </div>

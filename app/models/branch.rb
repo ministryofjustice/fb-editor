@@ -77,6 +77,14 @@ class Branch
     destinations_list(flow_objects: all_flow_objects)
   end
 
+  def main_destinations
+    destinations_list(flow_objects: ordered_pages)
+  end
+
+  def detached_destinations
+    destinations_list(flow_objects: detached)
+  end
+
   def previous_questions
     results = traversable.question_pages.map do |page|
       page.input_components.map do |component|

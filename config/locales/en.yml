@@ -99,6 +99,7 @@ en:
     conditional_title: 'Branch '
     title_otherwise: 'Otherwise'
     hint_otherwise: 'In any other case'
+    detached_list: 'Unconnected page'
     delete_modal:
       destinations: 'Go to:'
       lede: 'Choose which branch you want to keep in your form.'

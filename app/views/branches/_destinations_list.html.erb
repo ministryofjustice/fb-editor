@@ -1,0 +1,9 @@
+<% destinations.each do |item| %>
+  <% if item.last == selected %>
+    <option value="<%= item.last %>" selected="selected">
+    <% else %>
+    <option value="<%= item.last %>">
+  <% end %>
+    <%= item.first %>
+  </option>
+<% end %>
