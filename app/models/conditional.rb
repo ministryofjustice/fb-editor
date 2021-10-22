@@ -16,6 +16,7 @@ class Conditional
 
   def to_metadata
     {
+      '_uuid' => generate_uuid,
       '_type' => conditional_type,
       'next' => self.next,
       'expressions' => expressions.map(&:to_metadata)
@@ -52,5 +53,9 @@ class Conditional
     # The UI currently only supports IF and AND. The runner can also cater for
     # an OR but for the moment we have not surfaced that functionality
     expressions.count == 1 ? IF : AND
+  end
+
+  def generate_uuid
+    SecureRandom.uuid
   end
 end

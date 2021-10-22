@@ -18,7 +18,8 @@ RSpec.describe PageCreation, type: :model do
         component_type: 'text',
         page_url: 'admiral-ackbar',
         service_id: 'it-is-a-trap',
-        latest_metadata: metadata_fixture(:version)
+        latest_metadata: metadata_fixture(:version),
+        conditional_uuid: nil
       }
     end
 
