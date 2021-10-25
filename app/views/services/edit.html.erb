@@ -9,34 +9,31 @@
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
 <%# Flow overview layout for pages, branchs, and conditions %>
-<% if ENV['BRANCHING'] == 'enabled' %>
-  <section id="flow-overview">
-    <% @pages_flow.each do |collection| %>
-      <div class="column">
-        <% collection.each_with_index do |item, index| %>
-          <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
+<section id="flow-overview">
+  <% @pages_flow.each do |collection| %>
+    <div class="column">
+      <% collection.each_with_index do |item, index| %>
+        <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
+      <% end %>
+    </div>
+  <% end %>
+</section>
+
+<% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
+  <section id="flow-detached" data-component="Expander">
+    <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
+    <% @detached_flows.each do |detached_flow| %>
+      <div class="flow-detached-group">
+        <% detached_flow.each do |column| %>
+          <div class="column">
+            <% column.each_with_index do |flow, index| %>
+              <%= render partial: 'services/flow_layout', locals: { item: flow, index: index } %>
+            <% end %>
+          </div>
         <% end %>
       </div>
     <% end %>
   </section>
-
-  <% if @detached_flows.present? %>
-    <section id="flow-detached" data-component="Expander">
-      <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
-      <% @detached_flows.each do |detached_flow| %>
-        <div class="flow-detached-group">
-          <% detached_flow.each do |column| %>
-            <div class="column">
-              <% column.each_with_index do |flow, index| %>
-                <%= render partial: 'services/flow_layout', locals: { item: flow, index: index } %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-    </section>
-  <% end %>
-
 <% end %>
 
 
