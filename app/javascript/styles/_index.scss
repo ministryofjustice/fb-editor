@@ -490,26 +490,6 @@ html {
   position: relative;
   padding-right: 100px;
 
-  &:after {
-    border-top: govuk-colour("black") solid 2px;
-    content: "";
-    position: absolute;
-    right: 5px;
-    top: calc(45% - 1px);
-    width: 93px;
-  }
-
-  &:before {
-    border: govuk-colour("black") solid 5px;
-    border-top-color: govuk-colour("white");
-    border-left-color: govuk-colour("white");
-    content: "";
-    position: absolute;
-    right: 4px;
-    transform: rotate(-45deg);
-    top: calc(45% - 5px);
-  }
-
   &:hover {
     .ActivatedMenu_Activator {
       opacity: 1;
@@ -554,7 +534,29 @@ html {
   border: none;
   border-color: govuk-colour("black");
   border-bottom-style: solid;
-  border-bottom-width: 1px;
+  border-bottom-width: 2px;
+
+  span {
+    display: block;
+    height: 14px;
+    overflow: hidden;
+    position: absolute;
+    right: -1px;
+    top: -6px;
+    width: 7px;
+
+    &:after {
+      border: govuk-colour("black") solid 5px;
+      border-top-color: govuk-colour("white");
+      border-left-color: govuk-colour("white");
+      content: "";
+      display: block;
+      left: -5px;
+      position: relative;
+      transform: rotate(-45deg);
+      top: 2px;
+    }
+  }
 }
 
 .FlowItemMenuActivator {
