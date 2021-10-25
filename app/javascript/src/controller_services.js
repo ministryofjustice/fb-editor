@@ -484,7 +484,7 @@ function applyArrowPaths($overview) {
  **/
 class FlowConnectorPath {
   constructor(points, config) {
-    var $element = $("<div></div>");
+    var $element = $("<div><span></span></div>");
     $element.addClass("FlowConnectorPath");
     $element.css({
       height: FlowConnectorPath.difference(points.lY, points.rY) + "px",
