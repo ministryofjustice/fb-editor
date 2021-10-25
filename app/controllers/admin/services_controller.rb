@@ -52,6 +52,33 @@ module Admin
       redirect_to admin_services_path
     end
 
+    def unpublish
+      if queued?
+        flash[:notice] = "Already queued for unpublishing from #{params[:deployment_environment]}"
+      else
+        publish_service = PublishService.find(params[:publish_service_id])
+        version_metadata = get_version_metadata(publish_service)
+        publish_service_creation = PublishServiceCreation.new(
+          service_id: publish_service.service_id,
+          version_id: version_metadata['version_id'],
+          deployment_environment: params[:deployment_environment],
+          user_id: current_user.id
+        )
+        if publish_service_creation.save
+          UnpublishServiceJob.perform_later(
+            publish_service_id: publish_service_creation.publish_service_id,
+            service_slug: service_slug(version_metadata)
+          )
+          flash[:success] = "Service queued for unpublishing from #{params[:deployment_environment]}. Refresh in a minute"
+        else
+          flash[:error] = 'That was a big fat fail'
+        end
+      end
+
+      service_id = publish_service&.service_id || params[:service_id]
+      redirect_to admin_service_path(service_id)
+    end
+
     def search_term
       params[:search] || ''
     end
@@ -68,6 +95,8 @@ module Admin
     end
 
     def published(environment)
+      return {} if unpublished?(environment)
+
       publish_service = PublishService.where(
         service_id: @service.service_id,
         deployment_environment: environment
@@ -76,6 +105,7 @@ module Admin
       return {} if publish_service.nil?
 
       {
+        id: publish_service.id,
         published_by: published_by(publish_service.user_id)&.name,
         created_at: publish_service.created_at,
         version_id: publish_service.version_id
@@ -83,15 +113,30 @@ module Admin
     end
 
     def published_by(user_id)
-      return @service_creator if user_id == @service_creator.id
+      return @service_creator if user_id == @service_creator&.id
 
-      return @version_creator if user_id == @version_creator.id
+      return @version_creator if user_id == @version_creator&.id
 
       User.find_by(id: user_id)
     end
 
     def latest_version(service_id)
       MetadataApiClient::Service.latest_version(service_id)
+    end
+
+    def get_version_metadata(publish_service)
+      # get the latest version of the metadata because if the version id is missing
+      # then the latest version would have been the one published before the
+      # version_id column was added to the DB
+      if publish_service.version_id.blank?
+        return latest_version(publish_service.service_id)
+      end
+
+      version = MetadataApiClient::Version.find(
+        service_id: publish_service.service_id,
+        version_id: publish_service.version_id
+      )
+      version.metadata
     end
 
     def duplicate_attributes(service_creation)
@@ -112,6 +157,24 @@ module Admin
 
     def per_page
       params[:per_page] || 20
+    end
+
+    def queued?
+      publish_service = PublishService.where(
+        deployment_environment: params[:deployment_environment]
+      ).last
+      publish_service.queued? || publish_service.unpublishing?
+    end
+
+    def unpublished?(environment)
+      PublishService.where(
+        deployment_environment: environment
+      ).last&.unpublished?
+    end
+
+    def service_slug(version_metadata)
+      service = MetadataPresenter::Service.new(version_metadata, editor: true)
+      service.service_slug
     end
   end
 end

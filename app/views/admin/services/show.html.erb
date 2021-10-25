@@ -65,6 +65,14 @@
         </dd>
       </div>
     </dl>
+    <% if @published_to_live[:id].present? %>
+    <%= link_to 'Unpublish Live', admin_service_unpublish_path(
+        @service.service_id, @published_to_live[:id], 'production'),
+        method: :post,
+        class: "govuk-button fb-govuk-button",
+        disable_with: 'Unpublishing. . .'
+    %>
+    <% end %>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       Published to Test
@@ -101,6 +109,14 @@
         </dd>
       </div>
     </dl>
+    <% if @published_to_test[:id].present? %>
+    <%= link_to 'Unpublish Test', admin_service_unpublish_path(
+        @service.service_id, @published_to_test[:id], 'dev'),
+        method: :post,
+        class: "govuk-button fb-govuk-button",
+        disable_with: 'Unpublishing. . .'
+    %>
+    <% end %>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       Latest Metadata
