@@ -258,7 +258,7 @@ function stringInject(str, injections) {
 function maxWidth($collection) {
   var max = 0;
   $collection.each(function() {
-    var width = $(this).width();
+    var width = $(this).outerWidth();
     if(width > max) {
       max = width;
     }
