@@ -622,7 +622,6 @@ html {
 
 .flow-item {
   background-color: govuk-colour("white");
-  border:  $govuk-link-colour solid 2px;
   height: 125px;
   overflow: visible;
   width: 200px;
@@ -641,6 +640,7 @@ html {
 }
 
 .flow-page {
+  border:  $govuk-link-colour solid 2px;
   vertical-align: middle;
 }
 
