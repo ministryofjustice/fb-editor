@@ -133,7 +133,8 @@ module CommonSteps
   end
 
   def given_I_want_to_add_a_page
-    editor.add_page.click
+    and_I_click_on_the_three_dots
+    editor.add_page_here_link.click
   end
 
   def and_I_edit_the_service
@@ -316,7 +317,7 @@ module CommonSteps
     editor.preview_page_images.last.hover
     editor.three_dots_button.click
   end
-
+  
   def then_I_should_only_see_three_options_on_page_menu
     options = all('.ui-menu-item').map(&:text)
     expect(options).to eq([
