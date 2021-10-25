@@ -43,6 +43,21 @@ class BranchesController < FormController
   end
   helper_method :conditional_index
 
+  def destroy
+    destination_uuid = params
+      .require(:branch_destroyer)
+      .permit(:destination_uuid)[:destination_uuid]
+
+    @branch_destroyer = BranchDestroyer.new(
+      service: service,
+      branch_uuid: params[:branch_uuid],
+      destination_uuid: destination_uuid,
+      latest_metadata: service_metadata
+    )
+    @branch_destroyer.destroy
+    head :ok
+  end
+
   private
 
   def branch_metadata
