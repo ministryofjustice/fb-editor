@@ -88,12 +88,12 @@
 
   &:focus {
     @include focus;
-    border: none;
+    border-color: $govuk-focus-colour;
     outline: none;
   }
 
   &:hover {
-    border: none;
+    border-color: $govuk-link-colour;
     outline: none;
   }
 
