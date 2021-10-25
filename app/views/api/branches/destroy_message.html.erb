@@ -1,26 +1,24 @@
-<div class="component component-dialog component-dialog-delete" id="dialog-confirmation-delete">
+<div class="component component-dialog component-dialog-api-request dialog-delete"
+     data-component="DialogApiRequest">
+
   <h3 data-node="heading" class="govuk-label govuk-label--m">
     <%= t('dialogs.heading_delete', label: @branch.title) %>
   </h3>
-  <p data-node="content"><%= t('branches.delete_modal.lede') %></p>
-  <p class="govuk-heading-m">
-    <%= t('branches.after', page_title: @branch.previous_page_title) %>
-  </p>
 
   <%= form_for @branch, url: '/some-url-to-destroy-the-branch-which-does-not-exist-yet', method: :delete do |f| %>
-    <%= f.govuk_collection_radio_buttons :destinations, @branch.destinations,
-      :uuid,
-      :title,
-      legend: { text: t('branches.delete_modal.destinations') }
-    %>
-
-  <p data-node="content"><%= t('branches.delete_modal.before_submit') %></p>
-
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <div class="ui-dialog-buttonset">
-        <%= f.submit t('branches.delete_modal.submit'), class: 'govuk-button fb-govuk-button' %>
-        <button type="button" class="ui-button ui-corner-all ui-widget"><%= t('dialogs.cancel') %></button>
-      </div>
+    <div data-node="content">
+      <p><%= t('branches.delete_modal.lede') %></p>
+      <p><%= t('branches.after', page_title: @branch.previous_page_title) %></p>
+      <%= f.govuk_collection_radio_buttons :destinations, @branch.destinations,
+        :uuid,
+        :title,
+        legend: { text: t('branches.delete_modal.destinations'), class: 'govuk-fieldset__legend' }
+      %>
+      <p><%= t('branches.delete_modal.before_submit') %></p>
+    </div>
+    <div class="ui-dialog-buttonset">
+      <%= f.submit t('branches.delete_modal.submit'), class: 'govuk-button govuk-button--warning' %>
+      <button type="button" class="govuk-button govuk-button--secondary"><%= t('dialogs.button_cancel') %></button>
     </div>
   <% end %>
 </div>

@@ -1,0 +1,35 @@
+/**
+ * Dialog API Request Component
+ * ----------------------------------------------------
+ * Description:
+ * Expects response content from an API request, which it can wrap in a Dialog effect.
+ *
+ * Documentation:
+ *
+ *     - jQueryUI
+ *       https://api.jqueryui.com/menu
+ *
+ *     - TODO:
+ *       (steven.burnell@digital.justice.gov.uk to add).
+ *
+ **/
+
+
+.component-dialog-api-request {
+  button, input[type=submit] {
+    @include govuk-responsive-margin(7, "right");
+    margin-bottom: 0;
+    position: static;
+
+    &::before {
+      // Fixes a bug caused by GDS css
+      left: auto;
+      position: relative;
+      right: auto;
+    }
+  }
+
+  form {
+    margin-bottom: 0;
+  }
+}
