@@ -108,10 +108,10 @@ class EditorApp < SitePrism::Page
   data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
 
-  elements :form_pages, '.form-step'
+  elements :form_pages, '.flow-item'
   elements :form_urls, '.form-step a.govuk-link'
-  elements :preview_page_images, '.form-step img.body'
-  element :three_dots_button, '.form-step_button'
+  elements :preview_page_images, '.flow-item img.body'
+  element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
