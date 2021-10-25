@@ -550,20 +550,23 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
+.FlowConnectorPath {
+  border: none;
+  border-color: govuk-colour("black");
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
 .FlowItemMenuActivator {
-  bottom: calc(25px + #{govuk-spacing(4)});
   display: inline-block;
-  left: 158px;
+  left: 160px;
   opacity: 0;
   overflow: hidden;
   position: absolute;
+  top: calc(125px - 40px);
 }
 
 .flow-branch {
-  height: 125px;
-  overflow: visible;
-  width: 200px;
-
   & > a {
     box-sizing: border-box;
     color: govuk-colour("black");
@@ -617,6 +620,10 @@ html {
 
 .flow-item {
   background-color: govuk-colour("white");
+  border:  $govuk-link-colour solid 2px;
+  height: 125px;
+  overflow: visible;
+  width: 200px;
 
   &:hover {
     .ActivatedMenu_Activator {
@@ -632,7 +639,6 @@ html {
 }
 
 .flow-page {
-  overflow: hidden;
   vertical-align: middle;
 }
 
@@ -647,7 +653,7 @@ html {
 }
 
 .flow-thumbnail {
-  border:  $govuk-link-colour solid 2px;
+//  border:  $govuk-link-colour solid 2px;
   display: block;
   height: 125px;
   margin-bottom: govuk-spacing(2);
@@ -721,11 +727,8 @@ html {
   margin-bottom: 100px;
   overflow: auto;
   padding: 40px;
+  position: relative;
   width: 100%;
-
-  .container {
-    position: relative;
-  }
 }
 
 
