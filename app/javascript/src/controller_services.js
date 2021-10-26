@@ -421,7 +421,7 @@ function positionConditionsByDestination($overview) {
     var $node = $(this);
     var $parent = $node.parents(SELECTOR_FLOW_BRANCH);
     var parentTop = $parent.position().top;
-    var next = $node.data("fb-next");
+    var next = $node.data("next");
     var $destination = $overview.find("#" + next);
     var destinationTop = $destination.length ? $destination.position().top : -1; // Didn't find a destination ??
 
@@ -442,7 +442,8 @@ function positionConditionsByDestination($overview) {
  * required for a full branching view.
  **/
 function applyArrowPaths($overview) {
-  $overview.find("[data-next]").each(function() {
+  // Note: flow-condition element do not currently work with this.
+  $overview.find("[data-next]").not(".flow-condition").each(function() {
     var $this = $(this);
     var next = $this.data("next");
     var fromX = $this.position().left + $this.outerWidth() + 1; // + 1 for design spacing
@@ -486,8 +487,10 @@ class FlowConnectorPath {
   constructor(points, config) {
     var $element = $("<div><span></span></div>");
     $element.addClass("FlowConnectorPath");
+    $element.attr("data-from", config.from);
+    $element.attr("data-to", config.to);
     $element.css({
-      height: FlowConnectorPath.difference(points.lY, points.rY) + "px",
+      height: "0px",
       left: points.lX + "px",
       position: "absolute",
       top: points.lY + "px",
