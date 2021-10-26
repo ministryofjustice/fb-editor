@@ -67,11 +67,10 @@ module BranchingSteps
     when_I_save_my_changes
   end
 
-  def and_I_want_to_add_branching(index)
-    editor.preview_page_images[index].hover
+  def and_I_want_to_add_branching(url)
+    page.find('.flow-thumbnail', text: url).hover
     editor.three_dots_button.click
     editor.branching_link.click
-
     then_I_should_see_the_branching_page
   end
 
