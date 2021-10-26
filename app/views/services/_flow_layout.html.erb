@@ -35,7 +35,7 @@
             </li>
           <% end %>
         </ul>
-        <%= render partial: 'flow_branch_menu', locals: { item: item } %>
+        <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
       </article>
     <% else %>
 
@@ -44,13 +44,13 @@
         <article class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
           <%= flow_thumbnail_link(item) %>
           <%= flow_text_link(item) %>
-          <%= render partial: 'flow_page_menu', locals: { item: item } %>
+          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
         </article>
       <% else %>
         <article class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
           <%= flow_thumbnail_link(item) %>
           <%= flow_text_link(item) %>
-          <%= render partial: 'flow_page_menu', locals: { item: item } %>
+          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
         </article>
       <% end %>
     <% end %>
