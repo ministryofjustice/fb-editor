@@ -4,6 +4,7 @@ feature 'Edit check your answers page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:url) { 'check-your-answers' }
+  let(:url_link) { 'Check your answers' }
   let(:heading) { 'Become a sith' }
   let(:send_heading) { 'Welcome to the Dark side of the force' }
   let(:send_body) do
@@ -33,7 +34,7 @@ feature 'Edit check your answers page' do
     and_I_return_to_flow_page
     and_I_click_on_the_three_dots
     then_I_should_only_see_three_options_on_page_menu
-    and_I_edit_the_page(url: url)
+    and_I_edit_the_page(url: heading)
     then_I_should_see_the_page_heading(heading)
     then_I_should_see_the_page_send_heading(send_heading)
     then_I_should_see_the_page_send_body(send_body)
@@ -49,7 +50,7 @@ feature 'Edit check your answers page' do
     )
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_edit_the_page(url: url)
+    and_I_edit_the_page(url: url_link)
     then_I_should_see_the_first_component(content_component)
     then_I_should_see_the_first_extra_component(content_extra_component)
   end
