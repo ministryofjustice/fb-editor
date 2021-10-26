@@ -528,7 +528,7 @@ FlowConnectorPath.difference = function(a, b) {
  * location, leaving the menu in it's new position.
  **/
 function fixAddPageButtonPosition() {
-  $("#flow-overview").append($(".form-overview-button"));
+  $("#form-overview").append($(".form-overview-button"));
 }
 
 
