@@ -3,6 +3,7 @@ require_relative '../spec_helper'
 feature 'New branch page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
+  let(:page_url) { 'What is your favourite hobby?' }
 
   background do
     given_I_am_logged_in
@@ -12,7 +13,7 @@ feature 'New branch page' do
   scenario 'when all required fields are filled in' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
-    and_I_want_to_add_branching(1)
+    and_I_want_to_add_branching(page_url)
 
     then_I_should_be_on_the_correct_branch_page('new')
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')

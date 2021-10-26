@@ -129,6 +129,7 @@ module CommonSteps
 
   def given_I_want_to_add_a_single_question_page
     given_I_want_to_add_a_page
+    editor.add_exit.hover # This is to prevent menu overlay and hiding text
     editor.add_single_question.hover
   end
 
@@ -317,7 +318,7 @@ module CommonSteps
     editor.preview_page_images.last.hover
     editor.three_dots_button.click
   end
-  
+
   def then_I_should_only_see_three_options_on_page_menu
     options = all('.ui-menu-item').map(&:text)
     expect(options).to eq([
