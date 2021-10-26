@@ -83,8 +83,9 @@ describe Publisher::Utils::Shell do
     let(:exit_status) { double('status', success?: success) }
     let(:cmd) { %w[myexe arg1 arg2] }
     let(:stdin) { 'some stuff' }
+    let(:stderr_str) { '' }
     before do
-      allow(Open3).to receive(:capture2).and_return [output, exit_status]
+      allow(Open3).to receive(:capture3).and_return [output, stderr_str, exit_status]
     end
 
     it 'builds the command, passing the first arg as the executable' do
@@ -93,10 +94,10 @@ describe Publisher::Utils::Shell do
       described_class.capture_with_stdin(cmd: cmd, stdin: stdin)
     end
 
-    it 'executes the built command line with Open3.capture2, passing the given stdin: as stdin_data:' do
-      expect(Open3).to receive(:capture2)
+    it 'executes the built command line with Open3.capture3, passing the given stdin: as stdin_data:' do
+      expect(Open3).to receive(:capture3)
         .with('myexe arg1 arg2', stdin_data: stdin)
-        .and_return [output, exit_status]
+        .and_return [output, stderr_str, exit_status]
       described_class.capture_with_stdin(cmd: cmd, stdin: stdin)
     end
 

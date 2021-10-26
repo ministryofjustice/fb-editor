@@ -29,9 +29,9 @@ class Publisher
       def self.capture_with_stdin(cmd: [], stdin: nil)
         cmd_line = build_cmd(executable: cmd[0], args: cmd[1..-1])
 
-        stdout_str, status = Open3.capture2(cmd_line, stdin_data: stdin)
+        stdout_str, stderr_str, status = Open3.capture3(cmd_line, stdin_data: stdin)
         unless status.success?
-          raise CmdFailedError.new(cause: $?.to_s, message: "failing cmd: #{cmd_line}")
+          raise CmdFailedError.new(cause: stderr_str, message: "failing cmd: #{cmd_line}")
         end
 
         stdout_str
