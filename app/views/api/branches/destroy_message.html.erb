@@ -7,11 +7,15 @@
     <%= t('branches.after', page_title: @branch.previous_page_title) %>
   </p>
 
-  <%= form_for @branch, url: '/some-url-to-destroy-the-branch-which-does-not-exist-yet', method: :delete do |f| %>
-    <%= f.govuk_collection_radio_buttons :destinations, @branch.destinations,
+  <%= form_for @branch,
+    url: branch_path(service.service_id, @branch.branch_uuid),
+    method: :delete do |f| %>
+    <%= f.govuk_collection_radio_buttons(
+      :destination_uuid,
+      @branch.destinations,
       :uuid,
       :title,
-      legend: { text: t('branches.delete_modal.destinations') }
+      legend: { text: t('branches.delete_modal.destinations') })
     %>
 
   <p data-node="content"><%= t('branches.delete_modal.before_submit') %></p>
