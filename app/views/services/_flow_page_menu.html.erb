@@ -17,7 +17,7 @@
   <% end %>
 
   <% if ENV['BRANCHING'] == 'enabled' %>
-    <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
+    <% unless (item[:type] =~ /page.(confirmation|exit)/) %>
       <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
     <% end %>
   <% else %>
