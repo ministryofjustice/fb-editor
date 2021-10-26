@@ -18,14 +18,14 @@
         <%= flow_text_link(item) %>
         <ul class="flow-conditions">
           <% item[:conditionals].each_with_index do |condition, index| %>
-            <li class="flow-condition" data-fb-next="<%= condition[:next] %>">
+            <li class="flow-condition" data-next="<%= condition[:next] %>">
               <% condition[:expressions].each do |expression| %>
                 <% if expression[:operator].empty? && expression[:answer].empty? %>
-                  <div class="flow-expression" data-otherwise="true" data-next="<%= item[:next] =%>">
+                  <div class="flow-expression" data-otherwise="true">
                     <span class="question"><%= expression[:question] %></span>
                   </div>
                 <% else %>
-                  <div class="flow-expression" data-otherwise="false" data-next="<%= item[:next] =%>">
+                  <div class="flow-expression" data-otherwise="false">
                     <span class="question"><%= expression[:question] %></span>
                     <span class="operator"><%= expression[:operator] %></span>
                     <span class="answer"><%= expression[:answer] %></span>
