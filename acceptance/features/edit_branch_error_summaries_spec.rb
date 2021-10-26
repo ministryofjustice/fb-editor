@@ -4,6 +4,7 @@ feature 'Branching errors' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:unsupported_type_error) { I18n.t('activemodel.errors.messages.unsupported') }
+  let(:page_url) { 'What is your favourite hobby?' }
 
   background do
     given_I_am_logged_in
@@ -13,7 +14,7 @@ feature 'Branching errors' do
   scenario 'when no required fields are filled in' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
-    and_I_want_to_add_branching(1)
+    and_I_want_to_add_branching(page_url)
 
     when_I_save_my_changes
     then_I_should_see_an_error_summary
@@ -25,7 +26,7 @@ feature 'Branching errors' do
   scenario 'when the "Go to" field is not filled in' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
-    and_I_want_to_add_branching(1)
+    and_I_want_to_add_branching(page_url)
 
     and_I_select_the_condition_dropdown
     then_I_should_see_the_correct_number_of_options(
@@ -73,7 +74,7 @@ feature 'Branching errors' do
   scenario 'when there are two conditional objects to a branching point' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
-    and_I_want_to_add_branching(1)
+    and_I_want_to_add_branching(page_url)
 
     and_I_want_to_add_another_conditional
     then_I_should_see_another_conditional
