@@ -561,14 +561,17 @@ html {
 
 .FlowItemMenuActivator {
   display: inline-block;
-  left: 160px;
+  left: 157px;
   opacity: 0;
   overflow: hidden;
   position: absolute;
-  top: calc(125px - 40px);
+  top: calc(125px - 43px);
 }
 
 .flow-branch {
+  height: 125px;
+  width: 200px;
+
   & > a {
     box-sizing: border-box;
     color: govuk-colour("black");
@@ -623,9 +626,7 @@ html {
 
 .flow-item {
   background-color: govuk-colour("white");
-  height: 125px;
   overflow: visible;
-  width: 200px;
 
   &:hover {
     .ActivatedMenu_Activator {
@@ -642,7 +643,9 @@ html {
 
 .flow-page {
   border:  $govuk-link-colour solid 2px;
+  height: 121px;
   vertical-align: middle;
+  width: 196px;
 }
 
 .flow-pointer {
@@ -656,17 +659,16 @@ html {
 }
 
 .flow-thumbnail {
-//  border:  $govuk-link-colour solid 2px;
   display: block;
-  height: 125px;
+  height: 100%;
   margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
-  width: 200px;
+  width: 100%;
 
   img {
     display: block;
-    width: 200px;
+    width: inherit;
   }
 
   .text {
