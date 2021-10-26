@@ -4,6 +4,7 @@ class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
     include ::Publisher::Utils::Hostname
+    include ::Publisher::ConfigurationNaming
 
     attr_accessor :service_id,
                   :version_id,
@@ -44,22 +45,6 @@ class Publisher
 
     def secret_key_base
       SecureRandom.hex(64)
-    end
-
-    def config_map_name
-      "fb-#{service_slug}-config-map"
-    end
-
-    def secret_name
-      "fb-#{service_slug}-secrets"
-    end
-
-    def service_monitor_name
-      "formbuilder-form-#{service_slug}-service-monitor-#{platform_environment}-#{deployment_environment}"
-    end
-
-    def service_monitor_network_policy_name
-      "formbuilder-form-#{service_slug}-service-monitor-ingress-#{platform_environment}-#{deployment_environment}"
     end
 
     def replicas
