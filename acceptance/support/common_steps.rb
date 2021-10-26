@@ -143,7 +143,7 @@ module CommonSteps
   end
 
   def and_I_edit_the_page(url:)
-    click_link url
+    page.find('.govuk-link', text: url).click
   end
 
   def and_I_return_to_flow_page
