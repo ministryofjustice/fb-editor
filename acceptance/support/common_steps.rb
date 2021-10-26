@@ -323,8 +323,7 @@ module CommonSteps
     expect(options).to eq([
       I18n.t('actions.edit_page'),
       I18n.t('actions.preview_page'),
-      I18n.t('actions.delete_page'),
-      I18n.t('actions.add_branch')
+      I18n.t('actions.delete_page')
     ])
   end
 end
