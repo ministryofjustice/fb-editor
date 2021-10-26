@@ -106,7 +106,7 @@
      data-component="PageAdditionDialog"
      data-cancel-text="<%= t('pages.cancel') %>">
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-    <%= f.hidden_field :add_page_after, value: "" %>
+    <%= f.hidden_field :add_page_after, value: f.object.add_page_after.nil? ? '' : f.object.add_page_after %>
     <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
     <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
     <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
