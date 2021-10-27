@@ -365,6 +365,7 @@ function layoutDetachedItemsOveriew() {
     positionFlowItems($overview);
     positionConditionsByDestination($overview);
     adjustOverviewHeight($overview);
+    applyOverviewScroll($overview);
   });
 }
 
