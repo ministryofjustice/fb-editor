@@ -161,6 +161,7 @@ module Admin
 
     def queued?
       publish_service = PublishService.where(
+        service_id: params[:service_id],
         deployment_environment: params[:deployment_environment]
       ).last
       publish_service.queued? || publish_service.unpublishing?
@@ -168,6 +169,7 @@ module Admin
 
     def unpublished?(environment)
       PublishService.where(
+        service_id: @service.service_id,
         deployment_environment: environment
       ).last&.unpublished?
     end
