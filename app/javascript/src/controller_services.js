@@ -358,14 +358,37 @@ function layoutFormFlowOverview() {
 /* VIEW SETUP FUNCTION:
  * --------------------
  * Create the detatched overview layout to get the required design.
+ * Note: We treat the scrolling a bit different from the main layout
+ * area since there can be multiple, individual, layout groups and
+ * also the expander effect to take into account. This means we need
+ * to jump through a couple hoops by changing the section width and
+ * compensating for that with positioning the section title.
 **/
 function layoutDetachedItemsOveriew() {
+  var $overview = $("#flow-detached");
+  var $title = $("h2", $overview);
+  var offsetLeft = $overview.offset().left;
+
+  // Expand the width of the section.
+  $overview.css({
+    left:  ~(offsetLeft),
+    position: "relative",
+    width: window.innerWidth
+  });
+
+  // Compensate for previous change.
+  $title.css({
+    left: offsetLeft + "px",
+    position: "relative"
+  });
+
+  // Add required scrolling to layout groups.
   $(".flow-detached-group").each(function() {
-    var $overview = $(this);
-    positionFlowItems($overview);
-    positionConditionsByDestination($overview);
-    adjustOverviewHeight($overview);
-    applyOverviewScroll($overview);
+    var $group = $(this);
+    positionFlowItems($group);
+    positionConditionsByDestination($group);
+    adjustOverviewHeight($group);
+    applyOverviewScroll($group);
   });
 }
 
