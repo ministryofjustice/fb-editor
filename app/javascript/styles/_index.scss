@@ -633,6 +633,10 @@ html {
       opacity: 1;
     }
   }
+
+  .text {
+    word-break: break-word;
+  }
 }
 
 .flow-link {
@@ -934,6 +938,10 @@ html {
   // Try to get consistency between with/without page navigation bars
   // and even update space above/below main headings.
   margin-bottom: 0;
+}
+
+.govuk-heading-xl {
+  word-break: break-word;
 }
 
 .govuk-panel--confirmation {
