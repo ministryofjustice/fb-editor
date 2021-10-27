@@ -731,6 +731,7 @@ html {
   }
 
   .flow-detached-group {
+    @include govuk-width-container;
     margin-bottom: 250px;
     position: relative;
   }
