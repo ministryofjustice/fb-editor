@@ -723,11 +723,8 @@ html {
   // THE DETACHED PAGES SO THIS AREA IS
   // FOR SURFACING PAGES THAT WOULD
   // OTHERWISE BE LOST WITHOUT IT.
-  border: 2px solid #eee;
   margin-bottom: 100px;
-  overflow: auto;
-  padding: 40px;
-  width: 100%;
+  overflow: visible;
 
   h2 {
     display: inline-block;
