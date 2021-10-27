@@ -21,7 +21,15 @@ class Publisher
     end
 
     def namespace
-      "formbuilder-services-#{platform_deployment}"
+      sprintf(
+        Rails.application.config.platform_environments[:common][:namespace],
+        platform_environment: platform_environment,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    def platform_deployment
+      "#{platform_environment}-#{deployment_environment}"
     end
   end
 end

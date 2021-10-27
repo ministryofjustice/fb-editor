@@ -41,6 +41,7 @@ class Unpublisher
       alias_method :networkpolicy, :service_monitor_network_policy_name
       alias_method :secret, :secret_name
       alias_method :servicemonitor, :service_monitor_name
+      delegate :deployment_environment, to: :publish_service
 
       def config_present?(config:, name:)
         Publisher::Utils::Shell.output_of(
@@ -51,11 +52,6 @@ class Unpublisher
         return false if e.message.include?(NOT_FOUND)
 
         raise e
-      end
-
-      def platform_deployment
-        @platform_deployment ||=
-          "#{platform_environment}-#{publish_service.deployment_environment}"
       end
 
       def removal_service
