@@ -729,6 +729,10 @@ html {
   padding: 40px;
   width: 100%;
 
+  h2 {
+    display: inline-block;
+  }
+
   .flow-detached-group {
     margin-bottom: 250px;
     position: relative;
