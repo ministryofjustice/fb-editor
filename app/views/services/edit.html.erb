@@ -10,7 +10,7 @@
 
 <%# Flow overview layout for pages, branchs, and conditions %>
 <% if ENV['BRANCHING'] == 'enabled' %>
-<section id="flow-overview">
+  <section id="flow-overview">
     <% @pages_flow.each do |collection| %>
       <div class="column">
         <% collection.each_with_index do |item, index| %>
