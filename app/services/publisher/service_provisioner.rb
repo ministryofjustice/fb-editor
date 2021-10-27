@@ -35,10 +35,6 @@ class Publisher
 
     delegate :service_name, to: :service
 
-    def namespace
-      sprintf(Rails.application.config.platform_environments[:common][:namespace], platform_environment: platform_environment, deployment_environment: deployment_environment)
-    end
-
     def container_port
       Rails.application.config.platform_environments[:common][:container_port]
     end
@@ -117,10 +113,6 @@ class Publisher
           version_id: version_id
         ).metadata
       )
-    end
-
-    def platform_deployment
-      "#{platform_environment}-#{deployment_environment}"
     end
 
     def platform_app_url(app_name)
