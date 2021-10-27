@@ -568,6 +568,12 @@ html {
   top: calc(125px - 43px);
 }
 
+.FlowOverviewScrollingFrame {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
 .flow-branch {
   height: 125px;
   width: 200px;
@@ -731,13 +737,7 @@ html {
   // PRESENTED CONTENT. FOR NOW, THIS IS
   // DESIGNED TO ALLOW A VIEWABLE AREA
   // KNOWN TO BE WITH LIMITATIONS.
-  border: 2px solid #eee;
-  height: 700px;
   margin-bottom: 100px;
-  overflow: auto;
-  padding: 40px;
-  position: relative;
-  width: 100%;
 }
 
 
