@@ -41,6 +41,7 @@ class ServicesController extends DefaultController {
 
 
 /* CONTROLLER VIEW ACTION:
+ * -----------------------
  * Setup for the Edit action
  **/
 ServicesController.edit = function() {
@@ -50,7 +51,6 @@ ServicesController.edit = function() {
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
   fixAddPageButtonPosition();
-  fixFormOverviewScroll();
 
   layoutFormFlowOverview();
   layoutDetachedItemsOveriew();
@@ -62,6 +62,7 @@ ServicesController.edit = function() {
 
 
 /* VIEW SPECIFIC COMPONENT:
+ * ------------------------
  * Control form step (add/edit/delete/preview...) menus
  **/
 class FlowItemMenu extends ActivatedMenu {
@@ -182,6 +183,7 @@ class FlowItemMenu extends ActivatedMenu {
 
 
 /* VIEW SPECIFIC COMPONENT:
+ * ------------------------
  * Controls form step Add page functionality
  **/
 class PageAdditionMenu extends ActivatedMenu {
@@ -222,6 +224,58 @@ class PageAdditionMenu extends ActivatedMenu {
 
     this._config.view.pageAdditionDialog.open();
   }
+}
+
+
+/* VIEW SPECIFIC COMPONENT:
+ * ------------------------
+ *
+ * TODO: This will definitely need some extra work when it
+ * comes to implementing more complex paths. Currently, this
+ * has been created to support straight line connectors only.
+ *
+ * @points (Object) Points required for ConnectorPath dimensions {
+ *                      lX & lY: 'from' x+y points
+ *                      rX & rY: 'to' x+y points
+ *                  }
+ * @config (Object) Configurations {
+ *                      from: id of starting item
+ *                      to: 'next' value of destination item
+ *                      $container: jQuery node for appending element.
+ *                      space: Number to add before and after start and end points
+ *                             (allows for border compensation of existing css)
+ *                  }
+ **/
+class FlowConnectorPath {
+  constructor(points, config) {
+    var $element = $("<div><span></span></div>");
+    $element.addClass("FlowConnectorPath");
+    $element.attr("data-from", config.from);
+    $element.attr("data-to", config.to);
+    $element.css({
+      height: "0px",
+      left: points.lX + "px",
+      position: "absolute",
+      top: points.lY + "px",
+      width: FlowConnectorPath.difference(points.lX, points.rX) + "px"
+    });
+
+    // Now add it to the parent/containe
+    if(config.$container && config.$container.length) {
+      config.$container.append($element);
+    }
+    else {
+      $(document.body).append($element);
+    }
+  }
+}
+
+// Get the difference between two numbers
+FlowConnectorPath.difference = function(a, b) {
+  if(a > b)
+    return a - b;
+  else
+    return b - a;
 }
 
 
@@ -294,8 +348,10 @@ function layoutFormFlowOverview() {
   var $overview = $("#flow-overview");
   positionFlowItems($overview);
   positionConditionsByDestination($overview);
-  applyFlowOverviewDimensionWorkaround($overview);
+  adjustOverviewHeight($overview);
   applyArrowPaths($overview);
+  applyOverviewScroll($overview);
+  //applyOverviewScrollListener($overflow);
 }
 
 
@@ -308,7 +364,7 @@ function layoutDetachedItemsOveriew() {
     var $overview = $(this);
     positionFlowItems($overview);
     positionConditionsByDestination($overview);
-    applyFlowOverviewDimensionWorkaround($overview);
+    adjustOverviewHeight($overview);
   });
 }
 
@@ -396,7 +452,9 @@ function positionFlowItems($overview) {
 }
 
 
-/* After initial positionFlowItems() method has finished, we need to revisit
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * After initial positionFlowItems() method has finished, we need to revisit
  * the Conditional text items to try and align them better with their actual
  * destination items. To ignore this step can result in condition items
  * aligning with an incorrect row or even, being placed on an entirely new
@@ -432,7 +490,87 @@ function positionConditionsByDestination($overview) {
 }
 
 
-/* Function to apply the arrows (visual conntectors) that indicate the paths
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Because flow items are absolutely positioned, they will take up
+ * no space in their container. To compensate for this lack of
+ * container height, we manually calculate the required height and
+ * apply dimensional adjustments. 
+ **/
+function adjustOverviewHeight($overview) {
+  var $items = $(".flow-item", $overview);
+  var lowestPoint = 0;
+
+  $items.each(function() {
+    var $current = $(this);
+    var height = $current.css("height", "auto").outerHeight(true); // 1. Eliminate CSS height to get better calculation.
+    var bottom = $current.position().top + height;
+
+    $current.css("height", ""); // 2. Reset inline so CSS height is back in play.
+
+    if(bottom > lowestPoint) {
+      lowestPoint = bottom;
+    }
+  });
+
+  $overview.css("height", lowestPoint + "px");
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * To try and fix scrolling issues for the form overview
+ * when there are too many thumbnails to fix on the one page view.
+ **/
+function applyOverviewScroll($overview) {
+  var $container = $("<div></div>");
+  var $children = $overview.children();
+  var overviewWidth = $overview.width();
+  var containerWidth;
+
+  $container.addClass("FlowOverviewScrollingFrame");
+  $overview.append($container);
+  $container.append($children);
+  containerWidth = $container.get(0).scrollWidth;
+
+  if(containerWidth > overviewWidth) {
+    let offsetLeft = $overview.offset().left;
+    let margin = 30; // Arbitrary number based on common
+    let maxWidth = window.innerWidth - (margin * 2);
+    let left = (containerWidth - overviewWidth) / 2;
+    if(left < offsetLeft) {
+      $container.css("left", ~left);
+    }
+    else {
+      $container.css("left", ~(offsetLeft - margin));
+    }
+
+    $container.css("width", maxWidth + "px");
+  }
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * For form overview scrolling and reactivation on resize.
+ **/
+function applyOverviewScrollListener($overflow) {
+// TODO: UPDATE THIS FOR NEW VIEW
+return;
+  applyCustomOverviewWorkaround();
+  let scrollTimeout;
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
+      clearTimeout(scrollTimeout);
+      applyCustomOverviewWorkaround();
+    }, 500);
+  });
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Function to apply the arrows (visual conntectors) that indicate the paths
  * between page and branch objects within a flow.
  *
  * Note: This is an initial WIP effort designed to replicate the old view
@@ -467,55 +605,6 @@ function applyArrowPaths($overview) {
 }
 
 
-/* TODO: This will definitely need some extra work when it
- * comes to implementing more complex paths. Currently, this
- * has been created to support straight line connectors only.
- *
- * @points (Object) Points required for ConnectorPath dimensions {
- *                      lX & lY: 'from' x+y points
- *                      rX & rY: 'to' x+y points
- *                  }
- * @config (Object) Configurations {
- *                      from: id of starting item
- *                      to: 'next' value of destination item
- *                      $container: jQuery node for appending element.
- *                      space: Number to add before and after start and end points
- *                             (allows for border compensation of existing css)
- *                  }
- **/
-class FlowConnectorPath {
-  constructor(points, config) {
-    var $element = $("<div><span></span></div>");
-    $element.addClass("FlowConnectorPath");
-    $element.attr("data-from", config.from);
-    $element.attr("data-to", config.to);
-    $element.css({
-      height: "0px",
-      left: points.lX + "px",
-      position: "absolute",
-      top: points.lY + "px",
-      width: FlowConnectorPath.difference(points.lX, points.rX) + "px"
-    });
-
-    // Now add it to the parent/containe
-    if(config.$container && config.$container.length) {
-      config.$container.append($element);
-    }
-    else {
-      $(document.body).append($element);
-    }
-  }
-}
-
-// Get the difference between two numbers
-FlowConnectorPath.difference = function(a, b) {
-  if(a > b)
-    return a - b;
-  else
-    return b - a;
-}
-
-
 /* TEMPORARY FIX
  * -------------
  * For form overview Add Page button location.
@@ -529,90 +618,6 @@ FlowConnectorPath.difference = function(a, b) {
  **/
 function fixAddPageButtonPosition() {
   $("#form-overview").append($(".form-overview-button"));
-}
-
-
-/* TEMPORARY FIX
- * -------------
- * For form overview scrolling and reactivation on resize.
- **/
-function fixFormOverviewScroll() {
-  // Fix for the scrolling of form overview.
-  applyCustomOverviewWorkaround();
-  let scrollTimeout;
-  $(window).on("resize", function() {
-    scrollTimeout = setTimeout(function() {
-      clearTimeout(scrollTimeout);
-      applyCustomOverviewWorkaround();
-    }, 500);
-  });
-}
-
-
-/* QUICKFIX WORKAROUND
- * -------------------
- * To try and fix scrolling issues for the form overview
- * when there are too many thumbnails to fix on the one page view.
- **/
-function applyCustomOverviewWorkaround() {
-  var $overview = $("#form-overview");
-  var $container = $overview.find(" > .container");
-  var containerWidth = $container.width();
-  var overviewWidth = $overview.width();
-  var offsetLeft = $overview.offset().left;
-  var margin = 30; // Arbitrary number based on common
-  var spacerForMenu = 250;
-  var maxWidth = window.innerWidth - (margin * 2) - spacerForMenu;
-
-  if(containerWidth > overviewWidth) {
-    let left = ((containerWidth + spacerForMenu) - overviewWidth) / 2;
-    if(left < offsetLeft) {
-      $container.css("left", ~left);
-    }
-    else {
-      $container.css("left", ~(offsetLeft - margin));
-    }
-  }
-
-  $container.css("max-width", maxWidth); // Make sure to limit so a scrollbar can kick in, if necessary.
-  $container.scrollLeft(containerWidth); // Align to right so Add page button is visible
-  $overview.height($container.outerHeight(true));
-}
-
-
-/* QUICKFIX WORKAROUND
- * -------------------
- * Resizing of frame (will be improved with ticket regarding scroll implementation
- *
- * Quickfix workaround to try and adjust the width of available view
- * area on the flow overview (otherwise restricted by container css).
- * --------------------------------------------------------------------------
- * THIS IS WIP AND BASED ON applyCustomOverviewWorkaround() SO CONTAINS SOME
- * VARIABLES THAT COULD BE USEFUL BUT, DUE TO LGTM SCRIPTS POINTING OUT THEIR
- * CURRENT LACK OF USE, THEY HAVE BEEN TEMPORARILY COMMENTED OUT.
- * --------------------------------------------------------------------------
- **/
-function applyFlowOverviewDimensionWorkaround($overview) {
-  const SELECTOR_FLOW_ITEM = ".flow-item";
-  //var $container = $overview.find(" > .container");
-  //var containerWidth = $container.width();
-  //var overviewWidth = $overview.width();
-  //var offsetLeft = $overview.offset().left;
-  var $items = $(SELECTOR_FLOW_ITEM, $overview);
-  //var right = $items.last().position().left + $items.first().width();
-  //var margin = 30; // Arbitrary number based on common
-  //var maxWidth = window.innerWidth - (margin * 2);
-
-  // Adjust the overview height.
-  let lowestPoint = 0;
-  $items.each(function() {
-    var $current = $(this);
-    var bottom = ($current.position().top + $current.height());
-    if(bottom > lowestPoint) {
-      lowestPoint = bottom;
-    }
-  });
-  $overview.css("height", lowestPoint + "px");
 }
 
 
