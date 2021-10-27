@@ -34,10 +34,12 @@
   <% end %>
 
   <% if ENV['BRANCHING'] == 'enabled' %>
+  <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
     <li data-action="none">
       <%= link_to t('services.branch'),
       new_branches_path(service.service_id, item[:uuid]) %>
     </li>
+  <% end %>
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
       <li data-action="destination">
