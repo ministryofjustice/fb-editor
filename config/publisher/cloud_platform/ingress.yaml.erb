@@ -13,6 +13,8 @@ metadata:
         deny all;
         return 401;
       }
+    external-dns.alpha.kubernetes.io/set-identifier: <%= service_slug %>-ingress-<%= namespace %>-blue
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
     - hosts:
