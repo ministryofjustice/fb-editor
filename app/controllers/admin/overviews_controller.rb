@@ -39,9 +39,11 @@ module Admin
     end
 
     def published(environment)
-      PublishService.where(
-        deployment_environment: environment
-      ).distinct.pluck(:service_id).count
+      PublishService.where(deployment_environment: environment)
+                    .select('DISTINCT ON ("service_id") *')
+                    .order(:service_id, created_at: :desc)
+                    .select { |ps| ps.status == 'completed' }
+                    .count
     end
   end
 end
