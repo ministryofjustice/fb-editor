@@ -708,6 +708,12 @@ html {
       display: none;
     }
   }
+
+  &.standalone {
+    border:  $govuk-link-colour solid 2px;
+    box-sizing: border-box;
+    height: 125px;
+  }
 }
 
 
@@ -746,6 +752,7 @@ html {
     display: inline-block;
     margin-bottom: govuk-spacing(9);
     margin-right: govuk-spacing(9);
+    width: 200px;
   }
 }
 
