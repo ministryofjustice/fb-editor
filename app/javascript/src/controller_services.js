@@ -50,7 +50,6 @@ ServicesController.edit = function() {
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
-  fixAddPageButtonPosition();
 
   layoutFormFlowOverview();
   layoutDetachedItemsOveriew();
@@ -626,22 +625,6 @@ function applyArrowPaths($overview) {
       space: 5
     });
   });
-}
-
-
-/* TEMPORARY FIX
- * -------------
- * For form overview Add Page button location.
- * Due to changes required for the updated Flow Overview
- * layout, the Add Page menu HTML has been relocated outside
- * of the original DIV.form-overview element. This move has
- * affected the location of the dynamically inserted menu
- * activator and resulting CSS positioning. To correct this
- * the function here moves the element back to the original
- * location, leaving the menu in it's new position.
- **/
-function fixAddPageButtonPosition() {
-  $("#form-overview").append($(".form-overview-button"));
 }
 
 
