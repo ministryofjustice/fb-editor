@@ -350,7 +350,6 @@ function layoutFormFlowOverview() {
   adjustOverviewHeight($overview);
   applyArrowPaths($overview);
   applyOverviewScroll($overview);
-  //applyOverviewScrollListener($overflow);
 }
 
 
@@ -548,13 +547,33 @@ function adjustOverviewHeight($overview) {
 function applyOverviewScroll($overview) {
   var $container = $("<div></div>");
   var $children = $overview.children();
-  var overviewWidth = $overview.width();
-  var containerWidth;
+  var scrollTimeout;
 
   $container.addClass("FlowOverviewScrollingFrame");
   $overview.append($container);
   $container.append($children);
-  containerWidth = $container.get(0).scrollWidth;
+
+  // Apply initial adjustment.
+  adjustOverviewScrollDimensions($overview, $container);
+
+  // Listen for screen changes to reapply.
+  $(window).on("resize", function() {
+    scrollTimeout = setTimeout(function() {
+      clearTimeout(scrollTimeout);
+      adjustOverviewScrollDimensions($overview, $container);
+    }, 500);
+  });
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Heart of the solution for applyOverviewScroll() that tries to
+ * sort out the required dimensions for the layout area.
+ **/
+function adjustOverviewScrollDimensions($overview, $container) {
+  var overviewWidth = $overview.width()
+  var containerWidth = $container.get(0).scrollWidth;
 
   if(containerWidth > overviewWidth) {
     let offsetLeft = $overview.offset().left;
@@ -570,24 +589,8 @@ function applyOverviewScroll($overview) {
 
     $container.css("width", maxWidth + "px");
   }
-}
 
 
-/* VIEW HELPER FUNCTION:
- * ---------------------
- * For form overview scrolling and reactivation on resize.
- **/
-function applyOverviewScrollListener($overflow) {
-// TODO: UPDATE THIS FOR NEW VIEW
-return;
-  applyCustomOverviewWorkaround();
-  let scrollTimeout;
-  $(window).on("resize", function() {
-    scrollTimeout = setTimeout(function() {
-      clearTimeout(scrollTimeout);
-      applyCustomOverviewWorkaround();
-    }, 500);
-  });
 }
 
 
