@@ -44,35 +44,9 @@
 <%= render partial: 'partials/standalone' %>
 
 
-<%# ----------------------------------------------------------------------------------------------------- %>
-<%# OLD FORM OVERVIEW PAGE HERE %>
-<div id="form-overview">
-  <% if ENV['BRANCHING'] == 'enabled' %>
-    <div id="workaround-links">
-      <% service.flow.each do |uuid, flow| %>
-        <% if flow['_type'] == 'flow.branch' %>
-          | <%= link_to flow['title'] || 'Untitled Branch', edit_branch_path(service.service_id, uuid) %> |
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
-  <div class="container">
-    <% service.pages.each do |page| %>
-      <section class="form-overview-step form-step" aria-label="<%= t('aria.' + page.type) %>">
-        <%= flow_thumbnail(page) %>
-        <%= flow_text_link({ type: 'page', uuid: page.uuid, title: page.url }) %>
-        <%= render partial: 'services/form_overview_page_menu', locals: { item: { title: page.title, uuid: page.uuid, url: page.url, type: page.type  } } %>
-      </section>
-    <% end %>
-  </div>
-</div>
-<%# end: OLD FORM OVERVIEW PAGE %>
-<%# ----------------------------------------------------------------------------------------------------- %>
-
-
 <%# statically written menu template used for each item menu %>
 <ul class="component-activated-menu govuk-navigation"
-    data-activator-classname="form-overview-button"
+    data-activator-classname="flow-add-page-button"
     data-activator-text="<%= t('pages.create') %>"
     data-component="PageAdditionMenu">
   <li>
