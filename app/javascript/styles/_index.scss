@@ -490,26 +490,6 @@ html {
   position: relative;
   padding-right: 100px;
 
-  &:after {
-    border-top: govuk-colour("black") solid 2px;
-    content: "";
-    position: absolute;
-    right: 5px;
-    top: calc(45% - 1px);
-    width: 93px;
-  }
-
-  &:before {
-    border: govuk-colour("black") solid 5px;
-    border-top-color: govuk-colour("white");
-    border-left-color: govuk-colour("white");
-    content: "";
-    position: absolute;
-    right: 4px;
-    transform: rotate(-45deg);
-    top: calc(45% - 5px);
-  }
-
   &:hover {
     .ActivatedMenu_Activator {
       opacity: 1;
@@ -550,18 +530,46 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
+.FlowConnectorPath {
+  border: none;
+  border-color: govuk-colour("black");
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+
+  span {
+    display: block;
+    height: 14px;
+    overflow: hidden;
+    position: absolute;
+    right: -1px;
+    top: -6px;
+    width: 7px;
+
+    &:after {
+      border: govuk-colour("black") solid 5px;
+      border-top-color: govuk-colour("white");
+      border-left-color: govuk-colour("white");
+      content: "";
+      display: block;
+      left: -5px;
+      position: relative;
+      transform: rotate(-45deg);
+      top: 2px;
+    }
+  }
+}
+
 .FlowItemMenuActivator {
-  bottom: calc(25px + #{govuk-spacing(4)});
   display: inline-block;
-  left: 158px;
+  left: 157px;
   opacity: 0;
   overflow: hidden;
   position: absolute;
+  top: calc(125px - 43px);
 }
 
 .flow-branch {
   height: 125px;
-  overflow: visible;
   width: 200px;
 
   & > a {
@@ -586,6 +594,7 @@ html {
   .FlowItemMenuActivator {
     bottom: 10px;
     left: 82px;
+    top: calc(125px - 45px);
   }
 }
 
@@ -617,11 +626,16 @@ html {
 
 .flow-item {
   background-color: govuk-colour("white");
+  overflow: visible;
 
   &:hover {
     .ActivatedMenu_Activator {
       opacity: 1;
     }
+  }
+
+  .text {
+    word-break: break-word;
   }
 }
 
@@ -632,8 +646,10 @@ html {
 }
 
 .flow-page {
-  overflow: hidden;
+  border:  $govuk-link-colour solid 2px;
+  height: 121px;
   vertical-align: middle;
+  width: 196px;
 }
 
 .flow-pointer {
@@ -647,17 +663,16 @@ html {
 }
 
 .flow-thumbnail {
-  border:  $govuk-link-colour solid 2px;
   display: block;
-  height: 125px;
+  height: 100%;
   margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
-  width: 200px;
+  width: 100%;
 
   img {
     display: block;
-    width: 200px;
+    width: inherit;
   }
 
   .text {
@@ -721,11 +736,8 @@ html {
   margin-bottom: 100px;
   overflow: auto;
   padding: 40px;
+  position: relative;
   width: 100%;
-
-  .container {
-    position: relative;
-  }
 }
 
 
@@ -926,6 +938,10 @@ html {
   // Try to get consistency between with/without page navigation bars
   // and even update space above/below main headings.
   margin-bottom: 0;
+}
+
+.govuk-heading-xl {
+  word-break: break-word;
 }
 
 .govuk-panel--confirmation {

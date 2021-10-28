@@ -295,6 +295,7 @@ function layoutFormFlowOverview() {
   positionFlowItems($overview);
   positionConditionsByDestination($overview);
   applyFlowOverviewDimensionWorkaround($overview);
+  applyArrowPaths($overview);
 }
 
 
@@ -325,10 +326,10 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_THUMBNAIL = ".flow-thumbnail";
   const SELECTOR_FLOW_ITEM = ".flow-item";
   const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
-  const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).width();
+  const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).outerWidth();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
-  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).width();
+  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
   var $columns = $(".column", $overview);
   var left = 0;
 
@@ -420,7 +421,7 @@ function positionConditionsByDestination($overview) {
     var $node = $(this);
     var $parent = $node.parents(SELECTOR_FLOW_BRANCH);
     var parentTop = $parent.position().top;
-    var next = $node.data("fb-next");
+    var next = $node.data("next");
     var $destination = $overview.find("#" + next);
     var destinationTop = $destination.length ? $destination.position().top : -1; // Didn't find a destination ??
 
@@ -428,6 +429,90 @@ function positionConditionsByDestination($overview) {
       $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
     }
   });
+}
+
+
+/* Function to apply the arrows (visual conntectors) that indicate the paths
+ * between page and branch objects within a flow.
+ *
+ * Note: This is an initial WIP effort designed to replicate the old view
+ * arrows on a linear-only, non-branching, view, where straight arrows only
+ * are supported. The old view used CSS to achieve that but this function is
+ * intended to provide the basis for the far more complex arrow layout
+ * required for a full branching view.
+ **/
+function applyArrowPaths($overview) {
+  // Note: flow-condition element do not currently work with this.
+  $overview.find("[data-next]").not(".flow-condition").each(function() {
+    var $this = $(this);
+    var next = $this.data("next");
+    var fromX = $this.position().left + $this.outerWidth() + 1; // + 1 for design spacing
+    var fromY = $this.position().top + ($this.height() / 2);
+    var $next = $("#" + next);
+    var toX = $next.position().left - 1; // - 1 for design spacing
+    var toY = $next.position().top + ($next.height() / 2);
+
+    new FlowConnectorPath({
+      lX: fromX,
+      lY: fromY,
+      rX: toX,
+      rY: toY
+      }, {
+      $container: $overview,
+      from: $this.attr("id"),
+      to: next,
+      space: 5
+    });
+  });
+}
+
+
+/* TODO: This will definitely need some extra work when it
+ * comes to implementing more complex paths. Currently, this
+ * has been created to support straight line connectors only.
+ *
+ * @points (Object) Points required for ConnectorPath dimensions {
+ *                      lX & lY: 'from' x+y points
+ *                      rX & rY: 'to' x+y points
+ *                  }
+ * @config (Object) Configurations {
+ *                      from: id of starting item
+ *                      to: 'next' value of destination item
+ *                      $container: jQuery node for appending element.
+ *                      space: Number to add before and after start and end points
+ *                             (allows for border compensation of existing css)
+ *                  }
+ **/
+class FlowConnectorPath {
+  constructor(points, config) {
+    var $element = $("<div><span></span></div>");
+    $element.addClass("FlowConnectorPath");
+    $element.attr("data-from", config.from);
+    $element.attr("data-to", config.to);
+    $element.css({
+      height: "0px",
+      left: points.lX + "px",
+      position: "absolute",
+      top: points.lY + "px",
+      width: FlowConnectorPath.difference(points.lX, points.rX) + "px"
+    });
+
+    // Now add it to the parent/containe
+    if(config.$container && config.$container.length) {
+      config.$container.append($element);
+    }
+    else {
+      $(document.body).append($element);
+    }
+  }
+}
+
+// Get the difference between two numbers
+FlowConnectorPath.difference = function(a, b) {
+  if(a > b)
+    return a - b;
+  else
+    return b - a;
 }
 
 
@@ -443,7 +528,7 @@ function positionConditionsByDestination($overview) {
  * location, leaving the menu in it's new position.
  **/
 function fixAddPageButtonPosition() {
-  $("#form-overview .container").append($(".form-overview-button"));
+  $("#form-overview").append($(".form-overview-button"));
 }
 
 
