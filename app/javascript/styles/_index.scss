@@ -694,6 +694,7 @@ html {
 
 #flow-overview {
   margin-bottom: 100px;
+  min-height: 200px; // Temporary workaround of intermittent height calculation issues
 }
 
 #flow-standalone-pages {
