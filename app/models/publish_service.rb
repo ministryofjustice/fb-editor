@@ -21,6 +21,10 @@ class PublishService < ApplicationRecord
   scope :completed, -> { where(status: 'completed') }
   scope :desc, -> { order(created_at: :desc) }
 
+  def completed?
+    status == 'completed'
+  end
+
   def queued?
     status == 'queued'
   end

@@ -20,7 +20,10 @@
       <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
       <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
     <%# /p %>
-    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
+
+    <% if @published_dev %>
+      <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
+    <% end %>
 
     <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
     <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
@@ -44,7 +47,9 @@
       <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
     <%# /p %>
 
-    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
+    <% if @published_production %>
+      <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
+    <% end %>
 
     <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
     <%= form_for(@publish_service_creation_production,
