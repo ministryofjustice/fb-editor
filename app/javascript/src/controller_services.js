@@ -395,7 +395,6 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
-  const SELECTOR_FLOW_EXPRESSIONS = ".flow-expression";
   const SELECTOR_FLOW_ITEM = ".flow-item";
   const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
   const SPACING_X = 100;
