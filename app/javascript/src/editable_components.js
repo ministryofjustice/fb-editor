@@ -20,7 +20,6 @@ const createElement = utilities.createElement;
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const isBoolean = utilities.isBoolean;
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -768,9 +767,6 @@ class EditableCollectionItemRemover {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ itemRemove: 'remove' }, config.text);
     var $node = $(createElement("button", text.itemRemove, conf.classes));
-    var removeCollectionItem = function() {
-      editableCollectionFieldComponent.remove(editableCollectionItem);
-    }
 
     $node.data("instance", this);
     $node.addClass("EditableCollectionItemRemover");
@@ -825,16 +821,6 @@ function convertToHtml(markdown) {
   html = sanitiseHtml(html);
   return html;
 }
-
-
-/* Multiple Line Input Restrictions
- * Browser contentEditable mode means some pain in trying to prevent
- * HTML being inserted (rich text attempts by browser). We're only
- * editing as plain text and markdown for all elements so try to
- * prevent unwanted entry with this function.
- **/
-function multipleLineInputRestrictions(event) {}
-
 
 /* Single Line Input Restrictions
  *Browser contentEditable mode means some pain in trying to prevent

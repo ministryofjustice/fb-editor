@@ -18,7 +18,6 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const editableComponent = require('./editable_components').editableComponent;
 const QuestionMenu = require('./component_activated_question_menu');
 

@@ -187,7 +187,7 @@ function updateHiddenInputOnForm($form, name, content) {
  * @content (String) instance.content value added to input[hidden] field.
  **/
 function addHiddenInpuElementToForm($form, name, content) {
-  $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
+  var $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
   $form.prepend($input);
   $input.val(content);
 }
