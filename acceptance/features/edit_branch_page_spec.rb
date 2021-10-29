@@ -55,7 +55,7 @@ feature 'New branch page' do
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
 
-    and_I_want_to_add_branching(1)
+    and_I_want_to_add_branching(page_url)
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')
     then_I_should_see_the_operator(I18n.t('branches.expression.if'))
