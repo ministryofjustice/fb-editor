@@ -23,7 +23,6 @@ const mergeObjects = utilities.mergeObjects;
 const post = utilities.post;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
-const DialogConfirmation = require('./component_dialog_confirmation');
 const DefaultController = require('./controller_default');
 
 
@@ -397,10 +396,8 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_EXPRESSIONS = ".flow-expression";
-  const SELECTOR_FLOW_THUMBNAIL = ".flow-thumbnail";
   const SELECTOR_FLOW_ITEM = ".flow-item";
   const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
-  //const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).outerWidth();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
@@ -411,9 +408,7 @@ function positionFlowItems($overview) {
   $columns.each(function(index) {
     var $column = $(this);
     var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
-    var $expressions = $(SELECTOR_FLOW_EXPRESSIONS, $conditions);
     var $items = $(SELECTOR_FLOW_ITEM, this);
-    //var maxExpressionWidth = utilities.maxWidth($expressions);
     var top = 0;
 
     $items.each(function() {
