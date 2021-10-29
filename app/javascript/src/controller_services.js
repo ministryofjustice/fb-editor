@@ -53,8 +53,6 @@ ServicesController.edit = function() {
 
   layoutFormFlowOverview();
   layoutDetachedItemsOveriew();
-
-  addTemporaryLayoutTestAbility(view);
 }
 
 
@@ -627,121 +625,6 @@ function applyArrowPaths($overview) {
     });
   });
 }
-
-
-/*
- * -----------------------------------------------------------------------------
- * DEVELOPMENT ONLY
- * -----------------------------------------------------------------------------
- */
-function addTemporaryLayoutTestAbility(view) {
-  var $template = $("[data-component-template=DialogConfirmation]");
-  var $node = $($template.text());
-  var $button = $("<button>Upload json</button>");
-  var $textarea = $("<textarea style=\"margin-bottom:20px; width:100%\" rows=\"25\"></textarea>");
-  var dialog;
-
-  $node.append($textarea);
-  $button.on("click", function() {
-    dialog.open({
-      heading: "Create a layout from JSON",
-      content: "Paste some JSON format text here and press 'ok' to generate a deletable temporary layout view for testing."
-    });
-  });
-
-  view.$body.append($button);
-  view.$body.append($node);
-  dialog = new DialogConfirmation($node, {
-    onOk: function() {
-      var text = $textarea.val();
-      var json = JSON.parse(text);
-      var diamond = view.$body.html().match(/\/packs\/media\/images\/diamond-\w+?.svg/);
-      var src = (diamond.length ? diamond[0] : "diamond.svg"); // What to do if does not exist??
-      var $delete = $("<button>Delete</button>");
-      var $container = $("<div></div>");
-
-      $container.attr("id", utilities.uniqueString("temporary-layout-"));
-      $container.css({
-        border: "1px solid grey",
-        margin: "20px",
-        height: "500px",
-        overflow: "auto",
-        padding: "40px",
-        position: "relative"
-      });
-
-      $delete.css({
-        bottom: "0px",
-        left: "0p;x",
-        position: "absolute",
-      });
-
-      $delete.on("click", function() {
-        $container.empty();
-        $container.remove();
-      });
-
-      let index = 0;
-      for(var col in json) {
-        let collection = json[col];
-        let $column = $("<div class=\"column\"></div>");
-
-        for(var it in collection) {
-          let item = collection[it];
-
-          if(item.type == "spacer") {
-            let $section = $("<section class=\"flow-item flow-spacer\"></section>");
-            $column.append($section);
-          }
-          else {
-            if(item.type == "flow.branch") {
-              let $section = $("<section class=\"flow-item flow-branch\"></section>");
-              $section.append("<img src=\"" + src + "\" />");
-              $section.append("<a class=\"govuk-link\"><span class=\"text\">" + item.title + "</span></a>");
-
-              let $ul = $("<ul class=\"flow-conditions\"></ul>");
-              for(var con in item.conditionals) {
-                let condition = item.conditionals[con];
-                let $li = $("<li class=\"flow-condition\" data-fb-next=\"" + item.next + "\"></li>");
-
-                for(var ex in condition.expressions) {
-                  let expression = condition.expressions[ex];
-                  $li.append("<div class=\"flow-expression\"> \
-                                <span class=\"question\">" + expression.question + "</span> \
-                                <span class=\"operator\">" + expression.operator + "</span> \
-                                <span class=\"answer\">" + expression.answer + "</span> \
-                              </div>");
-                }
-                $ul.append($li);
-              }
-
-              $section.append($ul);
-              $column.append($section);
-            }
-            else {
-              let $section = $("<section class=\"flow-item flow-page\"></section>");
-              $section.append("<a class=\"flow-thumbnail text\"><span class=\"text\">" + item.title + "</span></a>");
-              $section.append("<a class=\"govuk-link\" href=\"#\"><span class=\"text\">" + item.title.replace(/\s/g, "") + "</span></a>");
-              $column.append($section);
-            }
-          }
-        }
-
-        $container.append($column);
-      }
-
-      view.$body.append($container);
-      positionFlowItems($container);
-      $container.append($delete);
-      $textarea.val("");
-    },
-    onCancel: function() {
-      $textarea.val("");
-    }
-  });
-
-}
-
 
 
 
