@@ -85,7 +85,6 @@ class FlowItemMenu extends ActivatedMenu {
    // Handle item selections on the form step context menu elements.
   selection(event, item) {
     var action = item.data("action");
-    var view = this._config.view;
 
     event.preventDefault();
     switch(action) {
@@ -164,9 +163,8 @@ class FlowItemMenu extends ActivatedMenu {
   }
 
   deleteItemApi(element) {
-    var view = this._config.view;
     var $link = element.find("> a");
-    var dialog = new DialogApiRequest($link.attr("href"), {
+    new DialogApiRequest($link.attr("href"), {
       activator: $link,
       closeOnClickSelector: ".govuk-button",
       build: function(dialog) {
@@ -404,7 +402,7 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_THUMBNAIL = ".flow-thumbnail";
   const SELECTOR_FLOW_ITEM = ".flow-item";
   const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
-  const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).outerWidth();
+  //const THUMBNAIL_WIDTH = $(SELECTOR_FLOW_THUMBNAIL).eq(0).outerWidth();
   const SPACING_X = 100;
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
@@ -417,7 +415,7 @@ function positionFlowItems($overview) {
     var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
     var $expressions = $(SELECTOR_FLOW_EXPRESSIONS, $conditions);
     var $items = $(SELECTOR_FLOW_ITEM, this);
-    var maxExpressionWidth = utilities.maxWidth($expressions);
+    //var maxExpressionWidth = utilities.maxWidth($expressions);
     var top = 0;
 
     $items.each(function() {
