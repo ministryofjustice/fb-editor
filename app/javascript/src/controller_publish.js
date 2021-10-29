@@ -16,7 +16,6 @@
  **/
 
 
-const utilities = require('./utilities');
 const ActivatedFormDialog = require('./component_activated_form_dialog');
 const DefaultController = require('./controller_default');
 
