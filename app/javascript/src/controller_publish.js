@@ -17,9 +17,6 @@
 
 
 const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const safelyActivateFunction = utilities.isFunction;
-const post = utilities.post;
 const ActivatedFormDialog = require('./component_activated_form_dialog');
 const DefaultController = require('./controller_default');
 

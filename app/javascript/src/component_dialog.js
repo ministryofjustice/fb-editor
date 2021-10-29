@@ -15,7 +15,6 @@
  **/
 
 const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
