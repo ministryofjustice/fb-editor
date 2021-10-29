@@ -14,8 +14,6 @@
  *
  **/
 
-const utilities = require('./utilities');
-
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
