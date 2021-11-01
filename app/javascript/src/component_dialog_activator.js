@@ -32,15 +32,15 @@ class DialogActivator {
     }, config);
 
     if(!$node || $node.length < 1) {
-      $node = createActivator(config.$target, config.text);
+      $node = createActivator(conf.$target, conf.text);
     }
 
     $node.addClass(config.classes);
     $node.on( "click", () => {
-      config.dialog.open();
+      conf.dialog.open();
     });
 
-    this.dialog = config.dialog;
+    this.dialog = conf.dialog;
     this.$node = $node;
   }
 }
