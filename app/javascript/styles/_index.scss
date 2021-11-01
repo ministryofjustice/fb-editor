@@ -118,6 +118,12 @@ html {
 
 /* Publishing
  * ------------------- */
+.publish-form {
+  .govuk-radios {
+    margin-bottom: govuk-spacing(6);
+  }
+}
+
 #publish-intro {
   .time {
     color: $govuk-secondary-text-colour;

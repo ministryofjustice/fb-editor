@@ -50,7 +50,7 @@ class ActivatedFormDialog extends FormDialog {
 
     var activator = new DialogActivator(conf.$activator, {
       dialog: this,
-      activatorText: conf.activatorText,
+      text: conf.activatorText,
       classes: conf.classes["ui-activator"],
       $target: $marker
     });
