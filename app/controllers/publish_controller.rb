@@ -1,6 +1,11 @@
 class PublishController < FormController
   before_action :assign_form_objects
 
+  def index
+    @published_dev = published?(service.service_id, 'dev')
+    @published_production = published?(service.service_id, 'production')
+  end
+
   def create
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
@@ -39,6 +44,13 @@ class PublishController < FormController
       service_id: service.service_id,
       deployment_environment: 'production'
     )
+  end
+
+  def published?(service_id, environment)
+    PublishService.where(
+      service_id: service_id,
+      deployment_environment: environment
+    ).last&.completed?
   end
 
   def update_form_objects
