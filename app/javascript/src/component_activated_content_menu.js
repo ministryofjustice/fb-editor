@@ -18,7 +18,6 @@
 const utilities = require('./utilities');
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const mergeObjects = utilities.mergeObjects;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
 const ActivatedMenu = require('./component_activated_menu');
 
 

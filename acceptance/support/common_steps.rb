@@ -129,11 +129,13 @@ module CommonSteps
 
   def given_I_want_to_add_a_single_question_page
     given_I_want_to_add_a_page
+    editor.add_exit.hover # This is to prevent menu overlay and hiding text
     editor.add_single_question.hover
   end
 
   def given_I_want_to_add_a_page
-    editor.add_page.click
+    and_I_click_on_the_three_dots
+    editor.add_page_here_link.click
   end
 
   def and_I_edit_the_service
@@ -142,7 +144,7 @@ module CommonSteps
   end
 
   def and_I_edit_the_page(url:)
-    click_link url
+    page.find('.govuk-link', text: url).click
   end
 
   def and_I_return_to_flow_page
@@ -312,6 +314,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     editor.preview_page_images.last.hover
     editor.three_dots_button.click
   end

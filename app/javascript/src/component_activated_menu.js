@@ -18,7 +18,6 @@ const utilities = require('./utilities');
 const property = utilities.property;
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
-const safelyActivateFunction = utilities.safelyActivateFunction;
 const uniqueString = utilities.uniqueString;
 
 

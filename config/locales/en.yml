@@ -37,16 +37,22 @@ en:
     button_delete_option: 'Delete option'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
+    button_understood: 'Understood'
     button_update: 'Update'
     heading: General heading here
-    heading_delete: Delete \"%{label}\"?
+    heading_delete: 'Delete "%{label}"?'
+    heading_delete_branch: Delete branch?
     heading_delete_condtition: Delete condition?
-    heading_delete_option: Delete the option \"%{option label}\"?
+    heading_delete_option: 'Delete the option "%{option label}"?'
     message: General message here
     message_delete: 'This cannot be undone'
-    message_delete_condition: 'This cannot be undone'
-    heading_delete_branch: Delete branch?
     message_delete_branch: 'This cannot be undone'
+    message_delete_condition: 'This cannot be undone'
+    destination:
+      button_change: Change destination
+      label: 'Change destination'
+      hint: 'Update this connection to lead to the following page:'
+      text: 'The page that was previously following (and attached to it) will be moved to the unconnected pages'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -76,9 +82,12 @@ en:
     add_page: 'Add page here'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
-    edit_page: 'Edit Page'
+    add_branch: 'Add branching'
+    edit_branch: 'Edit branching'
+    edit_page: 'Edit page'
     preview_page: 'Preview page'
     preview_form: 'Preview form'
+    delete_branch: 'Delete branching...'
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
@@ -119,7 +128,7 @@ en:
     actions: 'Actions'
     footer: 'Form footer'
     delete_modal:
-      delete_page: 'Delete "%{title}"'
+      delete_page: 'Deletes "%{title}"'
       delete_branch_destination_page_message: 'One of your branches leads to this page. We will update the branching point to lead to the next page in your flow.'
       delete_and_update_branching: 'Delete and update branching'
       you_cannot_delete_this_page: 'You cannot delete this page yet'
@@ -128,7 +137,7 @@ en:
     destination:
       heading: 'Change destination'
       lede: 'Update this connection to lead to the following page:'
-      hint: 'The page that was previously following (and attached to it) will be moved to the orphaned pages'
+      hint: 'The page that was previously following (and attached to it) will be moved to the unconnected pages'
       submit: 'Change destination'
       cancel: 'Cancel'
   components:

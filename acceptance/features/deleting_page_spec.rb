@@ -15,7 +15,7 @@ feature 'Deleting page' do
     and_I_return_to_flow_page
     and_I_want_to_delete_the_page_that_I_created
     when_I_delete_the_page
-    and_I_return_to_flow_page
+    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_not_see_the_deleted_page_anymore
   end
 
@@ -26,6 +26,7 @@ feature 'Deleting page' do
 
   def when_I_delete_the_page
     editor.delete_page_link.click
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     editor.delete_page_modal_button.click
   end
 

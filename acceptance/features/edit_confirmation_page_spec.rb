@@ -20,9 +20,9 @@ feature 'Edit confirmation pages' do
     and_I_change_the_page_body(confirmation_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_click_on_the_three_dots
+    and_I_click_on_the_confirmation_page_three_dots
     then_I_should_only_see_three_options_on_page_menu
-    and_I_edit_the_confirmation_page
+    and_I_edit_the_page(url: confirmation_heading)
     then_I_should_see_the_confirmation_heading(confirmation_heading)
     then_I_should_see_the_confirmation_lede(confirmation_lede)
     then_I_should_see_the_confirmation_body(confirmation_body)
@@ -42,16 +42,13 @@ feature 'Edit confirmation pages' do
     expect(editor.page_lede.text).to eq(lede)
   end
 
-  def and_I_edit_the_confirmation_page
-    editor.find('.form-step a.govuk-link', text: confirmation_url).click
-  end
-
   def then_I_should_see_the_confirmation_body(body)
     expect(editor.page_body.text).to eq(body)
   end
 
-  def and_I_click_on_the_three_dots
-    page.find('.form-step a.govuk-link', text: confirmation_url).hover
+  def and_I_click_on_the_confirmation_page_three_dots # confirmation page does not have 'img.body'
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    page.find('.flow-thumbnail', text: confirmation_heading).hover
     editor.three_dots_button.click
   end
 end

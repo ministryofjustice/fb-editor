@@ -336,4 +336,35 @@ describe('Utilities', function () {
       assert.equal(utilities.stringInject(text, words), "These are not the droids you are #{verb} for.");
     });
   });
+
+  describe('mazWidth', function() {
+    it('should return the maxWidth found in a collection', function() {
+      var $item1 = $("<p id=\"test-maxwidth-item1\">width item 1");
+      var $item2 = $("<p id=\"test-maxwidth-item2\">width item 2");
+      var $item3 = $("<p id=\"test-maxwidth-item3\">width item 3");
+      var $collection = $(); // empty jQuery collection.
+
+      // Add some widths...
+      $item1.css({ width: "300px" });
+      $item2.css({ width: "500px" });
+      $item3.css({ width: "400px" });
+
+      // Stick them in the document...
+      $(document.body).append($item1);
+      $(document.body).append($item2);
+      $(document.body).append($item3);
+
+      // Find the items...
+      $collection = $(document.body).find("#test-maxwidth-item1, #test-maxwidth-item2, #test-maxwidth-item3");
+
+      // Check we have them and their widths are correct...
+      assert.equal($collection.length, 3);
+      assert.equal($collection.eq(0).width(), "300");
+      assert.equal($collection.eq(1).width(), "500");
+      assert.equal($collection.eq(2).width(), "400");
+
+      // Check we can find the max width
+      assert.equal(utilities.maxWidth($collection), "500");
+    });
+  });
 });

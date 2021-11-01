@@ -14,9 +14,6 @@
  *
  **/
 
-const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
-
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -119,7 +116,7 @@ Dialog.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
     content: this._elements.content.text(),
-    ok: this._elements.ok.text(),
+    ok: this._elements.ok.text()
   };
 }
 

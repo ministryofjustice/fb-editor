@@ -13,6 +13,7 @@ feature 'Edit exit pages' do
   let(:optional_content) do
     I18n.t('default_text.content')
   end
+  let(:default_exit_page_title) { 'Title' }
 
   background do
     given_I_am_logged_in
@@ -29,7 +30,7 @@ feature 'Edit exit pages' do
     and_I_return_to_flow_page
     and_I_click_on_the_three_dots
     then_I_should_only_see_three_options_on_page_menu
-    and_I_edit_the_page(url: exit_url)
+    and_I_edit_the_page(url: exit_heading)
     then_I_see_the_updated_page_heading(exit_heading)
     then_I_see_the_updated_page_section_heading(exit_section_heading)
     then_I_see_the_updated_page_lede(exit_lede)
@@ -43,7 +44,7 @@ feature 'Edit exit pages' do
     )
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_edit_the_page(url: exit_url)
+    and_I_edit_the_page(url: default_exit_page_title)
     then_I_should_see_the_component(content_component)
   end
 
@@ -55,7 +56,7 @@ feature 'Edit exit pages' do
     )
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_edit_the_page(url: exit_url)
+    and_I_edit_the_page(url: default_exit_page_title)
     then_I_should_see_the_component(content_component)
     when_I_want_to_select_component_properties('.output', content_component)
     and_I_want_to_delete_a_component

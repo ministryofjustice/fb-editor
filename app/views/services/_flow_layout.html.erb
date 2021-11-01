@@ -1,0 +1,59 @@
+<% if item[:type] == 'spacer' %>
+  <article class="flow-item flow-spacer" aria-hidden="true">
+  </article>
+<% else %>
+
+  <% if item[:type]== 'pointer' %>
+    <article class="flow-item flow-pointer" id="<%= item[:uuid] %>">
+      <span><%= item[:title] %></span>
+    </article>
+  <% else %>
+
+    <% if item[:type] == 'flow.branch' %>
+      <article class="flow-item flow-branch" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
+        <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
+        <map name="thumbnail-<%= index %>" aria-hidden="true">
+          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+        </map>
+        <%= flow_text_link(item) %>
+        <ul class="flow-conditions">
+          <% item[:conditionals].each_with_index do |condition, index| %>
+            <li class="flow-condition" data-next="<%= condition[:next] %>">
+              <% condition[:expressions].each do |expression| %>
+                <% if expression[:operator].empty? && expression[:answer].empty? %>
+                  <div class="flow-expression" data-otherwise="true">
+                    <span class="question"><%= expression[:question] %></span>
+                  </div>
+                <% else %>
+                  <div class="flow-expression" data-otherwise="false">
+                    <span class="question"><%= expression[:question] %></span>
+                    <span class="operator"><%= expression[:operator] %></span>
+                    <span class="answer"><%= expression[:answer] %></span>
+                  </div>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+        <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
+      </article>
+    <% else %>
+
+      <% if item[:next].empty? %>
+        <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
+        <article class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>">
+          <%= flow_thumbnail_link(item) %>
+          <%= flow_text_link(item) %>
+          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
+        </article>
+      <% else %>
+        <article class="flow-item flow-page" aria-label="TODO-need-editable-label" id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
+          <%= flow_thumbnail_link(item) %>
+          <%= flow_text_link(item) %>
+          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
+        </article>
+      <% end %>
+    <% end %>
+
+  <% end %>
+<% end %>

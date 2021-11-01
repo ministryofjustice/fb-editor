@@ -18,12 +18,9 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const createElement = utilities.createElement;
 const uniqueString = utilities.uniqueString;
 const Question = require('./question');
 const ActivatedMenu = require('./component_activated_menu');
-const editableComponent = require('./editable_components');
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";

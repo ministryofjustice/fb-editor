@@ -16,42 +16,53 @@
  **/
 
 
-const ActivatedDialog = require('./component_activated_dialog');
+const FormDialog = require('./component_dialog_form');
+const DialogActivator = require('./component_dialog_activator');
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 
 
-class ActivatedFormDialog extends ActivatedDialog {
-  constructor($form, config) {
-    var $errors = $form.find(".govuk-error-message");
-    $form.before(config.activator); // We need to move before invoking any jQueryUI dialog.
+/* See jQueryUI Dialog for config options (all are passed straight in).
+ *
+ * Extra config options specific to this enhancement
+ * config.onOk takes a function to run when 'Ok' button is activated.
+ *
+ * @$node  (jQuery node) Form element found in template that should be enhanced.
+ * @config (Object) Configurable key/value pairs.
+ **/
+class ActivatedFormDialog extends FormDialog {
+  constructor($node, config) {
+    var conf = mergeObjects({
+      classes: {},
+      selectorErrors: ".error"
+    }, config);
 
-    super($form, mergeObjects( config, {
+    var $marker = $("<span></span>");
+    var $errors = $node.find(conf.selectorErrors);
+
+    $node.before($marker);
+    super($node, mergeObjects( config, {
       autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
-      okText: config.activator.val(),
-      activator: config.activator,
-      onOk: () => {
-        this.$form.submit();
-      },
-      onClose: () => {
-        this.clearErrors();
-      }
+      removeErrorsClasses: conf.removeErrorClasses,
+      selectorErrors: conf.selectorErrors
     }));
 
+    var activator = new DialogActivator(conf.$activator, {
+      dialog: this,
+      activatorText: conf.activatorText,
+      classes: conf.classes["ui-activator"],
+      $target: $marker
+    });
+
+    $marker.remove();
+
     // Change inherited class name to reflect this Class
-    $form.parents(".ActivatedDialog")
-      .removeClass("ActivatedDialog")
+    $node.parents(".FormDialog")
+      .removeClass("FormDialog")
       .addClass("ActivatedFormDialog");
 
-    this.$form = $form;
-    this.$errors = $errors;
-  }
-
-  clearErrors() {
-    this.$errors.parents().removeClass("govuk-form-group--error");
-    this.$errors.remove(); // Remove from DOM (includes removing all jQuery data)
-    this.$errors = $(); // Make sure nothing is left.
+    this.activator = activator;
   }
 }
 

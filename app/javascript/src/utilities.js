@@ -187,7 +187,7 @@ function updateHiddenInputOnForm($form, name, content) {
  * @content (String) instance.content value added to input[hidden] field.
  **/
 function addHiddenInpuElementToForm($form, name, content) {
-  $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
+  var $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
   $form.prepend($input);
   $input.val(content);
 }
@@ -253,6 +253,20 @@ function stringInject(str, injections) {
 }
 
 
+/* Return the largest width found from items within a jQuery collection
+ **/
+function maxWidth($collection) {
+  var max = 0;
+  $collection.each(function() {
+    var width = $(this).outerWidth();
+    if(width > max) {
+      max = width;
+    }
+  });
+  return max;
+}
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -268,5 +282,6 @@ module.exports  = {
   property: property,
   isBoolean: isBoolean,
   updateDomByApiRequest:updateDomByApiRequest,
-  stringInject: stringInject
+  stringInject: stringInject,
+  maxWidth: maxWidth
 }

@@ -1,3 +1,6 @@
+<%# ----------------------------------------------------------------------------------------------------- %>
+<%# TODO: update template when removing BRANCHING flag %>
+
 <%= link_to t('actions.preview_form'),
   preview_service_path(service.service_id),
   class: 'govuk-button fb-govuk-button fb-preview-button',
@@ -5,152 +8,87 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
-  <% if ENV['BRANCHING'] == 'enabled' %>
-  <div class='govuk-!-margin-bottom-10'>
-    <% service.flow.each do |uuid, flow| %>
-      <% if flow['_type'] == 'flow.branch' %>
-        | <%= link_to flow['title'] || 'Untitled Branch', edit_branch_path(service.service_id, uuid) %> |
-      <% end %>
-    <% end %>
-  </div>
-  <% end %>
-
-<div id="form-overview">
-  <div class="container">
-    <% service.pages.each do |page| %>
-      <section class="form-step" aria-label="<%= t('aria.' + page.type) %>">
-
-        <%= flow_thumbnail(page) %>
-
-        <ul class="govuk-navigation component-activated-menu"
-            data-activator-text="<%= t('pages.actions') %>"
-            data-activator-classname="form-step_button"
-            data-component="PageActionMenu"
-            data-page-heading="<%= page.title %>"
-            data-uuid="<%= page._uuid %>">
-          <li data-action="edit">
-            <%= link_to t('actions.edit_page'),
-            edit_page_path(service.service_id, page.uuid) %>
-          </li>
-          <li data-action="preview">
-            <%= link_to t('actions.preview_page'),
-            File.join(preview_service_path(service.service_id), page.url),
-            target: '_blank' %>
-          </li>
-          <% unless page.end_of_route? %>
-            <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
-          <% end %>
-          <li data-action="delete">
-            <% unless page.type == 'page.start' %>
-              <%= link_to t('actions.delete_page'),
-                page_path(service.service_id, page.uuid),
-                method: :delete,
-              class: 'destructive delete' %>
-            <% end %>
-          </li>
-          <% if ENV['BRANCHING'] == 'enabled' %>
-            <% unless page.end_of_route? %>
-              <li data-action="edit">
-                <%= link_to t('services.branch'),
-                  new_branches_path(service.service_id, page.uuid) %>
-              </li>
-            <% end %>
-            <% unless page.end_of_route? %>
-              <li data-action="edit">
-                <%= link_to t('actions.change_destination'),
-                  new_api_service_flow_destination_path(service.service_id, page.uuid) %>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-
-        <%= link_to edit_page_path(service.service_id, page.uuid), class: 'govuk-link' do %>
-           <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
-           <%= page.url %>
-        <% end %>
-      </section>
-    <% end %>
-
-    <ul class="component-activated-menu govuk-navigation"
-        data-activated-menu-container-id="ActivatedMenu_AddPage"
-        data-activator-classname="form-overview_button"
-        data-activator-text="<%= t('pages.create') %>"
-        data-component="PageAdditionMenu">
-      <li>
-        <span>Single question page</span>
-        <ul class="govuk-navigation">
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="text">Text</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="textarea">Textarea</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="number">Number</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="date">Date</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="radios">Radio buttons</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="checkboxes">Checkboxes</a></li>
-          <li><a href="#add-page"
-                 data-page-type="singlequestion"
-                 data-component-type="upload">File upload</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#add-page" data-page-type="multiplequestions">
-          Multiple question page
-        </a>
-      </li>
-      <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
-      <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
-      <li><a href="#add-page" data-page-type="content">Content page</a></li>
-      <% if ENV['BRANCHING'] == 'enabled' %>
-        <li><a href="#add-page" data-page-type="exit">Exit page</a></li>
-      <% end %>
-    </ul>
-
-    <div class="component-dialog-form"
-         id="new-page-create-dialog"
-         data-activator-text="<%= t('pages.create') %>"
-         data-cancel-text="<%= t('pages.cancel') %>"
-         data-component="PageCreateDialog">
-      <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-        <%= f.hidden_field :add_page_after, value: "" %>
-        <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
-        <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
-        <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
-          <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
-          <span class="govuk-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>
-          <% f.object.errors.each do |error|  %>
-            <span class="govuk-error-message"><%= error.message %></span>
-          <% end %>
-          <%= f.text_field :page_url, class: "govuk-input"  %>
-        </div>
-        <%= f.submit 'Add page', class: "govuk-button fb-govuk-button" %>
+<%# Flow overview layout for pages, branchs, and conditions %>
+<section id="flow-overview">
+  <% @pages_flow.each do |collection| %>
+    <div class="column">
+      <% collection.each_with_index do |item, index| %>
+        <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
       <% end %>
     </div>
-  </div>
-</div>
-
-  <% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
-  <div class="govuk-!-margin-top-10">
-    <h2 class="govuk-heading-m"><%= t('pages.flow.detached') %></h2>
-    <% @detached_flows.each do |detached_flow| %>
-      <% detached_flow.each do |column| %>
-        <% column.each do |flow| %>
-          <ul class="govuk-navigation">
-            <li><%= link_to flow[:title], detached_edit_link(flow) %></li>
-          </ul>
-        <% end %>
-      <% end %>
-    <% end %>
-  </div>
   <% end %>
+</section>
 
+<% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
+  <section id="flow-detached" data-component="Expander">
+    <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
+    <% @detached_flows.each do |detached_flow| %>
+      <div class="flow-detached-group">
+        <% detached_flow.each do |column| %>
+          <div class="column">
+            <% column.each_with_index do |flow, index| %>
+              <%= render partial: 'services/flow_layout', locals: { item: flow, index: index } %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+<% end %>
+
+
+<%# Section for static/standalone pages (e.g. T&Cs) %>
 <%= render partial: 'partials/standalone' %>
+
+
+<%# statically written menu template used for each item menu %>
+<ul class="component-activated-menu govuk-navigation"
+    data-activator-classname="flow-add-page-button"
+    data-activator-text="<%= t('pages.create') %>"
+    data-component="PageAdditionMenu">
+  <li>
+    <span>Single question page</span>
+    <ul class="govuk-navigation">
+      <li data-page-type="singlequestion"
+          data-component-type="text"><a href="#add-page">Text</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="number"><a href="#add-page">Number</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="date"><a href="#add-page">Date</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="upload"><a href="#add-page">File upload</a></li>
+    </ul>
+  </li>
+  <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
+  <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
+  <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
+  <li data-page-type="content"><a href="#add-page">Content page</a></li>
+  <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
+</ul>
+
+<%# Add page component dialog template %>
+<div class="component-dialog-form"
+     data-component="PageAdditionDialog"
+     data-cancel-text="<%= t('pages.cancel') %>">
+  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+    <%= f.hidden_field :add_page_after, value: f.object.add_page_after.nil? ? '' : f.object.add_page_after %>
+    <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
+    <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
+    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      <span class="govuk-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>
+      <% f.object.errors.each do |error|  %>
+        <span class="govuk-error-message"><%= error.message %></span>
+      <% end %>
+      <%= f.text_field :page_url, class: "govuk-input"  %>
+    </div>
+
+    <%= f.submit t('pages.create'), class: "govuk-button fb-govuk-button" %>
+  <% end %>
+</div>

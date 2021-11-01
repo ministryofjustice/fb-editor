@@ -1,20 +1,17 @@
-<div class="component-dialog-form"
-     data-component="PageCreateDialog">
-  <div class="govuk-form-group ">
-    <h2 class="govuk-heading-m">
-      <%= t('pages.delete_modal.delete_page', title: @page.title) %>
-    </h2>
+<div class="component component-dialog component-dialog-api-request dialog-delete"
+     data-component="DialogApiRequest">
 
-    <span class="govuk-hint">
-      <%= t('pages.delete_modal.delete_branch_destination_page_message') %>
-    </span>
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('dialogs.heading_delete', label: @page.title) %>
+  </h3>
+  <p data-node="content">
+    <%= t('pages.delete_modal.delete_branch_destination_page_message') %>
+  </p>
 
-    <div class="govuk-form-group ">
-      <%= link_to t('pages.delete_modal.delete_and_update_branching'),
-              page_path(service.service_id, @page.uuid),
-              method: :delete, class: 'govuk-button destructive delete' %>
-
-      <%= link_to t('pages.cancel'), class: 'govuk-button' %>
-    </div>
+  <div class="ui-dialog-buttonset">
+    <%= link_to t('pages.delete_modal.delete_and_update_branching'),
+            page_path(service.service_id, @page.uuid),
+            method: :delete, class: 'govuk-button govuk-button--warning ui-button' %>
+    <button class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.button_cancel') %></button>
   </div>
 </div>
