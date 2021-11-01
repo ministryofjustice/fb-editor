@@ -54,9 +54,11 @@ class PagesFlow
   end
 
   def convert_flow_object(flow)
-    send(flow.type.gsub('flow.', ''), flow)
-  rescue NoMethodError
-    raise NotImplementedError, "'#{flow.type}' method not implemented"
+    flow_method_name = flow.type.gsub('flow.', '')
+    send(flow_method_name, flow)
+  rescue NoMethodError => e
+    raise NotImplementedError,
+          "'#{flow_method_name}' method not implemented for #{self}. Detail: #{e.message}"
   end
 
   def base_props(obj)
