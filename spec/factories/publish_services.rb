@@ -12,6 +12,14 @@ FactoryBot.define do
       status { 'completed' }
     end
 
+    trait :unpublishing do
+      status { 'unpublishing' }
+    end
+
+    trait :unpublished do
+      status { 'unpublished' }
+    end
+
     trait :dev do
       deployment_environment { 'dev' }
     end

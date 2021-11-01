@@ -31,7 +31,9 @@ RSpec.describe PublishService, type: :model do
           'pre_publishing',
           'publishing',
           'post_publishing',
-          'completed'
+          'completed',
+          'unpublishing',
+          'unpublished'
         ).for(:status)
       end
 
@@ -46,6 +48,46 @@ RSpec.describe PublishService, type: :model do
       it 'do not allow blank' do
         should_not allow_values('').for(:service_id)
       end
+    end
+  end
+
+  describe '#completed?' do
+    let(:publish_service) do
+      create(:publish_service, :dev, :completed)
+    end
+
+    it 'returns true' do
+      expect(publish_service.completed?).to be_truthy
+    end
+  end
+
+  describe '#queued?' do
+    let(:publish_service) do
+      create(:publish_service, :dev, :queued)
+    end
+
+    it 'returns true' do
+      expect(publish_service.queued?).to be_truthy
+    end
+  end
+
+  describe '#unpublishing?' do
+    let(:publish_service) do
+      create(:publish_service, :dev, :unpublishing)
+    end
+
+    it 'returns true' do
+      expect(publish_service.unpublishing?).to be_truthy
+    end
+  end
+
+  describe '#unpublished?' do
+    let(:publish_service) do
+      create(:publish_service, :dev, :unpublished)
+    end
+
+    it 'returns true' do
+      expect(publish_service.unpublished?).to be_truthy
     end
   end
 end
