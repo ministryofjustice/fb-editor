@@ -32,6 +32,7 @@ class Expander {
     var conf = utilities.mergeObjects({
       activator_text: "Toggle", // Text for any self-created activator button.
       auto_open: false, // Set whether open on creation.
+      duration: 0, // Number determining how long the animation will run
       $activator: null // Pass in the jQuery element you want to toggle open/close.
     }, config);
 
@@ -66,14 +67,14 @@ class Expander {
 
   open() {
     this.$node.addClass("open");
-    this.$container.slideDown();
+    this.$container.slideDown({ duration: this._config.duration });
     this.$container.attr("aria-expanded", true);
     this._config.opened = true;
   }
 
   close() {
     this.$node.removeClass("open");
-    this.$container.slideUp();
+    this.$container.slideUp({ duration: this._config.duration });
     this.$container.attr("aria-expanded", false);
     this._config.opened = false;
   }
