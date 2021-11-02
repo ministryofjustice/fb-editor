@@ -215,6 +215,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
+          - name: PINGDOM_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: pingdom_token
+          - name: PINGDOM_ALERT_INTEGRATION_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: pingdom_alert_integration_id
       volumes:
         - name: tmp-files
           emptyDir: {}
