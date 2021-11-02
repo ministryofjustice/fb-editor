@@ -35,6 +35,7 @@ en:
     button_delete_condition: 'Delete condition'
     button_delete_branch: 'Delete branch'
     button_delete_option: 'Delete option'
+    button_delete_component: 'Delete component'
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
     button_understood: 'Understood'
@@ -170,7 +171,7 @@ en:
       remove: 'Delete...'
       required: 'Required...'
     dialog:
-      heading_remove: "Delete the component? #{label}"
+      heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
       affirmative: 'Yes'
       negative: 'No'

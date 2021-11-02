@@ -154,7 +154,7 @@ class DataController {
 
 
 /* Gives add component buttons functionality to select a component type
- * from a drop menu, and update the 'save' form by activation of a 
+ * from a drop menu, and update the 'save' form by activation of a
  * global document event.
  * (see addComponentMenuSelection function)
  **/
@@ -219,7 +219,7 @@ function addQuestionMenuListeners(view) {
     var html = $(templateContent).filter("[data-node=remove]").text();
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, question.$heading.text()),
-      ok: view.text.dialogs.button_delete_option
+      ok: view.text.dialogs.button_delete_component
       }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
@@ -261,7 +261,7 @@ function addContentMenuListeners(view) {
     var html = $(templateContent).filter("[data-node=remove]").text();
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
-      ok: view.text.dialogs.button_delete_option
+      ok: view.text.dialogs.button_delete_component
       }, function() {
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view

@@ -59,7 +59,7 @@ feature 'Edit exit pages' do
     and_I_edit_the_page(url: default_exit_page_title)
     then_I_should_see_the_component(content_component)
     when_I_want_to_select_component_properties('.output', content_component)
-    and_I_want_to_delete_a_component
+    and_I_want_to_delete_a_content_component
     then_I_should_not_see_my_content(content_component)
   end
 

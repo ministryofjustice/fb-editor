@@ -53,7 +53,7 @@ feature 'Edit multiple questions page' do
     and_I_change_the_text_component(text_component_question)
     when_I_save_my_changes
     when_I_want_to_select_component_properties('h2', text_component_question)
-    and_I_want_to_delete_a_component
+    and_I_want_to_delete_a_component(text_component_question)
     when_I_save_my_changes
     and_the_text_component_is_deleted
   end
@@ -67,7 +67,7 @@ feature 'Edit multiple questions page' do
     then_I_should_see_my_content(content_component)
 
     when_I_want_to_select_component_properties('.output', content_component)
-    and_I_want_to_delete_a_component
+    and_I_want_to_delete_a_content_component
     when_I_save_my_changes
     then_I_should_not_see_my_content(content_component)
   end
