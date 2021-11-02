@@ -24,26 +24,26 @@ class EditorApp < SitePrism::Page
   element :login_continue_button, :button, 'Log In'
 
   element :service_name, '#form-navigation-heading'
-  element :name_field, :field, 'Give your form a name'
-  element :create_service_button, :button, 'Create a new form'
+  element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
+  element :create_service_button, :button, I18n.t('services.create')
 
   element :footer_pages_link, 'h2', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'cookies'
 
-  element :pages_link, :link, 'Pages'
-  element :settings_link, :link, 'Settings'
-  element :form_details_link, :link, 'Form details'
-  element :form_name_field, :field, 'Form name'
-  element :save_button, :button, 'Save'
-  element :preview_form_button, :link, 'Preview form'
+  element :pages_link, :link, I18n.t('pages.name')
+  element :publishing_link, :link, I18n.t('publish.name')
+  element :settings_link, :link, I18n.t('settings.name')
+  element :form_details_link, :link, I18n.t('settings.form_information')
+  element :form_name_field, :field, I18n.t('settings.form_information_label')
+  element :save_button, :button, I18n.t('actions.save')
+  element :preview_form_button, :link, I18n.t('actions.preview_form')
 
-  element :submission_settings_link, :link, 'Submission settings'
-  element :send_by_email_link, :link, 'Send by email'
+  element :submission_settings_link, :link, I18n.t('settings.submission.name')
 
-  element :page_url_field, :field, 'Give your page a short name'
+  element :page_url_field, :field, I18n.t('activemodel.attributes.page_creation.page_url')
   element :new_page_form, '#new_page', visible: false
 
-  element :add_page, :button, 'Add page'
+  element :add_page, :button, I18n.t('pages.create')
   element :add_single_question,
           :xpath,
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Single question page')]"

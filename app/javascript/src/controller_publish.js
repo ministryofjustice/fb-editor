@@ -72,8 +72,10 @@ class PublishForm {
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
       cancelText: app.text.dialogs.button_cancel,
-      okText: $submit.val(),
-      activator: $submit
+      activatorText: $submit.val(),
+      classes: {
+        "ui-activator": "govuk-button fb-govuk-button"
+      }
     });
 
     this.$node = $node;

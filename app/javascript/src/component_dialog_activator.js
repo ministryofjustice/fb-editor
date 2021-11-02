@@ -12,26 +12,35 @@
  **/
 
 
+const utilities = require('./utilities');
+
+
 /* @node (jQuery element) Existing element to use as an Activator (one will be generated if null).
  * @config (Object) Configurable key/value pairs, e.g.
  *                  {
  *                    dialog: // Dialog component to be controlled by the activator (Required)
  *                    classes: // CSS class names to apply to the activator (if generating one)
- *                    activatorText: // Used if an Activator needs to be generated,
+ *                    text: // Used if an Activator needs to be generated,
  *                    $target: // Where to put a generated Activator $target.before($activator)
  *                  }
  **/
 class DialogActivator {
   constructor($node, config) {
+    var conf = utilities.mergeObjects({
+      text: "",
+      classes: ""
+    }, config);
+
     if(!$node || $node.length < 1) {
-      $node = createActivator(config.$target, config.activatorText, config.classes);
+      $node = createActivator(conf.$target, conf.text);
     }
 
+    $node.addClass(config.classes);
     $node.on( "click", () => {
-      config.dialog.open();
+      conf.dialog.open();
     });
 
-    this.dialog = config.dialog;
+    this.dialog = conf.dialog;
     this.$node = $node;
   }
 }
@@ -41,10 +50,9 @@ class DialogActivator {
  * @text    (String) Text that will show on the button.
  * @classes (String) Classes added to button.
  **/
-function createActivator($target, text, classes) {
+function createActivator($target, text) {
   var $activator = $("<button>\</button>");
   $activator.text((text || "open dialog")); 
-  $activator.addClass(classes);
   $target.before($activator);
   return $activator;
 }
