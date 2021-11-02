@@ -381,10 +381,16 @@ function layoutDetachedItemsOveriew() {
   // Add required scrolling to layout groups.
   $(".flow-detached-group").each(function() {
     var $group = $(this);
+    var $expander = $(".Expander_container");
+    var display = $expander.css("display");
+    $expander.css("display", "block"); // display:none objects have no height in jQuery
+
     positionFlowItems($group);
     positionConditionsByDestination($group);
     adjustOverviewHeight($group);
     applyOverviewScroll($group);
+
+    $expander.css("display", display); // Reset to original state
   });
 }
 
