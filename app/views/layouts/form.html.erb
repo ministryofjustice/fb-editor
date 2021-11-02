@@ -14,7 +14,8 @@
     <%= render partial: 'partials/header' %>
     <%= render partial: 'partials/form-navigation' %>
 
-    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m <%= "#{controller_name}-#{action_name}" %>"
+          id="main-content" role="main">
 
       <%= yield %>
     </main>

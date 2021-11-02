@@ -52,6 +52,9 @@ ServicesController.edit = function() {
 
   layoutFormFlowOverview();
   layoutDetachedItemsOveriew();
+
+  // Reverse the Brief flash of content quickfix.
+  $("#main-content").css("visibility", "visible");
 }
 
 

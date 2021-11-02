@@ -42,6 +42,16 @@ html {
 #main-content {
   position: relative;
   min-height: 55vh;
+
+  // Quickfix for Brief flash of content not ready for display.
+  // This can be reversed when slow or view reliant JS has
+  // finished running. We're using the controller name + action
+  // so we can use it only where actually needed. Find the
+  // corresponding JS controller+action function to see where it
+  // is turned off/reversed.
+  &.services-edit {
+    visibility: hidden;
+  }
 }
 
 
