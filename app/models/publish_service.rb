@@ -36,4 +36,8 @@ class PublishService < ApplicationRecord
   def unpublished?
     status == 'unpublished'
   end
+
+  def published?
+    !(unpublishing? || unpublished?)
+  end
 end

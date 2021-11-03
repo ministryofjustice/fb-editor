@@ -50,7 +50,7 @@ class PublishController < FormController
     PublishService.where(
       service_id: service_id,
       deployment_environment: environment
-    ).last&.completed?
+    ).last&.published?
   end
 
   def update_form_objects
