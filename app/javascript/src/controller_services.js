@@ -45,13 +45,20 @@ class ServicesController extends DefaultController {
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
+  var $flowOverview = $("#flow-overview");
+  var $flowDetached = $("#flow-detached");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
 
-  layoutFormFlowOverview();
-  layoutDetachedItemsOveriew();
+  if($flowOverview.length) {
+    layoutFormFlowOverview($flowOverview);
+  }
+
+  if($flowDetached.length) {
+    layoutDetachedItemsOveriew($flowDetached);
+  }
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").css("visibility", "visible");
@@ -341,8 +348,7 @@ function createFlowItemMenus(view) {
  * --------------------
  * Create the main overview layout for form to get the required design.
 **/
-function layoutFormFlowOverview() {
-  var $overview = $("#flow-overview");
+function layoutFormFlowOverview($overview) {
   positionFlowItems($overview);
   positionConditionsByDestination($overview);
   adjustOverviewHeight($overview);
@@ -360,8 +366,7 @@ function layoutFormFlowOverview() {
  * to jump through a couple hoops by changing the section width and
  * compensating for that with positioning the section title.
 **/
-function layoutDetachedItemsOveriew() {
-  var $overview = $("#flow-detached");
+function layoutDetachedItemsOveriew($overview) {
   var $title = $("h2", $overview);
   var offsetLeft = $overview.offset().left;
 
@@ -588,8 +593,6 @@ function adjustOverviewScrollDimensions($overview, $container) {
 
     $container.css("width", maxWidth + "px");
   }
-
-
 }
 
 
