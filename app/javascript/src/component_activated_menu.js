@@ -64,10 +64,10 @@ class ActivatedMenu {
   // @position (Object) Optional (jQuery position) object.
   open(position) {
     ActivatedMenu.setMenuOpenPosition.call(this, position);
-    this.activator.$node.addClass("active");
-    this.activator.$node.attr("aria-expanded", true);
     this.container.$node.show();
     this.$node.find(".ui-menu-item:first > :first-child").focus();
+    this.activator.$node.addClass("active");
+    this.activator.$node.attr("aria-expanded", true);
     this._state.open = true;
   }
 
