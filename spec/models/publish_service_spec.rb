@@ -90,4 +90,36 @@ RSpec.describe PublishService, type: :model do
       expect(publish_service.unpublished?).to be_truthy
     end
   end
+
+  describe '#published?' do
+    context 'when published' do
+      let(:publish_service) do
+        create(:publish_service, :dev, :completed)
+      end
+
+      it 'returns true' do
+        expect(publish_service.published?).to be_truthy
+      end
+    end
+
+    context 'when unpublishing' do
+      let(:publish_service) do
+        create(:publish_service, :dev, :unpublishing)
+      end
+
+      it 'returns false' do
+        expect(publish_service.published?).to be_falsey
+      end
+    end
+
+    context 'when unpublished' do
+      let(:publish_service) do
+        create(:publish_service, :dev, :unpublished)
+      end
+
+      it 'returns false' do
+        expect(publish_service.published?).to be_falsey
+      end
+    end
+  end
 end
