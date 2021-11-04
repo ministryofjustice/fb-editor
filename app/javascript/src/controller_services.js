@@ -45,19 +45,19 @@ class ServicesController extends DefaultController {
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
-  var $flowOverview = $("#flow-overview");
-  var $flowDetached = $("#flow-detached");
+  view.$flowOverview = $("#flow-overview");
+  view.$flowDetached = $("#flow-detached");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
 
-  if($flowOverview.length) {
-    layoutFormFlowOverview($flowOverview);
+  if(view.$flowOverview.length) {
+    layoutFormFlowOverview(view);
   }
 
-  if($flowDetached.length) {
-    layoutDetachedItemsOveriew($flowDetached);
+  if(view.$flowDetached.length) {
+    layoutDetachedItemsOveriew(view);
   }
 
   // Reverse the Brief flash of content quickfix.
@@ -348,13 +348,18 @@ function createFlowItemMenus(view) {
  * --------------------
  * Create the main overview layout for form to get the required design.
 **/
-function layoutFormFlowOverview($overview) {
-  positionFlowItems($overview);
-  positionConditionsByDestination($overview);
-  positionAddPageButton();
-  adjustOverviewHeight($overview);
-  applyArrowPaths($overview);
-  applyOverviewScroll($overview);
+function layoutFormFlowOverview(view) {
+  positionFlowItems(view.$flowOverview);
+  positionConditionsByDestination(view.$flowOverview);
+
+  // TEMPORARY: BRANCHING FEATURE FLAG
+  if(view.features.branching) {
+    positionAddPageButton();
+  }
+
+  adjustOverviewHeight(view.$flowOverview);
+  applyArrowPaths(view.$flowOverview);
+  applyOverviewScroll(view.$flowOverview);
 }
 
 
@@ -367,12 +372,12 @@ function layoutFormFlowOverview($overview) {
  * to jump through a couple hoops by changing the section width and
  * compensating for that with positioning the section title.
 **/
-function layoutDetachedItemsOveriew($overview) {
-  var $title = $("h2", $overview);
-  var offsetLeft = $overview.offset().left;
+function layoutDetachedItemsOveriew(view) {
+  var $title = $("h2", view.$flowDetached);
+  var offsetLeft = view.$flowDetached.offset().left;
 
   // Expand the width of the section.
-  $overview.css({
+  view.$flowDetached.css({
     left:  ~(offsetLeft),
     position: "relative",
     width: window.innerWidth
@@ -385,7 +390,7 @@ function layoutDetachedItemsOveriew($overview) {
   });
 
   // Add required scrolling to layout groups.
-  $(".flow-detached-group").each(function() {
+  $(".flow-detached-group", view.$flowDetached).each(function() {
     var $group = $(this);
     var $expander = $(".Expander_container");
     var display = $expander.css("display");
@@ -652,6 +657,7 @@ function positionAddPageButton() {
       $item.attr("data-next", id);
       $button.attr("id", id);
       $button.css({
+        display: "inline-block",
         left: Number($item.position().left + $item.outerWidth() + SPACING_X) + "PX",
         position: "absolute",
         top: Number(($item.height() / 2) - ($button.outerHeight() / 2)) + "px"

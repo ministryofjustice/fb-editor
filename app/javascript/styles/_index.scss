@@ -573,7 +573,11 @@ html {
 }
 
 .flow-add-page-button {
+  // TEMPORARY: BRANCHING FEATURE FLAG
+  // This should be display:none only but the other css is required for supporting the
+  // old style view of Add Page button functionality due to shared branching on/off code.
   border-radius: 0;
+  display: none;
   height: auto;
   padding: 5px 10px;
   text-indent: 0;
