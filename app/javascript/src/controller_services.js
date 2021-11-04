@@ -351,6 +351,7 @@ function createFlowItemMenus(view) {
 function layoutFormFlowOverview($overview) {
   positionFlowItems($overview);
   positionConditionsByDestination($overview);
+  positionAddPageButton();
   adjustOverviewHeight($overview);
   applyArrowPaths($overview);
   applyOverviewScroll($overview);
@@ -633,6 +634,31 @@ function applyArrowPaths($overview) {
 }
 
 
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ *
+ **/
+function positionAddPageButton() {
+  const SPACING_X = 100; // Same as flow item spacing
+  var $overview = $("#flow-overview");
+  var $button = $(".flow-add-page-button");
+  var $items = $(".flow-item", $overview).not("[data-next]");
+
+  $overview.append($button);
+  $items.each(function() {
+    var $item = $(this);
+    var id = utilities.uniqueString("add-page-");
+    if($item.position().top == 0) {
+      $item.attr("data-next", id);
+      $button.attr("id", id);
+      $button.css({
+        left: Number($item.position().left + $item.outerWidth() + SPACING_X) + "PX",
+        position: "absolute",
+        top: Number(($item.height() / 2) - ($button.outerHeight() / 2)) + "px"
+      });
+    }
+  });
+}
 
 
 module.exports = ServicesController;
