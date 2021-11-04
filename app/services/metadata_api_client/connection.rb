@@ -16,7 +16,7 @@ module MetadataApiClient
         conn.options[:open_timeout] = TIMEOUT
         conn.options[:timeout] = TIMEOUT
 
-        conn.authorization :Bearer, service_access_token
+        conn.request :authorization, 'Bearer', service_access_token
       end
     end
 
