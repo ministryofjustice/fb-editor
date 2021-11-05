@@ -614,8 +614,10 @@ function adjustOverviewScrollDimensions($overview, $container) {
  * required for a full branching view.
  **/
 function applyArrowPaths($overview) {
-  // Note: flow-condition element do not currently work with this.
-  $overview.find("[data-next]").not(".flow-condition").each(function() {
+  // Note:
+  // - flow-condition element do not currently work with this.
+  // - flow-branch and flow-spacer causing issue when branch is off and the Add Page functionality is trying to work.
+  $overview.find("[data-next]").not(".flow-condition, .flow-branch, .flow-spacer").each(function() {
     var $this = $(this);
     var next = $this.data("next");
     var fromX = $this.position().left + $this.outerWidth() + 1; // + 1 for design spacing
