@@ -53,6 +53,7 @@ class ActivatedMenu {
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
     this.$node.data("instance", this); // Add reference for instance from original node.
+    this.container.$node.css("width", this.$node.width() + "px"); // Required for alternative positioning.
 
     ActivatedMenu.bindMenuEventHandlers.call(this);
     ActivatedMenu.setMenuOpenPosition.call(this);
@@ -63,7 +64,24 @@ class ActivatedMenu {
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
   open(position) {
-    ActivatedMenu.setMenuOpenPosition.call(this, position);
+    if(position) {
+      // Use the passed postion values, without question.
+      ActivatedMenu.setMenuOpenPosition.call(this, position);
+    }
+    else {
+      // Try to use the default position values, which will
+      // also attempt to figure out if there's enough room
+      // for the menu to show on the right of the screen.
+      // If there's not, it will try to reverse things.
+      // Note: The underlying jQueryUI menu widget should
+      //       be able to do this but we have a wrapper
+      //       element on our menu (see container.$node).
+      //       We have to manually move the container to
+      //       set the desired position.
+      ActivatedMenu.calculateMenuOpenPosition.call(this);
+    }
+
+    this.container.$node.position(this._state.position);
     this.container.$node.show();
     this.$node.find(".ui-menu-item:first > :first-child").focus();
     this.activator.$node.addClass("active");
@@ -137,17 +155,47 @@ ActivatedMenu.bindMenuEventHandlers = function() {
 }
 
 /* Private function
- * Positions the menu in relation to the activator  if received
- * a setting in passed configuration (this._config.position).
- * Uses the jQueryUI position() utility function to set the values.
+ * Sets the menu position to the passed setting or uses the
+ * default setting (which can also be changed in constructor
+ * by passing in configuration at instantiation time.
+ *
+ * Uses the jQueryUI position() utility function for the
+ * values to set.
+ * e.g. @position (Object) {
+ *                           my: "left top",
+ *                           at: "left bottom",
+ *                           of: some_element_here
+ *                         }
  **/
 ActivatedMenu.setMenuOpenPosition = function(position) {
   var pos = position || {};
-  this.container.$node.position({
+  this._state.position = {
     my: (pos.my || this._position.my),
     at: (pos.at || this._position.at),
     of: (pos.of || this._position.of)
-  });
+  }
+}
+
+/* Private function
+ * Positions the menu in relation to the activator and default
+ * position values, but tries to calculate if needs to reverse
+ * the open position based on if the activator is too far right.
+ **/
+ActivatedMenu.calculateMenuOpenPosition = function() {
+  var activatorLeft = this.activator.$node.offset().left;
+  var rightBoundary = window.innerWidth;
+  var menuWidth = this.$node.outerWidth();
+
+  if(rightBoundary - activatorLeft < menuWidth) {
+    ActivatedMenu.setMenuOpenPosition.call(this, {
+      my: "right top",
+      at: "right bottom",
+      of: this.activator.$node
+    });
+  }
+  else {
+    ActivatedMenu.setMenuOpenPosition.call(this);
+  }
 }
 
 /* Private function
