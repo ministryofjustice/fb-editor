@@ -7,7 +7,7 @@ class MetricsController < ActionController::Base
       active_sessions_stats
     ].flatten
 
-    render 'metrics/show.text'
+    render 'metrics/show'
   end
 
   def filter_to_string(filter)
