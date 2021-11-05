@@ -353,7 +353,7 @@ function layoutFormFlowOverview(view) {
   positionConditionsByDestination(view.$flowOverview);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
-  if(view.features.branching) {
+  if(!view.features.branching) {
     positionAddPageButton();
   }
 
