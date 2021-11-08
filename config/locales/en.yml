@@ -63,8 +63,8 @@ en:
     header:
       forms: Your forms
       sign_out: Sign out %{user_name}
-      support: "Support"
-      supportURL: "https://moj-forms.service.justice.gov.uk/contact/"
+      user_guide: "User guide"
+      user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
   home:
     show:
       title: MoJ Forms
