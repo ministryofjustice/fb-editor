@@ -45,19 +45,19 @@ class ServicesController extends DefaultController {
  **/
 ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
-  var $flowOverview = $("#flow-overview");
-  var $flowDetached = $("#flow-detached");
+  view.$flowOverview = $("#flow-overview");
+  view.$flowDetached = $("#flow-detached");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
 
-  if($flowOverview.length) {
-    layoutFormFlowOverview($flowOverview);
+  if(view.$flowOverview.length) {
+    layoutFormFlowOverview(view);
   }
 
-  if($flowDetached.length) {
-    layoutDetachedItemsOveriew($flowDetached);
+  if(view.$flowDetached.length) {
+    layoutDetachedItemsOveriew(view);
   }
 
   // Reverse the Brief flash of content quickfix.
@@ -348,12 +348,18 @@ function createFlowItemMenus(view) {
  * --------------------
  * Create the main overview layout for form to get the required design.
 **/
-function layoutFormFlowOverview($overview) {
-  positionFlowItems($overview);
-  positionConditionsByDestination($overview);
-  adjustOverviewHeight($overview);
-  applyArrowPaths($overview);
-  applyOverviewScroll($overview);
+function layoutFormFlowOverview(view) {
+  positionFlowItems(view.$flowOverview);
+  positionConditionsByDestination(view.$flowOverview);
+
+  // TEMPORARY: BRANCHING FEATURE FLAG
+  if(!view.features.branching) {
+    positionAddPageButton();
+  }
+
+  adjustOverviewHeight(view.$flowOverview);
+  applyArrowPaths(view.$flowOverview);
+  applyOverviewScroll(view.$flowOverview);
 }
 
 
@@ -366,12 +372,12 @@ function layoutFormFlowOverview($overview) {
  * to jump through a couple hoops by changing the section width and
  * compensating for that with positioning the section title.
 **/
-function layoutDetachedItemsOveriew($overview) {
-  var $title = $("h2", $overview);
-  var offsetLeft = $overview.offset().left;
+function layoutDetachedItemsOveriew(view) {
+  var $title = $("h2", view.$flowDetached);
+  var offsetLeft = view.$flowDetached.offset().left;
 
   // Expand the width of the section.
-  $overview.css({
+  view.$flowDetached.css({
     left:  ~(offsetLeft),
     position: "relative",
     width: window.innerWidth
@@ -384,7 +390,7 @@ function layoutDetachedItemsOveriew($overview) {
   });
 
   // Add required scrolling to layout groups.
-  $(".flow-detached-group").each(function() {
+  $(".flow-detached-group", view.$flowDetached).each(function() {
     var $group = $(this);
     var $expander = $(".Expander_container");
     var display = $expander.css("display");
@@ -608,8 +614,10 @@ function adjustOverviewScrollDimensions($overview, $container) {
  * required for a full branching view.
  **/
 function applyArrowPaths($overview) {
-  // Note: flow-condition element do not currently work with this.
-  $overview.find("[data-next]").not(".flow-condition").each(function() {
+  // Note:
+  // - flow-condition element do not currently work with this.
+  // - flow-branch and flow-spacer causing issue when branch is off and the Add Page functionality is trying to work.
+  $overview.find("[data-next]").not(".flow-condition, .flow-branch, .flow-spacer").each(function() {
     var $this = $(this);
     var next = $this.data("next");
     var fromX = $this.position().left + $this.outerWidth() + 1; // + 1 for design spacing
@@ -633,6 +641,32 @@ function applyArrowPaths($overview) {
 }
 
 
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ *
+ **/
+function positionAddPageButton() {
+  const SPACING_X = 100; // Same as flow item spacing
+  var $overview = $("#flow-overview");
+  var $button = $(".flow-add-page-button");
+  var $items = $(".flow-item", $overview).not("[data-next]");
+
+  $overview.append($button);
+  $items.each(function() {
+    var $item = $(this);
+    var id = utilities.uniqueString("add-page-");
+    if($item.position().top == 0) {
+      $item.attr("data-next", id);
+      $button.attr("id", id);
+      $button.css({
+        display: "inline-block",
+        left: Number($item.position().left + $item.outerWidth() + SPACING_X) + "PX",
+        position: "absolute",
+        top: Number(($item.height() / 2) - ($button.outerHeight() / 2)) + "px"
+      });
+    }
+  });
+}
 
 
 module.exports = ServicesController;

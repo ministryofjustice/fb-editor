@@ -28,6 +28,7 @@ class DefaultController {
     var view = this;
     var $document = $(document);
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
+    this.features = app.features;
     this.page = app.page;
     this.text = app.text;
     this.dialog = createDialog.call(this);
