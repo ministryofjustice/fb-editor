@@ -11,7 +11,6 @@ feature 'New branch page' do
   end
 
   scenario 'when editing the branch page' do
-    skip
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
@@ -53,7 +52,6 @@ feature 'New branch page' do
   end
 
   scenario 'when editing with unconnected pages' do
-    skip
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
 
