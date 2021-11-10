@@ -12,7 +12,6 @@ feature 'Branching errors' do
   end
 
   scenario 'when no required fields are filled in' do
-    skip
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
@@ -25,7 +24,6 @@ feature 'Branching errors' do
   end
 
   scenario 'when the "Go to" field is not filled in' do
-    skip
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
@@ -74,7 +72,6 @@ feature 'Branching errors' do
   end
 
   scenario 'when there are two conditional objects to a branching point' do
-    skip
     given_I_add_all_pages_for_a_form_with_branching
     and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
