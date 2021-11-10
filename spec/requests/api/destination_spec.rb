@@ -9,7 +9,6 @@ RSpec.describe 'Destinations spec', type: :request do
       let(:invalid_destinations) do
         [
           'Service name goes here',
-          'Full name',
           'Confirmation'
         ]
       end
