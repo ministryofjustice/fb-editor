@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_18_140522) do
+ActiveRecord::Schema.define(version: 2021_11_10_204320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -85,6 +85,14 @@ ActiveRecord::Schema.define(version: 2021_10_18_140522) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["service_id", "deployment_environment"], name: "submission_settings_id_and_environment"
     t.index ["service_id"], name: "index_submission_settings_on_service_id"
+  end
+
+  create_table "uptime_checks", force: :cascade do |t|
+    t.uuid "service_id", null: false
+    t.string "check_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["service_id"], name: "index_uptime_checks_on_service_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
