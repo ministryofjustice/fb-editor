@@ -11,6 +11,12 @@ RSpec.describe Destination do
   let(:flow_uuid) { '9e1ba77f-f1e5-42f4-b090-437aa9af7f73' } # Full name
   let(:destination_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
 
+  describe '#title' do
+    it 'returns title of the page' do
+      expect(destination.title).to eq('Full name')
+    end
+  end
+
   describe '#change' do
     context 'when changing the flow object destination' do
       let(:version) { double(errors?: false, errors: [], metadata: updated_metadata) }

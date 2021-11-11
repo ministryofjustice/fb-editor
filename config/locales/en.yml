@@ -50,10 +50,11 @@ en:
     message_delete_branch: 'This cannot be undone'
     message_delete_condition: 'This cannot be undone'
     destination:
-      button_change: Change destination
-      label: 'Change destination'
-      hint: 'Update this connection to lead to the following page:'
-      text: 'The page that was previously following (and attached to it) will be moved to the unconnected pages'
+      button_change: Change next page
+      label: 'Change next page'
+      lede: 'After: "%{title}"'
+      go_to: 'Go to: '
+      text: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -104,7 +105,7 @@ en:
       if: 'If'
       and: 'And'
     goto: Go to
-    select_destination: '--- Select a destination page ---'
+    select_destination: '--- Select next page ---'
     select_question: '--Select a question--'
     conditional_title: 'Branch '
     title_otherwise: 'Otherwise'

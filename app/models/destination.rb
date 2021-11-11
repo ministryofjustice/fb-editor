@@ -7,6 +7,10 @@ class Destination
 
   alias_method :change, :create_version
 
+  def title
+    service.find_page_by_uuid(flow_uuid).title
+  end
+
   def metadata
     service.flow[flow_uuid]['next']['default'] = destination_uuid
     service.metadata.to_h.deep_stringify_keys
