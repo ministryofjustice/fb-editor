@@ -41,13 +41,13 @@ const LINE_Y = "pathlineY";
 class FlowConnectorPath {
   constructor(points, config) {
     var $container = $("<div></div>");
-    var type = calculateType(points);
+    var type;
 
     points.xDifference = utilities.difference(points.lX, points.rX);
     points.yDifference = utilities.difference(points.lY, points.rY);
+    type = calculateType(points);
 
     $container.addClass("FlowConnectorPath");
-
     // TEMPORARY: for development only
     $container.attr("data-from", config.from);
     $container.attr("data-to", config.to);
@@ -57,6 +57,7 @@ class FlowConnectorPath {
     this.points = points;
     this.$node = $container;
     this.type = type;
+
     customiseByType.call(this);
   }
 }
@@ -67,7 +68,7 @@ function calculateType(points) {
   var up = points.lY > points.rY;
   var type;
 
-  if(sameRow) {
+  if(points.yDifference < 5) { // 5 is to give some tolerance for a pixel here or there (e.g. some difference calculations  came out as 2)
     if(forward) {
       type = "forward";
     }
@@ -134,14 +135,6 @@ console.log("points.lY < points.rY: ", points.lY < points.rY);
          createElementsForForwardPath.call(this);
          $container.append($container);
          break;
-         $element.css({
-           height: "0px",
-           left: points.lX + "px",
-           position: "absolute",
-           top: points.lY + "px",
-           width: points.xDifference + "px"
-         });
-         break;
     case "forward-up":
          createElementsForForwardUpPath.call(this);
          $container.append($container);
@@ -179,7 +172,6 @@ function createElementsForForwardPath() {
         .css({
            height: points.yDifference + "px",
            left: points.lX + "px",
-           opacity: 0.5,
            top: (points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference) + "px",
            width: points.xDifference + "px"
          });
