@@ -102,7 +102,6 @@ function calculateType(points) {
 function customiseByType(type) {
   var $container = this.$node;
   var points = this.points;
-  var $element = $("<div><span></span></div>"); // temporary
 
 console.log("difference W: ", points.xDifference + "px");
 console.log("difference H: ", points.yDifference + "px");
@@ -110,57 +109,30 @@ console.log("points.lY < points.rY: ", points.lY < points.rY);
 
   switch(this.type) {
     case "backward":
-         // TODO: TEMPORARY
-         $container.append($element);
-         $element.css({
-           "border-color": "blue"
-         });
-         break;
+         // TODO...
     case "backward-down":
-         // TODO: TEMPORARY
-         $container.append($element);
-         $element.css({
-           "border-color": "green"
-         });
+         // TODO...
          break;
     case "backward-up":
-         // TODO: TEMPORARY
-         $container.append($element);
-         $element.css({
-           "border-color": "orange"
-         });
+         // TODO...
          break;
     case "forward":
-         // TODO: TEMPORARY
          createElementsForForwardPath.call(this);
          $container.append($container);
          break;
     case "forward-up":
+         // TODO... in progress
          createElementsForForwardUpPath.call(this);
          $container.append($container);
          break;
     case "forward-up-forward-down":
+         // TODO... not done yet
          createElementsForForwardUpForwardDownPath.call(this);
          $container.append($container);
          break;
     default:
-         // TODO: TEMPORARY
-         // TODO: ONE OF THE EXPECTED TYPES (straight??)
-         $container.append($element);
-         $element.css({
-           "background-color": "yellow",
-           "border-color": "blue",
-           "border-style": "solid",
-           "border-width": "1px",
-           height: points.yDifference + "px",
-           left: points.lX + "px",
-           opacity: 0.5,
-           top: (points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference) + "px",
-           width: points.xDifference + "px"
-         });
-
-         //$element.text("lY:%s, lX:%s\nrY:%s, rX:%s", points.lY, points.lX, points.rY, points.rX);
-         $element.text(JSON.stringify(points).replace("\\", ""));
+         // TODO: What will default be (forward??)
+         $container.text(JSON.stringify(points).replace("\\", ""));
   }
 }
 
