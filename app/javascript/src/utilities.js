@@ -267,6 +267,16 @@ function maxWidth($collection) {
 }
 
 
+/* Get the difference between two numbers
+ **/
+function difference(a, b) {
+  if(a > b)
+    return a - b;
+  else
+    return b - a;
+}
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -283,5 +293,6 @@ module.exports  = {
   isBoolean: isBoolean,
   updateDomByApiRequest:updateDomByApiRequest,
   stringInject: stringInject,
-  maxWidth: maxWidth
+  maxWidth: maxWidth,
+  difference: difference
 }

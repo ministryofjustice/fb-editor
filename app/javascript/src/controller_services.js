@@ -24,6 +24,7 @@ const post = utilities.post;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
+const FlowConnectorPath = require('./component_flow_connector_path');
 
 
 class ServicesController extends DefaultController {
@@ -65,6 +66,24 @@ ServicesController.edit = function() {
 }
 
 
+/* VIEW SPECIFIC COMPONENT:
+ * ------------------------
+ * Positionable item in the flow
+ **/
+class FlowItem {
+  constructor($node, config) {
+    $node.data("instance", this);
+
+    this.$node = $node;
+    this.id = $node.attr("id");
+    this.next = $node.attr("next");
+    this.coords = {
+      x_in: config.x_in,
+      x_out: config.x_out,
+      y: config.y,
+    }
+  }
+}
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -230,58 +249,6 @@ class PageAdditionMenu extends ActivatedMenu {
 }
 
 
-/* VIEW SPECIFIC COMPONENT:
- * ------------------------
- *
- * TODO: This will definitely need some extra work when it
- * comes to implementing more complex paths. Currently, this
- * has been created to support straight line connectors only.
- *
- * @points (Object) Points required for ConnectorPath dimensions {
- *                      lX & lY: 'from' x+y points
- *                      rX & rY: 'to' x+y points
- *                  }
- * @config (Object) Configurations {
- *                      from: id of starting item
- *                      to: 'next' value of destination item
- *                      $container: jQuery node for appending element.
- *                      space: Number to add before and after start and end points
- *                             (allows for border compensation of existing css)
- *                  }
- **/
-class FlowConnectorPath {
-  constructor(points, config) {
-    var $element = $("<div><span></span></div>");
-    $element.addClass("FlowConnectorPath");
-    $element.attr("data-from", config.from);
-    $element.attr("data-to", config.to);
-    $element.css({
-      height: "0px",
-      left: points.lX + "px",
-      position: "absolute",
-      top: points.lY + "px",
-      width: FlowConnectorPath.difference(points.lX, points.rX) + "px"
-    });
-
-    // Now add it to the parent/containe
-    if(config.$container && config.$container.length) {
-      config.$container.append($element);
-    }
-    else {
-      $(document.body).append($element);
-    }
-  }
-}
-
-// Get the difference between two numbers
-FlowConnectorPath.difference = function(a, b) {
-  if(a > b)
-    return a - b;
-  else
-    return b - a;
-}
-
-
 /* VIEW SETUP FUNCTION:
  * --------------------
  * Finds the (in page) form that can add a new page and enhances with Dialog component
@@ -438,6 +405,12 @@ function positionFlowItems($overview) {
       $column.before($item);
 
       // Positions boxes and diamonds
+      new FlowItem($item, {
+        x_in: left,
+        x_out: left + $item.outerWidth(),
+        y: top + conditionY
+      });
+
       $item.css({
         left: left + "px",
         position: "absolute",
@@ -460,6 +433,7 @@ function positionFlowItems($overview) {
     });
 
     if($conditions.length > 0) {
+
       // Positions bubble container relative to diamond.
       $conditions.css({
         left: CONDITIONS_LEFT_SPACING + "px",
@@ -624,18 +598,18 @@ function applyArrowPaths($overview) {
     var $next = $("#" + next);
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + ($next.height() / 2);
-
-    new FlowConnectorPath({
+    var path = new FlowConnectorPath({
       lX: fromX,
       lY: fromY,
       rX: toX,
       rY: toY
       }, {
-      $container: $overview,
       from: $this.attr("id"),
       to: next,
       space: 5
     });
+
+    $overview.append(path.$node);
   });
 }
 
