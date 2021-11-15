@@ -16,11 +16,14 @@
 
 
 const utilities = require('./utilities');
-const ARROW_LINE = "<div class=\"pathline\"><span class=\"patharrow\"></span></div>";
-const STANDARD_LINE = "<div class=\"pathline\"></div>";
-const STANDARD_CURVE = "<div class=\"pathcurve\"></div>";
-const LINE_X = "pathlineX";
-const LINE_Y = "pathlineY";
+const ARROW_LINE = "<div class=\"pathLine\"><span class=\"pathArrow\"></span></div>";
+const STANDARD_LINE = "<div class=\"pathLine\"></div>";
+const STANDARD_CURVE = "<div class=\"pathCurve\"></div>";
+const LINE_X_CLASS = "pathLineX";
+const LINE_Y_CLASS = "pathLineY";
+const CURVE_X_CLASS = "pathCurveX";
+const CURVE_Y_CLASS = "pathCurveY";
+const SPACER = 25;
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -54,6 +57,7 @@ class FlowConnectorPath {
     $container.attr("data-type", type);
     // ...............................
 
+    this._config = config;
     this.points = points;
     this.$node = $container;
     this.type = type;
@@ -103,9 +107,9 @@ function customiseByType(type) {
   var $container = this.$node;
   var points = this.points;
 
-console.log("difference W: ", points.xDifference + "px");
-console.log("difference H: ", points.yDifference + "px");
-console.log("points.lY < points.rY: ", points.lY < points.rY);
+//console.log("difference W: ", points.xDifference + "px");
+//console.log("difference H: ", points.yDifference + "px");
+//console.log("points.lY < points.rY: ", points.lY < points.rY);
 
   switch(this.type) {
     case "backward":
@@ -138,9 +142,9 @@ console.log("points.lY < points.rY: ", points.lY < points.rY);
 
 function createElementsForForwardPath() {
   var points = this.points;
-  var $line1 = $(ARROW_LINE).addClass(LINE_X);
+  var $line1 = $(ARROW_LINE);
 
-  $line1.addClass("ForwardPath")
+  $line1.addClass(LINE_X_CLASS)
         .css({
            height: points.yDifference + "px",
            left: points.lX + "px",
@@ -148,14 +152,40 @@ function createElementsForForwardPath() {
            width: points.xDifference + "px"
          });
 
-  this.$node.append($line1);
+  this.$node.addClass("ForwardUpPath")
+            .append($line1);
 }
 
 function createElementsForForwardUpPath() {
-  var $line1 = $(STANDARD_LINE).addClass(LINE_X);
-  var $line2 = $(STANDARD_LINE).addClass(LINE_Y);
-  var $curve1 = $(STANDARD_CURVE);
+  var points = this.points;
+  var $line1 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
+  var $line2 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
+  var $curve1 = $(STANDARD_CURVE).addClass(CURVE_Y_CLASS);
   var $curve2 = $(STANDARD_CURVE);
+  var height1 = points.yDifference;
+  var y1 = Number(points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference);
+  var y2 =  Number(points.yDifference + y1);
+  var width1 = points.xDifference - SPACER;
+
+  $line1.css({
+          left: points.lX + "px",
+          top: y2 + "px",
+          width: width1 + "px"
+        });
+
+//console.warn("$curve1: ", $caurve1);
+//console.warn("curveSize: ", this._config.curveSize);
+
+  $curve1.css({
+           left: Number((points.lX + width1) - this._config.curveSize) + "px",
+           top: Number(y2 - this._config.curveSize) + "px"
+         });
+
+  $line2.css({
+          height: points.yDifference + "px",
+          left: Number(points.lX + width1) + "px",
+          top: y1 + "px"
+        });
 
   this.$node.addClass("ForwardUpPath")
             .append($line1)
@@ -165,10 +195,10 @@ function createElementsForForwardUpPath() {
 }
 
 function createElementsForForwardUpForwarDownPath() {
-  var $line1 = $(STANDARD_LINE).addClass(LINE_X);
-  var $line2 = $(STANDARD_LINE).addClass(LINE_Y);
-  var $line3 = $(STANDARD_LINE).addClass(LINE_Y);
-  var $line4 = $(STANDARD_LINE).addClass(LINE_X);
+  var $line1 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
+  var $line2 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
+  var $line3 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
+  var $line4 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
   var $curve1 = $(STANDARD_CURVE);
   var $curve2 = $(STANDARD_CURVE);
   var $curve3 = $(STANDARD_CURVE);
