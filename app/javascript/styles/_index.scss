@@ -500,19 +500,41 @@ html {
  * ------------------------ */
 .FlowConnectorPath {
 
-  .pathline {
-    position: absolute,
+  .pathCurve {
+    border-radius: 15px;
+    border-style: solid;
+    height: 15px;
+    position: absolute;
+    width: 15px;
   }
 
-  .pathlineX {
+  .pathCurveX {
+    border-bottom-color: govuk-colour("white");
+    border-left-color: govuk-colour("black");
+    border-right-color: govuk-colour("white");
+    border-top-color: govuk-colour("black");
+    border-width: 0 2px 2px 0;
+  }
+
+  .pathCurveY {
+    border-bottom-color: govuk-colour("black");
+    border-left-color: govuk-colour("white");
+    border-right-color: govuk-colour("black");
+    border-top-color: govuk-colour("white");
+    border-width: 2px 0 0 2px;
+  }
+
+  .pathLine {
     border-color: govuk-colour("black");
-    border-bottom-style: solid;
+    border-style: solid;
+    position: absolute;
+  }
+
+  .pathLineX {
     border-width: 0 0 2px 0;
   }
 
-  .pathlineY {
-    border-color: govuk-colour("black");
-    border-bottom-style: solid;
+  .pathLineY {
     border-width: 0 2px 0 0;
   }
 
