@@ -16,9 +16,9 @@
 
 
 const utilities = require('./utilities');
-const ARROW_LINE = "<div class=\"pathLine\"><span class=\"pathArrow\"></span></div>";
-const STANDARD_LINE = "<div class=\"pathLine\"></div>";
-const STANDARD_CURVE = "<div class=\"pathCurve\"></div>";
+const SINGLE_LINE = "<div class=\"pathLine\"><span class=\"pathArrow\"></span></div>";
+const MULTI_LINE = "<path></path>";
+const LINE = "<path></path>";
 const LINE_X_CLASS = "pathLineX";
 const LINE_Y_CLASS = "pathLineY";
 const CURVE_X_CLASS = "pathCurveX";
@@ -43,26 +43,22 @@ const SPACER = 25;
  **/
 class FlowConnectorPath {
   constructor(points, config) {
-    var $container = $("<div></div>");
     var type;
 
     points.xDifference = utilities.difference(points.lX, points.rX);
     points.yDifference = utilities.difference(points.lY, points.rY);
-    type = calculateType(points);
-
-    $container.addClass("FlowConnectorPath");
-    // TEMPORARY: for development only
-    $container.attr("data-from", config.from);
-    $container.attr("data-to", config.to);
-    $container.attr("data-type", type);
-    // ...............................
 
     this._config = config;
     this.points = points;
-    this.$node = $container;
-    this.type = type;
+    this.type = calculateType(points);
+    this.$node = buildByType.call(this);
 
-    customiseByType.call(this);
+    this.$node.addClass("FlowConnectorPath")
+              .addClass(this.type)
+              .attr("height", "0")
+              .attr("width", "0")
+              .attr("data-from", config.from)
+              .attr("data-to", config.to);
   }
 }
 
@@ -74,27 +70,27 @@ function calculateType(points) {
 
   if(points.yDifference < 5) { // 5 is to give some tolerance for a pixel here or there (e.g. some difference calculations  came out as 2)
     if(forward) {
-      type = "forward";
+      type = "ForwardPath";
     }
     else {
-      type = "backward";
+      type = "BackwardPath";
     }
   }
   else {
     if(forward) {
       if(up) {
-        type = "forward-up";
+        type = "ForwardUpPath";
       }
       else {
-        type = "forward-down";
+        type = "ForwardDownPath";
       }
     }
     else {
       if(up) {
-        type = "backward-up";
+        type = "BackwardUpPath";
       }
       else {
-        type = "backward-down";
+        type = "BackwardDownPath";
       }
     }
   }
@@ -103,57 +99,74 @@ function calculateType(points) {
 }
 
 
-function customiseByType(type) {
-  var $container = this.$node;
+function buildByType(type) {
   var points = this.points;
-
+  var paths = "";
 //console.log("difference W: ", points.xDifference + "px");
 //console.log("difference H: ", points.yDifference + "px");
 //console.log("points.lY < points.rY: ", points.lY < points.rY);
 
   switch(this.type) {
-    case "backward":
+    case "BackwardPath":
          // TODO...
-    case "backward-down":
-         // TODO...
-         break;
-    case "backward-up":
+    case "BackwardDownPath":
          // TODO...
          break;
-    case "forward":
-         createElementsForForwardPath.call(this);
-         $container.append($container);
+    case "BackwardUpPath":
+         // TODO...
          break;
-    case "forward-up":
+    case "ForwardPath":
+         paths = createElementsForForwardPath.call(this);
+         break;
+    case "ForwardUpPath":
          // TODO... in progress
-         createElementsForForwardUpPath.call(this);
-         $container.append($container);
+//         createElementsForForwardUpPath.call(this);
+//         $container.append($container);
          break;
-    case "forward-up-forward-down":
+    case "ForwardUpForwardDownPath":
          // TODO... not done yet
-         createElementsForForwardUpForwardDownPath.call(this);
-         $container.append($container);
+//         createElementsForForwardUpForwardDownPath.call(this);
+//         $container.append($container);
          break;
     default:
          // TODO: What will default be (forward??)
-         $container.text(JSON.stringify(points).replace("\\", ""));
+         console.log("DEFAULT: ", JSON.stringify(points).replace("\\", ""));
   }
+
+  return createSvg(paths);
+}
+
+function createSvg(paths) {
+  const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
+  const SVG_TAG_CLOSE = "</svg>";
+  var svg = SVG_TAG_OPEN + paths + SVG_TAG_CLOSE;
+  return $(svg)
+}
+
+function createArrowPath(x, y) {
+  return "<path class=\"arrowPath\"  d=\"M " + (x - 10) + "," + (y - 5) + " v10 l 10,-5 z\"></path>";
+}
+
+function pathD(/* unlimited */) {
+  var path = "M";
+  for(var i=0; i<arguments.length; ++i) {
+    path += (" " + arguments[i]);
+  }
+  return path;
+}
+
+function xy(x, y) {
+  return String(x) + "," + String(y);
 }
 
 function createElementsForForwardPath() {
   var points = this.points;
-  var $line1 = $(ARROW_LINE);
-
-  $line1.addClass(LINE_X_CLASS)
-        .css({
-           height: points.yDifference + "px",
-           left: points.lX + "px",
-           top: (points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference) + "px",
-           width: points.xDifference + "px"
-         });
-
-  this.$node.addClass("ForwardUpPath")
-            .append($line1);
+  var x1 = points.lX;
+  var y1 = (points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference);
+  var width = "h" + points.xDifference;
+  var paths = "<path d=\"" + pathD(xy(x1, y1), width) + "\"></path>";
+  paths += createArrowPath(x1 + points.xDifference, y1);
+  return paths;
 }
 
 function createElementsForForwardUpPath() {
