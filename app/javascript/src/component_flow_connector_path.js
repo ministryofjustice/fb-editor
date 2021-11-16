@@ -16,7 +16,9 @@
 
 
 const utilities = require('./utilities');
-const CURVE_SPACING = 25;
+const CURVE_SPACING = 20;
+const CURVE_COORDS_UP = "a10,10 0 0 0 10,-10";
+const CURVE_COORDS_RIGHT = "a10,10 0 0 1 10,-10";
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -162,12 +164,9 @@ function createPathsForForwardUpConnector() {
   var height1 = points.yDifference;
   var y1 = Number(points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
   var y2 =  Number(points.yDifference + y1);
-  var width1 = "h" + (points.xDifference - CURVE_SPACING);
-console.group("createPathsForForwardUpConnector");
-console.log("points.from_y: ", points.from_y);
-console.log("points.to_y: ", points.to_y);
-  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), width1) + "\"></path>";
-console.groupEnd();
+  var vertical = "v-" + (points.yDifference - CURVE_SPACING);
+  var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_COORDS_UP, vertical, CURVE_COORDS_RIGHT) + "\"></path>";
   return paths;
 
   $curve1.css({
