@@ -499,65 +499,15 @@ html {
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .FlowConnectorPath {
+  left: 0;
+  overflow: visible;
+  position: absolute;
+  top: 0;
 
-  .pathCurve {
-    border-radius: 15px;
-    border-style: solid;
-    height: 15px;
-    position: absolute;
-    width: 15px;
-  }
-
-  .pathCurveX {
-    border-bottom-color: govuk-colour("white");
-    border-left-color: govuk-colour("black");
-    border-right-color: govuk-colour("white");
-    border-top-color: govuk-colour("black");
-    border-width: 0 2px 2px 0;
-  }
-
-  .pathCurveY {
-    border-bottom-color: govuk-colour("black");
-    border-left-color: govuk-colour("white");
-    border-right-color: govuk-colour("black");
-    border-top-color: govuk-colour("white");
-    border-width: 2px 0 0 2px;
-  }
-
-  .pathLine {
-    border-color: govuk-colour("black");
-    border-style: solid;
-    position: absolute;
-  }
-
-  .pathLineX {
-    border-width: 0 0 2px 0;
-  }
-
-  .pathLineY {
-    border-width: 0 2px 0 0;
-  }
-
-  span {
-    display: block;
-    height: 14px;
-    overflow: hidden;
-    position: absolute;
-    right: -1px;
-    top: -6px;
-    width: 7px;
-
-    &:after {
-      border: govuk-colour("black") solid 5px;
-      border-top-color: govuk-colour("white");
-      border-left-color: govuk-colour("white");
-      content: "";
-      display: block;
-      left: -5px;
-      position: relative;
-      transform: rotate(-45deg);
-      top: 2px;
-    }
+  path {
+    fill: govuk-colour("black");
+    stroke: govuk-colour("black");
+    stroke-width: 2px;
   }
 }
 

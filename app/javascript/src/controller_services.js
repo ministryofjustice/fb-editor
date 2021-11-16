@@ -605,10 +605,8 @@ function applyArrowPaths($overview) {
       rX: toX,
       rY: toY
       }, {
-      curveSize: 15, // Needs to be based on your CSS set dimensions
       from: $this.attr("id"),
-      to: next,
-      space: 5,
+      to: next
     });
 
     $overview.append(path.$node);
