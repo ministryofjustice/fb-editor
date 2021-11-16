@@ -599,13 +599,13 @@ function applyArrowPaths($overview) {
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + ($next.height() / 2);
     var path = new FlowConnectorPath({
-      lX: fromX,
-      lY: fromY,
-      rX: toX,
-      rY: toY
+      from_x: fromX,
+      from_y: fromY,
+      to_x: toX,
+      to_y: toY
       }, {
-      from: $this.attr("id"),
-      to: next
+      from_id: $this.attr("id"),
+      to_id: next
     });
 
     $overview.append(path.$node);
