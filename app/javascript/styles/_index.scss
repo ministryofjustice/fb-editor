@@ -505,9 +505,13 @@ html {
   top: 0;
 
   path {
-    fill: govuk-colour("black");
+    fill: none;
     stroke: govuk-colour("black");
     stroke-width: 2px;
+  }
+
+  .arrowPath {
+    fill: govuk-colour("black");
   }
 }
 
