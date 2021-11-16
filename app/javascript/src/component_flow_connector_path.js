@@ -16,14 +16,7 @@
 
 
 const utilities = require('./utilities');
-const SINGLE_LINE = "<div class=\"pathLine\"><span class=\"pathArrow\"></span></div>";
-const MULTI_LINE = "<path></path>";
-const LINE = "<path></path>";
-const LINE_X_CLASS = "pathLineX";
-const LINE_Y_CLASS = "pathLineY";
-const CURVE_X_CLASS = "pathCurveX";
-const CURVE_Y_CLASS = "pathCurveY";
-const SPACER = 25;
+const CURVE_SPACING = 25;
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -45,8 +38,8 @@ class FlowConnectorPath {
   constructor(points, config) {
     var type;
 
-    points.xDifference = utilities.difference(points.lX, points.rX);
-    points.yDifference = utilities.difference(points.lY, points.rY);
+    points.xDifference = utilities.difference(points.from_x, points.to_x);
+    points.yDifference = utilities.difference(points.from_y, points.to_y);
 
     this._config = config;
     this.points = points;
@@ -54,18 +47,18 @@ class FlowConnectorPath {
     this.$node = buildByType.call(this);
 
     this.$node.addClass("FlowConnectorPath")
-              .addClass(this.type)
               .attr("height", "0")
               .attr("width", "0")
-              .attr("data-from", config.from)
-              .attr("data-to", config.to);
+              .attr("data-from", config.from_id)
+              .attr("data-to", config.to_id)
+              .addClass(this.type); // TODO: Remove after development because this serves no other purpose
   }
 }
 
 function calculateType(points) {
-  var sameRow = points.lY == points.rY;
-  var forward = points.lX < points.rX;
-  var up = points.lY > points.rY;
+  var sameRow = points.from_y == points.to_y;
+  var forward = points.from_x < points.to_x;
+  var up = points.from_y > points.to_y;
   var type;
 
   if(points.yDifference < 5) { // 5 is to give some tolerance for a pixel here or there (e.g. some difference calculations  came out as 2)
@@ -94,7 +87,6 @@ function calculateType(points) {
       }
     }
   }
-  console.log("type: ", type);
   return type;
 }
 
@@ -102,9 +94,6 @@ function calculateType(points) {
 function buildByType(type) {
   var points = this.points;
   var paths = "";
-//console.log("difference W: ", points.xDifference + "px");
-//console.log("difference H: ", points.yDifference + "px");
-//console.log("points.lY < points.rY: ", points.lY < points.rY);
 
   switch(this.type) {
     case "BackwardPath":
@@ -116,12 +105,11 @@ function buildByType(type) {
          // TODO...
          break;
     case "ForwardPath":
-         paths = createElementsForForwardPath.call(this);
+         paths = createPathsForForwardConnector.call(this);
          break;
     case "ForwardUpPath":
          // TODO... in progress
-//         createElementsForForwardUpPath.call(this);
-//         $container.append($container);
+         paths = createPathsForForwardUpConnector.call(this);
          break;
     case "ForwardUpForwardDownPath":
          // TODO... not done yet
@@ -159,35 +147,28 @@ function xy(x, y) {
   return String(x) + "," + String(y);
 }
 
-function createElementsForForwardPath() {
+function createPathsForForwardConnector() {
   var points = this.points;
-  var x1 = points.lX;
-  var y1 = (points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference);
+  var x = points.from_x;
+  var y = (points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
   var width = "h" + points.xDifference;
-  var paths = "<path d=\"" + pathD(xy(x1, y1), width) + "\"></path>";
-  paths += createArrowPath(x1 + points.xDifference, y1);
+  var paths = "<path d=\"" + pathD(xy(x, y), width) + "\"></path>";
+  paths += createArrowPath(x + points.xDifference, y);
   return paths;
 }
 
-function createElementsForForwardUpPath() {
+function createPathsForForwardUpConnector() {
   var points = this.points;
-  var $line1 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
-  var $line2 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
-  var $curve1 = $(STANDARD_CURVE).addClass(CURVE_Y_CLASS);
-  var $curve2 = $(STANDARD_CURVE);
   var height1 = points.yDifference;
-  var y1 = Number(points.lY < points.rY ? points.lY + points.yDifference : points.lY - points.yDifference);
+  var y1 = Number(points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
   var y2 =  Number(points.yDifference + y1);
-  var width1 = points.xDifference - SPACER;
-
-  $line1.css({
-          left: points.lX + "px",
-          top: y2 + "px",
-          width: width1 + "px"
-        });
-
-//console.warn("$curve1: ", $caurve1);
-//console.warn("curveSize: ", this._config.curveSize);
+  var width1 = "h" + (points.xDifference - CURVE_SPACING);
+console.group("createPathsForForwardUpConnector");
+console.log("points.from_y: ", points.from_y);
+console.log("points.to_y: ", points.to_y);
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), width1) + "\"></path>";
+console.groupEnd();
+  return paths;
 
   $curve1.css({
            left: Number((points.lX + width1) - this._config.curveSize) + "px",
