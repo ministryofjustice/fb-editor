@@ -55,7 +55,8 @@ class BranchesController < FormController
       latest_metadata: service_metadata
     )
     @branch_destroyer.destroy
-    head :ok
+
+    redirect_to edit_service_path(service.service_id)
   end
 
   private
