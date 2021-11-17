@@ -38,8 +38,6 @@ const CURVE_COORDS_RIGHT = "a10,10 0 0 1 10,-10";
  **/
 class FlowConnectorPath {
   constructor(points, config) {
-    var type;
-
     points.xDifference = utilities.difference(points.from_x, points.to_x);
     points.yDifference = utilities.difference(points.from_y, points.to_y);
 
@@ -58,12 +56,13 @@ class FlowConnectorPath {
 }
 
 function calculateType(points) {
-  var sameRow = points.from_y == points.to_y;
+  var sameRow = points.yDifference < 5; // 5 is to give some tolerance for a pixel here or there
+                                        // (e.g. some difference calculations  came out as 2)
   var forward = points.from_x < points.to_x;
   var up = points.from_y > points.to_y;
   var type;
 
-  if(points.yDifference < 5) { // 5 is to give some tolerance for a pixel here or there (e.g. some difference calculations  came out as 2)
+  if(sameRow) {
     if(forward) {
       type = "ForwardPath";
     }
@@ -161,30 +160,10 @@ function createPathsForForwardConnector() {
 
 function createPathsForForwardUpConnector() {
   var points = this.points;
-  var height1 = points.yDifference;
-  var y1 = Number(points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
-  var y2 =  Number(points.yDifference + y1);
   var vertical = "v-" + (points.yDifference - CURVE_SPACING);
   var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_COORDS_UP, vertical, CURVE_COORDS_RIGHT) + "\"></path>";
   return paths;
-
-  $curve1.css({
-           left: Number((points.lX + width1) - this._config.curveSize) + "px",
-           top: Number(y2 - this._config.curveSize) + "px"
-         });
-
-  $line2.css({
-          height: points.yDifference + "px",
-          left: Number(points.lX + width1) + "px",
-          top: y1 + "px"
-        });
-
-  this.$node.addClass("ForwardUpPath")
-            .append($line1)
-            .append($line2)
-            .append($curve1)
-            .append($curve2);
 }
 
 function createElementsForForwardUpForwarDownPath() {
