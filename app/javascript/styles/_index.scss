@@ -500,9 +500,12 @@ html {
  * ------------------------ */
 .FlowConnectorPath {
   left: 0;
+  height: 100%;
   overflow: visible;
   position: absolute;
   top: 0;
+  width: 100%;
+  z-index: 1;
 
   path {
     fill: none;
@@ -611,6 +614,7 @@ html {
 .flow-item {
   background-color: govuk-colour("white");
   overflow: visible;
+  z-index: 2;
 
   &:hover {
     .ActivatedMenu_Activator {
