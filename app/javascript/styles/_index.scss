@@ -498,6 +498,38 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
+
+.services-edit {
+
+  main {
+    // Quickfix for Brief flash of content not ready for display.
+    // This can be reversed when slow or view reliant JS has
+    // finished running. We're using the controller name + action
+    // so we can use it only where actually needed. Find the
+    // corresponding JS controller+action function to see where it
+    // is turned off/reversed.
+    visibility: hidden;
+  }
+
+  // Fix z-index issues caused by Chrome being a pain with requiring height and width
+  // measurements on svg elements (which then required z-index to fix overlapping issues).
+  .FlowConnectorPath {
+    z-index: 1;
+  }
+
+  .flow-item,
+  .ui-widget-overlay {
+    z-index: 2;
+  }
+
+  .FlowItemMenu,
+  .PageAdditionMenu,
+  .ui-dialog {
+    z-index: 3;
+  }
+}
+
+
 .FlowConnectorPath {
   left: 0;
   height: 100%;
@@ -505,7 +537,6 @@ html {
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 1;
 
   path {
     fill: none;
@@ -516,10 +547,6 @@ html {
   .arrowPath {
     fill: govuk-colour("black");
   }
-}
-
-.FlowItemMenu {
-  z-index: 3;
 }
 
 .FlowItemMenuActivator {
@@ -618,7 +645,6 @@ html {
 .flow-item {
   background-color: govuk-colour("white");
   overflow: visible;
-  z-index: 2;
 
   &:hover {
     .ActivatedMenu_Activator {
