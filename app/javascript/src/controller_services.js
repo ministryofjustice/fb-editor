@@ -513,6 +513,21 @@ function adjustOverviewHeight($overview) {
 
     $current.css("height", ""); // 2. Reset inline so CSS height is back in play.
 
+    // Flow items will include the branch but not the conditions so this is a
+    // little workaround to increase height if related condition item need it.
+    // TODO: First condiiton item can still get clipped because it starts at a
+    //       point lower than zero, so will need to fix when adding better scroll.
+    if($current.hasClass("flow-branch")) {
+      let $conditions = $current.find(".flow-condition");
+      let top = $conditions.first().position().top;
+      let baseline = $conditions.last().position().top + $conditions.last().outerHeight();
+      if(top < 0) {
+        top = ~(top); // Turn something like -14.5 into 14.5
+      }
+
+      bottom = (top + baseline);
+    }
+
     if(bottom > lowestPoint) {
       lowestPoint = bottom;
     }
