@@ -243,6 +243,13 @@ jobs:
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
+      - run:
+          name: deploy to test (EKS cluster)
+          environment:
+            APPLICATION_NAME: fb-editor
+            PLATFORM_ENV: test
+            K8S_NAMESPACE: formbuilder-saas-test
+          command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *slack_status
   acceptance_tests:
     docker: *test_image
