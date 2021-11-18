@@ -77,6 +77,8 @@ class FlowItem {
     this.$node = $node;
     this.id = $node.attr("id");
     this.next = $node.attr("next");
+    this.row = config.row;
+    this.column = config.column;
     this.coords = {
       x_in: config.x_in,
       x_out: config.x_out,
@@ -388,44 +390,55 @@ function positionFlowItems($overview) {
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
   var $columns = $(".column", $overview);
+  var lastRowItems = [];
   var left = 0;
 
   // Loop over found columns created from the flow
-  $columns.each(function(index) {
+  $columns.each(function(column) {
     var $column = $(this);
     var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var top = 0;
 
-    $items.each(function() {
+    $items.each(function(row) {
       var conditionY = THUMBNAIL_HEIGHT / 2;
       var $item = $(this);
-
       // First, bring it out of the column because we don't need it.
       // We will remove the columns later.
       $column.before($item);
 
-      // Positions boxes and diamonds
+      // Creates FlowItem instances (boxes and diamonds) with positions data.
       new FlowItem($item, {
         x_in: left,
         x_out: left + $item.outerWidth(),
-        y: top + conditionY
+        y: top + conditionY,
+        column: column,
+        row: row
       });
 
+      // Log as last row item (will be replaced if it is not).
+      $item.data("lastRowItem", false);
+      lastRowItems[row] = $item;
+
+      // Position flow item node.
       $item.css({
         left: left + "px",
         position: "absolute",
         top: top + "px"
       });
 
-      // Positions bubbles
-      $(SELECTOR_FLOW_CONDITION, this).each(function() {
+      // Positions any conditions nodes (bubbles) with this loop
+      $(SELECTOR_FLOW_CONDITION, this).each(function(condition) {
         var $condition = $(this);
         $condition.css({
           left: 0,
           position: "absolute",
           bottom: ($condition.height() - conditionY) + "px"
         });
+
+        // Log as last row item (will be replaced if it is not).
+        $condition.data("lastRowItem", false);
+        lastRowItems[condition] = $condition;
 
         conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
       });
@@ -452,6 +465,12 @@ function positionFlowItems($overview) {
 
     left += SPACING_X; // Use same spacing regardless of condition found, or not.
   });
+
+  // Mark last row items.
+  for(var i=0; i<lastRowItems.length; ++i) {
+    lastRowItems[i].data("lastRowItem", true);
+    lastRowItems[i].attr("lastRowItem", true);
+  }
 
   // Ditch the columns.
   $columns.remove();
@@ -620,8 +639,8 @@ function applyArrowPaths($overview) {
       to_x: toX,
       to_y: toY
       }, {
-      from_id: $this.attr("id"),
-      to_id: next
+      from: $this,
+      to: $next
     });
 
     $overview.append(path.$node);
