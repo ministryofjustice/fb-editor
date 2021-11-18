@@ -85,7 +85,7 @@ spec:
           - name: EDITOR_SERVICE_ACCOUNT_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.editor_service_account_token }}
+                name: {{ .Values.bearer_token }}
                 key: token
           - name: SUBMISSION_ENCRYPTION_KEY
             valueFrom:
@@ -193,7 +193,7 @@ spec:
           - name: EDITOR_SERVICE_ACCOUNT_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.editor_service_account_token }}
+                name: {{ .Values.bearer_token }}
                 key: token
           - name: SUBMISSION_ENCRYPTION_KEY
             valueFrom:
