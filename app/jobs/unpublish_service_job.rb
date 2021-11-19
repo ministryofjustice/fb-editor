@@ -12,19 +12,17 @@ class UnpublishServiceJob < ApplicationJob
   end
 
   def success(job)
-    if ENV['PLATFORM_ENV'] == 'live'
-      publish_service = PublishService.find(job.arguments.first[:publish_service_id])
-      version = MetadataApiClient::Version.find(
-        service_id: publish_service.service_id,
-        version_id: publish_service.version_id
-      )
-      service_version = MetadataPresenter::Service.new(version.metadata)
+    publish_service = PublishService.find(job.arguments.first[:publish_service_id])
+    version = MetadataApiClient::Version.find(
+      service_id: publish_service.service_id,
+      version_id: publish_service.version_id
+    )
+    service_version = MetadataPresenter::Service.new(version.metadata)
 
-      UptimeJob.perform_later(
-        service_id: service_version.service_id,
-        action: :destroy
-      )
-    end
+    UptimeJob.perform_later(
+      service_id: service_version.service_id,
+      action: :destroy
+    )
   end
 
   def adapter

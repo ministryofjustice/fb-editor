@@ -28,21 +28,19 @@ class PublishServiceJob < ApplicationJob
   end
 
   def success(job)
-    if ENV['PLATFORM_ENV'] == 'live'
-      publish_service = PublishService.find(job.arguments.first[:publish_service_id])
-      version = MetadataApiClient::Version.find(
-        service_id: publish_service.service_id,
-        version_id: publish_service.version_id
-      )
-      service_version = MetadataPresenter::Service.new(version.metadata)
+    publish_service = PublishService.find(job.arguments.first[:publish_service_id])
+    version = MetadataApiClient::Version.find(
+      service_id: publish_service.service_id,
+      version_id: publish_service.version_id
+    )
+    service_version = MetadataPresenter::Service.new(version.metadata)
 
-      UptimeJob.perform_later(
-        service_id: service_version.service_id,
-        service_name: service_version.service_name,
-        host: "#{service_version.service_slug}.#{url_root}",
-        action: :create
-      )
-    end
+    UptimeJob.perform_later(
+      service_id: service_version.service_id,
+      service_name: service_version.service_name,
+      host: "#{service_version.service_slug}.#{url_root}",
+      action: :create
+    )
   end
 
   def url_root
