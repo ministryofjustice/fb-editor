@@ -26,4 +26,26 @@ class PublishServiceJob < ApplicationJob
       raise "Parameters invalid: #{service_provisioner.errors.full_messages}"
     end
   end
+
+  def success(job)
+    if ENV['PLATFORM_ENV'] == 'live'
+      publish_service = PublishService.find(job.arguments.first[:publish_service_id])
+      version = MetadataApiClient::Version.find(
+        service_id: publish_service.service_id,
+        version_id: publish_service.version_id
+      )
+      service_version = MetadataPresenter::Service.new(version.metadata)
+
+      UptimeJob.perform_later(
+        service_id: service_version.service_id,
+        service_name: service_version.service_name,
+        host: "#{service_version.service_slug}.#{url_root}",
+        action: :create
+      )
+    end
+  end
+
+  def url_root
+    Rails.application.config.platform_environments[ENV['PLATFORM_ENV']][:url_root]
+  end
 end
