@@ -656,11 +656,13 @@ function applyArrowPaths($overview) {
  * @$items (jQuery collection) All items that have been positioned (with row attribute).
  **/
 function calculateConnectorPathType($item, $next, points, $items) {
-  var forward = points.from_x < points.to_x;
-  var up = points.from_y > points.to_y;
-  var rowItem = $item.attr("row");
-  var rowNext = $next.attr("row");
-  var lastRowItem = false // TODO
+  var columnItem = Number($item.attr("column"));
+  var columnNext = Number($next.attr("column"));
+  var rowItem = Number($item.attr("row"));
+  var rowNext = Number($next.attr("row"));
+  var forward = columnItem < columnNext;
+  var up = rowItem > rowNext;
+  var destinationInNextColumn = utilities.difference(columnItem, columnNext) == 1;
   var type;
 
   if(rowItem == rowNext) { // Same row
@@ -677,7 +679,7 @@ function calculateConnectorPathType($item, $next, points, $items) {
   else {
     if(forward) {
       if(up) {
-        if(lastRowItem) {
+        if(destinationInNextColumn) {
           type = "ForwardUpPath";
         }
         else {
