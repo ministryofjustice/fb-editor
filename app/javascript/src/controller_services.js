@@ -390,7 +390,6 @@ function positionFlowItems($overview) {
   const SPACING_Y = THUMBNAIL_HEIGHT / 2;
   const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
   var $columns = $(".column", $overview);
-  var lastRowItems = [];
   var left = 0;
 
   // Loop over found columns created from the flow
@@ -411,14 +410,12 @@ function positionFlowItems($overview) {
       new FlowItem($item, {
         x_in: left,
         x_out: left + $item.outerWidth(),
-        y: top + conditionY,
-        column: column,
-        row: row
+        y: top + conditionY
       });
 
-      // Log as last row item (will be replaced if it is not).
-      $item.data("lastRowItem", false);
-      lastRowItems[row] = $item;
+      // Set column and row information for items.
+      $item.attr("column", column);
+      $item.attr("row", row);
 
       // Position flow item node.
       $item.css({
@@ -436,9 +433,9 @@ function positionFlowItems($overview) {
           bottom: ($condition.height() - conditionY) + "px"
         });
 
-        // Log as last row item (will be replaced if it is not).
-        $condition.data("lastRowItem", false);
-        lastRowItems[condition] = $condition;
+        // Set column and row information for items.
+        $item.attr("column", column);
+        $item.attr("row", row);
 
         conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
       });
@@ -465,12 +462,6 @@ function positionFlowItems($overview) {
 
     left += SPACING_X; // Use same spacing regardless of condition found, or not.
   });
-
-  // Mark last row items.
-  for(var i=0; i<lastRowItems.length; ++i) {
-    lastRowItems[i].data("lastRowItem", true);
-    lastRowItems[i].attr("lastRowItem", true);
-  }
 
   // Ditch the columns.
   $columns.remove();
@@ -625,26 +616,91 @@ function applyArrowPaths($overview) {
   // Note:
   // - flow-condition element do not currently work with this.
   // - flow-branch and flow-spacer causing issue when branch is off and the Add Page functionality is trying to work.
+  // var $itemsByColumn = $overview.find("[data-column]");
+  var $itemsByRow = $overview.find("[row]");
+
   $overview.find("[data-next]").not(".flow-condition, .flow-branch, .flow-spacer").each(function() {
-    var $this = $(this);
-    var next = $this.data("next");
-    var fromX = $this.position().left + $this.outerWidth() + 1; // + 1 for design spacing
-    var fromY = $this.position().top + ($this.height() / 2);
+    var $item = $(this);
+    var next = $item.data("next");
+    var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
+    var fromY = $item.position().top + ($item.height() / 2);
     var $next = $("#" + next);
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + ($next.height() / 2);
-    var path = new FlowConnectorPath({
+    var points = {
       from_x: fromX,
       from_y: fromY,
       to_x: toX,
       to_y: toY
-      }, {
-      from: $this,
-      to: $next
+    }
+
+    var path = new FlowConnectorPath(points, {
+      from: $item,
+      to: $next,
+      type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
 
     $overview.append(path.$node);
   });
+}
+
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Function uses the from/to relationship of Flow Items and any attributes awarded in the
+ * apply positionFlowItems() function to help determine the connector path type required.
+ *
+ * @$item  (jQuery node) Item that needs to know if there's a forward limit.
+ * @$next  (jQuery node) Destination of path.
+ * @$items (jQuery collection) All items that have been positioned (with row attribute).
+ **/
+function calculateConnectorPathType($item, $next, points, $items) {
+  var forward = points.from_x < points.to_x;
+  var up = points.from_y > points.to_y;
+  var rowItem = $item.attr("row");
+  var rowNext = $next.attr("row");
+  var lastRowItem = false // TODO
+  var type;
+
+  if(rowItem == rowNext) { // Same row
+    if(forward) {
+      type = "ForwardPath";
+    }
+    else {
+      // Currently not expected to happen. If it does (in testing?)
+      // then it's likely this should be a BackwardDownBackwardUp
+      // path due to how all backward paths are expected to draw.
+      type = "BackwardDownBackwardUpPath";
+    }
+  }
+  else {
+    if(forward) {
+      if(up) {
+        if(lastRowItem) {
+          type = "ForwardUpPath";
+        }
+        else {
+          type = "ForwardUpForwardDownPath";
+        }
+      }
+      else {
+        // Not expected to happen or be a relevant type.
+        type = "ForwardDownPath";
+      }
+    }
+    else {
+      if(up) {
+        // Not expected to happend due to how backward lines draw.
+        // type = "BackwardUpPath";
+        type = "BackwardDownBackwardUpPath";
+      }
+      else {
+        type = "BackwardDownBackwardUpPath";
+      }
+    }
+  }
+  return type;
 }
 
 
