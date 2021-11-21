@@ -47,7 +47,7 @@ class FlowConnectorPath {
     this._config = config;
     this._registry = registry;
     this.points = points;
-    this.type = calculateType.call(this);
+    this.type = config.type;
     this.$node = buildByType.call(this);
 
     this.$node.addClass("FlowConnectorPath")
@@ -57,55 +57,6 @@ class FlowConnectorPath {
               .attr("data-to", config.to.attr("id"))
               .data("instance", this);
   }
-}
-
-function calculateType() {
-  var points = this.points;
-  var sameRow = points.yDifference < 5; // 5 is to give some tolerance for a pixel here or there
-                                        // (e.g. some difference calculations  came out as 2)
-  var forward = points.from_x < points.to_x;
-  var up = points.from_y > points.to_y;
-  var lastRowItem = this._config.from.data("lastRowItem");
-  var type;
-
-  if(sameRow) {
-    if(forward) {
-      type = "ForwardPath";
-    }
-    else {
-      // Currently not expected to happen. If it does (in testing?)
-      // then it's likely this should be a BackwardDownBackwardUp
-      // path due to how all backward paths are expected to draw.
-      type = "BackwardDownBackwardUpPath";
-    }
-  }
-  else {
-    if(forward) {
-      if(up) {
-        if(lastRowItem) {
-          type = "ForwardUpPath";
-        }
-        else {
-          type = "ForwardUpForwardDownPath";
-        }
-      }
-      else {
-        // Not expected to happen or be a relevant type.
-        type = "ForwardDownPath";
-      }
-    }
-    else {
-      if(up) {
-        // Not expected to happend due to how backward lines draw.
-        // type = "BackwardUpPath";
-        type = "BackwardDownBackwardUpPath";
-      }
-      else {
-        type = "BackwardDownBackwardUpPath";
-      }
-    }
-  }
-  return type;
 }
 
 
