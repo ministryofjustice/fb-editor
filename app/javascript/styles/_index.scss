@@ -622,8 +622,9 @@ html {
 
 .flow-condition {
   @include list_reset;
+  margin: 0 50px;
   text-align: center;
-  width: inherit;
+  width: 300px;
 
   a, span {
     @include govuk-font($size: 16);
@@ -639,7 +640,8 @@ html {
 
 .flow-conditions {
   @include list_reset;
-  width: 300px;
+  padding-top: 60px; // Just under half height of thumbnail
+  width: 400px;
 }
 
 .flow-expression {
