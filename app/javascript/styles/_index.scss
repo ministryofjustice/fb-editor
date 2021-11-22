@@ -542,6 +542,10 @@ html {
     fill: none;
     stroke: govuk-colour("black");
     stroke-width: 2px;
+
+    &:hover {
+      stroke: govuk-colour("orange");
+    }
   }
 
   .arrowPath {
