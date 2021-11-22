@@ -17,8 +17,10 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 20;
-const CURVE_COORDS_UP = "a10,10 0 0 0 10,-10";
-const CURVE_COORDS_RIGHT = "a10,10 0 0 1 10,-10";
+const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
+const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
+const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
+const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 var registry = {}; // Every created FlowConnectorPath is added to this so they can gain knowledge of others, if required.
 
 
@@ -80,9 +82,7 @@ function buildByType(type) {
          paths = createPathsForForwardUpConnector.call(this);
          break;
     case "ForwardUpForwardDownPath":
-         // TODO... not done yet
-//         createElementsForForwardUpForwardDownPath.call(this);
-//         $container.append($container);
+         paths = createElementsForForwardUpForwarDownConnector.call(this);
          break;
     default:
          // TODO: What will default be (forward??)
@@ -129,29 +129,22 @@ function createPathsForForwardUpConnector() {
   var points = this.points;
   var vertical = "v-" + (points.yDifference - CURVE_SPACING);
   var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
-  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_COORDS_UP, vertical, CURVE_COORDS_RIGHT) + "\"></path>";
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT) + "\"></path>";
   return paths;
 }
 
-function createElementsForForwardUpForwarDownPath() {
-  var $line1 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
-  var $line2 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
-  var $line3 = $(STANDARD_LINE).addClass(LINE_Y_CLASS);
-  var $line4 = $(STANDARD_LINE).addClass(LINE_X_CLASS);
-  var $curve1 = $(STANDARD_CURVE);
-  var $curve2 = $(STANDARD_CURVE);
-  var $curve3 = $(STANDARD_CURVE);
-  var $curve4 = $(STANDARD_CURVE);
+function createElementsForForwardUpForwarDownConnector() {
+  var points = this.points;
+  var gap = this._config.gap;
+console.log("gap: ", gap);
+  var vertical1 = "v-" + utilities.difference(0, points.yDifference + gap);
+  var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
+var vertical3 = "v" + 100; // TODO...
+  var horizontal1 = "h" + (gap - (CURVE_SPACING * 2));
+  var horizontal2 = "h" + (points.xDifference - gap - (CURVE_SPACING));
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
 
-  this.$node.addClass("ForwardUpForwardDownPath")
-            .append($line1)
-            .append($line2)
-            .append($line3)
-            .append($line4)
-            .append($curve1)
-            .append($curve2)
-            .append($curve3)
-            .append($curve4);
+  return paths;
 }
 
 
