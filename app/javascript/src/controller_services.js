@@ -397,7 +397,7 @@ function positionFlowItems($overview) {
     var $column = $(this);
     var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
-    var top = 0;
+    var top = 100; // TODO...
 
     $items.each(function(row) {
       var conditionY = THUMBNAIL_HEIGHT / 2;
@@ -434,8 +434,8 @@ function positionFlowItems($overview) {
         });
 
         // Set column and row information for items.
-        $item.attr("column", column);
-        $item.attr("row", row);
+        $condition.attr("column", column);
+        $condition.attr("row", row);
 
         conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
       });
@@ -637,13 +637,13 @@ function applyArrowPaths($overview) {
     var path = new FlowConnectorPath(points, {
       from: $item,
       to: $next,
+      gap: 100,
       type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
 
     $overview.append(path.$node);
   });
 }
-
 
 
 /* VIEW HELPER FUNCTION:
