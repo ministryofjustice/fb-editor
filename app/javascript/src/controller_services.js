@@ -426,7 +426,7 @@ function positionFlowItems($overview) {
       });
 
       // Positions any conditions nodes (bubbles) with this loop
-      $(SELECTOR_FLOW_CONDITION, this).each(function(condition) {
+      $(SELECTOR_FLOW_CONDITION, this).each(function(index) {
         var $condition = $(this);
         $condition.css({
           left: 0,
@@ -436,7 +436,7 @@ function positionFlowItems($overview) {
 
         // Set column and row information for items.
         $condition.attr("column", column);
-        $condition.attr("row", row);
+        $condition.attr("row",  row + index); // Add row because Branch row is not always zero.
 
         conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
       });
@@ -659,43 +659,33 @@ function applyArrowBranchPaths($overview) {
 
     $conditions.each(function(index) {
       var $condition = $(this);
+      var $next = $("#" + $condition.data("next"), $overview);
       var conditionInX = $condition.position().left - 1; // - 1 for design spacing
       var conditionInY = $condition.position().top + ($condition.height() / 2);
+      var nextInX = $next.position().left;
+      var nextInY = $next.position().top + ($next.height() / 2);
       var path;
 
-      if(index == 0) {
+      if($condition.attr("row") == $next.attr("row")) {
         // Create straight path to go from right corner of the branch
         // to the x/y coordinates of the related 'next' destination.
-        let $next = $("#" + $condition.data("next"), $overview);
-        let nextInX = $next.position().left;
-        let nextInY = $next.position().top + ($next.height() / 2);
         path = new FlowConnectorPath({
             from_x: branchRightX,
-            from_y: branchRightY,
+            from_y: nextInY,
             to_x: nextInX,
             to_y: nextInY
           }, {
           from: $branch,
           to: $condition,
-          gap: 0,
           type: "ForwardPath"
         });
-
-        console.log("needs straight path to go from right corner to bottom right of condition 1");
-        console.log("branch: ", );
-      }
-      else {
-        console.log("needs straight path from X of bottom corner to bottom right of condition");
-      }
-
-      if(path) {
         $overview.append(path.$node);
       }
-    });
+      else {
+        console.log("TODO: What to do here?");
+      }
 
-    if($conditions.length) {
-      console.log("needs straight path from bottom corner to meet lowest xy of condition paths");
-    }
+    });
   });
 }
 
