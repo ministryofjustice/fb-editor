@@ -327,7 +327,8 @@ function layoutFormFlowOverview(view) {
   }
 
   adjustOverviewHeight(view.$flowOverview);
-  applyArrowPaths(view.$flowOverview);
+  applyArrowPagePaths(view.$flowOverview);
+  applyArrowBranchPaths(view.$flowOverview);
   applyOverviewScroll(view.$flowOverview);
 }
 
@@ -604,22 +605,15 @@ function adjustOverviewScrollDimensions($overview, $container) {
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Function to apply the arrows (visual conntectors) that indicate the paths
- * between page and branch objects within a flow.
+ * between page objects within a flow.
  *
- * Note: This is an initial WIP effort designed to replicate the old view
- * arrows on a linear-only, non-branching, view, where straight arrows only
- * are supported. The old view used CSS to achieve that but this function is
- * intended to provide the basis for the far more complex arrow layout
- * required for a full branching view.
+ * Note: Due to Branches working a little differently in terms of arrow
+ * design, they are excluded from this function and put in one of their own.
  **/
-function applyArrowPaths($overview) {
-  // Note:
-  // - flow-condition element do not currently work with this.
-  // - flow-branch and flow-spacer causing issue when branch is off and the Add Page functionality is trying to work.
-  // var $itemsByColumn = $overview.find("[data-column]");
+function applyArrowPagePaths($overview) {
   var $itemsByRow = $overview.find("[row]");
 
-  $overview.find("[data-next]").not(".flow-condition, .flow-branch, .flow-spacer").each(function() {
+  $overview.find(".flow-page[data-next]").each(function() {
     var $item = $(this);
     var next = $item.data("next");
     var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
@@ -642,6 +636,66 @@ function applyArrowPaths($overview) {
     });
 
     $overview.append(path.$node);
+  });
+}
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Function to apply the arrows (visual conntectors) that indicate the paths
+ * between branch (and condition) objects within a flow.
+ *
+ * Note: Branches arrows are a bit different from those between pages, so
+ * dealing with them separately from other page arrows.
+ **/
+function applyArrowBranchPaths($overview) {
+  var $itemsByRow = $overview.find("[row]");
+  $overview.find(".flow-branch").each(function() {
+    var $branch = $(this);
+    var branchRightX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design spacing
+    var branchRightY = $branch.position().top + ($branch.height() / 2) - 1; // - 1 due to design
+    var branchBottomX = $branch.position().left + ($branch.outerWidth() / 2);
+    var branchBottomY = $branch.position().top + $branch.outerHeight();
+    var $conditions = $branch.find(".flow-condition");
+
+    $conditions.each(function(index) {
+      var $condition = $(this);
+      var conditionInX = $condition.position().left - 1; // - 1 for design spacing
+      var conditionInY = $condition.position().top + ($condition.height() / 2);
+      var path;
+
+      if(index == 0) {
+        // Create straight path to go from right corner of the branch
+        // to the x/y coordinates of the related 'next' destination.
+        let $next = $("#" + $condition.data("next"), $overview);
+        let nextInX = $next.position().left;
+        let nextInY = $next.position().top + ($next.height() / 2);
+        path = new FlowConnectorPath({
+            from_x: branchRightX,
+            from_y: branchRightY,
+            to_x: nextInX,
+            to_y: nextInY
+          }, {
+          from: $branch,
+          to: $condition,
+          gap: 0,
+          type: "ForwardPath"
+        });
+
+        console.log("needs straight path to go from right corner to bottom right of condition 1");
+        console.log("branch: ", );
+      }
+      else {
+        console.log("needs straight path from X of bottom corner to bottom right of condition");
+      }
+
+      if(path) {
+        $overview.append(path.$node);
+      }
+    });
+
+    if($conditions.length) {
+      console.log("needs straight path from bottom corner to meet lowest xy of condition paths");
+    }
   });
 }
 
