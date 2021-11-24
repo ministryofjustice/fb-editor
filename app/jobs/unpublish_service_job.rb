@@ -1,4 +1,5 @@
 class UnpublishServiceJob < ApplicationJob
+  include EnvironmentCheck
   queue_as :default
 
   def perform(publish_service_id:, service_slug:)
@@ -12,6 +13,11 @@ class UnpublishServiceJob < ApplicationJob
   end
 
   def success(job)
+    unless live_production?
+      Rails.logger.info('Not live production. Skipping Pingdom unpublishing.')
+      return
+    end
+
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
     version = MetadataApiClient::Version.find(
       service_id: publish_service.service_id,

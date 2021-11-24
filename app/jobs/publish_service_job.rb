@@ -1,4 +1,5 @@
 class PublishServiceJob < ApplicationJob
+  include EnvironmentCheck
   queue_as :default
 
   def perform(publish_service_id:)
@@ -28,6 +29,11 @@ class PublishServiceJob < ApplicationJob
   end
 
   def success(job)
+    unless live_production?
+      Rails.logger.info('Not live production. Skipping Pingdom publishing.')
+      return
+    end
+
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
     version = MetadataApiClient::Version.find(
       service_id: publish_service.service_id,
@@ -35,12 +41,28 @@ class PublishServiceJob < ApplicationJob
     )
     service_version = MetadataPresenter::Service.new(version.metadata)
 
-    UptimeJob.perform_later(
+    job = if first_time_published?(publish_service)
+            # First time we need to wait the DNS to be set so we can add
+            # Pingdom to the service. Usually 30 minutes.
+            #
+            UptimeJob.set(wait: 30.minutes)
+          else
+            UptimeJob
+          end
+
+    job.perform_later(
       service_id: service_version.service_id,
       service_name: service_version.service_name,
       host: "#{service_version.service_slug}.#{url_root}",
       action: :create
     )
+  end
+
+  def first_time_published?(publish_service)
+    PublishService.completed.where(
+      deployment_environment: publish_service.deployment_environment,
+      service_id: publish_service.service_id
+    ).count <= 1
   end
 
   def url_root
