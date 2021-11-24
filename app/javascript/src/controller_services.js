@@ -658,30 +658,49 @@ function applyArrowBranchPaths($overview) {
 
     $conditions.each(function(index) {
       var $condition = $(this);
-      var $next = $("#" + $condition.data("next"), $overview);
+      var $destination = $("#" + $condition.data("next"), $overview);
       var conditionInX = $condition.position().left - 1; // - 1 for design spacing
       var conditionInY = $condition.position().top + ($condition.height() / 2);
-      var nextInX = $next.position().left;
-      var nextInY = $next.position().top + ($next.height() / 2);
-      var path;
+      var destinationInX = $destination.position().left;
+      var destinationInY = $destination.position().top + ($destination.height() / 2);
+      var conditionRow = $condition.attr("row");
+      var destinationRow = $destination.attr("row");
+      var points, type;
 
-      if($condition.attr("row") == $next.attr("row")) {
+      if(conditionRow == destinationRow) {
         // Create straight path to go from right corner of the branch
         // to the x/y coordinates of the related 'next' destination.
-        path = new FlowConnectorPath({
+        if(index == 0) {
+          points = {
             from_x: branchRightX,
-            from_y: nextInY,
-            to_x: nextInX,
-            to_y: nextInY
-          }, {
-          from: $branch,
-          to: $condition,
-          type: "ForwardPath"
-        });
-        $overview.append(path.$node);
+            from_y: destinationInY,
+            to_x: destinationInX,
+            to_y: destinationInY
+          }
+          type = "ForwardPath";
+        }
+        else {
+          points = {
+            from_x: branchBottomX,
+            from_y: branchBottomY,
+            to_x: destinationInX,
+            to_y: destinationInY
+          }
+          type = "DownForwardPath";
+        }
       }
       else {
+        if(conditionRow < destinationRow) {
         console.log("TODO: What to do here?");
+        }
+      }
+
+      if(type) {
+        $overview.append((new FlowConnectorPath(points, {
+          from: $branch,
+          to: $condition,
+          type: type
+        })).$node);
       }
 
     });

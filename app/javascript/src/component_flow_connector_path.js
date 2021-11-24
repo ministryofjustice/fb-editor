@@ -42,21 +42,24 @@ var registry = {}; // Every created FlowConnectorPath is added to this so they c
 class FlowConnectorPath {
   constructor(points, config) {
     var id = utilities.uniqueString("flowconnectorpath-");
+    var conf = utilities.mergeObjects({
+                 gap: 0 // Temporary vertical spacing for lines outside top
+               }, config);
+
     points.xDifference = utilities.difference(points.from_x, points.to_x);
     points.yDifference = utilities.difference(points.from_y, points.to_y);
     registry[id] = this; // Add to global register
 
-    this._config = config;
+    this._config = conf;
     this._registry = registry;
     this.points = points;
-    this.type = config.type;
+    this.type = conf.type;
     this.$node = buildByType.call(this);
-
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", id)
-              .attr("data-from", config.from.attr("id"))
-              .attr("data-to", config.to.attr("id"))
+              .attr("data-from", conf.from.attr("id"))
+              .attr("data-to", conf.to.attr("id"))
               .data("instance", this);
   }
 }
@@ -83,6 +86,9 @@ function buildByType(type) {
          break;
     case "ForwardUpForwardDownPath":
          paths = createElementsForForwardUpForwarDownConnector.call(this);
+         break;
+    case "DownForwardPath":
+         paths = createElementsForDownForwardConnector.call(this);
          break;
     default:
          // TODO: What will default be (forward??)
@@ -118,7 +124,12 @@ function xy(x, y) {
 function createPathsForForwardConnector() {
   var points = this.points;
   var x = points.from_x;
-  var y = (points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
+// NOTE: This does not seem to be required ???
+// Have temporarily replaced with simplified line below.
+// The console output FIRST/SECOND is giving different
+// responses, however, so not 100%. Will monitor.
+//  var y = (points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
+  var y = points.from_y + points.yDifference;
   var width = "h" + points.xDifference;
   var paths = "<path d=\"" + pathD(xy(x, y), width) + "\"></path>";
   paths += createArrowPath(x + points.xDifference, y);
@@ -129,23 +140,35 @@ function createPathsForForwardUpConnector() {
   var points = this.points;
   var vertical = "v-" + (points.yDifference - CURVE_SPACING);
   var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
-  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT) + "\"></path>";
-  return paths;
+  var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT) + "\"></path>";
+  return path;
 }
 
 function createElementsForForwardUpForwarDownConnector() {
   var points = this.points;
   var gap = this._config.gap;
-console.log("gap: ", gap);
   var vertical1 = "v-" + utilities.difference(0, points.yDifference + gap);
   var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
-var vertical3 = "v" + 100; // TODO...
+var vertical3 = "v" + 100; // TODO... what number should this be and where should it come from?
   var horizontal1 = "h" + (gap - (CURVE_SPACING * 2));
   var horizontal2 = "h" + (points.xDifference - gap - (CURVE_SPACING));
-  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
+  var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
 
+  return path;
+}
+
+
+function createElementsForDownForwardConnector() {
+  var points = this.points;
+  var arrowX = points.from_x + points.xDifference;
+  var arrowY = points.from_y + points.yDifference;
+  var down = "v" + (points.yDifference - (CURVE_SPACING / 2)); // Not sure why /2 for curve spacing but it works.
+  var forward = "h" + points.xDifference;
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward) + "\"></path>";
+  paths += createArrowPath(arrowX, arrowY);
   return paths;
 }
+
 
 
 // Make available for importing.
