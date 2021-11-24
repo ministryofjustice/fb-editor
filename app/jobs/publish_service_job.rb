@@ -29,12 +29,13 @@ class PublishServiceJob < ApplicationJob
   end
 
   def success(job)
-    unless live_production?
+    publish_service = PublishService.find(job.arguments.first[:publish_service_id])
+
+    unless live_production?(deployment_environment: publish_service.deployment_environment)
       Rails.logger.info('Not live production. Skipping Pingdom publishing.')
       return
     end
 
-    publish_service = PublishService.find(job.arguments.first[:publish_service_id])
     version = MetadataApiClient::Version.find(
       service_id: publish_service.service_id,
       version_id: publish_service.version_id
