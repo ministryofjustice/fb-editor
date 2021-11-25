@@ -1,0 +1,118 @@
+RSpec.describe Uptime do
+  subject(:uptime) { described_class.new(attributes) }
+  let(:service_id) { SecureRandom.uuid }
+  let(:service_name) { 'Apply To Use An Apply For Service' }
+  let(:host) { 'apply-to-use-an-apply-for-service' }
+  let(:attributes) do
+    {
+      service_id: service_id,
+      service_name: service_name,
+      host: host,
+      adapter: fake_uptime_adapter
+    }
+  end
+  let(:fake_uptime_adapter) do
+    # rubocop:disable Lint/ConstantDefinitionInBlock
+    class FakeUptimeAdapter
+      def check; end
+
+      def create(service_name, host); end
+
+      def update(check_id, service_name, host); end
+
+      def destroy(check_id); end
+    end
+    FakeUptimeAdapter
+    # rubocop:enable Lint/ConstantDefinitionInBlock
+  end
+  let(:check_id) { 'some-check-id' }
+  let(:adpater_response) do
+    {
+      'check' => {
+        'id' => check_id
+      }
+    }
+  end
+
+  describe '#create' do
+    context 'when no uptime check exists for service' do
+      it 'calls create on the adapter' do
+        expect_any_instance_of(fake_uptime_adapter).to receive(:create).with(service_name, host).and_return(adpater_response)
+        uptime.create
+      end
+
+      it 'creates a new uptime check in the database' do
+        allow_any_instance_of(fake_uptime_adapter).to receive(:create).and_return(adpater_response)
+        uptime.create
+
+        expect(UptimeCheck.find_by(service_id: service_id).check_id).to eq(check_id)
+      end
+
+      it 'instruments active support notification' do
+        expect(ActiveSupport::Notifications).to receive(:instrument).with('uptime.create')
+        uptime.create
+      end
+    end
+
+    context 'when uptime check exists for service' do
+      before do
+        create(:uptime_check, service_id: service_id, check_id: check_id)
+      end
+
+      it 'calls update' do
+        expect(uptime).to receive(:update)
+        uptime.create
+      end
+
+      it 'does not call create on the adapter' do
+        expect_any_instance_of(fake_uptime_adapter).not_to receive(:create)
+      end
+    end
+  end
+
+  describe '#update' do
+    before do
+      create(:uptime_check, service_id: service_id, check_id: check_id)
+    end
+
+    it 'calls update on the adapter' do
+      expect_any_instance_of(fake_uptime_adapter).to receive(:update).with(check_id, service_name, host)
+      uptime.update
+    end
+
+    it 'instruments active support notification' do
+      expect(ActiveSupport::Notifications).to receive(:instrument).with('uptime.update')
+      uptime.update
+    end
+  end
+
+  describe '#destroy' do
+    let(:attributes) do
+      {
+        service_id: service_id,
+        service_name: nil,
+        host: nil,
+        adapter: fake_uptime_adapter
+      }
+    end
+
+    before do
+      create(:uptime_check, service_id: service_id, check_id: check_id)
+    end
+
+    it 'calls destroy on the adapter' do
+      expect_any_instance_of(fake_uptime_adapter).to receive(:destroy).with(check_id)
+      uptime.destroy
+    end
+
+    it 'destroys the uptime check in the database' do
+      uptime.destroy
+      expect(UptimeCheck.find_by(service_id: service_id)).to be_nil
+    end
+
+    it 'instruments active support notification' do
+      expect(ActiveSupport::Notifications).to receive(:instrument).with('uptime.destroy')
+      uptime.destroy
+    end
+  end
+end
