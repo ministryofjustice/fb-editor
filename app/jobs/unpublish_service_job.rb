@@ -1,5 +1,4 @@
 class UnpublishServiceJob < ApplicationJob
-  include EnvironmentCheck
   queue_as :default
 
   def perform(publish_service_id:, service_slug:)
@@ -15,8 +14,8 @@ class UnpublishServiceJob < ApplicationJob
   def success(job)
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
 
-    unless live_production?(deployment_environment: publish_service.deployment_environment)
-      Rails.logger.info('Not live production. Skipping Pingdom unpublishing.')
+    if PingdomEligibility.new(publish_service).cannot_destroy?
+      Rails.logger.info('Skipping Pingdom unpublishing.')
       return
     end
 

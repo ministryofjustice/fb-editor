@@ -1,5 +1,4 @@
 class PublishServiceJob < ApplicationJob
-  include EnvironmentCheck
   queue_as :default
 
   def perform(publish_service_id:)
@@ -31,9 +30,8 @@ class PublishServiceJob < ApplicationJob
   def success(job)
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
 
-    unless first_time_published?(publish_service) &&
-        live_production?(deployment_environment: publish_service.deployment_environment)
-      Rails.logger.info('Not live production. Skipping Pingdom publishing.')
+    if Publisher::PingdomEligibility.new(publish_service).cannot_create?
+      Rails.logger.info('Skipping Pingdom publishing.')
       return
     end
 
@@ -45,22 +43,12 @@ class PublishServiceJob < ApplicationJob
 
     # First time we need to wait the DNS to be set so we can add
     # Pingdom to the service. Usually 30 minutes.
-    #
-    UptimeJob.set(wait: 30.minutes)
-
-    job.perform_later(
+    UptimeJob.set(wait: 30.minutes).perform_later(
       service_id: service_version.service_id,
       service_name: service_version.service_name,
       host: "#{service_version.service_slug}.#{url_root}",
       action: :create
     )
-  end
-
-  def first_time_published?(publish_service)
-    PublishService.completed.where(
-      deployment_environment: publish_service.deployment_environment,
-      service_id: publish_service.service_id
-    ).count.zero?
   end
 
   def url_root
