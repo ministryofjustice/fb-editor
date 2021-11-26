@@ -253,6 +253,20 @@ function stringInject(str, injections) {
 }
 
 
+/* Return the largest height found from items within a jQuery collection
+ **/
+function maxHeight($collection) {
+  var max = 0;
+  $collection.each(function() {
+    var height = $(this).outerHeight();
+    if(height > max) {
+      max = height;
+    }
+  });
+  return max;
+}
+
+
 /* Return the largest width found from items within a jQuery collection
  **/
 function maxWidth($collection) {
@@ -293,6 +307,7 @@ module.exports  = {
   isBoolean: isBoolean,
   updateDomByApiRequest:updateDomByApiRequest,
   stringInject: stringInject,
+  maxHeight: maxHeight,
   maxWidth: maxWidth,
   difference: difference
 }
