@@ -318,16 +318,16 @@ function createFlowItemMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   positionFlowItems(view.$flowOverview);
-  positionConditionsByDestination(view.$flowOverview);
+//  positionConditionsByDestination(view.$flowOverview);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
   if(!view.features.branching) {
     positionAddPageButton();
   }
 
-  adjustOverviewHeight(view.$flowOverview);
   applyArrowPagePaths(view.$flowOverview);
   applyArrowBranchPaths(view.$flowOverview);
+  adjustOverviewHeight(view.$flowOverview);
   applyOverviewScroll(view.$flowOverview);
 }
 
@@ -366,7 +366,7 @@ function layoutDetachedItemsOveriew(view) {
     $expander.css("display", "block"); // display:none objects have no height in jQuery
 
     positionFlowItems($group);
-    positionConditionsByDestination($group);
+//    positionConditionsByDestination($group);
     adjustOverviewHeight($group);
     applyOverviewScroll($group);
 
@@ -382,26 +382,26 @@ function layoutDetachedItemsOveriew(view) {
 **/
 function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
-  const SELECTOR_FLOW_CONDITIONS = ".flow-conditions";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_ITEM = ".flow-item";
-  const THUMBNAIL_HEIGHT = $(SELECTOR_FLOW_ITEM).eq(0).height();
   const SPACING_X = 100;
-  const SPACING_Y = THUMBNAIL_HEIGHT / 2;
-  const CONDITIONS_LEFT_SPACING = $(SELECTOR_FLOW_BRANCH).outerWidth();
   var $columns = $(".column", $overview);
+  var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
   var left = 0;
 
   // Loop over found columns created from the flow
   $columns.each(function(column) {
     var $column = $(this);
-    var $conditions = $(SELECTOR_FLOW_CONDITIONS, this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
+    var conditionsLeft = 0;
     var top = 100; // TODO...
 
     $items.each(function(row) {
-      var conditionY = THUMBNAIL_HEIGHT / 2;
       var $item = $(this);
+      var itemWidth = $item.outerWidth();
+      var conditionTop = (rowHeight / 4);
+      var $conditions = $(SELECTOR_FLOW_CONDITION, this);
+
       // First, bring it out of the column because we don't need it.
       // We will remove the columns later.
       $column.before($item);
@@ -410,7 +410,7 @@ function positionFlowItems($overview) {
       new FlowItem($item, {
         x_in: left,
         x_out: left + $item.outerWidth(),
-        y: top + conditionY
+        y: top + (rowHeight / 4)
       });
 
       // Set column and row information for items.
@@ -424,36 +424,33 @@ function positionFlowItems($overview) {
         top: top + "px"
       });
 
+      if($conditions.length) {
+        conditionsLeft = itemWidth + utilities.maxWidth($conditions);
+      }
+
       // Positions any conditions nodes (bubbles) with this loop
-      $(SELECTOR_FLOW_CONDITION, this).each(function(index) {
+      $conditions.each(function(index) {
         var $condition = $(this);
         $condition.css({
-          left: 0,
+          left: itemWidth,
           position: "absolute",
-          bottom: ($condition.height() - conditionY) + "px"
+          //bottom: ($condition.height() - conditionY) + "px"
+          top: conditionTop
         });
 
         // Set column and row information for items.
         $condition.attr("column", column);
         $condition.attr("row",  row + index); // Add row because Branch row is not always zero.
 
-        conditionY += THUMBNAIL_HEIGHT + SPACING_Y;
+        conditionTop += rowHeight;
       });
 
-      top += THUMBNAIL_HEIGHT + SPACING_Y; // TODO: This might need some thinking to line things up.
+      top += rowHeight;
     });
 
-    if($conditions.length > 0) {
-
-      // Positions bubble container relative to diamond.
-      $conditions.css({
-        left: CONDITIONS_LEFT_SPACING + "px",
-        position: "absolute",
-        top: "0px"
-      });
-
-      // Adjust distance based on finding some conditions
-      left += ($conditions.width() + SPACING_X);
+    if(conditionsLeft) {
+      // Adjust distance based on any found conditions
+      left += conditionsLeft
     }
     else {
       // Adjust distance based just on column width
@@ -468,7 +465,13 @@ function positionFlowItems($overview) {
 }
 
 
-/* VIEW HELPER FUNCTION:
+/* ========================================================================
+ *      DISABLED AS BELIEVE IT IS NO LONGER NEEDED.
+ *      WILL DELETE AFTER COMMENTING OUT IF THIS PROVES TRUE.
+ * ========================================================================
+ *
+ *
+ * VIEW HELPER FUNCTION:
  * ---------------------
  * After initial positionFlowItems() method has finished, we need to revisit
  * the Conditional text items to try and align them better with their actual
@@ -486,10 +489,17 @@ function positionFlowItems($overview) {
  * Note 2: have adjusted to ignore 'Otherwise' expression which can end up on
  * the top row in some configurations (e.g. Just points to CYA page), which
  * means it sits incorrectly flow of what would be the top path.
- **/
+ *
 function positionConditionsByDestination($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
+  $overview.find(SELECTOR_FLOW_BRANCH).each(function() {
+    var $branch = $(this);
+    var top = $branch.position().top;
+    $branch.find(SELECTOR_FLOW_CONDITION).each(function() {
+      console.log("top: ", top);
+    });
+  });
 
   $overview.find(SELECTOR_FLOW_CONDITION).each(function() {
     var $node = $(this);
@@ -504,6 +514,7 @@ function positionConditionsByDestination($overview) {
     }
   });
 }
+*/
 
 
 /* VIEW HELPER FUNCTION:
@@ -544,7 +555,7 @@ function adjustOverviewHeight($overview) {
     }
   });
 
-  $overview.css("height", lowestPoint + "px");
+  $overview.css("height", lowestPoint + 100 + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
 }
 
 
@@ -611,15 +622,17 @@ function adjustOverviewScrollDimensions($overview, $container) {
  **/
 function applyArrowPagePaths($overview) {
   var $itemsByRow = $overview.find("[row]");
+  var $items = $overview.find(".flow-page[data-next]");
+  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
-  $overview.find(".flow-page[data-next]").each(function() {
+  $items.each(function() {
     var $item = $(this);
     var next = $item.data("next");
     var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
-    var fromY = $item.position().top + ($item.height() / 2);
+    var fromY = $item.position().top + (rowHeight / 4);
     var $next = $("#" + next);
     var toX = $next.position().left - 1; // - 1 for design spacing
-    var toY = $next.position().top + ($next.height() / 2);
+    var toY = $next.position().top + (rowHeight / 4);
     var points = {
       from_x: fromX,
       from_y: fromY,
@@ -659,39 +672,52 @@ function applyArrowBranchPaths($overview) {
     $conditions.each(function(index) {
       var $condition = $(this);
       var $destination = $("#" + $condition.data("next"), $overview);
-      var conditionInX = $condition.position().left - 1; // - 1 for design spacing
-      var conditionInY = $condition.position().top + ($condition.height() / 2);
+
+      // --------------------------------------------------------------------------------------------
+      // TODO: Temporary hack to prevent but bug breaking the layout
+      // https://trello.com/c/iCDLMDgo/1836-bug-branchcondition-destination-page-is-in-detached-items
+      if($destination.length < 1) return false;
+      // --------------------------------------------------------------------------------------------
+
+      var conditionY = $condition.position().top;
       var destinationInX = $destination.position().left;
-      var destinationInY = $destination.position().top + ($destination.height() / 2);
+      var destinationInY = $destination.position().top + ($destination.height() / 4);
+      var conditionColumn = $condition.attr("column");
       var conditionRow = $condition.attr("row");
+      var destinationColumn = $destination.attr("column");
       var destinationRow = $destination.attr("row");
       var points, type;
 
       if(conditionRow == destinationRow) {
-        // Create straight path to go from right corner of the branch
-        // to the x/y coordinates of the related 'next' destination.
         if(index == 0) {
+          // Create straight path to go from right corner of the branch
+          // to the x/y coordinates of the related 'next' destination.
+          type = "ForwardPath";
           points = {
             from_x: branchRightX,
-            from_y: destinationInY,
+            from_y: branchRightY,
             to_x: destinationInX,
             to_y: destinationInY
           }
-          type = "ForwardPath";
         }
         else {
+          // All other 'standard' BranchConditions expected to be Down and Forward
+          // with the starting point from bottom and centre of the Branch item.
+          type = "DownForwardPath";
           points = {
             from_x: branchBottomX,
             from_y: branchBottomY,
             to_x: destinationInX,
             to_y: destinationInY
           }
-          type = "DownForwardPath";
         }
       }
       else {
-        if(conditionRow < destinationRow) {
-        console.log("TODO: What to do here?");
+        // Non-standard BranchCondition paths will all start from bottom and middle
+        // of the branch, go under the BranchCondition, and then end up wherever
+        // the destination point requires, using the calculated path type.
+        if(conditionRow > destinationRow) {
+          console.log("TODO: What to do here?");
         }
       }
 
