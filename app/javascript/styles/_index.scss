@@ -640,8 +640,9 @@ html {
 
 .flow-conditions {
   @include list_reset;
-  padding-top: 60px; // Just under half height of thumbnail
-  width: 400px;
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 
 .flow-expression {
@@ -670,10 +671,10 @@ html {
 }
 
 .flow-page {
-  border:  $govuk-link-colour solid 2px;
-  height: 121px;
+  height: 250px;
+  overflow: hidden;
   vertical-align: middle;
-  width: 196px;
+  width: 200px;
 }
 
 .flow-pointer {
@@ -687,12 +688,13 @@ html {
 }
 
 .flow-thumbnail {
+  border:  $govuk-link-colour solid 2px;
   display: block;
-  height: 100%;
+  height: 121px;
   margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
-  width: 100%;
+  width: 196px;
 
   img {
     display: block;
