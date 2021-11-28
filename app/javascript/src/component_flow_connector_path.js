@@ -90,9 +90,12 @@ function buildByType(type) {
     case "DownForwardPath":
          paths = createElementsForDownForwardConnector.call(this);
          break;
+    case "DownForwardUpPath":
+         paths = createElementsForDownForwardUpConnector.call(this);
+         break;
     default:
-         // TODO: What will default be (forward??)
-         console.log("DEFAULT: ", JSON.stringify(points).replace("\\", ""));
+         // Report something should have been set.
+         console.log("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
   }
 
   return createSvg(paths);
@@ -132,7 +135,7 @@ function createPathsForForwardConnector() {
   var y = points.from_y + points.yDifference;
   var width = "h" + points.xDifference;
   var paths = "<path d=\"" + pathD(xy(x, y), width) + "\"></path>";
-  paths += createArrowPath(x + points.xDifference, y);
+  paths += createArrowPath(points.to_x, points.to_y);
   return paths;
 }
 
@@ -162,13 +165,25 @@ function createElementsForDownForwardConnector() {
   var points = this.points;
   var arrowX = points.from_x + points.xDifference;
   var arrowY = points.from_y + points.yDifference;
-  var down = "v" + (points.yDifference - (CURVE_SPACING / 2)); // Not sure why /2 for curve spacing but it works.
+  var down = "v" + (points.yDifference - (CURVE_SPACING / 2));
   var forward = "h" + points.xDifference;
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward) + "\"></path>";
   paths += createArrowPath(arrowX, arrowY);
   return paths;
 }
 
+
+function createElementsForDownForwardUpConnector() {
+  var points = this.points;
+  var arrowX = points.to_x;
+  var arrowY = points.to_y;
+  var down = "v" + (points.boundary_y - (CURVE_SPACING / 2));
+  var forward = "h" + (points.xDifference - (CURVE_SPACING * 2));
+  var up = "v-" + (points.to_y - points.from_y - CURVE_SPACING); //utilities.difference(points.boundary_y, points.to_y);
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
+  paths += createArrowPath(arrowX, arrowY);
+  return paths;
+}
 
 
 // Make available for importing.
