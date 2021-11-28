@@ -384,7 +384,7 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_ITEM = ".flow-item";
-  const SPACING_X = 100;
+  const SPACING_X = 100; // TODO: Where should this come from?
   var $columns = $(".column", $overview);
   var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
   var left = 0;
@@ -394,7 +394,7 @@ function positionFlowItems($overview) {
     var $column = $(this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var conditionsLeft = 0;
-    var top = 100; // TODO...
+    var top = 0; // TODO: Where should this come from? (see also SPACING_X)
 
     $items.each(function(row) {
       var $item = $(this);
@@ -434,7 +434,6 @@ function positionFlowItems($overview) {
         $condition.css({
           left: itemWidth,
           position: "absolute",
-          //bottom: ($condition.height() - conditionY) + "px"
           top: conditionTop
         });
 
@@ -554,8 +553,8 @@ function adjustOverviewHeight($overview) {
       lowestPoint = bottom;
     }
   });
-
-  $overview.css("height", lowestPoint + 100 + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
+  // DEV TODO: Need to figure out top boundary after this disabling.
+  $overview.css("height", lowestPoint + 0 + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
 }
 
 
@@ -643,7 +642,7 @@ function applyArrowPagePaths($overview) {
     var path = new FlowConnectorPath(points, {
       from: $item,
       to: $next,
-      gap: 100,
+      gap: 0, // DEV TODO: Need to figure out top boundary after this disabling.
       type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
 
@@ -661,13 +660,15 @@ function applyArrowPagePaths($overview) {
  **/
 function applyArrowBranchPaths($overview) {
   var $itemsByRow = $overview.find("[row]");
+  var rowHeight = utilities.maxHeight($itemsByRow);
+
   $overview.find(".flow-branch").each(function() {
     var $branch = $(this);
-    var branchRightX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design spacing
-    var branchRightY = $branch.position().top + ($branch.height() / 2) - 1; // - 1 due to design
-    var branchBottomX = $branch.position().left + ($branch.outerWidth() / 2);
-    var branchBottomY = $branch.position().top + $branch.outerHeight();
+    var branchX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design gap
+    var branchY = $branch.position().top + (rowHeight / 4);
+    var branchWidth = $branch.outerWidth();
     var $conditions = $branch.find(".flow-condition");
+    var conditionY = branchY; // Not sure why the -10 should be needed but works
 
     $conditions.each(function(index) {
       var $condition = $(this);
@@ -679,9 +680,8 @@ function applyArrowBranchPaths($overview) {
       if($destination.length < 1) return false;
       // --------------------------------------------------------------------------------------------
 
-      var conditionY = $condition.position().top;
-      var destinationInX = $destination.position().left;
-      var destinationInY = $destination.position().top + ($destination.height() / 4);
+      var destinationX = $destination.position().left;
+      var destinationY = $destination.position().top + (rowHeight / 4);
       var conditionColumn = $condition.attr("column");
       var conditionRow = $condition.attr("row");
       var destinationColumn = $destination.attr("column");
@@ -694,10 +694,10 @@ function applyArrowBranchPaths($overview) {
           // to the x/y coordinates of the related 'next' destination.
           type = "ForwardPath";
           points = {
-            from_x: branchRightX,
-            from_y: branchRightY,
-            to_x: destinationInX,
-            to_y: destinationInY
+            from_x: branchX,
+            from_y: branchY,
+            to_x: destinationX,
+            to_y: destinationY
           }
         }
         else {
@@ -705,10 +705,10 @@ function applyArrowBranchPaths($overview) {
           // with the starting point from bottom and centre of the Branch item.
           type = "DownForwardPath";
           points = {
-            from_x: branchBottomX,
-            from_y: branchBottomY,
-            to_x: destinationInX,
-            to_y: destinationInY
+            from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
+            from_y: branchY,
+            to_x: destinationX,
+            to_y: conditionY
           }
         }
       }
@@ -717,7 +717,17 @@ function applyArrowBranchPaths($overview) {
         // of the branch, go under the BranchCondition, and then end up wherever
         // the destination point requires, using the calculated path type.
         if(conditionRow > destinationRow) {
-          console.log("TODO: What to do here?");
+          if(conditionColumn < destinationColumn) {
+            type = "DownForwardUpPath";
+            points = {
+              from_x: branchX - (branchWidth / 2),
+              from_y: branchY,
+              to_x: destinationX,
+              to_y: destinationY,
+              //boundary_y: conditionY - ($branch.outerHeight() / 2)
+              boundary_y: conditionY - branchY
+            }
+          }
         }
       }
 
@@ -728,7 +738,7 @@ function applyArrowBranchPaths($overview) {
           type: type
         })).$node);
       }
-
+      conditionY += rowHeight;
     });
   });
 }
