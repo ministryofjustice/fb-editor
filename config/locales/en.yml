@@ -77,6 +77,12 @@ en:
   auth:
     existing_user:
       welcome_html: 'Signed in successfully'
+    signup_error:
+      heading: 'Error signing up'
+      body: 'Unable to signup'
+    signup_not_allowed:
+      heading: 'Unable to sign in'
+      body: 'You cannot sign in with that email address'
   actions:
     edit: 'Edit'
     save: 'Save'
