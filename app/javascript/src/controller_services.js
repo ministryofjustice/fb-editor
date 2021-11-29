@@ -642,7 +642,7 @@ function applyArrowPagePaths($overview) {
     var path = new FlowConnectorPath(points, {
       from: $item,
       to: $next,
-      gap: 0, // DEV TODO: Need to figure out top boundary after this disabling.
+      boundary_y: 100, // Arbitrary spacing for top. Not sure if could be programmable.
       type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
 
@@ -668,7 +668,7 @@ function applyArrowBranchPaths($overview) {
     var branchY = $branch.position().top + (rowHeight / 4);
     var branchWidth = $branch.outerWidth();
     var $conditions = $branch.find(".flow-condition");
-    var conditionY = branchY; // Not sure why the -10 should be needed but works
+    var conditionY = branchY;
 
     $conditions.each(function(index) {
       var $condition = $(this);
@@ -724,7 +724,6 @@ function applyArrowBranchPaths($overview) {
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
-              //boundary_y: conditionY - ($branch.outerHeight() / 2)
               boundary_y: conditionY - branchY
             }
           }
