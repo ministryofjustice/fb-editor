@@ -1,4 +1,4 @@
-RSpec.describe Publisher::PingdomEligibility do
+RSpec.describe Publisher::UptimeEligibility do
   subject :pingdom_eligibility do
     described_class.new(publish_service)
   end

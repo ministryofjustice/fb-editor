@@ -1,5 +1,5 @@
 class Publisher
-  class PingdomEligibility
+  class UptimeEligibility
     include EnvironmentCheck
     attr_reader :publish_service
 

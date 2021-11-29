@@ -14,7 +14,7 @@ class UnpublishServiceJob < ApplicationJob
   def success(job)
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
 
-    if PingdomEligibility.new(publish_service).cannot_destroy?
+    if UptimeEligibility.new(publish_service).cannot_destroy?
       Rails.logger.info('Skipping Pingdom unpublishing.')
       return
     end

@@ -30,7 +30,7 @@ class PublishServiceJob < ApplicationJob
   def success(job)
     publish_service = PublishService.find(job.arguments.first[:publish_service_id])
 
-    if Publisher::PingdomEligibility.new(publish_service).cannot_create?
+    if Publisher::UptimeEligibility.new(publish_service).cannot_create?
       Rails.logger.info('Skipping Pingdom publishing.')
       return
     end
