@@ -34,6 +34,8 @@ feature 'Edit exit pages' do
     then_I_see_the_updated_page_heading(exit_heading)
     then_I_see_the_updated_page_section_heading(exit_section_heading)
     then_I_see_the_updated_page_lede(exit_lede)
+    preview_form = when_I_preview_the_form_until_the_exit_page
+    then_I_should_stop_until_the_exit_page(preview_form)
   end
 
   scenario 'adding components' do
@@ -90,5 +92,19 @@ feature 'Edit exit pages' do
     # the actual text in it
     output_component = editor.first_component.find('.output p', visible: false)
     expect(output_component.text).to eq(optional_content)
+  end
+
+  def when_I_preview_the_form_until_the_exit_page
+    and_I_return_to_flow_page
+    when_I_preview_the_form
+  end
+
+  def then_I_should_stop_until_the_exit_page(preview_form)
+    within_window(preview_form) do
+      page.click_button 'Start now'
+
+      expect(page.current_path).to include('/preview/exit')
+      expect(page.all('button').to_a).to eq([])
+    end
   end
 end
