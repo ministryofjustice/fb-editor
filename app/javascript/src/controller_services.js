@@ -26,6 +26,8 @@ const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 const FlowConnectorPath = require('./component_flow_connector_path');
 
+const COLUMN_SPACING = 100;
+
 
 class ServicesController extends DefaultController {
   constructor(app) {
@@ -385,7 +387,6 @@ function positionFlowItems($overview) {
   const SELECTOR_FLOW_BRANCH = ".flow-branch";
   const SELECTOR_FLOW_CONDITION = ".flow-condition";
   const SELECTOR_FLOW_ITEM = ".flow-item";
-  const SPACING_X = 100; // TODO: Where should this come from?
   var $columns = $(".column", $overview);
   var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
   var left = 0;
@@ -395,7 +396,7 @@ function positionFlowItems($overview) {
     var $column = $(this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var conditionsLeft = 0;
-    var top = 0; // TODO: Where should this come from? (see also SPACING_X)
+    var top = 0; // TODO: Where should this come from? (see also COLUMN_SPACING)
 
     $items.each(function(row) {
       var $item = $(this);
@@ -457,7 +458,7 @@ function positionFlowItems($overview) {
       left += utilities.maxWidth($items);
     }
 
-    left += SPACING_X; // Use same spacing regardless of condition found, or not.
+    left += COLUMN_SPACING; // Use same spacing regardless of condition found, or not.
   });
 
   // Ditch the columns.
@@ -637,19 +638,22 @@ function applyArrowPagePaths($overview) {
       from_x: fromX,
       from_y: fromY,
       to_x: toX,
-      to_y: toY
+      to_y: toY,
+      via_y: COLUMN_SPACING
     }
 
     var path = new FlowConnectorPath(points, {
       from: $item,
       to: $next,
-      boundary_y: 100, // Arbitrary spacing for top. Not sure if could be programmable.
+      container: $overview,
+      boundary: 100, // TODO: Arbitrary spacing for top. Not sure if could be programmable.
       type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
 
     $overview.append(path.$node);
   });
 }
+
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
@@ -725,7 +729,7 @@ function applyArrowBranchPaths($overview) {
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
-              boundary_y: conditionY - branchY
+              via_y: conditionY - branchY
             }
           }
         }
@@ -809,7 +813,6 @@ function calculateConnectorPathType($item, $next, points, $items) {
  *
  **/
 function positionAddPageButton() {
-  const SPACING_X = 100; // Same as flow item spacing
   var $overview = $("#flow-overview");
   var $button = $(".flow-add-page-button");
   var $items = $(".flow-item", $overview).not("[data-next]");
@@ -823,7 +826,7 @@ function positionAddPageButton() {
       $button.attr("id", id);
       $button.css({
         display: "inline-block",
-        left: Number($item.position().left + $item.outerWidth() + SPACING_X) + "PX",
+        left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "PX",
         position: "absolute",
         top: Number(($item.height() / 2) - ($button.outerHeight() / 2)) + "px"
       });
