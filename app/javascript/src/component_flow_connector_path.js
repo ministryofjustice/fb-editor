@@ -43,8 +43,14 @@ class FlowConnectorPath {
   constructor(points, config) {
     var id = utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
-                 boundary_y: 0 // Temporary vertical spacing for lines outside top
+                 container: $(),
+                 boundary: 0
                }, config);
+
+    points = utilities.mergeObjects({
+               via_x: 0, // If the connector needs to go via an certain route
+               via_y: 0  // you can add x/y coordinates to help route it.
+             }, points);
 
     points.xDifference = utilities.difference(points.from_x, points.to_x);
     points.yDifference = utilities.difference(points.from_y, points.to_y);
@@ -72,9 +78,6 @@ function buildByType(type) {
   switch(this.type) {
     case "BackwardPath":
          // TODO...
-    case "BackwardDownPath":
-         // TODO...
-         break;
     case "BackwardUpPath":
          // TODO...
          break;
@@ -149,13 +152,12 @@ function createPathsForForwardUpConnector() {
 
 function createElementsForForwardUpForwarDownConnector() {
   var points = this.points;
-  var boundaryY = this._config.boundary_y;
-  var vertical1 = "v-" + utilities.difference(0, points.yDifference + boundaryY);
+  var vertical1 = "v-" + utilities.difference(0, points.yDifference + points.via_y);
   var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
 var vertical3 = "v" + 100; // TODO... what number should this be and where should it come from?
-  var horizontal1 = "h" + (boundaryY - (CURVE_SPACING * 2));
-  var horizontal2 = "h" + (points.xDifference - boundaryY - (CURVE_SPACING));
-  var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), horizontal1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
+  var forward1 = "h" + (points.via_y - (CURVE_SPACING * 2));
+  var horizontal2 = "h" + (points.xDifference - points.via_y - (CURVE_SPACING));
+  var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
 
   return path;
 }
@@ -177,9 +179,9 @@ function createElementsForDownForwardUpConnector() {
   var points = this.points;
   var arrowX = points.to_x;
   var arrowY = points.to_y;
-  var down = "v" + (points.boundary_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
+  var down = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
   var forward = "h" + (points.xDifference - (CURVE_SPACING * 2.5)); // Not sure why 2.5 and not 3 but it works.
-  var up = "v-" + ((utilities.difference(points.boundary_y, points.to_y) + points.from_y) - CURVE_SPACING);
+  var up = "v-" + ((utilities.difference(points.via_y, points.to_y) + points.from_y) - CURVE_SPACING);
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
   paths += createArrowPath(arrowX, arrowY);
   return paths;
