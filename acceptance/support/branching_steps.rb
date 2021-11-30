@@ -70,8 +70,12 @@ module BranchingSteps
   def and_I_want_to_add_branching(url)
     page.find('.flow-thumbnail', text: url).hover
     editor.three_dots_button.click
-    editor.branching_link.click
+    and_I_add_branching_to_the_page
     then_I_should_see_the_branching_page
+  end
+
+  def and_I_add_branching_to_the_page
+    editor.branching_link.click
   end
 
   def then_I_should_see_the_branching_page

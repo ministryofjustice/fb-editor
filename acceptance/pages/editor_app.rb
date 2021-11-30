@@ -131,6 +131,12 @@ class EditorApp < SitePrism::Page
   element :field_options, '#branch_conditionals_attributes_0_expressions_attributes_0_field'
   element :otherwise_options, '#branch_default_next'
 
+  # There are times we need two branches in the same branching point
+  element :second_destination_options, '#branch_conditionals_attributes_1_next'
+  element :second_conditional_options, '#branch_conditionals_attributes_1_expressions_attributes_0_component'
+  element :second_operator_options, '#branch_conditionals_attributes_1_expressions_attributes_0_operator'
+  element :second_field_options, '#branch_conditionals_attributes_1_expressions_attributes_0_field'
+
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end
@@ -141,5 +147,11 @@ class EditorApp < SitePrism::Page
 
   def branch_title(index)
     find("div[data-conditional-index='#{index}'] p")
+  end
+
+  def hover_preview(page_title)
+    page.all('.flow-thumbnail').find do |element|
+      element.text.include?(page_title)
+    end.hover
   end
 end
