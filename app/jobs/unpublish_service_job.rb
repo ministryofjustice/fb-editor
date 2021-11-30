@@ -1,6 +1,10 @@
 class UnpublishServiceJob < ApplicationJob
   queue_as :default
 
+  after_perform do |job|
+    queue_uptime_job(job)
+  end
+
   def perform(publish_service_id:, service_slug:)
     publish_service = PublishService.find(publish_service_id)
     Unpublisher.new(
@@ -11,11 +15,11 @@ class UnpublishServiceJob < ApplicationJob
     ).call
   end
 
-  def success(job)
-    publish_service = PublishService.find(job.arguments.first[:publish_service_id])
+  def queue_uptime_job(job)
+    publish_service = PublishService.find(job.arguments.first)
 
     if UptimeEligibility.new(publish_service).cannot_destroy?
-      Rails.logger.info('Skipping Pingdom unpublishing.')
+      Rails.logger.info('Skipping Uptime Check unpublishing')
       return
     end
 
