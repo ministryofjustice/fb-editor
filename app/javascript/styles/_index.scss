@@ -578,12 +578,14 @@ html {
 	  display: inline-block;
     margin-top: 30px;
     padding: 0 40px;
+    position: relative;
     text-align: center;
     text-decoration: none;
     width: inherit;
   }
 
   img {
+    background-color: govuk-colour("white");
     height: 125px;
     left: 0;
     position: absolute;
@@ -650,7 +652,6 @@ html {
 }
 
 .flow-item {
-  background-color: govuk-colour("white");
   overflow: visible;
 
   &:hover {
@@ -688,6 +689,7 @@ html {
 }
 
 .flow-thumbnail {
+  background-color: govuk-colour("white");
   border:  $govuk-link-colour solid 2px;
   display: block;
   height: 121px;
