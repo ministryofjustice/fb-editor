@@ -32,7 +32,11 @@ feature 'Deleting page' do
   end
 
   scenario 'when try to delete a page which is a branch destination' do
-    pending
+    given_I_have_a_form_with_pages
+    and_I_want_to_delete_a_branch_destination_page
+    when_I_delete_the_branch_destination_page
+    then_I_should_not_see_the_deleted_page_in_the_flow
+    and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
   end
 
   scenario 'when deleting a branch' do
@@ -40,8 +44,7 @@ feature 'Deleting page' do
     and_I_click_to_delete_branching_point_one
     and_I_choose_page_c_to_connect_the_forms
     when_I_delete_the_branching_point
-    then_I_should_see_page_c_connected_in_the_main_flow
-    and_I_should_see_the_other_pages_as_unconnected
+    then_I_should_see_branch_pointing_one_deleted
   end
 
   def given_I_have_a_form_with_pages
@@ -90,6 +93,7 @@ feature 'Deleting page' do
 
     editor.save_button.click
     and_I_return_to_flow_page
+    expect(editor.text).to include('Branching point 1')
   end
 
   def given_I_have_a_branching_point_two
@@ -119,16 +123,60 @@ feature 'Deleting page' do
     try_to_delete_page('Page g')
   end
 
+  def and_I_click_to_delete_branching_point_one
+    editor.hover_branch('Branching point 1')
+    editor.three_dots_button.click
+    editor.delete_branch_link.click
+  end
+
+  def and_I_choose_page_c_to_connect_the_forms
+    choose 'Page c', visible: false
+  end
+
+  def when_I_delete_the_branching_point
+    editor.delete_branching_point_button.click
+    sleep 0.5
+  end
+
+  def then_I_should_see_branch_pointing_one_deleted
+    expect(editor.text).to_not include('Branching point 1')
+  end
+
   def then_I_should_see_a_message_that_is_not_possible_to_delete_the_page
     expect(editor.text).to include(
-      'You cannot delete this page because it is used in a branching condition'
+      I18n.t(
+        'pages.delete_modal.delete_page_used_for_branching_not_supported_message'
+      )
     )
   end
 
   def then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
     expect(editor.text).to include(
-      'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
+      I18n.t(
+        'pages.delete_modal.stack_branches_not_supported_message'
+      )
     )
+  end
+
+  def and_I_want_to_delete_a_branch_destination_page
+    editor.hover_preview('Page c')
+    editor.three_dots_button.click
+    editor.delete_page_link.click
+    sleep 0.5
+  end
+
+  def when_I_delete_the_branch_destination_page
+    editor.delete_and_update_branching_link.click
+    sleep 0.5
+  end
+
+  def then_I_should_not_see_the_deleted_page_in_the_flow
+    expect(editor.text).to_not include('Page c')
+  end
+
+  def and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
+    editor.click_branch('Branching point 1')
+    expect(editor.destination_options.find('option[selected]').text).to eq('Page d')
   end
 
   def and_I_want_to_delete_the_page_that_I_created
@@ -148,7 +196,6 @@ feature 'Deleting page' do
     editor.delete_page_link.click
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
   end
-
 
   def then_I_should_not_see_the_deleted_page_anymore
     expect(editor.form_urls.count).to eq(1)
