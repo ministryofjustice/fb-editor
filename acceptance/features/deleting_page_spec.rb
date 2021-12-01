@@ -112,13 +112,11 @@ feature 'Deleting page' do
   end
 
   def when_I_try_to_delete_a_page_which_has_a_branching_conditional
-    editor.hover_preview('Page b')
-    editor.three_dots_button.click
-    editor.delete_page_link.click
-    sleep 0.5
+    try_to_delete_page('Page b')
   end
 
   def when_I_try_to_delete_a_page_which_result_in_a_stack_branch
+    try_to_delete_page('Page g')
   end
 
   def then_I_should_see_a_message_that_is_not_possible_to_delete_the_page
@@ -128,6 +126,9 @@ feature 'Deleting page' do
   end
 
   def then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
+    expect(editor.text).to include(
+      'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
+    )
   end
 
   def and_I_want_to_delete_the_page_that_I_created
@@ -140,6 +141,14 @@ feature 'Deleting page' do
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     editor.delete_page_modal_button.click
   end
+
+  def try_to_delete_page(page_name)
+    editor.hover_preview(page_name)
+    editor.three_dots_button.click
+    editor.delete_page_link.click
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+  end
+
 
   def then_I_should_not_see_the_deleted_page_anymore
     expect(editor.form_urls.count).to eq(1)
