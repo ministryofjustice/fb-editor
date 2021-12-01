@@ -157,8 +157,8 @@ function createElementsForForwardUpForwarDownConnector() {
   var vertical1 = "v-" + utilities.difference(points.from_y, this._config.top);
   var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
   var vertical3 = "v" + utilities.difference(this._config.top, points.to_y);
-  var forward1 = "h" + (points.via_y - (CURVE_SPACING * 2));
-  var horizontal2 = "h" + (points.xDifference - points.via_y - (CURVE_SPACING));
+  var forward1 = "h" + (points.via_x - (CURVE_SPACING * 2));
+  var horizontal2 = "h" + (points.xDifference - points.via_x - (CURVE_SPACING));
   var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
 
   return path;
