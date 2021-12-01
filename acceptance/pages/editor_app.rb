@@ -131,6 +131,16 @@ class EditorApp < SitePrism::Page
   element :field_options, '#branch_conditionals_attributes_0_expressions_attributes_0_field'
   element :otherwise_options, '#branch_default_next'
 
+  # There are times we need two branches in the same branching point
+  element :second_destination_options, '#branch_conditionals_attributes_1_next'
+  element :second_conditional_options, '#branch_conditionals_attributes_1_expressions_attributes_0_component'
+  element :second_operator_options, '#branch_conditionals_attributes_1_expressions_attributes_0_operator'
+  element :second_field_options, '#branch_conditionals_attributes_1_expressions_attributes_0_field'
+
+  element :delete_branch_link, :link, I18n.t('actions.delete_branch')
+  element :delete_branching_point_button, :button, I18n.t('branches.delete_modal.submit')
+  element :delete_and_update_branching_link, :link, I18n.t('pages.delete_modal.delete_and_update_branching')
+
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end
@@ -141,5 +151,27 @@ class EditorApp < SitePrism::Page
 
   def branch_title(index)
     find("div[data-conditional-index='#{index}'] p")
+  end
+
+  def hover_preview(page_title)
+    hover_page_flow('.flow-thumbnail', content: page_title)
+  end
+
+  def click_branch(branch_title)
+    page_flow_item('.flow-branch', branch_title).click
+  end
+
+  def hover_branch(branch_title)
+    hover_page_flow('.flow-branch', content: branch_title)
+  end
+
+  def hover_page_flow(html_class, content:)
+    page_flow_item(html_class, content).hover
+  end
+
+  def page_flow_item(html_class, content)
+    page.all(html_class).find do |element|
+      element.text.include?(content)
+    end
   end
 end
