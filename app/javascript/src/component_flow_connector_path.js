@@ -137,11 +137,6 @@ function xy(x, y) {
 function createPathsForForwardConnector() {
   var points = this.points;
   var x = points.from_x;
-// NOTE: This does not seem to be required ???
-// Have temporarily replaced with simplified line below.
-// The console output FIRST/SECOND is giving different
-// responses, however, so not 100%. Will monitor.
-//  var y = (points.from_y < points.to_y ? points.from_y + points.yDifference : points.from_y - points.yDifference);
   var y = points.from_y + points.yDifference;
   var width = "h" + points.xDifference;
   var paths = "<path d=\"" + pathD(xy(x, y), width) + "\"></path>";
@@ -159,9 +154,9 @@ function createPathsForForwardUpConnector() {
 
 function createElementsForForwardUpForwarDownConnector() {
   var points = this.points;
-  var vertical1 = "v-" + utilities.difference(0, points.yDifference + points.via_y);
+  var vertical1 = "v-" + utilities.difference(points.from_y, this._config.top);
   var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
-var vertical3 = "v" + 100; // TODO... what number should this be and where should it come from?
+  var vertical3 = "v" + utilities.difference(this._config.top, points.to_y);
   var forward1 = "h" + (points.via_y - (CURVE_SPACING * 2));
   var horizontal2 = "h" + (points.xDifference - points.via_y - (CURVE_SPACING));
   var path = "<path d=\"" + pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT) + "\"></path>";
