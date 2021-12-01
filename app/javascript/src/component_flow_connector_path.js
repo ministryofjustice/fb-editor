@@ -44,7 +44,8 @@ class FlowConnectorPath {
     var id = utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
                  container: $(),
-                 boundary: 0
+                 top: 0,
+                 bottom: 0 // Nonsense number as should be set by calculating height of container and passing in.
                }, config);
 
     points = utilities.mergeObjects({
@@ -67,6 +68,8 @@ class FlowConnectorPath {
               .attr("data-from", conf.from.attr("id"))
               .attr("data-to", conf.to.attr("id"))
               .data("instance", this);
+
+    addToDOM.call(this);
   }
 }
 
@@ -102,6 +105,10 @@ function buildByType(type) {
   }
 
   return createSvg(paths);
+}
+
+function addToDOM() {
+  this._config.container.append(this.$node);
 }
 
 function createSvg(paths) {
