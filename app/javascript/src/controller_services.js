@@ -328,9 +328,9 @@ function layoutFormFlowOverview(view) {
     positionAddPageButton();
   }
 
+  adjustOverviewHeight(view.$flowOverview);
   applyArrowPagePaths(view.$flowOverview);
   applyArrowBranchPaths(view.$flowOverview);
-  adjustOverviewHeight(view.$flowOverview);
   applyOverviewScroll(view.$flowOverview);
 }
 
@@ -640,7 +640,7 @@ function applyArrowPagePaths($overview) {
       from_y: fromY,
       to_x: toX,
       to_y: toY,
-      via_y: COLUMN_SPACING
+      via_x: COLUMN_SPACING
     }
 
     new FlowConnectorPath(points, {
