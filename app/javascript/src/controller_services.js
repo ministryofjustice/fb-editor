@@ -554,6 +554,7 @@ function adjustOverviewHeight($overview) {
       lowestPoint = bottom;
     }
   });
+
   // DEV TODO: Need to figure out top boundary after this disabling.
   $overview.css("height", lowestPoint + 0 + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
 }
@@ -641,15 +642,12 @@ function applyArrowPagePaths($overview) {
       via_y: COLUMN_SPACING
     }
 
-    var path = new FlowConnectorPath(points, {
+    new FlowConnectorPath(points, {
       from: $item,
       to: $next,
       container: $overview,
-      boundary: 100, // TODO: Arbitrary spacing for top. Not sure if could be programmable.
       type: calculateConnectorPathType($item, $next, points, $itemsByRow)
     });
-
-    $overview.append(path.$node);
   });
 }
 
@@ -672,7 +670,6 @@ function applyArrowBranchPaths($overview) {
     var branchY = $branch.position().top + (rowHeight / 4);
     var branchWidth = $branch.outerWidth();
     var $conditions = $branch.find(".flow-condition");
-    var conditionY = branchY;
 
     $conditions.each(function(index) {
       var $condition = $(this);
@@ -735,13 +732,16 @@ function applyArrowBranchPaths($overview) {
       }
 
       if(type) {
-        $overview.append((new FlowConnectorPath(points, {
+        new FlowConnectorPath(points, {
+          container: $overview,
           from: $branch,
-          to: $condition,
-          type: type
-        })).$node);
+          to: $destination,
+          via: $condition,
+          type: type,
+          top: 0,                     // TODO: Is this and the height below the best way to position
+          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+        });
       }
-      conditionY += rowHeight;
     });
   });
 }
