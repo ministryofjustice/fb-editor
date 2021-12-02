@@ -1,9 +1,11 @@
 class PublishController < FormController
+  include PublishWarningHelper
   before_action :assign_form_objects
 
   def index
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
+    @warning_message = warning_message
   end
 
   def create
@@ -19,6 +21,13 @@ class PublishController < FormController
       render :index
     end
   end
+
+  def warning_message
+    submitting_pages_not_present ||
+      confirmation_page_not_present ||
+      cya_page_not_present
+  end
+  helper_method :warning_message
 
   private
 
