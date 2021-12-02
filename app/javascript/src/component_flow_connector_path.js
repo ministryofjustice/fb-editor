@@ -196,13 +196,14 @@ function createElementsForDownForwardUpConnector() {
 
 
 function createElementsForDownForwardDownBackwardUpConnector() {
+  const HACK = 2; // HACK! hardcoded 2 because calculation is slightly off. Might be something to do with the line widths.
   var points = this.points;
   var conf = this._config;
   var down1 = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
   var down2 = "v" + (utilities.difference(points.via_y, this._config.bottom) - (CURVE_SPACING * 3));
   var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
   var backward = "h-" + (points.via_x + points.xDifference);
-  var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) + CURVE_SPACING);
+  var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) + HACK);
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
   // Expected not to need an arrow since the page is earlier in the flow and something
   // must already be pointing to it for the journey to have progressed beyond that point.
