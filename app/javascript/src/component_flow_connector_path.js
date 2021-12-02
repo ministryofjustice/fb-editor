@@ -199,7 +199,7 @@ function createElementsForDownForwardDownBackwardUpConnector() {
   var points = this.points;
   var conf = this._config;
   var down1 = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
-  var down2 = "v" + (utilities.difference(points.via_y, this._config.bottom) - (CURVE_SPACING * 2));
+  var down2 = "v" + (utilities.difference(points.via_y, this._config.bottom) - (CURVE_SPACING * 3));
   var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
   var backward = "h-" + (points.via_x + points.xDifference);
   var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) + CURVE_SPACING);

@@ -526,23 +526,21 @@ function positionConditionsByDestination($overview) {
  **/
 function adjustOverviewHeight($overview) {
   var $items = $(".flow-item", $overview);
+  var $paths = $(".FlowConnectorPath path");
   var lowestPoint = 0;
 
   $items.each(function() {
-    var $current = $(this);
-    var height = $current.css("height", "auto").outerHeight(true); // 1. Eliminate CSS height to get better calculation.
-    var bottom = $current.position().top + height;
-
-    $current.css("height", ""); // 2. Reset inline so CSS height is back in play.
+    var $item = $(this);
+    var bottom = $item.position().top + $item.outerHeight(true);
 
     // Flow items will include the branch but not the conditions so this is a
     // little workaround to increase height if related condition item need it.
     // TODO: First condiiton item can still get clipped because it starts at a
     //       point lower than zero, so will need to fix when adding better scroll.
-    if($current.hasClass("flow-branch")) {
-      let $conditions = $current.find(".flow-condition");
+    if($item.hasClass("flow-branch")) {
+      let $conditions = $item.find(".flow-condition");
       let top = $conditions.first().position().top;
-      let baseline = $conditions.last().position().top + $conditions.last().outerHeight();
+      let baseline = $conditions.last().position().top + $conditions.last().outerHeight(true);
       if(top < 0) {
         top = ~(top); // Turn something like -14.5 into 14.5
       }
@@ -556,7 +554,7 @@ function adjustOverviewHeight($overview) {
   });
 
   // DEV TODO: Need to figure out top boundary after this disabling.
-  $overview.css("height", lowestPoint + 0 + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
+  $overview.css("height", lowestPoint + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
 }
 
 
@@ -571,6 +569,9 @@ function applyOverviewScroll($overview) {
   var scrollTimeout;
 
   $container.addClass("FlowOverviewScrollingFrame");
+  $container.height($overview.height()); // first steal the height from overview then reset
+  $overview.height("auto");              // the overview so it is controlled by container.
+
   $overview.append($container);
   $container.append($children);
 
@@ -595,20 +596,21 @@ function applyOverviewScroll($overview) {
 function adjustOverviewScrollDimensions($overview, $container) {
   var overviewWidth = $overview.width()
   var containerWidth = $container.get(0).scrollWidth;
+  var margin = 30; // Arbitrary number based on common
+  var viewWidth = window.innerWidth - (margin * 2);
 
   if(containerWidth > overviewWidth) {
     let offsetLeft = $overview.offset().left;
-    let margin = 30; // Arbitrary number based on common
-    let maxWidth = window.innerWidth - (margin * 2);
     let left = (containerWidth - overviewWidth) / 2;
+
     if(left < offsetLeft) {
-      $container.css("left", ~left);
+      $overview.css("left", ~left + "px");
     }
     else {
-      $container.css("left", ~(offsetLeft - margin));
+      $overview.css("left", ~(offsetLeft - margin));
     }
 
-    $container.css("width", maxWidth + "px");
+    $overview.css("width", viewWidth + "px");
   }
 }
 
