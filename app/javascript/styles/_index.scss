@@ -539,6 +539,7 @@ html {
   width: 100%;
 
   path {
+    display: block; // So we can capture a jQuery height calculation
     fill: none;
     stroke: govuk-colour("black");
     stroke-width: 2px;
@@ -564,7 +565,8 @@ html {
 
 .FlowOverviewScrollingFrame {
   height: 100%;
-  overflow: auto;
+  margin: 100px 0;
+  overflow: visible;
   position: relative;
 }
 
@@ -761,6 +763,8 @@ html {
 #flow-overview {
   margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
+  overflow: scroll;
+  position: relative;
 }
 
 #flow-standalone-pages {
