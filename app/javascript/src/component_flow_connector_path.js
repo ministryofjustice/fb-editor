@@ -20,7 +20,9 @@ const CURVE_SPACING = 20;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
+const CURVE_DOWN_LEFT = "a10,10 0 0 1 -10,10";
 const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
+const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
 var registry = {}; // Every created FlowConnectorPath is added to this so they can gain knowledge of others, if required.
 
 
@@ -98,6 +100,9 @@ function buildByType(type) {
          break;
     case "DownForwardUpPath":
          paths = createElementsForDownForwardUpConnector.call(this);
+         break;
+    case "DownForwardDownBackwardUpPath":
+         paths = createElementsForDownForwardDownBackwardUpConnector.call(this);
          break;
     default:
          // Report something should have been set.
@@ -186,6 +191,21 @@ function createElementsForDownForwardUpConnector() {
   var up = "v-" + ((utilities.difference(points.via_y, points.to_y) + points.from_y) - CURVE_SPACING);
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
   paths += createArrowPath(arrowX, arrowY);
+  return paths;
+}
+
+
+function createElementsForDownForwardDownBackwardUpConnector() {
+  var points = this.points;
+  var conf = this._config;
+  var down1 = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
+  var down2 = "v" + (utilities.difference(points.via_y, this._config.bottom) - (CURVE_SPACING * 2));
+  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+  var backward = "h-" + (points.via_x + points.xDifference);
+  var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) + CURVE_SPACING);
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
+  // Expected not to need an arrow since the page is earlier in the flow and something
+  // must already be pointing to it for the journey to have progressed beyond that point.
   return paths;
 }
 
