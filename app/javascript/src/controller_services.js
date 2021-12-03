@@ -649,7 +649,9 @@ function applyArrowPagePaths($overview) {
       from: $item,
       to: $next,
       container: $overview,
-      type: calculateConnectorPathType($item, $next, points, $itemsByRow)
+      type: calculateConnectorPathType($item, $next, points, $itemsByRow),
+      top: 0,                     // TODO: Is this and the height below the best way to position
+      bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
     });
   });
 }
@@ -810,9 +812,7 @@ function calculateConnectorPathType($item, $next, points, $items) {
     }
     else {
       if(up) {
-        // Not expected to happend due to how backward lines draw.
-        // type = "BackwardUpPath";
-        type = "BackwardDownBackwardUpPath";
+        type = "DownBackwardUpPath";
       }
       else {
         type = "BackwardDownBackwardUpPath";

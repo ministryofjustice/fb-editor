@@ -16,7 +16,7 @@
 
 
 const utilities = require('./utilities');
-const CURVE_SPACING = 20;
+const CURVE_SPACING = 10;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
@@ -104,9 +104,13 @@ function buildByType(type) {
     case "DownForwardDownBackwardUpPath":
          paths = createElementsForDownForwardDownBackwardUpConnector.call(this);
          break;
+    case "DownBackwardUpPath":
+         paths = createElementsForDownBackwardUpConnector.call(this);
+         break;
     default:
          // Report something should have been set.
-         console.log("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
+         console.error("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
+         console.error("Cannot connect %o to %of: ", this._config.from, this._config.to);
   }
 
   return createSvg(paths);
@@ -207,6 +211,19 @@ function createElementsForDownForwardDownBackwardUpConnector() {
   var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
   // Expected not to need an arrow since the page is earlier in the flow and something
   // must already be pointing to it for the journey to have progressed beyond that point.
+  return paths;
+}
+
+
+function createElementsForDownBackwardUpConnector() {
+  var points = this.points;
+  var conf = this._config;
+  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+  var down = "v" + (utilities.difference(points.from_y, this._config.bottom) - CURVE_SPACING * 2);
+  var backward = "h-" + utilities.difference(points.from_x + points.via_x, points.to_x);
+  var up = "v-" + (utilities.difference(this._config.bottom, points.from_y) + utilities.difference(points.from_y, points.to_y) - (CURVE_SPACING * 2));
+  var paths = "<path d=\"" + pathD(xy(points.from_x, points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT) + "\"></path>";
+  paths += createArrowPath(points.to_x, points.to_y);
   return paths;
 }
 
