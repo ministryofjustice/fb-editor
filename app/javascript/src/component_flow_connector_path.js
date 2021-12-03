@@ -127,8 +127,8 @@ function createSvg(paths) {
   return $(svg)
 }
 
-function createArrowPath(x, y) {
-  return "<path class=\"arrowPath\" d=\"M " + (x - 10) + "," + (y - 5) + " v10 l 10,-5 z\"></path>";
+function createArrowPath(points) {
+  return "<path class=\"arrowPath\" d=\"M " + (points.to_x - 10) + "," + (points.to_y - 5) + " v10 l 10,-5 z\"></path>";
 }
 
 function createPath(d) {
@@ -153,7 +153,7 @@ function createPathsForForwardConnector() {
   var y = points.from_y + points.yDifference;
   var width = "h" + points.xDifference;
   var paths = createPath(pathD(xy(x, y), width));
-  paths += createArrowPath(points.to_x, points.to_y);
+  paths += createArrowPath(points);
   return paths;
 }
 
@@ -161,44 +161,40 @@ function createPathsForForwardUpConnector() {
   var points = this.points;
   var vertical = "v-" + (points.yDifference - CURVE_SPACING);
   var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
-  var path = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
-  return path;
+  var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
+  paths += createArrowPath(points);
+  return paths;
 }
 
 function createElementsForForwardUpForwarDownConnector() {
   var points = this.points;
-  var vertical1 = "v-" + utilities.difference(points.from_y, this._config.top);
-  var vertical2 = "v-" + (points.yDifference - CURVE_SPACING);
-  var vertical3 = "v" + utilities.difference(this._config.top, points.to_y);
   var forward1 = "h" + (points.via_x - (CURVE_SPACING * 2));
-  var horizontal2 = "h" + (points.xDifference - points.via_x - (CURVE_SPACING));
-  var path = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, vertical1, CURVE_UP_RIGHT, horizontal2, CURVE_RIGHT_DOWN, vertical3, CURVE_DOWN_RIGHT));
-
-  return path;
+  var up = "v-" + utilities.difference(points.from_y, this._config.top);
+  var forward2 = "h" + (points.xDifference - points.via_x - (CURVE_SPACING));
+  var down = "v" + utilities.difference(this._config.top, points.to_y);
+  var paths = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
+  paths += createArrowPath(points);
+  return paths;
 }
 
 
 function createElementsForDownForwardConnector() {
   var points = this.points;
-  var arrowX = points.from_x + points.xDifference;
-  var arrowY = points.from_y + points.yDifference;
   var down = "v" + (points.yDifference - CURVE_SPACING);
   var forward = "h" + points.xDifference;
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward));
-  paths += createArrowPath(arrowX, arrowY);
+  paths += createArrowPath(points);
   return paths;
 }
 
 
 function createElementsForDownForwardUpConnector() {
   var points = this.points;
-  var arrowX = points.to_x;
-  var arrowY = points.to_y;
   var down = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
   var forward = "h" + (points.xDifference - (CURVE_SPACING * 2.5)); // Not sure why 2.5 and not 3 but it works.
   var up = "v-" + ((utilities.difference(points.via_y, points.to_y) + points.from_y) - CURVE_SPACING);
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
-  paths += createArrowPath(arrowX, arrowY);
+  paths += createArrowPath(points);
   return paths;
 }
 
@@ -212,8 +208,7 @@ function createElementsForDownForwardDownBackwardUpConnector() {
   var backward = "h-" + (points.via_x + points.xDifference + CURVE_SPACING);
   var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) - CURVE_SPACING * 2);
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-  // Expected not to need an arrow since the page is earlier in the flow and something
-  // must already be pointing to it for the journey to have progressed beyond that point.
+  paths += createArrowPath(points);
   return paths;
 }
 
@@ -226,7 +221,7 @@ function createElementsForDownBackwardUpConnector() {
   var backward = "h-" + utilities.difference(points.from_x + points.via_x, points.to_x);
   var up = "v-" + (utilities.difference(this._config.bottom, points.from_y) + utilities.difference(points.from_y, points.to_y) - (CURVE_SPACING * 2));
   var paths = createPath(pathD(xy(points.from_x, points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-  paths += createArrowPath(points.to_x, points.to_y);
+  paths += createArrowPath(points);
   return paths;
 }
 
