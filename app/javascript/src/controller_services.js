@@ -687,8 +687,8 @@ function applyArrowBranchPaths($overview) {
 
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
-      var conditionX = $condition.position().left + $condition.outerWidth();;
-      var conditionY = $condition.position().top;
+      var conditionX = $condition.position().left + $condition.width();;
+      var conditionY = $condition.position().top + branchY;
       var conditionColumn = $condition.attr("column");
       var conditionRow = $condition.attr("row");
       var destinationColumn = $destination.attr("column");
