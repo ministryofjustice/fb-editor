@@ -689,7 +689,7 @@ function applyArrowBranchPaths($overview) {
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
       var conditionX = $condition.position().left + $condition.width();;
-      var conditionY = $condition.position().top + branchY;
+      var conditionY = $condition.position().top;
       var conditionColumn = $condition.attr("column");
       var conditionRow = $condition.attr("row");
       var destinationColumn = $destination.attr("column");
@@ -732,7 +732,7 @@ function applyArrowBranchPaths($overview) {
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
-              via_y: conditionY - branchY
+              via_y: conditionY
             }
           }
           else {
@@ -743,7 +743,7 @@ function applyArrowBranchPaths($overview) {
               to_x: destinationX,
               to_y: destinationY,
               via_x: conditionX,
-              via_y: conditionY - branchY
+              via_y: conditionY
             }
           }
         }
