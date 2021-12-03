@@ -19,6 +19,7 @@ class NewServiceGenerator
     end
 
     metadata['flow'] = start_page_flow_object(metadata)
+    metadata = add_cya_and_confirmation(metadata) if ENV['BRANCHING'] == 'enabled'
     metadata['standalone_pages'] = footer_pages
     metadata
   end
@@ -45,5 +46,48 @@ class NewServiceGenerator
         metadata['body'] = attributes[:body]
       end
     end
+  end
+
+  def default_form_flow_object(metadata)
+    start_page_uuid = metadata['pages'][0]['_uuid']
+    cya_page_uuid = metadata['pages'][1]['_uuid']
+    confirmation_page_uuid = metadata['pages'][2]['_uuid']
+
+    {
+      start_page_uuid => {
+        '_type': 'flow.page',
+        'next': {
+          'default': cya_page_uuid
+        }
+      },
+      cya_page_uuid => {
+        '_type': 'flow.page',
+        'next': {
+          'default': confirmation_page_uuid
+        }
+      },
+      confirmation_page_uuid => {
+        '_type': 'flow.page',
+        'next': {
+          'default': ''
+        }
+      }
+    }
+  end
+
+  def add_cya_and_confirmation(metadata)
+    cya_metadata = DefaultMetadata['page.checkanswers']
+      .merge('_uuid' => SecureRandom.uuid)
+      .merge('url' => 'checkanswers')
+
+    confirmation_metadata = DefaultMetadata['page.confirmation']
+      .merge('_uuid' => SecureRandom.uuid)
+      .merge('url' => 'confirmation')
+
+    metadata['pages'].push(cya_metadata)
+    metadata['pages'].push(confirmation_metadata)
+    metadata['flow'].merge!(default_form_flow_object(metadata))
+
+    metadata
   end
 end
