@@ -642,7 +642,7 @@ function applyArrowPagePaths($overview) {
       from_y: fromY,
       to_x: toX,
       to_y: toY,
-      via_x: COLUMN_SPACING
+      via_x: COLUMN_SPACING - 25 // 25 because we don't want lines to start at edge of column space
     }
 
     new FlowConnectorPath(points, {
