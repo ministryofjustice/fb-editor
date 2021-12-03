@@ -532,11 +532,11 @@ html {
 
 .FlowConnectorPath {
   left: 0;
-  height: 100%;
+  height: 0;
   overflow: visible;
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 0;
 
   path {
     display: block; // So we can capture a jQuery height calculation
@@ -545,7 +545,11 @@ html {
     stroke-width: 2px;
 
     &:hover {
-      stroke: govuk-colour("orange");
+
+      &, & + path {
+        stroke-width:6px;
+        stroke: govuk-colour("orange");
+      }
     }
   }
 
