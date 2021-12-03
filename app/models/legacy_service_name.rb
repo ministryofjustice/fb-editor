@@ -1,0 +1,2 @@
+class LegacyServiceName < ApplicationRecord
+end
