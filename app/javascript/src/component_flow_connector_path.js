@@ -168,9 +168,9 @@ function createPathsForForwardUpConnector() {
 
 function createElementsForForwardUpForwarDownConnector() {
   var points = this.points;
-  var forward1 = "h" + (points.via_x - (CURVE_SPACING * 2));
+  var forward1 = "h" + (points.via_x - CURVE_SPACING);
   var up = "v-" + utilities.difference(points.from_y, this._config.top);
-  var forward2 = "h" + (points.xDifference - points.via_x - (CURVE_SPACING));
+  var forward2 = "h" + (points.xDifference - (points.via_x + (CURVE_SPACING * 4)));
   var down = "v" + utilities.difference(this._config.top, points.to_y);
   var paths = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
   paths += createArrowPath(points);
