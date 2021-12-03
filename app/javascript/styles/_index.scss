@@ -532,11 +532,11 @@ html {
 
 .FlowConnectorPath {
   left: 0;
-  height: 0;
+  height: 100%; // Want this to be zero for hover over lines to work but Chrome has bug that stops paths from being seen. FF is fine with it.
   overflow: visible;
   position: absolute;
   top: 0;
-  width: 0;
+  width: 100%; // See comment on height as well.
 
   path {
     display: block; // So we can capture a jQuery height calculation
