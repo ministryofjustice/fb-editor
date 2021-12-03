@@ -182,7 +182,7 @@ function createElementsForDownForwardConnector() {
   var points = this.points;
   var arrowX = points.from_x + points.xDifference;
   var arrowY = points.from_y + points.yDifference;
-  var down = "v" + (points.yDifference - (CURVE_SPACING / 2));
+  var down = "v" + (points.yDifference - CURVE_SPACING);
   var forward = "h" + points.xDifference;
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward));
   paths += createArrowPath(arrowX, arrowY);
