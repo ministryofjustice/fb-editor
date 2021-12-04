@@ -716,7 +716,7 @@ function applyArrowBranchPaths($overview) {
             from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
             from_y: branchY,
             to_x: destinationX,
-            to_y: conditionY
+            to_y: destinationY
           }
         }
       }
