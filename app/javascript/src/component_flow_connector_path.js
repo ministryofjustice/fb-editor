@@ -190,9 +190,9 @@ function createElementsForDownForwardConnector() {
 
 function createElementsForDownForwardUpConnector() {
   var points = this.points;
-  var down = "v" + (points.via_y - (CURVE_SPACING / 2)); // Half spacing works but would have expected x1.
-  var forward = "h" + (points.xDifference - (CURVE_SPACING * 2.5)); // Not sure why 2.5 and not 3 but it works.
-  var up = "v-" + ((utilities.difference(points.via_y, points.to_y) + points.from_y) - CURVE_SPACING);
+  var down = "v" + (points.yDifference - CURVE_SPACING);
+  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+  var up = "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2));
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
   paths += createArrowPath(points);
   return paths;

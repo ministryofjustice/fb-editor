@@ -688,7 +688,7 @@ function applyArrowBranchPaths($overview) {
 
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
-      var conditionX = $condition.position().left + $condition.width();;
+      var conditionX = (branchWidth / 2) + $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
       var conditionY = $condition.position().top;
       var conditionColumn = $condition.attr("column");
       var conditionRow = $condition.attr("row");
@@ -732,6 +732,7 @@ function applyArrowBranchPaths($overview) {
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
+              via_x: conditionX,
               via_y: conditionY
             }
           }
