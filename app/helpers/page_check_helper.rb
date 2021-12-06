@@ -25,6 +25,14 @@ module PageCheckHelper
     grid.page_uuids.include?(find_page_uuid('page.confirmation'))
   end
 
+  def checkanswers_in_service?
+    service_includes_page?('page.checkanswers')
+  end
+
+  def confirmation_in_service?
+    service_includes_page?('page.confirmation')
+  end
+
   def find_page_uuid(page_type)
     if service_includes_page?(page_type)
       matched_page =
