@@ -690,10 +690,10 @@ function applyArrowBranchPaths($overview) {
       var destinationY = $destination.position().top + (rowHeight / 4);
       var conditionX = (branchWidth / 2) + $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
-      var conditionColumn = $condition.attr("column");
-      var conditionRow = $condition.attr("row");
-      var destinationColumn = $destination.attr("column");
-      var destinationRow = $destination.attr("row");
+      var conditionColumn = Number($condition.attr("column"));
+      var conditionRow = Number($condition.attr("row"));
+      var destinationColumn = Number($destination.attr("column"));
+      var destinationRow = Number($destination.attr("row"));
       var points, type;
 
       if(conditionRow == destinationRow) {
@@ -709,14 +709,29 @@ function applyArrowBranchPaths($overview) {
           }
         }
         else {
-          // All other 'standard' BranchConditions expected to be Down and Forward
-          // with the starting point from bottom and centre of the Branch item.
-          type = "DownForwardPath";
-          points = {
-            from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
-            from_y: branchY,
-            to_x: destinationX,
-            to_y: destinationY
+          if(conditionColumn > destinationColumn) {
+            // If on the same row but placed behind the current condition (weird to think
+            // about but makes sense if you see some of the branching row splits).
+            type = "DownForwardDownBackwardUpPath";
+            points = {
+              from_x: branchX - (branchWidth / 2),
+              from_y: branchY,
+              to_x: destinationX,
+              to_y: destinationY,
+              via_x: conditionX,
+              via_y: conditionY
+            }
+          }
+          else {
+            // All other 'standard' BranchConditions expected to be Down and Forward
+            // with the starting point from bottom and centre of the Branch item.
+            type = "DownForwardPath";
+            points = {
+              from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
+              from_y: branchY,
+              to_x: destinationX,
+              to_y: destinationY
+            }
           }
         }
       }
@@ -749,7 +764,6 @@ function applyArrowBranchPaths($overview) {
           }
         }
       }
-
       if(type) {
         new FlowConnectorPath(points, {
           container: $overview,
