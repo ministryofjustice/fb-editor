@@ -1,5 +1,8 @@
 RSpec.describe ServiceCreation do
-  subject(:service_creation) { described_class.new(attributes) }
+  subject(:service_creation) do
+    described_class.new(attributes)
+  end
+  let(:current_user) { double(id: '1') }
 
   describe '#create' do
     context 'when is invalid' do
@@ -21,6 +24,18 @@ RSpec.describe ServiceCreation do
 
       context 'when name is too long' do
         let(:attributes) { { service_name: 'E' * 129 } }
+
+        it 'returns false' do
+          expect(service_creation.create).to be_falsey
+        end
+      end
+
+      context 'when name is in the legacy' do
+        let(:service_name) { 'So you want to become an avenger' }
+        let(:attributes) { { service_name: service_name } }
+        let!(:legacy_service_name) do
+          create(:legacy_service_name, name: service_name)
+        end
 
         it 'returns false' do
           expect(service_creation.create).to be_falsey
