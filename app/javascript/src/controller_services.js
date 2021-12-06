@@ -682,7 +682,7 @@ function applyArrowBranchPaths($overview) {
       // --------------------------------------------------------------------------------------------
       // TODO: Temporary hack to prevent but bug breaking the layout
       // https://trello.com/c/iCDLMDgo/1836-bug-branchcondition-destination-page-is-in-detached-items
-      if($destination.length < 1) return false;
+      if($destination.length < 1) return true;
       // --------------------------------------------------------------------------------------------
 
       var destinationX = $destination.position().left;
