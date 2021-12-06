@@ -205,7 +205,7 @@ function createElementsForDownForwardDownBackwardUpConnector() {
   var down1 = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
   var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
   var down2 = "v" + (utilities.difference(this._config.bottom, points.via_y) - CURVE_SPACING * 2);
-  var backward = "h-" + (points.via_x + points.xDifference + CURVE_SPACING);
+  var backward = "h-" + (points.via_x + utilities.difference(points.from_x, points.to_x) + 4); // +4 is a HACK to fix alignment - not sure why it's out.
   var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) - CURVE_SPACING * 2);
   var paths = createPath(pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
   paths += createArrowPath(points);
