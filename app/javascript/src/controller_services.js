@@ -532,16 +532,17 @@ function adjustOverviewHeight($overview) {
 
   $items.each(function() {
     var $item = $(this);
-    var bottom = $item.position().top + $item.outerHeight(true);
+    var itemTop = $item.position().top;
+    var bottom = itemTop + $item.outerHeight(true);
 
-    // Flow items will include the branch but not the conditions so this is a
-    // little workaround to increase height if related condition item need it.
-    // TODO: First condiiton item can still get clipped because it starts at a
-    //       point lower than zero, so will need to fix when adding better scroll.
+    // Flow items will include the branch but not the conditions so we need to
+    // assess them separately. Because the zero-point for a condition is the
+    // top of a branch, the baseline needs to include that count as part of the
+    // calculation.
     if($item.hasClass("flow-branch")) {
       let $conditions = $item.find(".flow-condition");
       let top = $conditions.first().position().top;
-      let baseline = $conditions.last().position().top + $conditions.last().outerHeight(true);
+      let baseline = itemTop + $conditions.last().position().top + $conditions.last().outerHeight(true);
       if(top < 0) {
         top = ~(top); // Turn something like -14.5 into 14.5
       }
@@ -555,7 +556,7 @@ function adjustOverviewHeight($overview) {
   });
 
   // DEV TODO: Need to figure out top boundary after this disabling.
-  $overview.css("height", lowestPoint + "px"); // 100 is arbitrary number chosen to avoid some clipping still seen.
+  $overview.css("height", lowestPoint + "px");
 }
 
 
