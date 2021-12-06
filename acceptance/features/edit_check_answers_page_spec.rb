@@ -26,13 +26,12 @@ feature 'Edit check your answers page' do
   end
 
   scenario 'editing page info' do
-    given_I_have_a_check_your_answers_page
+    given_I_edit_a_check_your_answers_page
     and_I_change_the_page_heading(heading)
     and_I_change_the_send_heading(send_heading)
     and_I_change_the_send_body(send_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_click_on_the_three_dots
     and_I_edit_the_page(url: heading)
     then_I_should_see_the_page_heading(heading)
     then_I_should_see_the_page_send_heading(send_heading)
@@ -40,7 +39,7 @@ feature 'Edit check your answers page' do
   end
 
   scenario 'adding components' do
-    given_I_have_a_check_your_answers_page
+    given_I_edit_a_check_your_answers_page
     and_I_add_a_content_component(
       content: content_component
     )
@@ -55,7 +54,7 @@ feature 'Edit check your answers page' do
   end
 
   scenario 'deleting components' do
-    given_I_have_a_check_your_answers_page
+    given_I_edit_a_check_your_answers_page
     and_I_add_a_content_component(
       content: content_component
     )
@@ -104,12 +103,14 @@ feature 'Edit check your answers page' do
 
   def and_I_add_a_content_component(content:)
     editor.add_content_area_buttons.last.click
+    editor.page_heading.click
     expect(editor.first_component.text).to eq(optional_content)
     when_I_change_editable_content(editor.first_component, content: content)
   end
 
   def and_I_add_a_content_extra_component(content:)
     editor.add_content_area_buttons.first.click
+    editor.page_heading.click
     expect(editor.first_extra_component.text).to eq(optional_content)
     when_I_change_editable_content(editor.first_extra_component, content: content)
   end

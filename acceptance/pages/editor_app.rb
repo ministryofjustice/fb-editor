@@ -37,6 +37,7 @@ class EditorApp < SitePrism::Page
   element :form_name_field, :field, I18n.t('settings.form_information_label')
   element :save_button, :button, I18n.t('actions.save')
   element :preview_form_button, :link, I18n.t('actions.preview_form')
+  element :edit_page_button, :link, I18n.t('actions.edit_page')
 
   element :submission_settings_link, :link, I18n.t('settings.submission.name')
 

@@ -11,7 +11,9 @@ feature 'Add page in the middle flow' do
     [
       "Edit:\nService name goes here",
       "Edit:\nWe Both Love Soup And Snow Peas",
-      "Edit:\nQuestion"
+      "Edit:\nQuestion",
+      "Edit:\nCheck your answers",
+      "Edit:\nApplication complete"
     ]
   end
 

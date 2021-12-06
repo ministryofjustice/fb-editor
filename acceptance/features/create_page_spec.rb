@@ -59,20 +59,6 @@ feature 'Create page' do
     then_I_should_see_the_edit_multiple_question_page
   end
 
-  scenario 'creating a check answers page' do
-    given_I_add_a_check_answers_page
-    and_I_add_a_page_url
-    when_I_add_the_page
-    then_I_should_see_the_edit_check_answers_page
-  end
-
-  scenario 'creating confirmation page' do
-    given_I_add_a_confirmation_page
-    and_I_add_a_page_url
-    when_I_add_the_page
-    then_I_should_see_the_edit_confirmation_page
-  end
-
   context 'existing urls' do
     let(:error_message) { 'You already have a page with that name' }
 

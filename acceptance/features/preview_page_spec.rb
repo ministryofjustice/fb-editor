@@ -19,8 +19,6 @@ feature 'Preview page' do
   scenario 'preview upload page' do
     given_I_have_a_single_question_page_with_upload
     and_I_return_to_flow_page
-    given_I_have_a_check_your_answers_page
-    and_I_return_to_flow_page
     preview_page = when_I_preview_the_upload_page
     then_I_should_upload_my_files(preview_page)
   end
@@ -76,7 +74,7 @@ feature 'Preview page' do
 
   def then_I_should_be_on_the_check_your_answers_page
     then_I_should_not_see_optional_text
-    expect(page.current_url).to include('cya')
+    expect(page.current_url).to include('checkanswers')
   end
 
   def then_I_should_see_that_I_should_add_a_file

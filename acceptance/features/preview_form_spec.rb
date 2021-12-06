@@ -95,15 +95,6 @@ feature 'Preview form' do
     when_I_update_the_question_name('Upload your file')
     and_I_make_the_question_optional
     and_I_return_to_flow_page
-
-    given_I_add_a_check_answers_page
-    and_I_add_a_page_url('cya')
-    when_I_add_the_page
-    and_I_return_to_flow_page
-
-    given_I_add_a_confirmation_page
-    and_I_add_a_page_url('confirmation')
-    when_I_add_the_page
   end
 
   def and_I_add_a_multiple_page_content_component(content:)
