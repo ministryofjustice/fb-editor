@@ -26,15 +26,6 @@ module BranchingSteps
     when_I_add_the_page
     when_I_update_the_question_name('Favourite sewing project')
     and_I_return_to_flow_page
-
-    given_I_add_a_check_answers_page
-    and_I_add_a_page_url('cya')
-    when_I_add_the_page
-    and_I_return_to_flow_page
-
-    given_I_add_a_confirmation_page
-    and_I_add_a_page_url('confirmation')
-    when_I_add_the_page
   end
 
   def then_I_can_add_and_delete_conditionals_and_expressions

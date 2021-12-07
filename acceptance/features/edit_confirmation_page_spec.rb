@@ -3,7 +3,6 @@ require_relative '../spec_helper'
 feature 'Edit confirmation pages' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
-  let(:confirmation_url) { 'confirmation' }
   let(:confirmation_heading) { 'Updated confirmation heading' }
   let(:confirmation_lede) { 'Updated confirmation lede' }
   let(:confirmation_body) { 'Updated confirmation body' }
@@ -14,7 +13,7 @@ feature 'Edit confirmation pages' do
   end
 
   scenario 'updates all fields' do
-    given_I_have_a_confirmation_page
+    given_I_edit_a_confirmation_page
     and_I_change_the_page_heading(confirmation_heading)
     and_I_change_the_page_lede(confirmation_lede)
     and_I_change_the_page_body(confirmation_body)
@@ -22,16 +21,10 @@ feature 'Edit confirmation pages' do
     and_I_return_to_flow_page
     and_I_click_on_the_confirmation_page_three_dots
     then_I_should_only_see_three_options_on_page_menu
-    and_I_edit_the_page(url: confirmation_heading)
+    and_I_click_edit_page
     then_I_should_see_the_confirmation_heading(confirmation_heading)
     then_I_should_see_the_confirmation_lede(confirmation_lede)
     then_I_should_see_the_confirmation_body(confirmation_body)
-  end
-
-  def given_I_have_a_confirmation_page
-    given_I_add_a_confirmation_page
-    and_I_add_a_page_url(confirmation_url)
-    when_I_add_the_page
   end
 
   def and_I_change_the_page_body(body)
@@ -50,5 +43,9 @@ feature 'Edit confirmation pages' do
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     page.find('.flow-thumbnail', text: confirmation_heading).hover
     editor.three_dots_button.click
+  end
+
+  def and_I_click_edit_page
+    editor.edit_page_button.click
   end
 end

@@ -102,9 +102,8 @@ module CommonSteps
     editor.add_checkboxes.click
   end
 
-  def given_I_add_a_check_answers_page
-    given_I_want_to_add_a_page
-    editor.add_check_answers.click
+  def given_I_edit_a_check_your_answers_page
+    page.find('.govuk-link', text: 'Check your answers').click
   end
 
   def given_I_add_a_content_page
@@ -117,9 +116,8 @@ module CommonSteps
     editor.add_multiple_question.click
   end
 
-  def given_I_add_a_confirmation_page
-    given_I_want_to_add_a_page
-    editor.add_confirmation.click
+  def given_I_edit_a_confirmation_page
+    page.find('.govuk-link', text: 'Application complete').click
   end
 
   def given_I_add_an_exit_page
@@ -184,7 +182,7 @@ module CommonSteps
   end
 
   def when_I_preview_the_page
-    editor.preview_page_images.last.hover
+    editor.preview_page_images[-2].hover
     when_I_click_preview_page
   end
 
@@ -315,7 +313,7 @@ module CommonSteps
 
   def and_I_click_on_the_three_dots
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    editor.preview_page_images.last.hover
+    editor.preview_page_images[-2].hover
     editor.three_dots_button.click
   end
 

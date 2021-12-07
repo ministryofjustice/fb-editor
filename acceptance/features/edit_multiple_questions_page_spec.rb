@@ -90,11 +90,7 @@ feature 'Edit multiple questions page' do
       page.choose '900 years old', visible: false
       page.check 'Prequels', visible: false
       page.click_button 'Continue'
-
-      # There are no next pages but it means that the continue work and the
-      # multiple question is working since filling the form above worked
-      # gracefully.
-      expect(page.text).to include("The page you were looking for doesn't exist.")
+      expect(page.text).to include("Check your answers")
     end
   end
 

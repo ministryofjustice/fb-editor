@@ -198,6 +198,6 @@ feature 'Deleting page' do
   end
 
   def then_I_should_not_see_the_deleted_page_anymore
-    expect(editor.form_urls.count).to eq(1)
+    expect(editor.form_urls.count).to eq(3)
   end
 end
