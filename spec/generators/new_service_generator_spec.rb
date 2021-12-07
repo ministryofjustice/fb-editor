@@ -141,7 +141,7 @@ RSpec.describe NewServiceGenerator do
         expect(service_metadata['pages']).to be_present
         expect(service_metadata['pages'][1]).to include(
           '_type' => 'page.checkanswers',
-          'url' => 'checkanswers'
+          'url' => 'check-answers'
         )
       end
 
@@ -149,7 +149,7 @@ RSpec.describe NewServiceGenerator do
         expect(service_metadata['pages']).to be_present
         expect(service_metadata['pages'][2]).to include(
           '_type' => 'page.confirmation',
-          'url' => 'confirmation'
+          'url' => 'form-sent'
         )
       end
 
