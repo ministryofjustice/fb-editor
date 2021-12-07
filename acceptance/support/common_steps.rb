@@ -102,6 +102,13 @@ module CommonSteps
     editor.add_checkboxes.click
   end
 
+  def given_I_add_a_check_answers_page
+    editor.preview_page_images.first.hover
+    editor.three_dots_button.click
+    editor.add_page_here_link.click
+    editor.add_check_answers.click
+  end
+
   def given_I_edit_a_check_your_answers_page
     page.find('.govuk-link', text: 'Check your answers').click
   end
@@ -114,6 +121,11 @@ module CommonSteps
   def given_I_add_a_multiple_question_page
     given_I_want_to_add_a_page
     editor.add_multiple_question.click
+  end
+
+  def given_I_add_a_confirmation_page
+    given_I_want_to_add_a_page
+    editor.add_confirmation.click
   end
 
   def given_I_edit_a_confirmation_page
@@ -324,5 +336,41 @@ module CommonSteps
       I18n.t('actions.preview_page'),
       I18n.t('actions.delete_page')
     ])
+  end
+
+  def then_I_should_not_be_able_to_add_page(page)
+    editor.preview_page_images.first.hover
+    editor.three_dots_button.click
+    editor.add_page_here_link.click
+    expect(editor.text).not_to include(page)
+  end
+
+  def then_I_should_be_able_to_add_page(page)
+    editor.preview_page_images.first.hover
+    editor.three_dots_button.click
+    editor.add_page_here_link.click
+    expect(editor.text).to include(page)
+  end
+
+  def then_I_should_see_default_service_pages
+    expect(editor.form_urls.count).to eq(3)
+  end
+
+  def and_I_delete_cya_page
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    editor.preview_page_images.last.hover
+    editor.three_dots_button.click
+    editor.delete_page_link.click
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    editor.delete_page_modal_button.click
+  end
+
+  def when_I_delete_confirmation_page
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    page.find('.govuk-link', text: 'Application complete').hover
+    editor.three_dots_button.click
+    editor.delete_page_link.click
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    editor.delete_page_modal_button.click
   end
 end

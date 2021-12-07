@@ -70,15 +70,6 @@ feature 'Branching errors' do
     expect(buttons_text).to include(I18n.t('publish.live.button'))
   end
 
-  def and_I_delete_cya_page
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    editor.preview_page_images.last.hover
-    editor.three_dots_button.click
-    editor.delete_page_link.click
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    editor.delete_page_modal_button.click
-  end
-
   def and_I_add_an_exit_page_after_cya_page
     editor.preview_page_images.last.hover
     editor.three_dots_button.click

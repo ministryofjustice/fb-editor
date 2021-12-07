@@ -4,6 +4,8 @@ feature 'Create page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'phasma' }
+  let(:checkanswers) { 'Check answers page' }
+  let(:confirmation) { 'Confirmation page' }
 
   background do
     given_I_am_logged_in
@@ -57,6 +59,34 @@ feature 'Create page' do
     and_I_add_a_page_url
     when_I_add_the_page
     then_I_should_see_the_edit_multiple_question_page
+  end
+
+  scenario 'creating check answers page' do
+    then_I_should_see_default_service_pages
+    then_I_should_not_be_able_to_add_page(checkanswers)
+    # this will fail when we implement delete warning
+    and_I_delete_cya_page
+    then_I_should_be_able_to_add_page(checkanswers)
+    given_I_add_a_check_answers_page
+    and_I_add_a_page_url
+    when_I_add_the_page
+    then_I_should_see_the_edit_check_answers_page
+    and_I_return_to_flow_page
+    then_I_should_not_be_able_to_add_page(checkanswers)
+  end
+
+  scenario 'creating confirmation page' do
+    then_I_should_see_default_service_pages
+    then_I_should_not_be_able_to_add_page(confirmation)
+    # this will fail when we implement delete warning
+    when_I_delete_confirmation_page
+    then_I_should_be_able_to_add_page(confirmation)
+    given_I_add_a_confirmation_page
+    and_I_add_a_page_url
+    when_I_add_the_page
+    then_I_should_see_the_edit_confirmation_page
+    and_I_return_to_flow_page
+    then_I_should_not_be_able_to_add_page(confirmation)
   end
 
   context 'existing urls' do
