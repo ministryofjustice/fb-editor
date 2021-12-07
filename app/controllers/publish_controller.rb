@@ -1,5 +1,5 @@
 class PublishController < FormController
-  include PublishWarningHelper
+  include PageCheckHelper
   before_action :assign_form_objects
 
   def index

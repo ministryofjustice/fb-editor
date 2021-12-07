@@ -1,4 +1,5 @@
 class ServicesController < PermissionsController
+  include PageCheckHelper
   layout 'form', only: :edit
 
   def index
