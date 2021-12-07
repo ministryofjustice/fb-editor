@@ -142,6 +142,17 @@ class EditorApp < SitePrism::Page
   element :delete_branching_point_button, :button, I18n.t('branches.delete_modal.submit')
   element :delete_and_update_branching_link, :link, I18n.t('pages.delete_modal.delete_and_update_branching')
 
+  element :change_destination_link, :link, I18n.t('actions.change_destination')
+  element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
+
+  elements :detached_flow, '.flow-detached-group .flow-item'
+
+  def unconnected_flow
+    detached_flow.map do |element|
+      element.text.gsub("Edit:\n", '').split("\n")
+    end.flatten.uniq
+  end
+
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end
@@ -170,9 +181,21 @@ class EditorApp < SitePrism::Page
     page_flow_item(html_class, content).hover
   end
 
+  def page_flow_items(html_class = '.flow-thumbnail')
+    page.all(html_class).map do |page_flow|
+      page_flow.text.gsub("Edit:\n", '')
+    end
+  end
+
   def page_flow_item(html_class, content)
     page.all(html_class).find do |element|
       element.text.include?(content)
+    end
+  end
+
+  def unconnected_expand_link
+    page.all('h2.Expander_Activator').find do |element|
+      element.text == 'Unconnected'
     end
   end
 end
