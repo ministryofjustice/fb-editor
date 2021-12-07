@@ -63,7 +63,7 @@ class FlowConnectorPath {
     this._registry = registry;
     this.points = points;
     this.type = conf.type;
-    this.$node = buildByType.call(this);
+    this.$node = this.build(buildByType.call(this));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", id)
@@ -73,47 +73,44 @@ class FlowConnectorPath {
 
     addToDOM.call(this);
   }
+
+  build(builder) {
+    var paths = builder ? builder.call(this) : "";
+    return createSvg.call(this, paths);
+  }
 }
 
 
-function buildByType(type) {
-  var points = this.points;
-  var paths = "";
-
+function buildByType() {
+  var builder;
   switch(this.type) {
-    case "BackwardPath":
-         // TODO...
-    case "BackwardUpPath":
-         // TODO...
-         break;
     case "ForwardPath":
-         paths = createPathsForForwardConnector.call(this);
+         builder = createPathsForForwardConnector;
          break;
     case "ForwardUpPath":
-         paths = createPathsForForwardUpConnector.call(this);
+         builder = createPathsForForwardUpConnector;
          break;
     case "ForwardUpForwardDownPath":
-         paths = createElementsForForwardUpForwarDownConnector.call(this);
+         builder = createElementsForForwardUpForwarDownConnector;
          break;
     case "ForwardDownBackwardUpPath":
-         paths = createElementsForForwardDownBackwardUpConnector.call(this);
+         builder = createElementsForForwardDownBackwardUpConnector;
          break;
     case "DownForwardPath":
-         paths = createElementsForDownForwardConnector.call(this);
+         builder = createElementsForDownForwardConnector;
          break;
     case "DownForwardUpPath":
-         paths = createElementsForDownForwardUpConnector.call(this);
+         builder = createElementsForDownForwardUpConnector;
          break;
     case "DownForwardDownBackwardUpPath":
-         paths = createElementsForDownForwardDownBackwardUpConnector.call(this);
+         builder = createElementsForDownForwardDownBackwardUpConnector;
          break;
     default:
          // Report something should have been set.
-         console.error("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
+         console.error("No path type specified for coordinates: ", JSON.stringify(this.points).replace("\\", ""));
          console.error("Cannot connect %o to %of: ", this._config.from, this._config.to);
   }
-
-  return createSvg(paths);
+  return builder;
 }
 
 function addToDOM() {
