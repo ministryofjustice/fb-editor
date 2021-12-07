@@ -808,7 +808,7 @@ function calculateConnectorPathType($item, $next, points, $items) {
       // Currently not expected to happen. If it does (in testing?)
       // then it's likely this should be a BackwardDownBackwardUp
       // path due to how all backward paths are expected to draw.
-      type = "BackwardDownBackwardUpPath";
+      type = "ForwardDownBackwardUpPath";
     }
   }
   else {
@@ -828,7 +828,7 @@ function calculateConnectorPathType($item, $next, points, $items) {
     }
     else {
       if(up) {
-        type = "DownBackwardUpPath";
+        type = "ForwardDownBackwardUpPath";
       }
       else {
         type = "BackwardDownBackwardUpPath";
