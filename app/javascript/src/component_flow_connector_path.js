@@ -95,6 +95,9 @@ function buildByType(type) {
     case "ForwardUpForwardDownPath":
          paths = createElementsForForwardUpForwarDownConnector.call(this);
          break;
+    case "ForwardDownBackwardUpPath":
+         paths = createElementsForForwardDownBackwardUpConnector.call(this);
+         break;
     case "DownForwardPath":
          paths = createElementsForDownForwardConnector.call(this);
          break;
@@ -103,9 +106,6 @@ function buildByType(type) {
          break;
     case "DownForwardDownBackwardUpPath":
          paths = createElementsForDownForwardDownBackwardUpConnector.call(this);
-         break;
-    case "DownBackwardUpPath":
-         paths = createElementsForDownBackwardUpConnector.call(this);
          break;
     default:
          // Report something should have been set.
@@ -132,7 +132,7 @@ function createArrowPath(points) {
 }
 
 function createPath(d) {
-  return "<path d=\"" + d + "\"></path>";
+  return "<path d=\"" + d + " h10 \"></path>"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
 }
 
 function pathD(/* unlimited */) {
@@ -213,7 +213,7 @@ function createElementsForDownForwardDownBackwardUpConnector() {
 }
 
 
-function createElementsForDownBackwardUpConnector() {
+function createElementsForForwardDownBackwardUpConnector() {
   var points = this.points;
   var conf = this._config;
   var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
