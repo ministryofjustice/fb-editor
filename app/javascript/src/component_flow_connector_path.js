@@ -192,6 +192,25 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 }
 
 
+class DownForwardUpPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "DownForwardUpPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var down = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
+    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+    var up = "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2));
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
+}
+
+
 function buildByType() {
   var builder;
   switch(this.type) {
@@ -199,7 +218,6 @@ function buildByType() {
          builder = createElementsForDownForwardConnector;
          break;
     case "DownForwardUpPath":
-         builder = createElementsForDownForwardUpConnector;
          break;
     case "DownForwardDownBackwardUpPath":
          break;
@@ -253,18 +271,6 @@ function createElementsForDownForwardConnector() {
 }
 
 
-function createElementsForDownForwardUpConnector() {
-  var points = this.points;
-  var down = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
-  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-  var up = "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2));
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
-  paths += createArrowPath(points);
-  return paths;
-}
-
-
-
 // Make available for importing.
 module.exports = {
   FlowConnectorPath: FlowConnectorPath,
@@ -272,5 +278,6 @@ module.exports = {
   ForwardUpPath: ForwardUpPath,
   ForwardUpForwardDownPath: ForwardUpForwardDownPath,
   ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,
-  DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath
+  DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath,
+  DownForwardUpPath: DownForwardUpPath
 }

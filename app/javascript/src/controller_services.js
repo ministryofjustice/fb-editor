@@ -749,15 +749,15 @@ function applyArrowBranchPaths($overview) {
         // the destination point requires, using the calculated path type.
         if(conditionRow > destinationRow) {
           if(conditionColumn < destinationColumn) {
-            type = "DownForwardUpPath";
-            points = {
+            new ConnectorPath.DownForwardUpPath({
               from_x: branchX - (branchWidth / 2),
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
               via_x: conditionX,
               via_y: conditionY
-            }
+            }, config);
+            return;
           }
           else {
             new ConnectorPath.DownForwardDownBackwardUpPath({
