@@ -37,7 +37,13 @@ feature 'Deleting page' do
 
   def then_page_j_should_be_after_page_b
     expect(editor.page_flow_items).to eq(
-      ['Service name goes here', 'Page b', 'Page j']
+      [
+        'Service name goes here',
+        'Page b',
+        'Page j',
+        'Check your answers',
+        'Application complete'
+      ]
     )
   end
 
@@ -78,7 +84,9 @@ feature 'Deleting page' do
       'Page g',
       'Page h',
       'Page i',
-      'Page j'
+      'Page j',
+      'Check your answers',
+      'Application complete'
     ])
   end
 
