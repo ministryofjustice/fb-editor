@@ -211,11 +211,28 @@ class DownForwardUpPath extends FlowConnectorPath {
 }
 
 
+class DownForwardPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "DownForwardPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var down = "v" + (points.yDifference - CURVE_SPACING);
+    var forward = "h" + points.xDifference;
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
+}
+
+
 function buildByType() {
   var builder;
   switch(this.type) {
     case "DownForwardPath":
-         builder = createElementsForDownForwardConnector;
          break;
     case "DownForwardUpPath":
          break;
@@ -261,16 +278,6 @@ function xy(x, y) {
 }
 
 
-function createElementsForDownForwardConnector() {
-  var points = this.points;
-  var down = "v" + (points.yDifference - CURVE_SPACING);
-  var forward = "h" + points.xDifference;
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward));
-  paths += createArrowPath(points);
-  return paths;
-}
-
-
 // Make available for importing.
 module.exports = {
   FlowConnectorPath: FlowConnectorPath,
@@ -279,5 +286,6 @@ module.exports = {
   ForwardUpForwardDownPath: ForwardUpForwardDownPath,
   ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,
   DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath,
-  DownForwardUpPath: DownForwardUpPath
+  DownForwardUpPath: DownForwardUpPath,
+  DownForwardPath: DownForwardPath
 }

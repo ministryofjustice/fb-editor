@@ -713,7 +713,6 @@ function applyArrowBranchPaths($overview) {
             to_x: destinationX,
             to_y: destinationY
           }, config);
-          return;
         }
         else {
           if(conditionColumn > destinationColumn) {
@@ -727,18 +726,16 @@ function applyArrowBranchPaths($overview) {
               via_x: conditionX,
               via_y: conditionY
             }, config);
-            return;
           }
           else {
             // All other 'standard' BranchConditions expected to be Down and Forward
             // with the starting point from bottom and centre of the Branch item.
-            type = "DownForwardPath";
-            points = {
+            new ConnectorPath.DownForwardPath({
               from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY
-            }
+            }, config);
           }
         }
       }
@@ -756,7 +753,6 @@ function applyArrowBranchPaths($overview) {
               via_x: conditionX,
               via_y: conditionY
             }, config);
-            return;
           }
           else {
             new ConnectorPath.DownForwardDownBackwardUpPath({
@@ -769,18 +765,6 @@ function applyArrowBranchPaths($overview) {
             }, config);
           }
         }
-      }
-
-      if(type) {
-        new ConnectorPath.FlowConnectorPath(points, {
-          container: $overview,
-          from: $branch,
-          to: $destination,
-          via: $condition,
-          type: type,
-          top: 0,                     // TODO: Is this and the height below the best way to position
-          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-        });
       }
     });
   });
