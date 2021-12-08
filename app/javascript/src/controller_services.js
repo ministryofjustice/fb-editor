@@ -637,41 +637,20 @@ function applyArrowPagePaths($overview) {
     var $next = $("#" + next);
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + (rowHeight / 4);
-    var points = {
+
+    calculateAndCreateConnectorPath({
       from_x: fromX,
       from_y: fromY,
       to_x: toX,
       to_y: toY,
       via_x: COLUMN_SPACING - 25 // 25 because we don't want lines to start at edge of column space
-    }
-
-    var type = calculateConnectorPathType($item, $next, points, $itemsByRow);
-    var config = {
-          from: $item,
-          to: $next,
-          container: $overview,
-          top: 0,                     // TODO: Is this and the height below the best way to position
-          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-        }
-
-    switch(type) {
-      case "ForwardPath":
-        new ConnectorPath.ForwardPath(points, config);
-        break;
-      case "ForwardUpPath":
-        new ConnectorPath.ForwardUpPath(points, config);
-        break;
-      case "ForwardUpForwardDownPath":
-        new ConnectorPath.ForwardUpForwardDownPath(points, config);
-        break;
-      case "ForwardDownBackwardUpPath":
-        new ConnectorPath.ForwardDownBackwardUpPath(points, config);
-        break;
-      default:
-         // Report something should have been set or new path is needed..
-         console.error("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
-         console.error("Cannot connect %o to %of: ", config.from, config.to);
-    }
+      }, {
+      from: $item,
+      to: $next,
+      container: $overview,
+      top: 0,                     // TODO: Is this and the height below the best way to position
+      bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+    });
   });
 }
 
@@ -740,15 +719,15 @@ function applyArrowBranchPaths($overview) {
           if(conditionColumn > destinationColumn) {
             // If on the same row but placed behind the current condition (weird to think
             // about but makes sense if you see some of the branching row splits).
-            type = "DownForwardDownBackwardUpPath";
-            points = {
+            new ConnectorPath.DownForwardDownBackwardUpPath({
               from_x: branchX - (branchWidth / 2),
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
               via_x: conditionX,
               via_y: conditionY
-            }
+            }, config);
+            return;
           }
           else {
             // All other 'standard' BranchConditions expected to be Down and Forward
@@ -780,15 +759,14 @@ function applyArrowBranchPaths($overview) {
             }
           }
           else {
-            type = "DownForwardDownBackwardUpPath";
-            points = {
+            new ConnectorPath.DownForwardDownBackwardUpPath({
               from_x: branchX - (branchWidth / 2),
               from_y: branchY,
               to_x: destinationX,
               to_y: destinationY,
               via_x: conditionX,
               via_y: conditionY
-            }
+            }, config);
           }
         }
       }
@@ -814,15 +792,14 @@ function applyArrowBranchPaths($overview) {
  * Function uses the from/to relationship of Flow Items and any attributes awarded in the
  * apply positionFlowItems() function to help determine the connector path type required.
  *
- * @$item  (jQuery node) Item that needs to know if there's a forward limit.
- * @$next  (jQuery node) Destination of path.
- * @$items (jQuery collection) All items that have been positioned (with row attribute).
+ * @points (Object) Properties for x/y coordinates (see FlowConnectorPath Class)
+ * @config (Object) Various items/properties required by FlowConnectorPath Class.
  **/
-function calculateConnectorPathType($item, $next, points, $items) {
-  var columnItem = Number($item.attr("column"));
-  var columnNext = Number($next.attr("column"));
-  var rowItem = Number($item.attr("row"));
-  var rowNext = Number($next.attr("row"));
+function calculateAndCreateConnectorPath(points, config) {
+  var columnItem = Number(config.from.attr("column"));
+  var columnNext = Number(config.to.attr("column"));
+  var rowItem = Number(config.from.attr("row"));
+  var rowNext = Number(config.to.attr("row"));
   var forward = columnItem < columnNext;
   var up = rowItem > rowNext;
   var destinationInNextColumn = utilities.difference(columnItem, columnNext) == 1;
@@ -830,40 +807,30 @@ function calculateConnectorPathType($item, $next, points, $items) {
 
   if(rowItem == rowNext) { // Same row
     if(forward) {
-      type = "ForwardPath";
+      new ConnectorPath.ForwardPath(points, config);
     }
     else {
-      // Currently not expected to happen. If it does (in testing?)
-      // then it's likely this should be a BackwardDownBackwardUp
-      // path due to how all backward paths are expected to draw.
-      type = "ForwardDownBackwardUpPath";
+      // Currently not expected to happen as this would be a loop within pages on a row.
+      new ConnectorPath.ForwardDownBackwardUpPath(points, config);
     }
   }
   else {
     if(forward) {
       if(up) {
         if(destinationInNextColumn) {
-          type = "ForwardUpPath";
+          new ConnectorPath.ForwardUpPath(points, config);
         }
         else {
-          type = "ForwardUpForwardDownPath";
+          new ConnectorPath.ForwardUpForwardDownPath(points, config);
         }
-      }
-      else {
-        // Not expected to happen or be a relevant type.
-        type = "ForwardDownPath";
       }
     }
     else {
       if(up) {
-        type = "ForwardDownBackwardUpPath";
-      }
-      else {
-        type = "BackwardDownBackwardUpPath";
+        new ConnectorPath.ForwardDownBackwardUpPath(points, config);
       }
     }
   }
-  return type;
 }
 
 

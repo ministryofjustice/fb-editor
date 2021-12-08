@@ -170,17 +170,31 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 }
 
 
+class DownForwardDownBackwardUpPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "DownForwardDownBackwardUpPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var conf = this._config;
+    var down1 = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
+    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+    var down2 = "v" + (utilities.difference(this._config.bottom, points.via_y) - CURVE_SPACING * 2);
+    var backward = "h-" + (points.via_x + utilities.difference(points.from_x, points.to_x) + 4); // +4 is a HACK to fix alignment - not sure why it's out.
+    var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) - CURVE_SPACING * 2);
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
+}
+
+
 function buildByType() {
   var builder;
   switch(this.type) {
-    case "ForwardPath":
-         break;
-    case "ForwardUpPath":
-         break;
-    case "ForwardUpForwardDownPath":
-         break;
-    case "ForwardDownBackwardUpPath":
-         break;
     case "DownForwardPath":
          builder = createElementsForDownForwardConnector;
          break;
@@ -188,7 +202,6 @@ function buildByType() {
          builder = createElementsForDownForwardUpConnector;
          break;
     case "DownForwardDownBackwardUpPath":
-         builder = createElementsForDownForwardDownBackwardUpConnector;
          break;
     default:
          // Report something should have been set.
@@ -251,20 +264,6 @@ function createElementsForDownForwardUpConnector() {
 }
 
 
-function createElementsForDownForwardDownBackwardUpConnector() {
-  var points = this.points;
-  var conf = this._config;
-  var down1 = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
-  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-  var down2 = "v" + (utilities.difference(this._config.bottom, points.via_y) - CURVE_SPACING * 2);
-  var backward = "h-" + (points.via_x + utilities.difference(points.from_x, points.to_x) + 4); // +4 is a HACK to fix alignment - not sure why it's out.
-  var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) - CURVE_SPACING * 2);
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-  paths += createArrowPath(points);
-  return paths;
-}
-
-
 
 // Make available for importing.
 module.exports = {
@@ -272,5 +271,6 @@ module.exports = {
   ForwardPath: ForwardPath,
   ForwardUpPath: ForwardUpPath,
   ForwardUpForwardDownPath: ForwardUpForwardDownPath,
-  ForwardDownBackwardUpPath: ForwardDownBackwardUpPath
+  ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,
+  DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath
 }
