@@ -148,6 +148,28 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 }
 
+
+class ForwardDownBackwardUpPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "ForwardDownBackwardUpPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var conf = this._config;
+    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
+    var down = "v" + (utilities.difference(points.from_y, this._config.bottom) - (CURVE_SPACING * 2));
+    var backward = "h-" + utilities.difference(points.from_x + points.via_x, points.to_x);
+    var up = "v-" + (utilities.difference(this._config.bottom, points.from_y) + utilities.difference(points.from_y, points.to_y) - (CURVE_SPACING * 2));
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
+}
+
+
 function buildByType() {
   var builder;
   switch(this.type) {
@@ -158,7 +180,6 @@ function buildByType() {
     case "ForwardUpForwardDownPath":
          break;
     case "ForwardDownBackwardUpPath":
-         builder = createElementsForForwardDownBackwardUpConnector;
          break;
     case "DownForwardPath":
          builder = createElementsForDownForwardConnector;
@@ -244,24 +265,12 @@ function createElementsForDownForwardDownBackwardUpConnector() {
 }
 
 
-function createElementsForForwardDownBackwardUpConnector() {
-  var points = this.points;
-  var conf = this._config;
-  var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-  var down = "v" + (utilities.difference(points.from_y, this._config.bottom) - (CURVE_SPACING * 2));
-  var backward = "h-" + utilities.difference(points.from_x + points.via_x, points.to_x);
-  var up = "v-" + (utilities.difference(this._config.bottom, points.from_y) + utilities.difference(points.from_y, points.to_y) - (CURVE_SPACING * 2));
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-  paths += createArrowPath(points);
-  return paths;
-}
-
-
 
 // Make available for importing.
 module.exports = {
   FlowConnectorPath: FlowConnectorPath,
   ForwardPath: ForwardPath,
   ForwardUpPath: ForwardUpPath,
-  ForwardUpForwardDownPath: ForwardUpForwardDownPath
+  ForwardUpForwardDownPath: ForwardUpForwardDownPath,
+  ForwardDownBackwardUpPath: ForwardDownBackwardUpPath
 }
