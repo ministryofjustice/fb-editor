@@ -647,26 +647,30 @@ function applyArrowPagePaths($overview) {
     }
 
     var type = calculateConnectorPathType($item, $next, points, $itemsByRow);
+    var config = {
+          from: $item,
+          to: $next,
+          container: $overview,
+          top: 0,
+          bottom: $overview.height()
+        }
 
-    if(type == "ForwardPath") {
-      new ConnectorPath.ForwardConnectorPath(points, {
-        from: $item,
-        to: $next,
-        container: $overview,
-        type: type,
-        top: 0,                     // TODO: Is this and the height below the best way to position
-        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-      });
-    }
-    else {
-      new ConnectorPath.FlowConnectorPath(points, {
-        from: $item,
-        to: $next,
-        container: $overview,
-        type: type,
-        top: 0,                     // TODO: Is this and the height below the best way to position
-        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-      });
+    switch(type) {
+      case "ForwardPath":
+        new ConnectorPath.ForwardPath(points, config);
+        break;
+      case "ForwardUpPath":
+        new ConnectorPath.ForwardUpPath(points, config);
+        break;
+      default: 
+        new ConnectorPath.FlowConnectorPath(points, {
+          from: $item,
+          to: $next,
+          container: $overview,
+          type: type,
+          top: 0,                     // TODO: Is this and the height below the best way to position
+          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+        });
     }
   });
 }
@@ -724,7 +728,7 @@ function applyArrowBranchPaths($overview) {
         if(index == 0) {
           // Create straight path to go from right corner of the branch
           // to the x/y coordinates of the related 'next' destination.
-          new ConnectorPath.ForwardConnectorPath({
+          new ConnectorPath.ForwardPath({
             from_x: branchX,
             from_y: branchY,
             to_x: destinationX,
