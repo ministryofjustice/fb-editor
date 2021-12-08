@@ -650,8 +650,8 @@ function applyArrowPagePaths($overview) {
           from: $item,
           to: $next,
           container: $overview,
-          top: 0,
-          bottom: $overview.height()
+          top: 0,                     // TODO: Is this and the height below the best way to position
+          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
         }
 
     switch(type) {
@@ -664,15 +664,13 @@ function applyArrowPagePaths($overview) {
       case "ForwardUpForwardDownPath":
         new ConnectorPath.ForwardUpForwardDownPath(points, config);
         break;
-      default: 
-        new ConnectorPath.FlowConnectorPath(points, {
-          from: $item,
-          to: $next,
-          container: $overview,
-          type: type,
-          top: 0,                     // TODO: Is this and the height below the best way to position
-          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-        });
+      case "ForwardDownBackwardUpPath":
+        new ConnectorPath.ForwardDownBackwardUpPath(points, config);
+        break;
+      default:
+         // Report something should have been set or new path is needed..
+         console.error("No path type specified for coordinates: ", JSON.stringify(points).replace("\\", ""));
+         console.error("Cannot connect %o to %of: ", config.from, config.to);
     }
   });
 }
