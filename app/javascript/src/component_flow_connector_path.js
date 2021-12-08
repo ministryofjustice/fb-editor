@@ -92,7 +92,7 @@ class FlowConnectorPath {
 }
 
 
-class ForwardConnectorPath extends FlowConnectorPath {
+class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, utilities.mergeObjects({
         type: "ForwardPath"
@@ -111,13 +111,30 @@ class ForwardConnectorPath extends FlowConnectorPath {
 }
 
 
+class ForwardUpPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "ForwardUpPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var vertical = "v-" + (points.yDifference - CURVE_SPACING);
+    var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
+    paths += createArrowPath(points);
+    return paths;
+  }
+}
+
+
 function buildByType() {
   var builder;
   switch(this.type) {
     case "ForwardPath":
          break;
     case "ForwardUpPath":
-         builder = createPathsForForwardUpConnector;
          break;
     case "ForwardUpForwardDownPath":
          builder = createElementsForForwardUpForwarDownConnector;
@@ -171,15 +188,6 @@ function pathD(/* unlimited */) {
 
 function xy(x, y) {
   return String(x) + "," + String(y);
-}
-
-function createPathsForForwardUpConnector() {
-  var points = this.points;
-  var vertical = "v-" + (points.yDifference - CURVE_SPACING);
-  var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
-  paths += createArrowPath(points);
-  return paths;
 }
 
 function createElementsForForwardUpForwarDownConnector() {
@@ -246,5 +254,6 @@ function createElementsForForwardDownBackwardUpConnector() {
 // Make available for importing.
 module.exports = {
  FlowConnectorPath: FlowConnectorPath,
- ForwardConnectorPath: ForwardConnectorPath
+ ForwardPath: ForwardPath,
+ ForwardUpPath: ForwardUpPath
 }
