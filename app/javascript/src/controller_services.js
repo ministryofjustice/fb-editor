@@ -24,7 +24,7 @@ const post = utilities.post;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
-const FlowConnectorPath = require('./component_flow_connector_path');
+const ConnectorPath = require('./component_flow_connector_path');
 
 const COLUMN_SPACING = 100;
 
@@ -646,14 +646,28 @@ function applyArrowPagePaths($overview) {
       via_x: COLUMN_SPACING - 25 // 25 because we don't want lines to start at edge of column space
     }
 
-    new FlowConnectorPath(points, {
-      from: $item,
-      to: $next,
-      container: $overview,
-      type: calculateConnectorPathType($item, $next, points, $itemsByRow),
-      top: 0,                     // TODO: Is this and the height below the best way to position
-      bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-    });
+    var type = calculateConnectorPathType($item, $next, points, $itemsByRow);
+
+    if(type == "ForwardPath") {
+      new ConnectorPath.ForwardConnectorPath(points, {
+        from: $item,
+        to: $next,
+        container: $overview,
+        type: type,
+        top: 0,                     // TODO: Is this and the height below the best way to position
+        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+      });
+    }
+    else {
+      new ConnectorPath.FlowConnectorPath(points, {
+        from: $item,
+        to: $next,
+        container: $overview,
+        type: type,
+        top: 0,                     // TODO: Is this and the height below the best way to position
+        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+      });
+    }
   });
 }
 
@@ -695,19 +709,28 @@ function applyArrowBranchPaths($overview) {
       var conditionRow = Number($condition.attr("row"));
       var destinationColumn = Number($destination.attr("column"));
       var destinationRow = Number($destination.attr("row"));
+      var config = {
+          container: $overview,
+          from: $branch,
+          to: $destination,
+          via: $condition,
+          top: 0,                     // TODO: Is this and the height below the best way to position
+          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+        }
+
       var points, type;
 
       if(conditionRow == destinationRow) {
         if(index == 0) {
           // Create straight path to go from right corner of the branch
           // to the x/y coordinates of the related 'next' destination.
-          type = "ForwardPath";
-          points = {
+          new ConnectorPath.ForwardConnectorPath({
             from_x: branchX,
             from_y: branchY,
             to_x: destinationX,
             to_y: destinationY
-          }
+          }, config);
+          return;
         }
         else {
           if(conditionColumn > destinationColumn) {
@@ -765,8 +788,9 @@ function applyArrowBranchPaths($overview) {
           }
         }
       }
+
       if(type) {
-        new FlowConnectorPath(points, {
+        new ConnectorPath.FlowConnectorPath(points, {
           container: $overview,
           from: $branch,
           to: $destination,
