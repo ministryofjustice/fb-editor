@@ -124,10 +124,29 @@ class ForwardUpPath extends FlowConnectorPath {
     var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
     var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
     paths += createArrowPath(points);
-    return paths;
+    return createSvg(paths);
   }
 }
 
+
+class ForwardUpForwardDownPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "ForwardUpForwardDownPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var forward1 = "h" + (points.via_x - CURVE_SPACING);
+    var up = "v-" + utilities.difference(points.from_y, this._config.top);
+    var forward2 = "h" + (points.xDifference - (points.via_x + (CURVE_SPACING * 4)));
+    var down = "v" + utilities.difference(this._config.top, points.to_y);
+    var paths = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
+}
 
 function buildByType() {
   var builder;
@@ -137,7 +156,6 @@ function buildByType() {
     case "ForwardUpPath":
          break;
     case "ForwardUpForwardDownPath":
-         builder = createElementsForForwardUpForwarDownConnector;
          break;
     case "ForwardDownBackwardUpPath":
          builder = createElementsForForwardDownBackwardUpConnector;
@@ -188,17 +206,6 @@ function pathD(/* unlimited */) {
 
 function xy(x, y) {
   return String(x) + "," + String(y);
-}
-
-function createElementsForForwardUpForwarDownConnector() {
-  var points = this.points;
-  var forward1 = "h" + (points.via_x - CURVE_SPACING);
-  var up = "v-" + utilities.difference(points.from_y, this._config.top);
-  var forward2 = "h" + (points.xDifference - (points.via_x + (CURVE_SPACING * 4)));
-  var down = "v" + utilities.difference(this._config.top, points.to_y);
-  var paths = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
-  paths += createArrowPath(points);
-  return paths;
 }
 
 
@@ -253,7 +260,8 @@ function createElementsForForwardDownBackwardUpConnector() {
 
 // Make available for importing.
 module.exports = {
- FlowConnectorPath: FlowConnectorPath,
- ForwardPath: ForwardPath,
- ForwardUpPath: ForwardUpPath
+  FlowConnectorPath: FlowConnectorPath,
+  ForwardPath: ForwardPath,
+  ForwardUpPath: ForwardUpPath,
+  ForwardUpForwardDownPath: ForwardUpForwardDownPath
 }

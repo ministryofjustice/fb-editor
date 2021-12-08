@@ -661,6 +661,9 @@ function applyArrowPagePaths($overview) {
       case "ForwardUpPath":
         new ConnectorPath.ForwardUpPath(points, config);
         break;
+      case "ForwardUpForwardDownPath":
+        new ConnectorPath.ForwardUpForwardDownPath(points, config);
+        break;
       default: 
         new ConnectorPath.FlowConnectorPath(points, {
           from: $item,
