@@ -78,6 +78,36 @@ class FlowConnectorPath {
     var paths = builder ? builder.call(this) : "";
     return createSvg.call(this, paths);
   }
+
+  nudge(x, y) {
+/*  TODO: ... kind of thing that needs to happen here, but dynamically.
+    var $path = this.$node.find("path:first");
+    console.log("$path: ", $path);
+    console.log("type: ", this.type);
+    console.log("d: ", $path.attr("d"));
+    $path.attr("d", "M 4601.000244140625,62.5 v989.9999542236328 a10,10 0 0 0 10,10 h435 a10,10 0 0 1 10,10 v87.50004577636719 a10,10 0 0 1 -10,10 h-3260 a10,10 0 0 1 -10,-10 v-1087.5 a10,10 0 0 1 10,-10 h10");
+    console.log("d: ", $path.attr("d"));
+*/
+  }
+}
+
+
+class ForwardConnectorPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, utilities.mergeObjects({
+        type: "ForwardPath"
+      }, config));
+  }
+
+  build() {
+    var points = this.points;
+    var x = points.from_x;
+    var y = points.from_y + points.yDifference;
+    var width = "h" + points.xDifference;
+    var paths = createPath(pathD(xy(x, y), width));
+    paths += createArrowPath(points);
+    return createSvg(paths);
+  }
 }
 
 
@@ -85,7 +115,6 @@ function buildByType() {
   var builder;
   switch(this.type) {
     case "ForwardPath":
-         builder = createPathsForForwardConnector;
          break;
     case "ForwardUpPath":
          builder = createPathsForForwardUpConnector;
@@ -142,16 +171,6 @@ function pathD(/* unlimited */) {
 
 function xy(x, y) {
   return String(x) + "," + String(y);
-}
-
-function createPathsForForwardConnector() {
-  var points = this.points;
-  var x = points.from_x;
-  var y = points.from_y + points.yDifference;
-  var width = "h" + points.xDifference;
-  var paths = createPath(pathD(xy(x, y), width));
-  paths += createArrowPath(points);
-  return paths;
 }
 
 function createPathsForForwardUpConnector() {
@@ -223,5 +242,9 @@ function createElementsForForwardDownBackwardUpConnector() {
 }
 
 
+
 // Make available for importing.
-module.exports = FlowConnectorPath;
+module.exports = {
+ FlowConnectorPath: FlowConnectorPath,
+ ForwardConnectorPath: ForwardConnectorPath
+}
