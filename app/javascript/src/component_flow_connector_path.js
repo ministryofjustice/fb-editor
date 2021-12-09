@@ -123,8 +123,8 @@ class ForwardUpPath extends FlowConnectorPath {
 
   build() {
     var points = this.points;
-    var vertical = "v-" + (points.yDifference - CURVE_SPACING);
-    var horizontal = "h" + (points.xDifference - (CURVE_SPACING * 2));
+    var vertical = "v-" + (points.yDifference - (CURVE_SPACING * 2));
+    var horizontal = "h" + (points.via_x - CURVE_SPACING);
     var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
     paths += createArrowPath(points);
     return createSvg(paths);
