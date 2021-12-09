@@ -62,8 +62,7 @@ class FlowConnectorPath {
     this._config = conf;
     this._registry = registry;
     this.points = points;
-    this.type = conf.type;
-    this.$node = this.build(buildByType.call(this));
+    this.$node = this.build();
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", id)
@@ -71,12 +70,15 @@ class FlowConnectorPath {
               .attr("data-to", conf.to.attr("id"))
               .data("instance", this);
 
-    addToDOM.call(this);
+    // Add node to DOM
+    this._config.container.append(this.$node);
   }
 
-  build(builder) {
-    var paths = builder ? builder.call(this) : "";
-    return createSvg.call(this, paths);
+  build() {
+    // Dummy example content.
+    // This should be different for each path type.
+    var paths = createPath(pathD(xy(10, 10), 100));
+    return createSvg(paths);
   }
 
   nudge(x, y) {
@@ -94,9 +96,8 @@ class FlowConnectorPath {
 
 class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "ForwardPath"
-      }, config));
+    super(points, config);
+    this.type = "ForwardPath";
   }
 
   build() {
@@ -113,9 +114,8 @@ class ForwardPath extends FlowConnectorPath {
 
 class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "ForwardUpPath"
-      }, config));
+    super(points, config);
+    this.type = "ForwardUpPath";
   }
 
   build() {
@@ -131,9 +131,8 @@ class ForwardUpPath extends FlowConnectorPath {
 
 class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "ForwardUpForwardDownPath"
-      }, config));
+    super(points, config);
+    this.type = "ForwardUpForwardDownPath";
   }
 
   build() {
@@ -151,9 +150,8 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "ForwardDownBackwardUpPath"
-      }, config));
+    super(points, config);
+    this.type = "ForwardDownBackwardUpPath";
   }
 
   build() {
@@ -172,9 +170,8 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "DownForwardDownBackwardUpPath"
-      }, config));
+    super(points, config);
+    this.type = "DownForwardDownBackwardUpPath";
   }
 
   build() {
@@ -194,9 +191,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
 class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "DownForwardUpPath"
-      }, config));
+    super(points, config);
+    this.type = "DownForwardUpPath";
   }
 
   build() {
@@ -213,9 +209,8 @@ class DownForwardUpPath extends FlowConnectorPath {
 
 class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
-    super(points, utilities.mergeObjects({
-        type: "DownForwardPath"
-      }, config));
+    super(points, config);
+    this.type = "DownForwardPath";
   }
 
   build() {
@@ -228,27 +223,6 @@ class DownForwardPath extends FlowConnectorPath {
   }
 }
 
-
-function buildByType() {
-  var builder;
-  switch(this.type) {
-    case "DownForwardPath":
-         break;
-    case "DownForwardUpPath":
-         break;
-    case "DownForwardDownBackwardUpPath":
-         break;
-    default:
-         // Report something should have been set.
-         console.error("No path type specified for coordinates: ", JSON.stringify(this.points).replace("\\", ""));
-         console.error("Cannot connect %o to %of: ", this._config.from, this._config.to);
-  }
-  return builder;
-}
-
-function addToDOM() {
-  this._config.container.append(this.$node);
-}
 
 function createSvg(paths) {
   const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
