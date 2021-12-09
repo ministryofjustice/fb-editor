@@ -64,7 +64,6 @@ class FlowConnectorPath {
     this.points = points;
     this.$node = this.build();
     this.$node.addClass("FlowConnectorPath")
-              .addClass(this.type)
               .attr("id", id)
               .attr("data-from", conf.from.attr("id"))
               .attr("data-to", conf.to.attr("id"))
@@ -97,7 +96,9 @@ class FlowConnectorPath {
 class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "ForwardPath";
+    var type = "ForwardPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -115,7 +116,9 @@ class ForwardPath extends FlowConnectorPath {
 class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "ForwardUpPath";
+    var type = "ForwardUpPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -132,7 +135,9 @@ class ForwardUpPath extends FlowConnectorPath {
 class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "ForwardUpForwardDownPath";
+    var type = "ForwardUpForwardDownPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -151,7 +156,9 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "ForwardDownBackwardUpPath";
+    var type = "ForwardDownBackwardUpPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -171,7 +178,9 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "DownForwardDownBackwardUpPath";
+    var type = "DownForwardDownBackwardUpPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -192,7 +201,9 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "DownForwardUpPath";
+    var type = "DownForwardUpPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
@@ -210,7 +221,9 @@ class DownForwardUpPath extends FlowConnectorPath {
 class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    this.type = "DownForwardPath";
+    var type = "DownForwardPath";
+    this.$node.addClass(type)
+    this.type = type;
   }
 
   build() {
