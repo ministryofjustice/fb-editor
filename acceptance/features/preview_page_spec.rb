@@ -74,7 +74,7 @@ feature 'Preview page' do
 
   def then_I_should_be_on_the_check_your_answers_page
     then_I_should_not_see_optional_text
-    expect(page.current_url).to include('checkanswers')
+    expect(page.current_url).to include('check-answers')
   end
 
   def then_I_should_see_that_I_should_add_a_file

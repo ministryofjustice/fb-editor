@@ -78,11 +78,11 @@ class NewServiceGenerator
   def add_cya_and_confirmation(metadata)
     cya_metadata = DefaultMetadata['page.checkanswers']
       .merge('_uuid' => SecureRandom.uuid)
-      .merge('url' => 'checkanswers')
+      .merge('url' => 'check-answers')
 
     confirmation_metadata = DefaultMetadata['page.confirmation']
       .merge('_uuid' => SecureRandom.uuid)
-      .merge('url' => 'confirmation')
+      .merge('url' => 'form-sent')
 
     metadata['pages'].push(cya_metadata)
     metadata['pages'].push(confirmation_metadata)
