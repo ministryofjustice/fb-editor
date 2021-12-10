@@ -17,13 +17,13 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 10;
+const NUDGE_SPACING = 10;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
 const CURVE_DOWN_LEFT = "a10,10 0 0 1 -10,10";
 const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
-var registry = {}; // Every created FlowConnectorPath is added to this so they can gain knowledge of others, if required.
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -57,27 +57,22 @@ class FlowConnectorPath {
 
     points.xDifference = utilities.difference(points.from_x, points.to_x);
     points.yDifference = utilities.difference(points.from_y, points.to_y);
-    registry[id] = this; // Add to global register
 
     this._config = conf;
-    this._registry = registry;
     this.points = points;
-    this.$node = this.build();
-    this.$node.addClass("FlowConnectorPath")
-              .attr("id", id)
-              .attr("data-from", conf.from.attr("id"))
-              .attr("data-to", conf.to.attr("id"))
-              .data("instance", this);
-
-    // Add node to DOM
-    this._config.container.append(this.$node);
+    this.id = id;
   }
 
-  build() {
-    // Dummy example content.
-    // This should be different for each path type.
-    var paths = createPath(pathD(xy(10, 10), 100));
-    return createSvg(paths);
+  build(path) {
+    this.$node = createSvg(this.path + createArrowPath(this.points));
+    this.$node.addClass("FlowConnectorPath")
+              .addClass(this.type)
+              .attr("id", this.id)
+              .attr("data-from", this._config.from.attr("id"))
+              .attr("data-to", this._config.to.attr("id"))
+              .data("instance", this);
+
+    this._config.container.append(this.$node);
   }
 
   nudge(x, y) {
@@ -96,19 +91,16 @@ class FlowConnectorPath {
 class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "ForwardPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      x: this.points.from_x,
+      y: this.points.from_y + this.points.yDifference,
+      width: "h" + this.points.xDifference
+    }
 
-  build() {
-    var points = this.points;
-    var x = points.from_x;
-    var y = points.from_y + points.yDifference;
-    var width = "h" + points.xDifference;
-    var paths = createPath(pathD(xy(x, y), width));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "ForwardPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(d.x, d.y), d.width));
+    this.build();
   }
 }
 
@@ -116,18 +108,15 @@ class ForwardPath extends FlowConnectorPath {
 class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "ForwardUpPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      vertical: "v-" + (this.points.yDifference - (CURVE_SPACING * 2)),
+      horizontal: "h" + (this.points.via_x - CURVE_SPACING)
+    }
 
-  build() {
-    var points = this.points;
-    var vertical = "v-" + (points.yDifference - (CURVE_SPACING * 2));
-    var horizontal = "h" + (points.via_x - CURVE_SPACING);
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "ForwardUpPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(points.from_x, points.from_y), d.horizontal, CURVE_RIGHT_UP, d.vertical, CURVE_UP_RIGHT));
+    this.build();
   }
 }
 
@@ -135,20 +124,17 @@ class ForwardUpPath extends FlowConnectorPath {
 class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "ForwardUpForwardDownPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      forward1: "h" + (this.points.via_x - CURVE_SPACING),
+      up: "v-" + utilities.difference(this.points.from_y, this._config.top),
+      forward2: "h" + (this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
+      down: "v" + utilities.difference(this._config.top, this.points.to_y)
+    }
 
-  build() {
-    var points = this.points;
-    var forward1 = "h" + (points.via_x - CURVE_SPACING);
-    var up = "v-" + utilities.difference(points.from_y, this._config.top);
-    var forward2 = "h" + (points.xDifference - (points.via_x + (CURVE_SPACING * 4)));
-    var down = "v" + utilities.difference(this._config.top, points.to_y);
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "ForwardUpForwardDownPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.forward1, CURVE_RIGHT_UP, d.up, CURVE_UP_RIGHT, d.forward2, CURVE_RIGHT_DOWN, d.down, CURVE_DOWN_RIGHT));
+    this.build();
   }
 }
 
@@ -156,21 +142,17 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "ForwardDownBackwardUpPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      forward: "h" + (this.points.via_x - (CURVE_SPACING * 2)),
+      down: "v" + (utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
+      backward: "h-" + utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x),
+      up: "v-" + (utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2))
+    }
 
-  build() {
-    var points = this.points;
-    var conf = this._config;
-    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-    var down = "v" + (utilities.difference(points.from_y, this._config.bottom) - (CURVE_SPACING * 2));
-    var backward = "h-" + utilities.difference(points.from_x + points.via_x, points.to_x);
-    var up = "v-" + (utilities.difference(this._config.bottom, points.from_y) + utilities.difference(points.from_y, points.to_y) - (CURVE_SPACING * 2));
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "ForwardDownBackwardUpPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.forward, CURVE_RIGHT_DOWN, d.down, CURVE_DOWN_LEFT, d.backward, CURVE_LEFT_UP, d.up, CURVE_UP_RIGHT));
+    this.build();
   }
 }
 
@@ -178,22 +160,18 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "DownForwardDownBackwardUpPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      down1: "v" + (utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
+      forward: "h" + (this.points.via_x - (CURVE_SPACING * 2)),
+      down2: "v" + (utilities.difference(this._config.bottom, this.points.via_y) - CURVE_SPACING * 2),
+      backward: "h-" + (this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x) + 2), // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
+      up: "v-" + ((utilities.difference(this._config.bottom, this._config.top) - this.points.to_y) - CURVE_SPACING * 2)
+    }
 
-  build() {
-    var points = this.points;
-    var conf = this._config;
-    var down1 = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
-    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-    var down2 = "v" + (utilities.difference(this._config.bottom, points.via_y) - CURVE_SPACING * 2);
-    var backward = "h-" + (points.via_x + utilities.difference(points.from_x, points.to_x) + 4); // +4 is a HACK to fix alignment - not sure why it's out.
-    var up = "v-" + ((utilities.difference(this._config.bottom, this._config.top) - points.to_y) - CURVE_SPACING * 2);
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "DownForwardDownBackwardUpPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.down1, CURVE_DOWN_RIGHT, d.forward, CURVE_RIGHT_DOWN, d.down2, CURVE_DOWN_LEFT, d.backward, CURVE_LEFT_UP, d.up, CURVE_UP_RIGHT));
+    this.build();
   }
 }
 
@@ -201,19 +179,16 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "DownForwardUpPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      down: "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      forward: "h" + (points.via_x - (CURVE_SPACING * 2)),
+      up: "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2))
+    }
 
-  build() {
-    var points = this.points;
-    var down = "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING);
-    var forward = "h" + (points.via_x - (CURVE_SPACING * 2));
-    var up = "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2));
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "DownForwardUpPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.down, CURVE_DOWN_RIGHT, d.forward, CURVE_RIGHT_UP, d.up, CURVE_UP_RIGHT));
+    this.build();
   }
 }
 
@@ -221,18 +196,15 @@ class DownForwardUpPath extends FlowConnectorPath {
 class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var type = "DownForwardPath";
-    this.$node.addClass(type)
-    this.type = type;
-  }
+    var d = {
+      down: "v" + (this.points.yDifference - CURVE_SPACING),
+      forward: "h" + this.points.xDifference
+    }
 
-  build() {
-    var points = this.points;
-    var down = "v" + (points.yDifference - CURVE_SPACING);
-    var forward = "h" + points.xDifference;
-    var paths = createPath(pathD(xy(points.from_x, points.from_y), down, CURVE_DOWN_RIGHT, forward));
-    paths += createArrowPath(points);
-    return createSvg(paths);
+    this.type = "DownForwardPath";
+    this.dimensions = d;
+    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.down, CURVE_DOWN_RIGHT, d.forward));
+    this.build();
   }
 }
 
