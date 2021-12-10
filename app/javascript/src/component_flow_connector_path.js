@@ -17,13 +17,14 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 10;
-const NUDGE_SPACING = 10;
+const NUDGE_SPACING = 5;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
 const CURVE_DOWN_LEFT = "a10,10 0 0 1 -10,10";
 const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
+
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -58,13 +59,17 @@ class FlowConnectorPath {
     points.xDifference = utilities.difference(points.from_x, points.to_x);
     points.yDifference = utilities.difference(points.from_y, points.to_y);
 
-    this._config = conf;
+    // Public
     this.points = points;
     this.id = id;
+
+    // Private
+    this._config = conf;
+    this._path = "";
   }
 
   build(path) {
-    this.$node = createSvg(this.path + createArrowPath(this.points));
+    this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", this.id)
@@ -75,7 +80,24 @@ class FlowConnectorPath {
     this._config.container.append(this.$node);
   }
 
+  get path() {
+    return this._path;
+  }
+
   nudge(x, y) {
+    // This function should allow the path to be nudged either vertically or horizontally
+    // to avoid overlapping lines (as in, one that follow a same path). See the example
+    // code below for what might happen but note, each individual path type will need to
+    // have its own custom variant to cope with path requirements. The basic ForwardPath
+    // is not likely to require anything so, for that and any other paths like it, this
+    // function serves as a placeholder that does nothing, in the event it is called by
+    // some accident or unintentional request.
+    //
+    // x & y params are multiples of how many nudges are required for each axis direction.
+    // Nudge distance is controlled by hardcoded constant NUDGE_SPACING.
+    // e.g. some_path_instance.nudge(2, 0) would cause a path to shift 2 x NUDGE_SPACING
+    //      on the x axis but not to move on the y.
+
 /*  TODO: ... kind of thing that needs to happen here, but dynamically.
     var $path = this.$node.find("path:first");
     console.log("$path: ", $path);
@@ -91,32 +113,60 @@ class FlowConnectorPath {
 class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var d = {
+    var dimensions = {
       x: this.points.from_x,
       y: this.points.from_y + this.points.yDifference,
-      width: "h" + this.points.xDifference
+      width: this.points.xDifference
     }
 
+    this._dimensions = { original: dimensions  } // Not expected to change.
     this.type = "ForwardPath";
-    this.dimensions = d;
-    this.path = createPath(pathD(xy(d.x, d.y), d.width));
+    this.path = dimensions;
     this.build();
   }
+
+  set path(dimensions) {
+    var width = "h" + dimensions.width;
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), width));
+  }
+
+
+  // Since this arrow simple goes from point A to B, which is expected to
+  // be between two adjacent items, it should not have any overlap issues
+  // which would mean nudge() functionality is not a requirement.
 }
 
 
 class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var d = {
-      vertical: "v-" + (this.points.yDifference - (CURVE_SPACING * 2)),
-      horizontal: "h" + (this.points.via_x - CURVE_SPACING)
+    var dimensions = {
+      vertical: this.points.yDifference - (CURVE_SPACING * 2),
+      horizontal: this.points.via_x - CURVE_SPACING
     }
 
+    this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
     this.type = "ForwardUpPath";
-    this.dimensions = d;
-    this.path = createPath(pathD(xy(points.from_x, points.from_y), d.horizontal, CURVE_RIGHT_UP, d.vertical, CURVE_UP_RIGHT));
+    this.path = dimensions;
     this.build();
+  }
+
+  set path(dimensions) {
+    var horizontal = "h" + dimensions.horizontal;
+    var vertical = "v-" + dimensions.vertical;
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
+  }
+
+  nudge(x, y) {
+    var dimensions = {
+      horizontal: this._dimensions.current.horizontal - (x * NUDGE_SPACING),
+      vertical: this._dimensions.current.vertical - (y * NUDGE_SPACING)
+    }
+
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
   }
 }
 
@@ -216,12 +266,18 @@ function createSvg(paths) {
   return $(svg)
 }
 
+
+// Helper functions
 function createArrowPath(points) {
   return "<path class=\"arrowPath\" d=\"M " + (points.to_x - 10) + "," + (points.to_y - 5) + " v10 l 10,-5 z\"></path>";
 }
 
 function createPath(d) {
-  return "<path d=\"" + d + " h10 \"></path>"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
+  return "<path d=\"" + createPathDimensions(d) + "\"></path>"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
+}
+
+function createPathDimensions(d) {
+  return d + " h10"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
 }
 
 function pathD(/* unlimited */) {
