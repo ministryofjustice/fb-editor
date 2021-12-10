@@ -174,17 +174,38 @@ class ForwardUpPath extends FlowConnectorPath {
 class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var d = {
-      forward1: "h" + (this.points.via_x - CURVE_SPACING),
-      up: "v-" + utilities.difference(this.points.from_y, this._config.top),
-      forward2: "h" + (this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
-      down: "v" + utilities.difference(this._config.top, this.points.to_y)
+    var dimensions = {
+      forward1: this.points.via_x - CURVE_SPACING,
+      up: utilities.difference(this.points.from_y, this._config.top),
+      forward2: this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4)),
+      down: utilities.difference(this._config.top, this.points.to_y)
     }
 
+    this._dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
-    this.dimensions = d;
-    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.forward1, CURVE_RIGHT_UP, d.up, CURVE_UP_RIGHT, d.forward2, CURVE_RIGHT_DOWN, d.down, CURVE_DOWN_RIGHT));
+    this.path = dimensions;
     this.build();
+  }
+
+  set path(dimensions) {
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
+    var down = "v" + dimensions.down;
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
+  }
+
+  nudge(x, y) {
+    var dimensions = {
+      forward1: this._dimensions.current.forward1 - (x * NUDGE_SPACING),
+      up: this._dimensions.current.up + (y * NUDGE_SPACING),
+      forward2: this._dimensions.current.forward2  + (x * NUDGE_SPACING),
+      down: this._dimensions.current.down + (y * NUDGE_SPACING)
+    }
+
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
   }
 }
 
