@@ -746,14 +746,28 @@ function applyArrowBranchPaths($overview) {
         // the destination point requires, using the calculated path type.
         if(conditionRow > destinationRow) {
           if(conditionColumn < destinationColumn) {
-            new ConnectorPath.DownForwardUpPath({
-              from_x: branchX - (branchWidth / 2),
-              from_y: branchY,
-              to_x: destinationX,
-              to_y: destinationY,
-              via_x: conditionX,
-              via_y: conditionY
-            }, config);
+            if(conditionColumn + 1 == destinationColumn) {
+              // Is a row above and in next column
+              new ConnectorPath.DownForwardUpPath({
+                from_x: branchX - (branchWidth / 2),
+                from_y: branchY,
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX,
+                via_y: conditionY
+              }, config);
+            }
+            else {
+              // Is a row above but not next column (so needs to go to top as a skip connector)
+              new ConnectorPath.DownForwardUpForwardDownPath({
+                from_x: branchX - (branchWidth / 2),
+                from_y: branchY,
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX,
+                via_y: conditionY
+              }, config);
+            }
           }
           else {
             new ConnectorPath.DownForwardDownBackwardUpPath({
@@ -766,7 +780,11 @@ function applyArrowBranchPaths($overview) {
             }, config);
           }
         }
+        else {
+          // TODO (Possibly): DownForwardDownForward
+        }
       }
+
     });
   });
 }

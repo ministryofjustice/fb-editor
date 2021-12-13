@@ -332,6 +332,47 @@ class DownForwardUpPath extends FlowConnectorPath {
 }
 
 
+class DownForwardUpForwardDownPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, config);
+    var dimensions = {
+      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
+      forward1: points.via_x - (CURVE_SPACING * 2),
+      up: utilities.difference(points.from_y, points.via_y) + utilities.difference(points.from_y, points.to_y) + utilities.difference(points.to_y, config.top),
+      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 4),
+      down2: points.to_y
+    }
+
+    this._dimensions = { original: dimensions };
+    this.type = "DownForwardUpForwardDown";
+    this.path = dimensions;
+    this.build();
+  }
+
+  set path(dimensions) {
+    var down1 = "v" + dimensions.down1;
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
+    var down2 = "v" + dimensions.down2;
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT));
+  }
+
+  nudge(x, y) {
+    var dimensions = {
+      down1: this._dimensions.current.down1,
+      forward1: this._dimensions.current.forward1,
+      up: this._dimensions.current.up,
+      forward2: this._dimensions.current.forward2,
+      down2: this._dimensions.current.down2
+    }
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+}
+
+
 class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
@@ -391,5 +432,6 @@ module.exports = {
   ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,
   DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath,
   DownForwardUpPath: DownForwardUpPath,
+  DownForwardUpForwardDownPath: DownForwardUpForwardDownPath,
   DownForwardPath: DownForwardPath
 }
