@@ -299,16 +299,35 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var d = {
-      down: "v" + (utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
-      forward: "h" + (points.via_x - (CURVE_SPACING * 2)),
-      up: "v-" + (utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2))
+    var dimensions = {
+      down: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
+      forward1: points.via_x - (CURVE_SPACING * 2),
+      up: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)
     }
 
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
-    this.dimensions = d;
-    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.down, CURVE_DOWN_RIGHT, d.forward, CURVE_RIGHT_UP, d.up, CURVE_UP_RIGHT));
+    this.path = dimensions;
     this.build();
+  }
+
+  set path(dimensions) {
+    var down = "v" + dimensions.down;
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
+  }
+
+  nudge(x, y) {
+    var dimensions = {
+      down: this._dimensions.current.down,
+      forward1: this._dimensions.current.forward1,
+      up: this._dimensions.current.up
+    }
+
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
   }
 }
 
