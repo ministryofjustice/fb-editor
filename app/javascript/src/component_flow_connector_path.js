@@ -258,11 +258,11 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING,
-      forward: this.points.via_x - (CURVE_SPACING * 2),
-      down2: utilities.difference(this._config.bottom, this.points.via_y) - CURVE_SPACING * 2,
-      backward: this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x) + 2, // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
-      up: (utilities.difference(this._config.bottom, this._config.top) - this.points.to_y) - CURVE_SPACING * 2
+      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
+      forward: points.via_x - (CURVE_SPACING * 2),
+      down2: utilities.difference(config.bottom, points.via_y) - CURVE_SPACING * 2,
+      backward: points.via_x + utilities.difference(points.from_x, points.to_x) + 2, // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
+      up: (utilities.difference(config.bottom, config.top) - points.to_y) - CURVE_SPACING * 2
     }
 
     this._dimensions = { original: dimensions };
