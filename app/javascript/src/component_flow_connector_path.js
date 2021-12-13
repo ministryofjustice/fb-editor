@@ -213,18 +213,44 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
-    var d = {
-      forward: "h" + (this.points.via_x - (CURVE_SPACING * 2)),
-      down: "v" + (utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
-      backward: "h-" + utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x),
-      up: "v-" + (utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2))
+    var dimensions = {
+      forward: this.points.via_x - (CURVE_SPACING * 2),
+      down: utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2),
+      backward: utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x),
+      up: utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)
     }
 
+    this._dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
-    this.dimensions = d;
-    this.path = createPath(pathD(xy(this.points.from_x, this.points.from_y), d.forward, CURVE_RIGHT_DOWN, d.down, CURVE_DOWN_LEFT, d.backward, CURVE_LEFT_UP, d.up, CURVE_UP_RIGHT));
+    this.path = dimensions;
     this.build();
   }
+
+  set path(dimensions) {
+    var forward = "h" + dimensions.forward;
+    var down = "v" + dimensions.down;
+    var backward = "h-" + dimensions.backward;
+    var up = "v-" + dimensions.up;
+
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
+  }
+
+  nudge(x, y) {
+// TODO: MAYBE NEED TO RETHINK NUDGE TO ALLOW SINGLE LINE MOVEMENT, NOT
+//       MOVING HORIZONTAL AND/OR VERTICAL AT SAME TIME (ASSUME ONLY
+//       ONE OF THE TWO VERTICAL LINES CLASH AND NEEDS TO BE MOVED).
+    var dimensions = {
+      forward: this._dimensions.current.forward - (x * NUDGE_SPACING),
+      down: this._dimensions.current.down + (y * NUDGE_SPACING),
+      backward: this._dimensions.current.backward - (x * NUDGE_SPACING),
+      up: this._dimensions.current.up + (y * NUDGE_SPACING)
+    }
+
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+
 }
 
 
