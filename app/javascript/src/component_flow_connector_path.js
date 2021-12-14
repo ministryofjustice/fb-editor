@@ -133,7 +133,7 @@ class ForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var width = "h" + dimensions.width;
+    var width = "h" + Math.ceil(dimensions.width);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), width));
   }
@@ -149,8 +149,9 @@ class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      vertical: this.points.yDifference - (CURVE_SPACING * 2),
-      horizontal: this.points.via_x - CURVE_SPACING
+      horizontal1: this.points.via_x - CURVE_SPACING,
+      horizontal2: 0,
+      vertical: this.points.yDifference - (CURVE_SPACING * 2)
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
@@ -160,16 +161,19 @@ class ForwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var horizontal = "h" + dimensions.horizontal;
-    var vertical = "v-" + dimensions.vertical;
+    var horizontal1 = "h" + Math.ceil(dimensions.horizontal1);
+    var horizontal2 = "h" + Math.ceil(dimensions.horizontal2);
+    var vertical = "v-" + Math.ceil(dimensions.vertical);
+
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), horizontal, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT));
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), horizontal1, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT, horizontal2));
   }
 
-  nudge(nH, nV) {
+  nudge(nH) {
     var dimensions = {
-      horizontal: this._dimensions.current.horizontal - (nH * NUDGE_SPACING),
-      vertical: this._dimensions.current.vertical - (nV * NUDGE_SPACING)
+      horizontal1: this._dimensions.current.horizontal1 - (nH * NUDGE_SPACING),
+      horizontal2: this._dimensions.current.horizontal2 + (nH * NUDGE_SPACING),
+      vertical: this._dimensions.current.vertical // No movement should be required (and therefore possible) for this line.
     }
 
     this.path = dimensions;
@@ -195,10 +199,10 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + dimensions.forward1;
-    var up = "v-" + dimensions.up;
-    var forward2 = "h" + dimensions.forward2;
-    var down = "v" + dimensions.down;
+    var forward1 = "h" + Math.ceil(dimensions.forward1);
+    var up = "v-" + Math.ceil(dimensions.up);
+    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var down = "v" + Math.ceil(dimensions.down);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
   }
@@ -234,10 +238,10 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward = "h" + dimensions.forward;
-    var down = "v" + dimensions.down;
-    var backward = "h-" + dimensions.backward;
-    var up = "v-" + dimensions.up;
+    var forward = "h" + Math.ceil(dimensions.forward);
+    var down = "v" + Math.ceil(dimensions.down);
+    var backward = "h-" + Math.ceil(dimensions.backward);
+    var up = "v-" + Math.ceil(dimensions.up);
 
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
@@ -276,11 +280,11 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + dimensions.down1;
-    var forward = "h" + dimensions.forward;
-    var down2 = "v" + dimensions.down2;
-    var backward = "h-" + dimensions.backward;
-    var up = "v-" + dimensions.up;
+    var down1 = "v" + Math.ceil(dimensions.down1);
+    var forward = "h" + Math.ceil(dimensions.forward);
+    var down2 = "v" + Math.ceil(dimensions.down2);
+    var backward = "h-" + Math.ceil(dimensions.backward);
+    var up = "v-" + Math.ceil(dimensions.up);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
   }
@@ -316,9 +320,9 @@ class DownForwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down = "v" + dimensions.down;
-    var forward = "h" + dimensions.forward;
-    var up = "v-" + dimensions.up;
+    var down = "v" + Math.ceil(dimensions.down);
+    var forward = "h" + Math.ceil(dimensions.forward);
+    var up = "v-" + Math.ceil(dimensions.up);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
   }
@@ -354,11 +358,11 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + dimensions.down1;
-    var forward1 = "h" + dimensions.forward1;
-    var up = "v-" + dimensions.up;
-    var forward2 = "h" + dimensions.forward2;
-    var down2 = "v" + dimensions.down2;
+    var down1 = "v" + Math.ceil(dimensions.down1);
+    var forward1 = "h" + Math.ceil(dimensions.forward1);
+    var up = "v-" + Math.ceil(dimensions.up);
+    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var down2 = "v" + Math.ceil(dimensions.down2);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT));
   }
@@ -392,8 +396,8 @@ class DownForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down = "v" + dimensions.down;
-    var forward = "h" + dimensions.forward;
+    var down = "v" + Math.ceil(dimensions.down);
+    var forward = "h" + Math.ceil(dimensions.forward);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward));
   }
@@ -440,7 +444,7 @@ function pathD(/* unlimited */) {
 }
 
 function xy(x, y) {
-  return String(x) + "," + String(y);
+  return String(Math.ceil(x)) + "," + String(Math.ceil(y));
 }
 
 
