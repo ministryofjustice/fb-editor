@@ -411,15 +411,9 @@ class DownForwardPath extends FlowConnectorPath {
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward));
   }
 
-  nudge(nD, nF) {
-    var dimensions = {
-      down: "v" + this._dimensions.current.down + (nD * NUDGE_SPACING),
-      forward: "h" + this._dimensions.current.forward + (nF * NUDGE_SPACING)
-    }
-
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
+  // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
+  // to be the next adjacent item, it should not have any overlap issues which would mean
+  // nudge() functionality is also not a requirement.
 }
 
 
