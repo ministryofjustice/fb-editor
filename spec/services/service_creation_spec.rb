@@ -83,11 +83,12 @@ RSpec.describe ServiceCreation do
 
     context 'when is valid' do
       let(:attributes) do
-        { service_name: 'Moff Gideon', current_user: double(id: '1') }
+        { service_name: "Secure Children's Home", current_user: double(id: '1') }
       end
       let(:service) do
         double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
       end
+
       before do
         expect(
           MetadataApiClient::Service
@@ -105,6 +106,27 @@ RSpec.describe ServiceCreation do
         expect(
           service_creation.service_id
         ).to eq('05e12a93-3978-4624-a875-e59893f2c262')
+      end
+    end
+
+    context 'when service name has an apostrophe' do
+      let(:attributes) do
+        { service_name: 'Secure Children’s Home', current_user: double(id: '1') }
+      end
+      let(:service) do
+        double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
+      end
+
+      before do
+        expect(
+          MetadataApiClient::Service
+        ).to receive(:create).and_return(service)
+
+        expect_any_instance_of(DefaultConfiguration).to receive(:create)
+      end
+
+      it 'returns true' do
+        expect(service_creation.create).to be_truthy
       end
     end
 
