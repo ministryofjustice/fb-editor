@@ -9,12 +9,12 @@
   <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
 
-<% if @warning_message.present? %>
+<% if PublishWarningPresenter.new(service).warning_message.present? %>
   <div class="govuk-warning-text">
   <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
   <strong class="govuk-warning-text__text">
     <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
-    <%= @warning_message %>
+    <%= PublishWarningPresenter.new(service).warning_message %>
   </strong>
 </div>
 <% end %>
