@@ -315,8 +315,9 @@ class DownForwardUpPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward: points.via_x - (CURVE_SPACING * 2),
-      up: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)
+      forward1: points.via_x - (CURVE_SPACING * 2),
+      up: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2),
+      forward2: 0
     }
 
     this._dimensions = { original: dimensions };
@@ -327,17 +328,19 @@ class DownForwardUpPath extends FlowConnectorPath {
 
   set path(dimensions) {
     var down = "v" + Math.ceil(dimensions.down);
-    var forward = "h" + Math.ceil(dimensions.forward);
+    var forward1 = "h" + Math.ceil(dimensions.forward1);
     var up = "v-" + Math.ceil(dimensions.up);
+    var forward2 = "h" + Math.ceil(dimensions.forward2);
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT));
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2));
   }
 
-  nudge(nD, nF, nU) {
+  nudge(nF) {
     var dimensions = {
-      down: this._dimensions.current.down + (nD * NUDGE_SPACING),
-      forward: this._dimensions.current.forward + (nF * NUDGE_SPACING),
-      up: this._dimensions.current.up - (nU * NUDGE_SPACING)
+      down: this._dimensions.current.down,
+      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
+      up: this._dimensions.current.up,
+      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING),
     }
 
     this.path = dimensions;
