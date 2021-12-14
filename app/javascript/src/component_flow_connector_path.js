@@ -376,13 +376,13 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT));
   }
 
-  nudge(nD1, nF1, nU, nF2, nD2) {
+  nudge(nF, nU) {
     var dimensions = {
-      down1: this._dimensions.current.down1 + (nD1 * NUDGE_SPACING),
-      forward1: this._dimensions.current.forward1 + (nF1 * NUDGE_SPACING),
+      down1: this._dimensions.current.down1,
+      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
       up: this._dimensions.current.up + (nU * NUDGE_SPACING),
-      forward2: this._dimensions.current.forward2 + (nF2 * NUDGE_SPACING),
-      down2: this._dimensions.current.down2 + (nD2 * NUDGE_SPACING)
+      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING),
+      down2: this._dimensions.current.down2 + (nU * NUDGE_SPACING)
     }
     this.path = dimensions;
     this.$node.find("path:first").attr("d", this._path);
