@@ -225,10 +225,11 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      forward: this.points.via_x - (CURVE_SPACING * 2),
+      forward1: this.points.via_x - (CURVE_SPACING * 2),
       down: utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2),
       backward: utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x),
-      up: utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)
+      up: utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2),
+      forward2: 0
     }
 
     this._dimensions = { original: dimensions };
@@ -238,21 +239,23 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward = "h" + Math.ceil(dimensions.forward);
+    var forward1 = "h" + Math.ceil(dimensions.forward1);
     var down = "v" + Math.ceil(dimensions.down);
     var backward = "h-" + Math.ceil(dimensions.backward);
     var up = "v-" + Math.ceil(dimensions.up);
+    var forward2 = "h" + Math.ceil(dimensions.forward2);
 
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT));
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2));
   }
 
-  nudge(nF, nD, nB, nU) {
+  nudge(nF, nD, nB) {
     var dimensions = {
-      forward: this._dimensions.current.forward - (nF * NUDGE_SPACING),
+      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
       down: this._dimensions.current.down + (nD * NUDGE_SPACING),
-      backward: this._dimensions.current.backward - (nB * NUDGE_SPACING),
-      up: this._dimensions.current.up + (nU * NUDGE_SPACING)
+      backward: this._dimensions.current.backward - (nF * NUDGE_SPACING) + (nB * NUDGE_SPACING),
+      up: this._dimensions.current.up + (nD * NUDGE_SPACING),
+      forward2: this._dimensions.current.forward2 + (nB * NUDGE_SPACING)
     }
 
     this.path = dimensions;
