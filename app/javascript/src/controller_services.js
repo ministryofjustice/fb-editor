@@ -639,7 +639,7 @@ function applyArrowPagePaths($overview) {
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + (rowHeight / 4);
 
-    calculateAndCreateConnectorPath({
+    calculateAndCreatePageFlowConnectorPath({
       from_x: fromX,
       from_y: fromY,
       to_x: toX,
@@ -797,22 +797,22 @@ function applyArrowBranchPaths($overview) {
  * @points (Object) Properties for x/y coordinates (see FlowConnectorPath Class)
  * @config (Object) Various items/properties required by FlowConnectorPath Class.
  **/
-function calculateAndCreateConnectorPath(points, config) {
+function calculateAndCreatePageFlowConnectorPath(points, config) {
   var columnItem = Number(config.from.attr("column"));
   var columnNext = Number(config.to.attr("column"));
   var rowItem = Number(config.from.attr("row"));
   var rowNext = Number(config.to.attr("row"));
   var forward = columnItem < columnNext;
+  var sameRow = (rowItem == rowNext);
   var up = rowItem > rowNext;
   var destinationInNextColumn = utilities.difference(columnItem, columnNext) == 1;
   var type;
 
-  if(rowItem == rowNext) { // Same row
+  if(sameRow) {
     if(forward) {
       new ConnectorPath.ForwardPath(points, config);
     }
     else {
-      // Currently not expected to happen as this would be a loop within pages on a row.
       new ConnectorPath.ForwardDownBackwardUpPath(points, config);
     }
   }
