@@ -11,6 +11,15 @@ RSpec.describe PublishWarningPresenter do
   let(:warning_confirmation_page) do
     I18n.t('publish.warning.confirmation')
   end
+  let(:delete_warning_both_pages) do
+    I18n.t('pages.flow.delete_warning_both_pages')
+  end
+  let(:delete_warning_cya_page) do
+    I18n.t('pages.flow.delete_warning_cya_page')
+  end
+  let(:delete_warning_confirmation_page) do
+    I18n.t('pages.flow.delete_warning_confirmation_page')
+  end
   let(:confirmation_uuid) { '778e364b-9a7f-4829-8eb2-510e08f156a3' }
   let(:checkanswers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
   let(:checkanswers_page) do
@@ -32,7 +41,8 @@ RSpec.describe PublishWarningPresenter do
       let(:latest_metadata) { metadata_fixture(:branching) }
 
       it 'returns nil' do
-        expect(presenter.warning_message).to be_nil
+        expect(presenter.publish_warning_message).to be_nil
+        expect(presenter.delete_warning_message).to be_nil
       end
     end
 
@@ -42,7 +52,8 @@ RSpec.describe PublishWarningPresenter do
       end
 
       it 'returns the correct warning' do
-        expect(presenter.warning_message).to eq(warning_both_pages)
+        expect(presenter.publish_warning_message).to eq(warning_both_pages)
+        expect(presenter.delete_warning_message).to eq(delete_warning_both_pages)
       end
     end
   end
@@ -64,7 +75,8 @@ RSpec.describe PublishWarningPresenter do
       end
 
       it 'returns the correct warning' do
-        expect(presenter.warning_message).to eq(warning_cya_page)
+        expect(presenter.publish_warning_message).to eq(warning_cya_page)
+        expect(presenter.delete_warning_message).to eq(delete_warning_cya_page)
       end
     end
 
@@ -77,7 +89,8 @@ RSpec.describe PublishWarningPresenter do
       end
 
       it 'returns the correct message' do
-        expect(presenter.warning_message).to eq(warning_cya_page)
+        expect(presenter.publish_warning_message).to eq(warning_cya_page)
+        expect(presenter.delete_warning_message).to eq(delete_warning_cya_page)
       end
     end
   end
@@ -97,7 +110,8 @@ RSpec.describe PublishWarningPresenter do
       end
 
       it 'returns the correct warning' do
-        expect(presenter.warning_message).to eq(warning_confirmation_page)
+        expect(presenter.publish_warning_message).to eq(warning_confirmation_page)
+        expect(presenter.delete_warning_message).to eq(delete_warning_confirmation_page)
       end
     end
 
@@ -108,7 +122,8 @@ RSpec.describe PublishWarningPresenter do
       end
 
       it 'returns the correct warning' do
-        expect(presenter.warning_message).to eq(warning_confirmation_page)
+        expect(presenter.publish_warning_message).to eq(warning_confirmation_page)
+        expect(presenter.delete_warning_message).to eq(delete_warning_confirmation_page)
       end
     end
   end

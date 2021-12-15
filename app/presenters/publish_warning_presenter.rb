@@ -5,27 +5,43 @@ class PublishWarningPresenter
     @service = service
   end
 
-  def warning_message
-    submitting_pages_not_present_message ||
-      confirmation_page_not_present_message ||
-      cya_page_not_present_message
+  def warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
+    submitting_pages_not_present_message(warning_both_pages) ||
+      confirmation_page_not_present_message(warning_confirmation_page) ||
+      cya_page_not_present_message(warning_cya_page)
   end
 
-  def submitting_pages_not_present_message
+  def publish_warning_message
+    warning_both_pages = 'publish.warning.both_pages'
+    warning_cya_page = 'publish.warning.cya'
+    warning_confirmation_page = 'publish.warning.confirmation'
+
+    warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
+  end
+
+  def delete_warning_message
+    warning_both_pages = 'pages.flow.delete_warning_both_pages'
+    warning_cya_page = 'pages.flow.delete_warning_cya_page'
+    warning_confirmation_page = 'pages.flow.delete_warning_confirmation_page'
+
+    warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
+  end
+
+  def submitting_pages_not_present_message(message)
     if !checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      I18n.t('publish.warning.both_pages')
+      I18n.t(message)
     end
   end
 
-  def cya_page_not_present_message
+  def cya_page_not_present_message(message)
     if !checkanswers_in_main_flow? && confirmation_in_main_flow?
-      I18n.t('publish.warning.cya')
+      I18n.t(message)
     end
   end
 
-  def confirmation_page_not_present_message
+  def confirmation_page_not_present_message(message)
     if checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      I18n.t('publish.warning.confirmation')
+      I18n.t(message)
     end
   end
 
