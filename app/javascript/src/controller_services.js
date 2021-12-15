@@ -679,7 +679,7 @@ function applyArrowBranchPaths($overview) {
       var $destination = $("#" + $condition.data("next"), $overview);
 
       // --------------------------------------------------------------------------------------------
-      // TODO: Temporary hack to prevent but bug breaking the layout
+      // TODO: Temporary hack to prevent missing destination item bug  breaking the layout
       // https://trello.com/c/iCDLMDgo/1836-bug-branchcondition-destination-page-is-in-detached-items
       if($destination.length < 1) return true;
       // --------------------------------------------------------------------------------------------
@@ -692,6 +692,11 @@ function applyArrowBranchPaths($overview) {
       var conditionRow = Number($condition.attr("row"));
       var destinationColumn = Number($destination.attr("column"));
       var destinationRow = Number($destination.attr("row"));
+      var backward = conditionColumn > destinationColumn;
+      var sameRow = (conditionRow == destinationRow);
+      var firstConditionItem = (index == 0);
+      var up = conditionRow > destinationRow;
+      var nextColumn = (conditionColumn + 1 == destinationColumn);
       var config = {
           container: $overview,
           from: $branch,
@@ -703,8 +708,22 @@ function applyArrowBranchPaths($overview) {
 
       var points, type;
 
-      if(conditionRow == destinationRow) {
-        if(index == 0) {
+      if(backward) {
+
+        // If on the same row but destination  behind the current condition
+        new ConnectorPath.DownForwardDownBackwardUpPath({
+          from_x: branchX - (branchWidth / 2),
+          from_y: branchY,
+          to_x: destinationX,
+          to_y: destinationY,
+          via_x: conditionX,
+          via_y: conditionY
+        }, config);
+      }
+      else {
+        // FORWARD
+
+        if(firstConditionItem) {
           // Create straight path to go from right corner of the branch
           // to the x/y coordinates of the related 'next' destination.
           new ConnectorPath.ForwardPath({
@@ -715,19 +734,10 @@ function applyArrowBranchPaths($overview) {
           }, config);
         }
         else {
-          if(conditionColumn > destinationColumn) {
-            // If on the same row but placed behind the current condition (weird to think
-            // about but makes sense if you see some of the branching row splits).
-            new ConnectorPath.DownForwardDownBackwardUpPath({
-              from_x: branchX - (branchWidth / 2),
-              from_y: branchY,
-              to_x: destinationX,
-              to_y: destinationY,
-              via_x: conditionX,
-              via_y: conditionY
-            }, config);
-          }
-          else {
+          // NOT FIRST CONDITION ITEM
+
+          if(sameRow) {
+
             // All other 'standard' BranchConditions expected to be Down and Forward
             // with the starting point from bottom and centre of the Branch item.
             new ConnectorPath.DownForwardPath({
@@ -737,50 +747,39 @@ function applyArrowBranchPaths($overview) {
               to_y: destinationY
             }, config);
           }
-        }
-      }
-      else {
-        // Non-standard BranchCondition paths will all start from bottom and middle
-        // of the branch, go under the BranchCondition, and then end up wherever
-        // the destination point requires, using the calculated path type.
-        if(conditionRow > destinationRow) {
-          if(conditionColumn < destinationColumn) {
-            if(conditionColumn + 1 == destinationColumn) {
-              // Is a row above and in next column
-              new ConnectorPath.DownForwardUpPath({
-                from_x: branchX - (branchWidth / 2),
-                from_y: branchY,
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX,
-                via_y: conditionY
-              }, config);
+          else {
+            // NOT SAME ROW
+
+            if(up) {
+              if(nextColumn) {
+
+                new ConnectorPath.DownForwardUpPath({
+                  from_x: branchX - (branchWidth / 2),
+                  from_y: branchY,
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX,
+                  via_y: conditionY
+                }, config);
+              }
+              else {
+                // NOT NEXT COLUMN
+                new ConnectorPath.DownForwardUpForwardDownPath({
+                  from_x: branchX - (branchWidth / 2),
+                  from_y: branchY,
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX,
+                  via_y: conditionY
+                }, config);
+              }
             }
             else {
-              // Is a row above but not next column (so needs to go to top as a skip connector)
-              new ConnectorPath.DownForwardUpForwardDownPath({
-                from_x: branchX - (branchWidth / 2),
-                from_y: branchY,
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX,
-                via_y: conditionY
-              }, config);
+              // DOWN
+
+              // new DownForwardDownForwardPath ??
             }
           }
-          else {
-            new ConnectorPath.DownForwardDownBackwardUpPath({
-              from_x: branchX - (branchWidth / 2),
-              from_y: branchY,
-              to_x: destinationX,
-              to_y: destinationY,
-              via_x: conditionX,
-              via_y: conditionY
-            }, config);
-          }
-        }
-        else {
-          // TODO (Possibly): DownForwardDownForward
         }
       }
 
