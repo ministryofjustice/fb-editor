@@ -390,6 +390,44 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 }
 
 
+class DownForwardDownForwardPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, config);
+    var dimensions = {
+      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
+      forward1: points.via_x - (CURVE_SPACING * 2),
+      down2: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2),
+      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 2)
+    }
+
+    this._dimensions = { original: dimensions };
+    this.type = "DownForwardUpForwardDown";
+    this.path = dimensions;
+    this.build();
+  }
+
+  set path(dimensions) {
+    var down1 = "v" + Math.ceil(dimensions.down1);
+    var forward1 = "h" + Math.ceil(dimensions.forward1);
+    var down2 = "v" + Math.ceil(dimensions.down2);
+    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    this._dimensions.current = dimensions;
+    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT, forward2));
+  }
+
+  nudge(nF) {
+    var dimensions = {
+      down1: this._dimensions.current.down1,
+      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
+      down2: this._dimensions.current.down2,
+      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING)
+    }
+    this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+}
+
+
 class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
@@ -461,5 +499,6 @@ module.exports = {
   DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath,
   DownForwardUpPath: DownForwardUpPath,
   DownForwardUpForwardDownPath: DownForwardUpForwardDownPath,
+  DownForwardDownForwardPath: DownForwardDownForwardPath,
   DownForwardPath: DownForwardPath
 }
