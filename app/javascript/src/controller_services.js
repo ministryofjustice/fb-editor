@@ -777,7 +777,14 @@ function applyArrowBranchPaths($overview) {
             else {
               // DOWN
 
-              // new DownForwardDownForwardPath ??
+              new ConnectorPath.DownForwardDownForwardPath({
+                from_x: branchX - (branchWidth / 2),
+                from_y: branchY,
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX,
+                via_y: conditionY
+              }, config);
             }
           }
         }
