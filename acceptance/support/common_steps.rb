@@ -135,6 +135,8 @@ module CommonSteps
   def given_I_add_an_exit_page
     given_I_want_to_add_a_page
     editor.add_exit.click
+    and_I_add_a_page_url(exit_url)
+    when_I_add_the_page
   end
 
   def given_I_want_to_add_a_single_question_page

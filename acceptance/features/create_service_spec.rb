@@ -52,7 +52,7 @@ feature 'Create a service' do
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(checkanswers)
     then_I_should_not_be_able_to_add_page(confirmation)
-    given_I_have_an_exit_page
+    given_I_add_an_exit_page
     and_I_return_to_flow_page
     then_some_pages_should_be_unconnected
     then_I_should_not_be_able_to_add_page(checkanswers)
@@ -103,10 +103,6 @@ feature 'Create a service' do
     given_I_add_an_exit_page
     and_I_add_a_page_url(exit_url)
     when_I_add_the_page
-  end
-
-  def then_I_should_see_default_service_pages
-    expect(editor.form_urls.count).to eq(3)
   end
 
   def then_some_pages_should_be_unconnected
