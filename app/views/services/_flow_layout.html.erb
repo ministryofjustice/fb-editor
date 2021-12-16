@@ -8,15 +8,17 @@
       <span><%= item[:title] %></span>
     </article>
 
-  <% elsif item[:type]== 'warning' %>
-   <div class="govuk-warning-text">
-      <article class="flow-item flow-warning" aria-hidden="true">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-          <span><%= item[:content] %></span>
-        </strong>
-      </article>
-    </div>
+  <% elsif item[:type] == 'warning' %>
+    <% if ENV['BRANCHING'] == 'enabled' %>
+    <div class="govuk-warning-text">
+        <article class="flow-item flow-warning" aria-hidden="true">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span><%= item[:content] %></span>
+          </strong>
+        </article>
+      </div>
+    <% end %>
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>
