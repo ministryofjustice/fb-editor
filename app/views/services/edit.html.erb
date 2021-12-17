@@ -67,16 +67,16 @@
   </li>
   <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
   <% if ENV['BRANCHING'] == 'enabled' %>
-    <% unless checkanswers_in_service? %>
+    <% unless service.checkanswers_page.present? %>
       <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
     <% end %>
-    <% unless confirmation_in_service? %>
+    <% unless service.confirmation_page.present? %>
       <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
     <% end %>
   <% else %>
     <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
     <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
-  <% end%>
+  <% end %>
   <li data-page-type="content"><a href="#add-page">Content page</a></li>
   <% if ENV['BRANCHING'] == 'enabled' %>
     <li data-page-type="exit"><a href="#add-page">Exit page</a></li>

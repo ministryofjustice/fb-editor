@@ -1,80 +1,56 @@
 class PublishWarningPresenter
-  attr_reader :service
+  attr_reader :service, :action
 
-  def initialize(service)
+  MESSAGE = {
+    publish: {
+      both_pages: I18n.t('publish.warning.both_pages'),
+      cya_page: I18n.t('publish.warning.cya'),
+      confirmation_page: I18n.t('publish.warning.confirmation')
+    },
+    delete: {
+      both_pages: I18n.t('pages.flow.delete_warning_both_pages'),
+      cya_page: I18n.t('pages.flow.delete_warning_cya_page'),
+      confirmation_page: I18n.t('pages.flow.delete_warning_confirmation_page')
+    }
+  }.freeze
+
+  def initialize(service, action)
     @service = service
+    @action = action
   end
 
-  def warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
-    submitting_pages_not_present_message(warning_both_pages) ||
-      confirmation_page_not_present_message(warning_confirmation_page) ||
-      cya_page_not_present_message(warning_cya_page)
+  def message
+    @message ||= submitting_pages_not_present_message ||
+      confirmation_page_not_present_message ||
+      cya_page_not_present_message
   end
 
-  def publish_warning_message
-    warning_both_pages = 'publish.warning.both_pages'
-    warning_cya_page = 'publish.warning.cya'
-    warning_confirmation_page = 'publish.warning.confirmation'
+  private
 
-    warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
-  end
-
-  def delete_warning_message
-    warning_both_pages = 'pages.flow.delete_warning_both_pages'
-    warning_cya_page = 'pages.flow.delete_warning_cya_page'
-    warning_confirmation_page = 'pages.flow.delete_warning_confirmation_page'
-
-    warning_message(warning_both_pages, warning_cya_page, warning_confirmation_page)
-  end
-
-  def submitting_pages_not_present_message(message)
+  def submitting_pages_not_present_message
     if !checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      I18n.t(message)
+      MESSAGE[action][:both_pages]
     end
   end
 
-  def cya_page_not_present_message(message)
+  def cya_page_not_present_message
     if !checkanswers_in_main_flow? && confirmation_in_main_flow?
-      I18n.t(message)
+      MESSAGE[action][:cya_page]
     end
   end
 
-  def confirmation_page_not_present_message(message)
+  def confirmation_page_not_present_message
     if checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      I18n.t(message)
+      MESSAGE[action][:confirmation_page]
     end
   end
 
   def checkanswers_in_main_flow?
-    grid.page_uuids.include?(find_page_uuid('page.checkanswers'))
+    grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
   def confirmation_in_main_flow?
-    grid.page_uuids.include?(find_page_uuid('page.confirmation'))
-  end
-
-  def checkanswers_in_service?
-    service_includes_page?('page.checkanswers')
-  end
-
-  def confirmation_in_service?
-    service_includes_page?('page.confirmation')
-  end
-
-  def find_page_uuid(page_type)
-    if service_includes_page?(page_type)
-      matched_page =
-        service.pages.find do |page|
-          page.type == page_type
-        end
-      matched_page.uuid
-    end
-  end
-
-  def service_includes_page?(page)
-    service.pages
-      .map(&:type)
-      .include?(page)
+    grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 
   def grid
