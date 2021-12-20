@@ -1733,7 +1733,12 @@ RSpec.describe PagesFlow do
             ],
             [
               {
-                type: 'spacer'
+                type: 'page.singlequestion',
+                title: 'Page F',
+                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
+                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                thumbnail: 'text',
+                url: 'page-f'
               },
               {
                 type: 'flow.branch',
@@ -1777,11 +1782,14 @@ RSpec.describe PagesFlow do
             [
               {
                 type: 'page.singlequestion',
-                title: 'Page F',
-                uuid: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
-                next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                title: 'Page H',
+                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
+                next: 'e337070b-f636-49a3-a65c-f506675265f0',
                 thumbnail: 'text',
-                url: 'page-f'
+                url: 'page-h'
+              },
+              {
+                type: 'spacer'
               },
               {
                 type: 'page.singlequestion',
@@ -1802,12 +1810,10 @@ RSpec.describe PagesFlow do
             ],
             [
               {
-                type: 'page.singlequestion',
-                title: 'Page H',
-                uuid: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
-                next: 'e337070b-f636-49a3-a65c-f506675265f0',
-                thumbnail: 'text',
-                url: 'page-h'
+                type: 'spacer'
+              },
+              {
+                type: 'spacer'
               },
               {
                 type: 'page.singlequestion',
