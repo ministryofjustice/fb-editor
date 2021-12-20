@@ -21,7 +21,7 @@ feature 'Edit exit pages' do
   end
 
   scenario 'updates all fields' do
-    given_I_have_an_exit_page
+    given_I_add_an_exit_page
     then_I_should_not_see_the_continue_button
     and_I_change_the_page_heading(exit_heading)
     and_I_change_the_page_section_heading(exit_section_heading)
@@ -39,7 +39,7 @@ feature 'Edit exit pages' do
   end
 
   scenario 'adding components' do
-    given_I_have_an_exit_page
+    given_I_add_an_exit_page
     then_I_should_not_see_the_continue_button
     and_I_add_a_content_component(
       content: content_component
@@ -51,7 +51,7 @@ feature 'Edit exit pages' do
   end
 
   scenario 'deleting components' do
-    given_I_have_an_exit_page
+    given_I_add_an_exit_page
     then_I_should_not_see_the_continue_button
     and_I_add_a_content_component(
       content: content_component

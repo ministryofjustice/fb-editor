@@ -90,6 +90,13 @@ class PagesFlow
     }
   end
 
+  def warning(_)
+    {
+      type: 'warning',
+      content: PublishWarningPresenter.new(service, :delete).message
+    }
+  end
+
   def use_flow_type?(obj)
     obj.components.blank? ||
       obj.branch? ||

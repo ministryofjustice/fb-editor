@@ -27,7 +27,7 @@ feature 'Branching errors' do
   scenario 'when visiting the publishing page without submitting pages present' do
     given_I_have_a_single_question_page_with_upload
     and_I_return_to_flow_page
-    given_I_have_an_exit_page
+    given_I_add_an_exit_page
     when_I_visit_the_publishing_page
     then_I_should_be_on_the_publishing_page
     then_I_should_see_warning_both_text
@@ -75,12 +75,6 @@ feature 'Branching errors' do
     editor.three_dots_button.click
     editor.add_page_here_link.click
     editor.add_exit.click
-    and_I_add_a_page_url(exit_url)
-    when_I_add_the_page
-  end
-
-  def given_I_have_an_exit_page
-    given_I_add_an_exit_page
     and_I_add_a_page_url(exit_url)
     when_I_add_the_page
   end
