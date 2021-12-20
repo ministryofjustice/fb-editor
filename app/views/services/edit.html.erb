@@ -103,3 +103,17 @@
     <%= f.submit t('pages.create'), class: "govuk-button fb-govuk-button" %>
   <% end %>
 </div>
+
+<% if params[:flow_uuid].present? %>
+<div class="component-dialog-form"
+     data-component="DisconnectDialog"
+     data-cancel-text="<%= t('pages.cancel') %>">
+     <p class="disconnect-message">Disconnect Dialog</p>
+   <%= form_with url: api_service_flow_destinations_path(
+                        service.service_id, params[:flow_uuid]),
+                 method: :post do |form| %>
+                  <%= form.submit('Understood', class: 'govuk-button') %>
+<%= form.hidden_field :destination_uuid, value: params[:destination_uuid] %>
+  <% end %>
+</div>
+<% end %>

@@ -11,6 +11,11 @@ class PublishWarningPresenter
       both_pages: I18n.t('pages.flow.delete_warning_both_pages'),
       cya_page: I18n.t('pages.flow.delete_warning_cya_page'),
       confirmation_page: I18n.t('pages.flow.delete_warning_confirmation_page')
+    },
+    disconnect: {
+      both_pages: I18n.t('pages.disconnecting_modal.both_pages'),
+      cya_page: I18n.t('pages.disconnecting_modal.cya'),
+      confirmation_page: I18n.t('pages.disconnecting_modal.confirmation')
     }
   }.freeze
 

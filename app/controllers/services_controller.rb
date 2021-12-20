@@ -21,6 +21,7 @@ class ServicesController < PermissionsController
     @publish_warning = PublishWarningPresenter.new(service, :publish)
     @detached_flows = flow.detached_flows
     @page_creation = PageCreation.new
+    @disconnecting_message = true
   end
 
   def services
