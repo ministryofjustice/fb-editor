@@ -60,6 +60,7 @@ feature 'Branching errors' do
   end
 
   def when_I_visit_the_publishing_page
+    sleep 0.5 # Allow time for the page to load
     editor.publishing_link.click
   end
 
