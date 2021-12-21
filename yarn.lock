@@ -2647,9 +2647,9 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     stream-shift "^1.0.0"
 
 electron-to-chromium@^1.4.17:
-  version "1.4.18"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.18.tgz#2fb282213937986a20a653315963070e8321b3f3"
-  integrity sha512-i7nKjGGBE1+YUIbfLObA1EZPmN7J1ITEllbhusDk+KIk6V6gUxN9PFe36v+Sd+8Cg0k3cgUv9lQhQZalr8rggw==
+  version "1.4.25"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.25.tgz#ce95e6678f8c6893ae892c7e95a5000e83f1957f"
+  integrity sha512-bTwub9Y/76EiNmfaiJih+hAy6xn7Ns95S4KvI2NuKNOz8TEEKKQUu44xuy0PYMudjM9zdjKRS1bitsUvHTfuUg==
 
 elliptic@^6.5.3:
   version "6.5.4"
