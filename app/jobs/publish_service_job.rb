@@ -1,10 +1,6 @@
 class PublishServiceJob < ApplicationJob
   queue_as :default
 
-  after_perform do |job|
-    queue_uptime_job(job)
-  end
-
   def perform(publish_service_id:)
     publish_service = PublishService.find(publish_service_id)
     service_configuration = ServiceConfiguration.where(
@@ -29,10 +25,12 @@ class PublishServiceJob < ApplicationJob
     else
       raise "Parameters invalid: #{service_provisioner.errors.full_messages}"
     end
+
+    queue_uptime_job(publish_service_id)
   end
 
-  def queue_uptime_job(job)
-    publish_service = PublishService.find(job.arguments.first)
+  def queue_uptime_job(publish_service_id)
+    publish_service = PublishService.find(publish_service_id)
 
     if Publisher::UptimeEligibility.new(publish_service).cannot_create?
       Rails.logger.info('Skipping Uptime Check publishing')

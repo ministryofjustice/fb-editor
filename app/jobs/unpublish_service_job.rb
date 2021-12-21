@@ -1,10 +1,6 @@
 class UnpublishServiceJob < ApplicationJob
   queue_as :default
 
-  after_perform do |job|
-    queue_uptime_job(job)
-  end
-
   def perform(publish_service_id:, service_slug:)
     publish_service = PublishService.find(publish_service_id)
     Unpublisher.new(
@@ -13,10 +9,12 @@ class UnpublishServiceJob < ApplicationJob
       service_slug: service_slug,
       adapter: adapter
     ).call
+
+    queue_uptime_job(publish_service_id)
   end
 
-  def queue_uptime_job(job)
-    publish_service = PublishService.find(job.arguments.first)
+  def queue_uptime_job(publish_service_id)
+    publish_service = PublishService.find(publish_service_id)
 
     if UptimeEligibility.new(publish_service).cannot_destroy?
       Rails.logger.info('Skipping Uptime Check unpublishing')
