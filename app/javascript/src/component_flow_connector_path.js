@@ -497,8 +497,8 @@ class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down: points.yDifference - CURVE_SPACING,
-      forward: points.xDifference
+      down: Math.ceil(this.points.yDifference - CURVE_SPACING),
+      forward: Math.ceil(this.points.xDifference)
     }
 
     this._dimensions = { original: dimensions };
@@ -508,8 +508,8 @@ class DownForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down = "v" + Math.ceil(dimensions.down);
-    var forward = "h" + Math.ceil(dimensions.forward);
+    var down = "v" + dimensions.down;
+    var forward = "h" + dimensions.forward;
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward));
   }
