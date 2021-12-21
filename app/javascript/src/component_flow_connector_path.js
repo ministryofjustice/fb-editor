@@ -380,7 +380,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 2),
+      forward1: points.via_x - (CURVE_SPACING * 3),
       up: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2),
       forward2: 0
     }
@@ -419,9 +419,9 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 2),
+      forward1: points.via_x - (CURVE_SPACING * 3),
       up: utilities.difference(points.from_y, points.via_y) + utilities.difference(points.from_y, points.to_y) + utilities.difference(points.to_y, config.top),
-      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 4),
+      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 3),
       down2: points.to_y
     }
 
