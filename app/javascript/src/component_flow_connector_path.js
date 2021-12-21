@@ -565,45 +565,53 @@ class Line {
   //                    type: [horizontal|vertical] // String value
   //                  }
   constructor(name, config) {
-    this.name = name;
-    this.position = [config.x, config.y];
-    this.range = Line.createRange(config.start, config.end);
-    this._config = config;
-//console.warn("name: ", name);
+    this._private = {
+      x: config.x,
+      y: config.y,
+      length: config.length,
+      name: name,
+      prefix: config.prefix,
+      type: config.type
+    }
+
+    this.range = [config.x, config.y];
   }
 
   get name() {
-    return this._config.name;
+    return this._private.name;
   }
 
   get type() {
-    return this._config.type;
+    return this._private.type;
+  }
+
+  get toString() {
+    return this._private.prefix + this._private.length
   }
 
   get range() {
-    return this._range;
+    return this._private.range;
   }
 
-  set range(r) {
-    this._range = r;
+  set range(points /* [x, y] */) {
+    var r = [];
+    var begin = (this._private.type == "horizontal") ? [0] : [1];
+    var end = this._private.length;
+    if(begin > end) {
+      for(var i=begin; i > end; --i) {
+        r.push(i);
+      }
+    }
+    else {
+      for(var i=begin; i < end; ++i) {
+        r.push(i);
+      }
+    }
+
+    this._private.range = r;
   }
 }
 
-Line.createRange = function(begin, end) {
-  var r = [];
-  if(begin > end) {
-    for(var i=begin; i > end; --i) {
-      r.push(i);
-    }
-  }
-  else {
-    for(var i=begin; i < end; ++i) {
-      r.push(i);
-    }
-  }
-//console.log("range: ", r);
-  return r;
-}
 
 
 /*************************************
