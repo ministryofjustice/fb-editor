@@ -43,10 +43,6 @@ feature 'Add page in the middle flow' do
     expect(editor.radio_options.size).to be(2)
   end
 
-  def then_I_should_see_the_page_flow_in_order(order:)
-    expect(editor.form_urls.map(&:text)).to eq(order)
-  end
-
   def when_I_update_the_question_name
     and_I_edit_the_question
     when_I_save_my_changes

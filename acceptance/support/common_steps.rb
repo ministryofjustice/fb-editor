@@ -358,6 +358,10 @@ module CommonSteps
     expect(editor.form_urls.count).to eq(3)
   end
 
+  def then_I_should_see_the_page_flow_in_order(order:)
+    expect(editor.form_urls.map(&:text)).to eq(order)
+  end
+
   def and_I_delete_cya_page
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     editor.preview_page_images.last.hover
