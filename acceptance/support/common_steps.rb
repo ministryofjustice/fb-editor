@@ -6,6 +6,11 @@ module CommonSteps
     I18n.t('default_text.option_hint')
   ].freeze
   ERROR_MESSAGE = 'There is a problem'.freeze
+  DELETE_WARNING = [
+    I18n.t('pages.flow.delete_warning_cya_page'),
+    I18n.t('pages.flow.delete_warning_confirmation_page'),
+    I18n.t('pages.flow.delete_warning_both_pages')
+  ].freeze
 
   def given_I_am_logged_in
     editor.load
@@ -378,5 +383,23 @@ module CommonSteps
     editor.delete_page_link.click
     sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     editor.delete_page_modal_button.click
+  end
+
+  def then_I_should_not_see_delete_warnings
+    expect(editor.text).not_to include(DELETE_WARNING[0])
+    expect(editor.text).not_to include(DELETE_WARNING[1])
+    expect(editor.text).not_to include(DELETE_WARNING[2])
+  end
+
+  def then_I_should_see_delete_warning_cya
+    expect(editor.text).to include(DELETE_WARNING[0])
+  end
+
+  def then_I_should_see_delete_warning_confirmation
+    expect(editor.text).to include(DELETE_WARNING[1])
+  end
+
+  def then_I_should_see_delete_warning_both
+    expect(editor.text).to include(DELETE_WARNING[2])
   end
 end

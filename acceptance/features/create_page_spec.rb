@@ -64,8 +64,8 @@ feature 'Create page' do
   scenario 'creating check answers page' do
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(checkanswers)
-    # this will fail when we implement delete warning
     and_I_delete_cya_page
+    then_I_should_see_delete_warning_cya
     then_I_should_be_able_to_add_page(checkanswers)
     given_I_add_a_check_answers_page
     and_I_add_a_page_url
@@ -78,8 +78,8 @@ feature 'Create page' do
   scenario 'creating confirmation page' do
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(confirmation)
-    # this will fail when we implement delete warning
     when_I_delete_confirmation_page
+    then_I_should_see_delete_warning_confirmation
     then_I_should_be_able_to_add_page(confirmation)
     given_I_add_a_confirmation_page
     and_I_add_a_page_url
