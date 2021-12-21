@@ -151,9 +151,9 @@ class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      x: Math.ceil(this.points.from_x),
-      y: Math.ceil(this.points.from_y + this.points.yDifference),
-      width: Math.ceil(this.points.xDifference)
+      x: Math.round(this.points.from_x),
+      y: Math.round(this.points.from_y + this.points.yDifference),
+      width: Math.round(this.points.xDifference)
     }
 
     this._dimensions = { original: dimensions  } // Not expected to change.
@@ -183,10 +183,10 @@ class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      x: Math.ceil(this.points.from_x),
-      y: Math.ceil(this.points_from_y),
-      forward1: Math.ceil(this.points.via_x - CURVE_SPACING),
-      up: Math.ceil(this.points.yDifference - (CURVE_SPACING * 2)),
+      x: Math.round(this.points.from_x),
+      y: Math.round(this.points_from_y),
+      forward1: Math.round(this.points.via_x - CURVE_SPACING),
+      up: Math.round(this.points.yDifference - (CURVE_SPACING * 2)),
       forward2: 0 // TODO: What about if it is not next column?
     }
 
@@ -245,10 +245,10 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      forward1: Math.ceil(this.points.via_x - CURVE_SPACING),
-      up: Math.ceil(utilities.difference(this.points.from_y, this._config.top)),
-      forward2: Math.ceil(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
-      down: Math.ceil(utilities.difference(this._config.top, this.points.to_y))
+      forward1: Math.round(this.points.via_x - CURVE_SPACING),
+      up: Math.round(utilities.difference(this.points.from_y, this._config.top)),
+      forward2: Math.round(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
+      down: Math.round(utilities.difference(this._config.top, this.points.to_y))
     }
 
     this._dimensions = { original: dimensions };
@@ -290,10 +290,10 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      forward1: this.points.via_x - (CURVE_SPACING * 2),
-      down: utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2),
-      backward: utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x),
-      up: utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2),
+      forward1: Math.round(this.points.via_x - (CURVE_SPACING * 2)),
+      down: Math.round(utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
+      backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x) + 1.5),
+      up: Math.round(utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
@@ -304,11 +304,11 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var down = "v" + Math.ceil(dimensions.down);
-    var backward = "h-" + Math.ceil(dimensions.backward);
-    var up = "v-" + Math.ceil(dimensions.up);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var forward1 = "h" + dimensions.forward1;
+    var down = "v" + dimensions.down;
+    var backward = "h-" + dimensions.backward;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
 
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2));
@@ -349,12 +349,12 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + Math.ceil(dimensions.down1);
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var down2 = "v" + Math.ceil(dimensions.down2);
-    var backward = "h-" + Math.ceil(dimensions.backward);
-    var up = "v-" + Math.ceil(dimensions.up);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var down1 = "v" + Math.round(dimensions.down1);
+    var forward1 = "h" + Math.round(dimensions.forward1);
+    var down2 = "v" + Math.round(dimensions.down2);
+    var backward = "h-" + Math.round(dimensions.backward);
+    var up = "v-" + Math.round(dimensions.up);
+    var forward2 = "h" + Math.round(dimensions.forward2);
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2));
   }
@@ -379,9 +379,9 @@ class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 3),
-      up: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2),
+      down: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
+      up: Math.round(utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
@@ -392,10 +392,10 @@ class DownForwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down = "v" + Math.ceil(dimensions.down);
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var up = "v-" + Math.ceil(dimensions.up);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var down = "v" + dimensions.down;
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2));
   }
@@ -418,11 +418,11 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 3),
-      up: utilities.difference(points.from_y, points.via_y) + utilities.difference(points.from_y, points.to_y) + utilities.difference(points.to_y, config.top),
-      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 3),
-      down2: points.to_y
+      down1: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
+      up: Math.round(utilities.difference(points.from_y, points.via_y) + utilities.difference(points.from_y, points.to_y) + utilities.difference(points.to_y, config.top)),
+      forward2: Math.round(utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 3)),
+      down2: Math.round(points.to_y)
     }
 
     this._dimensions = { original: dimensions };
@@ -432,11 +432,11 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + Math.ceil(dimensions.down1);
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var up = "v-" + Math.ceil(dimensions.up);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
-    var down2 = "v" + Math.ceil(dimensions.down2);
+    var down1 = "v" + dimensions.down1;
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
+    var down2 = "v" + dimensions.down2;
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT));
   }
@@ -459,10 +459,10 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 2),
-      down2: utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2),
-      forward2: utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 2)
+      down1: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
+      down2: Math.round(utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)),
+      forward2: Math.round(utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 2))
     }
 
     this._dimensions = { original: dimensions };
@@ -472,10 +472,10 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + Math.ceil(dimensions.down1);
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var down2 = "v" + Math.ceil(dimensions.down2);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
+    var down1 = "v" + dimensions.down1;
+    var forward1 = "h" + dimensions.forward1;
+    var down2 = "v" + dimensions.down2;
+    var forward2 = "h" + dimensions.forward2;
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT, forward2));
   }
@@ -497,8 +497,8 @@ class DownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down: Math.ceil(this.points.yDifference - CURVE_SPACING),
-      forward: Math.ceil(this.points.xDifference)
+      down: Math.round(this.points.yDifference - CURVE_SPACING),
+      forward: Math.round(this.points.xDifference)
     }
 
     this._dimensions = { original: dimensions };
@@ -602,7 +602,7 @@ function pathD(/* unlimited */) {
 }
 
 function xy(x, y) {
-  return String(Math.ceil(x)) + "," + String(Math.ceil(y));
+  return String(Math.round(x)) + "," + String(Math.round(y));
 }
 
 
