@@ -334,11 +334,11 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: utilities.difference(points.from_y, points.via_y) - CURVE_SPACING,
-      forward1: points.via_x - (CURVE_SPACING * 2),
-      down2: utilities.difference(config.bottom, points.via_y) - CURVE_SPACING * 2,
-      backward: points.via_x + utilities.difference(points.from_x, points.to_x) + 2, // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
-      up: (utilities.difference(config.bottom, config.top) - points.to_y) - CURVE_SPACING * 2,
+      down1: utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING,
+      forward1: this.points.via_x - (CURVE_SPACING * 2),
+      down2: utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2,
+      backward: this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x) + 2, // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
+      up: (utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2,
       forward2: 0
     }
 
@@ -379,9 +379,9 @@ class DownForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      down: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
-      up: Math.round(utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)),
+      up: Math.round(utilities.difference(points.via_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
@@ -418,10 +418,10 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
-      up: Math.round(utilities.difference(points.from_y, points.via_y) + utilities.difference(points.from_y, points.to_y) + utilities.difference(points.to_y, config.top)),
-      forward2: Math.round(utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 3)),
+      up: Math.round(utilities.difference(points.from_y, this.points.via_y) + utilities.difference(points.from_y, this.points.to_y) + utilities.difference(points.to_y, config.top)),
+      forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 3)),
       down2: Math.round(points.to_y)
     }
 
@@ -459,10 +459,10 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: Math.round(utilities.difference(points.from_y, points.via_y) - CURVE_SPACING),
+      down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
-      down2: Math.round(utilities.difference(points.via_y, points.to_y) - (CURVE_SPACING * 2)),
-      forward2: Math.round(utilities.difference(points.from_x + points.via_x, points.to_x) - (CURVE_SPACING * 2))
+      down2: Math.round(utilities.difference(points.via_y, this.points.to_y) - (CURVE_SPACING * 2)),
+      forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 2))
     }
 
     this._dimensions = { original: dimensions };
