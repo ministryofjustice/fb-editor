@@ -6,9 +6,6 @@ feature 'Delete cya confirmation pages' do
   let(:service_name) { generate_service_name }
   let(:page_url) { 'gateau' }
   let(:exit_url) { 'exit' }
-  let(:delete_warning_cya) { I18n.t('pages.flow.delete_warning_cya_page') }
-  let(:delete_warning_confirmation) { I18n.t('pages.flow.delete_warning_confirmation_page') }
-  let(:delete_warning_both) { I18n.t('pages.flow.delete_warning_both_pages') }
 
   background do
     given_I_am_logged_in
@@ -45,23 +42,5 @@ feature 'Delete cya confirmation pages' do
     given_I_add_an_exit_page
     and_I_return_to_flow_page
     then_I_should_see_delete_warning_both
-  end
-
-  def then_I_should_not_see_delete_warnings
-    expect(editor.text).not_to include(delete_warning_cya)
-    expect(editor.text).not_to include(delete_warning_confirmation)
-    expect(editor.text).not_to include(delete_warning_both)
-  end
-
-  def then_I_should_see_delete_warning_cya
-    expect(editor.text).to include(delete_warning_cya)
-  end
-
-  def then_I_should_see_delete_warning_confirmation
-    expect(editor.text).to include(delete_warning_confirmation)
-  end
-
-  def then_I_should_see_delete_warning_both
-    expect(editor.text).to include(delete_warning_both)
   end
 end

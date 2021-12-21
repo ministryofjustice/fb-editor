@@ -22,12 +22,14 @@ feature 'Deleting page' do
   scenario 'when try to delete a page which has a branching conditional' do
     given_I_have_a_form_with_pages
     when_I_try_to_delete_a_page_which_has_a_branching_conditional
+    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_a_message_that_is_not_possible_to_delete_the_page
   end
 
   scenario 'when try to delete a page which result with a stack branch' do
     given_I_have_a_form_with_pages
     when_I_try_to_delete_a_page_which_result_in_a_stack_branch
+    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
   end
 
@@ -35,6 +37,7 @@ feature 'Deleting page' do
     given_I_have_a_form_with_pages
     and_I_want_to_delete_a_branch_destination_page
     when_I_delete_the_branch_destination_page
+    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_not_see_the_deleted_page_in_the_flow
     and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
   end
@@ -44,6 +47,7 @@ feature 'Deleting page' do
     and_I_click_to_delete_branching_point_one
     and_I_choose_page_c_to_connect_the_forms
     when_I_delete_the_branching_point
+    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_branch_pointing_one_deleted
   end
 

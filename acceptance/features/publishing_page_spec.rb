@@ -38,8 +38,8 @@ feature 'Branching errors' do
   scenario 'when visiting the publishing page without cya page present' do
     given_I_have_a_single_question_page_with_upload
     and_I_return_to_flow_page
-    # this will fail when we implement delete warning
     and_I_delete_cya_page
+    then_I_should_see_delete_warning_cya
     when_I_visit_the_publishing_page
     then_I_should_be_on_the_publishing_page
     then_I_should_not_see_warning_both_text
@@ -60,6 +60,7 @@ feature 'Branching errors' do
   end
 
   def when_I_visit_the_publishing_page
+    sleep 0.5 # Allow time for the page to load
     editor.publishing_link.click
   end
 
