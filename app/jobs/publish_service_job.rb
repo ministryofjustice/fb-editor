@@ -25,35 +25,5 @@ class PublishServiceJob < ApplicationJob
     else
       raise "Parameters invalid: #{service_provisioner.errors.full_messages}"
     end
-
-    queue_uptime_job(publish_service_id)
-  end
-
-  def queue_uptime_job(publish_service_id)
-    publish_service = PublishService.find(publish_service_id)
-
-    if Publisher::UptimeEligibility.new(publish_service).cannot_create?
-      Rails.logger.info('Skipping Uptime Check publishing')
-      return
-    end
-
-    version = MetadataApiClient::Version.find(
-      service_id: publish_service.service_id,
-      version_id: publish_service.version_id
-    )
-    service_version = MetadataPresenter::Service.new(version.metadata)
-
-    # First time we need to wait the DNS to be set so we can add
-    # Pingdom to the service. Usually 30 minutes.
-    UptimeJob.set(wait: 30.minutes).perform_later(
-      service_id: service_version.service_id,
-      service_name: service_version.service_name,
-      host: "#{service_version.service_slug}.#{url_root}",
-      action: :create
-    )
-  end
-
-  def url_root
-    Rails.application.config.platform_environments[ENV['PLATFORM_ENV']][:url_root]
   end
 end

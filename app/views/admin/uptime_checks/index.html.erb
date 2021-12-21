@@ -1,0 +1,129 @@
+<% content_for(:title) do %>
+  <%= display_resource_name('UptimeChecks') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+</header>
+
+<% if ENV['PLATFORM_ENV'] == 'live' || Rails.env.development? %>
+  <section class="main-content__body main-content__body--flush">
+    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+      Without Checks
+    </h2>
+
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Service Name</th>
+          <th scope="col" class="govuk-table__header">Service ID</th>
+          <th scope="col" class="govuk-table__header">Service Slug</th>
+          <th scope="col" class="govuk-table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% @without_checks.each do |service| %>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell"  id="service-name">
+              <%= service.service_name %>
+            </td>
+            <td class="govuk-table__cell"  id="service-id">
+              <%= service.service_id %>
+            </td>
+            <td class="govuk-table__cell"  id="service-slug">
+              <%= service.service_slug %>
+            </td>
+            <td class="govuk-table__cell">
+              <%= link_to 'Create',
+                  admin_uptime_checks_path(id: service.service_id),
+                  method: :post,
+                  class: 'govuk-button fb-govuk-button' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+      With Checks
+    </h2>
+
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Service Name</th>
+          <th scope="col" class="govuk-table__header">Hostname</th>
+          <th scope="col" class="govuk-table__header">Check ID</th>
+          <th scope="col" class="govuk-table__header">Status</th>
+          <th scope="col" class="govuk-table__header"></th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% @with_uptime_checks.each do |check| %>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" id="service-name">
+              <%= check['name'].gsub('Form Builder - ', '') %>
+            </td>
+            <td class="govuk-table__cell" id="hostname">
+              <%= check['hostname'] %>
+            </td>
+            <td class="govuk-table__cell" id="check-id">
+              <%= check['id'] %>
+            </td>
+            <td class="govuk-table__cell" id="check-status">
+              <%= check['status'] %>
+            </td>
+            <td class="govuk-table__cell">
+              <%= link_to 'Delete',
+                admin_uptime_check_path(id: check['id']),
+                  method: :delete,
+                  class: 'govuk-button govuk-button--warning' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+      Other MoJ Forms Uptime Checks
+    </h2>
+
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m govuk-!-margin-left-5">
+        These services are from the Legacy Form Builder system, except the Publisher and the Product Page
+      </caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Service Name</th>
+          <th scope="col" class="govuk-table__header">Hostname</th>
+          <th scope="col" class="govuk-table__header">Check ID</th>
+          <th scope="col" class="govuk-table__header">Status</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% @legacy_checks.each do |check| %>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell" id="service-name">
+              <%= check['name'].gsub('Form Builder - ', '') %>
+            </td>
+            <td class="govuk-table__cell" id="hostname">
+              <%= check['hostname'] %>
+            </td>
+            <td class="govuk-table__cell" id="check-id">
+              <%= check['id'] %>
+            </td>
+            <td class="govuk-table__cell" id="check-status">
+              <%= check['status'] %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
+<% else %>
+  <h2 class="govuk-heading-m govuk-!-margin-left-5">
+    This is only available in the Live environment
+  </h2>
+<% end %>
