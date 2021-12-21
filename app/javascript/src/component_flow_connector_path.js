@@ -258,18 +258,54 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + dimensions.forward1;
-    var up = "v-" + dimensions.up;
-    var forward2 = "h" + dimensions.forward2;
-    var down = "v" + dimensions.down;
-    var lines = [
-      new Line("forward1", { start: this.points.from_x, end: dimensions.forward1 }),
-      new Line("up", { start: this.points.from_y + CURVE_SPACING, end: dimensions.up }),
-      new Line("forward2", { start: (dimensions.up + CURVE_SPACING), end: 0 }) // TODO... incomplete
-    ];
+    var x, y, lineForward1, lineUp, lineForward2, lineDown;
+
+    x = this.points.from_x;
+    y = this.points.from_y;
+    lineForward1 = new Line("forward1", {
+                    x: x,
+                    y: y,
+                    length: dimensions.forward1
+                  });
+
+    x += dimensions.foward1 + CURVE_SPACING;
+    y -= CURVE_SPACING;
+    lineUp = new Line("up", {
+               x: x,
+               y: y,
+               length: dimensions.up
+             });
+
+    x += CURVE_SPACING;
+    y -= (dimensions.up + CURVE_SPACING);
+    lineForward2 = new Line("forward2", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward2
+                   });
+
+    x += (dimensions.forward2 + CURVE_SPACING);
+    y += CURVE_SPACING;
+    lineDown = new Line("down", {
+                 x: x,
+                 y: y,
+                 length: dimensions.down
+               });
 
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
+    this._dimensions.lines = [ lineForward1, lineUp, lineForward2, lineDown ];
+
+    this._path = createPathDimensions(pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   "h" + forward1,
+                   CURVE_RIGHT_UP,
+                   "v-" + up,
+                   CURVE_UP_RIGHT,
+                   "h" + forward2,
+                   CURVE_RIGHT_DOWN,
+                   "v" + down,
+                   CURVE_DOWN_RIGHT
+                 ));
   }
 
   nudge(nF, nU) {
