@@ -114,6 +114,36 @@ class FlowConnectorPath {
     //   }
     //
   }
+
+  avoidOverlap(coords) {
+    // This function should be able to compare any passed coordinates with its own internal
+    // positions that the makeup of its path occupies. If any path is found to occupy space
+    // within the passed coordinate object, the function should return the name of which
+    // path does.
+// TODO adjust comment above...
+    // If an overlap is found with the passed coordinates, the FlowConnectorPath nudge()
+    // functionality is called to shift the line that matches (overlaps) with the passed
+    // coordinates. The nudge() functionality is shifted by a factor of 1, e.g nudge(1, 0)
+    //
+    // This function isn't needed by all type of FlowConnectorPaths, so some will inherit
+    // and use this empty function but, others will want to have a customised version that
+    // works with their own path makeup.
+    // e.g. something like this:
+    // if(coordsOverlap(this.dimensions.coords.forward, coords)) {
+    //   this.nudge(1, 0); // or whatever makes sense
+    // }
+    //
+    // The general idea should be that the Overview object (or controller script) should
+    // loop over found FlowConnectorPaths, and pass known used coordinates into each
+    // in something like a `item.avoidOverlap({from[x,y], to:[x,y]});` form.
+  }
+}
+
+function coordsOverlap(coords1, coords2) {
+  // TODO: Incomplete idea - not sure what's happening here, just yet.
+  //coords1 = { from: [0,0], to: [0,10] };
+  //coords1 = { from: [0,5], to: [0,10] };
+  return false;
 }
 
 
@@ -121,9 +151,9 @@ class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      x: this.points.from_x,
-      y: this.points.from_y + this.points.yDifference,
-      width: this.points.xDifference
+      x: Math.ceil(this.points.from_x),
+      y: Math.ceil(this.points.from_y + this.points.yDifference),
+      width: Math.ceil(this.points.xDifference)
     }
 
     this._dimensions = { original: dimensions  } // Not expected to change.
@@ -133,11 +163,15 @@ class ForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var width = "h" + Math.ceil(dimensions.width);
+    var width = "h" + dimensions.width;
+    var lines = [
+      new Line("forward", { x: dimensions.x, y: dimensions.y, length: width })
+    ];
+
     this._dimensions.current = dimensions;
+    this._dimensions.lines = lines;
     this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), width));
   }
-
 
   // Since this arrow simply goes from point A to B, which is expected to
   // be between two adjacent items, it should not have any overlap issues
@@ -149,9 +183,11 @@ class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      horizontal1: this.points.via_x - CURVE_SPACING,
-      horizontal2: 0,
-      vertical: this.points.yDifference - (CURVE_SPACING * 2)
+      x: Math.ceil(this.points.from_x),
+      y: Math.ceil(this.points_from_y),
+      forward1: Math.ceil(this.points.via_x - CURVE_SPACING),
+      up: Math.ceil(this.points.yDifference - (CURVE_SPACING * 2)),
+      forward2: 0 // TODO: What about if it is not next column?
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
@@ -161,23 +197,46 @@ class ForwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var horizontal1 = "h" + Math.ceil(dimensions.horizontal1);
-    var horizontal2 = "h" + Math.ceil(dimensions.horizontal2);
-    var vertical = "v-" + Math.ceil(dimensions.vertical);
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
+    var lines = [
+      new Line("forward1", {
+        x: dimensions.x,
+        y: dimensions.y,
+        length: dimensions.forward1
+      }),
+      new Line("up", {
+        x: (dimensions.x + dimensions.forward1 + CURVE_SPACING),
+        y: dimensions.y + CURVE_SPACING,
+        length: dimensions.vertical
+      }),
+      new Line("forward2", {
+        x: (dimensions.x + dimensions.forward1 + CURVE_SPACING + CURVE_SPACING),
+        y: dimensions.y + CURVE_SPACING,
+        length: dimensions.forward2
+      })
+    ];
 
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), horizontal1, CURVE_RIGHT_UP, vertical, CURVE_UP_RIGHT, horizontal2));
+    this._dimensions.lines = lines;
+    this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2));
   }
 
-  nudge(nH) {
+  nudge(nF) {
     var dimensions = {
-      horizontal1: this._dimensions.current.horizontal1 - (nH * NUDGE_SPACING),
-      horizontal2: this._dimensions.current.horizontal2 + (nH * NUDGE_SPACING),
-      vertical: this._dimensions.current.vertical // No movement should be required (and therefore possible) for this line.
+      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
+      up: this._dimensions.current.up, // No movement should be required (and therefore possible) for this line.
+      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING)
     }
 
     this.path = dimensions;
     this.$node.find("path:first").attr("d", this._path);
+  }
+
+  avoidOverlap(coords) {
+    var name = ""; // A line name (see dimensions)
+    return name;
   }
 }
 
@@ -186,10 +245,10 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      forward1: this.points.via_x - CURVE_SPACING,
-      up: utilities.difference(this.points.from_y, this._config.top),
-      forward2: this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4)),
-      down: utilities.difference(this._config.top, this.points.to_y)
+      forward1: Math.ceil(this.points.via_x - CURVE_SPACING),
+      up: Math.ceil(utilities.difference(this.points.from_y, this._config.top)),
+      forward2: Math.ceil(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
+      down: Math.ceil(utilities.difference(this._config.top, this.points.to_y))
     }
 
     this._dimensions = { original: dimensions };
@@ -199,10 +258,16 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + Math.ceil(dimensions.forward1);
-    var up = "v-" + Math.ceil(dimensions.up);
-    var forward2 = "h" + Math.ceil(dimensions.forward2);
-    var down = "v" + Math.ceil(dimensions.down);
+    var forward1 = "h" + dimensions.forward1;
+    var up = "v-" + dimensions.up;
+    var forward2 = "h" + dimensions.forward2;
+    var down = "v" + dimensions.down;
+    var lines = [
+      new Line("forward1", { start: this.points.from_x, end: dimensions.forward1 }),
+      new Line("up", { start: this.points.from_y + CURVE_SPACING, end: dimensions.up }),
+      new Line("forward2", { start: (dimensions.up + CURVE_SPACING), end: 0 }) // TODO... incomplete
+    ];
+
     this._dimensions.current = dimensions;
     this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down, CURVE_DOWN_RIGHT));
   }
@@ -455,6 +520,60 @@ class DownForwardPath extends FlowConnectorPath {
 }
 
 
+class Line {
+
+  // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
+  // @config (Object) Should be populated with {
+  //                    start: 0, // An x or y number depending on type.
+  //                    end: 10,  // An x or y number depending on type.
+  //                    type: [horizontal|vertical] // String value
+  //                  }
+  constructor(name, config) {
+    this.name = name;
+    this.position = [config.x, config.y];
+    this.range = Line.createRange(config.start, config.end);
+    this._config = config;
+//console.warn("name: ", name);
+  }
+
+  get name() {
+    return this._config.name;
+  }
+
+  get type() {
+    return this._config.type;
+  }
+
+  get range() {
+    return this._range;
+  }
+
+  set range(r) {
+    this._range = r;
+  }
+}
+
+Line.createRange = function(begin, end) {
+  var r = [];
+  if(begin > end) {
+    for(var i=begin; i > end; --i) {
+      r.push(i);
+    }
+  }
+  else {
+    for(var i=begin; i < end; ++i) {
+      r.push(i);
+    }
+  }
+//console.log("range: ", r);
+  return r;
+}
+
+
+/*************************************
+ * HELPER FUNCTIONS
+ *************************************/
+
 function createSvg(paths) {
   const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
   const SVG_TAG_CLOSE = "</svg>";
@@ -462,8 +581,6 @@ function createSvg(paths) {
   return $(svg)
 }
 
-
-// Helper functions
 function createArrowPath(points) {
   return "<path class=\"arrowPath\" d=\"M " + (points.to_x - 10) + "," + (points.to_y - 5) + " v10 l 10,-5 z\"></path>";
 }
@@ -489,7 +606,11 @@ function xy(x, y) {
 }
 
 
-// Make available for importing.
+
+/*************************************
+ * Make available for importing.
+ *************************************/
+
 module.exports = {
   FlowConnectorPath: FlowConnectorPath,
   ForwardPath: ForwardPath,
