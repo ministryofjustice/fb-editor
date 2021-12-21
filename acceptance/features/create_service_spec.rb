@@ -6,6 +6,7 @@ feature 'Create a service' do
   let(:another_service_name) { generate_service_name }
   let(:checkanswers) { 'Check answers page' }
   let(:confirmation) { 'Confirmation page' }
+  let(:add_page) { 'Add page here' }
   let(:exit_url) { 'exit' }
   let(:form_urls) do
     # page url links have the word "Edit" as a visually hidden span element
@@ -48,6 +49,8 @@ feature 'Create a service' do
     then_I_should_see_the_page_flow_in_order(order: form_urls)
     then_I_should_not_be_able_to_add_page(checkanswers)
     then_I_should_not_be_able_to_add_page(confirmation)
+    when_I_three_dots_button_on_the_confirmation_page
+    then_I_should_not_be_able_to_see_add_page_link
   end
 
   scenario 'validates uniqueness of the service name' do
@@ -123,5 +126,15 @@ feature 'Create a service' do
         'Application complete'
       ]
     )
+  end
+
+  def when_I_three_dots_button_on_the_confirmation_page
+    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    page.find('.govuk-link', text: 'Application complete').hover
+    editor.three_dots_button.click
+  end
+
+  def then_I_should_not_be_able_to_see_add_page_link
+    expect(editor.text).not_to include(add_page)
   end
 end
