@@ -51,17 +51,12 @@ class FlowConnectorPath {
                  bottom: 0 // Nonsense number as should be set by calculating height of container and passing in.
                }, config);
 
-    points = utilities.mergeObjects({
-               via_x: 0, // If the connector needs to go via an certain route
-               via_y: 0  // you can add x/y coordinates to help route it.
-             }, points);
-
-    points.xDifference = utilities.difference(points.from_x, points.to_x);
-    points.yDifference = utilities.difference(points.from_y, points.to_y);
-
     // Public
-    this.points = points;
     this.id = id;
+    this.points = createConnectorPathPoints(utilities.mergeObjects({
+                      via_x: 0, // If the connector needs to go via an certain route
+                      via_y: 0  // you can add x/y coordinates to help route it.
+                    }, points));
 
     // Private
     this._config = conf;
@@ -189,11 +184,9 @@ class ForwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      x: Math.round(this.points.from_x),
-      y: Math.round(this.points_from_y),
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       up: Math.round(this.points.yDifference - (CURVE_SPACING * 2)),
-      forward2: 0 // TODO: What about if it is not next column?
+      forward2: utilities.difference(Math.round(this.points.via_x - CURVE_SPACING), this.points.to_x) // TODO: What about if it is not next column?
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
@@ -203,30 +196,45 @@ class ForwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + dimensions.forward1;
-    var up = "v-" + dimensions.up;
-    var forward2 = "h" + dimensions.forward2;
-    var lines = [
-      new Line("forward1", {
-        x: dimensions.x,
-        y: dimensions.y,
-        length: dimensions.forward1
-      }),
-      new Line("up", {
-        x: (dimensions.x + dimensions.forward1 + CURVE_SPACING),
-        y: dimensions.y + CURVE_SPACING,
-        length: dimensions.vertical
-      }),
-      new Line("forward2", {
-        x: (dimensions.x + dimensions.forward1 + CURVE_SPACING + CURVE_SPACING),
-        y: dimensions.y + CURVE_SPACING,
-        length: dimensions.forward2
-      })
-    ];
+    var x = this.points.from_x;
+    var y = this.points.from_y;
+
+    var forward1 = new Line("forward1", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward1,
+                     prefix: "h"
+                   });
+
+    x += (dimensions.forward1 + CURVE_SPACING);
+    y += CURVE_SPACING;
+    var up = new Line("up", {
+               x: x,
+               y: y,
+               length: dimensions.up,
+               prefix: "v-"
+             });
+
+   x += CURVE_SPACING;
+   y += (dimensions.up + CURVE_SPACING);
+   var forward2 = new Line("forward2", {
+                    x: x,
+                    y: y,
+                    length: dimensions.forward2,
+                    prefix: "h"
+                  });
 
     this._dimensions.current = dimensions;
-    this._dimensions.lines = lines;
-    this._path = pathD(xy(dimensions.x, dimensions.y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2);
+    this._dimensions.lines = [ forward1, up, forward2 ];
+
+    this._path = pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   forward1.path,
+                   CURVE_RIGHT_UP,
+                   up.path,
+                   CURVE_UP_RIGHT,
+                   forward2.path
+                 );
   }
 
   nudge(nF) {
@@ -628,6 +636,18 @@ class Line {
 /*************************************
  * HELPER FUNCTIONS
  *************************************/
+
+function createConnectorPathPoints(points) {
+  for(var point in points) {
+    if(points.hasOwnProperty(point)) {
+      points[point] = Math.round(points[point]);
+    }
+  }
+
+  points.xDifference = Math.round(utilities.difference(points.from_x, points.to_x));
+  points.yDifference = Math.round(utilities.difference(points.from_y, points.to_y));
+  return points;
+}
 
 function createSvg(paths) {
   const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
