@@ -258,52 +258,56 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var x, y, lineForward1, lineUp, lineForward2, lineDown;
+    var x, y, forward1, up, forward2, down;
 
     x = this.points.from_x;
     y = this.points.from_y;
-    lineForward1 = new Line("forward1", {
-                    x: x,
-                    y: y,
-                    length: dimensions.forward1
-                  });
+    forward1 = new Line("forward1", {
+                 x: x,
+                 y: y,
+                 length: dimensions.forward1,
+                 prefix: "h"
+               });
 
     x += dimensions.foward1 + CURVE_SPACING;
     y -= CURVE_SPACING;
-    lineUp = new Line("up", {
-               x: x,
-               y: y,
-               length: dimensions.up
-             });
+    up = new Line("up", {
+           x: x,
+           y: y,
+           length: dimensions.up,
+           prefix: "v-"
+         });
 
     x += CURVE_SPACING;
     y -= (dimensions.up + CURVE_SPACING);
-    lineForward2 = new Line("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2
-                   });
+    forward2 = new Line("forward2", {
+                 x: x,
+                 y: y,
+                 length: dimensions.forward2,
+                 prefix: "h"
+               });
 
     x += (dimensions.forward2 + CURVE_SPACING);
     y += CURVE_SPACING;
-    lineDown = new Line("down", {
-                 x: x,
-                 y: y,
-                 length: dimensions.down
-               });
+    down = new Line("down", {
+             x: x,
+             y: y,
+             length: dimensions.down,
+             prefix: "v"
+           });
 
     this._dimensions.current = dimensions;
-    this._dimensions.lines = [ lineForward1, lineUp, lineForward2, lineDown ];
+    this._dimensions.lines = [ forward1, up, forward2, down ];
 
     this._path = createPathDimensions(pathD(
                    xy(this.points.from_x, this.points.from_y),
-                   "h" + forward1,
+                   forward1.path,
                    CURVE_RIGHT_UP,
-                   "v-" + up,
+                   up.path,
                    CURVE_UP_RIGHT,
-                   "h" + forward2,
+                   forward2.path,
                    CURVE_RIGHT_DOWN,
-                   "v" + down,
+                   down.path,
                    CURVE_DOWN_RIGHT
                  ));
   }
@@ -585,7 +589,8 @@ class Line {
     return this._private.type;
   }
 
-  get toString() {
+  // Returns a string used for part of an svg <path> d attribute value.
+  get path() {
     return this._private.prefix + this._private.length
   }
 
