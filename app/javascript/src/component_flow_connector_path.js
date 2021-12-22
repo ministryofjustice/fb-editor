@@ -207,7 +207,7 @@ class ForwardUpPath extends FlowConnectorPath {
                    });
 
     x += (dimensions.forward1 + CURVE_SPACING);
-    y += CURVE_SPACING;
+    y -= CURVE_SPACING;
     var up = new Line("up", {
                x: x,
                y: y,
@@ -216,7 +216,7 @@ class ForwardUpPath extends FlowConnectorPath {
              });
 
    x += CURVE_SPACING;
-   y += (dimensions.up + CURVE_SPACING);
+   y -= CURVE_SPACING;
    var forward2 = new Line("forward2", {
                     x: x,
                     y: y,
@@ -272,11 +272,10 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var x, y, forward1, up, forward2, down;
+    var x = this.points.from_x;
+    var y = this.points.from_y;
 
-    x = this.points.from_x;
-    y = this.points.from_y;
-    forward1 = new Line("forward1", {
+    var forward1 = new Line("forward1", {
                  x: x,
                  y: y,
                  length: dimensions.forward1,
@@ -285,7 +284,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += dimensions.foward1 + CURVE_SPACING;
     y -= CURVE_SPACING;
-    up = new Line("up", {
+    var up = new Line("up", {
            x: x,
            y: y,
            length: dimensions.up,
@@ -294,7 +293,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (dimensions.up + CURVE_SPACING);
-    forward2 = new Line("forward2", {
+    var forward2 = new Line("forward2", {
                  x: x,
                  y: y,
                  length: dimensions.forward2,
@@ -303,7 +302,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += (dimensions.forward2 + CURVE_SPACING);
     y += CURVE_SPACING;
-    down = new Line("down", {
+    var down = new Line("down", {
              x: x,
              y: y,
              length: dimensions.down,
@@ -358,14 +357,64 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var forward1 = "h" + dimensions.forward1;
-    var down = "v" + dimensions.down;
-    var backward = "h-" + dimensions.backward;
-    var up = "v-" + dimensions.up;
-    var forward2 = "h" + dimensions.forward2;
+    var x = this.points.from_x;
+    var y = this.points.from_y;
+
+    var forward1 = new Line("forward1", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward1,
+                     prefix: "h"
+                   });
+
+    x += (dimensions.foward1 + CURVE_SPACING);
+    y += CURVE_SPACING;
+    var down = new Line("down", {
+                 x: x,
+                 y: y,
+                 length: dimensions.down,
+                 prefix: "v"
+               });
+
+    x -= CURVE_SPACING;
+    y += CURVE_SPACING;
+    var backward = new Line("backward", {
+                     x: x,
+                     y: y,
+                     length: dimensions.backward,
+                     prefix: "h-"
+                   });
+
+    x -= (dimensions.backward + CURVE_SPACING);
+    y -= CURVE_SPACING;
+    var up = new Line("up", {
+               x: x,
+               y: y,
+               length: dimensions.up,
+               prefix: "v-"
+             });
+
+    x += CURVE_SPACING;
+    y -= CURVE_SPACING;
+    var forward2 = new Line("up", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward2,
+                     prefix: "h"
+                   });
 
     this._dimensions.current = dimensions;
-    this._path = pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2);
+    this._path = pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   forward1.path,
+                   CURVE_RIGHT_DOWN,
+                   down.path,
+                   CURVE_DOWN_LEFT,
+                   backward.path,
+                   CURVE_LEFT_UP,
+                   up.path,
+                   CURVE_UP_RIGHT,
+                   forward2.path);
   }
 
   nudge(nF, nD, nB) {
