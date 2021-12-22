@@ -404,6 +404,8 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                    });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ forward1, down, backward, up, forward2 ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    forward1.path,
@@ -508,6 +510,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                    });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    down1.path,
@@ -595,6 +599,8 @@ class DownForwardUpPath extends FlowConnectorPath {
                    });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ down, forward1, up, forward2 ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    down.path,
@@ -686,6 +692,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                 });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ down1, forward1, up, forward2, down2 ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    down1.path,
@@ -770,6 +778,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                    });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ down1, forward1, down2, forward2 ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    down1.path,
@@ -830,6 +840,8 @@ class DownForwardPath extends FlowConnectorPath {
          });
 
     this._dimensions.current = dimensions;
+    this._dimensions.lines = [ down, forward ];
+
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    down.path,
