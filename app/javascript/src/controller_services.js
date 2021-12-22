@@ -693,6 +693,7 @@ function applyArrowBranchPaths($overview) {
       var destinationColumn = Number($destination.attr("column"));
       var destinationRow = Number($destination.attr("row"));
       var backward = conditionColumn > destinationColumn;
+      var sameColumn = (conditionColumn == destinationColumn);
       var sameRow = (conditionRow == destinationRow);
       var firstConditionItem = (index == 0);
       var up = conditionRow > destinationRow;
@@ -708,7 +709,7 @@ function applyArrowBranchPaths($overview) {
 
       var points, type;
 
-      if(backward) {
+      if(backward || sameColumn) {
 
         // If on the same row but destination  behind the current condition
         new ConnectorPath.DownForwardDownBackwardUpPath({
@@ -723,7 +724,7 @@ function applyArrowBranchPaths($overview) {
       else {
         // FORWARD
 
-        if(firstConditionItem) {
+        if(firstConditionItem && sameRow) {
           // Create straight path to go from right corner of the branch
           // to the x/y coordinates of the related 'next' destination.
           new ConnectorPath.ForwardPath({
