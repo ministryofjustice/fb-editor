@@ -151,9 +151,7 @@ class ForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      x: Math.round(this.points.from_x),
-      y: Math.round(this.points.from_y + this.points.yDifference),
-      width: Math.round(this.points.xDifference)
+      forward: Math.round(this.points.xDifference)
     }
 
     this._dimensions = { original: dimensions  } // Not expected to change.
@@ -163,14 +161,22 @@ class ForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var width = "h" + dimensions.width;
-    var lines = [
-      new Line("forward", { x: dimensions.x, y: dimensions.y, length: width })
-    ];
+    var x = this.points.from_x;
+    var y = this.points.from_y;
+    var forward = new Line("forward", {
+                    x: x,
+                    y: y,
+                    length: dimensions.forward,
+                    prefix: "h"
+                  });
 
     this._dimensions.current = dimensions;
-    this._dimensions.lines = lines;
-    this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), width));
+    this._dimensions.lines = [ forward ];
+
+    this._path = createPathDimensions(pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   forward.path
+                 ));
   }
 
   // Since this arrow simply goes from point A to B, which is expected to
