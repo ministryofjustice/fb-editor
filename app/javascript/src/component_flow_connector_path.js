@@ -452,14 +452,76 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down1 = "v" + Math.round(dimensions.down1);
-    var forward1 = "h" + Math.round(dimensions.forward1);
-    var down2 = "v" + Math.round(dimensions.down2);
-    var backward = "h-" + Math.round(dimensions.backward);
-    var up = "v-" + Math.round(dimensions.up);
-    var forward2 = "h" + Math.round(dimensions.forward2);
+    var x = this.points.from_x + CURVE_SPACING;
+    var y = this.points.from_y + CURVE_SPACING;
+
+    var down1 = new Line("forward1", {
+                  x: x,
+                  y: y,
+                  length: dimensions.down1,
+                  prefix: "v"
+                });
+
+    x += CURVE_SPACING;
+    y += (down1 + CURVE_SPACING);
+    var forward1 = new Line("forward1", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward1,
+                     prefix: "h"
+                   });
+
+    x += CURVE_SPACING;
+    y += CURVE_SPACING;
+    var down2 = new Line("down2", {
+                  x: x,
+                  y: y,
+                  length: dimensions.down2,
+                  prefix: "v"
+                });
+
+    x -= CURVE_SPACING;
+    y += (dimensions.down2 + CURVE_SPACING);
+    var backward = new Line("backward", {
+                     x: x,
+                     y: y,
+                     length: dimensions.backward,
+                     prefix: "h-"
+                   });
+
+    x -= (CURVE_SPACING + dimensions.backward);
+    y -= CURVE_SPACING;
+    var up = new Line("up", {
+               x: x,
+               y: y,
+               length: dimensions.up,
+               prefix: "v-"
+             });
+
+    x += CURVE_SPACING;
+    y -= (up + CURVE_SPACING);
+    var forward2 = new Line("forward2", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward2,
+                     prefix: "h"
+                   });
+
     this._dimensions.current = dimensions;
-    this._path = pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2);
+    this._path = pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   down1.path,
+                   CURVE_DOWN_RIGHT,
+                   forward1.path,
+                   CURVE_RIGHT_DOWN,
+                   down2.path,
+                   CURVE_DOWN_LEFT,
+                   backward.path,
+                   CURVE_LEFT_UP,
+                   up.path,
+                   CURVE_UP_RIGHT,
+                   forward2.path
+                 );
   }
 
   nudge(nD, nB) {
