@@ -810,10 +810,32 @@ class DownForwardPath extends FlowConnectorPath {
   }
 
   set path(dimensions) {
-    var down = "v" + dimensions.down;
-    var forward = "h" + dimensions.forward;
+    var x = this.points.from_x;
+    var y = this.points.from_y;
+
+    var down = new Line("down", {
+                 x: x,
+                 y: y,
+                 length: dimensions.down,
+                 prefix: "v"
+               });
+
+    x += CURVE_SPACING;
+    y += (down + CURVE_SPACING);
+    var forward = new Line("forward", {
+           x: x,
+           y: y,
+           length: dimensions.forward,
+           prefix: "h"
+         });
+
     this._dimensions.current = dimensions;
-    this._path = pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward);
+    this._path = pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   down.path,
+                   CURVE_DOWN_RIGHT,
+                   forward.path
+                 );
   }
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
