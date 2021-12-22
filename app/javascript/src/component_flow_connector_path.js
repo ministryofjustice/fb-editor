@@ -173,10 +173,10 @@ class ForwardPath extends FlowConnectorPath {
     this._dimensions.current = dimensions;
     this._dimensions.lines = [ forward ];
 
-    this._path = createPathDimensions(pathD(
+    this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    forward.path
-                 ));
+                 );
   }
 
   // Since this arrow simply goes from point A to B, which is expected to
@@ -226,7 +226,7 @@ class ForwardUpPath extends FlowConnectorPath {
 
     this._dimensions.current = dimensions;
     this._dimensions.lines = lines;
-    this._path = createPathDimensions(pathD(xy(dimensions.x, dimensions.y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2));
+    this._path = pathD(xy(dimensions.x, dimensions.y), forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2);
   }
 
   nudge(nF) {
@@ -305,7 +305,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     this._dimensions.current = dimensions;
     this._dimensions.lines = [ forward1, up, forward2, down ];
 
-    this._path = createPathDimensions(pathD(
+    this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
                    forward1.path,
                    CURVE_RIGHT_UP,
@@ -315,7 +315,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                    CURVE_RIGHT_DOWN,
                    down.path,
                    CURVE_DOWN_RIGHT
-                 ));
+                 );
   }
 
   nudge(nF, nU) {
@@ -338,7 +338,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     var dimensions = {
       forward1: Math.round(this.points.via_x - (CURVE_SPACING * 2)),
       down: Math.round(utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
-      backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x) + 1.5),
+      backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x) - CURVE_SPACING),
       up: Math.round(utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
@@ -357,7 +357,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     var forward2 = "h" + dimensions.forward2;
 
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), forward1, CURVE_RIGHT_DOWN, down, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2);
   }
 
   nudge(nF, nD, nB) {
@@ -383,7 +383,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
       down1: utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING,
       forward1: this.points.via_x - (CURVE_SPACING * 2),
       down2: utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2,
-      backward: this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x) + 2, // +2 is a HACK to fix alignment due to arrow width and curve spacing not being taken out/added in.
+      backward: this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x),
       up: (utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2,
       forward2: 0
     }
@@ -402,7 +402,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     var up = "v-" + Math.round(dimensions.up);
     var forward2 = "h" + Math.round(dimensions.forward2);
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_LEFT, backward, CURVE_LEFT_UP, up, CURVE_UP_RIGHT, forward2);
   }
 
   nudge(nD, nB) {
@@ -426,7 +426,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
-      forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
+      forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
       up: Math.round(utilities.difference(points.via_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
@@ -443,7 +443,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     var up = "v-" + dimensions.up;
     var forward2 = "h" + dimensions.forward2;
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2);
   }
 
   nudge(nF) {
@@ -465,9 +465,9 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
-      forward1: Math.round(points.via_x - (CURVE_SPACING * 3)),
+      forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
       up: Math.round(utilities.difference(points.from_y, this.points.via_y) + utilities.difference(points.from_y, this.points.to_y) + utilities.difference(points.to_y, config.top)),
-      forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 3)),
+      forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 4)),
       down2: Math.round(points.to_y)
     }
 
@@ -484,7 +484,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     var forward2 = "h" + dimensions.forward2;
     var down2 = "v" + dimensions.down2;
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_UP, up, CURVE_UP_RIGHT, forward2, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT);
   }
 
   nudge(nF, nU) {
@@ -523,7 +523,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     var down2 = "v" + dimensions.down2;
     var forward2 = "h" + dimensions.forward2;
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT, forward2));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), down1, CURVE_DOWN_RIGHT, forward1, CURVE_RIGHT_DOWN, down2, CURVE_DOWN_RIGHT, forward2);
   }
 
   nudge(nF) {
@@ -557,7 +557,7 @@ class DownForwardPath extends FlowConnectorPath {
     var down = "v" + dimensions.down;
     var forward = "h" + dimensions.forward;
     this._dimensions.current = dimensions;
-    this._path = createPathDimensions(pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward));
+    this._path = pathD(xy(this.points.from_x, this.points.from_y), down, CURVE_DOWN_RIGHT, forward);
   }
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
@@ -641,11 +641,7 @@ function createArrowPath(points) {
 }
 
 function createPath(d) {
-  return "<path d=\"" + createPathDimensions(d) + "\"></path>"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
-}
-
-function createPathDimensions(d) {
-  return d + " h10"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
+  return "<path d=\"" + d + "\"></path>"; // h10 is a little extra that should go under the arrow to make sure gaps are eliminated
 }
 
 function pathD(/* unlimited */) {
