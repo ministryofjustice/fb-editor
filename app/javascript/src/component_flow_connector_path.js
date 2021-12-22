@@ -186,7 +186,7 @@ class ForwardUpPath extends FlowConnectorPath {
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       up: Math.round(this.points.yDifference - (CURVE_SPACING * 2)),
-      forward2: utilities.difference(Math.round((this.points.from_x + this.points.via_x) - CURVE_SPACING), this.points.to_x) // TODO: What about if it is not next column?
+      forward2: utilities.difference(Math.round((this.points.from_x + this.points.via_x) - CURVE_SPACING), this.points.to_x)
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
