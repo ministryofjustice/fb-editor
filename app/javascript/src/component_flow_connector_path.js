@@ -812,7 +812,7 @@ function createSvg(paths) {
 }
 
 function createArrowPath(points) {
-  return "<path class=\"arrowPath\" d=\"M " + (points.to_x - 10) + "," + (points.to_y - 5) + " v10 l 10,-5 z\"></path>";
+  return "<path class=\"arrowPath\" d=\"M " + (points.to_x - 11) + "," + (points.to_y - 5) + " v10 l 10,-5 z\"></path>";
 }
 
 function createPath(d) {
