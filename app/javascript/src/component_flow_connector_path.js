@@ -842,7 +842,7 @@ class DownForwardPath extends FlowConnectorPath {
                });
 
     x += CURVE_SPACING;
-    y += (down + CURVE_SPACING);
+    y += (down.prop("length") + CURVE_SPACING);
     var forward = new Line("forward", {
            x: x,
            y: y,
