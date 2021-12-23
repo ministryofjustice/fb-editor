@@ -29,10 +29,12 @@ module Admin
     end
 
     def services_without_uptime_checks
-      without_uptime_checks.map do |uuid|
+      checks = without_uptime_checks.map do |uuid|
         latest_metadata = MetadataApiClient::Service.latest_version(uuid)
         MetadataPresenter::Service.new(latest_metadata, editor: true)
       end
+
+      checks.sort_by(&:service_name)
     end
 
     def without_uptime_checks
@@ -41,10 +43,14 @@ module Admin
     end
 
     def with_uptime_checks
-      @with_uptime_checks ||= uptime_checks.select do |check|
-        check['tags'].any? do |tag|
-          tag['name'].in?(published_services_uuids)
+      @with_uptime_checks ||= begin
+        checks = uptime_checks.select do |check|
+          check['tags'].any? do |tag|
+            tag['name'].in?(published_services_uuids)
+          end
         end
+
+        checks.sort_by { |check| check['name'] }
       end
     end
 
