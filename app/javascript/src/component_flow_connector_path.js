@@ -65,14 +65,16 @@ class FlowConnectorPath {
 
   build(path) {
     this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
-    this.$node.addClass("FlowConnectorPath")
-              .addClass(this.type)
+    this.$node.addClass(this.type)
               .attr("id", this.id)
               .attr("data-from", this._config.from.attr("id"))
               .attr("data-to", this._config.to.attr("id"))
               .data("instance", this);
 
     this._config.container.append(this.$node);
+
+    // Uncomment for developer helper code only
+    this.makeLinesVisibleForTesting();
   }
 
   get path() {
@@ -131,6 +133,15 @@ class FlowConnectorPath {
     // The general idea should be that the Overview object (or controller script) should
     // loop over found FlowConnectorPaths, and pass known used coordinates into each
     // in something like a `item.avoidOverlap({from[x,y], to:[x,y]});` form.
+  }
+
+  makeLinesVisibleForTesting() {
+    // DEVELOPMENT ONLY FUNCTION
+    // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
+    // this funciton can be called to make things visible and, therefore, a bit easier. See this.build().
+    for(var i=0; i<this._dimensions.lines.length; ++i) {
+      this._config.container.append(this._dimensions.lines[i].testOnlySvg());
+    }
   }
 }
 
@@ -874,11 +885,23 @@ class Line {
       type: config.type
     }
 
+    switch(config.prefix.charAt(0)) {
+      case "h": this.type = "horizontal";
+         break;
+      case "v": this.type = "vertical";
+         break;
+      default: this.type = "uknown";
+    }
+
     this.range = [config.x, config.y];
   }
 
   get name() {
     return this._private.name;
+  }
+
+  set type(t) {
+    this._private.type = t;
   }
 
   get type() {
@@ -911,6 +934,15 @@ class Line {
 
     this._private.range = r;
   }
+
+  testOnlySvg() {
+    var path = createPath(pathD(
+                 xy(this._private.x, this._private.y),
+                 this.path
+               ));
+
+    return createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" "));
+  }
 }
 
 
@@ -934,8 +966,9 @@ function createConnectorPathPoints(points) {
 function createSvg(paths) {
   const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
   const SVG_TAG_CLOSE = "</svg>";
-  var svg = SVG_TAG_OPEN + paths + SVG_TAG_CLOSE;
-  return $(svg)
+  var $svg = $(SVG_TAG_OPEN + paths + SVG_TAG_CLOSE);
+  $svg.addClass("FlowConnectorPath");
+  return $svg;
 }
 
 function createArrowPath(points) {
@@ -958,6 +991,20 @@ function xy(x, y) {
   return String(Math.round(x)) + "," + String(Math.round(y));
 }
 
+
+/******************************************
+ * Temporary/development helper functions
+ ******************************************/
+function createTestSvg(line) {
+  var d = pathD(xy(line.x, line.y), line.path);
+  var $svg = createSvg(createPath(d));
+  var $path = $svg.find("path");
+  $svg.addClass("FlowConnectorPath");
+  $svg.css("z-index", "2");
+  $path.css("stroke", "red");
+  $path.attr("stroke-width", "2");
+  return $svg;
+}
 
 
 /*************************************
