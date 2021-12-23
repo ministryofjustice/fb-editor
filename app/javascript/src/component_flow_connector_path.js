@@ -667,7 +667,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                });
 
     x += CURVE_SPACING;
-    y += CURVE_SPACING;
+    y += (down1.prop("length") + CURVE_SPACING);
     var forward1 = new Line("forward1", {
                      x: x,
                      y: y,
@@ -675,7 +675,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                      prefix: "h"
                    });
 
-    x += (forward1 + CURVE_SPACING);
+    x += (forward1.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
     var up = new Line("up", {
                x: x,
@@ -685,7 +685,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
              });
 
     x += CURVE_SPACING;
-    y -= (up + CURVE_SPACING);
+    y -= (up.prop("length") + CURVE_SPACING);
     var forward2 = new Line("forward2", {
                      x: x,
                      y: y,
@@ -693,7 +693,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                      prefix: "h"
                    });
 
-    x += (forward2 + CURVE_SPACING);
+    x += (forward2.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
     var down2 = new Line("down2", {
                   x: x,
@@ -933,6 +933,23 @@ class Line {
     }
 
     this._private.range = r;
+  }
+
+  prop(p) {
+    var value;
+    switch(p) {
+      case "x":
+        value = this._private.x;
+        break;
+      case "y":
+        value = this._private.y;
+        break;
+      case "length":
+        value = this._private.length;
+        break;
+      default: // nothing;
+    }
+    return value;
   }
 
   testOnlySvg() {
