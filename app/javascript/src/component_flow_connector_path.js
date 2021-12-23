@@ -378,7 +378,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                      prefix: "h"
                    });
 
-    x += (dimensions.foward1 + CURVE_SPACING);
+    x += (forward1.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
     var down = new Line("down", {
                  x: x,
@@ -388,7 +388,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                });
 
     x -= CURVE_SPACING;
-    y += CURVE_SPACING;
+    y += (down.prop("length") + CURVE_SPACING);
     var backward = new Line("backward", {
                      x: x,
                      y: y,
@@ -396,7 +396,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                      prefix: "h-"
                    });
 
-    x -= (dimensions.backward + CURVE_SPACING);
+    x -= (backward.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
     var up = new Line("up", {
                x: x,
@@ -406,7 +406,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
              });
 
     x += CURVE_SPACING;
-    y -= CURVE_SPACING;
+    y -= (up.prop("length") + CURVE_SPACING);
     var forward2 = new Line("up", {
                      x: x,
                      y: y,
