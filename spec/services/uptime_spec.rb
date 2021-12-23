@@ -6,6 +6,7 @@ RSpec.describe Uptime do
   let(:attributes) do
     {
       service_id: service_id,
+      check_id: check_id,
       service_name: service_name,
       host: host,
       adapter: fake_uptime_adapter
@@ -16,33 +17,28 @@ RSpec.describe Uptime do
     class FakeUptimeAdapter
       def check; end
 
-      def create(service_name, host); end
+      def create(service_name, host, service_id); end
 
       def update(check_id, service_name, host); end
 
       def destroy(check_id); end
+
+      def exists?(service_id); end
     end
     FakeUptimeAdapter
     # rubocop:enable Lint/ConstantDefinitionInBlock
   end
   let(:check_id) { 'some-check-id' }
-  let(:adpater_response) do
-    {
-      'check' => {
-        'id' => check_id
-      }
-    }
-  end
 
   describe '#create' do
     context 'when no uptime check exists for service' do
       it 'calls create on the adapter' do
-        expect_any_instance_of(fake_uptime_adapter).to receive(:create).with(service_name, host).and_return(adpater_response)
+        expect_any_instance_of(fake_uptime_adapter).to receive(:create).with(service_name, host, service_id).and_return(check_id)
         uptime.create
       end
 
       it 'creates a new uptime check in the database' do
-        allow_any_instance_of(fake_uptime_adapter).to receive(:create).and_return(adpater_response)
+        allow_any_instance_of(fake_uptime_adapter).to receive(:create).and_return(check_id)
         uptime.create
 
         expect(UptimeCheck.find_by(service_id: service_id).check_id).to eq(check_id)
@@ -60,6 +56,7 @@ RSpec.describe Uptime do
       end
 
       it 'calls update' do
+        expect_any_instance_of(fake_uptime_adapter).to receive(:exists?).with(service_id).and_return(true)
         expect(uptime).to receive(:update)
         uptime.create
       end
@@ -89,7 +86,8 @@ RSpec.describe Uptime do
   describe '#destroy' do
     let(:attributes) do
       {
-        service_id: service_id,
+        service_id: nil,
+        check_id: check_id,
         service_name: nil,
         host: nil,
         adapter: fake_uptime_adapter
