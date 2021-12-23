@@ -217,7 +217,7 @@ class ForwardUpPath extends FlowConnectorPath {
                      prefix: "h"
                    });
 
-    x += (dimensions.forward1 + CURVE_SPACING);
+    x += (forward1.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
     var up = new Line("up", {
                x: x,
