@@ -762,7 +762,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                });
 
     x += CURVE_SPACING;
-    y += CURVE_SPACING;
+    y += (down1.prop("length") + CURVE_SPACING);
     var forward1 = new Line("forward1", {
                      x: x,
                      y: y,
@@ -770,7 +770,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                      prefix: "h"
                    });
 
-    x += (forward1 + CURVE_SPACING);
+    x += (forward1.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
     var down2 = new Line("down2", {
                   x: x,
@@ -780,7 +780,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                 });
 
     x += CURVE_SPACING;
-    y += (down2 + CURVE_SPACING);
+    y += (down2.prop("length") + CURVE_SPACING);
     var forward2 = new Line("forward2", {
                      x: x,
                      y: y,
