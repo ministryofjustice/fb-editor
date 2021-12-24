@@ -20,11 +20,11 @@ module Admin
         },
         {
           name: 'Published to Live',
-          value: published('production')
+          value: published('production').count
         },
         {
           name: 'Published to Test',
-          value: published('dev')
+          value: published('dev').count
         }
       ]
     end
@@ -36,14 +36,6 @@ module Admin
       ActiveRecord::SessionStore::Session.where(
         'updated_at < ?', cutoff_period
       ).count
-    end
-
-    def published(environment)
-      PublishService.where(deployment_environment: environment)
-                    .select('DISTINCT ON ("service_id") *')
-                    .order(:service_id, created_at: :desc)
-                    .select { |ps| ps.status == 'completed' }
-                    .count
     end
   end
 end

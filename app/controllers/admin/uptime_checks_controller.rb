@@ -64,11 +64,7 @@ module Admin
     end
 
     def published_services_uuids
-      @published_services_uuids ||=
-        PublishService.production
-                      .completed
-                      .select('distinct(service_id)')
-                      .pluck(:service_id)
+      @published_services_uuids ||= published('production').map(&:service_id)
     end
 
     def non_editor_service_checks
