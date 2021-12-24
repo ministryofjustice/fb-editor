@@ -36,10 +36,11 @@
               <%= service.service_slug %>
             </td>
             <td class="govuk-table__cell">
-              <%= link_to 'Create',
-                  admin_uptime_checks_path(id: service.service_id),
-                  method: :post,
-                  class: 'govuk-button fb-govuk-button' %>
+              <%= form_with url: admin_uptime_checks_path,
+                  method: :post do |form| %>
+                  <%= form.hidden_field(:id, value: service.service_id) %>
+                  <%= form.submit('Create', class: 'govuk-button fb-govuk-button') %>
+              <% end %>
             </td>
           </tr>
         <% end %>
@@ -76,10 +77,10 @@
               <%= check['status'] %>
             </td>
             <td class="govuk-table__cell">
-              <%= link_to 'Delete',
-                admin_uptime_check_path(id: check['id']),
-                  method: :delete,
-                  class: 'govuk-button govuk-button--warning' %>
+              <%= form_with url: admin_uptime_check_path(check['id']),
+                  method: :delete do |form| %>
+                  <%= form.submit('Delete', class: 'govuk-button govuk-button--warning') %>
+              <% end %>
             </td>
           </tr>
         <% end %>
