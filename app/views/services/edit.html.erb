@@ -113,7 +113,11 @@
                         service.service_id, params[:flow_uuid]),
                  method: :post do |form| %>
                   <%= form.submit('Understood', class: 'govuk-button') %>
-<%= form.hidden_field :destination_uuid, value: params[:destination_uuid] %>
+    <%= form.hidden_field :destination_uuid, value: params[:destination_uuid] %>
+    <%= form.hidden_field :user_confirmation, value: 'true' %>
+    <%= form.label :page_url, class: "govuk-label govuk-label--m" %>
+    <span class="govuk-hint"><%= t('pages.disconnecting_modal.unconnected_pages_message') %></span>
+    <span class="govuk-hint"><%= t('pages.disconnecting_modal.no_data_message') %></span>
   <% end %>
 </div>
 <% end %>
