@@ -3,7 +3,7 @@ class Destination
   include ApplicationHelper
   include DestinationsList
   include MetadataVersion
-  attr_accessor :service, :flow_uuid, :destination_uuid, :latest_metadata
+  attr_accessor :service, :flow_uuid, :destination_uuid
 
   alias_method :change, :create_version
 

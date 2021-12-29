@@ -24,7 +24,7 @@ module Api
 
     private
 
-    #rubocop:disable Naming/MemoizedInstanceVariableName
+    # rubocop:disable Naming/MemoizedInstanceVariableName
     def destination
       @_destination ||= Destination.new(
         service: service,
@@ -32,6 +32,6 @@ module Api
         destination_uuid: params[:destination_uuid]
       )
     end
-    #rubocop:enable Naming/MemoizedInstanceVariableName
+    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 end

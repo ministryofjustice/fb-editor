@@ -4,7 +4,7 @@ class PublishController < FormController
   def index
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
-    @publish_warning = PublishWarningPresenter.new(service, :publish)
+    @publish_warning = PublishPresenter.new(service)
   end
 
   def create

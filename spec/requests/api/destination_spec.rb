@@ -90,7 +90,7 @@ RSpec.describe 'Destinations spec', type: :request do
 
     context 'disconnecting CYA and confirmation pages' do
       let(:metadata) { metadata_fixture(:version) }
-      
+
       context 'without user confirmation' do
         shared_examples 'redirect with confirmation modal' do
           it 'does not change the destination' do
@@ -142,9 +142,9 @@ RSpec.describe 'Destinations spec', type: :request do
         let(:request) do
           post "/api/services/#{service.service_id}/flow/#{flow_uuid}/destinations",
                params: {
-                destination_uuid: destination_uuid,
-                user_confirmation: 'true'
-              }
+                 destination_uuid: destination_uuid,
+                 user_confirmation: 'true'
+               }
         end
         let(:expected_redirect_url) { "/services/#{service.service_id}/edit" }
 
