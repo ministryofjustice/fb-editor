@@ -11,28 +11,69 @@ feature 'Deleting page' do
   end
 
   scenario 'change destination to another page' do
-    given_I_want_to_change_destination_of_page_b
-    when_I_change_destination_to_page_j
+    given_I_want_to_change_destination_of_a_page('Page b')
+    when_I_change_destination_to_page('Page j')
     then_page_j_should_be_after_page_b
     then_some_pages_should_be_unconnected
   end
 
   scenario 'change destination in the middle of a branch' do
-    given_I_want_to_change_destination_of_page_b
-    when_I_change_destination_to_page_d
+    given_I_want_to_change_destination_of_a_page('Page b')
+    when_I_change_destination_to_page('Page d')
     then_page_d_should_be_after_page_b
     and_the_branching_should_be_unconnected
   end
 
-  def given_I_want_to_change_destination_of_page_b
-    editor.hover_preview('Page b')
+  scenario 'change destination to disconnect CYA and confirmation pages' do
+    given_I_want_to_change_destination_of_a_page('Page j')
+    when_I_change_destination_to_page('Page d')
+    then_I_should_see_the_disconnect_modal
+    when_I_click_cancel
+    then_no_pages_should_be_unconnected
+    given_I_want_to_change_destination_of_a_page('Page j')
+    when_I_change_destination_to_page('Page d')
+    then_I_should_see_the_disconnect_modal
+    when_I_click_continue
+    then_cya_and_confirmation_pages_should_be_unconnected
+  end
+
+  def given_I_want_to_change_destination_of_a_page(page)
+    editor.hover_preview(page)
     editor.three_dots_button.click
     editor.change_destination_link.click
   end
 
-  def when_I_change_destination_to_page_j
-    select 'Page j'
+  def when_I_change_destination_to_page(page)
+    select page
     editor.change_next_page_button.click
+  end
+
+  def when_I_click_continue
+    editor.continue_button.click
+  end
+
+  def when_I_click_cancel
+    editor.cancel_button.click
+  end
+
+  def then_I_should_see_the_disconnect_modal
+    # wait for the modal to appear
+    sleep(2)
+    expect(editor.text).to include(I18n.t('pages.disconnecting_modal.unconnected_pages_message'))
+  end
+
+  def then_no_pages_should_be_unconnected
+    expect(editor.text).to_not include(I18n.t('pages.flow.detached'))
+  end
+
+  def then_cya_and_confirmation_pages_should_be_unconnected
+    editor.unconnected_expand_link.click
+    expect(editor.unconnected_flow).to eq(
+      [
+        'Check your answers',
+        'Application complete'
+      ]
+    )
   end
 
   def then_page_j_should_be_after_page_b
@@ -67,11 +108,6 @@ feature 'Deleting page' do
         'Page j'
       ]
     )
-  end
-
-  def when_I_change_destination_to_page_d
-    select 'Page d'
-    editor.change_next_page_button.click
   end
 
   def then_page_d_should_be_after_page_b
