@@ -11,10 +11,15 @@ class WarningPresenter
       cya_page_not_present_message
   end
 
+  def cya_and_confirmation_missing?
+    !checkanswers_in_main_flow? &&
+      !confirmation_in_main_flow?
+  end
+
   private
 
   def submitting_pages_not_present_message
-    if !checkanswers_in_main_flow? && !confirmation_in_main_flow?
+    if cya_and_confirmation_missing?
       messages[:both_pages]
     end
   end

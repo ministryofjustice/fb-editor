@@ -1,0 +1,22 @@
+<% if params[:flow_uuid].present? %>
+<div class="component-dialog-form"
+     data-component="DisconnectDialog"
+     data-cancel-text="<%= t('pages.cancel') %>">
+   <%= form_with url: api_service_flow_destinations_path(
+                        service.service_id, params[:flow_uuid]),
+                 method: :post do |form| %>
+                  <%= form.submit(t('actions.continue'), class: 'govuk-button') %>
+    <%= form.hidden_field :destination_uuid, value: params[:destination_uuid] %>
+    <%= form.hidden_field :user_confirmation, value: 'true' %>
+    <%= form.label @change_destination_confirmation.message, class: "govuk-label govuk-label--m" %>
+    <span class="govuk-hint">
+      <% if @change_destination_confirmation.cya_and_confirmation_missing? %>
+        <%= t('pages.disconnecting_modal.unconnected_pages_message') %>
+      <% else %>
+        <%= t('pages.disconnecting_modal.unconnected_single_page_message') %>
+      <% end %>
+    </span>
+    <span class="govuk-hint"><%= t('pages.disconnecting_modal.no_data_message') %></span>
+  <% end %>
+</div>
+<% end %>

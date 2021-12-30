@@ -24,7 +24,6 @@ const post = utilities.post;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
-const Dialog = require('./component_dialog');
 
 
 class ServicesController extends DefaultController {
@@ -50,9 +49,9 @@ ServicesController.edit = function() {
   view.$flowDetached = $("#flow-detached");
 
   createPageAdditionDialog(view);
-  disconnectDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
+  createDisconnectDialog(view);
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -186,7 +185,6 @@ class FlowItemMenu extends ActivatedMenu {
     });
   }
 }
-
 
 /* VIEW SPECIFIC COMPONENT:
  * ------------------------
@@ -345,6 +343,21 @@ function createFlowItemMenus(view) {
   });
 }
 
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Create the menu effect and required functionality for disconnecting CYA or Confirmation
+ * page through 'Change Destination'.
+ **/
+function createDisconnectDialog(view) {
+  var $dialog = $("[data-component='DisconnectDialog']"); // Expect only one
+  if ($dialog.length){
+    view.createDisconnectDialog = new FormDialog($dialog, {
+      autoOpen: true,
+      view: view,
+      cancelText: $dialog.attr("data-cancel-text")
+    });
+  }
+}
 
 /* VIEW SETUP FUNCTION:
  * --------------------
@@ -668,19 +681,6 @@ function positionAddPageButton() {
       });
     }
   });
-}
-
-function disconnectDialog(view) {
-  var $dialog = $("[data-component='DisconnectDialog']"); // Expect only one
-  var $form = $dialog.find("form");
-  // var $change = $dialog.find(".disconnect-message");
- if ($dialog.length){
-  view.disconnectDialog = new Dialog($dialog, {
-    autoOpen: true,
-    view: view,
-    cancelText: $dialog.attr("data-cancel-text")
-  });
-  }
 }
 
 module.exports = ServicesController;

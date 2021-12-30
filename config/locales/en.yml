@@ -149,7 +149,8 @@ en:
       both_pages: 'This will remove the check answers and confirmation pages'
       cya: 'This will remove the check answers page'
       confirmation: 'This will remove the confirmation page'
-      unconnected_pages_message: 'It will be moved to the unconnected pages section.'
+      unconnected_single_page_message: 'It will be moved to the unconnected pages section.'
+      unconnected_pages_message: 'They will be moved to the unconnected pages section.'
       no_data_message: 'You won’t receive any user data without a check answers page and confirmation page connected to your form.'
     destination:
       heading: 'Change destination'

@@ -12,6 +12,8 @@ class DisconnectPresenter < WarningPresenter
     super(updated_service)
   end
 
+  private
+
   # we need a service which represents what the metadata WOULD look like
   # if the user changed the destination
   def updated_service
