@@ -12,8 +12,10 @@ class Destination
   end
 
   def metadata
-    service.flow[flow_uuid]['next']['default'] = destination_uuid
-    service.metadata.to_h.deep_stringify_keys
+    @metadata ||= begin
+      service.flow[flow_uuid]['next']['default'] = destination_uuid
+      service.metadata.to_h.deep_stringify_keys
+    end
   end
 
   def destinations
@@ -23,6 +25,19 @@ class Destination
 
   def current_destination
     service.flow_object(flow_uuid).default_next
+  end
+
+  def cya_and_confirmation_present?
+    grid.flow_uuids.include?(service.checkanswers_page.uuid) &&
+      grid.flow_uuids.include?(service.confirmation_page.uuid)
+  end
+
+  def checkanswers_detached?
+    !grid.flow_uuids.include?(service.checkanswers_page.uuid)
+  end
+
+  def confirmation_detached?
+    !grid.flow_uuids.include?(service.confirmation_page.uuid)
   end
 
   private

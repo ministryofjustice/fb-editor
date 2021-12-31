@@ -18,9 +18,19 @@ class ServicesController < PermissionsController
   def edit
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
-    @publish_warning = PublishWarningPresenter.new(service, :publish)
+    @publish_warning = PublishPresenter.new(service)
     @detached_flows = flow.detached_flows
     @page_creation = PageCreation.new
+
+    if params[:flow_uuid].present?
+      @change_destination_confirmation = DisconnectPresenter.new(
+        Destination.new(
+          service: service,
+          flow_uuid: params[:flow_uuid],
+          destination_uuid: params[:destination_uuid]
+        )
+      )
+    end
   end
 
   def services
