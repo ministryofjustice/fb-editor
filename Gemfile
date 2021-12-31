@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.3'
+ruby '2.7.5'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -15,11 +15,11 @@ gem 'delayed_job_active_record'
 #    github: 'ministryofjustice/fb-metadata-presenter',
 #    branch: 'add-branching-title'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.14.1'
+gem 'metadata_presenter', '2.15.0'
 
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'fb-jwt-auth', '0.7.0'
+gem 'fb-jwt-auth', '0.8.0'
 gem 'hashie'
 gem 'omniauth-auth0', '~> 3.0.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.0'
