@@ -24,7 +24,8 @@ const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
 const CURVE_DOWN_LEFT = "a10,10 0 0 1 -10,10";
 const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
-
+const HORIZONTAL = "horizontal";
+const VERTICAL = "vertical";
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -63,9 +64,14 @@ class FlowConnectorPath {
     this._path = "";
   }
 
+  get path() {
+    return this._path;
+  }
+
   build(path) {
     this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
-    this.$node.addClass(this.type)
+    this.$node.addClass("FlowConnectorPath")
+              .addClass(this.type)
               .attr("id", this.id)
               .attr("data-from", this._config.from.attr("id"))
               .attr("data-to", this._config.to.attr("id"))
@@ -77,8 +83,16 @@ class FlowConnectorPath {
     this.makeLinesVisibleForTesting();
   }
 
-  get path() {
-    return this._path;
+  // Return all FlowConnectorLines or just those matching the passed type.
+  lines(type="") {
+    var lineArr = this._dimensions.lines;
+    var filtered = [];
+    for(var i=0; i<lineArr.length; ++i) {
+      if(lineArr[i].type == type) {
+        filtered.push(lineArr[i]);
+      }
+    }
+    return filtered.length && filtered || lineArr;
   }
 
   nudge(nX, nY, nZ) {
@@ -169,7 +183,7 @@ class ForwardPath extends FlowConnectorPath {
   set path(dimensions) {
     var x = this.points.from_x;
     var y = this.points.from_y;
-    var forward = new Line("forward", {
+    var forward = new FlowConnectorLine("forward", {
                     x: x,
                     y: y,
                     length: dimensions.forward,
@@ -210,7 +224,7 @@ class ForwardUpPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -219,7 +233,7 @@ class ForwardUpPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
                x: x,
                y: y,
                length: dimensions.up,
@@ -228,7 +242,7 @@ class ForwardUpPath extends FlowConnectorPath {
 
    x += CURVE_SPACING;
    y -= (up.prop("length") + CURVE_SPACING);
-   var forward2 = new Line("forward2", {
+   var forward2 = new FlowConnectorLine("forward2", {
                     x: x,
                     y: y,
                     length: dimensions.forward2,
@@ -286,7 +300,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                  x: x,
                  y: y,
                  length: dimensions.forward1,
@@ -295,7 +309,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += forward1.prop("length") + CURVE_SPACING;
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
            x: x,
            y: y,
            length: dimensions.up,
@@ -304,7 +318,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("forward2", {
+    var forward2 = new FlowConnectorLine("forward2", {
                  x: x,
                  y: y,
                  length: dimensions.forward2,
@@ -313,7 +327,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += (forward2.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
-    var down = new Line("down", {
+    var down = new FlowConnectorLine("down", {
              x: x,
              y: y,
              length: dimensions.down,
@@ -371,7 +385,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -380,7 +394,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
-    var down = new Line("down", {
+    var down = new FlowConnectorLine("down", {
                  x: x,
                  y: y,
                  length: dimensions.down,
@@ -389,7 +403,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x -= CURVE_SPACING;
     y += (down.prop("length") + CURVE_SPACING);
-    var backward = new Line("backward", {
+    var backward = new FlowConnectorLine("backward", {
                      x: x,
                      y: y,
                      length: dimensions.backward,
@@ -398,7 +412,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x -= (backward.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
                x: x,
                y: y,
                length: dimensions.up,
@@ -407,7 +421,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("up", {
+    var forward2 = new FlowConnectorLine("up", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -468,7 +482,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down1 = new Line("forward1", {
+    var down1 = new FlowConnectorLine("forward1", {
                   x: x,
                   y: y,
                   length: dimensions.down1,
@@ -477,7 +491,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -486,7 +500,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
-    var down2 = new Line("down2", {
+    var down2 = new FlowConnectorLine("down2", {
                   x: x,
                   y: y,
                   length: dimensions.down2,
@@ -495,7 +509,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x -= CURVE_SPACING;
     y += (down2.prop("length") + CURVE_SPACING);
-    var backward = new Line("backward", {
+    var backward = new FlowConnectorLine("backward", {
                      x: x,
                      y: y,
                      length: dimensions.backward,
@@ -504,7 +518,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x -= (CURVE_SPACING + dimensions.backward);
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
                x: x,
                y: y,
                length: dimensions.up,
@@ -513,7 +527,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("forward2", {
+    var forward2 = new FlowConnectorLine("forward2", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -575,7 +589,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down = new Line("down", {
+    var down = new FlowConnectorLine("down", {
                  x: x,
                  y: y,
                  length: dimensions.down,
@@ -584,7 +598,7 @@ class DownForwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down.prop("length") + CURVE_SPACING);
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -593,7 +607,7 @@ class DownForwardUpPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
                x: x,
                y: y,
                length: dimensions.up,
@@ -602,7 +616,7 @@ class DownForwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("forward2", {
+    var forward2 = new FlowConnectorLine("forward2", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -659,7 +673,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down1 = new Line("down1", {
+    var down1 = new FlowConnectorLine("down1", {
                  x: x,
                  y: y,
                  length: dimensions.down1,
@@ -668,7 +682,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -677,7 +691,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y -= CURVE_SPACING;
-    var up = new Line("up", {
+    var up = new FlowConnectorLine("up", {
                x: x,
                y: y,
                length: dimensions.up,
@@ -686,7 +700,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("forward2", {
+    var forward2 = new FlowConnectorLine("forward2", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -695,7 +709,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     x += (forward2.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
-    var down2 = new Line("down2", {
+    var down2 = new FlowConnectorLine("down2", {
                   x: x,
                   y: y,
                   length: dimensions.down2,
@@ -754,7 +768,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down1 = new Line("down1", {
+    var down1 = new FlowConnectorLine("down1", {
                  x: x,
                  y: y,
                  length: dimensions.down1,
@@ -763,7 +777,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new Line("forward1", {
+    var forward1 = new FlowConnectorLine("forward1", {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
@@ -772,7 +786,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 
     x += (forward1.prop("length") + CURVE_SPACING);
     y += CURVE_SPACING;
-    var down2 = new Line("down2", {
+    var down2 = new FlowConnectorLine("down2", {
                   x: x,
                   y: y,
                   length: dimensions.down2,
@@ -781,7 +795,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down2.prop("length") + CURVE_SPACING);
-    var forward2 = new Line("forward2", {
+    var forward2 = new FlowConnectorLine("forward2", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -834,7 +848,7 @@ class DownForwardPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down = new Line("down", {
+    var down = new FlowConnectorLine("down", {
                  x: x,
                  y: y,
                  length: dimensions.down,
@@ -843,7 +857,7 @@ class DownForwardPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y += (down.prop("length") + CURVE_SPACING);
-    var forward = new Line("forward", {
+    var forward = new FlowConnectorLine("forward", {
            x: x,
            y: y,
            length: dimensions.forward,
@@ -867,7 +881,7 @@ class DownForwardPath extends FlowConnectorPath {
 }
 
 
-class Line {
+class FlowConnectorLine {
 
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
   // @config (Object) Should be populated with {
@@ -886,9 +900,9 @@ class Line {
     }
 
     switch(config.prefix.charAt(0)) {
-      case "h": this.type = "horizontal";
+      case "h": this.type = HORIZONTAL;
          break;
-      case "v": this.type = "vertical";
+      case "v": this.type = VERTICAL;
          break;
       default: this.type = "uknown";
     }
@@ -919,7 +933,7 @@ class Line {
 
   set range(points /* [x, y] */) {
     var r = [];
-    var begin = (this._private.type == "horizontal") ? [0] : [1];
+    var begin = (this._private.type == HORIZONTAL) ? points[0] : points[1];
     var end = this._private.length;
     if(begin > end) {
       for(var i=begin; i > end; --i) {
@@ -957,8 +971,9 @@ class Line {
                  xy(this._private.x, this._private.y),
                  this.path
                ));
-
-    return createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" "));
+    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" "));
+    $svg.addClass("FlowConnectorLine");
+    return $svg
   }
 }
 
@@ -984,7 +999,6 @@ function createSvg(paths) {
   const SVG_TAG_OPEN = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
   const SVG_TAG_CLOSE = "</svg>";
   var $svg = $(SVG_TAG_OPEN + paths + SVG_TAG_CLOSE);
-  $svg.addClass("FlowConnectorPath");
   return $svg;
 }
 
