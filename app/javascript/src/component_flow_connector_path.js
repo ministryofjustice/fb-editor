@@ -126,27 +126,20 @@ class FlowConnectorPath {
     //
   }
 
-  avoidOverlap(coords) {
-    // This function should be able to compare any passed coordinates with its own internal
-    // positions that the makeup of its path occupies. If any path is found to occupy space
-    // within the passed coordinate object, the function should return the name of which
-    // path does.
-// TODO adjust comment above...
-    // If an overlap is found with the passed coordinates, the FlowConnectorPath nudge()
-    // functionality is called to shift the line that matches (overlaps) with the passed
-    // coordinates. The nudge() functionality is shifted by a factor of 1, e.g nudge(1, 0)
+  avoidOverlap(path) {
+    // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
+    // functionality of the passed path is called to shift the line that matches (overlaps).
+    // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
+    //
+    // The nudge() functionality is shifted by a factor of 1, e.g nudge(1, 0)
     //
     // This function isn't needed by all type of FlowConnectorPaths, so some will inherit
     // and use this empty function but, others will want to have a customised version that
     // works with their own path makeup.
-    // e.g. something like this:
-    // if(coordsOverlap(this.dimensions.coords.forward, coords)) {
-    //   this.nudge(1, 0); // or whatever makes sense
-    // }
     //
-    // The general idea should be that the Overview object (or controller script) should
-    // loop over found FlowConnectorPaths, and pass known used coordinates into each
-    // in something like a `item.avoidOverlap({from[x,y], to:[x,y]});` form.
+    // The general idea should be that an Overview object (or controller script) should
+    // loop over found FlowConnectorPaths passing each one, in turn, into this function
+    // for overlap comparison.
   }
 
   makeLinesVisibleForTesting() {
