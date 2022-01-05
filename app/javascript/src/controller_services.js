@@ -328,8 +328,9 @@ function layoutFormFlowOverview(view) {
   }
 
   adjustOverviewHeight(view.$flowOverview);
-  applyArrowPagePaths(view.$flowOverview);
-  applyArrowBranchPaths(view.$flowOverview);
+  applyPageFlowConnectorPaths(view.$flowOverview);
+  applyBranchFlowConnectorPaths(view.$flowOverview);
+  adjustOverlappingFlowConnectorPaths(view.$flowOverview);
   applyOverviewScroll(view.$flowOverview);
 }
 
@@ -624,7 +625,7 @@ function adjustOverviewScrollDimensions($overview, $container) {
  * Note: Due to Branches working a little differently in terms of arrow
  * design, they are excluded from this function and put in one of their own.
  **/
-function applyArrowPagePaths($overview) {
+function applyPageFlowConnectorPaths($overview) {
   var $itemsByRow = $overview.find("[row]");
   var $items = $overview.find(".flow-page[data-next]");
   var rowHeight = utilities.maxHeight($items); // There's always a starting page.
@@ -663,7 +664,7 @@ function applyArrowPagePaths($overview) {
  * Note: Branches arrows are a bit different from those between pages, so
  * dealing with them separately from other page arrows.
  **/
-function applyArrowBranchPaths($overview) {
+function applyBranchFlowConnectorPaths($overview) {
   var $itemsByRow = $overview.find("[row]");
   var rowHeight = utilities.maxHeight($itemsByRow);
 
@@ -791,6 +792,34 @@ function applyArrowBranchPaths($overview) {
         }
       }
 
+    });
+  });
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Finds and loops over each FlowConnectorPaths calling the avoidOverlap function.
+ * Within each iteration, each of the other FlowConnectorPaths are passed in for
+ * comparison. The FlowConnectorPaths.avoidOverlap() function will handle the rest.
+ *
+ * @$overview (jQuery node) Overview container for form layout.
+ **/
+function adjustOverlappingFlowConnectorPaths($overview) {
+  var $paths = $overview.find(".FlowConnectorPath");
+  var horizontalLines = [];
+  var verticalLines = [];
+
+  $paths.each(function() {
+    var $path = $(this);
+    var path = $path.data("instance");
+
+    $paths.each(function() {
+      var $current = $(this);
+      var current = $current.data("instance");
+      if(path.id != current.id) {
+        path.avoidOverlap(current);
+      }
     });
   });
 }

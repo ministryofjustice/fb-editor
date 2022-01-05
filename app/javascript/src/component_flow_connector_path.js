@@ -26,6 +26,7 @@ const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
 const HORIZONTAL = "horizontal";
 const VERTICAL = "vertical";
+const PATH_OVERLAP_MINIMUM = 50; // Minimum amount of overlapping contact point to trigger an overlap situation.
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -87,12 +88,13 @@ class FlowConnectorPath {
   lines(type="") {
     var lineArr = this._dimensions.lines;
     var filtered = [];
+
     for(var i=0; i<lineArr.length; ++i) {
       if(lineArr[i].type == type) {
         filtered.push(lineArr[i]);
       }
     }
-    return filtered.length && filtered || lineArr;
+    return type != "" ? filtered : lineArr;
   }
 
   nudge(nX, nY, nZ) {
@@ -150,13 +152,6 @@ class FlowConnectorPath {
       this._config.container.append(this._dimensions.lines[i].testOnlySvg());
     }
   }
-}
-
-function coordsOverlap(coords1, coords2) {
-  // TODO: Incomplete idea - not sure what's happening here, just yet.
-  //coords1 = { from: [0,0], to: [0,10] };
-  //coords1 = { from: [0,5], to: [0,10] };
-  return false;
 }
 
 
@@ -266,9 +261,35 @@ class ForwardUpPath extends FlowConnectorPath {
     this.$node.find("path:first").attr("d", this._path);
   }
 
-  avoidOverlap(coords) {
-    var name = ""; // A line name (see dimensions)
-    return name;
+  avoidOverlap(path) {
+    // TODO: WIP currently only concerned with vertical lines.
+    //       This will develop and evolve as solutions are found.
+    console.group("avoidOverlap");
+    var vLines = this.lines("vertical");
+    var hLines = this.lines("horizontal");
+    var vComparisonLines = path.lines("vertical");
+    var hComparisonLines = path.lines("horizontal");
+
+    for(var v=0; v < vLines.length; ++v) {
+      let vr = vLines[v].range;
+
+      for(var c=0; c < vComparisonLines.length; ++c) {
+        let cr = vComparisonLines[c].range;
+        let overlapCount = 0;
+
+        for(var i=0; i < cr.length; ++i) {
+          if(vr.indexOf(cr[i]) >= 0) {
+            overlapCount++;
+          }
+        }
+
+        if(overlapCount >= PATH_OVERLAP_MINIMUM) {
+          console.error("Overlap found between '%s' and '%s'", vLines[v].name, vComparisonLines[c].name);
+          //path.nudge(vComparisonLines[c].name);
+        }
+      }
+    }
+    console.groupEnd();
   }
 }
 
@@ -414,7 +435,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     x += CURVE_SPACING;
     y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("up", {
+    var forward2 = new FlowConnectorLine("forward2", {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
@@ -475,7 +496,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     var x = this.points.from_x;
     var y = this.points.from_y;
 
-    var down1 = new FlowConnectorLine("forward1", {
+    var down1 = new FlowConnectorLine("down1", {
                   x: x,
                   y: y,
                   length: dimensions.down1,
