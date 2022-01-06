@@ -7,19 +7,16 @@ module Api
     end
 
     def create
-      destination.metadata
-
-      if destination.cya_and_confirmation_present? || destination_change_confirmed?
+      if page_disconnection_warning.show_warning? && params[:user_confirmation].blank?
+        redirect_to edit_service_path(
+          service.service_id,
+          flow_uuid: params[:flow_uuid],
+          destination_uuid: params[:destination_uuid]
+        )
+      else
         destination.change
         redirect_to edit_service_path(service.service_id)
-      else
-        redirect_to edit_service_path(service.service_id, flow_uuid: params[:flow_uuid], destination_uuid: params[:destination_uuid])
       end
-    end
-
-    def destination_change_confirmed?
-      (destination.checkanswers_detached? || destination.confirmation_detached?) &&
-        params[:user_confirmation].present?
     end
 
     private
@@ -33,5 +30,26 @@ module Api
       )
     end
     # rubocop:enable Naming/MemoizedInstanceVariableName
+
+    def page_disconnection_warning
+      PageDisconnectionWarning.new(
+        current_grid: current_grid,
+        potential_grid: potential_grid
+      )
+    end
+
+    def current_grid
+      grid = MetadataPresenter::Grid.new(service)
+      grid.build
+      grid
+    end
+
+    def potential_grid
+      grid = MetadataPresenter::Grid.new(
+        MetadataPresenter::Service.new(destination.metadata)
+      )
+      grid.build
+      grid
+    end
   end
 end
