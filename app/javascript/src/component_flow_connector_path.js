@@ -292,6 +292,7 @@ class ForwardUpPath extends FlowConnectorPath {
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
       case "up":
+console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
            break;
@@ -595,6 +596,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     var d = this._dimensions.current;
     switch(linename) {
       case "down2":
+console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
     }
@@ -679,10 +681,12 @@ class DownForwardUpPath extends FlowConnectorPath {
     switch(linename) {
       case "down":
       case "forward1":
+           console.log("DEV HELPER MESSAGE: This can be ignored");
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
            break;
       case "up":
+console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
            break;
@@ -780,8 +784,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                  );
   }
 
+/*
   nudge(nF, nU) {
-return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
@@ -790,6 +794,23 @@ return;
       down2: this._dimensions.current.down2 + (nU * NUDGE_SPACING)
     }
     this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+*/
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "down1":
+           console.log("DEV HELPER MESSAGE: This can be ignored");
+           // There should be no clash on this line by leaving this line and comment for code clarity.
+           break;
+      case "up":
+console.log("fixed");
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 -= NUDGE_SPACING;
+           break;
+    }
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
@@ -928,6 +949,11 @@ class DownForwardPath extends FlowConnectorPath {
   // nudge() functionality is also not a requirement. The 'down1' line is likely to clash with
   // others coming from the same Branch node, but they are ok to overlap as they should all
   // appear to be a single line.
+  nudge(linename) {
+    switch(linename) {
+      case "down": console.log("DEV HELPER MESSAGE: This can be ignored");
+    }
+  }
 }
 
 
