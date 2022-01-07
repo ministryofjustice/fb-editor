@@ -17,7 +17,7 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 10;
-const NUDGE_SPACING = 5;
+const NUDGE_SPACING = 10;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
@@ -81,7 +81,7 @@ class FlowConnectorPath {
     this._config.container.append(this.$node);
 
     // Uncomment for developer helper code only
-    this.makeLinesVisibleForTesting();
+    //this.makeLinesVisibleForTesting();
   }
 
   // Return all FlowConnectorLines or just those matching the passed type.
@@ -178,7 +178,10 @@ console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vC
           // If there were enough overlaps (matched points in each) then we need to nudge a line.
           if(overlapCount >= PATH_OVERLAP_MINIMUM) {
             console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
-            //path.nudge(vComparisonLines[c].name);
+if(path.type == "ForwardUpPath") {
+console.warn("HERE............................");
+            path.nudge(vComparisonLines[c].name);
+}
           }
         }
       }
@@ -284,33 +287,21 @@ class ForwardUpPath extends FlowConnectorPath {
                  );
   }
 
-  nudge(nF) {
-    var dimensions = {
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      up: this._dimensions.current.up, // No movement should be required (and therefore possible) for this line.
-      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING)
-    }
-
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-/* TODO....
   nudge(linename) {
-    console.log("linename: ", linename);
     var d = this._dimensions.current;
     switch(linename) {
       case "forward":
-           console.log("change forward");
+           // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
       case "up":
-           console.log("change up");
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
            break;
     }
-    console.log("d: ", d);
+
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
-*/
 }
 
 
