@@ -26,7 +26,7 @@ const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
 const HORIZONTAL = "horizontal";
 const VERTICAL = "vertical";
-const PATH_OVERLAP_MINIMUM = 50; // Minimum amount of overlapping contact point to trigger an overlap situation.
+const PATH_OVERLAP_MINIMUM = 10; // Minimum amount of overlapping contact point to trigger an overlap situation.
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -128,22 +128,6 @@ class FlowConnectorPath {
     //
   }
 
-  avoidOverlap(path) {
-    // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
-    // functionality of the passed path is called to shift the line that matches (overlaps).
-    // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
-    //
-    // The nudge() functionality is shifted by a factor of 1, e.g nudge(1, 0)
-    //
-    // This function isn't needed by all type of FlowConnectorPaths, so some will inherit
-    // and use this empty function but, others will want to have a customised version that
-    // works with their own path makeup.
-    //
-    // The general idea should be that an Overview object (or controller script) should
-    // loop over found FlowConnectorPaths passing each one, in turn, into this function
-    // for overlap comparison.
-  }
-
   makeLinesVisibleForTesting() {
     // DEVELOPMENT ONLY FUNCTION
     // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
@@ -151,6 +135,56 @@ class FlowConnectorPath {
     for(var i=0; i<this._dimensions.lines.length; ++i) {
       this._config.container.append(this._dimensions.lines[i].testOnlySvg());
     }
+  }
+
+  avoidOverlap(path) {
+    // TODO: WIP currently only concerned with vertical lines.
+    //       This will develop and evolve as solutions are found.
+    // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
+    // functionality of the passed path is called to shift the line that matches (overlaps).
+    // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
+    //
+    // The general idea should be that an Overview object (or controller script) should
+    // loop over found FlowConnectorPaths passing each one, in turn, into this function
+    // for overlap comparison.
+    var vLines = this.lines("vertical");
+    var hLines = this.lines("horizontal");
+    var vComparisonLines = path.lines("vertical");
+    var hComparisonLines = path.lines("horizontal");
+
+    // Loop over each line in current FlowConnectorPath
+    for(var v=0; v < vLines.length; ++v) {
+      let vr = vLines[v].range;
+
+      // Compare with each line in the passed FlowConnectorPath
+      for(var c=0; c < vComparisonLines.length; ++c) {
+        let cr = vComparisonLines[c].range;
+        let vLineX = vLines[v].prop("x");
+        let vComparisonLineX = vComparisonLines[c].prop("x");
+        let overlapCount = 0;
+
+console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vComparisonLines[c].name, (vComparisonLineX >= (vLineX - 2) && vComparisonLineX <= (vLineX + 2)));
+
+        // For vertical lines, we need to first check if they occupy the same horizontal point/position.
+        if(vComparisonLineX >= (vLineX - 2) && vComparisonLineX <= (vLineX + 2)) { // 2 is just for some pixel tolerance
+
+          // Check each point in the comparison line range to find matches in the current line range.
+          for(var i=0; i < cr.length; ++i) {
+            if(vr.indexOf(cr[i]) >= 0) {
+              overlapCount++;
+            }
+          }
+
+          // If there were enough overlaps (matched points in each) then we need to nudge a line.
+          if(overlapCount >= PATH_OVERLAP_MINIMUM) {
+            console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
+            //path.nudge(vComparisonLines[c].name);
+          }
+        }
+      }
+    }
+
+    console.groupEnd();
   }
 }
 
@@ -199,7 +233,7 @@ class ForwardUpPath extends FlowConnectorPath {
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       up: Math.round(this.points.yDifference - (CURVE_SPACING * 2)),
-      forward2: utilities.difference(Math.round((this.points.from_x + this.points.via_x) - CURVE_SPACING), this.points.to_x)
+      forward2: Math.round(utilities.difference((this.points.from_x + this.points.via_x) - CURVE_SPACING, this.points.to_x))
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
@@ -260,37 +294,23 @@ class ForwardUpPath extends FlowConnectorPath {
     this.path = dimensions;
     this.$node.find("path:first").attr("d", this._path);
   }
-
-  avoidOverlap(path) {
-    // TODO: WIP currently only concerned with vertical lines.
-    //       This will develop and evolve as solutions are found.
-    console.group("avoidOverlap");
-    var vLines = this.lines("vertical");
-    var hLines = this.lines("horizontal");
-    var vComparisonLines = path.lines("vertical");
-    var hComparisonLines = path.lines("horizontal");
-
-    for(var v=0; v < vLines.length; ++v) {
-      let vr = vLines[v].range;
-
-      for(var c=0; c < vComparisonLines.length; ++c) {
-        let cr = vComparisonLines[c].range;
-        let overlapCount = 0;
-
-        for(var i=0; i < cr.length; ++i) {
-          if(vr.indexOf(cr[i]) >= 0) {
-            overlapCount++;
-          }
-        }
-
-        if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-          console.error("Overlap found between '%s' and '%s'", vLines[v].name, vComparisonLines[c].name);
-          //path.nudge(vComparisonLines[c].name);
-        }
-      }
+/* TODO....
+  nudge(linename) {
+    console.log("linename: ", linename);
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "forward":
+           console.log("change forward");
+           break;
+      case "up":
+           console.log("change up");
+           break;
     }
-    console.groupEnd();
+    console.log("d: ", d);
+    this.path = d;
+    this.$node.find("path:first").attr("d", this._path);
   }
+*/
 }
 
 
@@ -313,7 +333,6 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   set path(dimensions) {
     var x = this.points.from_x;
     var y = this.points.from_y;
-
     var forward1 = new FlowConnectorLine("forward1", {
                  x: x,
                  y: y,
@@ -470,7 +489,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     this.path = dimensions;
     this.$node.find("path:first").attr("d", this._path);
   }
-
 }
 
 
@@ -478,12 +496,12 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
-      down1: utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING,
-      forward1: this.points.via_x - (CURVE_SPACING * 2),
-      down2: utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2,
-      backward: this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x),
-      up: (utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2,
-      forward2: 0
+      down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
+      forward1: Math.round(this.points.via_x - (CURVE_SPACING * 2)),
+      down2: Math.round(utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2),
+      backward: Math.round(this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x)),
+      up: Math.round((utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2),
+      forward2: 0 // TODO: This doesn't look right. What should it be?
     }
 
     this._dimensions = { original: dimensions };
@@ -678,7 +696,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this._dimensions = { original: dimensions };
-    this.type = "DownForwardUpForwardDown";
+    this.type = "DownForwardUpForwardDownPath";
     this.path = dimensions;
     this.build();
   }
@@ -891,7 +909,9 @@ class DownForwardPath extends FlowConnectorPath {
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
   // to be the next adjacent item, it should not have any overlap issues which would mean
-  // nudge() functionality is also not a requirement.
+  // nudge() functionality is also not a requirement. The 'down1' line is likely to clash with
+  // others coming from the same Branch node, but they are ok to overlap as they should all
+  // appear to be a single line.
 }
 
 
@@ -947,15 +967,17 @@ class FlowConnectorLine {
 
   set range(points /* [x, y] */) {
     var r = [];
-    var begin = (this._private.type == HORIZONTAL) ? points[0] : points[1];
-    var end = this._private.length;
-    if(begin > end) {
-      for(var i=begin; i > end; --i) {
+    var start = (this._private.type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
+    var length = this._private.length;
+
+    // Decide if count goes forward or backward based on line prefix containing minus, or not.
+    if(this._private.prefix.search("-") >= 0) {
+      for(var i=start; i > (start - length); --i) {
         r.push(i);
       }
     }
     else {
-      for(var i=begin; i < end; ++i) {
+      for(var i=start; i < (start + length); ++i) {
         r.push(i);
       }
     }
@@ -985,7 +1007,7 @@ class FlowConnectorLine {
                  xy(this._private.x, this._private.y),
                  this.path
                ));
-    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" "));
+    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.name + "\""));
     $svg.addClass("FlowConnectorLine");
     return $svg
   }
