@@ -289,6 +289,7 @@ class ForwardUpPath extends FlowConnectorPath {
     var d = this._dimensions.current;
     switch(linename) {
       case "forward":
+           console.log("DEV HELPER MESSAGE: This can be ignored");
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
 
@@ -835,7 +836,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this._dimensions = { original: dimensions };
-    this.type = "DownForwardUpForwardDown";
+    this.type = "DownForwardDownForwardPath";
     this.path = dimensions;
     this.build();
   }
@@ -893,8 +894,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                  );
   }
 
+/*
   nudge(nF) {
-return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
@@ -902,6 +903,24 @@ return;
       forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING)
     }
     this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+*/
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "down1":
+           console.log("DEV HELPER MESSAGE: This can be ignored");
+           // There should be no clash on this line by leaving this line and comment for code clarity.
+           break;
+
+      case "down2":
+console.log("fixed");
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           break;
+    }
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
