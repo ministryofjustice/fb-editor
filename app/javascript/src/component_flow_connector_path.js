@@ -576,8 +576,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                  );
   }
 
+/*
   nudge(nD, nB) {
-return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1,
@@ -588,6 +588,18 @@ return;
     }
 
     this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+*/
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "down2":
+           d.forward1 -= NUDGE_SPACING;
+           d.backward -= NUDGE_SPACING;
+    }
+
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
