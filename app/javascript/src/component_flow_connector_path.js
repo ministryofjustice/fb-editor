@@ -291,6 +291,7 @@ class ForwardUpPath extends FlowConnectorPath {
       case "forward":
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
+
       case "up":
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
@@ -595,6 +596,11 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   nudge(linename) {
     var d = this._dimensions.current;
     switch(linename) {
+      case "down1":
+           console.log("DEV HELPER MESSAGE: This can be ignored");
+           // There should be no clash on this line by leaving this line and comment for code clarity.
+           break;
+
       case "down2":
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
@@ -684,12 +690,13 @@ class DownForwardUpPath extends FlowConnectorPath {
            console.log("DEV HELPER MESSAGE: This can be ignored");
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
-           break;
+
       case "up":
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
            break;
+
       case "forward2":
            // This possibly does not need clash functionality as it is here to support the shifting
            // of the 'up' line only (see workings above to understand).
@@ -804,6 +811,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
            console.log("DEV HELPER MESSAGE: This can be ignored");
            // There should be no clash on this line by leaving this line and comment for code clarity.
            break;
+
       case "up":
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
@@ -978,8 +986,10 @@ class FlowConnectorLine {
     switch(config.prefix.charAt(0)) {
       case "h": this.type = HORIZONTAL;
          break;
+
       case "v": this.type = VERTICAL;
          break;
+
       default: this.type = "uknown";
     }
 
@@ -1033,12 +1043,15 @@ class FlowConnectorLine {
       case "x":
         value = this._private.x;
         break;
+
       case "y":
         value = this._private.y;
         break;
+
       case "length":
         value = this._private.length;
         break;
+
       default: // nothing;
     }
     return value;
