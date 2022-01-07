@@ -178,10 +178,8 @@ console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vC
           // If there were enough overlaps (matched points in each) then we need to nudge a line.
           if(overlapCount >= PATH_OVERLAP_MINIMUM) {
             console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
-if(path.type == "ForwardUpPath") {
-console.warn("HERE............................");
+            console.warn("TYPE: ", path.type);
             path.nudge(vComparisonLines[c].name);
-}
           }
         }
       }
@@ -375,6 +373,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   nudge(nF, nU) {
+return;
     var dimensions = {
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
       up: this._dimensions.current.up + (nU * NUDGE_SPACING),
@@ -469,6 +468,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   nudge(nF, nD, nB) {
+return;
     var dimensions = {
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
       down: this._dimensions.current.down + (nD * NUDGE_SPACING),
@@ -577,6 +577,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   nudge(nD, nB) {
+return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1,
@@ -661,15 +662,25 @@ class DownForwardUpPath extends FlowConnectorPath {
                  );
   }
 
-  nudge(nF) {
-    var dimensions = {
-      down: this._dimensions.current.down,
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      up: this._dimensions.current.up,
-      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING),
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "down":
+      case "forward1":
+           // There should be no clash on this line by leaving this line and comment for code clarity.
+           break;
+           break;
+      case "up":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           break;
+      case "forward2":
+           // This possibly does not need clash functionality as it is here to support the shifting
+           // of the 'up' line only (see workings above to understand).
+           break;
     }
 
-    this.path = dimensions;
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
@@ -758,6 +769,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   nudge(nF, nU) {
+return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
@@ -841,6 +853,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
   }
 
   nudge(nF) {
+return;
     var dimensions = {
       down1: this._dimensions.current.down1,
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
