@@ -512,6 +512,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                    forward2.path);
   }
 
+/*
   nudge(nF, nD, nB) {
 return;
     var dimensions = {
@@ -523,6 +524,21 @@ return;
     }
 
     this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+*/
+
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "down":
+console.log("fixed");
+           d.forward1 -= NUDGE_SPACING;
+           d.backward -= NUDGE_SPACING;
+           break;
+    }
+
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
