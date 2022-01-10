@@ -606,6 +606,13 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
+           break;
+
+      case "up":
+console.log("fixed");
+           d.forward += NUDGE_SPACING;
+           d.backward -= NUDGE_SPACING;
+           break;
     }
 
     this.path = d;
