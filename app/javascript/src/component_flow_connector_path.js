@@ -27,6 +27,7 @@ const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
 const HORIZONTAL = "horizontal";
 const VERTICAL = "vertical";
 const PATH_OVERLAP_MINIMUM = 10; // Minimum amount of overlapping contact point to trigger an overlap situation.
+const LINE_PIXEL_TOLERANCE = 4; // Arbitrary number just for some pixel tolerance
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -171,7 +172,7 @@ class FlowConnectorPath {
 console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vComparisonLines[c].name, (vComparisonLineX >= (vLineX - 2) && vComparisonLineX <= (vLineX + 2)));
 
         // For vertical lines, we need to first check if they occupy the same horizontal point/position.
-        if(vComparisonLineX >= (vLineX - 2) && vComparisonLineX <= (vLineX + 2)) { // 2 is just for some pixel tolerance
+        if(vComparisonLineX >= (vLineX - LINE_PIXEL_TOLERANCE) && vComparisonLineX <= (vLineX + LINE_PIXEL_TOLERANCE)) {
 
           // Check each point in the comparison line range to find matches in the current line range.
           for(var i=0; i < cr.length; ++i) {
