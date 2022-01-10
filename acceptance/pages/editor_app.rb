@@ -145,9 +145,6 @@ class EditorApp < SitePrism::Page
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
 
-  element :continue_button, :button, I18n.t('actions.continue')
-  element :cancel_button, :button, I18n.t('pages.cancel')
-
   elements :detached_flow, '.flow-detached-group .flow-item'
 
   def unconnected_flow

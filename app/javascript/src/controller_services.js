@@ -51,7 +51,6 @@ ServicesController.edit = function() {
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
   createFlowItemMenus(view);
-  createDisconnectDialog(view);
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -343,21 +342,6 @@ function createFlowItemMenus(view) {
   });
 }
 
-/* VIEW SETUP FUNCTION:
- * --------------------
- * Create the menu effect and required functionality for disconnecting CYA or Confirmation
- * page through 'Change Destination'.
- **/
-function createDisconnectDialog(view) {
-  var $dialog = $("[data-component='DisconnectDialog']"); // Expect only one
-  if ($dialog.length){
-    view.createDisconnectDialog = new FormDialog($dialog, {
-      autoOpen: true,
-      view: view,
-      cancelText: $dialog.attr("data-cancel-text")
-    });
-  }
-}
 
 /* VIEW SETUP FUNCTION:
  * --------------------
