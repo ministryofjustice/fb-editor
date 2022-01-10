@@ -187,9 +187,6 @@ console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vC
             console.error(error);
             console.warn("TYPE: ", path.type);
             console.warn("Line: ", path.$node.find("path").eq(0));
-            if(error == "Overlap found between 'ForwardUpPath.up' and 'ForwardUpForwardDownPath.up'") {
-              console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ Already done?");
-            }
             path.nudge(vComparisonLines[c].name);
             fixedOverlap = true;
           }
@@ -769,7 +766,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
       forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
       up: Math.round(utilities.difference(points.from_y, this.points.via_y) + utilities.difference(points.from_y, this.points.to_y) + utilities.difference(points.to_y, config.top)),
       forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 4)),
-      down2: Math.round(points.to_y)
+      down2: Math.round(points.to_y),
+      forward3: 0 // start value
     }
 
     this._dimensions = { original: dimensions };
@@ -825,8 +823,17 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                   prefix: "v"
                 });
 
+    x += CURVE_SPACING;
+    y += down2.prop("length") + CURVE_SPACING;
+    var forward3 = new FlowConnectorLine("forward3", {
+                  x: x,
+                  y: y,
+                  length: dimensions.forward3,
+                  prefix: "h"
+                });
+
     this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down1, forward1, up, forward2, down2 ];
+    this._dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
 
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
@@ -839,7 +846,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                    forward2.path,
                    CURVE_RIGHT_DOWN,
                    down2.path,
-                   CURVE_DOWN_RIGHT
+                   CURVE_DOWN_RIGHT,
+                   forward3.path
                  );
   }
 
@@ -868,6 +876,12 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 -= NUDGE_SPACING;
+           break;
+
+      case "down2":
+console.log("fixed");
+           d.forward2 -= NUDGE_SPACING;
+           d.forward3 += NUDGE_SPACING;
            break;
     }
     this.path = d;
