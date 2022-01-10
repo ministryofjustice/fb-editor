@@ -371,7 +371,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
            });
 
     x += CURVE_SPACING;
-    y += NUDGE_SPACING;
+    y += (down.prop("length") + CURVE_SPACING);
     var forward3 = new FlowConnectorLine("forward3", {
              x: x,
              y: y,
@@ -381,7 +381,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
 
     this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward1, up, forward2, down ];
+    this._dimensions.lines = [ forward1, up, forward2, down, forward3 ];
 
     this._path = pathD(
                    xy(this.points.from_x, this.points.from_y),
