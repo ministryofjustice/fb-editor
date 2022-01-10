@@ -147,10 +147,15 @@ class FlowConnectorPath {
     // The general idea should be that an Overview object (or controller script) should
     // loop over found FlowConnectorPaths passing each one, in turn, into this function
     // for overlap comparison.
+    //
+    // Note: This function will return true/false depending on whether it found and fixed any
+    //       overlap.
     var vLines = this.lines("vertical");
     var hLines = this.lines("horizontal");
     var vComparisonLines = path.lines("vertical");
     var hComparisonLines = path.lines("horizontal");
+    var overlapCount = 0;
+    var fixedOverlap = false;
 
     // Loop over each line in current FlowConnectorPath
     for(var v=0; v < vLines.length; ++v) {
@@ -177,16 +182,23 @@ console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vC
 
           // If there were enough overlaps (matched points in each) then we need to nudge a line.
           if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-            console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
+            let error = "Overlap found between '" + this.type + "." + vLines[v].name + "' and '" + path.type + "." + vComparisonLines[c].name + "'";
+            //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
+            console.error(error);
             console.warn("TYPE: ", path.type);
             console.warn("Line: ", path.$node.find("path").eq(0));
+            if(error == "Overlap found between 'ForwardUpPath.up' and 'ForwardUpForwardDownPath.up'") {
+              console.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ Already done?");
+            }
             path.nudge(vComparisonLines[c].name);
+            fixedOverlap = true;
           }
         }
       }
     }
 
     console.groupEnd();
+    return fixedOverlap;
   }
 }
 
@@ -314,7 +326,8 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       up: Math.round(utilities.difference(this.points.from_y, this._config.top)),
       forward2: Math.round(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
-      down: Math.round(utilities.difference(this._config.top, this.points.to_y))
+      down: Math.round(utilities.difference(this._config.top, this.points.to_y)),
+      forward3: 0 // Expected start value
     }
 
     this._dimensions = { original: dimensions };
@@ -360,6 +373,16 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
              prefix: "v"
            });
 
+    x += CURVE_SPACING;
+    y += NUDGE_SPACING;
+    var forward3 = new FlowConnectorLine("forward3", {
+             x: x,
+             y: y,
+             length: dimensions.forward3,
+             prefix: "h"
+           });
+
+
     this._dimensions.current = dimensions;
     this._dimensions.lines = [ forward1, up, forward2, down ];
 
@@ -372,11 +395,13 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                    forward2.path,
                    CURVE_RIGHT_DOWN,
                    down.path,
-                   CURVE_DOWN_RIGHT
+                   CURVE_DOWN_RIGHT,
+                   forward3.path,
                  );
   }
-
+/*
   nudge(nF, nU) {
+console.warn("TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... ");
 return;
     var dimensions = {
       forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
@@ -386,6 +411,24 @@ return;
     }
 
     this.path = dimensions;
+    this.$node.find("path:first").attr("d", this._path);
+  }
+*/
+  nudge(linename) {
+    var d = this._dimensions.current;
+    switch(linename) {
+      case "up":
+console.log("fixed");
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           break;
+      case "down":
+console.log("fixed");
+           d.forward2 -= NUDGE_SPACING;
+           d.forward3 += NUDGE_SPACING;
+    }
+
+    this.path = d;
     this.$node.find("path:first").attr("d", this._path);
   }
 }
