@@ -673,8 +673,8 @@ console.log("fixed");
 
       case "up":
 console.log("fixed");
-           d.forward += NUDGE_SPACING;
-           d.backward -= NUDGE_SPACING;
+           d.backward += NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
            break;
     }
 
