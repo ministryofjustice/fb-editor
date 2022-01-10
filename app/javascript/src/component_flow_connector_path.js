@@ -179,6 +179,7 @@ console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vC
           if(overlapCount >= PATH_OVERLAP_MINIMUM) {
             console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
             console.warn("TYPE: ", path.type);
+            console.warn("Line: ", path.$node.find("path").eq(0));
             path.nudge(vComparisonLines[c].name);
           }
         }
@@ -628,7 +629,7 @@ class DownForwardUpPath extends FlowConnectorPath {
       down: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
       up: Math.round(utilities.difference(points.via_y, this.points.to_y) - (CURVE_SPACING * 2)),
-      forward2: 0
+      forward2: Math.round(utilities.difference(points.from_x, points.to_x) - (points.via_x + CURVE_SPACING))
     }
 
     this._dimensions = { original: dimensions };
@@ -672,7 +673,7 @@ class DownForwardUpPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
-                     prefix: "v-"
+                     prefix: "h"
                    });
 
     this._dimensions.current = dimensions;
