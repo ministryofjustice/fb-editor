@@ -536,6 +536,11 @@ console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
            break;
+      case "up":
+console.log("fixed");
+           d.backward += NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           break;
     }
 
     this.path = d;
