@@ -511,8 +511,10 @@ html {
     visibility: hidden;
   }
 
-  // Fix z-index issues caused by Chrome being a pain with requiring height and width
-  // measurements on svg elements (which then required z-index to fix overlapping issues).
+  // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
+  // their lines from centre of a Branch Node, which places them directly over those
+  // elements, without this workaround in place (easier to fix z-index than calculations).
+  .FlowConnectorLine,
   .FlowConnectorPath {
     z-index: 1;
   }
@@ -530,6 +532,7 @@ html {
 }
 
 
+.FlowConnectorLine,
 .FlowConnectorPath {
   // A note about the height and width settings.
   // They should both be zero because we want to avoid element overlap to
