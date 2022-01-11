@@ -879,6 +879,7 @@ function editableComponent($node, config) {
       klass = EditableContent;
       break;
     case "text":
+    case "email":
     case "number":
     case "upload":
       klass = EditableTextFieldComponent;

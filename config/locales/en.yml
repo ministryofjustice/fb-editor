@@ -155,6 +155,7 @@ en:
     list:
       text: 'Text'
       textarea: 'Textarea'
+      email: 'Email address'
       number: 'Number'
       date: 'Date'
       radios: 'Radio buttons'
