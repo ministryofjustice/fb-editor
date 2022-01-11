@@ -107,6 +107,11 @@ module CommonSteps
     editor.add_checkboxes.click
   end
 
+  def given_I_add_a_single_question_page_with_email
+    given_I_want_to_add_a_single_question_page
+    editor.add_email.click
+  end
+
   def given_I_add_a_check_answers_page
     editor.preview_page_images.first.hover
     editor.three_dots_button.click
