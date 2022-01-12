@@ -151,53 +151,51 @@ class FlowConnectorPath {
     //
     // Note: This function will return true/false depending on whether it found and fixed any
     //       overlap.
-    var vLines = this.lines("vertical");
-    var hLines = this.lines("horizontal");
-    var vComparisonLines = path.lines("vertical");
-    var hComparisonLines = path.lines("horizontal");
-    var overlapCount = 0;
-    var fixedOverlap = false;
+    FlowConnectorPath.compareLines(this, path, "vertical");
+    FlowConnectorPath.compareLines(this, path, "horizontal");
+  }
+}
+
+
+FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
+    var lines = path.lines(direction);
+    var comparisonLines = comparisonPath.lines(direction);
 
     // Loop over each line in current FlowConnectorPath
-    for(var v=0; v < vLines.length; ++v) {
-      let vr = vLines[v].range;
+    for(var a=0; a < lines.length; ++a) {
+      let ar = lines[a].range;
 
       // Compare with each line in the passed FlowConnectorPath
-      for(var c=0; c < vComparisonLines.length; ++c) {
-        let cr = vComparisonLines[c].range;
-        let vLineX = vLines[v].prop("x");
-        let vComparisonLineX = vComparisonLines[c].prop("x");
+      for(var b=0; b < comparisonLines.length; ++b) {
+        let br = comparisonLines[b].range;
+        let lineXY = lines[a].prop(direction == "vertical" ? "x" : "y");
+        let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
         let overlapCount = 0;
 
-console.log("test (%s.%s vs. %s.%s): ", this.type, vLines[v].name, path.type, vComparisonLines[c].name, (vComparisonLineX >= (vLineX - 2) && vComparisonLineX <= (vLineX + 2)));
+console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
 
         // For vertical lines, we need to first check if they occupy the same horizontal point/position.
-        if(vComparisonLineX >= (vLineX - LINE_PIXEL_TOLERANCE) && vComparisonLineX <= (vLineX + LINE_PIXEL_TOLERANCE)) {
+        if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
 
           // Check each point in the comparison line range to find matches in the current line range.
-          for(var i=0; i < cr.length; ++i) {
-            if(vr.indexOf(cr[i]) >= 0) {
+          for(var i=0; i < br.length; ++i) {
+            if(ar.indexOf(br[i]) >= 0) {
               overlapCount++;
             }
           }
 
           // If there were enough overlaps (matched points in each) then we need to nudge a line.
           if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-            let error = "Overlap found between '" + this.type + "." + vLines[v].name + "' and '" + path.type + "." + vComparisonLines[c].name + "'";
-            //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, vLines[v].name, path.type, vComparisonLines[c].name);
+            let error = "Overlap found between '" + path.type + "." + lines[a].name + "' and '" + path.type + "." + comparisonLines[b].name + "'";
+            //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, lines[a].name, path.type, comparisonLines[b].name);
             console.error(error);
             console.warn("TYPE: ", path.type);
             console.warn("Line: ", path.$node.find("path").eq(0));
-            path.nudge(vComparisonLines[c].name);
-            fixedOverlap = true;
+            path.nudge(comparisonLines[b].name);
           }
         }
       }
     }
-
-    console.groupEnd();
-    return fixedOverlap;
-  }
 }
 
 
@@ -414,7 +412,14 @@ return;
 */
   nudge(linename) {
     var d = this._dimensions.current;
+console.log("========================================");
+console.log("linename: ", linename);
     switch(linename) {
+      case "forward2":
+console.log("here");
+           d.up += NUDGE_SPACING;
+           d.down += NUDGE_SPACING;
+           break;
       case "up":
 console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
@@ -424,6 +429,10 @@ console.log("fixed");
 console.log("fixed");
            d.forward2 -= NUDGE_SPACING;
            d.forward3 += NUDGE_SPACING;
+      case "forward1":
+      case "forward3":
+           // no overlap prevention should be required for these.
+           break;
     }
 
     this.path = d;
