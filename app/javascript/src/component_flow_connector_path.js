@@ -98,6 +98,7 @@ class FlowConnectorPath {
     return type != "" ? filtered : lineArr;
   }
 
+
   nudge(nX, nY, nZ) {
     // This function should allow the path lines to be nudged either vertically or horizontally
     // to avoid overlapping (as in, one that follows the same path as another). The basic
@@ -127,6 +128,7 @@ class FlowConnectorPath {
     //     this.$node.find("path:first").attr("d", this._path);
     //   }
     //
+    return false; // Other (active) nudge functions should return true if something was nudged.
   }
 
   makeLinesVisibleForTesting() {
@@ -151,51 +153,72 @@ class FlowConnectorPath {
     //
     // Note: This function will return true/false depending on whether it found and fixed any
     //       overlap.
-    FlowConnectorPath.compareLines(this, path, "vertical");
-    FlowConnectorPath.compareLines(this, path, "horizontal");
+    var overlapWasFixed = false;
+
+    if(FlowConnectorPath.compareLines(this, path, "vertical")) {
+      overlapWasFixed = true;
+    }
+
+    if(FlowConnectorPath.compareLines(this, path, "horizontal")) {
+      overlapWasFixed = true;
+    };
+
+    return overlapWasFixed;
   }
 }
 
 
 FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
-    var lines = path.lines(direction);
-    var comparisonLines = comparisonPath.lines(direction);
+  var lines = path.lines(direction);
+  var comparisonLines = comparisonPath.lines(direction);
+  var lineWasNudged = false;
 
-    // Loop over each line in current FlowConnectorPath
-    for(var a=0; a < lines.length; ++a) {
-      let ar = lines[a].range;
+  // Loop over each line in current FlowConnectorPath
+  for(var a=0; a < lines.length; ++a) {
+    let ar = lines[a].range;
 
-      // Compare with each line in the passed FlowConnectorPath
-      for(var b=0; b < comparisonLines.length; ++b) {
-        let br = comparisonLines[b].range;
-        let lineXY = lines[a].prop(direction == "vertical" ? "x" : "y");
-        let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
-        let overlapCount = 0;
+    // Compare with each line in the passed FlowConnectorPath
+    for(var b=0; b < comparisonLines.length; ++b) {
+      let br = comparisonLines[b].range;
+      let lineXY = lines[a].prop(direction == "vertical" ? "x" : "y");
+      let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
+      let overlapCount = 0;
 
-console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
+//console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
 
-        // For vertical lines, we need to first check if they occupy the same horizontal point/position.
-        if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
+      // For vertical lines, we need to first check if they occupy the same horizontal point/position.
+      if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
 
-          // Check each point in the comparison line range to find matches in the current line range.
-          for(var i=0; i < br.length; ++i) {
-            if(ar.indexOf(br[i]) >= 0) {
-              overlapCount++;
-            }
+        // Check each point in the comparison line range to find matches in the current line range.
+        for(var i=0; i < br.length; ++i) {
+          if(ar.indexOf(br[i]) >= 0) {
+            overlapCount++;
           }
+        }
 
-          // If there were enough overlaps (matched points in each) then we need to nudge a line.
-          if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-            let error = "Overlap found between '" + path.type + "." + lines[a].name + "' and '" + path.type + "." + comparisonLines[b].name + "'";
-            //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, lines[a].name, path.type, comparisonLines[b].name);
-            console.error(error);
-            console.warn("TYPE: ", path.type);
-            console.warn("Line: ", path.$node.find("path").eq(0));
-            path.nudge(comparisonLines[b].name);
+        // If there were enough overlaps (matched points in each) then we need to nudge a line.
+        if(overlapCount >= PATH_OVERLAP_MINIMUM) {
+          let error = "Overlap found between '" + path.type + "." + lines[a].name + "' and '" + path.type + "." + comparisonLines[b].name + "'";
+          //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, lines[a].name, path.type, comparisonLines[b].name);
+          console.error(error);
+          console.warn("TYPE: ", path.type);
+          console.warn("Line: ", path.$node.find("path").eq(0));
+
+          // Call the nudge function (may or may not actual need to move the line).
+          // If the line is moved we set a variable to report back that action.
+          // It is likely the controlling/calling script will want to know so that
+          // the comparisons can start again. This will be useful if the movement
+          // simply caused the line to be moved from one overlap to cause an
+          // overlap with another line.
+          if(path.nudge(comparisonLines[b].name)) {
+            lineWasNudged = true;
           }
         }
       }
     }
+  }
+
+  return lineWasNudged;
 }
 
 
@@ -296,21 +319,22 @@ class ForwardUpPath extends FlowConnectorPath {
 
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
-      case "forward":
-           console.log("DEV HELPER MESSAGE: This can be ignored");
-           // There should be no clash on this line by leaving this line and comment for code clarity.
-           break;
-
       case "up":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
+
+      case "forward":
+           // This line can be ignored because it should not cause an overlap.
+           // Leaving the case and comment to show it has not been overlooked.
     }
 
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -412,31 +436,34 @@ return;
 */
   nudge(linename) {
     var d = this._dimensions.current;
-console.log("========================================");
-console.log("linename: ", linename);
+    var nudged = false;
     switch(linename) {
       case "forward2":
-console.log("here");
            d.up += NUDGE_SPACING;
            d.down += NUDGE_SPACING;
+           nudged = true;
            break;
+
       case "up":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
+
       case "down":
-console.log("fixed");
            d.forward2 -= NUDGE_SPACING;
            d.forward3 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
       case "forward1":
       case "forward3":
            // no overlap prevention should be required for these.
-           break;
     }
 
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -539,21 +566,24 @@ return;
 
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
       case "down":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
+           nudged = true;
            break;
+
       case "up":
-console.log("fixed");
            d.backward += NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
     }
 
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -668,27 +698,27 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 */
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
-      case "down1":
-           console.log("DEV HELPER MESSAGE: This can be ignored");
-           // There should be no clash on this line by leaving this line and comment for code clarity.
-           break;
-
       case "down2":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
+           nudged = true;
            break;
 
       case "up":
-console.log("fixed");
            d.backward += NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
+
+      case "down1":
+           // This line can be ignored because overlaps are tolerated or not relevant.
     }
 
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -764,27 +794,26 @@ class DownForwardUpPath extends FlowConnectorPath {
 
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
-      case "down":
-      case "forward1":
-           console.log("DEV HELPER MESSAGE: This can be ignored");
-           // There should be no clash on this line by leaving this line and comment for code clarity.
-           break;
-
       case "up":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
 
       case "forward2":
            // This possibly does not need clash functionality as it is here to support the shifting
            // of the 'up' line only (see workings above to understand).
-           break;
+
+      case "down":
+      case "forward1":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -897,26 +926,34 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 */
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
-      case "down1":
-           console.log("DEV HELPER MESSAGE: This can be ignored");
-           // There should be no clash on this line by leaving this line and comment for code clarity.
-           break;
-
       case "up":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward2":
+           d.up += NUDGE_SPACING;
+           d.down2 += NUDGE_SPACING;
+           nudged = true;
            break;
 
       case "down2":
-console.log("fixed");
            d.forward2 -= NUDGE_SPACING;
            d.forward3 += NUDGE_SPACING;
+           nudged = true;
            break;
+
+      case "down1":
+      case "forward1":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
     }
+
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -1004,20 +1041,21 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 */
   nudge(linename) {
     var d = this._dimensions.current;
+    var nudged = false;
     switch(linename) {
-      case "down1":
-           console.log("DEV HELPER MESSAGE: This can be ignored");
-           // There should be no clash on this line by leaving this line and comment for code clarity.
-           break;
-
       case "down2":
-console.log("fixed");
            d.forward1 -= NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
+           nudged = true;
            break;
+
+      case "down1":
+           // This line can be ignored because overlaps are tolerated or not relevant.
     }
+
     this.path = d;
     this.$node.find("path:first").attr("d", this._path);
+    return nudged;
   }
 }
 
@@ -1074,12 +1112,17 @@ class DownForwardPath extends FlowConnectorPath {
   // appear to be a single line.
   nudge(linename) {
     switch(linename) {
-      case "down": console.log("DEV HELPER MESSAGE: This can be ignored");
+      case "down":
+      case "forward":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
     }
+    return false;
   }
 }
 
 
+/* Class used for building and tracking tracking individual lines within a FlowConnectorPath
+ **/
 class FlowConnectorLine {
 
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
