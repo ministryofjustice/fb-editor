@@ -875,7 +875,7 @@ console.groupEnd();
     if(loopCount >= recursionLimit) {
       console.error("Oops! Some may have gone wrong. The overlap loop and gone round %d times and tripped the limit.", recursionLimit);
     }
-debugger;
+
   } while(keepChecking && loopCount < recursionLimit);
 }
 

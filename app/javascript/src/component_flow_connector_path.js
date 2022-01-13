@@ -171,11 +171,11 @@ class FlowConnectorPath {
     if(FlowConnectorPath.compareLines(this, path, "vertical")) {
       overlapWasFixed = true;
     }
-/*
+
     if(FlowConnectorPath.compareLines(this, path, "horizontal")) {
       overlapWasFixed = true;
     };
-*/
+
     return overlapWasFixed;
   }
 }
