@@ -330,8 +330,9 @@ function layoutFormFlowOverview(view) {
   adjustOverviewHeight(view.$flowOverview);
   applyPageFlowConnectorPaths(view.$flowOverview);
   applyBranchFlowConnectorPaths(view.$flowOverview);
+applyOverviewScroll(view.$flowOverview);
   adjustOverlappingFlowConnectorPaths(view.$flowOverview);
-  applyOverviewScroll(view.$flowOverview);
+  //applyOverviewScroll(view.$flowOverview);
 }
 
 
@@ -804,24 +805,78 @@ function applyBranchFlowConnectorPaths($overview) {
  * comparison. The FlowConnectorPaths.avoidOverlap() function will handle the rest.
  *
  * @$overview (jQuery node) Overview container for form layout.
+ *
+ * Note: In an effort to try and save some computing time, we're excluding the
+ * ForwardPath FlowConnectorPaths because they have no nudge functionality and
+ * should not have any issues with overlapping. They are the ones that go in a
+ * straight line between Page A ---> Page B.
  **/
 function adjustOverlappingFlowConnectorPaths($overview) {
-  var $paths = $overview.find(".FlowConnectorPath");
-  var horizontalLines = [];
-  var verticalLines = [];
+  const recursionLimit = 20; // This is a safety feature for the while loop.
+  var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
+  var somethingMoved;
+  var numberOfPaths = $paths.length;
+  var keepChecking = true;
+  var loopCount = 1;
 
-  $paths.each(function() {
-    var $path = $(this);
-    var path = $path.data("instance");
+  do {
+    somethingMoved = false;
+console.log("do... while start (somethingMoved: %s)", somethingMoved);
+console.log("LENGTH %d", $paths.length);
+    $paths.each(function(count) {
+      var numberChecked = (count + 1); // zero index workaround
+      var $path = $(this);
+      var path = $path.data("instance");
+console.log("COUNT %d", count);
+console.group("+++++++++++++++++++++++++++ LOOPING, LOOPING, LOOPING ++++++++++++++++++++++++++++++");
+console.log("$path checked: ", $path.find("path"));
 
-    $paths.each(function() {
-      var $current = $(this);
-      var current = $current.data("instance");
-      if(path.id != current.id) {
-        path.avoidOverlap(current);
+      $paths.each(function() { // or $paths.not($path).each
+        var $current = $(this);
+        var current = $current.data("instance");
+console.log("against each path ($current): ", $current.find("path"));
+        if(path.id != current.id) {
+
+          // Call the overlap avoidance functionality and register
+          // if anything was moved (reported by its return value).
+          if(path.avoidOverlap(current)) {
+            somethingMoved = true;
+console.log("EXIT THE INNER LOOP");
+            return false;
+          }
+        }
+      });
+
+      // If something has moved, we wil want to start again. Reason
+      // for this is because we may have simply moved one overlapping
+      // line to overlap with another. There's little point in doing
+      // that will all because you'll just be shifting overlaps to a
+      // new position, and still have overlaps at the end. Restarting
+      // means, eventually, you should end up without any overlaps.
+      if(somethingMoved) {
+console.log("EXIT THE OUTER LOOP");
+        return false;
       }
+
+      // If nothing was moved then we should find outselves here.
+      // When we have gone through all paths, without any changes
+      // (moved items) the condition should be true. This should
+      // then exit the do...while loop.
+console.log("numberChecked: ", numberChecked);
+console.log("numberOfPaths: ", numberOfPaths);
+      keepChecking = (numberChecked < numberOfPaths);
+console.log("keepChecking: ", keepChecking);
+console.groupEnd();
     });
-  });
+
+    console.log("INSIDE THE DO...WHILE keepChecking: ", keepChecking);
+console.groupEnd();
+    loopCount++
+    if(loopCount >= recursionLimit) {
+      console.error("Oops! Some may have gone wrong. The overlap loop and gone round %d times and tripped the limit.", recursionLimit);
+    }
+debugger;
+  } while(keepChecking && loopCount < recursionLimit);
 }
 
 

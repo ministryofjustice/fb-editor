@@ -17,7 +17,7 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 10;
-const NUDGE_SPACING = 10;
+const NUDGE_SPACING = 20;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
@@ -26,8 +26,8 @@ const CURVE_DOWN_RIGHT = "a10,10 0 0 0 10,10";
 const CURVE_LEFT_UP = "a10,10 0 0 1 -10,-10";
 const HORIZONTAL = "horizontal";
 const VERTICAL = "vertical";
-const PATH_OVERLAP_MINIMUM = 10; // Minimum amount of overlapping contact point to trigger an overlap situation.
-const LINE_PIXEL_TOLERANCE = 4; // Arbitrary number just for some pixel tolerance
+const PATH_OVERLAP_MINIMUM = 50; // Minimum amount of overlapping contact point to trigger an overlap situation.
+const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel tolerance
 
 
 /* VIEW SPECIFIC COMPONENT:
@@ -98,6 +98,18 @@ class FlowConnectorPath {
     return type != "" ? filtered : lineArr;
   }
 
+  // Same as the lines() function but does not return lines
+  // not required to be included the any overlap comparison.
+  linesForOverlapComparison(type="") {
+    var lns = this.lines(type);
+    var filtered = [];
+    for(var i=0; i<lns.length; ++i) {
+      if(!lns[i].prop("overlapAllowed")) {
+        filtered.push(lns[i]);
+      }
+    }
+    return filtered;
+  }
 
   nudge(nX, nY, nZ) {
     // This function should allow the path lines to be nudged either vertically or horizontally
@@ -141,6 +153,7 @@ class FlowConnectorPath {
   }
 
   avoidOverlap(path) {
+    console.warn("CHECKING: ", path.$node.find("path"));
     // TODO: WIP currently only concerned with vertical lines.
     //       This will develop and evolve as solutions are found.
     // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
@@ -158,19 +171,19 @@ class FlowConnectorPath {
     if(FlowConnectorPath.compareLines(this, path, "vertical")) {
       overlapWasFixed = true;
     }
-
+/*
     if(FlowConnectorPath.compareLines(this, path, "horizontal")) {
       overlapWasFixed = true;
     };
-
+*/
     return overlapWasFixed;
   }
 }
 
 
 FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
-  var lines = path.lines(direction);
-  var comparisonLines = comparisonPath.lines(direction);
+  var lines = path.linesForOverlapComparison(direction);
+  var comparisonLines = comparisonPath.linesForOverlapComparison(direction);
   var lineWasNudged = false;
 
   // Loop over each line in current FlowConnectorPath
@@ -184,7 +197,7 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
       let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
       let overlapCount = 0;
 
-//console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
+console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
 
       // For vertical lines, we need to first check if they occupy the same horizontal point/position.
       if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
@@ -195,14 +208,14 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
             overlapCount++;
           }
         }
-
+console.log("overlapCount: ", overlapCount);
         // If there were enough overlaps (matched points in each) then we need to nudge a line.
         if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-          let error = "Overlap found between '" + path.type + "." + lines[a].name + "' and '" + path.type + "." + comparisonLines[b].name + "'";
-          //console.error("Overlap found between '%s.%s' and '%s.%s'", this.type, lines[a].name, path.type, comparisonLines[b].name);
-          console.error(error);
+          console.error("Overlap found between '%s.%s' and '%s.%s'", path.type, lines[a].name, comparisonPath.type, comparisonLines[b].name);
           console.warn("TYPE: ", path.type);
           console.warn("Line: ", path.$node.find("path").eq(0));
+          console.warn("c TYPE: ", comparisonPath.type);
+          console.warn("c Line: ", comparisonPath.$node.find("path").eq(0));
 
           // Call the nudge function (may or may not actual need to move the line).
           // If the line is moved we set a variable to report back that action.
@@ -242,7 +255,8 @@ class ForwardPath extends FlowConnectorPath {
                     x: x,
                     y: y,
                     length: dimensions.forward,
-                    prefix: "h"
+                    prefix: "h",
+                    overlapAllowed: true
                   });
 
     this._dimensions.current = dimensions;
@@ -283,7 +297,8 @@ class ForwardUpPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -301,7 +316,8 @@ class ForwardUpPath extends FlowConnectorPath {
                     x: x,
                     y: y,
                     length: dimensions.forward2,
-                    prefix: "h"
+                    prefix: "h",
+                    overlapAllowed: true
                   });
 
     this._dimensions.current = dimensions;
@@ -327,9 +343,9 @@ class ForwardUpPath extends FlowConnectorPath {
            nudged = true;
            break;
 
-      case "forward":
-           // This line can be ignored because it should not cause an overlap.
-           // Leaving the case and comment to show it has not been overlooked.
+      case "forward1":
+      case "forward2":
+           // no overlap prevention should be required for these.
     }
 
     this.path = d;
@@ -363,7 +379,8 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                  x: x,
                  y: y,
                  length: dimensions.forward1,
-                 prefix: "h"
+                 prefix: "h",
+                 overlapAllowed: true
                });
 
     x += forward1.prop("length") + CURVE_SPACING;
@@ -493,7 +510,8 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -579,6 +597,14 @@ return;
            d.forward2 += NUDGE_SPACING;
            nudged = true;
            break;
+
+      case "backward":
+           d.down += NUDGE_SPACING;
+           d.up += NUDGE_SPACING;
+           nudged = true;
+
+      case "forward1":
+           // no overlap prevention should be required for this.
     }
 
     this.path = d;
@@ -597,7 +623,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
       down2: Math.round(utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2),
       backward: Math.round(this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x)),
       up: Math.round((utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2),
-      forward2: 0 // TODO: This doesn't look right. What should it be?
+      forward2: 0
     }
 
     this._dimensions = { original: dimensions };
@@ -614,7 +640,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                   x: x,
                   y: y,
                   length: dimensions.down1,
-                  prefix: "v"
+                  prefix: "v",
+                  overlapAllowed: true
                 });
 
     x += CURVE_SPACING;
@@ -623,7 +650,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -712,8 +740,15 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
            nudged = true;
            break;
 
+      case "backward":
+           d.down2 += NUDGE_SPACING;
+           d.up += NUDGE_SPACING;
+           nudged = true;
+           break;
+
       case "down1":
-           // This line can be ignored because overlaps are tolerated or not relevant.
+      case "forward1":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
     this.path = d;
@@ -747,7 +782,8 @@ class DownForwardUpPath extends FlowConnectorPath {
                  x: x,
                  y: y,
                  length: dimensions.down,
-                 prefix: "v"
+                 prefix: "v",
+                 overlapAllowed: true
                });
 
     x += CURVE_SPACING;
@@ -756,7 +792,8 @@ class DownForwardUpPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -802,12 +839,9 @@ class DownForwardUpPath extends FlowConnectorPath {
            nudged = true;
            break;
 
-      case "forward2":
-           // This possibly does not need clash functionality as it is here to support the shifting
-           // of the 'up' line only (see workings above to understand).
-
       case "down":
       case "forward1":
+      case "forward2":
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
@@ -844,7 +878,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                  x: x,
                  y: y,
                  length: dimensions.down1,
-                 prefix: "v"
+                 prefix: "v",
+                 overlapAllowed: true
                });
 
     x += CURVE_SPACING;
@@ -853,7 +888,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -889,7 +925,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                   x: x,
                   y: y,
                   length: dimensions.forward3,
-                  prefix: "h"
+                  prefix: "h",
+                  overlapAllowed: true
                 });
 
     this._dimensions.current = dimensions;
@@ -982,7 +1019,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                  x: x,
                  y: y,
                  length: dimensions.down1,
-                 prefix: "v"
+                 prefix: "v",
+                 overlapAllowed: true
                });
 
     x += CURVE_SPACING;
@@ -991,7 +1029,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward1,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     x += (forward1.prop("length") + CURVE_SPACING);
@@ -1009,7 +1048,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                      x: x,
                      y: y,
                      length: dimensions.forward2,
-                     prefix: "h"
+                     prefix: "h",
+                     overlapAllowed: true
                    });
 
     this._dimensions.current = dimensions;
@@ -1050,7 +1090,9 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
            break;
 
       case "down1":
-           // This line can be ignored because overlaps are tolerated or not relevant.
+      case "forward1":
+      case "forward2":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
     this.path = d;
@@ -1082,7 +1124,8 @@ class DownForwardPath extends FlowConnectorPath {
                  x: x,
                  y: y,
                  length: dimensions.down,
-                 prefix: "v"
+                 prefix: "v",
+                 overlapAllowed: true
                });
 
     x += CURVE_SPACING;
@@ -1091,7 +1134,8 @@ class DownForwardPath extends FlowConnectorPath {
            x: x,
            y: y,
            length: dimensions.forward,
-           prefix: "h"
+           prefix: "h",
+           overlapAllowed: true
          });
 
     this._dimensions.current = dimensions;
@@ -1137,6 +1181,7 @@ class FlowConnectorLine {
       y: config.y,
       length: config.length,
       name: name,
+      overlapAllowed: (config.overlapAllowed ? config.overlapAllowed : false),
       prefix: config.prefix,
       type: config.type
     }
@@ -1198,6 +1243,9 @@ class FlowConnectorLine {
   prop(p) {
     var value;
     switch(p) {
+      case "overlapAllowed":
+        value = this._private.overlapAllowed;
+        break;
       case "x":
         value = this._private.x;
         break;
