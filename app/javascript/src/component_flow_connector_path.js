@@ -17,7 +17,7 @@
 
 const utilities = require('./utilities');
 const CURVE_SPACING = 10;
-const NUDGE_SPACING = 20;
+const NUDGE_SPACING = 10;
 const CURVE_RIGHT_UP = "a10,10 0 0 0 10,-10";
 const CURVE_UP_RIGHT = "a10,10 0 0 1 10,-10";
 const CURVE_RIGHT_DOWN = "a10,10 0 0 1 10,10";
@@ -223,7 +223,7 @@ console.log("overlapCount: ", overlapCount);
           // the comparisons can start again. This will be useful if the movement
           // simply caused the line to be moved from one overlap to cause an
           // overlap with another line.
-          if(path.nudge(comparisonLines[b].name)) {
+          if(comparisonPath.nudge(comparisonLines[b].name)) {
             lineWasNudged = true;
           }
         }
