@@ -153,9 +153,6 @@ class FlowConnectorPath {
   }
 
   avoidOverlap(path) {
-    console.warn("CHECKING: ", path.$node.find("path"));
-    // TODO: WIP currently only concerned with vertical lines.
-    //       This will develop and evolve as solutions are found.
     // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
     // functionality of the passed path is called to shift the line that matches (overlaps).
     // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
@@ -197,8 +194,6 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
       let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
       let overlapCount = 0;
 
-console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, comparisonLines[b].name, (comparisonLineXY >= (lineXY - 2) && comparisonLineXY <= (lineXY + 2)));
-
       // For vertical lines, we need to first check if they occupy the same horizontal point/position.
       if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
 
@@ -208,14 +203,10 @@ console.log("test (%s.%s vs. %s.%s): ", path.type, lines[a].name, path.type, com
             overlapCount++;
           }
         }
-console.log("overlapCount: ", overlapCount);
+
         // If there were enough overlaps (matched points in each) then we need to nudge a line.
         if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-          console.error("Overlap found between '%s.%s' and '%s.%s'", path.type, lines[a].name, comparisonPath.type, comparisonLines[b].name);
-          console.warn("TYPE: ", path.type);
-          console.warn("Line: ", path.$node.find("path").eq(0));
-          console.warn("c TYPE: ", comparisonPath.type);
-          console.warn("c Line: ", comparisonPath.$node.find("path").eq(0));
+          //console.log("Overlap found between '%s.%s' and '%s.%s'", path.type, lines[a].name, comparisonPath.type, comparisonLines[b].name);
 
           // Call the nudge function (may or may not actual need to move the line).
           // If the line is moved we set a variable to report back that action.
@@ -436,21 +427,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                    forward3.path,
                  );
   }
-/*
-  nudge(nF, nU) {
-console.warn("TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... TODO... ");
-return;
-    var dimensions = {
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      up: this._dimensions.current.up + (nU * NUDGE_SPACING),
-      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING),
-      down: this._dimensions.current.down + (nU * NUDGE_SPACING)
-    }
 
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-*/
   nudge(linename) {
     var d = this._dimensions.current;
     var nudged = false;
@@ -565,22 +542,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                    CURVE_UP_RIGHT,
                    forward2.path);
   }
-
-/*
-  nudge(nF, nD, nB) {
-return;
-    var dimensions = {
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      down: this._dimensions.current.down + (nD * NUDGE_SPACING),
-      backward: this._dimensions.current.backward - (nF * NUDGE_SPACING) + (nB * NUDGE_SPACING),
-      up: this._dimensions.current.up + (nD * NUDGE_SPACING),
-      forward2: this._dimensions.current.forward2 + (nB * NUDGE_SPACING)
-    }
-
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-*/
 
   nudge(linename) {
     var d = this._dimensions.current;
@@ -709,21 +670,6 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                  );
   }
 
-/*
-  nudge(nD, nB) {
-    var dimensions = {
-      down1: this._dimensions.current.down1,
-      forward1: this._dimensions.current.forward1,
-      down2: this._dimensions.current.down2 + (nD * NUDGE_SPACING),
-      backward: this._dimensions.current.backward + (nB * NUDGE_SPACING),
-      up: this._dimensions.current.up + (nD * NUDGE_SPACING),
-      forward2:  this._dimensions.current.forward2 + (nB * NUDGE_SPACING)
-    }
-
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-*/
   nudge(linename) {
     var d = this._dimensions.current;
     var nudged = false;
@@ -948,19 +894,6 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                  );
   }
 
-/*
-  nudge(nF, nU) {
-    var dimensions = {
-      down1: this._dimensions.current.down1,
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      up: this._dimensions.current.up + (nU * NUDGE_SPACING),
-      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING),
-      down2: this._dimensions.current.down2 + (nU * NUDGE_SPACING)
-    }
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-*/
   nudge(linename) {
     var d = this._dimensions.current;
     var nudged = false;
@@ -1067,18 +1000,6 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                  );
   }
 
-/*
-  nudge(nF) {
-    var dimensions = {
-      down1: this._dimensions.current.down1,
-      forward1: this._dimensions.current.forward1 - (nF * NUDGE_SPACING),
-      down2: this._dimensions.current.down2,
-      forward2: this._dimensions.current.forward2 + (nF * NUDGE_SPACING)
-    }
-    this.path = dimensions;
-    this.$node.find("path:first").attr("d", this._path);
-  }
-*/
   nudge(linename) {
     var d = this._dimensions.current;
     var nudged = false;
