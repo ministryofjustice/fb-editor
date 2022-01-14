@@ -523,6 +523,7 @@ html {
   }
 
   .FlowItemMenu,
+  .ConnectionMenu,
   .PageAdditionMenu,
   .ui-dialog {
     z-index: 3;
@@ -606,6 +607,20 @@ html {
   }
 }
 
+.ConnectionMenuActivator {
+  display: inline-block;
+  left: calc(100% + 10px);
+  // opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 46px;
+  
+  &:after {
+    content: '+';
+    top: -22px;
+  }
+}
+
 .flow-add-page-button {
   // TEMPORARY: BRANCHING FEATURE FLAG
   // This should be display:none only but the other css is required for supporting the
@@ -679,7 +694,7 @@ html {
 
 .flow-page {
   height: 250px;
-  overflow: hidden;
+  // overflow: hidden;
   vertical-align: middle;
   width: 200px;
 }
