@@ -614,6 +614,11 @@ html {
   overflow: hidden;
   position: absolute;
   top: 46px;
+
+  &.branch-connection-menu-activator {
+    left: -10px;
+    top: -17px;
+  }
   
   &:after {
     content: '+';
