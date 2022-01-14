@@ -333,6 +333,7 @@ function layoutFormFlowOverview(view) {
   applyPageFlowConnectorPaths(view.$flowOverview);
   applyBranchFlowConnectorPaths(view.$flowOverview);
   adjustOverlappingFlowConnectorPaths(view.$flowOverview);
+  adjustBranchConditionPositions(view.$flowOverview);
   applyOverviewScroll(view.$flowOverview);
 }
 
@@ -462,6 +463,25 @@ function positionFlowItems($overview) {
 
   // Ditch the columns.
   $columns.remove();
+}
+
+
+/*
+ * VIEW HELPER FUNCTION:
+ * ---------------------
+ * Position of BranchCondition text is below the FlowConnectorPath lines, which helps make the initial
+ * calculations for items and line, etc. However, the design wants the text to be above the lines.
+ **/
+function adjustBranchConditionPositions($overview) {
+  var lineHeight = Number($(".FlowConnectorPath path").eq(0).css("stroke-width").replace("px", "")) || 0;
+  $overview.find(".flow-expression").each(function() {
+    var $this = $(this);
+    var expressionHeight = Number($this.height()) || 0;
+    $this.css({
+      position: "relative",
+      top: "-" + (expressionHeight + lineHeight) + "px"
+    });
+  });
 }
 
 
