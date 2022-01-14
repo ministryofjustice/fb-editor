@@ -27,6 +27,9 @@ const DefaultController = require('./controller_default');
 const ConnectorPath = require('./component_flow_connector_path');
 
 const COLUMN_SPACING = 100;
+const SELECTOR_FLOW_BRANCH = ".flow-branch";
+const SELECTOR_FLOW_CONDITION = ".flow-condition";
+const SELECTOR_FLOW_ITEM = ".flow-item";
 
 
 class ServicesController extends DefaultController {
@@ -320,7 +323,6 @@ function createFlowItemMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   positionFlowItems(view.$flowOverview);
-//  positionConditionsByDestination(view.$flowOverview);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
   if(!view.features.branching) {
@@ -384,9 +386,6 @@ function layoutDetachedItemsOveriew(view) {
  * within an overview layout.
 **/
 function positionFlowItems($overview) {
-  const SELECTOR_FLOW_BRANCH = ".flow-branch";
-  const SELECTOR_FLOW_CONDITION = ".flow-condition";
-  const SELECTOR_FLOW_ITEM = ".flow-item";
   var $columns = $(".column", $overview);
   var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
   var left = 0;
@@ -466,58 +465,6 @@ function positionFlowItems($overview) {
 }
 
 
-/* ========================================================================
- *      DISABLED AS BELIEVE IT IS NO LONGER NEEDED.
- *      WILL DELETE AFTER COMMENTING OUT IF THIS PROVES TRUE.
- * ========================================================================
- *
- *
- * VIEW HELPER FUNCTION:
- * ---------------------
- * After initial positionFlowItems() method has finished, we need to revisit
- * the Conditional text items to try and align them better with their actual
- * destination items. To ignore this step can result in condition items
- * aligning with an incorrect row or even, being placed on an entirely new
- * and unpopulated row.
- *
- * Note 1: initial problem was highlighted by a 3-row layout that had a branch
- * on the 2nd row, with three conditions showing, each one on a separate row.
- * The first lined up with the branch node, and the others followed beneath.
- * This meant, the first condition, which had a destination page sitting on
- * the row above, essentially positioned all three Condition text elements
- * exactly one row beneath a more correct row position.)
- *
- * Note 2: have adjusted to ignore 'Otherwise' expression which can end up on
- * the top row in some configurations (e.g. Just points to CYA page), which
- * means it sits incorrectly flow of what would be the top path.
- *
-function positionConditionsByDestination($overview) {
-  const SELECTOR_FLOW_BRANCH = ".flow-branch";
-  const SELECTOR_FLOW_CONDITION = ".flow-condition";
-  $overview.find(SELECTOR_FLOW_BRANCH).each(function() {
-    var $branch = $(this);
-    var top = $branch.position().top;
-    $branch.find(SELECTOR_FLOW_CONDITION).each(function() {
-      console.log("top: ", top);
-    });
-  });
-
-  $overview.find(SELECTOR_FLOW_CONDITION).each(function() {
-    var $node = $(this);
-    var $parent = $node.parents(SELECTOR_FLOW_BRANCH);
-    var parentTop = $parent.position().top;
-    var next = $node.data("next");
-    var $destination = $overview.find("#" + next);
-    var destinationTop = $destination.length ? $destination.position().top : -1; // Didn't find a destination ??
-
-    if(destinationTop >= 0 && $node.data("otherwise") == "false") {
-      $node.css("bottom", parentTop - (destinationTop + ($destination.height() / 2)) + "px");
-    }
-  });
-}
-*/
-
-
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Because flow items are absolutely positioned, they will take up
@@ -526,7 +473,7 @@ function positionConditionsByDestination($overview) {
  * apply dimensional adjustments. 
  **/
 function adjustOverviewHeight($overview) {
-  var $items = $(".flow-item", $overview);
+  var $items = $(SELECTOR_FLOW_ITEM, $overview);
   var $paths = $(".FlowConnectorPath path");
   var lowestPoint = 0;
 
@@ -540,7 +487,7 @@ function adjustOverviewHeight($overview) {
     // top of a branch, the baseline needs to include that count as part of the
     // calculation.
     if($item.hasClass("flow-branch")) {
-      let $conditions = $item.find(".flow-condition");
+      let $conditions = $item.find(SELECTOR_FLOW_CONDITION);
       let top = $conditions.first().position().top;
       let baseline = itemTop + $conditions.last().position().top + $conditions.last().outerHeight(true);
       if(top < 0) {
@@ -668,12 +615,12 @@ function applyBranchFlowConnectorPaths($overview) {
   var $itemsByRow = $overview.find("[row]");
   var rowHeight = utilities.maxHeight($itemsByRow);
 
-  $overview.find(".flow-branch").each(function() {
+  $overview.find(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
     var branchX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design gap
     var branchY = $branch.position().top + (rowHeight / 4);
     var branchWidth = $branch.outerWidth();
-    var $conditions = $branch.find(".flow-condition");
+    var $conditions = $branch.find(SELECTOR_FLOW_CONDITION);
 
     $conditions.each(function(index) {
       var $condition = $(this);
@@ -920,7 +867,7 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
 function positionAddPageButton() {
   var $overview = $("#flow-overview");
   var $button = $(".flow-add-page-button");
-  var $items = $(".flow-item", $overview).not("[data-next]");
+  var $items = $(SELECTOR_FLOW_ITEM, $overview).not("[data-next]");
 
   $overview.append($button);
   $items.each(function() {
