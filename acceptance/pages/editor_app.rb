@@ -98,6 +98,7 @@ class EditorApp < SitePrism::Page
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
+  element :section_heading_hint, '.fb-section_heading'
   data_content_id :section_heading, 'page[section_heading]'
   data_content_id :page_heading, 'page[heading]'
   data_content_id :page_lede, 'page[lede]'
