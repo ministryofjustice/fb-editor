@@ -322,19 +322,20 @@ function createFlowItemMenus(view) {
  * Create the main overview layout for form to get the required design.
 **/
 function layoutFormFlowOverview(view) {
-  positionFlowItems(view.$flowOverview);
+  var $container = view.$flowOverview;
+  positionFlowItems($container);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
   if(!view.features.branching) {
     positionAddPageButton();
   }
 
-  adjustOverviewHeight(view.$flowOverview);
-  applyPageFlowConnectorPaths(view.$flowOverview);
-  applyBranchFlowConnectorPaths(view.$flowOverview);
-  adjustOverlappingFlowConnectorPaths(view.$flowOverview);
-  adjustBranchConditionPositions(view.$flowOverview);
-  applyOverviewScroll(view.$flowOverview);
+  adjustOverviewHeight($container);
+  applyPageFlowConnectorPaths($container);
+  applyBranchFlowConnectorPaths($container);
+  adjustOverlappingFlowConnectorPaths($container);
+  adjustBranchConditionPositions($container);
+  applyOverviewScroll($container);
 }
 
 
@@ -348,11 +349,12 @@ function layoutFormFlowOverview(view) {
  * compensating for that with positioning the section title.
 **/
 function layoutDetachedItemsOveriew(view) {
-  var $title = $("h2", view.$flowDetached);
-  var offsetLeft = view.$flowDetached.offset().left;
+  var $container = view.$flowDetached;
+  var $title = $("h2", $container);
+  var offsetLeft = $container.offset().left;
 
   // Expand the width of the section.
-  view.$flowDetached.css({
+  $container.css({
     left:  ~(offsetLeft),
     position: "relative",
     width: window.innerWidth
@@ -365,15 +367,18 @@ function layoutDetachedItemsOveriew(view) {
   });
 
   // Add required scrolling to layout groups.
-  $(".flow-detached-group", view.$flowDetached).each(function() {
+  $(".flow-detached-group", $container).each(function() {
     var $group = $(this);
     var $expander = $(".Expander_container");
     var display = $expander.css("display");
     $expander.css("display", "block"); // display:none objects have no height in jQuery
 
     positionFlowItems($group);
-//    positionConditionsByDestination($group);
     adjustOverviewHeight($group);
+    applyPageFlowConnectorPaths($group);
+    applyBranchFlowConnectorPaths($group);
+    adjustOverlappingFlowConnectorPaths($group);
+    adjustBranchConditionPositions($group);
     applyOverviewScroll($group);
 
     $expander.css("display", display); // Reset to original state
