@@ -3,6 +3,7 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
+const DialogApiRequest = require('./component_dialog_api_request');
 
 class FlowItemMenu extends ActivatedMenu {
   constructor($node, config) {
