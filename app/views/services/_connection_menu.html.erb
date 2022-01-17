@@ -28,8 +28,10 @@
   <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
   
   <li data-page-type="content"><a href="#add-page">Content page</a></li>
-
   <% if ENV['BRANCHING'] == 'enabled' %>
+
+    <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
+
     <% unless service.checkanswers_page.present? %>
       <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
     <% end %>
@@ -43,9 +45,7 @@
         <%= link_to t('services.branch'),
         new_branches_path(service.service_id, item[:uuid]) %>
       </li>
-    <% end %>
 
-    <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
       <li data-action="destination">
         <%= link_to t('actions.change_destination'),
         new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
