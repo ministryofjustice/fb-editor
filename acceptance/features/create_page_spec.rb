@@ -54,6 +54,13 @@ feature 'Create page' do
     then_I_should_see_the_edit_single_question_checkboxes_page
   end
 
+  scenario 'creating a single question page with email' do
+    given_I_add_a_single_question_page_with_email
+    and_I_add_a_page_url
+    when_I_add_the_page
+    then_I_should_see_the_edit_single_question_email_page
+  end
+
   scenario 'creating multiple question page' do
     given_I_add_a_multiple_question_page
     and_I_add_a_page_url
@@ -144,6 +151,13 @@ feature 'Create page' do
     and_I_should_see_default_checkboxes_created
   end
 
+  def then_I_should_see_the_edit_single_question_email_page
+    and_I_should_see_default_values_for_email_created
+    and_I_should_see_the_save_button_visible
+    and_I_should_see_the_save_button_disabled
+    expect(editor.find('input[type="email"]')).to be_visible
+  end
+
   def and_I_should_be_on_the_edit_page
     and_I_should_see_default_values_created
     and_I_should_see_the_save_button_visible
@@ -159,6 +173,10 @@ feature 'Create page' do
     expect(editor.text).to include('[Optional hint text]')
   end
 
+  def and_I_should_see_default_values_for_email_created
+    expect(editor.text).to include('Email address question')
+    expect(editor.text).to include('[Optional hint text]')
+  end
   def and_I_should_see_default_radio_options_created
     expect(
       editor.radio_options.map { |option| option[:value] }

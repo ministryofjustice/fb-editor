@@ -319,7 +319,7 @@ RSpec.describe NewPageGenerator do
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do
-          %w[checkboxes date number radios text textarea upload].each do |type|
+          %w[checkboxes date number radios text textarea upload email].each do |type|
             context "when #{type} component" do
               let(:page_type) { 'singlequestion' }
               let(:component_type) { type }
@@ -370,7 +370,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'multiple questions page allow any component type' do
-          %w[checkboxes content date number radios text textarea].each do |type|
+          %w[checkboxes content date number radios text textarea email].each do |type|
             context "when #{type} component type" do
               let(:page_type) { 'multiplequestions' }
               let(:component_type) { type }
@@ -403,7 +403,7 @@ RSpec.describe NewPageGenerator do
       context 'when metadata is invalid' do
         context 'pages that only allow content components' do
           %w[content checkanswers confirmation exit].each do |page|
-            %w[checkboxes date number radios text textarea].each do |type|
+            %w[checkboxes date number radios text textarea email].each do |type|
               context "#{page} page and #{type} component" do
                 let(:page_type) { page }
                 let(:component_type) { type }

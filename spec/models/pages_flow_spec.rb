@@ -30,7 +30,7 @@ RSpec.describe PagesFlow do
               type: 'page.singlequestion',
               title: 'Full name',
               uuid: '9e1ba77f-f1e5-42f4-b090-437aa9af7f73',
-              next: 'df1ba645-f748-46d0-ad75-f34112653e37',
+              next: 'adcb61c3-52b1-479b-be51-1bb610876d54',
               thumbnail: 'text',
               url: 'name'
             }
@@ -39,9 +39,9 @@ RSpec.describe PagesFlow do
             {
               type: 'page.singlequestion',
               title: 'Email address',
-              uuid: 'df1ba645-f748-46d0-ad75-f34112653e37',
+              uuid: 'adcb61c3-52b1-479b-be51-1bb610876d54',
               next: '4b8c6bf3-878a-4446-9198-48351b3e2185',
-              thumbnail: 'text',
+              thumbnail: 'email',
               url: 'email-address'
             }
           ],
