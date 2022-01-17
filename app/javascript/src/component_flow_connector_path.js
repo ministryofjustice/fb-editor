@@ -1241,21 +1241,6 @@ function xy(x, y) {
 }
 
 
-/******************************************
- * Temporary/development helper functions
- ******************************************/
-function createTestSvg(line) {
-  var d = pathD(xy(line.x, line.y), line.path);
-  var $svg = createSvg(createPath(d));
-  var $path = $svg.find("path");
-  $svg.addClass("FlowConnectorPath");
-  $svg.css("z-index", "2");
-  $path.css("stroke", "red");
-  $path.attr("stroke-width", "2");
-  return $svg;
-}
-
-
 /*************************************
  * Make available for importing.
  *************************************/

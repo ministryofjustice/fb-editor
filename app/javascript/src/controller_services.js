@@ -88,7 +88,8 @@ class FlowItem {
       x_in: config.x_in,
       x_out: config.x_out,
       y: config.y,
-    }
+    };
+
   }
 }
 
@@ -499,7 +500,6 @@ function adjustBranchConditionPositions($overview) {
  **/
 function adjustOverviewHeight($overview) {
   var $items = $(SELECTOR_FLOW_ITEM, $overview);
-  var $paths = $(".FlowConnectorPath path");
   var lowestPoint = 0;
 
   $items.each(function() {
@@ -598,7 +598,6 @@ function adjustOverviewScrollDimensions($overview, $container) {
  * design, they are excluded from this function and put in one of their own.
  **/
 function applyPageFlowConnectorPaths($overview) {
-  var $itemsByRow = $overview.find("[row]");
   var $items = $overview.find(".flow-page[data-next]");
   var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
@@ -672,15 +671,13 @@ function applyBranchFlowConnectorPaths($overview) {
       var up = conditionRow > destinationRow;
       var nextColumn = (conditionColumn + 1 == destinationColumn);
       var config = {
-          container: $overview,
-          from: $branch,
-          to: $destination,
-          via: $condition,
-          top: 0,                     // TODO: Is this and the height below the best way to position
-          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-        }
-
-      var points, type;
+            container: $overview,
+            from: $branch,
+            to: $destination,
+            via: $condition,
+            top: 0,                     // TODO: Is this and the height below the best way to position
+            bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+          };
 
       if(backward || sameColumn) {
 
@@ -829,7 +826,7 @@ function adjustOverlappingFlowConnectorPaths($overview) {
       keepChecking = (numberChecked < numberOfPaths);
     });
 
-    loopCount++
+    loopCount++;
     if(loopCount >= recursionLimit) {
       console.error("Oops! Somethign may have gone wrong. The overlap loop has gone round %d times and tripped the limit.", recursionLimit);
     }
@@ -855,7 +852,6 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
   var sameRow = (rowItem == rowNext);
   var up = rowItem > rowNext;
   var destinationInNextColumn = utilities.difference(columnItem, columnNext) == 1;
-  var type;
 
   if(sameRow) {
     if(forward) {
