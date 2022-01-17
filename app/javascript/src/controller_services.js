@@ -578,7 +578,7 @@ function adjustOverviewScrollDimensions($overview, $container) {
     let left = (containerWidth - overviewWidth) / 2;
 
     if(left < offsetLeft) {
-      $overview.css("left", ~left + "px");
+      $overview.css("left", ~(left - margin) + "px");
     }
     else {
       $overview.css("left", ~(offsetLeft - margin));
@@ -607,7 +607,7 @@ function applyPageFlowConnectorPaths($overview) {
     var next = $item.data("next");
     var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
     var fromY = $item.position().top + (rowHeight / 4);
-    var $next = $("#" + next);
+    var $next = $("[data-fb-id=" + next + "]", $overview);
     var toX = $next.position().left - 1; // - 1 for design spacing
     var toY = $next.position().top + (rowHeight / 4);
 
@@ -649,7 +649,7 @@ function applyBranchFlowConnectorPaths($overview) {
 
     $conditions.each(function(index) {
       var $condition = $(this);
-      var $destination = $("#" + $condition.data("next"), $overview);
+      var $destination = $("[data-fb-id=" + $condition.data("next") + "]", $overview);
 
       // --------------------------------------------------------------------------------------------
       // TODO: Temporary hack to prevent missing destination item bug  breaking the layout
