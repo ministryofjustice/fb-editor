@@ -25,7 +25,7 @@ const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 const ConnectorPath = require('./component_flow_connector_path');
-const FlowItemMenu = require('./component_flow_item_menu');
+const PageMenu = require('./component_page_menu');
 const ConnectionMenu = require('./component_connection_menu');
 
 const COLUMN_SPACING = 100;
@@ -54,7 +54,7 @@ ServicesController.edit = function() {
   view.$flowDetached = $("#flow-detached");
 
   createPageAdditionDialog(view);
-  createFlowItemMenus(view);
+  createPageMenus(view);
   createConnectionMenus(view);
 
   if(view.$flowOverview.length) {
@@ -137,9 +137,9 @@ function createPageAdditionMenu(view) {
  * --------------------
  * Create the context menus for each flow item within an overview layout.
  **/
-function createFlowItemMenus(view) {
+function createPageMenus(view) {
   $("[data-component='ItemActionMenu']").each((i, el) => {
-    var menu = new FlowItemMenu($(el), {
+    var menu = new PageMenu($(el), {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {

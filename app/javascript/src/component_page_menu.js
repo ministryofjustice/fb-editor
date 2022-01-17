@@ -5,7 +5,7 @@ const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
 
-class FlowItemMenu extends ActivatedMenu {
+class PageMenu extends ActivatedMenu {
   constructor($node, config) {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
@@ -119,4 +119,4 @@ class FlowItemMenu extends ActivatedMenu {
   }
 }
 
-module.exports = FlowItemMenu
+module.exports = PageMenu
