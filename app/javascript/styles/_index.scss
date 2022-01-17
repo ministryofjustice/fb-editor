@@ -703,8 +703,10 @@ html {
   width: 200px;
 
   span {
+    background-color: govuk-colour("white");
     display: table-cell;
     height: 125px;
+    padding-left: 0.5em;
     vertical-align: middle;
   }
 }
@@ -773,7 +775,7 @@ html {
   }
 
   .flow-detached-group {
-    margin-bottom: 250px;
+    margin: 0 30px 250px 30px;
     position: relative;
   }
 }
