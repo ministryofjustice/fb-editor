@@ -1,6 +1,7 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
+const DialogApiRequest = require('./component_dialog_api_request');
 
 class ConnectionMenu extends ActivatedMenu {
   constructor($node, config) {
@@ -32,18 +33,63 @@ class ConnectionMenu extends ActivatedMenu {
   }
 
   selection(event, item) {
-    var dialog = this._config.view.pageAdditionDialog;
-    var $form = dialog.$form;
 
-    // Set the 'add_page_here' value to mark point of new page inclusion.
-    // Should be a uuid of previous page or blank if at end of form.
-    utilities.updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
+    var action = item.data("action");
+    
+    event.preventDefault();
 
-    // Then add any required values.
-    utilities.updateHiddenInputOnForm($form, "page[page_type]", item.data("page-type"));
-    utilities.updateHiddenInputOnForm($form, "page[component_type]", item.data("component-type"));
+    switch(action) {
+      case "none":
+        // null action e.g. when we show submenu
+        break;
+      case "link": 
+        this.link(item);
+        break;
+      case "destination":
+        this.changeDestination(item);
+        break;
+      default:
+        this.addPage(item);
+        break;
+      }
 
-    this._config.view.pageAdditionDialog.open();
+    }
+
+    addPage(element) {
+        var dialog = this._config.view.pageAdditionDialog;
+        var $form = dialog.$form;
+      
+        // Set the 'add_page_here' value to mark point of new page inclusion.
+        // Should be a uuid of previous page or blank if at end of form.
+        utilities.updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
+
+        // Then add any required values.
+        utilities.updateHiddenInputOnForm($form, "page[page_type]", element.data("page-type"));
+        utilities.updateHiddenInputOnForm($form, "page[component_type]", element.data("component-type"));
+
+        this._config.view.pageAdditionDialog.open();
+    } 
+    
+    link(element) {
+      var $link = element.find("> a");
+      location.href = $link.attr("href");
+    }
+
+    // Open an API request dialog to change destination
+    changeDestination(element) {
+      var view = this._config.view;
+      var $link = element.find("> a");
+      new DialogApiRequest($link.attr("href"), {
+        activator: $link,
+        buttons: [{
+          text: view.text.dialogs.button_change_destination,
+          click: function(dialog) {
+            dialog.$node.find("form").submit();
+          }
+        }, {
+          text: view.text.dialogs.button_cancel
+        }]
+      });
+    }
   }
-}
-module.exports = ConnectionMenu
+  module.exports = ConnectionMenu

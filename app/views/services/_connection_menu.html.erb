@@ -5,7 +5,7 @@
     data-title="<%= item[:title] %>"
     data-uuid="<%= item[:uuid] %>">
 
-  <li>
+  <li data-action="none">
     <span>Single question page</span>
     <ul class="govuk-navigation">
       <li data-page-type="singlequestion"
@@ -39,7 +39,7 @@
     <% end %>
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) || item[:type] == 'flow.branch' %>
-      <li data-action="none">
+      <li data-action="link">
         <%= link_to t('services.branch'),
         new_branches_path(service.service_id, item[:uuid]) %>
       </li>
