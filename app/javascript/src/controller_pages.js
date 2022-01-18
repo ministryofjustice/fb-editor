@@ -132,7 +132,6 @@ class DataController {
     var controller = this;
     var $form = $("#editContentForm");
     $form.on("submit", controller.update);
-
     this.$form = $form;
   }
 
@@ -458,7 +457,7 @@ function createDialogConfiguration() {
 function workaroundForDefaultText(view) {
   $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
     var $this = $(this);
-    var $span = $this.find("span");
+    var $span = $this.find(".govuk-hint");
     $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
   });
 }
