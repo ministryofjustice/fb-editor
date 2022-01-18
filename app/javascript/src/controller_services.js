@@ -896,7 +896,7 @@ function positionAddPageButton() {
     var id = utilities.uniqueString("add-page-");
     if($item.position().top == 0) {
       $item.attr("data-next", id);
-      $button.attr("id", id);
+      $button.attr("data-fb-id", id);
       $button.css({
         display: "inline-block",
         left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "PX",
