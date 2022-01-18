@@ -570,10 +570,13 @@ function applyOverviewScroll($overview) {
  **/
 function adjustOverviewScrollDimensions($overview, $container) {
   var overviewWidth = $overview.width()
+  var overviewTop = $overview.offset().top;
   var containerWidth = $container.get(0).scrollWidth;
   var margin = 30; // Arbitrary number based on common
   var viewWidth = window.innerWidth - (margin * 2);
+  var top;
 
+  // Sort out widths...
   if(containerWidth > overviewWidth) {
     let offsetLeft = $overview.offset().left;
     let left = (containerWidth - overviewWidth) / 2;
@@ -586,6 +589,19 @@ function adjustOverviewScrollDimensions($overview, $container) {
     }
 
     $overview.css("width", viewWidth + "px");
+  }
+
+  // Sort out heights...
+  $(".FlowConnectorPath path:first-child", $overview).each(function() {
+    var $this = $(this);
+    var offsetTop = $this.offset().top;
+    if(!top || top > offsetTop) {
+      top = offsetTop;
+    }
+  });
+
+  if(top < overviewTop) {
+    $overview.css("padding-top", (overviewTop - top) + "px");
   }
 }
 
@@ -884,7 +900,8 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- *
+ * TEMPORARY: BRANCHING FEATURE FLAG
+ * Old style view of Add Page button functionality due to shared branching on/off code.
  **/
 function positionAddPageButton() {
   var $overview = $("#flow-overview");
@@ -900,9 +917,9 @@ function positionAddPageButton() {
       $button.attr("data-fb-id", id);
       $button.css({
         display: "inline-block",
-        left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "PX",
+        left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "px",
         position: "absolute",
-        top: Number(($item.height() / 2) - ($button.outerHeight() / 2)) + "px"
+        top: "43px"
       });
     }
   });
