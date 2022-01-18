@@ -479,7 +479,8 @@ function positionFlowItems($overview) {
  * calculations for items and line, etc. However, the design wants the text to be above the lines.
  **/
 function adjustBranchConditionPositions($overview) {
-  var lineHeight = Number($(".FlowConnectorPath path").eq(0).css("stroke-width").replace("px", "")) || 0;
+  var strokeWidth = $(".FlowConnectorPath path").eq(0).css("stroke-width") || "";
+  var lineHeight = Number(strokeWidth.replace("px", "")) || 0;
   $overview.find(".flow-expression").each(function() {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
