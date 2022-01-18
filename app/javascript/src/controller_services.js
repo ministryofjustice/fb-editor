@@ -900,28 +900,48 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * TEMPORARY: BRANCHING FEATURE FLAG
- * Old style view of Add Page button functionality due to shared branching on/off code.
+ * Handles position and setup of the Add Page button.
  **/
 function positionAddPageButton() {
   var $overview = $("#flow-overview");
   var $button = $(".flow-add-page-button");
-  var $items = $(SELECTOR_FLOW_ITEM, $overview).not("[data-next]");
+  var $items = $(SELECTOR_FLOW_ITEM, $overview).not("[data-next]"); // Expect only one.
+  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
+  var id = utilities.uniqueString("add-page-");
+  var $item;
 
-  $overview.append($button);
+  // Find last item on first row (again, we should only be dealing with one but just making sure).
   $items.each(function() {
-    var $item = $(this);
-    var id = utilities.uniqueString("add-page-");
-    if($item.position().top == 0) {
+    var $this = $(this);
+    if($this.position().top == 0) {
+      $item = $this;
       $item.attr("data-next", id);
-      $button.attr("data-fb-id", id);
-      $button.css({
-        display: "inline-block",
-        left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "px",
-        position: "absolute",
-        top: "43px"
-      });
     }
+  });
+
+  // Position button next to $item.
+  $overview.append($button);
+  $button.attr("data-fb-id", id);
+  $button.css({
+    display: "inline-block",
+    left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "px",
+    position: "absolute",
+    top: "43px"
+  });
+
+  // Add the FlowConnectorPath.
+  new ConnectorPath.ForwardPath({
+    from_x: $item.position().left + $item.outerWidth() + 1, // + 1 for design spacing,
+    from_y: $item.position().top + (rowHeight / 4),
+    to_x: $button.position().left - 1, // - 1 for design spacing,
+    to_y: $item.position().top + (rowHeight / 4), // Should be a straight line only.
+    via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
+    }, {
+    from: $item,
+    to: $button,
+    container: $overview,
+    top: 0,                     // TODO: Is this and the height below the best way to position
+    bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
   });
 }
 
