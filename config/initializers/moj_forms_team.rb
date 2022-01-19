@@ -1,3 +1,8 @@
+MOJ_FORMS_TEAM = [
+  'claire.bowman@digital.justice.gov.uk',
+  'sijy.mathew@digital.justice.gov.uk'
+].freeze
+
 MOJ_FORMS_DEVS = [
   'brendan.butler@digital.justice.gov.uk',
   'matt.tei@digital.justice.gov.uk',
@@ -6,4 +11,5 @@ MOJ_FORMS_DEVS = [
   'chris.pymm@digital.justice.gov.uk'
 ].freeze
 
+Rails.application.config.moj_forms_team = MOJ_FORMS_TEAM
 Rails.application.config.moj_forms_devs = MOJ_FORMS_DEVS
