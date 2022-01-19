@@ -71,6 +71,8 @@ class FlowConnectorPath {
   }
 
   build(path) {
+    var flowConnectorPath = this;
+
     this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
@@ -80,6 +82,14 @@ class FlowConnectorPath {
               .data("instance", this);
 
     this._config.container.append(this.$node);
+
+    this.$node.find("path").on("mouseover", function() {
+      flowConnectorPath.$node.addClass("active");
+    });
+
+    this.$node.find("path").on("mouseout", function() {
+      flowConnectorPath.$node.removeClass("active");
+    });
 
     // Uncomment for developer helper code only
     //this.makeLinesVisibleForTesting();
