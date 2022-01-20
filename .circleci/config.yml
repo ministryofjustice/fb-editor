@@ -243,6 +243,17 @@ jobs:
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
+      - slack/status: *slack_status
+  deploy_to_test_eks:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - add_ssh_keys: *ssh_keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
       - run:
           name: deploy to test (EKS cluster)
           environment:
@@ -449,6 +460,10 @@ workflows:
               only:
                 - main
       - deploy_to_test:
+          requires:
+            - build_web_image
+            - build_workers_image
+      - deploy_to_test_eks:
           requires:
             - build_web_image
             - build_workers_image
