@@ -31,7 +31,6 @@ class QuestionMenu extends ActivatedMenu {
       onSetRequired: function(){} // Called at end of set required function
     }, config));
 
-    //$node.on("menuselect", QuestionMenu.selection.bind(this) );
     $node.on("menuselect", (event, ui) => {
       this.selection(event, ui.item);
     });
