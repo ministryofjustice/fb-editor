@@ -31,6 +31,7 @@ const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
+const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
@@ -216,23 +217,28 @@ function addQuestionMenuListeners(view) {
 
   // QuestionMenuSelectionRemove
   view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
-    var html = $(templateContent).filter("[data-node=remove]").text();
-    view.dialogConfirmationDelete.open({
-      heading: html.replace(/#{label}/, question.$heading.text()),
-      ok: view.text.dialogs.button_delete_component
-      }, function() {
+    var questionUuid = question.data._uuid;
+    var apiUrl = question.menu.selectedItem.data('apiPath').replace('question_uuid', questionUuid);
+    
+    new DialogApiRequest(apiUrl, {
+      activator: question.menu.selectedItem,
+      closeOnClickSelector: ".govuk-button",
+
+      build: function(dialog) {
+        // Find and correct (make work!) any method:delete links
+        dialog.$node.find("[data-method=delete]").on("click", function(e) {
+          e.preventDefault();
       // Workaround solution that doesn't require extra backend work
       // 1. First remove component from view
-      question.$node.hide();
-
+          question.$node.hide();
       // 2. Update form (in case anything else has changed)
-      view.dataController.update();
-
+          view.dataController.update();
       // 3. Remove corresponding component from form
-      question.remove();
-
+          question.remove();
       // 4. Trigger save required (to enable Save button)
-      view.dataController.saveRequired(true); // 4
+          view.dataController.saveRequired(true);
+        });
+      }
     });
   });
 
@@ -381,18 +387,6 @@ function enhanceQuestions(view) {
         }
       },
 
-      onItemRemoveConfirmation: function(item) {
-        // @item (EditableComponentItem) Item to be deleted.
-        // Runs before onItemRemove when removing an editable Collection item.
-        // Currently not used but added for future option and consistency
-        // with onItemAdd (provides an opportunity for clean up).
-        view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
-          }, function() {
-          item.component.removeItem(item);
-        });
-      }
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
@@ -412,18 +406,6 @@ function enhanceQuestions(view) {
         }
       },
 
-      onItemRemoveConfirmation: function(item) {
-        // @item (EditableComponentItem) Item to be deleted.
-        // Runs before onItemRemove when removing an editable Collection item.
-        // Currently not used but added for future option and consistency
-        // with onItemAdd (provides an opportunity for clean up).
-        view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
-          }, function() {
-          item.component.removeItem(item);
-        });
-      }
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
