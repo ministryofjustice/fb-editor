@@ -78,10 +78,11 @@ ServicesController.edit = function() {
 class FlowItem {
   constructor($node, config) {
     $node.data("instance", this);
+    $node.addClass("FlowItem");
 
     this.$node = $node;
-    this.id = $node.attr("id");
-    this.next = $node.attr("next");
+    this.id = $node.attr("data-fb-id");
+    this.next = $node.attr("data-next");
     this.row = config.row;
     this.column = config.column;
     this.coords = {
@@ -90,6 +91,27 @@ class FlowItem {
       y: config.y,
     };
 
+  }
+}
+
+
+/* VIEW SPECIFIC COMPONENT:
+ * ------------------------
+ * Simple item to mimic FlowItem-like object but for the branch conditions.
+ * Could also be renamed FlowBranchCondition class but we're trying to
+ * highlight the similarities to a FlowItem (which could also be split into
+ * two separate classes of FlowPage and FlowBranch but keeping things simple).
+ **/
+class FlowConditionItem {
+  constructor($node, config) {
+    $node.data("instance", this);
+    $node.addClass("FlowConditionItem");
+
+    this.$node = $node;
+    this.from = $node.attr("data-from");
+    this.next = $node.attr("data-next");
+    this.row = config.row;
+    this.column = config.column;
   }
 }
 
@@ -324,7 +346,7 @@ function createFlowItemMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
-  positionFlowItems($container);
+  createAndPositionFlowItems($container);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
   if(!view.features.branching) {
@@ -374,7 +396,7 @@ function layoutDetachedItemsOveriew(view) {
     var display = $expander.css("display");
     $expander.css("display", "block"); // display:none objects have no height in jQuery
 
-    positionFlowItems($group);
+    createAndPositionFlowItems($group);
     adjustOverviewHeight($group);
     applyPageFlowConnectorPaths($group);
     applyBranchFlowConnectorPaths($group);
@@ -392,7 +414,7 @@ function layoutDetachedItemsOveriew(view) {
  * Main function to find and position flow items (pages/branches/spacers)
  * within an overview layout.
 **/
-function positionFlowItems($overview) {
+function createAndPositionFlowItems($overview) {
   var $columns = $(".column", $overview);
   var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
   var left = 0;
@@ -418,12 +440,10 @@ function positionFlowItems($overview) {
       new FlowItem($item, {
         x_in: left,
         x_out: left + $item.outerWidth(),
-        y: top + (rowHeight / 4)
+        y: top + (rowHeight / 4),
+        column: column,
+        row: row
       });
-
-      // Set column and row information for items.
-      $item.attr("column", column);
-      $item.attr("row", row);
 
       // Position flow item node.
       $item.css({
@@ -445,9 +465,11 @@ function positionFlowItems($overview) {
           top: conditionTop
         });
 
-        // Set column and row information for items.
-        $condition.attr("column", column);
-        $condition.attr("row",  row + index); // Add row because Branch row is not always zero.
+        // Creates FlowConditionItem instances (speach bubbles) with simple data.
+        new FlowConditionItem($condition, {
+          column: column,
+          row: row + index
+        });
 
         conditionTop += rowHeight;
       });
@@ -634,8 +656,8 @@ function applyPageFlowConnectorPaths($overview) {
       to_y: toY,
       via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
       }, {
-      from: $item,
-      to: $next,
+      from: $item.data("instance"),
+      to: $next.data("instance"),
       container: $overview,
       top: 0,                     // TODO: Is this and the height below the best way to position
       bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
@@ -653,10 +675,10 @@ function applyPageFlowConnectorPaths($overview) {
  * dealing with them separately from other page arrows.
  **/
 function applyBranchFlowConnectorPaths($overview) {
-  var $itemsByRow = $overview.find("[row]");
-  var rowHeight = utilities.maxHeight($itemsByRow);
+  var $flowItemElements = $overview.find(SELECTOR_FLOW_ITEM);
+  var rowHeight = utilities.maxHeight($flowItemElements);
 
-  $overview.find(SELECTOR_FLOW_BRANCH).each(function() {
+  $flowItemElements.filter(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
     var branchX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design gap
     var branchY = $branch.position().top + (rowHeight / 4);
@@ -665,7 +687,9 @@ function applyBranchFlowConnectorPaths($overview) {
 
     $conditions.each(function(index) {
       var $condition = $(this);
+      var condition = $condition.data("instance"); // FlowConditionItem
       var $destination = $("[data-fb-id=" + $condition.data("next") + "]", $overview);
+      var destination = $destination.data("instance"); // FlowItem
 
       // --------------------------------------------------------------------------------------------
       // TODO: Temporary hack to prevent missing destination item bug  breaking the layout
@@ -677,10 +701,10 @@ function applyBranchFlowConnectorPaths($overview) {
       var destinationY = $destination.position().top + (rowHeight / 4);
       var conditionX = (branchWidth / 2) + $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
-      var conditionColumn = Number($condition.attr("column"));
-      var conditionRow = Number($condition.attr("row"));
-      var destinationColumn = Number($destination.attr("column"));
-      var destinationRow = Number($destination.attr("row"));
+      var conditionColumn = condition.column;
+      var conditionRow = condition.row;
+      var destinationColumn = destination.column;
+      var destinationRow = destination.row;
       var backward = conditionColumn > destinationColumn;
       var sameColumn = (conditionColumn == destinationColumn);
       var sameRow = (conditionRow == destinationRow);
@@ -689,8 +713,8 @@ function applyBranchFlowConnectorPaths($overview) {
       var nextColumn = (conditionColumn + 1 == destinationColumn);
       var config = {
             container: $overview,
-            from: $branch,
-            to: $destination,
+            from: $branch.data("instance"), // Should be FlowItem instance
+            to: $destination.data("instance"), // Should be FlowItem instance
             via: $condition,
             top: 0,                     // TODO: Is this and the height below the best way to position
             bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
@@ -855,16 +879,16 @@ function adjustOverlappingFlowConnectorPaths($overview) {
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Function uses the from/to relationship of Flow Items and any attributes awarded in the
- * apply positionFlowItems() function to help determine the connector path type required.
+ * createAndPositionFlowItems() function to help determine the connector path type required.
  *
  * @points (Object) Properties for x/y coordinates (see FlowConnectorPath Class)
  * @config (Object) Various items/properties required by FlowConnectorPath Class.
  **/
 function calculateAndCreatePageFlowConnectorPath(points, config) {
-  var columnItem = Number(config.from.attr("column"));
-  var columnNext = Number(config.to.attr("column"));
-  var rowItem = Number(config.from.attr("row"));
-  var rowNext = Number(config.to.attr("row"));
+  var columnItem = Number(config.from.column);
+  var columnNext = Number(config.to.column);
+  var rowItem = Number(config.from.row);
+  var rowNext = Number(config.to.row);
   var forward = columnItem < columnNext;
   var sameRow = (rowItem == rowNext);
   var up = rowItem > rowNext;

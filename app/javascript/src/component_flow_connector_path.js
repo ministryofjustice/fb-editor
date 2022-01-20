@@ -38,8 +38,8 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
  *                      rX & rY: 'to' x+y points
  *                  }
  * @config (Object) Configurations {
- *                      from: Starting $node of the path.
- *                      to: Destination $node of the path.
+ *                      from: Starting FlowItem of the path.
+ *                      to: Destination FlowItem of the path.
  *                      $container: jQuery node for appending element.
  *                      space: Number to add before and after start and end points
  *                             (allows for border compensation of existing css)
@@ -61,6 +61,9 @@ class FlowConnectorPath {
                       via_y: 0  // you can add x/y coordinates to help route it.
                     }, points));
 
+    this.from = conf.from;
+    this.to = conf.to;
+
     // Private
     this._config = conf;
     this._path = "";
@@ -77,8 +80,8 @@ class FlowConnectorPath {
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", this.id)
-              .attr("data-from", this._config.from.attr("id"))
-              .attr("data-to", this._config.to.attr("id"))
+              .attr("data-from", this._config.from.id)
+              .attr("data-to", this._config.to.id)
               .data("instance", this);
 
     this._config.container.append(this.$node);
