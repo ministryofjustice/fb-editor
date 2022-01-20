@@ -482,15 +482,13 @@ workflows:
           include_job_number_field: false
           requires:
             - acceptance_tests
-            - acceptance_tests_no_branching
-      - confirm_live_deploy:
-          type: approval
-          requires:
-            - acceptance_tests
-            - acceptance_tests_no_branching
-      - deploy_to_live:
-          requires:
-            - confirm_live_deploy
+      # - confirm_live_deploy:
+      #     type: approval
+      #     requires:
+      #       - acceptance_tests
+      # - deploy_to_live:
+      #     requires:
+      #       - confirm_live_deploy
   deploy_testable_branch:
     jobs:
       - build:
