@@ -31,7 +31,10 @@ class QuestionMenu extends ActivatedMenu {
       onSetRequired: function(){} // Called at end of set required function
     }, config));
 
-    $node.on("menuselect", QuestionMenu.selection.bind(this) );
+    //$node.on("menuselect", QuestionMenu.selection.bind(this) );
+    $node.on("menuselect", (event, ui) => {
+      this.selection(event, ui.item);
+    });
 
     let $target = this._config.$target;
     if($target.length) {
@@ -43,6 +46,12 @@ class QuestionMenu extends ActivatedMenu {
     this.container.$node.addClass("QuestionMenu");
     this.question = config.question;
     this.setRequiredViewState();
+  }
+
+  selection(event, item) {
+    var action = item.data("action");
+    this.selectedItem = item;
+    safelyActivateFunction(this[action].bind(this));
   }
 
   remove() {
@@ -64,15 +73,5 @@ class QuestionMenu extends ActivatedMenu {
     }
   }
 }
-
-/* Handles what happens when an item in the menu has been selected
- * @event (jQuery Event Object) See jQuery docs for info.
- * @data  (Object) See ActivatedMenu and search for config.selection_event
- **/
-QuestionMenu.selection = function(event, ui) {
-  var action = $(event.originalEvent.currentTarget).data("action");
-  safelyActivateFunction(this[action].bind(this));
-}
-
 
 module.exports = QuestionMenu;
