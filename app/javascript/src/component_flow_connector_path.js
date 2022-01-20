@@ -87,10 +87,12 @@ class FlowConnectorPath {
     this._config.container.append(this.$node);
 
     this.$node.find("path").on("mouseover", function() {
+      $(document).trigger("FlowConnectorPathOver", flowConnectorPath);
       flowConnectorPath.$node.addClass("active");
     });
 
     this.$node.find("path").on("mouseout", function() {
+      $(document).trigger("FlowConnectorPathOut", flowConnectorPath);
       flowConnectorPath.$node.removeClass("active");
     });
 
