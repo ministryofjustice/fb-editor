@@ -51,7 +51,16 @@ class QuestionMenu extends ActivatedMenu {
   selection(event, item) {
     var action = item.data("action");
     this.selectedItem = item;
-    safelyActivateFunction(this[action].bind(this));
+
+    event.preventDefault();
+    switch(action) {
+      case "remove":
+           this.remove();
+           break;
+      case "required":
+          this.required();
+          break;
+    }
   }
 
   remove() {
