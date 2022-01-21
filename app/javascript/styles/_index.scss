@@ -527,7 +527,7 @@ html {
   }
 
   .FlowItemMenu,
-  .PageAdditionMenu,
+  .ConnectionMenu,
   .ui-dialog {
     z-index: 3;
   }
@@ -702,7 +702,6 @@ html {
 
 .flow-page {
   height: 250px;
-  overflow: hidden;
   vertical-align: middle;
   width: 200px;
 }
