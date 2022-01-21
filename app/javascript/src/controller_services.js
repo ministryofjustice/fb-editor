@@ -155,6 +155,7 @@ function createPageMenus(view) {
     view.addLastPointHandler(menu.activator.$node);
   });
 }
+
 /* VIEW SETUP FUNCTION:
  * --------------------
  * Create the connection menus for each flow item within an overview layout.
