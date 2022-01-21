@@ -498,32 +498,79 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
+
+.services-edit {
+
+  main {
+    // Quickfix for Brief flash of content not ready for display.
+    // This can be reversed when slow or view reliant JS has
+    // finished running. We're using the controller name + action
+    // so we can use it only where actually needed. Find the
+    // corresponding JS controller+action function to see where it
+    // is turned off/reversed.
+    visibility: hidden;
+  }
+
+  // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
+  // their lines from centre of a Branch Node, which places them directly over those
+  // elements, without this workaround in place (easier to fix z-index than calculations).
+  .FlowConnectorLine,
+  .FlowConnectorPath {
+    z-index: 1;
+  }
+
+  .FlowConnectorPath.active,
+  .flow-item,
+  .ui-widget-overlay {
+    z-index: 2;
+  }
+
+  .FlowItemMenu,
+  .PageAdditionMenu,
+  .ui-dialog {
+    z-index: 3;
+  }
+}
+
+
+.FlowConnectorLine,
 .FlowConnectorPath {
-  border: none;
-  border-color: govuk-colour("black");
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
+  // A note about the height and width settings.
+  // They should both be zero because we want to avoid element overlap to
+  // allow for use of hover over event in making Conneciton menus appear.
+  // However, although this setting works fine in Firefox, there seems to
+  // be a bug in Chrome that simply hides FlowConnectorPath elements from
+  // being seen. By accidental tinkering, it seems that giving them a
+  // value of 100px works !?!? Not sure why, at time of writing. Also,
+  // after playing with it for a couple minutes, it seems setting to 10px
+  // still does not work and, setting to 50px makes them appear but gives
+  // an incorrectly placed layout. So, 100px is perhaps the magic number
+  // although, that doesn't rule out others having equally magical
+  // properties. For now, will be leaving as 100px with fingers crossed.
+  left: 0px;
+  height: 100px;
+  overflow: visible;
+  position: absolute;
+  top: 0px;
+  width: 100px;
 
-  span {
-    display: block;
-    height: 14px;
-    overflow: hidden;
-    position: absolute;
-    right: -1px;
-    top: -6px;
-    width: 7px;
+  path {
+    display: block; // So we can capture a jQuery height calculation
+    fill: none;
+    stroke: #949494;
+    stroke-width: 2px;
 
-    &:after {
-      border: govuk-colour("black") solid 5px;
-      border-top-color: govuk-colour("white");
-      border-left-color: govuk-colour("white");
-      content: "";
-      display: block;
-      left: -5px;
-      position: relative;
-      transform: rotate(-45deg);
-      top: 2px;
+    &:hover {
+
+      &, & + path {
+        stroke-width:4px;
+        stroke: $govuk-link-hover-colour;
+      }
     }
+  }
+
+  .arrowPath {
+    fill: #949494;
   }
 }
 
@@ -538,7 +585,7 @@ html {
 
 .FlowOverviewScrollingFrame {
   height: 100%;
-  overflow: auto;
+  overflow: visible;
   position: relative;
 }
 
@@ -552,12 +599,14 @@ html {
 	  display: inline-block;
     margin-top: 30px;
     padding: 0 40px;
+    position: relative;
     text-align: center;
     text-decoration: none;
     width: inherit;
   }
 
   img {
+    background-color: govuk-colour("white");
     height: 125px;
     left: 0;
     position: absolute;
@@ -596,8 +645,9 @@ html {
 
 .flow-condition {
   @include list_reset;
+  margin: 0 50px;
   text-align: center;
-  width: inherit;
+  width: 300px;
 
   a, span {
     @include govuk-font($size: 16);
@@ -613,7 +663,9 @@ html {
 
 .flow-conditions {
   @include list_reset;
-  width: 300px;
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 
 .flow-expression {
@@ -621,7 +673,6 @@ html {
 }
 
 .flow-item {
-  background-color: govuk-colour("white");
   overflow: visible;
 
   &:hover {
@@ -642,29 +693,33 @@ html {
 }
 
 .flow-page {
-  border:  $govuk-link-colour solid 2px;
-  height: 121px;
+  height: 250px;
+  overflow: hidden;
   vertical-align: middle;
-  width: 196px;
+  width: 200px;
 }
 
 .flow-pointer {
   width: 200px;
 
   span {
+    background-color: govuk-colour("white");
     display: table-cell;
     height: 125px;
+    padding-left: 0.5em;
     vertical-align: middle;
   }
 }
 
 .flow-thumbnail {
+  background-color: govuk-colour("white");
+  border:  $govuk-link-colour solid 2px;
   display: block;
-  height: 100%;
+  height: 121px;
   margin-bottom: govuk-spacing(2);
   overflow: hidden;
   text-decoration: none;
-  width: 100%;
+  width: 196px;
 
   img {
     display: block;
@@ -720,8 +775,7 @@ html {
   }
 
   .flow-detached-group {
-    @include govuk-width-container;
-    margin-bottom: 250px;
+    margin: 0 30px 250px 30px;
     position: relative;
   }
 }
@@ -729,6 +783,8 @@ html {
 #flow-overview {
   margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
+  overflow: scroll;
+  position: relative;
 }
 
 #flow-standalone-pages {
