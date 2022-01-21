@@ -557,20 +557,20 @@ html {
   path {
     display: block; // So we can capture a jQuery height calculation
     fill: none;
-    stroke: govuk-colour("black");
+    stroke: #949494;
     stroke-width: 2px;
 
     &:hover {
 
       &, & + path {
-        stroke-width:6px;
-        stroke: govuk-colour("orange");
+        stroke-width:4px;
+        stroke: $govuk-link-hover-colour;
       }
     }
   }
 
   .arrowPath {
-    fill: govuk-colour("black");
+    fill: #949494;
   }
 }
 
