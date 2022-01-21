@@ -526,7 +526,7 @@ html {
   }
 
   .FlowItemMenu,
-  .PageAdditionMenu,
+  .ConnectionMenu,
   .ui-dialog {
     z-index: 3;
   }
@@ -621,7 +621,27 @@ html {
   }
 }
 
-.flow-add-page-button {
+.ConnectionMenuActivator {
+  display: inline-block;
+  left: calc(100% + 10px);
+  // opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 46px;
+
+  &.branch-connection-menu-activator {
+    left: -10px;
+    top: -17px;
+  }
+
+  &:after {
+    content: '+';
+    top: -22px;
+  }
+}
+
+.flow-addge-button {
+  // TODO - I think this can be deleted once the conneciton menu is live. 
   // TEMPORARY: BRANCHING FEATURE FLAG
   // This should be display:none only but the other css is required for supporting the
   // old style view of Add Page button functionality due to shared branching on/off code.
@@ -694,7 +714,6 @@ html {
 
 .flow-page {
   height: 250px;
-  overflow: hidden;
   vertical-align: middle;
   width: 200px;
 }

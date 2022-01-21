@@ -16,10 +16,6 @@
     </li>
   <% end %>
 
-  <% unless (item[:type] =~ /page.(confirmation|exit)/) %>
-    <li data-action="add"><a href="#add-page-here"><%= t('actions.add_page') %></a></li>
-  <% end %>
-
   <% unless item[:type] == 'page.start' %>
     <li data-action="delete-api">
       <%= link_to t('actions.delete_page'),
@@ -27,21 +23,5 @@
         method: :delete,
         class: 'destructive delete' %>
     </li>
-  <% end %>
-
-  <% if ENV['BRANCHING'] == 'enabled' %>
-    <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
-      <li data-action="none">
-        <%= link_to t('services.branch'),
-        new_branches_path(service.service_id, item[:uuid]) %>
-      </li>
-    <% end %>
-
-    <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) %>
-      <li data-action="destination">
-        <%= link_to t('actions.change_destination'),
-        new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
-      </li>
-    <% end %>
   <% end %>
 </ul>
