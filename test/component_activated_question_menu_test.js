@@ -193,6 +193,12 @@ describe("QuestionMenu", function() {
   });
 
   describe("Actions", function() {
+      this.timeout(10000);
+    beforeEach( async () => {
+   await new Promise(resolve => setTimeout(resolve, 5000));
+   console.log("----------------------");
+});
+
     it("should trigger QuestionMenuSelectionRemove event on remove()", function() {
       var value = 1;
       var $target;
