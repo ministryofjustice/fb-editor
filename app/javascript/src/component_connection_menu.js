@@ -20,8 +20,10 @@ class ConnectionMenu extends ActivatedMenu {
 
     this.activator.$node.addClass("ConnectionMenuActivator");
     this.container.$node.addClass("ConnectionMenu");
-    this.uuid = $node.data("uuid");
+    //this.uuid = $node.data("uuid");
     this.title = $node.data("title");
+
+    this.addPageAfter = $node.data("uuid");
   }
 
   set addPageAfter(uuid) {
@@ -55,7 +57,7 @@ class ConnectionMenu extends ActivatedMenu {
 
     }
 
-    addPage(element) {
+    addPage(element) { 
         var dialog = this._config.view.pageAdditionDialog;
         var $form = dialog.$form;
       
