@@ -681,7 +681,7 @@ function applyBranchFlowConnectorPaths($overview) {
   $flowItemElements.filter(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
     var branchX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design gap
-    var branchY = $branch.position().top + (rowHeight / 4);
+    var branchY = $branch.position().top + (rowHeight / 2);
     var branchWidth = $branch.outerWidth();
     var $conditions = $branch.find(SELECTOR_FLOW_CONDITION);
 
@@ -740,7 +740,7 @@ function applyBranchFlowConnectorPaths($overview) {
           // to the x/y coordinates of the related 'next' destination.
           new ConnectorPath.ForwardPath({
             from_x: branchX,
-            from_y: branchY,
+            from_y: branchY - (rowHeight / 4),
             to_x: destinationX,
             to_y: destinationY
           }, config);
