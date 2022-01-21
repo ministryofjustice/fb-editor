@@ -559,18 +559,17 @@ html {
     fill: none;
     stroke: #949494;
     stroke-width: 2px;
-
-    &:hover {
-
-      &, & + path {
-        stroke-width:4px;
-        stroke: $govuk-link-hover-colour;
-      }
-    }
   }
 
   .arrowPath {
     fill: #949494;
+  }
+
+  &.active {
+    path {
+      stroke-width:4px;
+      stroke: $govuk-link-hover-colour;
+    }
   }
 }
 
