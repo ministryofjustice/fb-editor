@@ -27,19 +27,19 @@
     </ul>
   </li>
   
-  <li data-page-type="multiplequestions"><a href="#add-page">Add Multiple question page</a></li>
+  <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
   
-  <li data-page-type="content"><a href="#add-page">Add Content page</a></li>
+  <li data-page-type="content"><a href="#add-page">Add content page</a></li>
   <% if ENV['BRANCHING'] == 'enabled' %>
 
-    <li data-page-type="exit"><a href="#add-page">Add Exit page</a></li>
+    <li data-page-type="exit"><a href="#add-page">Add exit page</a></li>
 
     <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page">Add Check answers page</a></li>
+      <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
     <% end %>
       
     <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page">Add Confirmation page</a></li>
+      <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
     <% end %>
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) || item[:type] == 'flow.branch' %>
@@ -55,8 +55,8 @@
     <% end %>
 
   <% else %>
-    <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
-    <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
+    <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
+    <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
   <% end %>
 
 
