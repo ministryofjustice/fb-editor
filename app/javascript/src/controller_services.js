@@ -216,10 +216,6 @@ function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
   createAndPositionFlowItems($container);
 
-  // TEMPORARY: BRANCHING FEATURE FLAG
-  if(!view.features.branching) {
-    positionAddPageButton();
-  }
 
   adjustOverviewHeight($container);
   applyPageFlowConnectorPaths($container);
