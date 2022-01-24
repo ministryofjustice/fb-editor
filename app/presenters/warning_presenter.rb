@@ -1,22 +1,8 @@
-class PublishWarningPresenter
+class WarningPresenter
   attr_reader :service, :action
 
-  MESSAGE = {
-    publish: {
-      both_pages: I18n.t('publish.warning.both_pages'),
-      cya_page: I18n.t('publish.warning.cya'),
-      confirmation_page: I18n.t('publish.warning.confirmation')
-    },
-    delete: {
-      both_pages: I18n.t('pages.flow.delete_warning_both_pages'),
-      cya_page: I18n.t('pages.flow.delete_warning_cya_page'),
-      confirmation_page: I18n.t('pages.flow.delete_warning_confirmation_page')
-    }
-  }.freeze
-
-  def initialize(service, action)
+  def initialize(service = nil)
     @service = service
-    @action = action
   end
 
   def message
@@ -25,23 +11,28 @@ class PublishWarningPresenter
       cya_page_not_present_message
   end
 
+  def cya_and_confirmation_missing?
+    !checkanswers_in_main_flow? &&
+      !confirmation_in_main_flow?
+  end
+
   private
 
   def submitting_pages_not_present_message
-    if !checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      MESSAGE[action][:both_pages]
+    if cya_and_confirmation_missing?
+      messages[:both_pages]
     end
   end
 
   def cya_page_not_present_message
     if !checkanswers_in_main_flow? && confirmation_in_main_flow?
-      MESSAGE[action][:cya_page]
+      messages[:cya_page]
     end
   end
 
   def confirmation_page_not_present_message
     if checkanswers_in_main_flow? && !confirmation_in_main_flow?
-      MESSAGE[action][:confirmation_page]
+      messages[:confirmation_page]
     end
   end
 

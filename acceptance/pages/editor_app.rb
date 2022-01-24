@@ -85,6 +85,7 @@ class EditorApp < SitePrism::Page
   element :add_radio, :link, I18n.t('components.list.radios'), visible: false
   element :add_checkboxes, :link, I18n.t('components.list.checkboxes'), visible: false
   element :add_content, :link, I18n.t('components.menu.content_area'), visible: false
+  element :add_email, :link, I18n.t('components.list.email'), visible: false
 
   elements :add_page_submit_button, :button, I18n.t('pages.create')
   element :save_page_button, :xpath, '//input[@value="Save"]'
@@ -97,6 +98,7 @@ class EditorApp < SitePrism::Page
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
+  element :section_heading_hint, '.fb-section_heading'
   data_content_id :section_heading, 'page[section_heading]'
   data_content_id :page_heading, 'page[heading]'
   data_content_id :page_lede, 'page[lede]'

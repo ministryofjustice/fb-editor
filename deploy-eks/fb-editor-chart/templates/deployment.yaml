@@ -6,7 +6,7 @@ metadata:
   name: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"

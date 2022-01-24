@@ -93,7 +93,7 @@ class PagesFlow
   def warning(_)
     {
       type: 'warning',
-      content: PublishWarningPresenter.new(service, :delete).message
+      content: DeletePresenter.new(service).message
     }
   end
 

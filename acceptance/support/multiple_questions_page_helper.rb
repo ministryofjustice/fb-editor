@@ -31,6 +31,7 @@ module MultipleQuestionsPageHelper
   def and_I_update_the_components
     and_I_change_the_page_heading(page_heading)
     and_I_change_the_text_component(text_component_question)
+    and_I_change_the_email_component(email_component_question)
     and_I_change_the_textarea_component(textarea_component_question)
     and_I_change_the_radio_component(
       radio_component_question,
@@ -50,11 +51,15 @@ module MultipleQuestionsPageHelper
     and_I_change_the_component(question, component: component, tag: 'label')
   end
 
-  def and_I_change_the_radio_component(question, component: 2, options:)
+  def and_I_change_the_email_component(question, component: 2)
+    and_I_change_the_component(question, component: component, tag: 'label')
+  end
+
+  def and_I_change_the_radio_component(question, component: 3, options:)
     and_I_change_the_component(question, component: component, tag: 'legend', options: options)
   end
 
-  def and_I_change_the_checkboxes_component(question, component: 3, options:)
+  def and_I_change_the_checkboxes_component(question, component: 4, options:)
     and_I_change_the_component(question, component: component, tag: 'legend', options: options)
   end
 

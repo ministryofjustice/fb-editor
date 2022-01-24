@@ -18,7 +18,7 @@ class ServicesController < PermissionsController
   def edit
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
-    @publish_warning = PublishWarningPresenter.new(service, :publish)
+    @publish_warning = PublishPresenter.new(service)
     @detached_flows = flow.detached_flows
     @page_creation = PageCreation.new
   end

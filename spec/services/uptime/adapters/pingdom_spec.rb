@@ -45,7 +45,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
           'Content-Type' => 'application/json',
-          'User-Agent' => 'Faraday v1.8.0'
+          'User-Agent' => "Faraday v#{Faraday::VERSION}"
         }
       ).to_return(response_body)
   end
@@ -106,7 +106,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v1.8.0',
+              'User-Agent' => "Faraday v#{Faraday::VERSION}",
               'Authorization' => "Bearer #{pingdom_token}"
             }
           ).to_return(response_body)
@@ -118,7 +118,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v1.8.0',
+              'User-Agent' => "Faraday v#{Faraday::VERSION}",
               'Authorization' => "Bearer #{pingdom_token}"
             }
           ).to_return(

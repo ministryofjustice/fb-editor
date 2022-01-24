@@ -2,22 +2,31 @@
 
 New editor from the MoJ online.
 
+## Prerequisites
+* Docker 
+* Node (version 14.18.1)
+* Ruby v2.7.5
+* Postgresql
+* Yarn
+
 ## Setup
 Ensure you are running on Node version 14.18.1:
 `nvm use 14.18.1`
 
-Compile the necessary assets and run webpack:
-`make assets`
+Install gems:
+`bundle`
+
+Create and migrate the test database:
+`bundle exec rails db:create db:migrate`
 
 Copy the environment variables into your own .env file:
 `cp .env.development .env`
 
-Install the gems, create migrate the test database and start the Rails server:
-    ```
-      bundle
-      bundle exec rails db:create db:migrate
-      bundle exec rails s
-    ```
+Compile the necessary assets and run webpack:
+`make assets`
+
+Start the Rails server:
+`bundle exec rails s`
 
 This application talks to the [fb-metadata-api](https://github.com/ministryofjustice/fb-metadata-api) project.
 

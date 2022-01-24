@@ -253,6 +253,20 @@ function stringInject(str, injections) {
 }
 
 
+/* Return the largest height found from items within a jQuery collection
+ **/
+function maxHeight($collection) {
+  var max = 0;
+  $collection.each(function() {
+    var height = $(this).outerHeight();
+    if(height > max) {
+      max = height;
+    }
+  });
+  return max;
+}
+
+
 /* Return the largest width found from items within a jQuery collection
  **/
 function maxWidth($collection) {
@@ -264,6 +278,16 @@ function maxWidth($collection) {
     }
   });
   return max;
+}
+
+
+/* Get the difference between two numbers
+ **/
+function difference(a, b) {
+  if(a > b)
+    return a - b;
+  else
+    return b - a;
 }
 
 
@@ -283,5 +307,7 @@ module.exports  = {
   isBoolean: isBoolean,
   updateDomByApiRequest:updateDomByApiRequest,
   stringInject: stringInject,
-  maxWidth: maxWidth
+  maxHeight: maxHeight,
+  maxWidth: maxWidth,
+  difference: difference
 }

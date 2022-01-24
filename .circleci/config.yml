@@ -9,7 +9,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -35,7 +35,7 @@ jobs:
           include_job_number_field: false
   lint:
     docker:
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -45,7 +45,7 @@ jobs:
       - slack/status: *slack_status
   security:
     docker:
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -53,7 +53,7 @@ jobs:
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
       - environment:
           POSTGRES_DB: editor_local
           POSTGRES_PASSWORD: password
@@ -93,7 +93,7 @@ jobs:
       - slack/status: *slack_status
   js_test:
     docker:
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
     parallelism: 3
     steps:
       - checkout
@@ -181,7 +181,7 @@ jobs:
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
-      - image: 'cimg/ruby:2.7.3-node'
+      - image: 'cimg/ruby:2.7.5-node'
     steps:
     - checkout
     - ruby/install-deps
@@ -243,6 +243,17 @@ jobs:
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy'
+      - slack/status: *slack_status
+  deploy_to_test_eks:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - add_ssh_keys: *ssh_keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
       - run:
           name: deploy to test (EKS cluster)
           environment:
@@ -251,6 +262,24 @@ jobs:
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *slack_status
+  deploy_to_test_no_branching:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+      - add_ssh_keys: *ssh_keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
+      - run:
+          name: deploy to test no branching
+          environment:
+            APPLICATION_NAME: fb-editor
+            PLATFORM_ENV: test
+            K8S_NAMESPACE: formbuilder-saas-test
+            DISABLE_BRANCHING: 'true'
+          command: './deploy-scripts/bin/deploy'
   acceptance_tests:
     docker: *test_image
     resource_class: large
@@ -278,22 +307,54 @@ jobs:
             source $BASH_ENV
 
             TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
+            TO_EXCLUDE=acceptance/features/no_branching_spec.rb
+            FILTERED_TESTFILES=$(printf '%s\n' "${TESTFILES//$TO_EXCLUDE/}")
+
             echo '***********'
-            echo $TESTFILES
+            echo $FILTERED_TESTFILES
             echo '***********'
 
             bundle exec rspec --format progress \
               --format RspecJunitFormatter \
               --out ~/acceptance/acceptance.xml \
-              $TESTFILES
+              $FILTERED_TESTFILES
       - store_test_results:
           path: ~/acceptance
       - slack/status: *slack_status
+  acceptance_tests_no_branching:
+    docker: *test_image
+    resource_class: large
+    environment: *test_environment
+    steps:
+      - checkout
+      - ruby/install-deps
+      - browser-tools/install-browser-tools
+      - run:
+          name: Check browser tools install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run: *wait_for_db
+      - run: *db_setup
+      - run:
+          name: Run no branching acceptance tests
+          command: |
+            EDITOR_APP=https://fb-editor-test-no-branching.apps.live-1.cloud-platform.service.justice.gov.uk
+            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
+            echo 'export CI_MODE=true' >> $BASH_ENV
+            source $BASH_ENV
+
+            bundle exec rspec --format progress \
+              --format RspecJunitFormatter \
+              acceptance/features/no_branching_spec.rb
+      - slack/status: *testable_slack_status
   testable_branch_acceptance_tests:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 4
+    parallelism: 5
     steps:
       - checkout
       - ruby/install-deps
@@ -402,21 +463,32 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
+      - deploy_to_test_eks:
+          requires:
+            - build_web_image
+            - build_workers_image
+      - deploy_to_test_no_branching:
+          requires:
+            - build_web_image
+            - build_workers_image
       - acceptance_tests:
           requires:
             - deploy_to_test
+      - acceptance_tests_no_branching:
+          requires:
+            - deploy_to_test_no_branching
       - slack/approval-notification:
           message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
           include_job_number_field: false
           requires:
             - acceptance_tests
-      - confirm_live_deploy:
-          type: approval
-          requires:
-            - acceptance_tests
-      - deploy_to_live:
-          requires:
-            - confirm_live_deploy
+      # - confirm_live_deploy:
+      #     type: approval
+      #     requires:
+      #       - acceptance_tests
+      # - deploy_to_live:
+      #     requires:
+      #       - confirm_live_deploy
   deploy_testable_branch:
     jobs:
       - build:

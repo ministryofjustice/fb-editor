@@ -132,7 +132,6 @@ class DataController {
     var controller = this;
     var $form = $("#editContentForm");
     $form.on("submit", controller.update);
-
     this.$form = $form;
   }
 
@@ -335,7 +334,7 @@ function enhanceContent(view) {
 /* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
-  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
     var question = new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -458,7 +457,7 @@ function createDialogConfiguration() {
 function workaroundForDefaultText(view) {
   $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
     var $this = $(this);
-    var $span = $this.find("span");
+    var $span = $this.find(".govuk-hint");
     $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
   });
 }

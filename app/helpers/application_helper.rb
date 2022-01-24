@@ -52,6 +52,10 @@ module ApplicationHelper
     flow_object.title || service.find_page_by_uuid(flow_object.uuid).title
   end
 
+  def moj_forms_team?
+    Rails.application.config.moj_forms_team.include?(current_user.email)
+  end
+
   def moj_forms_dev?
     Rails.application.config.moj_forms_devs.include?(current_user.email)
   end

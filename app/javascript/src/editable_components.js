@@ -125,8 +125,8 @@ class EditableElement extends EditableBase {
     if(this._content != trimmedContent) {
       this._content = trimmedContent;
 
-      // If something change, let's make sure it's not
-      if(this._content != "" && this._content != this._defaultContent && this._content != this._originalContent) {
+      // If something changed...
+      if(this._content != this._defaultContent && this._content != this._originalContent) {
         this.emitSaveRequired();
       }
     }
@@ -879,6 +879,7 @@ function editableComponent($node, config) {
       klass = EditableContent;
       break;
     case "text":
+    case "email":
     case "number":
     case "upload":
       klass = EditableTextFieldComponent;

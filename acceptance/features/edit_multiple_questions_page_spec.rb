@@ -11,6 +11,9 @@ feature 'Edit multiple questions page' do
   let(:textarea_component_question) do
     'How Did Maz Kanata End Up With Luke`s Lightsaber?'
   end
+  let(:email_component_question) do
+    'What is your email address?'
+  end
   let(:radio_component_question) do
     'How old is Yoda when he dies?'
   end
@@ -37,6 +40,7 @@ feature 'Edit multiple questions page' do
     given_I_have_a_multiple_questions_page
     and_I_add_the_component(editor.add_text)
     and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(editor.add_email)
     and_I_add_the_component(editor.add_radio)
     and_I_add_the_component(editor.add_checkboxes)
     and_I_update_the_components
@@ -55,7 +59,20 @@ feature 'Edit multiple questions page' do
     when_I_want_to_select_component_properties('h2', text_component_question)
     and_I_want_to_delete_a_component(text_component_question)
     when_I_save_my_changes
-    and_the_text_component_is_deleted
+    and_the_component_is_deleted(1)
+  end
+
+  scenario 'deleting an email component' do
+    given_I_have_a_multiple_questions_page
+    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(editor.add_email)
+    and_I_change_the_email_component(email_component_question)
+    when_I_save_my_changes
+    when_I_want_to_select_component_properties('h2', email_component_question)
+    and_I_want_to_delete_a_component(email_component_question)
+    when_I_save_my_changes
+    and_the_component_is_deleted(2)
   end
 
   scenario 'deleting content components' do
@@ -87,6 +104,8 @@ feature 'Edit multiple questions page' do
         with: 'Fluent in over six million forms of communication.'
       page.fill_in 'How Did Maz Kanata End Up With Luke`s Lightsaber?',
         with: 'Who knows?'
+      page.fill_in 'What is your email address?',
+        with: 'healthy.harold@justice.gov.uk'
       page.choose '900 years old', visible: false
       page.check 'Prequels', visible: false
       page.click_button 'Continue'
@@ -94,7 +113,7 @@ feature 'Edit multiple questions page' do
     end
   end
 
-  def and_the_text_component_is_deleted
-    expect(page).to have_selector('.Question', count: 1)
+  def and_the_component_is_deleted(components_remaining)
+    expect(page).to have_selector('.Question', count: components_remaining)
   end
 end

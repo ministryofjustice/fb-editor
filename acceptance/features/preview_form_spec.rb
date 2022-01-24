@@ -95,6 +95,12 @@ feature 'Preview form' do
     when_I_update_the_question_name('Upload your file')
     and_I_make_the_question_optional
     and_I_return_to_flow_page
+
+    given_I_add_a_single_question_page_with_email
+    and_I_add_a_page_url('email')
+    when_I_add_the_page
+    when_I_update_the_question_name('Email address')
+    and_I_return_to_flow_page
   end
 
   def and_I_add_a_multiple_page_content_component(content:)
@@ -165,6 +171,14 @@ feature 'Preview form' do
       then_I_should_see_a_back_link
       page.click_button 'Continue'
 
+      expect(page.text).to include('Email address')
+      then_I_should_not_see_optional_text
+      then_I_should_see_a_back_link
+      page.click_button 'Continue'
+      then_I_should_see_an_error_message('Email address')
+      page.fill_in 'Email address', with: 'nymphadora.tonks@digital.justice.gov.uk'
+      page.click_button 'Continue'
+
       expect(page.text).to include('Check your answers')
       expect(page.text).to include('Charmy Pappitson')
       expect(page.text).to include('Car Car Binks')
@@ -172,6 +186,7 @@ feature 'Preview form' do
       expect(page.text).to include('03 June 2002')
       expect(page.text).to include('Apples')
       expect(page.text).to include('Upload your file')
+      expect(page.text).to include('nymphadora.tonks@digital.justice.gov.uk')
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       then_I_should_not_see_content_page_in_check_your_answers(page)

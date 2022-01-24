@@ -107,6 +107,11 @@ module CommonSteps
     editor.add_checkboxes.click
   end
 
+  def given_I_add_a_single_question_page_with_email
+    given_I_want_to_add_a_single_question_page
+    editor.add_email.click
+  end
+
   def given_I_add_a_check_answers_page
     editor.preview_page_images.first.hover
     editor.three_dots_button.click
@@ -331,7 +336,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    sleep 1 # Arbitrary delay, possibly required due to focus issues
     editor.preview_page_images[-2].hover
     editor.three_dots_button.click
   end
@@ -368,20 +373,20 @@ module CommonSteps
   end
 
   def and_I_delete_cya_page
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    sleep 1 # Arbitrary delay, possibly required due to focus issues
     editor.preview_page_images.last.hover
     editor.three_dots_button.click
     editor.delete_page_link.click
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    sleep 1 # Arbitrary delay, possibly required due to focus issues
     editor.delete_page_modal_button.click
   end
 
   def when_I_delete_confirmation_page
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    sleep 1 # Arbitrary delay, possibly required due to focus issues
     page.find('.govuk-link', text: 'Application complete').hover
     editor.three_dots_button.click
     editor.delete_page_link.click
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
+    sleep 1 # Arbitrary delay, possibly required due to focus issues
     editor.delete_page_modal_button.click
   end
 
