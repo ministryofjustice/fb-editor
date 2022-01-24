@@ -19,10 +19,6 @@
 
 const utilities = require('./utilities');
 const FormDialog = require('./component_dialog_form');
-const mergeObjects = utilities.mergeObjects;
-const post = utilities.post;
-const ActivatedMenu = require('./component_activated_menu');
-const DialogApiRequest = require('./component_dialog_api_request');
 const DefaultController = require('./controller_default');
 const ConnectorPath = require('./component_flow_connector_path');
 const PageMenu = require('./component_page_menu');
@@ -142,23 +138,6 @@ function createPageAdditionDialog(view) {
     }
   });
 }
-
-
-/* VIEW SETUP FUNCTION:
- * --------------------
- * Create the menu effect and required functionality for controlling and selecting new page types.
- **/
-// function createPageAdditionMenu(view) {
-//   var $menu = $("[data-component='PageAdditionMenu']"); // Expect only one
-
-//   view.pageAdditionMenu = new PageAdditionMenu($menu, {
-//     view: view,
-//     selection_event: "PageAdditionMenuSelection",
-//     menu: {
-//       position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-//     }
-//   });
-// }
 
 
 /* VIEW SETUP FUNCTION:
@@ -831,52 +810,5 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
   }
 }
 
-
-/* VIEW HELPER FUNCTION:
- * ---------------------
- * Handles position and setup of the Add Page button.
- **/
-function positionAddPageButton() {
-  var $overview = $("#flow-overview");
-  var $button = $(".flow-add-page-button");
-  var $items = $(SELECTOR_FLOW_ITEM, $overview).not("[data-next]"); // Expect only one.
-  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
-  var id = utilities.uniqueString("add-page-");
-  var $item;
-
-  // Find last item on first row (again, we should only be dealing with one but just making sure).
-  $items.each(function() {
-    var $this = $(this);
-    if($this.position().top == 0) {
-      $item = $this;
-      $item.attr("data-next", id);
-    }
-  });
-
-  // Position button next to $item.
-  $overview.append($button);
-  $button.attr("data-fb-id", id);
-  $button.css({
-    display: "inline-block",
-    left: Number($item.position().left + $item.outerWidth() + COLUMN_SPACING) + "px",
-    position: "absolute",
-    top: "43px"
-  });
-
-  // Add the FlowConnectorPath.
-  new ConnectorPath.ForwardPath({
-    from_x: $item.position().left + $item.outerWidth() + 1, // + 1 for design spacing,
-    from_y: $item.position().top + (rowHeight / 4),
-    to_x: $button.position().left - 1, // - 1 for design spacing,
-    to_y: $item.position().top + (rowHeight / 4), // Should be a straight line only.
-    via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
-    }, {
-    from: $item,
-    to: $button,
-    container: $overview,
-    top: 0,                     // TODO: Is this and the height below the best way to position
-    bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-  });
-}
 
 module.exports = ServicesController;
