@@ -808,8 +808,7 @@ function convertToMarkdown(html) {
  * For that reason, we are trying to be minimalistic in approach.
  **/ 
 function sanitiseHtml(html) {
-  html = html.replace(/<\/script(.*?)>/i, "&lt;/script&gt;");
-  html = html.replace(/<script(.*?)>/i, "&lt;script$1&gt;");
+  html = html.replace(/<([\/\s])?script[^\<\>]*?>/mig, "&lt;$1script&gt;");
   return html;
 }
 
