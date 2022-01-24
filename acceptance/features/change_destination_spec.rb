@@ -79,6 +79,12 @@ feature 'Deleting page' do
     )
   end
 
+  def then_some_pages_should_be_unconnected
+    editor.unconnected_expand_link.click
+    page.driver.browser.manage.window.resize_to(30000, 1080)
+    expect(editor.unconnected_flow).to eq(['Page j', 'Check your answers'])
+  end
+
   def then_page_d_should_be_after_page_b
     expect(editor.page_flow_items).to eq([
       'Service name goes here',
@@ -97,13 +103,7 @@ feature 'Deleting page' do
 
   def and_the_branching_should_be_unconnected
     editor.unconnected_expand_link.click
-    expect(editor.unconnected_flow).to eq([
-      'Branching point 1',
-      'Page b is Thor',
-      'Page b is Hulk',
-      'Otherwise',
-      'Page c',
-      'Page d'
-    ])
+    page.driver.browser.manage.window.resize_to(30000, 1080)
+    expect(editor.unconnected_flow).to include('Branching point 1')
   end
 end
