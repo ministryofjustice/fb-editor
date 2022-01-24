@@ -6,12 +6,14 @@
     data-uuid="<%= item[:uuid] %>">
 
   <li data-action="none">
-    <span>Single question page</span>
+    <span>Add Single question page</span>
     <ul class="govuk-navigation">
       <li data-page-type="singlequestion"
           data-component-type="text"><a href="#add-page">Text</a></li>
       <li data-page-type="singlequestion"
           data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+      <li data-page-type="singlequestion"
+          data-component-type="email"><a href="#add-page">Email address</a></li>
       <li data-page-type="singlequestion"
           data-component-type="number"><a href="#add-page">Number</a></li>
       <li data-page-type="singlequestion"
@@ -25,19 +27,19 @@
     </ul>
   </li>
   
-  <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
+  <li data-page-type="multiplequestions"><a href="#add-page">Add Multiple question page</a></li>
   
-  <li data-page-type="content"><a href="#add-page">Content page</a></li>
+  <li data-page-type="content"><a href="#add-page">Add Content page</a></li>
   <% if ENV['BRANCHING'] == 'enabled' %>
 
-    <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
+    <li data-page-type="exit"><a href="#add-page">Add Exit page</a></li>
 
     <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
+      <li data-page-type="checkanswers"><a href="#add-page">Add Check answers page</a></li>
     <% end %>
       
     <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
+      <li data-page-type="confirmation"><a href="#add-page">Add Confirmation page</a></li>
     <% end %>
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) || item[:type] == 'flow.branch' %>

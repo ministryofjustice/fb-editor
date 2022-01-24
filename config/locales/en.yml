@@ -100,7 +100,7 @@ en:
     delete_page: 'Delete page...'
     option_add: 'Add option'
     option_remove: 'Delete...'
-    change_destination: 'Change destination...'
+    change_destination: 'Change next page...'
     ok: 'Ok'
   branches:
     branch_add: 'Add another branch'
