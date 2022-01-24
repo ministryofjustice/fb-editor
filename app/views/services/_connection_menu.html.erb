@@ -5,34 +5,36 @@
     data-title="<%= item[:title] %>"
     data-uuid="<%= item[:uuid] %>">
 
-  <li data-action="none">
-    <span>Add single question page</span>
-    <ul class="govuk-navigation">
-      <li data-page-type="singlequestion"
-          data-component-type="text"><a href="#add-page">Text</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="textarea"><a href="#add-page">Textarea</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="email"><a href="#add-page">Email address</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="number"><a href="#add-page">Number</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="date"><a href="#add-page">Date</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="upload"><a href="#add-page">File upload</a></li>
-    </ul>
-  </li>
-  
-  <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
-  
-  <li data-page-type="content"><a href="#add-page">Add content page</a></li>
-  <% if ENV['BRANCHING'] == 'enabled' %>
+    <% if ENV['BRANCHING'] == 'enabled' %>
+      <% unless item[:type] == 'page.checkanswers' %>
+        <li data-action="none">
+          <span>Add single question page</span>
+          <ul class="govuk-navigation">
+            <li data-page-type="singlequestion"
+                data-component-type="text"><a href="#add-page">Text</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="email"><a href="#add-page">Email address</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="number"><a href="#add-page">Number</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="date"><a href="#add-page">Date</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+            <li data-page-type="singlequestion"
+                data-component-type="upload"><a href="#add-page">File upload</a></li>
+          </ul>
+        </li>
+        
+        <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
+        
+        <li data-page-type="content"><a href="#add-page">Add content page</a></li>
 
-    <li data-page-type="exit"><a href="#add-page">Add exit page</a></li>
+        <li data-page-type="exit"><a href="#add-page">Add exit page</a></li>
+    <% end %>
 
     <% unless service.checkanswers_page.present? %>
       <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
@@ -55,10 +57,42 @@
     <% end %>
 
   <% else %>
-    <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
-    <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
+
+    <% unless item[:type] == 'page.checkanswers' %>
+
+      <li data-action="none">
+        <span>Add single question page</span>
+        <ul class="govuk-navigation">
+          <li data-page-type="singlequestion"
+              data-component-type="text"><a href="#add-page">Text</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="email"><a href="#add-page">Email address</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="number"><a href="#add-page">Number</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="date"><a href="#add-page">Date</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+          <li data-page-type="singlequestion"
+              data-component-type="upload"><a href="#add-page">File upload</a></li>
+        </ul>
+      </li>
+      
+      <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
+      
+      <li data-page-type="content"><a href="#add-page">Add content page</a></li>
+    <% end %>
+
+    <% unless service.checkanswers_page.present? %>
+      <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
+    <% end %>
+ 
+    <% unless service.confirmation_page.present? %>
+      <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
+    <% end %>
   <% end %>
-
-
-
 </ul>
