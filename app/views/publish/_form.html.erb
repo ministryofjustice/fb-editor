@@ -6,8 +6,8 @@
     <%= f.label :allow_anonymous, class: 'govuk-label govuk-radios__label', for: "require_authentication_#{deployment_environment}_1" %>
   </div>
   <div class="govuk-radios__item">
-    <%= f.radio_button :require_authentication, 1, class: 'govuk-radios__input', checked: f.object.existing_authentication?(deployment_environment: deployment_environment), id: 'require_authentication_2' %>
-    <%= f.label :require_authentication, class: 'govuk-label govuk-radios__label', for: 'require_authentication_2'  %>
+    <%= f.radio_button :require_authentication, 1, class: 'govuk-radios__input', checked: f.object.existing_authentication?(deployment_environment: deployment_environment), id: "require_authentication_#{deployment_environment}_2" %>
+    <%= f.label :require_authentication, class: 'govuk-label govuk-radios__label', for: "require_authentication_#{deployment_environment}_2"  %>
   </div>
 </div>
 
