@@ -59,6 +59,7 @@ feature 'Deleting page' do
 
   def then_some_pages_should_be_unconnected
     editor.unconnected_expand_link.click
+    page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq(
       [
         'Branching point 1',
@@ -97,6 +98,7 @@ feature 'Deleting page' do
 
   def and_the_branching_should_be_unconnected
     editor.unconnected_expand_link.click
+    page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq([
       'Branching point 1',
       'Page b is Thor',
