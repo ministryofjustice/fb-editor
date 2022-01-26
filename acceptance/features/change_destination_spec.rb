@@ -72,7 +72,7 @@ feature 'Deleting page' do
         'Page f',
         'Page g',
         'Branching point 2',
-        'Page g is Thor',
+        'Question 2 is Thor',
         'Page h',
         'Page i',
         'Page j'
