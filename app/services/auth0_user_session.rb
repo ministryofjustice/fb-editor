@@ -4,7 +4,8 @@ class Auth0UserSession
   include ActiveModel::Validations
 
   VALID_EMAIL_DOMAINS = [
-    'justice.gov.uk'
+    'justice.gov.uk',
+    'Justice.gov.uk'
   ].freeze
 
   attr_accessor :user_info, :user_id, :created_at, :new_user
