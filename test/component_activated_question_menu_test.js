@@ -195,7 +195,9 @@ describe("QuestionMenu", function() {
   describe("Actions", function() {
 
     /* For some reason only one of these tests would pass.
-     * This one has been removed and replace by acceptance test coverage */
+     * This one has been removed and replace by acceptance test coverage:
+     * /acceptance/features/edit_multiple_questions_page_spec.rb:92-106
+    */
     it("should trigger QuestionMenuSelectionRemove event on remove()");
 
     it("should trigger QuestionMenuSelectionRequired event on required()", function() {
