@@ -201,7 +201,7 @@ module BranchingSteps
     given_I_have_a_page('page-d')
     given_I_have_a_page('page-e')
     given_I_have_a_page('page-f')
-    given_I_have_a_page('page-g')
+    given_I_have_a_multiquestion_page('page-g')
     given_I_have_a_page('page-h')
     given_I_have_a_page('page-i')
     given_I_have_a_page('page-j')
@@ -215,6 +215,32 @@ module BranchingSteps
     when_I_add_the_page
     editor.question_heading.first.set(url.underscore.humanize)
     and_I_edit_the_option_items('Thor', 'Hulk')
+    and_I_return_to_flow_page
+  end
+
+  def given_I_have_a_multiquestion_page(url)
+    given_I_add_a_multiple_question_page
+    and_I_add_a_page_url(url)
+    when_I_add_the_page
+    editor.question_heading.first.set(url.underscore.humanize)
+  
+    and_I_add_the_component(editor.add_radio)
+    and_I_add_the_component(editor.add_checkboxes)
+    
+    and_I_change_the_component(
+      'Question 1',
+      component: 0,
+      tag: 'legend',
+      options: ['Thanos']
+    )
+    and_I_change_the_component(
+      'Question 2',
+      component: 1,
+      tag: 'legend',
+      options: ['Thor','Hulk'], 
+    )
+
+    when_I_save_my_changes
     and_I_return_to_flow_page
   end
 
@@ -252,7 +278,7 @@ module BranchingSteps
 
     # Go to page h if Page g is Thor
     editor.destination_options.select('Page h')
-    editor.conditional_options.select('Page g')
+    editor.conditional_options.select('Question 2')
     editor.operator_options.select('is')
     editor.field_options.select('Thor')
     #

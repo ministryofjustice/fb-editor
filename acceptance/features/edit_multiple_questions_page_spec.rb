@@ -59,7 +59,7 @@ feature 'Edit multiple questions page' do
     when_I_want_to_select_component_properties('h2', text_component_question)
     and_I_want_to_delete_a_component(text_component_question)
     when_I_save_my_changes
-    and_the_component_is_deleted(1)
+    and_the_component_is_deleted(text_component_question, remaining: 1)
   end
 
   scenario 'deleting an email component' do
@@ -72,7 +72,7 @@ feature 'Edit multiple questions page' do
     when_I_want_to_select_component_properties('h2', email_component_question)
     and_I_want_to_delete_a_component(email_component_question)
     when_I_save_my_changes
-    and_the_component_is_deleted(2)
+    and_the_component_is_deleted(email_component_question, remaining: 2)
   end
 
   scenario 'deleting content components' do
@@ -87,6 +87,22 @@ feature 'Edit multiple questions page' do
     and_I_want_to_delete_a_content_component
     when_I_save_my_changes
     then_I_should_not_see_my_content(content_component)
+  end
+
+  scenario 'deleting a component not used for branching' do
+    given_I_have_a_form_with_pages
+    and_I_edit_the_page(url: 'Page g')
+    when_I_want_to_select_component_properties('h2', 'Question 1')
+    and_I_want_to_delete_a_component('Question 1')
+    and_the_component_is_deleted('Question 1', remaining: 1)
+  end
+
+  scenario 'deleting a component used for branching' do
+    given_I_have_a_form_with_pages
+    and_I_edit_the_page(url: 'Page g')
+    when_I_want_to_select_component_properties('h2', 'Question 2')
+    and_I_want_to_delete_a_branching_component('Question 2')
+    and_the_component_is_not_deleted('Question 2', remaining: 2) 
   end
 
   def then_I_add_a_content_component(content:)
@@ -113,7 +129,13 @@ feature 'Edit multiple questions page' do
     end
   end
 
-  def and_the_component_is_deleted(components_remaining)
-    expect(page).to have_selector('.Question', count: components_remaining)
+  def and_the_component_is_deleted(question, remaining:)
+    expect(page).to_not have_selector('h2', text: question) 
+    expect(page).to have_selector('.Question', count: remaining)
+  end
+
+  def and_the_component_is_not_deleted(question, remaining: )
+    expect(page).to have_selector('h2', text: question) 
+    expect(page).to have_selector('.Question', count: remaining)
   end
 end
