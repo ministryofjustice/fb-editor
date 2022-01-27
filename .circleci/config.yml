@@ -377,14 +377,17 @@ jobs:
             source $BASH_ENV
 
             TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
+            TO_EXCLUDE=acceptance/features/no_branching_spec.rb
+            FILTERED_TESTFILES=$(printf '%s\n' "${TESTFILES//$TO_EXCLUDE/}")
+
             echo '***********'
-            echo $TESTFILES
+            echo $FILTERED_TESTFILES
             echo '***********'
 
             bundle exec rspec --format progress \
               --format RspecJunitFormatter \
               --out ~/acceptance/acceptance.xml \
-              $TESTFILES
+              $FILTERED_TESTFILES
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
