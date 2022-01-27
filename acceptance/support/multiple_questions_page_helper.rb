@@ -79,10 +79,18 @@ module MultipleQuestionsPageHelper
 
   def and_I_want_to_delete_a_component(question)
     and_I_click_the_delete_link
-    expect(editor.find(:css, '#dialog-confirmation-delete h3').text).to include(question)
+    expect(editor.find(:css, '.component-dialog h3').text).to include(question)
     and_I_click_the_delete_button
   end
 
+  def and_I_want_to_delete_a_branching_component(question)
+    and_I_click_the_delete_link
+    expect(
+      editor.find(:css, '.component-dialog p').text
+    ).to eq(I18n.t('questions.delete_modal.can_not_delete_message'))
+    editor.find(:css, '.ui-dialog-titlebar-close').click
+  end
+  
   def and_I_want_to_delete_a_content_component
     and_I_click_the_delete_link
     expect(
