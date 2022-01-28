@@ -16,6 +16,10 @@ class WarningPresenter
       !confirmation_in_main_flow?
   end
 
+  def confirmation_in_main_flow?
+    grid.page_uuids.include?(service.confirmation_page&.uuid)
+  end
+
   private
 
   def submitting_pages_not_present_message
@@ -40,9 +44,6 @@ class WarningPresenter
     grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
-  def confirmation_in_main_flow?
-    grid.page_uuids.include?(service.confirmation_page&.uuid)
-  end
 
   def grid
     @grid ||= MetadataPresenter::Grid.new(service)
