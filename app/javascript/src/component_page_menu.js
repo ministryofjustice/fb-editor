@@ -30,7 +30,7 @@ class PageMenu extends ActivatedMenu {
     event.preventDefault();
     switch(action) {
       case "preview":
-           this.prevewPage(item);
+           this.previewPage(item);
            break;
 
       case "add":
