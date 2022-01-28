@@ -80,7 +80,7 @@ jobs:
           name: Database setup
           command: |
             bundle exec rails db:setup
-            bundle exec rails db:migrate
+            bundle exec rails db:migrate:ignore_concurrent
       - run:
           name: Running the tests
           command: |
