@@ -40,9 +40,20 @@
       <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
     <% end %>
       
-    <% unless service.confirmation_page.present? %>
+    <% if service.confirmation_page.present? %>
+      <% if !@publish_warning.confirmation_in_main_flow? %>
+        <li data-page-type="confirmation" data-action="destination">
+          <%= link_to 'Reconnect confirmation page',
+                      new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
+        </li>
+      <% end %>
+    <% else %>
       <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
     <% end %>
+
+
+
+
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) || item[:type] == 'flow.branch' %>
       <li data-action="link">
