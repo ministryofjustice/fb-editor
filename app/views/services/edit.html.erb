@@ -22,8 +22,9 @@
 <% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
   <section id="flow-detached" data-component="Expander">
     <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
+
     <% @detached_flows.each do |detached_flow| %>
-      <div class="flow-detached-group">
+          <div class="flow-detached-group">
         <% detached_flow.each do |column| %>
           <div class="column">
             <% column.each_with_index do |flow, index| %>
