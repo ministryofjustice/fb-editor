@@ -199,6 +199,7 @@ function layoutFormFlowOverview(view) {
   adjustOverviewHeight($container);
   applyPageFlowConnectorPaths($container);
   applyBranchFlowConnectorPaths($container);
+  applyRouteEndFlowConnectorPaths($container);
   adjustOverlappingFlowConnectorPaths($container);
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
@@ -503,7 +504,7 @@ function adjustScrollDimensionsAndPosition($container) {
  * design, they are excluded from this function and put in one of their own.
  **/
 function applyPageFlowConnectorPaths($overview) {
-  var $items = $overview.find(".flow-page[data-next]");
+  var $items = $overview.find('.flow-page[data-next]:not([data-next="connection"])');
   var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
   $items.each(function() {
@@ -671,7 +672,36 @@ function applyBranchFlowConnectorPaths($overview) {
     });
   });
 }
+function applyRouteEndFlowConnectorPaths($overview) {
+  var $items = $overview.find('.flow-page[data-next="connection"]');
+  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
+  $items.each(function() {
+    var $item = $(this);
+    var next = $item.data("next");
+    var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
+    var fromY = $item.position().top + (rowHeight / 4);
+    var $next = $("[data-fb-id=" + next + "]", $overview);
+    var toX = fromX + 100; // - 1 for design spacing
+    var toY = fromY;
+
+    new ConnectorPath.ForwardPath({
+        from_x: fromX,
+        from_y: fromY,
+        to_x: toX,
+        to_y: toY,
+        via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
+      }, {
+        from: $item.data("instance"),
+        to: $item.data("instance"),
+        container: $overview,
+        top: 0,                     // TODO: Is this and the height below the best way to position
+        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+      }); 
+
+    
+  });
+}
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
@@ -691,7 +721,7 @@ function adjustOverlappingFlowConnectorPaths($overview) {
   var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
   var somethingMoved;
   var numberOfPaths = $paths.length;
-  var keepChecking = true;
+  var keepChecking = $paths.length > 0; 
   var loopCount = 1;
 
   do {
