@@ -1043,7 +1043,7 @@ class DownForwardPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       down: Math.round(this.points.yDifference - CURVE_SPACING),
-      forward: Math.round(this.points.xDifference)
+      forward: Math.round(this.points.xDifference - CURVE_SPACING)
     }
 
     this._dimensions = { original: dimensions };

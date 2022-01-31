@@ -49,7 +49,7 @@ feature 'Create a service' do
     then_I_should_see_the_page_flow_in_order(order: form_urls)
     then_I_should_not_be_able_to_add_page(checkanswers)
     then_I_should_not_be_able_to_add_page(confirmation)
-    when_I_three_dots_button_on_the_confirmation_page
+    when_I_click_the_three_dots_button_on_the_confirmation_page
     then_I_should_not_be_able_to_see_add_page_link
   end
 
@@ -128,9 +128,8 @@ feature 'Create a service' do
     )
   end
 
-  def when_I_three_dots_button_on_the_confirmation_page
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    page.find('.govuk-link', text: 'Application complete').hover
+  def when_I_click_the_three_dots_button_on_the_confirmation_page
+    editor.hover_preview('Application complete')
     editor.three_dots_button.click
   end
 

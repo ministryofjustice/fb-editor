@@ -254,6 +254,7 @@ html {
 
 .BranchConditionInjector {
   @include button_as_link;
+  background-color: transparent;
   margin-bottom: govuk-spacing(5);
   margin-left: 100px;
 
@@ -559,18 +560,17 @@ html {
     fill: none;
     stroke: #949494;
     stroke-width: 2px;
-
-    &:hover {
-
-      &, & + path {
-        stroke-width:4px;
-        stroke: $govuk-link-hover-colour;
-      }
-    }
   }
 
   .arrowPath {
     fill: #949494;
+  }
+
+  &.active {
+    path {
+      stroke-width:4px;
+      stroke: $govuk-link-hover-colour;
+    }
   }
 }
 
@@ -587,6 +587,28 @@ html {
   height: 100%;
   overflow: visible;
   position: relative;
+}
+
+.flow-add-page-button {
+  // TEMPORARY: BRANCHING FEATURE FLAG
+  // This should be display:none only but the other css is required for supporting the
+  // old style view of Add Page button functionality due to shared branching on/off code.
+  border-radius: 0;
+  display: none;
+  height: auto;
+  padding: 5px 10px;
+  text-indent: 0;
+  white-space: nowrap;
+  width: auto;
+
+  &:after {
+    display: none;
+  }
+
+  &:before {
+	  content: "+";
+	  margin-right: 5px;
+  }
 }
 
 .flow-branch {
@@ -621,26 +643,13 @@ html {
   }
 }
 
-.flow-add-page-button {
-  // TEMPORARY: BRANCHING FEATURE FLAG
-  // This should be display:none only but the other css is required for supporting the
-  // old style view of Add Page button functionality due to shared branching on/off code.
-  border-radius: 0;
-  display: none;
-  height: auto;
-  padding: 5px 10px;
-  text-indent: 0;
-  white-space: nowrap;
-  width: auto;
-
-  &:after {
-    display: none;
-  }
-
-  &:before {
-	  content: "+";
-	  margin-right: 5px;
-  }
+// Bit complicated but necessary for correct Activator hover (without JS intervention)
+.flow-branch a:hover ~ .ActivatedMenu_Activator,
+.flow-branch map:hover ~ .ActivatedMenu_Activator,
+.flow-branch .ActivatedMenu_Activator:hover,
+.flow-page .ActivatedMenu_Activator:hover,
+.flow-thumbnail:hover ~ .ActivatedMenu_Activator {
+  opacity: 1;
 }
 
 .flow-condition {
@@ -674,12 +683,6 @@ html {
 
 .flow-item {
   overflow: visible;
-
-  &:hover {
-    .ActivatedMenu_Activator {
-      opacity: 1;
-    }
-  }
 
   .text {
     word-break: break-word;
@@ -721,6 +724,10 @@ html {
   text-decoration: none;
   width: 196px;
 
+  &:hover {
+    border-color: $govuk-link-hover-colour;
+  }
+
   img {
     display: block;
     width: inherit;
@@ -733,10 +740,6 @@ html {
     font-size: 12px;
     font-weight: bold;
     margin: 0 15px 10px 15px;
-  }
-
-  &:hover {
-    border-color: $govuk-link-hover-colour;
   }
 
   /* Special case for styling the title */

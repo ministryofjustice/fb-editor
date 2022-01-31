@@ -337,6 +337,8 @@ module CommonSteps
 
   def and_I_click_on_the_three_dots
     sleep 1 # Arbitrary delay, possibly required due to focus issues
+    # assuming the last two pages are checkanswers and confirmation, always pick
+    # the page directly before the checkanswers page
     editor.preview_page_images[-2].hover
     editor.three_dots_button.click
   end
@@ -374,7 +376,7 @@ module CommonSteps
 
   def and_I_delete_cya_page
     sleep 1 # Arbitrary delay, possibly required due to focus issues
-    editor.preview_page_images.last.hover
+    editor.hover_preview('Check your answers')
     editor.three_dots_button.click
     editor.delete_page_link.click
     sleep 1 # Arbitrary delay, possibly required due to focus issues
@@ -383,7 +385,7 @@ module CommonSteps
 
   def when_I_delete_confirmation_page
     sleep 1 # Arbitrary delay, possibly required due to focus issues
-    page.find('.govuk-link', text: 'Application complete').hover
+    editor.hover_preview('Application complete')
     editor.three_dots_button.click
     editor.delete_page_link.click
     sleep 1 # Arbitrary delay, possibly required due to focus issues
