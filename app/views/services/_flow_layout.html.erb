@@ -54,7 +54,7 @@
 
       <% if item[:next].empty? %>
         <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
-        <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=connection' : ''  -%> >
+        <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
           <%= flow_thumbnail_link(item) %>
           <%= flow_text_link(item) %>
           <%= render partial: 'services/flow_page_menu', locals: { item: item } %>

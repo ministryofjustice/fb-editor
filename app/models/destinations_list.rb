@@ -8,13 +8,9 @@ module DestinationsList
   end
 
   def invalid_destination?(flow_uuid, current_uuid)
-    if current_uuid == checkanswers_uuid
-      flow_uuid != confirmation_uuid
-    else
-      flow_uuid == start_uuid ||
-        flow_uuid == confirmation_uuid ||
-        flow_uuid == current_uuid
-    end
+    flow_uuid == start_uuid ||
+      flow_uuid == confirmation_uuid ||
+      flow_uuid == current_uuid
   end
 
   def start_uuid
@@ -24,10 +20,5 @@ module DestinationsList
   def confirmation_uuid
     @confirmation_uuid ||=
       service.pages.find { |page| page.type == 'page.confirmation' }&.uuid
-  end
-
-  def checkanswers_uuid
-    @checkanswers_uuid ||=
-      service.pages.find { |page| page.type == 'page.checkanswers'}&.uuid
   end
 end

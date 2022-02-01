@@ -47,8 +47,8 @@ class ConnectionMenu extends ActivatedMenu {
       case "link": 
         this.link(item);
         break;
-      case "destination":
-        this.changeDestination(item);
+      case "reconnect-confirmation":
+        this.reconnectConfirmation(item);
         break;
       default:
         this.addPage(item);
@@ -91,6 +91,15 @@ class ConnectionMenu extends ActivatedMenu {
         }, {
           text: view.text.dialogs.button_cancel
         }]
+      });
+    }
+
+    reconnectConfirmation(element) {
+      var url = element.data('url');
+      var destinationUuid = element.data('destination-uuid');
+
+      utilities.post(url, {
+        'destination_uuid': destinationUuid,
       });
     }
   }
