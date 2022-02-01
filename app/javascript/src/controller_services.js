@@ -376,11 +376,10 @@ function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
   var $title = $("h2", $container);
   var offsetLeft = $container.offset().left;
-  var $expander = $(".Expander_container");
-  var display = $expander.css("display");
+  var expander = $container.data("instance"); // Element is set as an Expander Component.
 
-  // display:none objects have no height in jQuery
-  $expander.css("display", "block");
+  // Make sure it's open on page load
+  expander.open();
 
   // Expand the width of the section.
   $container.css({
@@ -407,9 +406,6 @@ function layoutDetachedItemsOveriew(view) {
     adjustOverviewWidth($group);
     applyOverviewScroll($group);
   });
-
-  // Reset to original state
-  $expander.css("display", display);
 }
 
 
