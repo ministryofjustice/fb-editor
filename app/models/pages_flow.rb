@@ -115,6 +115,7 @@ class PagesFlow
 
   def if_conditional(conditional)
     {
+      uuid: conditional.uuid,
       next: conditional.next,
       expressions: conditional_expressions(conditional)
     }
@@ -124,6 +125,7 @@ class PagesFlow
   def or_conditional(conditional)
     conditional.expressions.map do |expression|
       {
+        uuid: conditional.uuid,
         next: conditional.next,
         expressions: [question_and_answer(expression)]
       }
