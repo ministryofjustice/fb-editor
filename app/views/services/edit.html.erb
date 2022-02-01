@@ -48,6 +48,10 @@
     <%= f.hidden_field :add_page_after, value: f.object.add_page_after.nil? ? '' : f.object.add_page_after %>
     <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
     <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
+
+    <%# For when a user adds a page directly after a branch using the connection menu %>
+    <%= f.hidden_field :conditional_uuid, value: '' %>
+
     <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
       <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
       <span class="govuk-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>
