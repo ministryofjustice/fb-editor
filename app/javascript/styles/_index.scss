@@ -583,9 +583,10 @@ html {
   top: calc(125px - 43px);
 }
 
-.FlowOverviewScrollingFrame {
-  height: 100%;
-  overflow: visible;
+.FlowOverviewScrollFrame {
+  // Dimensions are calculated by JS
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
 }
 
@@ -777,6 +778,10 @@ html {
     display: inline-block;
   }
 
+  .Expander_container {
+    @include govuk-width-container($govuk-page-width);
+  }
+
   .flow-detached-group {
     margin: 0 30px 250px 30px;
     position: relative;
@@ -786,7 +791,6 @@ html {
 #flow-overview {
   margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
-  overflow: scroll;
   position: relative;
 }
 

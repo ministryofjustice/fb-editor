@@ -291,6 +291,53 @@ function difference(a, b) {
 }
 
 
+/* Returns a sorted copy of the passed array starting from low to high.
+ * If input was detected to be not worthy, you'll get an empty in response.
+ * @numbers (Array) Array of numbers
+ **/
+function sortNumberArrayValues(numbers) {
+  var result = [];
+  if(arguments.length && (typeof(numbers) === 'array' || numbers instanceof Array) && numbers.length) {
+    result = numbers.slice();
+    result.sort(function(a, b) {
+      return a - b;
+    });
+  }
+  return result;
+}
+
+
+/* Returns the lowest detected number from a passed array of numbers.
+ * @numbers (Array) Array of numbers
+ **/
+function lowestNumber(numbers) {
+  var sorted = sortNumberArrayValues(numbers);
+  var result;
+
+  if(sorted.length) {
+    result = sorted[0];
+  }
+
+  return result;
+}
+
+
+/* Returns the highest detected number from a passed array of numbers.
+ * @numbers (Array) Array of numbers
+ **/
+function highestNumber(numbers) {
+  var sorted = sortNumberArrayValues(numbers);
+  var result;
+
+  if(sorted.length) {
+    result = sorted[sorted.length - 1];
+  }
+
+  return result;
+}
+
+
+
 // Make available for importing.
 module.exports  = { 
   mergeObjects: mergeObjects,
@@ -309,5 +356,8 @@ module.exports  = {
   stringInject: stringInject,
   maxHeight: maxHeight,
   maxWidth: maxWidth,
-  difference: difference
+  difference: difference,
+  sortNumberArrayValues: sortNumberArrayValues,
+  lowestNumber:lowestNumber,
+  highestNumber: highestNumber
 }
