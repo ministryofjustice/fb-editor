@@ -7,11 +7,11 @@ class PagesController < FormController
 
   def create
     @page_creation = PageCreation.new(page_creation_params)
-    @pages_flow = PagesFlow.new(service).build
 
     if @page_creation.create
       redirect_to edit_page_path(service_id, @page_creation.page_uuid)
     else
+      @pages_flow = PagesFlow.new(service).build
       render template: 'services/edit', status: :unprocessable_entity
     end
   end
