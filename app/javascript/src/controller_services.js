@@ -509,7 +509,7 @@ function adjustScrollDimensionsAndPosition($container) {
  * design, they are excluded from this function and put in one of their own.
  **/
 function applyPageFlowConnectorPaths($overview) {
-  var $items = $overview.find('.flow-page[data-next]:not([data-next="connection"])');
+  var $items = $overview.find('.flow-page[data-next]:not([data-next="trailing-route"])');
   var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
   $items.each(function() {
@@ -678,15 +678,13 @@ function applyBranchFlowConnectorPaths($overview) {
   });
 }
 function applyRouteEndFlowConnectorPaths($overview) {
-  var $items = $overview.find('.flow-page[data-next="connection"]');
+  var $items = $overview.find('.flow-page[data-next="trailing-route"]');
   var rowHeight = utilities.maxHeight($items); // There's always a starting page.
 
   $items.each(function() {
     var $item = $(this);
-    var next = $item.data("next");
     var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
     var fromY = $item.position().top + (rowHeight / 4);
-    var $next = $("[data-fb-id=" + next + "]", $overview);
     var toX = fromX + 100; // - 1 for design spacing
     var toY = fromY;
 

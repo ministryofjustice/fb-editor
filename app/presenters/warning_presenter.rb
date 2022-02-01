@@ -44,7 +44,6 @@ class WarningPresenter
     grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
-
   def grid
     @grid ||= MetadataPresenter::Grid.new(service)
   end
