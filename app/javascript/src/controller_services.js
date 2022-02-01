@@ -586,7 +586,6 @@ function adjustOverviewWidth($overview) {
  * when there are too many thumbnails to fix on the one page view.
  **/
 function applyOverviewScroll($overview) {
-  const margin = 30; // TODO: Maybe we can get this number from something??
   var $container = $("<div></div>");
   var $main = $("#main-content");
   var timeout;

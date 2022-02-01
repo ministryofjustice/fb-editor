@@ -297,7 +297,7 @@ function difference(a, b) {
  **/
 function sortNumberArrayValues(numbers) {
   var result = [];
-  if(arguments.length && (typeof(numbers) === 'array' || numbers instanceof Array) && numbers.length) {
+  if(arguments.length && (numbers.constructor == (new Array).constructor) && numbers.length) {
     result = numbers.slice();
     result.sort(function(a, b) {
       return a - b;
