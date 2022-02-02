@@ -103,6 +103,7 @@ en:
     ok: 'Ok'
   branches:
     branch_add: 'Add another branch'
+    branch_edit: 'Edit branch'
     branch_remove: 'Delete...'
     condition_add: 'Add condition'
     condition_remove: 'Remove condition'

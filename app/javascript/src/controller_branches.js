@@ -124,7 +124,7 @@ BranchesController.addBranchMenu = function(args) {
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
   if(!first) {
     new ActivatedMenu($ul, {
-      activator_text: "Edit branch",
+      activator_text: app.text.branches.branch_edit,
       container_classname: "SomeClassName",
       container_id: utilities.uniqueString("activated-menu-"),
       menu: {
