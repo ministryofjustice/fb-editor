@@ -20,18 +20,9 @@ class ConnectionMenu extends ActivatedMenu {
 
     this.activator.$node.addClass("ConnectionMenuActivator");
     this.container.$node.addClass("ConnectionMenu");
-    //this.uuid = $node.data("uuid");
     this.title = $node.data("title");
-
     this.addPageAfter = $node.data("uuid");
-  }
-
-  set addPageAfter(uuid) {
-    this._uuid = uuid;
-  }
-
-  get addPageAfter() {
-    return this._uuid
+    this.addPageAfterCondition = $node.data("condition-uuid");
   }
 
   selection(event, item) {
@@ -63,7 +54,11 @@ class ConnectionMenu extends ActivatedMenu {
       
         // Set the 'add_page_here' value to mark point of new page inclusion.
         // Should be a uuid of previous page or blank if at end of form.
+        // If we are on a branch condition, then also set the condition uuid 
         utilities.updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
+        if(this.addPageAfterCondition) {
+          utilities.updateHiddenInputOnForm($form, "page[conditional_uuid]", this.addPageAfterCondition);
+        }
 
         // Then add any required values.
         utilities.updateHiddenInputOnForm($form, "page[page_type]", element.data("page-type"));
