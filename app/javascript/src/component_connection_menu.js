@@ -47,6 +47,9 @@ class ConnectionMenu extends ActivatedMenu {
       case "link": 
         this.link(item);
         break;
+      case "destination":
+        this.changeDestination(item); 
+        break;
       case "reconnect-confirmation":
         this.reconnectConfirmation(item);
         break;
