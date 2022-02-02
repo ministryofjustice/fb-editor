@@ -11,10 +11,10 @@ RSpec.describe 'Expressions spec', type: :request do
       let(:expressions_index) { 1 }
       let(:expected_operators) do
         [
-          '<option value="is">is</option>',
-          '<option value="is_not">is not</option>',
-          '<option value="is_answered">is answered</option>',
-          '<option value="is_not_answered">is not answered</option>'
+          '<option data-hide-answers="false" value="is">is</option>',
+          '<option data-hide-answers="false" value="is_not">is not</option>',
+          '<option data-hide-answers="true" value="is_answered">is answered</option>',
+          '<option data-hide-answers="true" value="is_not_answered">is not answered</option>'
         ]
       end
       let(:expected_answers) do

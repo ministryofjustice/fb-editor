@@ -6,10 +6,10 @@ class Expression
   validate :unsupported_component
 
   OPERATORS = [
-    [I18n.t('operators.is'), 'is'],
-    [I18n.t('operators.is_not'), 'is_not'],
-    [I18n.t('operators.is_answered'), 'is_answered'],
-    [I18n.t('operators.is_not_answered'), 'is_not_answered']
+    [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
+    [I18n.t('operators.is_not'), 'is_not', { 'data-hide-answers': 'false' }],
+    [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
+    [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
   ].freeze
 
   def to_metadata
