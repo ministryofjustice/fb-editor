@@ -571,6 +571,10 @@ html {
       stroke-width:4px;
       stroke: $govuk-link-hover-colour;
     }
+
+    .arrowPath {
+      fill: $govuk-link-hover-colour;
+    }
   }
 }
 
