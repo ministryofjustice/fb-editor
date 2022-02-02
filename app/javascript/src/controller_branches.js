@@ -78,6 +78,11 @@ BranchesController.enhanceCurrentBranches = function($branches) {
     if(index == 0) {
       branch.$node.find(".BranchRemover").eq(0).hide();
     }
+    
+    // Inject or statements between each of the branches 
+    if(index != 0) {
+      branch.$node.before("<p class=\"branch-or\">or</p>");
+    }
   });
 }
 
@@ -119,7 +124,7 @@ BranchesController.addBranchMenu = function(args) {
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
   if(!first) {
     new ActivatedMenu($ul, {
-      activator_text: "Activator text here",
+      activator_text: "Edit branch",
       container_classname: "SomeClassName",
       container_id: utilities.uniqueString("activated-menu-"),
       menu: {

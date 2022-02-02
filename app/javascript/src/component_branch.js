@@ -83,8 +83,14 @@ class Branch {
   }
 
   destroy() {
+    // find preceding 'or' text to remove as well
+    var $or = this.$node.prev('.branch-or').first();
     this.$node.remove();
+    if($or) {
+      $or.remove()
+    }
   }
+  
 }
 
 
