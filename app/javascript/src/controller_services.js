@@ -30,6 +30,7 @@ const COLUMN_SPACING = 100;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
+const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
 
 
 class ServicesController extends DefaultController {
@@ -343,6 +344,18 @@ function createFlowItemMenus(view) {
 /* VIEW SETUP FUNCTION:
  * --------------------
  * Create the main overview layout for form to get the required design.
+ *
+ * IMPORTANT: We are intentionally calling adjustOverviewHeight() twice.
+ *            Reason for this is because some lines are not getting their
+ *            correct dimensions (observed DownForwardDownBackwardsUp).
+ *            Calling adjustOverviewHeight() after positioning Flow items
+ *            means the container expands to the height of items. Then,
+ *            calling it a second time, after the FlowConnectorPaths have
+ *            been drawn, recalculates the height of container to include
+ *            any lines that have gone outside the original boundary. This
+ *            is a little annoying but, without the first call, things
+ *            appear to position correctly with the noticed exception of
+ *            the line type mentioned earlier. Double call is quickfix.
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
@@ -353,6 +366,7 @@ function layoutFormFlowOverview(view) {
     positionAddPageButton();
   }
 
+  adjustOverviewHeight($container);
   applyPageFlowConnectorPaths($container);
   applyBranchFlowConnectorPaths($container);
   adjustOverlappingFlowConnectorPaths($container);
@@ -371,6 +385,18 @@ function layoutFormFlowOverview(view) {
  * also the expander effect to take into account. This means we need
  * to jump through a couple hoops by changing the section width and
  * compensating for that with positioning the section title.
+ *
+ * IMPORTANT: We are intentionally calling adjustOverviewHeight() twice.
+ *            Reason for this is because some lines are not getting their
+ *            correct dimensions (observed DownForwardDownBackwardsUp).
+ *            Calling adjustOverviewHeight() after positioning Flow items
+ *            means the container expands to the height of items. Then,
+ *            calling it a second time, after the FlowConnectorPaths have
+ *            been drawn, recalculates the height of container to include
+ *            any lines that have gone outside the original boundary. This
+ *            is a little annoying but, without the first call, things
+ *            appear to position correctly with the noticed exception of
+ *            the line type mentioned earlier. Double call is quickfix.
 **/
 function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
@@ -398,6 +424,7 @@ function layoutDetachedItemsOveriew(view) {
   $(".flow-detached-group", $container).each(function() {
     var $group = $(this);
     createAndPositionFlowItems($group);
+    adjustOverviewHeight($container);
     applyPageFlowConnectorPaths($group);
     applyBranchFlowConnectorPaths($group);
     adjustOverlappingFlowConnectorPaths($group);
@@ -522,7 +549,7 @@ function adjustBranchConditionPositions($overview) {
  * apply dimensional adjustments. 
  **/
 function adjustOverviewHeight($overview) {
-  var $items = $(SELECTOR_FLOW_ITEM + ", .FlowConnectorPath path:first-child", $overview);
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
   var bottomNumbers = [];
   var topNumbers = [];
   var top, bottom, topOverlap, height;
@@ -562,7 +589,7 @@ function adjustOverviewHeight($overview) {
  * based on calculations of content positions.
  **/
 function adjustOverviewWidth($overview) {
-  var $items = $(SELECTOR_FLOW_ITEM + ", .FlowConnectorPath path:first-child", $overview);
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
   var leftNumbers = [];
   var rightNumbers = [];
   var left, right;
