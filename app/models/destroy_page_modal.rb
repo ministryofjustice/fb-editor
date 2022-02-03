@@ -8,6 +8,7 @@ class DestroyPageModal
     potential_stacked_branches?: 'stack_branches_not_supported',
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
     branch_destination?: 'delete_branch_destination_page',
+    branch_destination_no_default_next?: 'delete_branch_destination_page_no_default_next',
     default?: 'delete'
   }.freeze
 
@@ -28,7 +29,11 @@ class DestroyPageModal
   end
 
   def branch_destination?
-    page.uuid.in?(branch_destinations)
+    page.uuid.in?(branch_destinations) && service.flow_object(page.uuid).default_next.present?
+  end
+
+  def branch_destination_no_default_next?
+    page.uuid.in?(branch_destinations) && service.flow_object(page.uuid).default_next.blank?
   end
 
   # If the other checks returns false it means the page can be deleted

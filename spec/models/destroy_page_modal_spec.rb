@@ -10,12 +10,24 @@ RSpec.describe DestroyPageModal do
   describe '#to_partial_path' do
     subject(:partial) { destroy_page_modal.to_partial_path }
 
+    # branch destinations
     context 'when after branch' do
       context 'when there is no branch sequentially after the page' do
-        let(:page) { service.find_page_by_url('page-c') }
+        context 'when the destination has a default next' do
+          let(:page) { service.find_page_by_url('page-c') }
+
+          it 'returns deleting branch destination page partial' do
+            expect(partial).to eq('api/pages/delete_branch_destination_page_modal')
+          end
+        end
+      end
+
+      context 'when the destination has no default next' do
+        let(:service_metadata) { metadata_fixture(:branching_7) }
+        let(:page) { service.find_page_by_url('page-g') }
 
         it 'returns deleting branch destination page partial' do
-          expect(partial).to eq('api/pages/delete_branch_destination_page_modal')
+          expect(partial).to eq('api/pages/delete_branch_destination_page_no_default_next_modal')
         end
       end
 

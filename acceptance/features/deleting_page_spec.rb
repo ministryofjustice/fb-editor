@@ -3,6 +3,8 @@ require_relative '../spec_helper'
 feature 'Deleting page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
+  let(:exit_url) { 'exit' }
+  let(:exit_page_title) { 'Exit page' }
   let(:page_url) { 'dooku' }
 
   background do
@@ -33,13 +35,24 @@ feature 'Deleting page' do
     then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
   end
 
-  scenario 'when try to delete a page which is a branch destination' do
+  scenario 'when deleting a branch destination with a default next' do
     given_I_have_a_form_with_pages
     and_I_want_to_delete_a_branch_destination_page
     when_I_delete_the_branch_destination_page
     sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_not_see_the_deleted_page_in_the_flow
     and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
+  end
+
+  scenario 'when deleting a branch destination with no default next' do
+    given_I_have_a_form_with_pages
+    given_I_add_an_exit_page
+    and_I_update_the_exit_page_question
+    and_I_return_to_flow_page
+    given_I_set_the_exit_page_as_a_branch_destination
+    and_I_return_to_flow_page
+    try_to_delete_page(exit_page_title)
+    then_I_should_see_the_delete_page_no_default_next_modal
   end
 
   scenario 'when deleting a branch' do
@@ -135,5 +148,24 @@ feature 'Deleting page' do
 
   def then_I_should_not_see_the_deleted_page_anymore
     expect(editor.form_urls.count).to eq(3)
+  end
+
+  def and_I_update_the_exit_page_question
+    editor.question_heading.first.set(exit_page_title)
+    when_I_save_my_changes
+  end
+
+  def given_I_set_the_exit_page_as_a_branch_destination
+    editor.click_branch('Branching point 1')
+    editor.otherwise_options.select(exit_page_title)
+    when_I_save_my_changes
+  end
+
+  def then_I_should_see_the_delete_page_no_default_next_modal
+    expect(page.text).to include(
+      I18n.t(
+        'pages.delete_modal.delete_branch_destination_page_no_default_next_message'
+      )
+    )
   end
 end
