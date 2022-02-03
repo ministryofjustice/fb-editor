@@ -36,13 +36,13 @@
         <li data-page-type="exit"><a href="#add-page">Add exit page</a></li>
     <% end %>
 
-    <% unless service.checkanswers_page.present? %>
+    <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && item[:next].blank?  %>
       <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
     <% end %>
       
     <% if item[:type] == 'page.checkanswers' %>
       <% if service.confirmation_page.present? %>
-        <% if !@publish_warning.confirmation_in_main_flow? %>
+        <% if !@publish_warning&.confirmation_in_main_flow? %>
           <li data-action="reconnect-confirmation"
               data-url="<%= api_service_flow_destinations_path(service.service_id, item[:uuid]) -%>"
               data-destination-uuid="<%= service.confirmation_page.uuid -%>">
