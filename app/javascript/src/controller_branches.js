@@ -52,6 +52,8 @@ class BranchesController extends DefaultController {
    /* Setup view for the create (new) action
    **/
   create() {
+    var view = this;
+
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
     var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
@@ -62,6 +64,8 @@ class BranchesController extends DefaultController {
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
     BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
+
+    addBranchEventListeners(view)
   }
 }
 
@@ -78,11 +82,7 @@ BranchesController.enhanceCurrentBranches = function($branches) {
     if(index == 0) {
       branch.$node.find(".BranchRemover").eq(0).hide();
     }
-    
-    // Inject or statements between each of the branches 
-    if(index != 0) {
-      branch.$node.before("<p class=\"branch-or\">or</p>");
-    }
+
   });
 }
 
@@ -156,6 +156,7 @@ BranchesController.createBranch = function($node) {
     template_condition: this._branchConditionTemplate,
     event_on_create: function(branch) {
       BranchesController.addBranchMenu(branch);
+      BranchesController.addBranchCombinator(branch);
     },
     event_question_change: function() {
       if(this.$node.find(".BranchAnswer").length > 0) {
@@ -174,6 +175,26 @@ BranchesController.createBranch = function($node) {
   }
   this._branchCount++;
   return branch;
+}
+
+BranchesController.addBranchCombinator = function(args) {
+  var branch = args[0];
+  if( !branch.index == 0 ) {
+    branch.$node.before("<p class=\"branch-or\">or</p>");
+  }
+}
+
+BranchesController.removeBranchCombinator = function(node) {
+    var $or = $(node).prev('.branch-or').first();
+    if($or) {
+      $or.remove()
+    }
+}
+
+function addBranchEventListeners(view) {
+  view.$document.on('branchRemoved', function(event, node){
+    BranchesController.removeBranchCombinator.call(view, node);
+  });
 }
 
 
@@ -206,7 +227,6 @@ class BranchInjector {
       type: "after",
       done: function ($node) {
         BranchesController.createBranch.call(view, $node);
-        $node.before("<p class=\"branch-or\">or</p>");
       }
     });
   }

@@ -42,11 +42,11 @@ class Branch {
     });
 
     this._config = conf;
-    this._index = Number(conf.branch_index);
     this._conditionCount = 0;
     this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
     this.view = conf.view;
+    this.index = Number(conf.branch_index);
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.remover = new BranchRemover($remover, conf);
@@ -66,7 +66,7 @@ class Branch {
 
   addCondition() {
     var template = utilities.stringInject(this._config.template_condition, {
-      branch_index: this._index,
+      branch_index: this.index,
       condition_index: ++this._conditionCount
     });
 
@@ -83,12 +83,8 @@ class Branch {
   }
 
   destroy() {
-    // find preceding 'or' text to remove as well
-    var $or = this.$node.prev('.branch-or').first();
+    $(document).trigger('branchRemoved', this.$node );
     this.$node.remove();
-    if($or) {
-      $or.remove()
-    }
   }
   
 }

@@ -148,14 +148,14 @@ describe("Branch", function () {
       expect(global_test_branch.conditionInjector).to.exist;
     });
 
+    it("should make the index value public", function() {
+      expect(global_test_branch.index).to.exist;
+      expect(global_test_branch.index).to.equal(INDEX_BRANCH);
+    });
+
     it("should make (public but indicated as) private reference to config", function() {
       expect(global_test_branch._config).to.exist;
       expect(global_test_branch._config.selector_condition).to.equal(BRANCH_CONDITION_SELECTOR);
-    });
-
-    it("should make (public but indicated as) private reference to index value", function() {
-      expect(global_test_branch._index).to.exist;
-      expect(global_test_branch._index).to.equal(INDEX_BRANCH);
     });
 
     it("should make (public but indicated as) private reference to condition counter value", function() {
