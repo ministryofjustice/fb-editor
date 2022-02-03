@@ -40,6 +40,7 @@ RSpec.describe DestroyPageModal do
       end
     end
 
+    # used for branch conditionals
     context 'when there is a branch that depends on the page' do
       let(:page) { service.find_page_by_url('page-b') }
 
