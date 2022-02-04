@@ -46,7 +46,7 @@ class Branch {
     this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
     this.view = conf.view;
-    this.index = Number(conf.branch_index);
+    this._index = Number(conf.branch_index);
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.remover = new BranchRemover($remover, conf);
@@ -64,9 +64,13 @@ class Branch {
     utilities.safelyActivateFunction(this._config.event_on_create, [this]);
   }
 
+  get index() {
+    return this._index;
+  }
+
   addCondition() {
     var template = utilities.stringInject(this._config.template_condition, {
-      branch_index: this.index,
+      branch_index: this._index,
       condition_index: ++this._conditionCount
     });
 
@@ -83,7 +87,7 @@ class Branch {
   }
 
   destroy() {
-    $(document).trigger('branchRemoved', this.$node );
+    $(document).trigger('BranchRemove', this.$node );
     this.$node.remove();
   }
   

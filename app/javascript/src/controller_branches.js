@@ -65,7 +65,7 @@ class BranchesController extends DefaultController {
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
     BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
 
-    addBranchEventListeners(view)
+    BranchesController.addBranchEventListeners(view)
   }
 }
 
@@ -179,20 +179,17 @@ BranchesController.createBranch = function($node) {
 
 BranchesController.addBranchCombinator = function(args) {
   var branch = args[0];
-  if( !branch.index == 0 ) {
+  if( branch.index != 0 ) {
     branch.$node.before("<p class=\"branch-or\">or</p>");
   }
 }
 
 BranchesController.removeBranchCombinator = function(node) {
-    var $or = $(node).prev('.branch-or').first();
-    if($or) {
-      $or.remove()
-    }
+    $(node).prev('.branch-or').first().remove();
 }
 
-function addBranchEventListeners(view) {
-  view.$document.on('branchRemoved', function(event, node){
+BranchesController.addBranchEventListeners = function(view) {
+  view.$document.on('BranchRemove', function(event, node){
     BranchesController.removeBranchCombinator.call(view, node);
   });
 }

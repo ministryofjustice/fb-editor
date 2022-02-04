@@ -162,6 +162,11 @@ describe("Branch", function () {
       expect(global_test_branch._conditionCount).to.exist;
       expect(global_test_branch._conditionCount).to.equal(1);
     });
+
+    it("should make (public but indicated as) private index value", function() {
+      expect(global_test_branch._index).to.exist;
+      expect(global_test_branch._index).to.equal(INDEX_BRANCH);
+    });
   });
 
   describe("BranchCondition", function() {
