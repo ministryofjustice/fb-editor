@@ -9,36 +9,36 @@
     <% if ENV['BRANCHING'] == 'enabled' %>
       <% unless item[:type] == 'page.checkanswers' %>
         <li data-action="none">
-          <span>Add single question page</span>
+          <span><%= t('actions.add_single_question') -%></span>
           <ul class="govuk-navigation">
             <li data-page-type="singlequestion"
-                data-component-type="text"><a href="#add-page">Text</a></li>
+                data-component-type="text"><a href="#add-page"><%= t('components.list.text') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+                data-component-type="textarea"><a href="#add-page"><%= t('components.list.textarea') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="email"><a href="#add-page">Email address</a></li>
+                data-component-type="email"><a href="#add-page"><%= t('components.list.email') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="number"><a href="#add-page">Number</a></li>
+                data-component-type="number"><a href="#add-page"><%= t('components.list.number') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="date"><a href="#add-page">Date</a></li>
+                data-component-type="date"><a href="#add-page"><%= t('components.list.date') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+                data-component-type="radios"><a href="#add-page"><%= t('components.list.radios') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+                data-component-type="checkboxes"><a href="#add-page"><%= t('components.list.checkboxes') -%></a></li>
             <li data-page-type="singlequestion"
-                data-component-type="upload"><a href="#add-page">File upload</a></li>
+                data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
           </ul>
         </li>
         
-        <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
+        <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
         
-        <li data-page-type="content"><a href="#add-page">Add content page</a></li>
+        <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
 
-        <li data-page-type="exit"><a href="#add-page">Add exit page</a></li>
+        <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
     <% end %>
 
     <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && item[:next].blank?  %>
-      <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
+      <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
       
     <% if item[:type] == 'page.checkanswers' %>
@@ -47,11 +47,11 @@
           <li data-action="reconnect-confirmation"
               data-url="<%= api_service_flow_destinations_path(service.service_id, item[:uuid]) -%>"
               data-destination-uuid="<%= service.confirmation_page.uuid -%>">
-            <a href="#reconnect-confirmation">Reconnect confirmation page</a>
+              <a href="#reconnect-confirmation"><%= t('actions.reconnect_confirmation') -%></a>
           </li>
         <% end %>
       <% else %>
-        <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
+        <li data-page-type="confirmation"><a href="#add-page"><%= t('actions.add_confirmation') -%></a></li>
       <% end %>
     <% end %>
 
@@ -72,38 +72,38 @@
     <% unless item[:type] == 'page.checkanswers' %>
 
       <li data-action="none">
-        <span>Add single question page</span>
+        <span><%= t('actions.add_single_question') -%></span>
         <ul class="govuk-navigation">
           <li data-page-type="singlequestion"
-              data-component-type="text"><a href="#add-page">Text</a></li>
+              data-component-type="text"><a href="#add-page"><%= t('components.list.text') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="textarea"><a href="#add-page">Textarea</a></li>
+              data-component-type="textarea"><a href="#add-page"><%= t('components.list.textarea') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="email"><a href="#add-page">Email address</a></li>
+              data-component-type="email"><a href="#add-page"><%= t('components.list.email') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="number"><a href="#add-page">Number</a></li>
+              data-component-type="number"><a href="#add-page"><%= t('components.list.number') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="date"><a href="#add-page">Date</a></li>
+              data-component-type="date"><a href="#add-page"><%= t('components.list.date') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
+              data-component-type="radios"><a href="#add-page"><%= t('components.list.radios') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
+              data-component-type="checkboxes"><a href="#add-page"><%= t('components.list.checkboxes') -%></a></li>
           <li data-page-type="singlequestion"
-              data-component-type="upload"><a href="#add-page">File upload</a></li>
+              data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
         </ul>
       </li>
       
-      <li data-page-type="multiplequestions"><a href="#add-page">Add multiple question page</a></li>
+      <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
       
-      <li data-page-type="content"><a href="#add-page">Add content page</a></li>
+      <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
     <% end %>
 
     <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page">Add check answers page</a></li>
+      <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
  
     <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page">Add confirmation page</a></li>
+      <li data-page-type="confirmation"><a href="#add-page"><%= t('actions.add_confirmation') -%></a></li>
     <% end %>
   <% end %>
 </ul>
