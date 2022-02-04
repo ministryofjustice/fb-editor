@@ -43,6 +43,7 @@ class Expander {
     $container.attr("id", id);
     $container.addClass("Expander_container");
     $node.addClass("Expander");
+    $node.data("instance", this);
 
     this._config = conf;
     this.$node = $node;

@@ -111,9 +111,9 @@ class EditorApp < SitePrism::Page
   data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
 
-  elements :form_pages, '.flow-item'
-  elements :form_urls, '.flow-item a.govuk-link'
-  elements :preview_page_images, '.flow-item img.body'
+  elements :form_pages, '#flow-overview .flow-item'
+  elements :form_urls, '#flow-overview .flow-item a.govuk-link'
+  elements :preview_page_images, '#flow-overview .flow-item img.body'
   element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
@@ -183,7 +183,7 @@ class EditorApp < SitePrism::Page
     page_flow_item(html_class, content).hover
   end
 
-  def page_flow_items(html_class = '.flow-thumbnail')
+  def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
     page.all(html_class).map do |page_flow|
       page_flow.text.gsub("Edit:\n", '')
     end

@@ -36,7 +36,6 @@ feature 'Deleting page' do
   end
 
   def then_cya_and_confirmation_pages_should_be_unconnected
-    editor.unconnected_expand_link.click
     expect(editor.unconnected_flow).to eq(
       [
         'Check your answers',
@@ -58,7 +57,6 @@ feature 'Deleting page' do
   end
 
   def then_some_pages_should_be_unconnected
-    editor.unconnected_expand_link.click
     page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq(
       [
@@ -97,7 +95,6 @@ feature 'Deleting page' do
   end
 
   def and_the_branching_should_be_unconnected
-    editor.unconnected_expand_link.click
     page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq([
       'Branching point 1',

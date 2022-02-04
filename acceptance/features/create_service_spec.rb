@@ -119,7 +119,6 @@ feature 'Create a service' do
   end
 
   def then_some_pages_should_be_unconnected
-    editor.unconnected_expand_link.click
     expect(editor.unconnected_flow).to eq(
       [
         'Check your answers',

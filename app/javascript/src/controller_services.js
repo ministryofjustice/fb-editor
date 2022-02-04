@@ -30,6 +30,7 @@ const COLUMN_SPACING = 100;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
+const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
 
 
 class ServicesController extends DefaultController {
@@ -343,6 +344,18 @@ function createFlowItemMenus(view) {
 /* VIEW SETUP FUNCTION:
  * --------------------
  * Create the main overview layout for form to get the required design.
+ *
+ * IMPORTANT: We are intentionally calling adjustOverviewHeight() twice.
+ *            Reason for this is because some lines are not getting their
+ *            correct dimensions (observed DownForwardDownBackwardsUp).
+ *            Calling adjustOverviewHeight() after positioning Flow items
+ *            means the container expands to the height of items. Then,
+ *            calling it a second time, after the FlowConnectorPaths have
+ *            been drawn, recalculates the height of container to include
+ *            any lines that have gone outside the original boundary. This
+ *            is a little annoying but, without the first call, things
+ *            appear to position correctly with the noticed exception of
+ *            the line type mentioned earlier. Double call is quickfix.
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
@@ -358,6 +371,8 @@ function layoutFormFlowOverview(view) {
   applyBranchFlowConnectorPaths($container);
   adjustOverlappingFlowConnectorPaths($container);
   adjustBranchConditionPositions($container);
+  adjustOverviewHeight($container);
+  adjustOverviewWidth($container);
   applyOverviewScroll($container);
 }
 
@@ -370,11 +385,27 @@ function layoutFormFlowOverview(view) {
  * also the expander effect to take into account. This means we need
  * to jump through a couple hoops by changing the section width and
  * compensating for that with positioning the section title.
+ *
+ * IMPORTANT: We are intentionally calling adjustOverviewHeight() twice.
+ *            Reason for this is because some lines are not getting their
+ *            correct dimensions (observed DownForwardDownBackwardsUp).
+ *            Calling adjustOverviewHeight() after positioning Flow items
+ *            means the container expands to the height of items. Then,
+ *            calling it a second time, after the FlowConnectorPaths have
+ *            been drawn, recalculates the height of container to include
+ *            any lines that have gone outside the original boundary. This
+ *            is a little annoying but, without the first call, things
+ *            appear to position correctly with the noticed exception of
+ *            the line type mentioned earlier. Double call is quickfix.
 **/
 function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
   var $title = $("h2", $container);
   var offsetLeft = $container.offset().left;
+  var expander = $container.data("instance"); // Element is set as an Expander Component.
+
+  // Make sure it's open on page load
+  expander.open();
 
   // Expand the width of the section.
   $container.css({
@@ -392,19 +423,15 @@ function layoutDetachedItemsOveriew(view) {
   // Add required scrolling to layout groups.
   $(".flow-detached-group", $container).each(function() {
     var $group = $(this);
-    var $expander = $(".Expander_container");
-    var display = $expander.css("display");
-    $expander.css("display", "block"); // display:none objects have no height in jQuery
-
     createAndPositionFlowItems($group);
-    adjustOverviewHeight($group);
+    adjustOverviewHeight($container);
     applyPageFlowConnectorPaths($group);
     applyBranchFlowConnectorPaths($group);
     adjustOverlappingFlowConnectorPaths($group);
     adjustBranchConditionPositions($group);
+    adjustOverviewHeight($group);
+    adjustOverviewWidth($group);
     applyOverviewScroll($group);
-
-    $expander.css("display", display); // Reset to original state
   });
 }
 
@@ -522,36 +549,61 @@ function adjustBranchConditionPositions($overview) {
  * apply dimensional adjustments. 
  **/
 function adjustOverviewHeight($overview) {
-  var $items = $(SELECTOR_FLOW_ITEM, $overview);
-  var lowestPoint = 0;
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
+  var bottomNumbers = [];
+  var topNumbers = [];
+  var top, bottom, topOverlap, height;
 
   $items.each(function() {
     var $item = $(this);
-    var itemTop = $item.position().top;
-    var bottom = itemTop + $item.outerHeight(true);
-
-    // Flow items will include the branch but not the conditions so we need to
-    // assess them separately. Because the zero-point for a condition is the
-    // top of a branch, the baseline needs to include that count as part of the
-    // calculation.
-    if($item.hasClass("flow-branch")) {
-      let $conditions = $item.find(SELECTOR_FLOW_CONDITION);
-      let top = $conditions.first().position().top;
-      let baseline = itemTop + $conditions.last().position().top + $conditions.last().outerHeight(true);
-      if(top < 0) {
-        top = ~(top); // Turn something like -14.5 into 14.5
-      }
-
-      bottom = (top + baseline);
-    }
-
-    if(bottom > lowestPoint) {
-      lowestPoint = bottom;
-    }
+    var top = Math.ceil($item.offset().top);
+    bottomNumbers.push(top + $item.height());
+    topNumbers.push(top);
   });
 
-  // DEV TODO: Need to figure out top boundary after this disabling.
-  $overview.css("height", lowestPoint + "px");
+  top = utilities.lowestNumber(topNumbers);
+  bottom = utilities.highestNumber(bottomNumbers);
+  topOverlap = $overview.offset().top - top;
+  height = bottom - top;
+
+  // If the paths expand outside the top of the top of the overview area
+  // then the topOverlap will have capture the measurement of by how much.
+  // Move the overview area down to avoid paths overlapping content above.
+  if(topOverlap > 0) {
+    $overview.css("top", topOverlap + "px");
+  }
+
+  // Adjustment to make the height over overview area contain the height
+  // of all flow items and paths within it.
+  if(height > $overview.height()) {
+    $overview.css("height", (bottom - top) + "px");
+  }
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Due to the flow items and paths being positioned by absolute measurements,
+ * the containing (parent) element will not be able to calculate and set
+ * correct width dimensions. This function will detect the required width
+ * based on calculations of content positions.
+ **/
+function adjustOverviewWidth($overview) {
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
+  var leftNumbers = [];
+  var rightNumbers = [];
+  var left, right;
+
+  $items.each(function() {
+    var $item = $(this);
+    var offsetLeft = Math.ceil($item.offset().left);
+    leftNumbers.push(offsetLeft);
+    rightNumbers.push(offsetLeft + $item.width());
+  });
+
+  left = utilities.lowestNumber(leftNumbers);
+  right = utilities.highestNumber(rightNumbers);
+  $overview.width((right - left) + "px");
 }
 
 
@@ -562,68 +614,52 @@ function adjustOverviewHeight($overview) {
  **/
 function applyOverviewScroll($overview) {
   var $container = $("<div></div>");
-  var $children = $overview.children();
-  var scrollTimeout;
+  var $main = $("#main-content");
+  var timeout;
 
-  $container.addClass("FlowOverviewScrollingFrame");
-  $container.height($overview.height()); // first steal the height from overview then reset
-  $overview.height("auto");              // the overview so it is controlled by container.
+  $container.addClass("FlowOverviewScrollFrame");
+  $overview.before($container);
+  $container.append($overview);
 
-  $overview.append($container);
-  $container.append($children);
+  adjustScrollDimensionsAndPosition($container);
 
-  // Apply initial adjustment.
-  adjustOverviewScrollDimensions($overview, $container);
-
-  // Listen for screen changes to reapply.
   $(window).on("resize", function() {
-    scrollTimeout = setTimeout(function() {
-      clearTimeout(scrollTimeout);
-      adjustOverviewScrollDimensions($overview, $container);
-    }, 500);
+    clearTimeout(timeout);
+    $main.css("visibility", "hidden");
+    timeout = setTimeout(function() {
+      $container.get(0).style = ""; // reset everything
+      adjustScrollDimensionsAndPosition($container);
+      $main.css("visibility", "visible");
+    }, 1500);
   });
 }
 
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * Heart of the solution for applyOverviewScroll() that tries to
- * sort out the required dimensions for the layout area.
+ * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustOverviewScrollDimensions($overview, $container) {
-  var overviewWidth = $overview.width()
-  var overviewTop = $overview.offset().top;
-  var containerWidth = $container.get(0).scrollWidth;
-  var margin = 30; // Arbitrary number based on common
+function adjustScrollDimensionsAndPosition($container) {
+  const margin = 30; // Based on assumed 30x2 padding (TODO: figure out dynamic/auto method not hardcoded).
+  const menuSpacer = 50; // Arbitrary number designed to allow any context menu to fit in container width.
   var viewWidth = window.innerWidth - (margin * 2);
-  var top;
+  var containerWidth = $container.get(0).scrollWidth;
+  var offsetLeft = $container.offset().left;
 
-  // Sort out widths...
-  if(containerWidth > overviewWidth) {
-    let offsetLeft = $overview.offset().left;
-    let left = (containerWidth - overviewWidth) / 2;
-
-    if(left < offsetLeft) {
-      $overview.css("left", ~(left - margin) + "px");
-    }
-    else {
-      $overview.css("left", ~(offsetLeft - margin));
-    }
-
-    $overview.css("width", viewWidth + "px");
+  if(containerWidth > viewWidth) {
+    // position container width to max left and constrain width
+    $container.css({
+      left: ~(offsetLeft - margin) + "px",
+      padding: "0 " + menuSpacer + " 0 0", // 100 is just arbitrary  extra spacing for opening menus
+      width: viewWidth + "px"
+    });
   }
-
-  // Sort out heights...
-  $(".FlowConnectorPath path:first-child", $overview).each(function() {
-    var $this = $(this);
-    var offsetTop = $this.offset().top;
-    if(!top || top > offsetTop) {
-      top = offsetTop;
-    }
-  });
-
-  if(top < overviewTop) {
-    $overview.css("padding-top", (overviewTop - top) + "px");
+  else {
+    // centre the container
+    $container.css({
+      left: ~(offsetLeft - ((viewWidth - containerWidth) / 2)) + "px",
+      width: containerWidth + "px"
+    });
   }
 }
 
