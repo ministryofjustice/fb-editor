@@ -100,6 +100,13 @@ en:
     option_add: 'Add option'
     option_remove: 'Delete...'
     change_destination: 'Change next page...'
+    add_single_question: 'Add single question page'
+    add_multi_question: 'Add multiple question page'
+    add_content: 'Add content page'
+    add_exit: 'Add exit page'
+    add_check_answers: 'Add check answers page'
+    add_confirmation: 'Add confirmation page'
+    reconnect_confirmation: 'Reconnect confirmation page'
     ok: 'Ok'
   branches:
     branch_add: 'Add another branch'
