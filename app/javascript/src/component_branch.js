@@ -17,7 +17,7 @@
 
 const utilities = require('./utilities');
 const BranchDestination = require('./component_branch_destination');
-const EVENT_QUESTION_CHANGE = "branchquestionchange";
+const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
 
 
 /* Branch component
@@ -37,16 +37,13 @@ class Branch {
 
     $node.addClass("Branch");
     $node.data("instance", this);
-    $node.on(EVENT_QUESTION_CHANGE, () => {
-      utilities.safelyActivateFunction.call(this, conf.event_question_change);
-    });
 
     this._config = conf;
-    this._index = Number(conf.branch_index);
     this._conditionCount = 0;
     this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
     this.view = conf.view;
+    this._index = Number(conf.branch_index);
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.remover = new BranchRemover($remover, conf);
@@ -61,7 +58,11 @@ class Branch {
       branch._conditionCount++;
     });
 
-    utilities.safelyActivateFunction(this._config.event_on_create, [this]);
+    $(document).trigger('BranchCreate', this);
+  }
+
+  get index() {
+    return this._index;
   }
 
   addCondition() {
@@ -83,8 +84,10 @@ class Branch {
   }
 
   destroy() {
+    $(document).trigger('BranchRemove', this.$node );
     this.$node.remove();
   }
+  
 }
 
 
@@ -247,7 +250,7 @@ class BranchQuestion {
     switch(supported) {
       case true:
            this.condition.update(value, function() {
-             branch.$node.trigger(EVENT_QUESTION_CHANGE);
+             $(document).trigger(EVENT_QUESTION_CHANGE, branch);
            });
            break;
       case false:
@@ -255,7 +258,7 @@ class BranchQuestion {
            break;
       default:
            // Just trigger an event
-           this.condition.branch.$node.trigger(EVENT_QUESTION_CHANGE);
+           $(document).trigger(EVENT_QUESTION_CHANGE, this.condition.branch);
     }
   }
 

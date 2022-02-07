@@ -59,6 +59,7 @@ class BranchesController extends DefaultController {
     this._branchCount = 0;
     this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
 
+    BranchesController.addBranchEventListeners(this)
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
     BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
@@ -78,6 +79,7 @@ BranchesController.enhanceCurrentBranches = function($branches) {
     if(index == 0) {
       branch.$node.find(".BranchRemover").eq(0).hide();
     }
+
   });
 }
 
@@ -112,14 +114,14 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
 /* Find branch menu element and wrap with ActivatedMenu
  * functionality.
  **/
-BranchesController.addBranchMenu = function(args) {
-  var branch = args[0];
+BranchesController.addBranchMenu = function(branch) {
+  //var branch = args[0];
   var $form = branch.$node.parent("form");
   var $ul = branch.$node.find(".component-activated-menu");
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
   if(!first) {
     new ActivatedMenu($ul, {
-      activator_text: "Activator text here",
+      activator_text: app.text.branches.branch_edit,
       container_classname: "SomeClassName",
       container_id: utilities.uniqueString("activated-menu-"),
       menu: {
@@ -149,17 +151,6 @@ BranchesController.createBranch = function($node) {
     expression_url: this.api.get_expression,
     question_label: this.text.branches.label_question_and,
     template_condition: this._branchConditionTemplate,
-    event_on_create: function(branch) {
-      BranchesController.addBranchMenu(branch);
-    },
-    event_question_change: function() {
-      if(this.$node.find(".BranchAnswer").length > 0) {
-        this.$node.find(".BranchConditionInjector").show();
-      }
-      else {
-        this.$node.find(".BranchConditionInjector").hide();
-      }
-    },
     dialog_delete: view.dialogConfirmationDelete,
     view: view
   });
@@ -169,6 +160,36 @@ BranchesController.createBranch = function($node) {
   }
   this._branchCount++;
   return branch;
+}
+
+BranchesController.addBranchCombinator = function(branch) {
+  if( branch.index != 0 ) {
+    branch.$node.before("<p class=\"branch-or\">or</p>");
+  }
+}
+
+BranchesController.removeBranchCombinator = function(node) {
+    $(node).prev('.branch-or').first().remove();
+}
+
+BranchesController.addBranchEventListeners = function(view) {
+  view.$document.on('BranchRemove', function(event, node){
+    BranchesController.removeBranchCombinator.call(view, node);
+  });
+
+  view.$document.on('BranchCreate', function(event, branch) {
+    BranchesController.addBranchMenu(branch);
+    BranchesController.addBranchCombinator(branch);
+  });
+
+  view.$document.on('BranchQuestionChange', function(event, branch) {
+    if(branch.$node.find(".BranchAnswer").length > 0) {
+      branch.$node.find(".BranchConditionInjector").show();
+    }
+    else {
+      branch.$node.find(".BranchConditionInjector").hide();
+    }
+  });
 }
 
 
@@ -201,7 +222,6 @@ class BranchInjector {
       type: "after",
       done: function ($node) {
         BranchesController.createBranch.call(view, $node);
-        $node.before("<p class=\"branch-or\">or</p>");
       }
     });
   }
