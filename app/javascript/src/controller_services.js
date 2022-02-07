@@ -55,6 +55,7 @@ ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
+  view.$flowStandalone = $("#flow-standalone-pages");
 
   createPageAdditionDialog(view);
   createPageAdditionMenu(view);
@@ -67,6 +68,8 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOveriew(view);
   }
+
+  applyContentScrolling(view);
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").addClass(JS_ENHANCEMENT_DONE);
@@ -373,7 +376,6 @@ function layoutFormFlowOverview(view) {
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
-  applyOverviewScroll($container);
 }
 
 
@@ -431,7 +433,6 @@ function layoutDetachedItemsOveriew(view) {
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
     adjustOverviewWidth($group);
-    applyOverviewScroll($group);
   });
 }
 
@@ -611,20 +612,43 @@ function adjustOverviewWidth($overview) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * To try and fix scrolling issues for the form overview
- * when there are too many thumbnails to fix on the one page view.
+ * To try and fix scrolling issues for the ServicresEdit page
+ * when flow overview areas extend beyond the restricted width
+ * of the main content area.
+ * @view (Object) Reference to the overall view instance of Services#edit action.
  **/
-function applyOverviewScroll($overview) {
+function applyContentScrolling(view) {
   var $container = $("<div></div>");
   var $main = $("#main-content");
+  var $footer = $("footer");
+  var marginBottomMain = Number($main.css("margin-bottom").replace("px", ""));
+  var paddingBottomMain = Number($main.css("padding-bottom").replace("px", ""));
+  var paddingTopFooter = Number($footer.css("padding-top").replace("px", ""));
+  var spacing = marginBottomMain + paddingBottomMain + paddingTopFooter;
   var timeout;
 
-  $container.addClass("FlowOverviewScrollFrame");
-  $overview.before($container);
-  $container.append($overview);
+  // Make adjustments to layout elements.
+  $container.addClass("ServicesContentScrollContainer");
+  view.$flowOverview.before($container);
+  $container.append(view.$flowOverview);
+  $container.append(view.$flowDetached);
+  $container.append(view.$flowStandalone);
 
+  // Would prefer this in stylesheet but doing it here
+  // to detect and copy any GDS dynamic values in use.
+  $container.css("padding-bottom", spacing + "px");
+  $footer.css("padding-top", 0);
+  $main.css({
+    "margin-bottom": 0,
+    "padding-bottom": 0
+  });
+
+
+  // Make adjustments based on content.
   adjustScrollDimensionsAndPosition($container);
 
+
+  // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
     clearTimeout(timeout);
     $main.removeClass(JS_ENHANCEMENT_DONE);
@@ -632,7 +656,7 @@ function applyOverviewScroll($overview) {
       $container.get(0).style = ""; // reset everything
       adjustScrollDimensionsAndPosition($container);
       $main.addClass(JS_ENHANCEMENT_DONE);
-    }, 1500);
+    }, 750);
   });
 }
 

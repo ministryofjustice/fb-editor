@@ -537,6 +537,13 @@ html {
   }
 }
 
+.ServicesContentScrollContainer {
+  // Due to layout element of GDS templates, the scroll dimensions
+  // need to be calculated by JS (cannot just use width:100%).
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+}
 
 .FlowConnectorLine,
 .FlowConnectorPath {
@@ -589,13 +596,6 @@ html {
   overflow: hidden;
   position: absolute;
   top: calc(125px - 43px);
-}
-
-.FlowOverviewScrollFrame {
-  // Dimensions are calculated by JS
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: relative;
 }
 
 .flow-add-page-button {
@@ -799,7 +799,6 @@ html {
   }
 
   .flow-detached-group {
-    margin: 0 30px;
     position: relative;
   }
 }
