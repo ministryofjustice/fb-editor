@@ -589,6 +589,83 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 }
 
+class ForwardDownForwardPath extends FlowConnectorPath {
+  constructor(points, config) {
+    super(points, config);
+    var dimensions = {
+      forward1: Math.round(this.points.via_x - CURVE_SPACING),
+      down: Math.round(utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
+      forward2: Math.round( utilities.difference( this.points.from_x + this.points.via_x, this.points.to_x ) - CURVE_SPACING),
+    }
+
+    this._dimensions = { original: dimensions };
+    this.type = "ForwardDownForwardPath";
+    this.path = dimensions;
+    this.build();
+  }
+
+  set path(dimensions) {
+    var x = this.points.from_x;
+    var y = this.points.from_y;
+
+    var forward1 = new FlowConnectorLine("forward1", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward1,
+                     prefix: "h",
+                     overlapAllowed: true
+                   });
+
+    x += (forward1.prop("length") + CURVE_SPACING);
+    y += CURVE_SPACING;
+    var down = new FlowConnectorLine("down", {
+                 x: x,
+                 y: y,
+                 length: dimensions.down,
+                 prefix: "v"
+               });
+
+    x += CURVE_SPACING;
+    y += (down.prop("length") + CURVE_SPACING);
+    var forward2 = new FlowConnectorLine("forward2", {
+                     x: x,
+                     y: y,
+                     length: dimensions.forward2,
+                     prefix: "h"
+                   });
+
+    this._dimensions.current = dimensions;
+    this._dimensions.lines = [ forward1, down, forward2 ];
+
+    this._path = pathD(
+                   xy(this.points.from_x, this.points.from_y),
+                   forward1.path,
+                   CURVE_RIGHT_DOWN,
+                   down.path,
+                   CURVE_DOWN_RIGHT,
+                   forward2.path);
+  }
+
+  nudge(linename) {
+    var d = this._dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "down":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward1":
+      case "forward2":
+           // no overlap prevention should be required for this.
+    }
+
+    this.path = d;
+    this.$node.find("path:first").attr("d", this._path);
+    return nudged;
+  }
+}
 
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
@@ -1265,6 +1342,7 @@ module.exports = {
   ForwardPath: ForwardPath,
   ForwardUpPath: ForwardUpPath,
   ForwardUpForwardDownPath: ForwardUpForwardDownPath,
+  ForwardDownForwardPath: ForwardDownForwardPath,
   ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,
   DownForwardDownBackwardUpPath: DownForwardDownBackwardUpPath,
   DownForwardUpPath: DownForwardUpPath,

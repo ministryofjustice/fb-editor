@@ -948,6 +948,9 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
           new ConnectorPath.ForwardUpForwardDownPath(points, config);
         }
       }
+      else {
+        new ConnectorPath.ForwardDownForwardPath(points, config);
+      }
     }
     else {
       if(up) {
