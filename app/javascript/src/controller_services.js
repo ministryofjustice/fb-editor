@@ -655,7 +655,8 @@ function applyContentScrolling(view) {
     timeout = setTimeout(function() {
       $container.get(0).style = ""; // reset everything
       adjustScrollDimensionsAndPosition($container);
-      $main.addClass(JS_ENHANCEMENT_DONE);
+      $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
+      $main.css("visibility", "visible");
     }, 750);
   });
 }
@@ -676,7 +677,7 @@ function adjustScrollDimensionsAndPosition($container) {
     // position container width to max left and constrain width
     $container.css({
       left: ~(offsetLeft - margin) + "px",
-      padding: "0 " + menuSpacer + " 0 0", // 100 is just arbitrary  extra spacing for opening menus
+      "padding-right": menuSpacer + "px",
       width: viewWidth + "px"
     });
   }
