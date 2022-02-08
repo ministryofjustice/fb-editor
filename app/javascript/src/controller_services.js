@@ -886,7 +886,7 @@ function adjustOverlappingFlowConnectorPaths($overview) {
   var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
   var somethingMoved;
   var numberOfPaths = $paths.length;
-  var keepChecking = true;
+  var keepChecking = $paths.length > 1;
   var loopCount = 1;
 
   do {
