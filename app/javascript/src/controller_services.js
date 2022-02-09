@@ -409,19 +409,6 @@ function layoutDetachedItemsOveriew(view) {
   // Make sure it's open on page load
   expander.open();
 
-  // Expand the width of the section.
-  $container.css({
-    left:  ~(offsetLeft),
-    position: "relative",
-    width: window.innerWidth
-  });
-
-  // Compensate for previous change.
-  $title.css({
-    left: offsetLeft + "px",
-    position: "relative"
-  });
-
   // Add required scrolling to layout groups.
   $(".flow-detached-group", $container).each(function() {
     var $group = $(this);
