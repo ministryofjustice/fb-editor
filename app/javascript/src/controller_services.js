@@ -424,7 +424,7 @@ function layoutDetachedItemsOveriew(view) {
   $(".flow-detached-group", $container).each(function() {
     var $group = $(this);
     createAndPositionFlowItems($group);
-    adjustOverviewHeight($container);
+    adjustOverviewHeight($group);
     applyPageFlowConnectorPaths($group);
     applyBranchFlowConnectorPaths($group);
     adjustOverlappingFlowConnectorPaths($group);
