@@ -657,6 +657,25 @@ html {
   opacity: 1;
 }
 
+.ConnectionMenuActivator {
+  display: inline-block;
+  left: calc(100% + 10px);
+  // opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 46px;
+
+  &.branch-connection-menu-activator {
+    left: -10px;
+    top: -17px;
+  }
+  
+  &:after {
+    content: '+';
+    top: -22px;
+  }
+}
+
 .flow-condition {
   @include list_reset;
   margin: 0 50px;
