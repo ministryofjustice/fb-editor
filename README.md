@@ -4,14 +4,15 @@ New editor from the MoJ online.
 
 ## Prerequisites
 * Docker
-* Node (version 16.13.2)
+* Node (version 14.19.0 LTS)
 * Ruby v2.7.5
 * Postgresql
 * Yarn
 
 ## Setup
-Ensure you are running on Node version 16.13.2:
-`nvm use 16.13.2`
+Ensure you are running Node version 14.19.0 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
+`nvm install 14.19.0`
+`nvm use 14.19.0`
 
 Install gems:
 `bundle`

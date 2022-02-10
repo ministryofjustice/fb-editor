@@ -2,7 +2,7 @@
   "name": "fb_editor",
   "private": true,
   "engines": {
-    "node": "16.13.2"
+    "node": ">=14.19.0"
   },
   "scripts": {
     "jstest": "mocha"
