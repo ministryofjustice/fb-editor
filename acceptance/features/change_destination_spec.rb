@@ -13,21 +13,35 @@ feature 'Deleting page' do
   scenario 'change destination to another page' do
     given_I_want_to_change_destination_of_a_page('Page b')
     when_I_change_destination_to_page('Page j')
+    then_I_should_not_see_unconnected_pages
     then_page_j_should_be_after_page_b
     then_some_pages_should_be_unconnected
+    given_I_want_to_change_destination_of_a_page('Page b')
+    then_I_should_see_unconnected_pages
   end
 
   scenario 'change destination in the middle of a branch' do
     given_I_want_to_change_destination_of_a_page('Page b')
     when_I_change_destination_to_page('Page d')
+    then_I_should_not_see_unconnected_pages
     then_page_d_should_be_after_page_b
     and_the_branching_should_be_unconnected
+    given_I_want_to_change_destination_of_a_page('Page b')
+    then_I_should_see_unconnected_pages
   end
 
   def given_I_want_to_change_destination_of_a_page(page)
     editor.hover_preview(page)
     editor.three_dots_button.click
     editor.change_destination_link.click
+  end
+
+  def then_I_should_not_see_unconnected_pages
+    expect(editor).not_to have_selector('.destination-optgroup')
+  end
+
+  def then_I_should_see_unconnected_pages
+    expect(editor).to have_selector('.destination-optgroup')
   end
 
   def when_I_change_destination_to_page(page)
