@@ -139,6 +139,56 @@ RSpec.describe Destination do
     end
   end
 
+  describe '#main_destination' do
+    let(:latest_metadata) do
+      metadata = metadata_fixture('branching')
+      checkanswers = metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+      obj = metadata['flow']['0b297048-aa4d-49b6-ac74-18e069118185'] # Favourite fruit
+      obj['next']['default'] = checkanswers['_uuid']
+      metadata
+    end
+    let(:expected_destinations) do
+      [
+        'Full name',
+        'Do you like Star Wars?',
+        'Branching point 1',
+        'How well do you know Star Wars?',
+        'What is your favourite fruit?',
+        'Check your answers'
+      ]
+    end
+
+    it 'returns destinations without detached pages' do
+      expect(destination.main_destinations.map(&:first)).to eq(expected_destinations)
+    end
+  end
+
+  describe '#detached_destinations' do
+    let(:latest_metadata) do
+      metadata = metadata_fixture('branching')
+      checkanswers = metadata['pages'].find { |p| p['_type'] == 'page.checkanswers' }
+      obj = metadata['flow']['dc7454f9-4186-48d7-b055-684d57bbcdc7'] # What is the best Marvel series?
+      obj['next']['default'] = checkanswers['_uuid']
+      metadata
+    end
+    let(:expected_destinations) do
+      [
+        'Branching point 6',
+        'Loki',
+        'Other quotes',
+        'Select all Arnold Schwarzenegger quotes',
+        'Branching point 7',
+        'You are wrong',
+        'You are right',
+        'You are wrong'
+      ]
+    end
+
+    it 'returns destinations without detached pages' do
+      expect(destination.detached_destinations.map(&:first)).to eq(expected_destinations)
+    end
+  end
+
   context 'when there are different branches pointing to the same page' do
     let(:page_flow) do
       service.flow_object(service.find_page_by_url('name').uuid)
