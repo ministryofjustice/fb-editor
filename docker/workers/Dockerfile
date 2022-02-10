@@ -1,10 +1,10 @@
-FROM ruby:2.7.5-alpine3.15
+FROM ruby:2.7.5-alpine3.13
 
 ARG UID=1001
 
 RUN apk add git yarn build-base postgresql-contrib postgresql-dev bash libcurl curl
 
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs=16.13.2-r0 npm
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs npm
 
 ARG KUBE_VERSION="1.18.2"
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v$KUBE_VERSION/bin/linux/amd64/kubectl
