@@ -116,6 +116,8 @@ feature 'Deleting page' do
       'Page b is Hulk',
       'Otherwise',
       'Page c',
+      'Page e',
+      'Page g',
       'Page d'
     ])
   end
