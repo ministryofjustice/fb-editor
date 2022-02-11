@@ -6,17 +6,26 @@
         <%= t('dialogs.destination.lede', title: @destination.title) %>
       </span>
       <span><%= t('dialogs.destination.go_to') %></span>
-      <%= f.select :destination_uuid, @destination.destinations,
-        {
-          include_blank: false,
-          selected: @destination.current_destination
-        },
-        {
-          class: 'govuk-select',
-          name: 'destination_uuid',
-          id: 'destination_uuid'
-        }
-      %>
+       <div class="govuk-form-group">
+        <select class="govuk-select" name="destination_uuid" id="destination_uuid">
+          <%= render partial: "branches/destinations_list",
+                    locals: {
+                      destinations: @destination.main_destinations,
+                      selected: @destination.current_destination
+                    }
+          %>
+          <% if @destination.detached_destinations.present? %>
+            <optgroup class="destination-optgroup" label="<%= t('branches.detached_list') %>">
+              <%= render partial: "branches/destinations_list",
+                        locals: {
+                          destinations: @destination.detached_destinations,
+                          selected: @destination.current_destination
+                        }
+              %>
+            </optgroup>
+          <% end %>
+        </select>
+      </div>
     </div>
     <p><%= t('dialogs.destination.text') %></p>
   <% end %>

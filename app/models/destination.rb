@@ -25,6 +25,14 @@ class Destination
     service.flow_object(flow_uuid).default_next
   end
 
+  def main_destinations
+    destinations_list(flow_objects: grid.ordered_flow)
+  end
+
+  def detached_destinations
+    destinations_list(flow_objects: detached_objects)
+  end
+
   private
 
   def grid
@@ -32,6 +40,9 @@ class Destination
   end
 
   def detached_objects
-    Detached.new(service: service, main_flow_uuids: grid.flow_uuids).flow_objects
+    Detached.new(
+      service: service,
+      main_flow_uuids: grid.flow_uuids
+    ).flow_objects
   end
 end
