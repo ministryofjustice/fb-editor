@@ -624,7 +624,6 @@ function addServicesContentScrollContainer(view) {
   // Would prefer this in stylesheet but doing it here
   // to detect and copy any GDS dynamic values in use.
   $container.css("padding-bottom", spacing + "px");
-  $footer.css("padding-top", 0);
   $main.css({
     "margin-bottom": 0,
     "padding-bottom": 0
