@@ -26,11 +26,11 @@ class Destination
   end
 
   def main_destinations
-    destinations_list(flow_objects: grid.ordered_flow)
+    destinations_list(flow_objects: grid.ordered_flow, current_uuid: flow_uuid)
   end
 
   def detached_destinations
-    destinations_list(flow_objects: detached_objects)
+    destinations_list(flow_objects: detached_objects, current_uuid: flow_uuid)
   end
 
   private
