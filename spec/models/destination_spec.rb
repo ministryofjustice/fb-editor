@@ -149,7 +149,6 @@ RSpec.describe Destination do
     end
     let(:expected_destinations) do
       [
-        'Full name',
         'Do you like Star Wars?',
         'Branching point 1',
         'How well do you know Star Wars?',
