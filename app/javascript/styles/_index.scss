@@ -526,6 +526,7 @@ html {
 .ServicesContentScrollContainer {
   // Due to layout element of GDS templates, the scroll dimensions
   // need to be calculated by JS (cannot just use width:100%).
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
