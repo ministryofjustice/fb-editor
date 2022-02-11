@@ -517,19 +517,22 @@ html {
   // elements, without this workaround in place (easier to fix z-index than calculations).
   .FlowConnectorLine,
   .FlowConnectorPath {
-    z-index: 1;
+    z-index: 2;
   }
 
-  .FlowConnectorPath.active,
-  .flow-item,
+  // .flow-item,
   .ui-widget-overlay {
-    z-index: 2;
+    z-index: 1;
   }
 
   .FlowItemMenu,
   .ConnectionMenu,
   .ui-dialog {
     z-index: 3;
+  }
+
+  .ConnectionMenuActivator {
+    z-index: 4;
   }
 }
 
@@ -666,7 +669,7 @@ html {
   top: 46px;
 
   &.branch-connection-menu-activator {
-    left: -10px;
+    left: calc(100% - 24px);
     top: -17px;
   }
   
@@ -678,19 +681,24 @@ html {
 
 .flow-condition {
   @include list_reset;
-  margin: 0 50px;
+  margin: 0 30px;
+  padding: 0 25px;
   text-align: center;
   width: 300px;
 
   a, span {
     @include govuk-font($size: 16);
+    color: $govuk-secondary-text-colour;
     display: inline;
     position: static;
     width: auto;
   }
 
   .operator {
-    color: $govuk-secondary-text-colour;
+    font-weight: bold;
+  }
+  .condition-operator {
+    text-transform: uppercase;
   }
 }
 

@@ -55,7 +55,6 @@ ServicesController.edit = function() {
 
   createPageAdditionDialog(view);
   createPageMenus(view);
-  createConnectionMenus(view); 
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -64,6 +63,8 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOveriew(view);
   }
+
+  createConnectionMenus(view); 
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").css("visibility", "visible");
@@ -364,12 +365,12 @@ function createAndPositionFlowItems($overview) {
 function adjustBranchConditionPositions($overview) {
   var strokeWidth = $(".FlowConnectorPath path").eq(0).css("stroke-width") || "";
   var lineHeight = Number(strokeWidth.replace("px", "")) || 0;
-  $overview.find(".flow-expression").each(function() {
+  $overview.find(".flow-expressions").each(function() {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
     $this.css({
       position: "relative",
-      top: "-" + (expressionHeight + lineHeight) + "px"
+      top: "-" + (expressionHeight + (lineHeight * 2) ) + "px"
     });
   });
 }
