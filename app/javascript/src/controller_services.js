@@ -31,7 +31,7 @@ const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
-const JS_ENHANCEMENT_DONE = "jsdone";
+const SELECTOR_FLOW_DETACHED_GROUP = ".flow-detached-group";
 
 
 class ServicesController extends DefaultController {
@@ -410,7 +410,7 @@ function layoutDetachedItemsOveriew(view) {
   expander.open();
 
   // Add required scrolling to layout groups.
-  $(".flow-detached-group", $container).each(function() {
+  $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
     createAndPositionFlowItems($group);
     adjustOverviewHeight($group);
@@ -616,6 +616,7 @@ function applyContentScrolling(view) {
 
   // Make adjustments to layout elements.
   $container.addClass("ServicesContentScrollContainer");
+  view.$scrollContainer = $container; // Make it available on view.
   view.$flowOverview.before($container);
   $container.append(view.$flowOverview);
   $container.append(view.$flowDetached);
@@ -630,10 +631,8 @@ function applyContentScrolling(view) {
     "padding-bottom": 0
   });
 
-
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition($container);
-
+  adjustScrollDimensionsAndPosition(view);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -641,7 +640,7 @@ function applyContentScrolling(view) {
     $main.removeClass(JS_ENHANCEMENT_DONE);
     timeout = setTimeout(function() {
       $container.get(0).style = ""; // reset everything
-      adjustScrollDimensionsAndPosition($container);
+      adjustScrollDimensionsAndPosition(view);
       $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
       $main.css("visibility", "visible");
     }, 750);
@@ -653,28 +652,22 @@ function applyContentScrolling(view) {
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustScrollDimensionsAndPosition($container) {
-  const margin = 30; // Based on assumed 30x2 padding (TODO: figure out dynamic/auto method not hardcoded).
+function adjustScrollDimensionsAndPosition(view) {
   const menuSpacer = 50; // Arbitrary number designed to allow any context menu to fit in container width.
-  var viewWidth = window.innerWidth - (margin * 2);
-  var containerWidth = $container.get(0).scrollWidth;
-  var offsetLeft = $container.offset().left;
+  var viewWidth = window.innerWidth;
+  var containerWidth = view.$scrollContainer.get(0).scrollWidth;
+  var offsetLeft = view.$scrollContainer.offset().left;
+  var $detached = $(SELECTOR_FLOW_DETACHED_GROUP, view.$flowDetached);
+  var $sections = view.$flowOverview.add($detached);
+  var maxWidth = utilities.maxWidth($sections);
 
-  if(containerWidth > viewWidth) {
-    // position container width to max left and constrain width
-    $container.css({
-      left: ~(offsetLeft - margin) + "px",
-      "padding-right": menuSpacer + "px",
-      width: viewWidth + "px"
-    });
-  }
-  else {
-    // centre the container
-    $container.css({
-      left: ~(offsetLeft - ((viewWidth - containerWidth) / 2)) + "px",
-      width: containerWidth + "px"
-    });
-  }
+  view.$scrollContainer.css({
+    "padding-left": offsetLeft + "px",
+    left: ~(offsetLeft - 2) + "px",
+    width: (viewWidth - 6) + "px"
+  });
+
+  $sections.width(maxWidth + 250); // 250 is extra space for menu
 }
 
 
