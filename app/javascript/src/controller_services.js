@@ -69,7 +69,7 @@ ServicesController.edit = function() {
     layoutDetachedItemsOveriew(view);
   }
 
-  applyContentScrolling(view);
+  addServicesContentScrollContainer(view);
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").addClass(JS_ENHANCEMENT_DONE);
@@ -604,7 +604,7 @@ function adjustOverviewWidth($overview) {
  * of the main content area.
  * @view (Object) Reference to the overall view instance of Services#edit action.
  **/
-function applyContentScrolling(view) {
+function addServicesContentScrollContainer(view) {
   var $container = $("<div></div>");
   var $main = $("#main-content");
   var $footer = $("footer");
@@ -660,6 +660,7 @@ function adjustScrollDimensionsAndPosition(view) {
   var $detached = $(SELECTOR_FLOW_DETACHED_GROUP, view.$flowDetached);
   var $sections = view.$flowOverview.add($detached);
   var maxWidth = utilities.maxWidth($sections);
+  var mainHeight = $("#main-content").height();
 
   view.$scrollContainer.css({
     "padding-left": offsetLeft + "px",
@@ -668,6 +669,12 @@ function adjustScrollDimensionsAndPosition(view) {
   });
 
   $sections.width(maxWidth + 250); // 250 is extra space for menu
+
+  // Sometimes scroll container height is less than the main height,
+  // which would mean the scroll bars are distanced from the footer.
+  if(view.$scrollContainer.height() < mainHeight) {
+    view.$scrollContainer.height(mainHeight);
+  }
 }
 
 
