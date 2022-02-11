@@ -527,15 +527,6 @@ html {
   }
 }
 
-.ServicesContentScrollContainer {
-  // Due to layout element of GDS templates, the scroll dimensions
-  // need to be calculated by JS (cannot just use width:100%).
-  box-sizing: border-box;
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: relative;
-}
-
 .FlowConnectorLine,
 .FlowConnectorPath {
   // A note about the height and width settings.
@@ -803,6 +794,15 @@ html {
     margin-right: govuk-spacing(9);
     width: 200px;
   }
+}
+
+#ServicesContentScrollContainer {
+  // Due to layout element of GDS templates, the scroll dimensions
+  // need to be calculated by JS (cannot just use width:100%).
+  box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
 }
 
 
