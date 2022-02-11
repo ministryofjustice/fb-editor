@@ -614,7 +614,7 @@ function applyContentScrolling(view) {
   var timeout;
 
   // Make adjustments to layout elements.
-  $container.addClass("ServicesContentScrollContainer");
+  $container.attr("id", "ServicesContentScrollContainer");
   view.$scrollContainer = $container; // Make it available on view.
   view.$flowOverview.before($container);
   $container.append(view.$flowOverview);
