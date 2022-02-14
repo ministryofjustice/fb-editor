@@ -798,8 +798,7 @@ html {
   // need to be calculated by JS (cannot just use width:100%).
   background-color: govuk-colour("white");
   box-sizing: border-box;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
   position: relative;
 }
 

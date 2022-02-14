@@ -660,6 +660,7 @@ function adjustScrollDimensionsAndPosition(view) {
   var $body = $("body");
   var $html = $("html");
   var $footer = $("footer");
+  var $footerContentContainer = $footer.find(".govuk-width-container");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
 
@@ -667,25 +668,30 @@ function adjustScrollDimensionsAndPosition(view) {
   $button.css({
     left: $button.offset().left + "px",
     position: "fixed",
-    top: $button.offset().top + "px"
+    top: $button.offset().top + "px",
+    "z-index": 1
   });
 
   $title.css({
     left: $title.offset().left + "px",
     position: "fixed",
-    top: $title.offset().top + "px"
+    top: $title.offset().top + "px",
+    "z-index": 1
   });
 
   $nav.css({
+    "border-bottom": "110px solid white",
     position: "fixed",
     top: $nav.offset().top + "px",
-    width: "100%"
+    width: "100%",
+    "z-index": 1
   });
 
   $header.css({
     position: "fixed",
     top: $header.offset().top + "px",
-    width: "100%"
+    width: "100%",
+    "z-index": 1
   });
 
   // Now adjust the scroll container.
@@ -693,13 +699,18 @@ function adjustScrollDimensionsAndPosition(view) {
     "margin-top": fixedHeight + "px", // This one because we fixed elements above.
     "padding-left": scrollContainerLeft + "px",
     left: ~(scrollContainerLeft - 2) + "px",
-    width: (viewWidth - 6) + "px"
+    width: (viewWidth - 6) + "px",
+    "z-index": 0
   });
 
   // Some visual corrections for the footer now.
   $footer.css({
     "background-color": $html.css("background-color"),
     width: $body.get(0).scrollWidth
+  });
+
+  $footerContentContainer.css({
+    "margin-left": scrollContainerLeft + "px"
   });
 
   // And remove the <html> (grey) background that was for the footer.
