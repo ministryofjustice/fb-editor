@@ -632,6 +632,18 @@ function addServicesContentScrollContainer(view) {
 
   // Make adjustments based on content.
   adjustScrollDimensionsAndPosition(view);
+
+  // So the dimension self-correct upon browser resizing (or tablet rotate).
+  $(window).on("resize", function() {
+    clearTimeout(timeout);
+    $main.css("visibility", "hidden");
+    timeout = setTimeout(function() {
+      $container.get(0).style = ""; // reset everything
+      adjustScrollDimensionsAndPosition(view);
+      $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
+      $main.css("visibility", "visible");
+    }, 750);
+  });
 }
 
 
@@ -647,25 +659,29 @@ function adjustScrollDimensionsAndPosition(view) {
   var $title = $("h1");
   var $body = $("body");
   var $html = $("html");
+  var $main = $("#main-content");
   var $footer = $("footer");
   var $footerContentContainer = $footer.find(".govuk-width-container");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
+  var mainLeft = $main.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
 
+  $(document).off("scroll.adjustScrollDimensionsAndPosition");
+
   // First fix the position of some elements (the order is important).
   $button.css({
-    left: $button.offset().left + "px",
+    left: (mainLeft + $main.width()) + "px",
     position: "fixed",
     top: $button.offset().top + "px",
     "z-index": 1
   });
 
   $title.css({
-    left: $title.offset().left + "px",
+    left: $main.offset().left + "px",
     position: "fixed",
     top: $title.offset().top + "px",
     "z-index": 1
@@ -706,7 +722,7 @@ function adjustScrollDimensionsAndPosition(view) {
   });
 
   // Need the header to stay put horizontally but not vertically.
-  $(document).on("scroll", function() {
+  $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
     var y = ~window.scrollY;
     $header.css("top", (y + headerTop) + "px");
     $nav.css("top", (y + navTop) + "px");
