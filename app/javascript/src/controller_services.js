@@ -652,28 +652,58 @@ function addServicesContentScrollContainer(view) {
  * Sort out the required dimensions and position for the scrollable area.
  **/
 function adjustScrollDimensionsAndPosition(view) {
-  const menuSpacer = 50; // Arbitrary number designed to allow any context menu to fit in container width.
   var viewWidth = window.innerWidth;
-  var containerWidth = view.$scrollContainer.get(0).scrollWidth;
-  var offsetLeft = view.$scrollContainer.offset().left;
-  var $detached = $(SELECTOR_FLOW_DETACHED_GROUP, view.$flowDetached);
-  var $sections = view.$flowOverview.add($detached);
-  var maxWidth = utilities.maxWidth($sections);
-  var mainHeight = $("#main-content").height();
+  var $header = $("header");
+  var $nav = $("#form-navigation");
+  var $button = $(".fb-preview-button");
+  var $title = $("h1");
+  var $body = $("body");
+  var $html = $("html");
+  var $footer = $("footer");
+  var scrollContainerLeft = view.$scrollContainer.offset().left;
+  var fixedHeight = $title.offset().top + $title.outerHeight();
 
+  // First fix the position of some elements (the order is important).
+  $button.css({
+    left: $button.offset().left + "px",
+    position: "fixed",
+    top: $button.offset().top + "px"
+  });
+
+  $title.css({
+    left: $title.offset().left + "px",
+    position: "fixed",
+    top: $title.offset().top + "px"
+  });
+
+  $nav.css({
+    position: "fixed",
+    top: $nav.offset().top + "px",
+    width: "100%"
+  });
+
+  $header.css({
+    position: "fixed",
+    top: $header.offset().top + "px",
+    width: "100%"
+  });
+
+  // Now adjust the scroll container.
   view.$scrollContainer.css({
-    "padding-left": offsetLeft + "px",
-    left: ~(offsetLeft - 2) + "px",
+    "margin-top": fixedHeight + "px", // This one because we fixed elements above.
+    "padding-left": scrollContainerLeft + "px",
+    left: ~(scrollContainerLeft - 2) + "px",
     width: (viewWidth - 6) + "px"
   });
 
-  $sections.width(maxWidth + 250); // 250 is extra space for menu
+  // Some visual corrections for the footer now.
+  $footer.css({
+    "background-color": $html.css("background-color"),
+    width: $body.get(0).scrollWidth
+  });
 
-  // Sometimes scroll container height is less than the main height,
-  // which would mean the scroll bars are distanced from the footer.
-  if(view.$scrollContainer.height() < mainHeight) {
-    view.$scrollContainer.height(mainHeight);
-  }
+  // And remove the <html> (grey) background that was for the footer.
+  $html.css("background-color", "white");
 }
 
 
