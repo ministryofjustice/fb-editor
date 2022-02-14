@@ -11,11 +11,6 @@
 
 /* General rules
  * ------------- */
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 html {
   background-color: govuk-colour("light-grey");
   min-height: 100%;
@@ -757,6 +752,7 @@ html {
 }
 
 #flow-detached {
+  background-color: govuk-colour("white");
   margin-bottom: 100px;
   overflow: visible;
 
@@ -770,6 +766,7 @@ html {
 }
 
 #flow-overview {
+  background-color: govuk-colour("white");
   margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
   position: relative;
@@ -787,6 +784,7 @@ html {
 #ServicesContentScrollContainer {
   // Due to layout element of GDS templates, the scroll dimensions
   // need to be calculated by JS (cannot just use width:100%).
+  background-color: govuk-colour("white");
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
