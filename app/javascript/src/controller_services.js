@@ -632,18 +632,6 @@ function addServicesContentScrollContainer(view) {
 
   // Make adjustments based on content.
   adjustScrollDimensionsAndPosition(view);
-
-  // So the dimension self-correct upon browser resizing (or tablet rotate).
-  $(window).on("resize", function() {
-    clearTimeout(timeout);
-    $main.removeClass(JS_ENHANCEMENT_DONE);
-    timeout = setTimeout(function() {
-      $container.get(0).style = ""; // reset everything
-      adjustScrollDimensionsAndPosition(view);
-      $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
-      $main.css("visibility", "visible");
-    }, 750);
-  });
 }
 
 
@@ -663,6 +651,10 @@ function adjustScrollDimensionsAndPosition(view) {
   var $footerContentContainer = $footer.find(".govuk-width-container");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
+  var headerTop = $header.position().top;
+  var navTop = $nav.position().top;
+  var titleTop = $title.offset().top;
+  var buttonTop = $button.offset().top;
 
   // First fix the position of some elements (the order is important).
   $button.css({
@@ -711,6 +703,15 @@ function adjustScrollDimensionsAndPosition(view) {
 
   $footerContentContainer.css({
     "margin-left": scrollContainerLeft + "px"
+  });
+
+  // Need the header to stay put horizontally but not vertically.
+  $(document).on("scroll", function() {
+    var y = ~window.scrollY;
+    $header.css("top", (y + headerTop) + "px");
+    $nav.css("top", (y + navTop) + "px");
+    $title.css("top", (y + titleTop) + "px");
+    $button.css("top", (y + buttonTop) + "px");
   });
 
   // And remove the <html> (grey) background that was for the footer.
