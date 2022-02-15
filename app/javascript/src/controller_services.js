@@ -632,7 +632,7 @@ function addServicesContentScrollContainer(view) {
     "padding-bottom": 0
   });
 
-  // First fix the position of some elements (the order is important).
+  // Fix/update the position of some elements (the order is important).
   $button.css({
     left: (mainLeft + $main.width()) + "px",
     position: "fixed",
@@ -662,8 +662,12 @@ function addServicesContentScrollContainer(view) {
     "z-index": 1
   });
 
+  $footer.css({
+    position: "relative"
+  });
+
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button);
+  adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -678,7 +682,7 @@ function addServicesContentScrollContainer(view) {
       $(".fb-preview-button").get(0).style = "";
       $container.get(0).style = "";
 
-      adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button);
+      adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer);
       $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
       $main.css("visibility", "visible");
     }, 750);
@@ -690,19 +694,17 @@ function addServicesContentScrollContainer(view) {
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button) {
+function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer) {
   var viewWidth = window.innerWidth;
   var $body = $("body");
   var $html = $("html");
   var $main = $("#main-content");
-  var $footer = $("footer");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
-  var footerTop = $footer.offset().top;
 
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
 
@@ -713,11 +715,6 @@ function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button)
     left: ~(scrollContainerLeft - 2) + "px",
     width: (viewWidth - 6) + "px",
     "z-index": 0
-  });
-
-  // Some visual corrections for the footer now.
-  $footer.css({
-    position: "relative"
   });
 
   // Need the header/footer (and others) to stay put horizontally but not vertically.
