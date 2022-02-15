@@ -5,25 +5,50 @@ RSpec.describe Expression do
   let(:expression_hash) { {} }
 
   describe '#to_metadata' do
-    let(:expression_hash) do
-      {
-        'operator': 'is',
-        'page': double(uuid: 'some-page-uuid'),
-        'component': 'some-component-uuid',
-        'field': 'some-field-uuid'
-      }
-    end
-    let(:expected_expression) do
-      {
-        'operator' => 'is',
-        'page' => 'some-page-uuid',
-        'component' => 'some-component-uuid',
-        'field' => 'some-field-uuid'
-      }
+    context 'when field has an answer' do
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': double(uuid: 'some-page-uuid'),
+          'component': 'some-component-uuid',
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_expression) do
+        {
+          'operator' => 'is',
+          'page' => 'some-page-uuid',
+          'component' => 'some-component-uuid',
+          'field' => 'some-field-uuid'
+        }
+      end
+
+      it 'returns the correct structure' do
+        expect(expression.to_metadata).to eq(expected_expression)
+      end
     end
 
-    it 'returns the correct structure' do
-      expect(expression.to_metadata).to eq(expected_expression)
+    context 'when field is nil' do
+      let(:expression_hash) do
+        {
+          'operator': 'is_answered',
+          'page': double(uuid: 'some-page-uuid'),
+          'component': 'some-component-uuid',
+          'field': nil
+        }
+      end
+      let(:expected_expression) do
+        {
+          'operator' => 'is_answered',
+          'page' => 'some-page-uuid',
+          'component' => 'some-component-uuid',
+          'field' => ''
+        }
+      end
+
+      it 'returns the correct structure' do
+        expect(expression.to_metadata).to eq(expected_expression)
+      end
     end
   end
 
@@ -150,6 +175,29 @@ RSpec.describe Expression do
         expect(errors.values.first).to include(
           I18n.t(
             'activemodel.errors.messages.unsupported_component'
+          )
+        )
+      end
+    end
+
+    context '#blank_field' do
+      let(:page) { service.find_page_by_url('do-you-like-star-wars') }
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': page,
+          'component': page.components.first.uuid,
+          'field': nil
+        }
+      end
+
+      it 'returns the error message' do
+        errors = expression.errors.messages
+        expect(errors).to be_present
+        expect(errors.values.first).to include(
+          I18n.t(
+            'activemodel.errors.messages.blank',
+            attribute: Expression.human_attribute_name(:operator)
           )
         )
       end
