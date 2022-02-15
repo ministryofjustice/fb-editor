@@ -605,6 +605,7 @@ function adjustOverviewWidth($overview) {
 function addServicesContentScrollContainer(view) {
   var $container = $("<div id=\"ServicesContentScrollContainer\"></div>");
   var $html = $("html");
+  var $body = $("body");
   var $header = $("header");
   var $nav = $("#form-navigation");
   var $main = $("#main-content");
@@ -624,15 +625,14 @@ function addServicesContentScrollContainer(view) {
   $container.append(view.$flowDetached);
   $container.append(view.$flowStandalone);
 
-  // Would prefer this in stylesheet but doing it here
-  // to detect and copy any GDS dynamic values in use.
-  // And remove the <html> (grey) background that was for the footer.
+  // Would prefer this in stylesheet but doing it here to detect and copy
+  // any GDS dynamic values in use or quickly implement only when the
+  // scrollable area is in play (without doing element detaction and css
+  // class variants, etc.
+  // Removing the <html> (grey) background that was for the footer.
+  // And overriding GDS set margin-bottom that exposes <html> area.
   $html.css("background-color", "white");
-  $container.css("padding-bottom", spacing + "px");
-  $main.css({
-    "margin-bottom": 0,
-    "padding-bottom": 0
-  });
+  $body.css("margin-bottom", "0px");
 
   // Fix/update the position of some elements (the order is important).
   $button.css({
