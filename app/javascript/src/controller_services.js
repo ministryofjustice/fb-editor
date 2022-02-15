@@ -637,7 +637,14 @@ function addServicesContentScrollContainer(view) {
     clearTimeout(timeout);
     $main.css("visibility", "hidden");
     timeout = setTimeout(function() {
-      $container.get(0).style = ""; // reset everything
+      // Reset everything (note: Could do this better and make it more DRY)
+      window.scrollTo(0,0);
+      $("header").get(0).style = "";
+      $("#form-navigation").get(0).style = "";
+      $("h1").get(0).style = "";
+      $(".fb-preview-button").get(0).style = "";
+      $container.get(0).style = "";
+
       adjustScrollDimensionsAndPosition(view);
       $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
       $main.css("visibility", "visible");
