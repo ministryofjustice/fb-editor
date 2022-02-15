@@ -642,6 +642,7 @@ function addServicesContentScrollContainer(view) {
 
     // Hide the content and reset things
     $main.css("visibility", "hidden");
+    window.scrollTo(0,0);
     $header.get(0).style = "";
     $nav.get(0).style = "";
     $title.get(0).style = "";
@@ -673,37 +674,34 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
-  var fixedHeight = titleTop + $title.outerHeight();
+  var containerTop = titleTop + $title.outerHeight();
 
   // Remove any existing event if calling for second time.
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
 
-  // Reset the view position
-  window.scrollTo(0,0);
-
   // Fix/update the position of some elements (the order is important).
-  $button.css({
-    left: (mainLeft + $main.width()) + "px",
-    position: "fixed",
-    top: $button.offset().top + "px"
-  });
-
   $title.css({
     left: mainLeft + "px",
     position: "fixed",
-    top: $title.offset().top + "px"
+    top: titleTop + "px"
+  });
+
+  $button.css({
+    right: mainLeft + "px",
+    position: "fixed",
+    top: buttonTop + "px"
   });
 
   $nav.css({
     "border-bottom": "110px solid white",
     position: "fixed",
-    top: $nav.offset().top + "px",
+    top: navTop + "px",
     width: "100%"
   });
 
   $header.css({
     position: "fixed",
-    top: $header.offset().top + "px",
+    top: headerTop + "px",
     width: "100%"
   });
 
@@ -715,7 +713,7 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
 
   // Now adjust the scroll container.
   $container.css({
-    "margin-top": fixedHeight + "px", // This one because we fixed elements above.
+    "margin-top": containerTop + "px", // This one because we fixed elements above.
     "padding-left": mainLeft + "px",
     left: ~(mainLeft - 2) + "px",
     width: (viewWidth - 6) + "px"
