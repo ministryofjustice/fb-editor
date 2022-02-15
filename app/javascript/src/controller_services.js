@@ -605,9 +605,11 @@ function addServicesContentScrollContainer(view) {
   var $container = $("<div></div>");
   var $header = $("header");
   var $nav = $("#form-navigation");
-  var $title = $("h1");
   var $main = $("#main-content");
+  var $title = $("h1");
+  var $button = $(".fb-preview-button");
   var $footer = $("footer");
+  var mainLeft = $main.offset().left;
   var marginBottomMain = Number($main.css("margin-bottom").replace("px", ""));
   var paddingBottomMain = Number($main.css("padding-bottom").replace("px", ""));
   var paddingTopFooter = Number($footer.css("padding-top").replace("px", ""));
@@ -631,8 +633,15 @@ function addServicesContentScrollContainer(view) {
   });
 
   // First fix the position of some elements (the order is important).
+  $button.css({
+    left: (mainLeft + $main.width()) + "px",
+    position: "fixed",
+    top: $button.offset().top + "px",
+    "z-index": 1
+  });
+
   $title.css({
-    left: $main.offset().left + "px",
+    left: mainLeft + "px",
     position: "fixed",
     top: $title.offset().top + "px",
     "z-index": 1
@@ -654,7 +663,7 @@ function addServicesContentScrollContainer(view) {
   });
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition(view, $header, $nav, $title);
+  adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -669,7 +678,7 @@ function addServicesContentScrollContainer(view) {
       $(".fb-preview-button").get(0).style = "";
       $container.get(0).style = "";
 
-      adjustScrollDimensionsAndPosition(view, $header, $nav, $title);
+      adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button);
       $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
       $main.css("visibility", "visible");
     }, 750);
@@ -681,16 +690,14 @@ function addServicesContentScrollContainer(view) {
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustScrollDimensionsAndPosition(view, $header, $nav, $title) {
+function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button) {
   var viewWidth = window.innerWidth;
-  var $button = $(".fb-preview-button");
   var $body = $("body");
   var $html = $("html");
   var $main = $("#main-content");
   var $footer = $("footer");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
-  var mainLeft = $main.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
@@ -698,14 +705,6 @@ function adjustScrollDimensionsAndPosition(view, $header, $nav, $title) {
   var footerTop = $footer.offset().top;
 
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
-
-  // First fix the position of some elements (the order is important).
-  $button.css({
-    left: (mainLeft + $main.width()) + "px",
-    position: "fixed",
-    top: $button.offset().top + "px",
-    "z-index": 1
-  });
 
   // Now adjust the scroll container.
   view.$scrollContainer.css({
