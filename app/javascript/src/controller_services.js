@@ -603,6 +603,7 @@ function adjustOverviewWidth($overview) {
  **/
 function addServicesContentScrollContainer(view) {
   var $container = $("<div></div>");
+  var $html = $("html");
   var $header = $("header");
   var $nav = $("#form-navigation");
   var $main = $("#main-content");
@@ -626,6 +627,9 @@ function addServicesContentScrollContainer(view) {
 
   // Would prefer this in stylesheet but doing it here
   // to detect and copy any GDS dynamic values in use.
+
+  // And remove the <html> (grey) background that was for the footer.
+  $html.css("background-color", "white");
   $container.css("padding-bottom", spacing + "px");
   $main.css({
     "margin-bottom": 0,
@@ -696,9 +700,6 @@ function addServicesContentScrollContainer(view) {
  **/
 function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer) {
   var viewWidth = window.innerWidth;
-  var $body = $("body");
-  var $html = $("html");
-  var $main = $("#main-content");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
   var headerTop = $header.position().top;
@@ -726,9 +727,6 @@ function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button,
     $button.css("top", (y + buttonTop) + "px");
     $footer.css("left", window.scrollX + "px");
   });
-
-  // And remove the <html> (grey) background that was for the footer.
-  $html.css("background-color", "white");
 }
 
 
