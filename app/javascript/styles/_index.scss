@@ -525,14 +525,17 @@ html {
     z-index: 1;
   }
 
-  .FlowItemMenu,
-  .ConnectionMenu,
-  .ui-dialog {
+  .ConnectionMenuActivator {
     z-index: 3;
   }
 
-  .ConnectionMenuActivator {
+  .FlowItemMenu,
+  .ConnectionMenu {
     z-index: 4;
+  }
+
+  .ui-dialog {
+    z-index: 5;
   }
 }
 
@@ -697,8 +700,10 @@ html {
   .operator {
     font-weight: bold;
   }
+
   .condition-operator {
     text-transform: uppercase;
+    font-weight: bold;
   }
 }
 
