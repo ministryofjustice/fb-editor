@@ -634,15 +634,21 @@ function addServicesContentScrollContainer(view) {
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
+
+    // Hide the content and reset things
     $main.css("visibility", "hidden");
     $header.get(0).style = "";
     $nav.get(0).style = "";
     $title.get(0).style = "";
     $button.get(0).style = "";
 
+    // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
     clearTimeout(timeout);
     timeout = setTimeout(function() {
       adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button);
+
+     // Clear the view blocker because we're done shifting stuff.
+     $main.css("visibility", "visible");
     }, 750);
   });
 }
@@ -658,7 +664,6 @@ function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $
   var $main = $("#main-content");
   var $footer = $("footer");
   var mainLeft = $main.offset().left;
-  var scrollContainerLeft = $container.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
@@ -668,7 +673,7 @@ function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $
   // Remove any existing event if calling for second time.
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
 
-  // Reset the view
+  // Reset the view position
   window.scrollTo(0,0);
 
   // Fix/update the position of some elements (the order is important).
@@ -700,13 +705,10 @@ function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $
   // Now adjust the scroll container.
   $container.css({
     "margin-top": fixedHeight + "px", // This one because we fixed elements above.
-    "padding-left": scrollContainerLeft + "px",
-    left: ~(scrollContainerLeft - 2) + "px",
+    "padding-left": mainLeft + "px",
+    left: ~(mainLeft - 2) + "px",
     width: (viewWidth - 6) + "px"
   });
-
-  // Clear the view blocker because we're done shifting stuff.
-  $main.css("visibility", "visible");
 
   // Need the header/footer (and others) to stay put horizontally but not vertically.
   $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
