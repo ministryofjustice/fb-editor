@@ -605,17 +605,12 @@ function addServicesContentScrollContainer(view) {
   var $container = $("<div id=\"ServicesContentScrollContainer\"></div>");
   var $html = $("html");
   var $body = $("body");
-  var $header = $("header");
-  var $nav = $("#form-navigation");
   var $main = $("#main-content");
   var $title = $("h1");
   var $button = $(".fb-preview-button");
+  var $header = $("header");
+  var $nav = $("#form-navigation");
   var $footer = $("footer");
-  var mainLeft = $main.offset().left;
-  var marginBottomMain = Number($main.css("margin-bottom").replace("px", ""));
-  var paddingBottomMain = Number($main.css("padding-bottom").replace("px", ""));
-  var paddingTopFooter = Number($footer.css("padding-top").replace("px", ""));
-  var spacing = marginBottomMain + paddingBottomMain + paddingTopFooter;
   var timeout;
 
   // Make adjustments to layout elements.
@@ -632,6 +627,49 @@ function addServicesContentScrollContainer(view) {
   // And overriding GDS set margin-bottom that exposes <html> area.
   $html.css("background-color", "white");
   $body.css("margin-bottom", "0px");
+  $footer.css("relative");
+
+  // Make adjustments based on content.
+  adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button);
+
+  // So the dimension self-correct upon browser resizing (or tablet rotate).
+  $(window).on("resize", function() {
+    $main.css("visibility", "hidden");
+    $header.get(0).style = "";
+    $nav.get(0).style = "";
+    $title.get(0).style = "";
+    $button.get(0).style = "";
+
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button);
+    }, 750);
+  });
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Sort out the required dimensions and position for the scrollable area.
+ * @$container (jQuery node) The dynamically added container applied to main scrollable content.
+ **/
+function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button) {
+  var viewWidth = window.innerWidth;
+  var $main = $("#main-content");
+  var $footer = $("footer");
+  var mainLeft = $main.offset().left;
+  var scrollContainerLeft = $container.offset().left;
+  var headerTop = $header.position().top;
+  var navTop = $nav.position().top;
+  var titleTop = $title.offset().top;
+  var buttonTop = $button.offset().top;
+  var fixedHeight = titleTop + $title.outerHeight();
+
+  // Remove any existing event if calling for second time.
+  $(document).off("scroll.adjustScrollDimensionsAndPosition");
+
+  // Reset the view
+  window.scrollTo(0,0);
 
   // Fix/update the position of some elements (the order is important).
   $button.css({
@@ -659,47 +697,6 @@ function addServicesContentScrollContainer(view) {
     width: "100%"
   });
 
-  $footer.css({
-    position: "relative"
-  });
-
-  // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container);
-
-  // So the dimension self-correct upon browser resizing (or tablet rotate).
-  $(window).on("resize", function() {
-    clearTimeout(timeout);
-    $main.css("visibility", "hidden");
-    timeout = setTimeout(function() {
-      adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container);
-      $main.css("visibility", "visible");
-    }, 750);
-  });
-}
-
-
-/* VIEW HELPER FUNCTION:
- * ---------------------
- * Sort out the required dimensions and position for the scrollable area.
- **/
-function adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container) {
-  var viewWidth = window.innerWidth;
-  var scrollContainerLeft = $container.offset().left;
-  var headerTop = $header.position().top;
-  var navTop = $nav.position().top;
-  var titleTop = $title.offset().top;
-  var buttonTop = $button.offset().top;
-  var fixedHeight = titleTop + $title.outerHeight();
-
-  // Reset everything (note: Could do this better and make it more DRY)
-  $(document).off("scroll.adjustScrollDimensionsAndPosition");
-  $header.get(0).style = "";
-  $nav.get(0).style = "";
-  $title.get(0).style = "";
-  $button.get(0).style = "";
-  $container.get(0).style = "";
-  window.scrollTo(0,0);
-
   // Now adjust the scroll container.
   $container.css({
     "margin-top": fixedHeight + "px", // This one because we fixed elements above.
@@ -708,10 +705,13 @@ function adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $foot
     width: (viewWidth - 6) + "px"
   });
 
+  // Clear the view blocker because we're done shifting stuff.
+  $main.css("visibility", "visible");
+
   // Need the header/footer (and others) to stay put horizontally but not vertically.
   $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
     var y = ~window.scrollY;
-    $header.css("top", (y + headerTop) + "px");
+    $header.css("top", (y) + "px");
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
     $button.css("top", (y + buttonTop) + "px");
