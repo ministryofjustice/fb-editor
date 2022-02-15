@@ -605,6 +605,7 @@ function addServicesContentScrollContainer(view) {
   var $container = $("<div></div>");
   var $header = $("header");
   var $nav = $("#form-navigation");
+  var $title = $("h1");
   var $main = $("#main-content");
   var $footer = $("footer");
   var marginBottomMain = Number($main.css("margin-bottom").replace("px", ""));
@@ -630,6 +631,13 @@ function addServicesContentScrollContainer(view) {
   });
 
   // First fix the position of some elements (the order is important).
+  $title.css({
+    left: $main.offset().left + "px",
+    position: "fixed",
+    top: $title.offset().top + "px",
+    "z-index": 1
+  });
+
   $nav.css({
     "border-bottom": "110px solid white",
     position: "fixed",
@@ -646,7 +654,7 @@ function addServicesContentScrollContainer(view) {
   });
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition(view, $header, $nav);
+  adjustScrollDimensionsAndPosition(view, $header, $nav, $title);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -661,7 +669,7 @@ function addServicesContentScrollContainer(view) {
       $(".fb-preview-button").get(0).style = "";
       $container.get(0).style = "";
 
-      adjustScrollDimensionsAndPosition(view, $header, $nav);
+      adjustScrollDimensionsAndPosition(view, $header, $nav, $title);
       $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
       $main.css("visibility", "visible");
     }, 750);
@@ -673,10 +681,9 @@ function addServicesContentScrollContainer(view) {
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustScrollDimensionsAndPosition(view, $header, $nav) {
+function adjustScrollDimensionsAndPosition(view, $header, $nav, $title) {
   var viewWidth = window.innerWidth;
   var $button = $(".fb-preview-button");
-  var $title = $("h1");
   var $body = $("body");
   var $html = $("html");
   var $main = $("#main-content");
@@ -697,13 +704,6 @@ function adjustScrollDimensionsAndPosition(view, $header, $nav) {
     left: (mainLeft + $main.width()) + "px",
     position: "fixed",
     top: $button.offset().top + "px",
-    "z-index": 1
-  });
-
-  $title.css({
-    left: $main.offset().left + "px",
-    position: "fixed",
-    top: $title.offset().top + "px",
     "z-index": 1
   });
 
