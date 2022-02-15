@@ -669,7 +669,7 @@ html {
   top: 46px;
 
   &.branch-connection-menu-activator {
-    left: calc(100% - 24px);
+    left: calc(100% - 24px); 
     top: -17px;
   }
   
@@ -681,7 +681,7 @@ html {
 
 .flow-condition {
   @include list_reset;
-  margin: 0 30px;
+  margin: 0 100px 0 0px;
   padding: 0 25px;
   text-align: center;
   width: 300px;
