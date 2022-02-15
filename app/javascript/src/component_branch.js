@@ -327,6 +327,7 @@ class BranchAnswer {
 
     if(hideAnswers) {
       $answer.hide();
+      $answer.val([]);
     } else {
       $answer.show();
     }
