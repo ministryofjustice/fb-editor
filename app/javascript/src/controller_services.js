@@ -603,7 +603,7 @@ function adjustOverviewWidth($overview) {
  * @view (Object) Reference to the overall view instance of Services#edit action.
  **/
 function addServicesContentScrollContainer(view) {
-  var $container = $("<div></div>");
+  var $container = $("<div id=\"ServicesContentScrollContainer\"></div>");
   var $html = $("html");
   var $header = $("header");
   var $nav = $("#form-navigation");
@@ -619,8 +619,6 @@ function addServicesContentScrollContainer(view) {
   var timeout;
 
   // Make adjustments to layout elements.
-  $container.attr("id", "ServicesContentScrollContainer");
-  view.$scrollContainer = $container; // Make it available on view.
   view.$flowOverview.before($container);
   $container.append(view.$flowOverview);
   $container.append(view.$flowDetached);
@@ -628,7 +626,6 @@ function addServicesContentScrollContainer(view) {
 
   // Would prefer this in stylesheet but doing it here
   // to detect and copy any GDS dynamic values in use.
-
   // And remove the <html> (grey) background that was for the footer.
   $html.css("background-color", "white");
   $container.css("padding-bottom", spacing + "px");
@@ -641,30 +638,26 @@ function addServicesContentScrollContainer(view) {
   $button.css({
     left: (mainLeft + $main.width()) + "px",
     position: "fixed",
-    top: $button.offset().top + "px",
-    "z-index": 1
+    top: $button.offset().top + "px"
   });
 
   $title.css({
     left: mainLeft + "px",
     position: "fixed",
-    top: $title.offset().top + "px",
-    "z-index": 1
+    top: $title.offset().top + "px"
   });
 
   $nav.css({
     "border-bottom": "110px solid white",
     position: "fixed",
     top: $nav.offset().top + "px",
-    width: "100%",
-    "z-index": 1
+    width: "100%"
   });
 
   $header.css({
     position: "fixed",
     top: $header.offset().top + "px",
-    width: "100%",
-    "z-index": 1
+    width: "100%"
   });
 
   $footer.css({
@@ -672,23 +665,14 @@ function addServicesContentScrollContainer(view) {
   });
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer);
+  adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
     clearTimeout(timeout);
     $main.css("visibility", "hidden");
     timeout = setTimeout(function() {
-      // Reset everything (note: Could do this better and make it more DRY)
-      window.scrollTo(0,0);
-      $("header").get(0).style = "";
-      $("#form-navigation").get(0).style = "";
-      $("h1").get(0).style = "";
-      $(".fb-preview-button").get(0).style = "";
-      $container.get(0).style = "";
-
-      adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer);
-      $container.css("padding-bottom", spacing + "px"); // HACK! Seems to be losing this on resize so just adding it here
+      adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container);
       $main.css("visibility", "visible");
     }, 750);
   });
@@ -699,24 +683,30 @@ function addServicesContentScrollContainer(view) {
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
  **/
-function adjustScrollDimensionsAndPosition(view, $header, $nav, $title, $button, $footer) {
+function adjustScrollDimensionsAndPosition($header, $nav, $title, $button, $footer, $container) {
   var viewWidth = window.innerWidth;
-  var scrollContainerLeft = view.$scrollContainer.offset().left;
-  var fixedHeight = $title.offset().top + $title.outerHeight();
+  var scrollContainerLeft = $container.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
+  var fixedHeight = titleTop + $title.outerHeight();
 
+  // Reset everything (note: Could do this better and make it more DRY)
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
+  $header.get(0).style = "";
+  $nav.get(0).style = "";
+  $title.get(0).style = "";
+  $button.get(0).style = "";
+  $container.get(0).style = "";
+  window.scrollTo(0,0);
 
   // Now adjust the scroll container.
-  view.$scrollContainer.css({
+  $container.css({
     "margin-top": fixedHeight + "px", // This one because we fixed elements above.
     "padding-left": scrollContainerLeft + "px",
     left: ~(scrollContainerLeft - 2) + "px",
-    width: (viewWidth - 6) + "px",
-    "z-index": 0
+    width: (viewWidth - 6) + "px"
   });
 
   // Need the header/footer (and others) to stay put horizontally but not vertically.
