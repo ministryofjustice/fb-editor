@@ -486,6 +486,13 @@ html {
  * ------------------------ */
 
 .services-edit {
+  h1 {
+    clear: both;
+
+    @include govuk-media-query($from: tablet) {
+      clear: none;
+    }
+  }
 
   main {
     // Quickfix for Brief flash of content not ready for display.
