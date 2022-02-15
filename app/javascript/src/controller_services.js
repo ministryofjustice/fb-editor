@@ -601,6 +601,9 @@ function adjustOverviewWidth($overview) {
  * when flow overview areas extend beyond the restricted width
  * of the main content area.
  * @view (Object) Reference to the overall view instance of Services#edit action.
+ *
+ * Note: Way too much CSS manipulation here but we're trying to deal with dynamic
+ * situations that cannot really be done (easily/at all??) with a stylesheet.
  **/
 function addServicesContentScrollContainer(view) {
   var $container = $("<div id=\"ServicesContentScrollContainer\"></div>");
@@ -612,6 +615,7 @@ function addServicesContentScrollContainer(view) {
   var $header = $("header");
   var $nav = $("#form-navigation");
   var $footer = $("footer");
+  var $footerContent = $footer.find(".govuk-width-container"); // Terrible lookup but we're dealing with GDS class names
   var timeout;
 
   // Make adjustments to layout elements.
@@ -628,10 +632,10 @@ function addServicesContentScrollContainer(view) {
   // And overriding GDS set margin-bottom that exposes <html> area.
   $html.css("background-color", "white");
   $body.css("margin-bottom", "0px");
-  $footer.css("relative");
+  $footer.css("position", "relative");
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button);
+  adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -642,11 +646,13 @@ function addServicesContentScrollContainer(view) {
     $nav.get(0).style = "";
     $title.get(0).style = "";
     $button.get(0).style = "";
+    $footer.get(0).style = "";
+    $footerContent.get(0).style = "";
 
     // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
     clearTimeout(timeout);
     timeout = setTimeout(function() {
-      adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button);
+      adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
      // Clear the view blocker because we're done shifting stuff.
      $main.css("visibility", "visible");
@@ -660,10 +666,8 @@ function addServicesContentScrollContainer(view) {
  * Sort out the required dimensions and position for the scrollable area.
  * @$container (jQuery node) The dynamically added container applied to main scrollable content.
  **/
-function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $button) {
+function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent) {
   var viewWidth = window.innerWidth;
-  var $main = $("#main-content");
-  var $footer = $("footer");
   var mainLeft = $main.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
@@ -703,6 +707,12 @@ function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $
     width: "100%"
   });
 
+  $footer.css("width", (mainLeft + $container.get(0).scrollWidth) + "px");
+  $footerContent.css({
+    "margin-left": mainLeft + "px",
+    "max-width": $main.width() + "px"
+  });
+
   // Now adjust the scroll container.
   $container.css({
     "margin-top": fixedHeight + "px", // This one because we fixed elements above.
@@ -711,14 +721,13 @@ function adjustScrollDimensionsAndPositions($container, $header, $nav, $title, $
     width: (viewWidth - 6) + "px"
   });
 
-  // Need the header/footer (and others) to stay put horizontally but not vertically.
+  // Need the header (and others) to stay put horizontally but not vertically.
   $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
     var y = ~window.scrollY;
     $header.css("top", (y) + "px");
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
     $button.css("top", (y + buttonTop) + "px");
-    $footer.css("left", window.scrollX + "px");
   });
 }
 
