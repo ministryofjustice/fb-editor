@@ -661,7 +661,6 @@ function adjustScrollDimensionsAndPosition(view) {
   var $html = $("html");
   var $main = $("#main-content");
   var $footer = $("footer");
-  var $footerContentContainer = $footer.find(".govuk-width-container");
   var scrollContainerLeft = view.$scrollContainer.offset().left;
   var fixedHeight = $title.offset().top + $title.outerHeight();
   var mainLeft = $main.offset().left;
@@ -669,6 +668,7 @@ function adjustScrollDimensionsAndPosition(view) {
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
+  var footerTop = $footer.offset().top;
 
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
 
@@ -713,21 +713,17 @@ function adjustScrollDimensionsAndPosition(view) {
 
   // Some visual corrections for the footer now.
   $footer.css({
-    "background-color": $html.css("background-color"),
-    width: $body.get(0).scrollWidth
+    position: "relative"
   });
 
-  $footerContentContainer.css({
-    "margin-left": scrollContainerLeft + "px"
-  });
-
-  // Need the header to stay put horizontally but not vertically.
+  // Need the header/footer (and others) to stay put horizontally but not vertically.
   $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
     var y = ~window.scrollY;
     $header.css("top", (y + headerTop) + "px");
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
     $button.css("top", (y + buttonTop) + "px");
+    $footer.css("left", window.scrollX + "px");
   });
 
   // And remove the <html> (grey) background that was for the footer.
