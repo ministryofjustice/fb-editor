@@ -508,6 +508,13 @@ html {
     }
   }
 
+  // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
+  // their lines from centre of a Branch Node, which places them directly over those
+  // elements, without this workaround in place (easier to fix z-index than calculations).
+  .FlowConnectorLine,
+  .FlowConnectorPath,
+  .govuk-header,
+  .govuk-navigation-app,
   .ui-widget-overlay {
     z-index: 1;
   }
