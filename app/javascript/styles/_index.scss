@@ -488,6 +488,7 @@ html {
 .services-edit {
   h1 {
     clear: both;
+    z-index: 1;
 
     @include govuk-media-query($from: tablet) {
       clear: none;
@@ -507,10 +508,12 @@ html {
   // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
   // their lines from centre of a Branch Node, which places them directly over those
   // elements, without this workaround in place (easier to fix z-index than calculations).
+  // Also includes some elements that gained position:fixed because they fell off the view.
   .FlowConnectorLine,
   .FlowConnectorPath,
   .govuk-header,
-  .govuk-navigation-app {
+  .govuk-navigation-app,
+  .fb-preview-button {
     z-index: 1;
   }
 
