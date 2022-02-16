@@ -508,7 +508,9 @@ html {
   // their lines from centre of a Branch Node, which places them directly over those
   // elements, without this workaround in place (easier to fix z-index than calculations).
   .FlowConnectorLine,
-  .FlowConnectorPath {
+  .FlowConnectorPath,
+  .govuk-header,
+  .govuk-navigation-app {
     z-index: 1;
   }
 
