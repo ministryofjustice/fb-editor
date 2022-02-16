@@ -242,7 +242,7 @@ html {
 .BranchConditionInjector {
   @include button_as_link;
   background-color: transparent;
-  margin-bottom: govuk-spacing(5);
+  margin-bottom: govuk-spacing(9);
   margin-left: 100px;
 
   @include govuk-media-query($until: tablet) {
