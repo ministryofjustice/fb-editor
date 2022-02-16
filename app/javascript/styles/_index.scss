@@ -207,8 +207,9 @@ html {
 }
 
 .BranchCondition {
+  margin-right: 75px;
   overflow: hidden;
-  padding-right: 75px;
+  padding-left: 13px;
   position: relative;
 
   &.error {
