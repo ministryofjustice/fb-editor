@@ -13,6 +13,10 @@
 
 
 .Expander {
+  &.close {
+    height: auto;
+  }
+
   &.open .Expander_Activator {
     &:before {
       position: relative;
