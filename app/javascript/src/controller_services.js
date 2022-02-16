@@ -675,6 +675,7 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
   var titleTop = $title.offset().top;
   var buttonTop = $button.offset().top;
   var containerTop = titleTop + $title.outerHeight();
+  var containerWidth = mainLeft + $container.get(0).scrollWidth;
 
   // Remove any existing event if calling for second time.
   $(document).off("scroll.adjustScrollDimensionsAndPosition");
@@ -705,7 +706,13 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
     width: "100%"
   });
 
-  $footer.css("width", (mainLeft + $container.get(0).scrollWidth) + "px");
+  if(containerWidth > viewWidth) {
+    $footer.css("width", containerWidth + "px");
+  }
+  else {
+    $footer.css("width", viewWidth + "px");
+  }
+
   $footerContent.css({
     "margin-left": mainLeft + "px",
     "max-width": $main.width() + "px"
