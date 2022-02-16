@@ -634,7 +634,7 @@ function addServicesContentScrollContainer(view) {
   $footer.css("position", "relative");
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+  adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -652,7 +652,7 @@ function addServicesContentScrollContainer(view) {
     // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
     clearTimeout(timeout);
     timeout = setTimeout(function() {
-      adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+      adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
      // Clear the view blocker because we're done shifting stuff.
      $main.css("visibility", "visible");
@@ -666,7 +666,7 @@ function addServicesContentScrollContainer(view) {
  * Sort out the required dimensions and position for the scrollable area.
  * @$container (jQuery node) The dynamically added container applied to main scrollable content.
  **/
-function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $title, $button, $footer, $footerContent) {
+function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent) {
   var viewWidth = window.innerWidth;
   var mainLeft = $main.offset().left;
   var headerTop = $header.position().top;
@@ -705,6 +705,7 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
     width: "100%"
   });
 
+  // If scroll is not enough we need to stretch the footer horizontally.
   if(containerWidth > viewWidth) {
     $footer.css("width", containerWidth + "px");
   }
@@ -712,6 +713,12 @@ function adjustScrollDimensionsAndPositions($container, $main, $header, $nav, $t
     $footer.css("width", viewWidth + "px");
   }
 
+  // If content length is not enought we need to stretch the footer vertically.
+  if($body.height() < window.outerHeight) {
+    $footer.height(window.outerHeight - $body.height() + 30); // Hack! 30px extra is guess as not adding up.
+  }
+
+  // Make sure the content aligns to left as thought centred to viewport not full width of scroll.
   $footerContent.css({
     "margin-left": mainLeft + "px",
     "max-width": $main.width() + "px"
