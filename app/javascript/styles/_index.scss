@@ -211,17 +211,6 @@ html {
   padding-right: 75px;
   position: relative;
 
-  &:after {
-    background-color: $govuk-border-colour;
-    content: "";
-    display: block;
-    height: calc(100% - #{govuk-spacing(6)});
-    right: calc(85% + #{govuk-spacing(6)});
-    position: absolute;
-    top: 0;
-    width: 5px;
-  }
-
   &.error {
     &:after {
       background-color: $govuk-error-colour;
