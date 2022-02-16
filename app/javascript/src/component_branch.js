@@ -330,6 +330,7 @@ class BranchAnswer {
       $answer.val([]);
     } else {
       $answer.show();
+      $answer.val( $answer.find('option:first').val() );
     }
   }
 }
