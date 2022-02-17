@@ -181,7 +181,7 @@ class FlowItemMenu extends ActivatedMenu {
 
   // Open the views Page Addition Menu
   addPage(element) {
-    var menu = this._config.view.pageAdditionMenu;
+    var menu = this._config.connectedSecondaryMenu;
     menu.addPageAfter = this.uuid;
     menu.open({
       my: "left top",
@@ -329,7 +329,7 @@ function createPageAdditionMenu(view) {
 function createFlowItemMenus(view) {
   $("[data-component='ItemActionMenu']").each((i, el) => {
     var menu = new FlowItemMenu($(el), {
-      view: view,
+      connectedSecondaryMenu: view.pageAdditionMenu,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
