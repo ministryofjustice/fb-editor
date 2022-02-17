@@ -45,10 +45,11 @@ class ActivatedMenu {
       open: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
-                     // See config._position (above) and jQueryUI documentation
+                     // See _private.position (above) and jQueryUI documentation
                      // for what value(s) are required.
     }
 
+    this.connectedSecondaryMenu = config.connectedSecondaryMenu; // A way to bridge across different component menus
     this.container.$node.addClass("ActivatedMenu"); // Also add the main component class.
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
@@ -59,6 +60,18 @@ class ActivatedMenu {
     ActivatedMenu.setMenuOpenPosition.call(this);
 
     this.close();
+  }
+
+  get connectedSecondaryMenu() {
+    return this._connectedSecondaryMenu;
+  }
+
+  set connectedSecondaryMenu(menu) {
+    this._connectedSecondaryMenu = menu;
+  }
+
+  isOpen() {
+    return this._state.open;
   }
 
   // Opens the menu.
@@ -113,10 +126,18 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // open the menu.
 
   this.$node.on("mouseout", (event) => {
-    // event.currentTarget will be the menu (UL) element.
-    // check if relatedTarget is not a child element.
+    var connectedMenu = this.connectedSecondaryMenu;
     component._state.close = true;
-    if(!$.contains(event.currentTarget, event.relatedTarget)) {
+
+    // IF the mouse is no longer over any part of the menu.
+    // !$.contains(event.currentTarget, event.relatedTarget)
+    //
+    // AND it does not have a connected menu
+    // !connectedMenu
+    //
+    // OR a connected menu is not open
+    // !connectedMenu.isOpen()
+    if(!$.contains(event.currentTarget, event.relatedTarget) && (!connectedMenu || !connectedMenu.isOpen())) {
       setTimeout(function(e) {
         if(component._state.close) {
           component.close();
