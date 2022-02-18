@@ -312,6 +312,26 @@ class BranchAnswer {
     $node.data("instance", this);
     this._config = conf;
     this.$node = $node;
+    
+    this.showHideAnswers();
+
+    this.$node.find('[data-expression-operator]').on('change', (event) =>  {
+      this.showHideAnswers();
+    }); 
+  }
+
+  showHideAnswers() {
+    var $condition = this.$node.find('[data-expression-operator]');
+    var $answer = this.$node.find('[data-expression-answer]');
+    var hideAnswers = $condition.find(':selected').data('hide-answers');
+
+    if(hideAnswers) {
+      $answer.hide();
+      $answer.val([]);
+    } else {
+      $answer.show();
+      $answer.val( $answer.find('option:first').val() );
+    }
   }
 }
 
