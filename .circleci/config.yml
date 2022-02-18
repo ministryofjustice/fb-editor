@@ -581,20 +581,10 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test:
-          requires:
-            - deploy_to_test_eks
-            - build_web_image
-            - build_workers_image
       - deploy_to_test_no_branching_eks:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test_no_branching:
-          requires:
-            - build_web_image
-            - build_workers_image
-            - deploy_to_test_no_branching_eks
       - acceptance_tests_eks:
           requires:
             - deploy_to_test_eks
