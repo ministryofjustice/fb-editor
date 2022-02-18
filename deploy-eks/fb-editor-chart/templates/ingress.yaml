@@ -11,7 +11,7 @@ metadata:
         return 401;
       }
     external-dns.alpha.kubernetes.io/set-identifier: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}-formbuilder-saas-{{ .Values.environmentName }}-green"
-    external-dns.alpha.kubernetes.io/aws-weight: "0"
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
   - hosts:
