@@ -484,6 +484,28 @@ jobs:
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
+  deploy_to_live_eks:
+    working_directory: ~/circle/git/fb-editor
+    docker: *ecr_image
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.11
+      - add_ssh_keys: *ssh_keys
+      - run: *base_environment_variables
+      - run: *deploy_scripts
+      - run:
+          name: deploy to live (eks)
+          environment:
+            APPLICATION_NAME: fb-editor
+            PLATFORM_ENV: live
+            K8S_NAMESPACE: formbuilder-saas-live
+          command: './deploy-scripts/bin/deploy-eks'
+      - slack/status:
+          only_for_branches: main
+          success_message: ":rocket:  Successfully deployed to Live (eks) :guitar:"
+          failure_message: ":alert:  Failed to deploy to Live (eks)  :try_not_to_cry:"
+          include_job_number_field: false
   deploy_to_live:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
@@ -555,11 +577,16 @@ workflows:
             branches:
               only:
                 - main
-      - deploy_to_test:
+      - deploy_to_test_eks:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test_eks:
+      - deploy_to_test:
+          requires:
+            - deploy_to_test_eks
+            - build_web_image
+            - build_workers_image
+      - deploy_to_test_no_branching_eks:
           requires:
             - build_web_image
             - build_workers_image
@@ -567,10 +594,7 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test_no_branching_eks:
-          requires:
-            - build_web_image
-            - build_workers_image
+            - deploy_to_test_no_branching_eks
       - acceptance_tests:
           requires:
             - deploy_to_test
@@ -598,9 +622,13 @@ workflows:
             - acceptance_tests_eks
             - acceptance_tests_no_branching
             - acceptance_tests_no_branching_eks
+      - deploy_to_live_eks:
+          requires:
+            - confirm_live_deploy
       - deploy_to_live:
           requires:
             - confirm_live_deploy
+            - deploy_to_live_eks
   deploy_testable_branch:
     jobs:
       - build:
