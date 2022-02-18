@@ -77,11 +77,66 @@ RSpec.describe Expression do
     end
   end
 
-  describe '#operators' do
+  describe '#all_operators' do
     let(:expected_operators) { Expression::OPERATORS }
 
     it 'returns all the operators' do
-      expect(expression.operators).to eq(expected_operators)
+      expect(expression.all_operators).to eq(expected_operators)
+    end
+  end
+
+  describe '#operators' do
+    let(:metadata) { metadata_fixture(:branching) }
+    let(:service) { MetadataPresenter::Service.new(metadata) }
+
+    context 'when component type is checkboxes' do
+      let(:page) { service.find_page_by_url('burgers') }
+      let(:component) { page.components.find { |component| component.type == 'checkboxes' } }
+      let(:expression_hash) do
+        {
+          'operator': 'contains',
+          'page': page,
+          'component': component.uuid,
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_operators) do
+        [
+          [I18n.t('operators.contains'), 'contains', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.does_not_contain'), 'does_not_contain', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
+          [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
+        ]
+      end
+
+      it 'returns the expected operators' do
+        expect(expression.operators).to eq(expected_operators)
+      end
+    end
+
+    context 'when component type is radios' do
+      let(:page) { service.find_page_by_url('star-wars-knowledge') }
+      let(:component) { page.components.find { |component| component.type == 'radios' } }
+      let(:expression_hash) do
+        {
+          'operator': 'contains',
+          'page': page,
+          'component': component.uuid,
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_operators) do
+        [
+          [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_not'), 'is_not', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
+          [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
+        ]
+      end
+
+      it 'returns the expected operators' do
+        expect(expression.operators).to eq(expected_operators)
+      end
     end
   end
 

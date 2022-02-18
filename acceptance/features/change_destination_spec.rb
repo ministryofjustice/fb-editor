@@ -75,8 +75,8 @@ feature 'Deleting page' do
     expect(editor.unconnected_flow).to eq(
       [
         'Branching point 1',
-        'Page b is Thor',
-        'Page b is Hulk',
+        'Page b contains Thor',
+        'Page b contains Hulk',
         'Otherwise',
         'Page c',
         'Page d',
@@ -84,7 +84,7 @@ feature 'Deleting page' do
         'Page f',
         'Page g',
         'Branching point 2',
-        'Question 2 is Thor',
+        'Question 2 contains Thor',
         'Page h',
         'Page i',
         'Page j'
@@ -112,8 +112,8 @@ feature 'Deleting page' do
     page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq([
       'Branching point 1',
-      'Page b is Thor',
-      'Page b is Hulk',
+      'Page b contains Thor',
+      'Page b contains Hulk',
       'Otherwise',
       'Page c',
       'Page e',

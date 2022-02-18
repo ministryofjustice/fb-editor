@@ -8,6 +8,8 @@ class Expression
   OPERATORS = [
     [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
     [I18n.t('operators.is_not'), 'is_not', { 'data-hide-answers': 'false' }],
+    [I18n.t('operators.contains'), 'contains', { 'data-hide-answers': 'false' }],
+    [I18n.t('operators.does_not_contain'), 'does_not_contain', { 'data-hide-answers': 'false' }],
     [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
     [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
   ].freeze
@@ -29,7 +31,7 @@ class Expression
     component_object.items.map { |item| [item.label, item.uuid] }
   end
 
-  def operators
+  def all_operators
     OPERATORS
   end
 
@@ -45,6 +47,12 @@ class Expression
   def id_attr(conditional_index:, expression_index:, attribute:)
     "branch_conditionals_attributes_#{conditional_index}_" \
     "expressions_attributes_#{expression_index}_#{attribute}"
+  end
+
+  def operators
+    return contains_operators if is_checkbox?
+
+    is_operators
   end
 
   private
@@ -77,5 +85,17 @@ class Expression
         'activemodel.errors.messages.blank'
       ))
     end
+  end
+
+  def contains_operators
+    @contains_operators ||= all_operators.select { |operator| operator.exclude?('is') && operator.exclude?('is_not') }
+  end
+
+  def is_operators
+    @is_operators ||= all_operators.select { |operator| operator.exclude?('contains') && operator.exclude?('does_not_contain') }
+  end
+
+  def is_checkbox?
+    component_type == 'checkboxes'
   end
 end
