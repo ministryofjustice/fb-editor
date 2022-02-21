@@ -96,6 +96,7 @@ class ActivatedMenu {
 
     this.container.$node.position(this._state.position);
     this.container.$node.show();
+    this.$node.trigger("open");
     this.$node.find(".ui-menu-item:first > :first-child").focus();
     this.activator.$node.addClass("active");
     this.activator.$node.attr("aria-expanded", true);
@@ -108,6 +109,7 @@ class ActivatedMenu {
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
     this.activator.$node.attr("aria-expanded", false);
+    this.$node.trigger("close");
 
     // Reset any externally/temporary setting of
     // component._state.position back to default.
