@@ -191,7 +191,22 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("none");
     });
 
-    it("should trigger a 'close' event when the close() method is run");
+    it("should trigger a 'close' event when the close() method is run", function() {
+      var passed = false;
+
+      menu.open();
+      expect(menu.activator.$node.hasClass("active")).to.be.true;
+
+      menu.$node.on("close.testingevent2", function() {
+        passed = true;
+      });
+
+      menu.close();
+      expect(passed).to.be.true;
+
+      // Remove because we're sharing menu
+      menu.$node.off("close.testingevent2");
+    });
 
     it("should set the state.open to false when close() is activated", function() {
       menu.open();
