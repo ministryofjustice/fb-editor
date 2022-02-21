@@ -591,24 +591,24 @@ workflows:
       - acceptance_tests_no_branching_eks:
           requires:
             - deploy_to_test_no_branching_eks
-      # - slack/approval-notification:
-      #     message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-      #     include_job_number_field: false
-      #     requires:
-      #       - acceptance_tests_no_branching
-      #       - acceptance_tests_no_branching_eks
-      # - confirm_live_deploy:
-      #     type: approval
-      #     requires:
-      #       - acceptance_tests_no_branching
-      #       - acceptance_tests_no_branching_eks
-      # - deploy_to_live_eks:
-      #     requires:
-      #       - confirm_live_deploy
-      # - deploy_to_live:
-      #     requires:
-      #       - confirm_live_deploy
-      #       - deploy_to_live_eks
+      - slack/approval-notification:
+          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
+          include_job_number_field: false
+          requires:
+            - acceptance_tests_eks
+            - acceptance_tests_no_branching_eks
+      - confirm_live_deploy:
+          type: approval
+          requires:
+            - acceptance_tests_eks
+            - acceptance_tests_no_branching_eks
+      - deploy_to_live_eks:
+          requires:
+            - confirm_live_deploy
+      - deploy_to_live:
+          requires:
+            - confirm_live_deploy
+            - deploy_to_live_eks
   deploy_testable_branch:
     jobs:
       - build:
