@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   end
 
   get '/health', to: 'health#show'
+  get '/readiness', to: 'health#readiness'
   get '/metrics', to: 'metrics#show'
 
   # Auth0 routes
