@@ -231,6 +231,7 @@ class BranchQuestion {
     $node.find("select").on("change.branchquestion", (e) => {
       var select = e.currentTarget;
       var supported = $(select.selectedOptions).data("supports-branching");
+      this.disable();
       this.change(supported, select.value);
     });
 
@@ -243,18 +244,28 @@ class BranchQuestion {
     this.$node = $node;
   }
 
+  disable() {
+    this.$node.find('select').prop('disabled', true);
+  }
+
+  enable() {
+    this.$node.find('select').prop('disabled', false);
+  }
+
   change(supported, value) {
     var branch = this.condition.branch;
     this.clearErrorState();
     this.condition.clear();
     switch(supported) {
       case true:
-           this.condition.update(value, function() {
+           this.condition.update(value, () =>  {
              $(document).trigger(EVENT_QUESTION_CHANGE, branch);
+             this.enable();
            });
            break;
       case false:
            this.error("unsupported");
+           this.enable(); 
            break;
       default:
            // Just trigger an event
