@@ -13,7 +13,7 @@ metadata:
         deny all;
         return 401;
       }
-    external-dns.alpha.kubernetes.io/set-identifier: acceptance-tests-date-ingress-formbuilder-services-test-dev-blue
+    external-dns.alpha.kubernetes.io/set-identifier: acceptance-tests-date-ingress-formbuilder-services-test-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
