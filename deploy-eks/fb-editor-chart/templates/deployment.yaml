@@ -6,7 +6,12 @@ metadata:
   name: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.replicas.web }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.strategy.web.maxSurge }}
+      maxUnavailable: {{ .Values.strategy.web.maxUnavailable }}
   selector:
     matchLabels:
       app: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
@@ -29,13 +34,20 @@ spec:
         imagePullPolicy: Always
         ports:
           - containerPort: 3000
-        readinessProbe:
+        livenessProbe:
           httpGet:
             path: /health
             port: 3000
-          initialDelaySeconds: 15
-          periodSeconds: 5
-          successThreshold: 1
+          initialDelaySeconds: {{ .Values.livenessProbe.web.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.web.periodSeconds }}
+          successThreshold: {{ .Values.livenessProbe.web.successThreshold }}
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 3000
+          initialDelaySeconds: {{ .Values.readinessProbe.web.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.web.periodSeconds }}
+          successThreshold: {{ .Values.readinessProbe.web.successThreshold }}
         # non-secret env vars
         # defined in config_map.yaml
         envFrom:
@@ -128,7 +140,7 @@ metadata:
   name: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicas.workers }}
   selector:
     matchLabels:
       app: "{{ .Values.app_name }}-workers-{{ .Values.environmentName }}"
