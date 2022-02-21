@@ -177,7 +177,7 @@ jobs:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
-          command: './deploy-scripts/bin/deploy'
+          command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
@@ -462,7 +462,7 @@ jobs:
       - run:
           name: Run acceptance tests
           command: |
-            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk
+            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk
             echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
@@ -656,7 +656,7 @@ workflows:
           requires:
             - deploy_testable_branch
       - slack/approval-notification:
-          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
           include_job_number_field: false
           requires:
             - testable_branch_acceptance_tests
