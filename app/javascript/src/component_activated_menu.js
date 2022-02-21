@@ -125,19 +125,21 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // Main (generated) activator uses this event to
   // open the menu.
 
-  this.$node.on("mouseout", (event) => {
+  this.$node.on("mouseout", (event, remainOpen) => {
     var connectedMenu = this.connectedSecondaryMenu;
     component._state.close = true;
-
-    // IF the mouse is no longer over any part of the menu.
-    // !$.contains(event.currentTarget, event.relatedTarget)
+    // IF remainOpen
+    //    We want to block this event from closing the menu
     //
-    // AND it does not have a connected menu
-    // !connectedMenu
+    // IF !$.contains(event.currentTarget, event.relatedTarget)
+    //    The mouse is no longer over any part of the menu.
     //
-    // OR a connected menu is not open
-    // !connectedMenu.isOpen()
-    if(!$.contains(event.currentTarget, event.relatedTarget) && (!connectedMenu || !connectedMenu.isOpen())) {
+    // AND !connectedMenu
+    //     It does not have a connected menu
+    //
+    // OR !connectedMenu.isOpen()
+    //    A connected menu is not open
+    if(!remainOpen && !$.contains(event.currentTarget, event.relatedTarget) && (!connectedMenu || !connectedMenu.isOpen())) {
       setTimeout(function(e) {
         if(component._state.close) {
           component.close();
