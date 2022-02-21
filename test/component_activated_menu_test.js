@@ -52,9 +52,10 @@ describe("ActivatedMenu", function() {
     return new ActivatedMenu ($ul, {
       activator: $button,
       activator_classname: config.activator_classname,
+      activator_text: config.activator_text,
       container_id: config.container_id,
       container_classname: config.container_classname,
-      activator_text: config.activator_text,
+      connectedSecondaryMenu: config.connectedSecondaryMenu,
       preventDefault: true,
       selection_event: config.selection_event_name
     });
@@ -127,9 +128,11 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.exist;
     });
 
-    it("should make (public but indicated as) private reference to connected menu");
 
-    it("should retrieve any assigned connected menu");
+    it("should not have (public but indicated as) private reference to connected menu when none passed in config", function() {
+      expect(menu).to.exist;
+      expect(menu._connectedSecondaryMenu).to.equal(undefined);
+    });
 
     it("should open the menu by the open() method", function() {
       simulateClosed(menu);
@@ -215,7 +218,54 @@ describe("ActivatedMenu", function() {
       menu.$node.find("li > a").eq(0).click();
       expect(value).to.equal(2);
     });
+
+    describe(".connectedSecondaryMenu", function() {
+      var connectedMenu;
+      var tempMenu;
+
+      beforeEach(function() {
+        connectedMenu = createMenu({});
+      });
+
+      afterEach(function() {
+        // Cleanup
+        connectedMenu.container.$node.remove();
+        tempMenu.container.$node.remove();
+      });
+
+      it("should make (public but indicated as) private reference to connected menu from config", function() {
+        tempMenu = createMenu({
+          connectedSecondaryMenu: connectedMenu
+        });
+
+        expect(connectedMenu).to.exist;
+        expect(tempMenu).to.exist;
+        expect(tempMenu._connectedSecondaryMenu).to.equal(connectedMenu);
+      });
+
+      it("should make (public but indicated as) private reference to connected menu from public setter", function() {
+        tempMenu = createMenu({});
+
+        expect(connectedMenu).to.exist;
+        expect(tempMenu).to.exist;
+        expect(tempMenu._connectedSecondaryMenu).to.equal(undefined);
+
+        tempMenu.connectedSecondaryMenu = connectedMenu;
+        expect(tempMenu._connectedSecondaryMenu).to.equal(connectedMenu);
+      });
+
+      it("should retrieve any assigned connected menu from publc getter", function() {
+        tempMenu = createMenu({
+          connectedSecondaryMenu: connectedMenu
+        });
+
+        expect(connectedMenu).to.exist;
+        expect(tempMenu).to.exist;
+        expect(tempMenu.connectedSecondaryMenu).to.equal(connectedMenu);
+      });
+    });
   });
+
 
   describe("ActivatedMenuContainer", function() {
     it("should apply the config.container_id to $node", function() {
