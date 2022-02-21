@@ -142,8 +142,6 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("");
     });
 
-    it("should trigger an 'open' event when the open() method is run");
-
     it("should set the state.open to true when open() is activated", function() {
       simulateClosed(menu);
       expect(menu._state.open).to.be.false;
@@ -152,7 +150,23 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.be.true;
     });
 
-    it("should return true for isOpen when the menu is open");
+    it("should trigger an 'open' event when the open() method is run", function() {
+      var passed = false;
+
+      simulateClosed(menu);
+      expect(menu._state.open).to.be.false;
+
+      menu.$node.on("open.testingevent1", function() {
+        passed = true;
+      });
+
+      menu.open();
+
+      expect(passed).to.be.true;
+
+      // Remove because we're sharing menu
+      menu.$node.off("open.testingevent1");
+    });
 
     it("should add the class 'active' to the activator on open()", function() {
       simulateClosed(menu);
@@ -187,8 +201,6 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.be.false;
     });
 
-    it("should return false for isOpen when the menu is closed");
-
     it("should remove the class 'active' from the activator on close()", function() {
       menu.open();
       expect(menu.activator.$node.hasClass("active")).to.be.true;
@@ -217,6 +229,11 @@ describe("ActivatedMenu", function() {
 
       menu.$node.find("li > a").eq(0).click();
       expect(value).to.equal(2);
+    });
+
+    describe(".isOpen", function() {
+      it("should return true for isOpen when the menu is open");
+      it("should return false for isOpen when the menu is closed");
     });
 
     describe(".connectedSecondaryMenu", function() {
