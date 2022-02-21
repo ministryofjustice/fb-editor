@@ -181,7 +181,7 @@ describe("ActivatedMenu", function() {
     /* TODO: Test is on hold because we cannot use jsDom
      * for testing position of elements
      **/
-    it("should set the position values passed in open()");
+    it("should set the position values passed in open() ... Maybe cannot test due to jsDom limitations");
 
     it("should close the menu by the close() method", function() {
       menu.open();
@@ -227,12 +227,12 @@ describe("ActivatedMenu", function() {
     /* TODO: Test is on hold because we cannot use jsDom
      * for testing position of elements
      */
-    it("should reset the position values on close()");
+    it("should reset the position values on close() ... Maybe cannot test due to jsDom limitations");
 
     /* TODO: Test is on hold because we cannot use jsDom
      * for testing mouse events
      **/
-    it("should close the menu on mouseout (not sure if can test)");
+    it("should close the menu on mouseout ... Maybe cannot test due to jsDom limitations");
 
     it("should activate the config.selection_event on menu item selection", function() {
       var value = 1;
