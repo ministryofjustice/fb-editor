@@ -1,6 +1,8 @@
 require("./setup");
 
 describe("ActivatedMenu", function() {
+  // jQuery is present in document because the
+  // components use it so we can use it here.
 
   const ActivatedMenu = require("../app/javascript/src/component_activated_menu");
   const COMPONENT_CLASSNAME = "ActivatedMenu";
@@ -23,15 +25,15 @@ describe("ActivatedMenu", function() {
     menu.activator.$node.removeClass("active");
   }
 
-  before(function() {
-    // jQuery is present in document because the
-    // components use it so we can use it here.
-
+  /* Creates and returns a new menu from passed configuration
+   * that will also be added to the testing DOM.
+   */
+  function createMenu(config) {
     var $ul = $(`<ul>
                    <li>
                      <span>Item 1a</span>
                      <ul>
-                       <li><button id="steven" href="#action1">Item 1b</button></li>
+                       <li><a href="#action1">Item 1b</a></li>
                        <li><a href="#action2">Item 2b</a></li>
                        <li><a href="#action3">Item 3b</a></li>
                      </ul>
@@ -41,19 +43,32 @@ describe("ActivatedMenu", function() {
                  </ul>`);
 
     var $button = $("<button></button>");
+
     $button.attr("id", ACTIVATOR_ID);
     $(document.body).append($ul);
     $(document.body).append($button);
 
     $ul.attr("id", MENU_ID);
-    menu = new ActivatedMenu ($ul, {
+    return new ActivatedMenu ($ul, {
       activator: $button,
+      activator_classname: config.activator_classname,
+      container_id: config.container_id,
+      container_classname: config.container_classname,
+      activator_text: config.activator_text,
+      preventDefault: true,
+      selection_event: config.selection_event_name
+    });
+  }
+
+  before(function() {
+    menu = createMenu({
+      activator_id: ACTIVATOR_ID,
       activator_classname: ACTIVATOR_CLASSNAME,
+      activator_text: ACTIVATOR_TEXT,
       container_id: CONTAINER_ID,
       container_classname: CONTAINER_CLASSNAME,
-      activator_text: ACTIVATOR_TEXT,
-      preventDefault: true,
-      selection_event: TEST_SELECTION_EVENT_NAME
+      menu_id: MENU_ID,
+      selection_event_name: TEST_SELECTION_EVENT_NAME
     });
   });
 
@@ -112,6 +127,10 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.exist;
     });
 
+    it("should make (public but indicated as) private reference to connected menu");
+
+    it("should retrieve any assigned connected menu");
+
     it("should open the menu by the open() method", function() {
       simulateClosed(menu);
       expect(menu.container.$node.get(0).style.display).to.equal("none");
@@ -120,6 +139,8 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("");
     });
 
+    it("should trigger an 'open' event when the open() method is run");
+
     it("should set the state.open to true when open() is activated", function() {
       simulateClosed(menu);
       expect(menu._state.open).to.be.false;
@@ -127,6 +148,8 @@ describe("ActivatedMenu", function() {
       menu.open();
       expect(menu._state.open).to.be.true;
     });
+
+    it("should return true for isOpen when the menu is open");
 
     it("should add the class 'active' to the activator on open()", function() {
       simulateClosed(menu);
@@ -151,6 +174,8 @@ describe("ActivatedMenu", function() {
       expect(menu.container.$node.get(0).style.display).to.equal("none");
     });
 
+    it("should trigger a 'close' event when the close() method is run");
+
     it("should set the state.open to false when close() is activated", function() {
       menu.open();
       expect(menu._state.open).to.be.true;
@@ -158,6 +183,8 @@ describe("ActivatedMenu", function() {
       menu.close();
       expect(menu._state.open).to.be.false;
     });
+
+    it("should return false for isOpen when the menu is closed");
 
     it("should remove the class 'active' from the activator on close()", function() {
       menu.open();
