@@ -247,8 +247,17 @@ describe("ActivatedMenu", function() {
     });
 
     describe(".isOpen", function() {
-      it("should return true for isOpen when the menu is open");
-      it("should return false for isOpen when the menu is closed");
+      it("should return true for isOpen when the menu is open", function() {
+        menu.open();
+        expect(menu.activator.$node.hasClass("active")).to.be.true;
+        expect(menu.isOpen()).to.be.true;
+      });
+
+      it("should return false for isOpen when the menu is closed", function() {
+        menu.close();
+        expect(menu.activator.$node.hasClass("active")).to.be.false;
+        expect(menu.isOpen()).to.be.false;
+      });
     });
 
     describe(".connectedSecondaryMenu", function() {
