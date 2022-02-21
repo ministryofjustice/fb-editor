@@ -2,13 +2,13 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: fb-editor-{{ .Values.environmentName }}
+  name: fb-editor-web-{{ .Values.environmentName }}
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: fb-editor-{{ .Values.environmentName }}
+    name: fb-editor-web-{{ .Values.environmentName }}
   minReplicas: {{ .Values.hpa.web.minReplicas }}
   maxReplicas: {{ .Values.hpa.web.maxReplicas }}
   targetCPUUtilizationPercentage: {{ .Values.hpa.web.targetCPUUtilizationPercentage }}
