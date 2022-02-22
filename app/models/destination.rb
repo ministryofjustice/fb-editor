@@ -17,7 +17,7 @@ class Destination
   end
 
   def destinations
-    all_flow_objects = grid.ordered_flow + detached_objects
+    all_flow_objects = grid.ordered_flow + detached_objects.flow_objects
     destinations_list(flow_objects: all_flow_objects, current_uuid: flow_uuid)
   end
 
@@ -30,7 +30,7 @@ class Destination
   end
 
   def detached_destinations
-    destinations_list(flow_objects: detached_objects, current_uuid: flow_uuid)
+    destinations_list(flow_objects: ordered_detached_objects, current_uuid: flow_uuid)
   end
 
   private
@@ -43,6 +43,11 @@ class Destination
     Detached.new(
       service: service,
       main_flow_uuids: grid.flow_uuids
-    ).flow_objects
+    )
+  end
+
+  def ordered_detached_objects
+    all_obj = detached_objects.detached_flows.flatten
+    all_obj.select { |obj| obj.is_a?(MetadataPresenter::Flow) }
   end
 end
