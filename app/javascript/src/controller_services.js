@@ -529,12 +529,12 @@ function createAndPositionFlowItems($overview) {
 function adjustBranchConditionPositions($overview) {
   var strokeWidth = $(".FlowConnectorPath path").eq(0).css("stroke-width") || "";
   var lineHeight = Number(strokeWidth.replace("px", "")) || 0;
-  $overview.find(".flow-expression").each(function() {
+  $overview.find(".flow-expressions").each(function() {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
     $this.css({
       position: "relative",
-      top: "-" + (expressionHeight + lineHeight) + "px"
+      top: "-" + (expressionHeight + (lineHeight * 2) ) + "px" 
     });
   });
 }

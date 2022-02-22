@@ -31,19 +31,24 @@
         <ul class="flow-conditions">
           <% item[:conditionals].each_with_index do |condition, index| %>
             <li class="flow-condition" data-from="<%= "#{item[:uuid]}-#{index}" %>" data-next="<%= condition[:next] %>">
-              <% condition[:expressions].each do |expression| %>
-                <% if expression[:operator].empty? && expression[:answer].empty? %>
-                  <div class="flow-expression" data-otherwise="true">
-                    <span class="question"><%= expression[:question] %></span>
-                  </div>
-                <% else %>
-                  <div class="flow-expression" data-otherwise="false">
-                    <span class="question"><%= expression[:question] %></span>
-                    <span class="operator"><%= expression[:operator] %></span>
-                    <span class="answer"><%= expression[:answer] %></span>
-                  </div>
+             <div class="flow-expressions">
+                <% condition[:expressions].each_with_index do |expression, index| %>
+                  <% if expression[:operator].empty? && expression[:answer].empty? %>
+                    <span class="flow-expression" data-otherwise="true">
+                      <span class="question"><%= expression[:question] %></span>
+                    </span>
+                  <% else %>
+                    <span class="flow-expression" data-otherwise="false">
+                      <span class="question"><%= expression[:question] %></span>
+                      <span class="operator"><%= expression[:operator] %></span>
+                      <span class="answer"><%= expression[:answer] %></span>
+                    </span>
+                  <% end %>
+                  <% if index + 1 < condition[:expressions].size %>
+                    <span class="condition-operator"><%= t("branches.expression.and") -%></span>
+                  <% end %>
                 <% end %>
-              <% end %>
+              </div> 
             </li>
           <% end %>
         </ul>
