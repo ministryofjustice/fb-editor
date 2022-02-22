@@ -55,8 +55,8 @@ describe("ActivatedMenu", function() {
       activator_text: config.activator_text,
       container_id: config.container_id,
       container_classname: config.container_classname,
-      connectedSecondaryMenu: config.connectedSecondaryMenu,
-      preventDefault: true,
+      connected_secondary_menu: config.connected_secondary_menu,
+      prevent_default: true,
       selection_event: config.selection_event_name
     });
   }
@@ -110,7 +110,7 @@ describe("ActivatedMenu", function() {
 
     it("should make (public but indicated as) private reference to config", function() {
       expect(menu._config).to.exist;
-      expect(menu._config.preventDefault).to.exist;
+      expect(menu._config.prevent_default).to.exist;
       expect(menu._config.activator_text).to.equal(ACTIVATOR_TEXT);
     });
 
@@ -276,7 +276,7 @@ describe("ActivatedMenu", function() {
 
       it("should make (public but indicated as) private reference to connected menu from config", function() {
         tempMenu = createMenu({
-          connectedSecondaryMenu: connectedMenu
+          connected_secondary_menu: connectedMenu
         });
 
         expect(connectedMenu).to.exist;
@@ -297,7 +297,7 @@ describe("ActivatedMenu", function() {
 
       it("should retrieve any assigned connected menu from publc getter", function() {
         tempMenu = createMenu({
-          connectedSecondaryMenu: connectedMenu
+          connected_secondary_menu: connectedMenu
         });
 
         expect(connectedMenu).to.exist;

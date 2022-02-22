@@ -5,6 +5,8 @@
  * Enhances jQueryUI Menu component by adding a controlling activator.
  *
  * Documentation:
+ * Wrapper around a jQueryUI menu widget that allows more preferable interaction without
+ * having to write the core widget code from scratch (reason for basing on a widget).
  *
  *     - jQueryUI
  *       https://api.jqueryui.com/menu
@@ -49,7 +51,7 @@ class ActivatedMenu {
                      // for what value(s) are required.
     }
 
-    this.connectedSecondaryMenu = config.connectedSecondaryMenu; // A way to bridge across different component menus
+    this.connectedSecondaryMenu = config.connected_secondary_menu; // A way to bridge across different component menus
     this.container.$node.addClass("ActivatedMenu"); // Also add the main component class.
     this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
@@ -162,7 +164,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     component.$node.on("menuselect", function(event, ui) {
       var e = event.originalEvent;
 
-      if(component._config.preventDefault) {
+      if(component._config.prevent_default) {
          e.preventDefault();
       }
 

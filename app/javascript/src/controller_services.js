@@ -181,7 +181,7 @@ class FlowItemMenu extends ActivatedMenu {
 
   // Open the views Page Addition Menu
   addPage(element) {
-    var menu = this._config.connectedSecondaryMenu;
+    var menu = this.connectedSecondaryMenu;
     menu.addPageAfter = this.uuid;
     menu.$node.one("open", () => element.attr("aria-haspopup", true) );
     menu.$node.one("close", () => element.removeAttr("aria-haspopup") );
@@ -331,8 +331,8 @@ function createPageAdditionMenu(view) {
 function createFlowItemMenus(view) {
   $("[data-component='ItemActionMenu']").each((i, el) => {
     var menu = new FlowItemMenu($(el), {
-      connectedSecondaryMenu: view.pageAdditionMenu,
-      preventDefault: true, // Stops the default action of triggering element.
+      connected_secondary_menu: view.pageAdditionMenu,
+      prevent_default: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
       }

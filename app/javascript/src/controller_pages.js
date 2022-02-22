@@ -167,7 +167,7 @@ class AddComponent {
     this.$button = $button;
     this.menu = new ActivatedMenu($list, {
       selection_event: "AddComponentMenuSelection",
-      preventDefault: true, // Stops the default action of triggering element.
+      prevent_default: true, // Stops the default action of triggering element.
       activator: $button,
       menu: {
         position: { at: "right+2 top-2" }
