@@ -32,10 +32,6 @@ spec:
         securityContext:
           runAsUser: 1001
         imagePullPolicy: Always
-        lifecycle:
-          preStop:
-            exec:
-              command: ["/bin/sleep", "10"]
         ports:
           - containerPort: 3000
         livenessProbe:
@@ -168,10 +164,6 @@ spec:
         securityContext:
           runAsUser: 1001
         imagePullPolicy: Always
-        lifecycle:
-          preStop:
-            exec:
-              command: ["/bin/sleep", "10"]
         ports:
           - containerPort: 3000
         # non-secret env vars
