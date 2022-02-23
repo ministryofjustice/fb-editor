@@ -31,7 +31,6 @@
         <ul class="flow-conditions">
           <% item[:conditionals].each_with_index do |condition, index| %>
             <li class="flow-condition" data-from="<%= "#{item[:uuid]}-#{index}" %>" data-next="<%= condition[:next] %>">
-              <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
               <% condition[:expressions].each do |expression| %>
                 <% if expression[:operator].empty? && expression[:answer].empty? %>
                   <div class="flow-expression" data-otherwise="true">
@@ -45,6 +44,7 @@
                   </div>
                 <% end %>
               <% end %>
+              <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
             </li>
           <% end %>
         </ul>

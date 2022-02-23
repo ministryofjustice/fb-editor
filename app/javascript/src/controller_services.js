@@ -55,7 +55,6 @@ ServicesController.edit = function() {
 
   createPageAdditionDialog(view);
   createPageMenus(view);
-  createConnectionMenus(view); 
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -64,6 +63,8 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOveriew(view);
   }
+
+  createConnectionMenus(view); 
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").css("visibility", "visible");
