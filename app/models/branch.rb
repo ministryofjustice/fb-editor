@@ -73,7 +73,7 @@ class Branch
   end
 
   def destinations
-    all_flow_objects = ordered_pages + detached
+    all_flow_objects = ordered_pages + detached.flow_objects
     destinations_list(flow_objects: all_flow_objects)
   end
 
@@ -82,7 +82,7 @@ class Branch
   end
 
   def detached_destinations
-    destinations_list(flow_objects: detached)
+    destinations_list(flow_objects: detached.ordered_no_branches)
   end
 
   def previous_questions
@@ -151,7 +151,7 @@ class Branch
       service: service,
       main_flow_uuids: grid.page_uuids,
       exclude_branches: true
-    ).flow_objects
+    )
   end
 
   def previous_flow_object
