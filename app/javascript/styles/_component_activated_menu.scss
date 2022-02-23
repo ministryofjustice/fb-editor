@@ -60,6 +60,7 @@
 
   [aria-haspopup] {
     &:after {
+      color: inherit;
       content: ">";
       font-family: monospace;
       font-size: 22px;

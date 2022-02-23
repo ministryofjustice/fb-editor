@@ -183,8 +183,6 @@ class FlowItemMenu extends ActivatedMenu {
   addPage(element) {
     var menu = this.connectedSecondaryMenu;
     menu.addPageAfter = this.uuid;
-    menu.$node.one("open", () => element.attr("aria-haspopup", true) );
-    menu.$node.one("close", () => element.removeAttr("aria-haspopup") );
     menu.open({
       my: "left top",
       at: "right top",
