@@ -17,6 +17,15 @@ class Detached
     end
   end
 
+  def ordered
+    all_obj = detached_flows.flatten
+    all_obj.select { |obj| obj.is_a?(MetadataPresenter::Flow) }
+  end
+
+  def ordered_no_branches
+    ordered.select { |obj| obj.type == 'flow.page' }
+  end
+
   private
 
   attr_reader :service, :main_flow_uuids, :exclude_branches

@@ -424,7 +424,6 @@ RSpec.describe Branch do
     end
     let(:detached_destination_pages) do
       [
-        'Do you like apple juice?',
         'Do you like orange juice?',
         'What is your favourite band?',
         'Which app do you use to listen music?',
@@ -437,9 +436,10 @@ RSpec.describe Branch do
         'Loki',
         'Other quotes',
         'Select all Arnold Schwarzenegger quotes',
-        'You are wrong',
         'You are right',
-        'You are wrong'
+        'You are wrong',
+        'You are wrong',
+        'Do you like apple juice?'
       ]
     end
 

@@ -177,8 +177,8 @@ RSpec.describe Destination do
         'Other quotes',
         'Select all Arnold Schwarzenegger quotes',
         'Branching point 7',
-        'You are wrong',
         'You are right',
+        'You are wrong',
         'You are wrong'
       ]
     end
