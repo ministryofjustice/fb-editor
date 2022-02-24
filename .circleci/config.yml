@@ -404,71 +404,73 @@ workflows:
                 - main
   test_and_build:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore:
-                - /testable-.*/
-      - lint:
-          requires:
-            - build
-      - security:
-          requires:
-            - build
-      - rspec_test:
-          requires:
-            - build
-      - js_test:
-          requires:
-            - build
+      # - build:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - /testable-.*/
+      # - lint:
+      #     requires:
+      #       - build
+      # - security:
+      #     requires:
+      #       - build
+      # - rspec_test:
+      #     requires:
+      #       - build
+      # - js_test:
+      #     requires:
+      #       - build
       - build_web_image:
-          requires:
-            - lint
-            - security
-            - rspec_test
-            - js_test
+          # requires:
+          #   - lint
+          #   - security
+          #   - rspec_test
+          #   - js_test
           filters:
             branches:
               only:
                 - main
+                - testable-flow-view-connection-menu
       - build_workers_image:
-          requires:
-            - lint
-            - security
-            - rspec_test
-            - js_test
+          # requires:
+          #   - lint
+          #   - security
+          #   - rspec_test
+          #   - js_test
           filters:
             branches:
               only:
                 - main
-      - deploy_to_test_eks:
-          requires:
-            - build_web_image
-            - build_workers_image
+                - testable-flow-view-connection-menu
+      # - deploy_to_test_eks:
+      #     requires:
+      #       - build_web_image
+      #       - build_workers_image
       - deploy_to_test_no_branching_eks:
           requires:
             - build_web_image
             - build_workers_image
-      - acceptance_tests_eks:
-          requires:
-            - deploy_to_test_eks
-      - acceptance_tests_no_branching_eks:
-          requires:
-            - deploy_to_test_no_branching_eks
-      - slack/approval-notification:
-          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-          include_job_number_field: false
-          requires:
-            - acceptance_tests_eks
-            - acceptance_tests_no_branching_eks
-      - confirm_live_deploy:
-          type: approval
-          requires:
-            - acceptance_tests_eks
-            - acceptance_tests_no_branching_eks
-      - deploy_to_live_eks:
-          requires:
-            - confirm_live_deploy
+      # - acceptance_tests_eks:
+      #     requires:
+      #       - deploy_to_test_eks
+      # - acceptance_tests_no_branching_eks:
+      #     requires:
+      #       - deploy_to_test_no_branching_eks
+      # - slack/approval-notification:
+      #     message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
+      #     include_job_number_field: false
+      #     requires:
+      #       - acceptance_tests_eks
+      #       - acceptance_tests_no_branching_eks
+      # - confirm_live_deploy:
+      #     type: approval
+      #     requires:
+      #       - acceptance_tests_eks
+      #       - acceptance_tests_no_branching_eks
+      # - deploy_to_live_eks:
+      #     requires:
+      #       - confirm_live_deploy
   deploy_testable_branch:
     jobs:
       - build:
