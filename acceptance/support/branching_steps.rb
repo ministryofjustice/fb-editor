@@ -92,12 +92,12 @@ module BranchingSteps
     expect(options.length).to eq(amount)
   end
 
-  def then_I_should_not_see_field_options(text)
-    page_without_css('.govuk-select', text)
+  def then_I_should_not_see_field_options(name)
+    expect(page).to have_no_select(name)
   end
 
-  def then_I_should_see_the_first_field_options(text)
-    expect(page).to have_css('.govuk-select', text: text)
+  def then_I_should_see_the_field_option(name, text)
+    expect(page).to have_select(name, text: text)
   end
 
   def and_I_choose_an_option(name, option)

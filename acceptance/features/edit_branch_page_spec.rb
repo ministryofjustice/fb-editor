@@ -46,8 +46,35 @@ feature 'New branch page' do
 
     then_I_can_add_and_delete_conditionals_and_expressions
 
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is answered'
+    )
+    then_I_should_not_see_field_options('branch[conditionals_attributes][0][expressions_attributes][0][field]')
+
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is'
+    )
+
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]', 
+      'Hiking'
+    )
+    
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
+      'Sewing'
+    )
+
     when_I_save_my_changes
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')
+     
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]', 
+      'Hiking'
+    )
+
     then_I_should_see_no_errors
   end
 
