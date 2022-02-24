@@ -10,7 +10,7 @@
   "dependencies": {
     "@rails/actioncable": "^7.0.2",
     "@rails/activestorage": "^7.0.2",
-    "@rails/ujs": "^7.0.1",
+    "@rails/ujs": "^7.0.2",
     "@rails/webpacker": "^5.4.3",
     "govuk-frontend": "^3.14.0",
     "jquery": "^3.6.0",
@@ -22,6 +22,6 @@
     "chai": "^4.3.6",
     "jquery-ui": "^1.13.0",
     "jsdom": "^19.0.0",
-    "mocha": "^9.2.0"
+    "mocha": "^9.2.1"
   }
 }
