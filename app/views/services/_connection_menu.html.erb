@@ -56,10 +56,12 @@
     <% end %>
 
     <% unless (item[:type] =~ /page.(checkanswers|confirmation|exit)/) || item[:type] == 'flow.branch' %>
-      <li data-action="link">
-        <%= link_to t('services.branch'),
-        new_branches_path(service.service_id, item[:uuid]) %>
-      </li>
+      <% unless item[:type] == 'page.start' %>
+        <li data-action="link">
+          <%= link_to t('services.branch'),
+          new_branches_path(service.service_id, item[:uuid]) %>
+        </li>
+      <% end %>
 
       <li data-action="destination">
         <%= link_to t('actions.change_destination'),
