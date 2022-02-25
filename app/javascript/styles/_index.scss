@@ -512,24 +512,25 @@ html {
     visibility: hidden;
   }
 
-  // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
-  // their lines from centre of a Branch Node, which places them directly over those
-  // elements, without this workaround in place (easier to fix z-index than calculations).
-  .FlowConnectorLine,
-  .FlowConnectorPath {
+  .ui-widget-overlay {
     z-index: 1;
   }
 
-  .FlowConnectorPath.active,
-  .flow-item,
-  .ui-widget-overlay {
+  .FlowConnectorLine,
+  .FlowConnectorPath {
     z-index: 2;
+
+    &.active {
+      z-index: 3;
+    }
   }
 
-  .FlowItemMenu,
-  .PageAdditionMenu,
+  .FlowItemMenu {
+    z-index: 4;
+  }
+
   .ui-dialog {
-    z-index: 3;
+    z-index: 5;
   }
 }
 
@@ -665,14 +666,22 @@ html {
 
   a, span {
     @include govuk-font($size: 16);
+
+    color: $govuk-secondary-text-colour;
     display: inline;
     position: static;
     width: auto;
   }
 
-  .operator {
+ .operator {
     color: $govuk-secondary-text-colour;
+    font-weight: bold;
   }
+
+  .condition-operator {
+    text-transform: uppercase;
+    font-weight: bold;
+  } 
 }
 
 .flow-conditions {
