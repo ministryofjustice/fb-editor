@@ -56,7 +56,7 @@ feature 'New branch page' do
       'is'
     )
 
-    then_I_should_see_the_first_field_options('Hiking')
+    then_I_should_see_the_field_option('branch_conditionals_attributes_0_expressions_attributes_0_field', 'Hiking')
 
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_expressions_attributes_0_field',
