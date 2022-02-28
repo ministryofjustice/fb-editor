@@ -183,8 +183,10 @@ class AddComponent {
  **/
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
-  updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
-  this.dataController.$form.submit();
+  if( action != "none" ) {
+    updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
+    this.dataController.$form.submit();
+  }
 }
 
 
