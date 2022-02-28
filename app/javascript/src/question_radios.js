@@ -71,6 +71,7 @@ class RadiosQuestion extends Question {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before removing an editable Collection item.
         // Provides an opportunity for clean up.
+        console.log('remove');
         var activatedMenu = item.$node.data("ActivatedMenu");
         if(activatedMenu) {
           activatedMenu.activator.$node.remove();
@@ -78,10 +79,7 @@ class RadiosQuestion extends Question {
           activatedMenu.container.$node.remove();
         }
       },
-      onItemRemoveConfirmation: function(item) {
-        // @item (EditableComponentItem) Item to be deleted.
-        // Runs before onItemRemove when removing an editable Collection item.
-      }
+
     }, config));
 
     $node.addClass("RadiosQuestion");
