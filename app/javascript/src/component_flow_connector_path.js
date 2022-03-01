@@ -143,7 +143,7 @@ class FlowConnectorPath {
     //             var up = (nU * NUDGE_SPACING);
     //
     // For more examples, see the actual nudge() functions already in place or (at time of
-    // writing) the following code that is used for the simplistic ForwardUpPath class.
+    // writing) the following code that is used for the simplistic ForwardUpForwardPath class.
     //
     //   nudge(nH, nV) {
     //     var dimensions = {
@@ -280,17 +280,17 @@ class ForwardPath extends FlowConnectorPath {
 }
 
 
-class ForwardUpPath extends FlowConnectorPath {
+class ForwardUpForwardPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       up: Math.round(this.points.yDifference - (CURVE_SPACING * 2)),
-      forward2: Math.round(utilities.difference((this.points.from_x + this.points.via_x) - CURVE_SPACING, this.points.to_x))
+      forward2: Math.round(utilities.difference((this.points.from_x + this.points.via_x), this.points.to_x) - (CURVE_SPACING * 2))
     }
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
-    this.type = "ForwardUpPath";
+    this.type = "ForwardUpForwardPath";
     this.path = dimensions;
     this.build();
   }
@@ -1340,7 +1340,7 @@ function xy(x, y) {
 module.exports = {
   FlowConnectorPath: FlowConnectorPath,
   ForwardPath: ForwardPath,
-  ForwardUpPath: ForwardUpPath,
+  ForwardUpForwardPath: ForwardUpForwardPath,
   ForwardUpForwardDownPath: ForwardUpForwardDownPath,
   ForwardDownForwardPath: ForwardDownForwardPath,
   ForwardDownBackwardUpPath: ForwardDownBackwardUpPath,

@@ -691,7 +691,7 @@ function applyPageFlowConnectorPaths($overview) {
       from_y: fromY,
       to_x: toX,
       to_y: toY,
-      via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
+      via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
       }, {
       from: $item.data("instance"),
       to: $next.data("instance"),
@@ -815,7 +815,7 @@ function applyBranchFlowConnectorPaths($overview) {
             if(up) {
               if(nextColumn) {
 
-                new ConnectorPath.DownForwardUpPath({
+                new ConnectorPath.DownForwardUpForwardPath({
                   from_x: branchX - (branchWidth / 2),
                   from_y: branchY,
                   to_x: destinationX,
@@ -957,7 +957,7 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
     if(forward) {
       if(up) {
         if(destinationInNextColumn) {
-          new ConnectorPath.ForwardUpPath(points, config);
+          new ConnectorPath.ForwardUpForwardPath(points, config);
         }
         else {
           new ConnectorPath.ForwardUpForwardDownPath(points, config);
