@@ -231,6 +231,7 @@ class BranchQuestion {
     $node.find("select").on("change.branchquestion", (e) => {
       var select = e.currentTarget;
       var supported = $(select.selectedOptions).data("supports-branching");
+      this.disable();
       this.change(supported, select.value);
     });
 
@@ -243,18 +244,28 @@ class BranchQuestion {
     this.$node = $node;
   }
 
+  disable() {
+    this.$node.find('select').prop('disabled', true);
+  }
+
+  enable() {
+    this.$node.find('select').prop('disabled', false);
+  }
+
   change(supported, value) {
     var branch = this.condition.branch;
     this.clearErrorState();
     this.condition.clear();
     switch(supported) {
       case true:
-           this.condition.update(value, function() {
+           this.condition.update(value, () =>  {
              $(document).trigger(EVENT_QUESTION_CHANGE, branch);
+             this.enable();
            });
            break;
       case false:
            this.error("unsupported");
+           this.enable(); 
            break;
       default:
            // Just trigger an event
@@ -312,6 +323,28 @@ class BranchAnswer {
     $node.data("instance", this);
     this._config = conf;
     this.$node = $node;
+    
+    this.showHideAnswers();
+
+    this.$node.find('[data-expression-operator]').on('change', (event) =>  {
+      this.showHideAnswers();
+    }); 
+  }
+
+  showHideAnswers() {
+    var $condition = this.$node.find('[data-expression-operator]');
+    var $answer = this.$node.find('[data-expression-answer]');
+    var hideAnswers = $condition.find(':selected').data('hide-answers');
+
+    if(hideAnswers) {
+      $answer.hide();
+      $answer.val([]);
+    } else {
+      $answer.show();
+      if( !$answer.val() ) {
+        $answer.val( $answer.find('option:first').val() );
+      }
+    }
   }
 }
 

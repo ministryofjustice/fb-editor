@@ -2,7 +2,7 @@
   <% if @page.supported_input_components.present? %>
     <div class="component add-component" data-component="add-component">
       <ul class="govuk-navigation">
-        <li>
+        <li data-action="none">
           <span><%= t('components.menu.question') %></span>
           <ul class="govuk-navigation">
             <% @page.supported_input_components.each do |component| %>

@@ -513,20 +513,26 @@ html {
   .FlowConnectorPath,
   .govuk-header,
   .govuk-navigation-app,
-  .fb-preview-button {
+  .fb-preview-button,
+  .ui-widget-overlay {
     z-index: 1;
   }
 
-  .FlowConnectorPath.active,
-  .flow-item,
-  .ui-widget-overlay {
+  .FlowConnectorLine,
+  .FlowConnectorPath {
     z-index: 2;
+
+    &.active {
+      z-index: 3;
+    }
   }
 
-  .FlowItemMenu,
-  .PageAdditionMenu,
+  .FlowItemMenu {
+    z-index: 4;
+  }
+
   .ui-dialog {
-    z-index: 3;
+    z-index: 5;
   }
 }
 
@@ -654,14 +660,22 @@ html {
 
   a, span {
     @include govuk-font($size: 16);
+
+    color: $govuk-secondary-text-colour;
     display: inline;
     position: static;
     width: auto;
   }
 
-  .operator {
+ .operator {
     color: $govuk-secondary-text-colour;
+    font-weight: bold;
   }
+
+  .condition-operator {
+    text-transform: uppercase;
+    font-weight: bold;
+  } 
 }
 
 .flow-conditions {

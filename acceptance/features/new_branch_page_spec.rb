@@ -48,7 +48,16 @@ feature 'New branch page' do
       'is answered'
     )
 
-    and_I_select_the_field_dropdown
+    then_I_should_not_see_field_options('Hiking')
+
+    and_I_select_the_operator_dropdown
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is'
+    )
+
+    then_I_should_see_the_field_option('branch_conditionals_attributes_0_expressions_attributes_0_field', 'Hiking')
+
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_expressions_attributes_0_field',
       2
@@ -75,7 +84,7 @@ feature 'New branch page' do
     then_I_should_be_on_the_correct_branch_page('edit')
     then_I_should_see_previous_saved_choices(
       'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
-      'is answered'
+      'is'
     )
     then_I_should_see_previous_saved_choices(
       'branch[conditionals_attributes][0][expressions_attributes][0][field]',

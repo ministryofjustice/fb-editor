@@ -1,0 +1,15 @@
+{{- if .Values.hpa }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.app_name }}-web-{{ .Values.environmentName }}
+  namespace: formbuilder-saas-{{ .Values.environmentName }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.app_name }}-web-{{ .Values.environmentName }}
+  minReplicas: {{ .Values.hpa.web.minReplicas }}
+  maxReplicas: {{ .Values.hpa.web.maxReplicas }}
+  targetCPUUtilizationPercentage: {{ .Values.hpa.web.targetCPUUtilizationPercentage }}
+{{- end }}

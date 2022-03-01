@@ -5,6 +5,7 @@ class TestableEditorRemover
     { type: 'configmap', append: '-config-map' },
     { type: 'deployment', append: WEB },
     { type: 'deployment', append: WORKERS },
+    { type: 'hpa', append: WEB },
     { type: 'ingress', append: '-ing-test' },
     { type: 'service', append: '-svc-test' },
     { type: 'servicemonitor', append: '-service-monitor-test' }

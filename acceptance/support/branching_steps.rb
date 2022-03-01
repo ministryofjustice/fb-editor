@@ -92,6 +92,14 @@ module BranchingSteps
     expect(options.length).to eq(amount)
   end
 
+  def then_I_should_not_see_field_options(name)
+    expect(page).to have_no_select(name)
+  end
+
+  def then_I_should_see_the_field_option(name, text)
+    expect(page).to have_select(name, text: text)
+  end
+
   def and_I_choose_an_option(name, option)
     select(option, from: name)
   end
@@ -252,14 +260,14 @@ module BranchingSteps
     # Go to page c if Page b is Thor
     editor.destination_options.select('Page c')
     editor.conditional_options.select('Page b')
-    editor.operator_options.select('is')
+    editor.operator_options.select('contains')
     editor.field_options.select('Thor')
 
     # Go to Page e if Page b is Hulk
     and_I_add_another_branch
     editor.second_destination_options.select('Page e')
     editor.second_conditional_options.select('Page b')
-    editor.second_operator_options.select('is')
+    editor.second_operator_options.select('contains')
     editor.second_field_options.select('Hulk')
 
     # Otherise go to Page g
@@ -278,8 +286,10 @@ module BranchingSteps
 
     # Go to page h if Page g is Thor
     editor.destination_options.select('Page h')
-    editor.conditional_options.select('Question 2')
+    editor.conditional_options.select('Question 1')
     editor.operator_options.select('is')
+    editor.conditional_options.select('Question 2')
+    editor.operator_options.select('contains')
     editor.field_options.select('Thor')
     #
     # Otherise go to Page i

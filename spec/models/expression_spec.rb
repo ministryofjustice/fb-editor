@@ -5,25 +5,50 @@ RSpec.describe Expression do
   let(:expression_hash) { {} }
 
   describe '#to_metadata' do
-    let(:expression_hash) do
-      {
-        'operator': 'is',
-        'page': double(uuid: 'some-page-uuid'),
-        'component': 'some-component-uuid',
-        'field': 'some-field-uuid'
-      }
-    end
-    let(:expected_expression) do
-      {
-        'operator' => 'is',
-        'page' => 'some-page-uuid',
-        'component' => 'some-component-uuid',
-        'field' => 'some-field-uuid'
-      }
+    context 'when field has an answer' do
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': double(uuid: 'some-page-uuid'),
+          'component': 'some-component-uuid',
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_expression) do
+        {
+          'operator' => 'is',
+          'page' => 'some-page-uuid',
+          'component' => 'some-component-uuid',
+          'field' => 'some-field-uuid'
+        }
+      end
+
+      it 'returns the correct structure' do
+        expect(expression.to_metadata).to eq(expected_expression)
+      end
     end
 
-    it 'returns the correct structure' do
-      expect(expression.to_metadata).to eq(expected_expression)
+    context 'when field is nil' do
+      let(:expression_hash) do
+        {
+          'operator': 'is_answered',
+          'page': double(uuid: 'some-page-uuid'),
+          'component': 'some-component-uuid',
+          'field': nil
+        }
+      end
+      let(:expected_expression) do
+        {
+          'operator' => 'is_answered',
+          'page' => 'some-page-uuid',
+          'component' => 'some-component-uuid',
+          'field' => ''
+        }
+      end
+
+      it 'returns the correct structure' do
+        expect(expression.to_metadata).to eq(expected_expression)
+      end
     end
   end
 
@@ -52,11 +77,66 @@ RSpec.describe Expression do
     end
   end
 
-  describe '#operators' do
+  describe '#all_operators' do
     let(:expected_operators) { Expression::OPERATORS }
 
     it 'returns all the operators' do
-      expect(expression.operators).to eq(expected_operators)
+      expect(expression.all_operators).to eq(expected_operators)
+    end
+  end
+
+  describe '#operators' do
+    let(:metadata) { metadata_fixture(:branching) }
+    let(:service) { MetadataPresenter::Service.new(metadata) }
+
+    context 'when component type is checkboxes' do
+      let(:page) { service.find_page_by_url('burgers') }
+      let(:component) { page.components.find { |component| component.type == 'checkboxes' } }
+      let(:expression_hash) do
+        {
+          'operator': 'contains',
+          'page': page,
+          'component': component.uuid,
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_operators) do
+        [
+          [I18n.t('operators.contains'), 'contains', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.does_not_contain'), 'does_not_contain', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
+          [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
+        ]
+      end
+
+      it 'returns the expected operators' do
+        expect(expression.operators).to eq(expected_operators)
+      end
+    end
+
+    context 'when component type is radios' do
+      let(:page) { service.find_page_by_url('star-wars-knowledge') }
+      let(:component) { page.components.find { |component| component.type == 'radios' } }
+      let(:expression_hash) do
+        {
+          'operator': 'contains',
+          'page': page,
+          'component': component.uuid,
+          'field': 'some-field-uuid'
+        }
+      end
+      let(:expected_operators) do
+        [
+          [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_not'), 'is_not', { 'data-hide-answers': 'false' }],
+          [I18n.t('operators.is_answered'), 'is_answered', { 'data-hide-answers': 'true' }],
+          [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
+        ]
+      end
+
+      it 'returns the expected operators' do
+        expect(expression.operators).to eq(expected_operators)
+      end
     end
   end
 
@@ -150,6 +230,29 @@ RSpec.describe Expression do
         expect(errors.values.first).to include(
           I18n.t(
             'activemodel.errors.messages.unsupported_component'
+          )
+        )
+      end
+    end
+
+    context '#blank_field' do
+      let(:page) { service.find_page_by_url('do-you-like-star-wars') }
+      let(:expression_hash) do
+        {
+          'operator': 'is',
+          'page': page,
+          'component': page.components.first.uuid,
+          'field': nil
+        }
+      end
+
+      it 'returns the error message' do
+        errors = expression.errors.messages
+        expect(errors).to be_present
+        expect(errors.values.first).to include(
+          I18n.t(
+            'activemodel.errors.messages.blank',
+            attribute: Expression.human_attribute_name(:operator)
           )
         )
       end

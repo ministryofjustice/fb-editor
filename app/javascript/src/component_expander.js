@@ -68,12 +68,14 @@ class Expander {
 
   open() {
     this.$node.addClass("open");
+    this.$node.removeClass("close");
     this.$container.slideDown({ duration: this._config.duration });
     this.$container.attr("aria-expanded", true);
     this._config.opened = true;
   }
 
   close() {
+    this.$node.addClass("close");
     this.$node.removeClass("open");
     this.$container.slideUp({ duration: this._config.duration });
     this.$container.attr("aria-expanded", false);

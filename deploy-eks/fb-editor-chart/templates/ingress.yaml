@@ -11,15 +11,14 @@ metadata:
         return 401;
       }
     external-dns.alpha.kubernetes.io/set-identifier: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}-formbuilder-saas-{{ .Values.environmentName }}-green"
-    external-dns.alpha.kubernetes.io/aws-weight: "0"
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
   - hosts:
     - {{ .Values.editor_host }}
-    - fb-editor-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk
     secretName: editor-tls-certificate
   rules:
-  - host: fb-editor-{{ .Values.environmentName }}.apps.live.cloud-platform.service.justice.gov.uk
+  - host: {{ .Values.editor_host }}
     http:
       paths:
       - path: /

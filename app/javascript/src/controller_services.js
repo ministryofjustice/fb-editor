@@ -369,7 +369,6 @@ function layoutFormFlowOverview(view) {
   if(!view.features.branching) {
     positionAddPageButton();
   }
-
   adjustOverviewHeight($container);
   applyPageFlowConnectorPaths($container);
   applyBranchFlowConnectorPaths($container);
@@ -412,7 +411,7 @@ function layoutDetachedItemsOveriew(view) {
   $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
     createAndPositionFlowItems($group);
-    adjustOverviewHeight($container);
+    adjustOverviewHeight($group);
     applyPageFlowConnectorPaths($group);
     applyBranchFlowConnectorPaths($group);
     adjustOverlappingFlowConnectorPaths($group);
@@ -517,12 +516,12 @@ function createAndPositionFlowItems($overview) {
 function adjustBranchConditionPositions($overview) {
   var strokeWidth = $(".FlowConnectorPath path").eq(0).css("stroke-width") || "";
   var lineHeight = Number(strokeWidth.replace("px", "")) || 0;
-  $overview.find(".flow-expression").each(function() {
+  $overview.find(".flow-expressions").each(function() {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
     $this.css({
       position: "relative",
-      top: "-" + (expressionHeight + lineHeight) + "px"
+      top: "-" + (expressionHeight + (lineHeight * 2) ) + "px" 
     });
   });
 }
@@ -541,13 +540,15 @@ function adjustOverviewHeight($overview) {
   var topNumbers = [];
   var top, bottom, topOverlap, height;
 
-  $items.each(function() {
+  $items.each(function(index) {
     var $item = $(this);
-    var top = Math.ceil($item.offset().top);
+    // jquery.offset() always returns 0,0 in Safari for scg elements
+    // so we use native getBoundingClientRect instead which returns correct values
+    var top = $item[0].getBoundingClientRect().y + window.scrollY;
     bottomNumbers.push(top + $item.height());
     topNumbers.push(top);
   });
-
+  
   top = utilities.lowestNumber(topNumbers);
   bottom = utilities.highestNumber(bottomNumbers);
   topOverlap = $overview.offset().top - top;
@@ -563,7 +564,7 @@ function adjustOverviewHeight($overview) {
   // Adjustment to make the height over overview area contain the height
   // of all flow items and paths within it.
   if(height > $overview.height()) {
-    $overview.css("height", (bottom - top) + "px");
+    $overview.css("height", height + "px");
   }
 }
 

@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   slack: circleci/slack@3.4.2
-  ruby: circleci/ruby@1.1.3
+  ruby: circleci/ruby@1.4.0
   node: circleci/node@4.5.1
   browser-tools: circleci/browser-tools@1.2.4
   kubernetes: circleci/kubernetes@0.12.0
@@ -119,8 +119,9 @@ jobs:
           aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
-      - setup_remote_docker:
+      - setup_remote_docker: &remote_docker
           version: 20.10.11
+          docker_layer_caching: true
       - run: &build_sha
           name: Setup base environment variable
           command: |
@@ -143,8 +144,7 @@ jobs:
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
       - run:
@@ -159,8 +159,7 @@ jobs:
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 0f:d3:b5:c2:a1:7e:0a:a3:d3:2a:84:41:ef:cc:94:f5
@@ -177,7 +176,7 @@ jobs:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
-          command: './deploy-scripts/bin/deploy'
+          command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
@@ -199,8 +198,7 @@ jobs:
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
       - run:
@@ -215,8 +213,7 @@ jobs:
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
       - run:
@@ -226,31 +223,12 @@ jobs:
             IMAGE_TYPE: workers
           command: './deploy-scripts/bin/build'
       - slack/status: *slack_status
-  deploy_to_test:
-    working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.11
-      - add_ssh_keys: *ssh_keys
-      - run: *base_environment_variables
-      - run: *deploy_scripts
-      - run:
-          name: deploy to test
-          environment:
-            APPLICATION_NAME: fb-editor
-            PLATFORM_ENV: test
-            K8S_NAMESPACE: formbuilder-saas-test
-          command: './deploy-scripts/bin/deploy'
-      - slack/status: *slack_status
   deploy_to_test_eks:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
@@ -262,13 +240,12 @@ jobs:
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *slack_status
-  deploy_to_test_no_branching:
+  deploy_to_test_no_branching_eks:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
@@ -279,12 +256,12 @@ jobs:
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
             DISABLE_BRANCHING: 'true'
-          command: './deploy-scripts/bin/deploy'
-  acceptance_tests:
+          command: './deploy-scripts/bin/deploy-eks'
+  acceptance_tests_eks:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
@@ -300,7 +277,7 @@ jobs:
       - run:
           name: Run acceptance tests
           command: |
-            EDITOR_APP=https://fb-editor-test.apps.live-1.cloud-platform.service.justice.gov.uk
+            EDITOR_APP=https://fb-editor-test.apps.live.cloud-platform.service.justice.gov.uk
             echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
@@ -322,7 +299,7 @@ jobs:
       - store_test_results:
           path: ~/acceptance
       - slack/status: *slack_status
-  acceptance_tests_no_branching:
+  acceptance_tests_no_branching_eks:
     docker: *test_image
     resource_class: large
     environment: *test_environment
@@ -341,7 +318,7 @@ jobs:
       - run:
           name: Run no branching acceptance tests
           command: |
-            EDITOR_APP=https://fb-editor-test-no-branching.apps.live-1.cloud-platform.service.justice.gov.uk
+            EDITOR_APP=https://fb-editor-test-no-branching.apps.live.cloud-platform.service.justice.gov.uk
             echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
@@ -356,7 +333,7 @@ jobs:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
@@ -372,7 +349,7 @@ jobs:
       - run:
           name: Run acceptance tests
           command: |
-            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk
+            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk
             echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
@@ -394,27 +371,26 @@ jobs:
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
-  deploy_to_live:
+  deploy_to_live_eks:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.11
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
       - run: *deploy_scripts
       - run:
-          name: deploy to live
+          name: deploy to live (eks)
           environment:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: live
             K8S_NAMESPACE: formbuilder-saas-live
-          command: './deploy-scripts/bin/deploy'
+          command: './deploy-scripts/bin/deploy-eks'
       - slack/status:
           only_for_branches: main
-          success_message: ":rocket:  Successfully deployed to Live  :guitar:"
-          failure_message: ":alert:  Failed to deploy to Live  :try_not_to_cry:"
+          success_message: ":rocket:  Successfully deployed to Live (eks) :guitar:"
+          failure_message: ":alert:  Failed to deploy to Live (eks)  :try_not_to_cry:"
           include_job_number_field: false
 
 workflows:
@@ -465,36 +441,32 @@ workflows:
             branches:
               only:
                 - main
-      - deploy_to_test:
-          requires:
-            - build_web_image
-            - build_workers_image
       - deploy_to_test_eks:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test_no_branching:
+      - deploy_to_test_no_branching_eks:
           requires:
             - build_web_image
             - build_workers_image
-      - acceptance_tests:
+      - acceptance_tests_eks:
           requires:
-            - deploy_to_test
-      - acceptance_tests_no_branching:
+            - deploy_to_test_eks
+      - acceptance_tests_no_branching_eks:
           requires:
-            - deploy_to_test_no_branching
+            - deploy_to_test_no_branching_eks
       - slack/approval-notification:
           message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
           include_job_number_field: false
           requires:
-            - acceptance_tests
-            - acceptance_tests_no_branching
+            - acceptance_tests_eks
+            - acceptance_tests_no_branching_eks
       - confirm_live_deploy:
           type: approval
           requires:
-            - acceptance_tests
-            - acceptance_tests_no_branching
-      - deploy_to_live:
+            - acceptance_tests_eks
+            - acceptance_tests_no_branching_eks
+      - deploy_to_live_eks:
           requires:
             - confirm_live_deploy
   deploy_testable_branch:
@@ -544,7 +516,7 @@ workflows:
           requires:
             - deploy_testable_branch
       - slack/approval-notification:
-          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live-1.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
           include_job_number_field: false
           requires:
             - testable_branch_acceptance_tests
