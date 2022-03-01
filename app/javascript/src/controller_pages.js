@@ -386,6 +386,20 @@ function enhanceQuestions(view) {
         }
       },
 
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.open({
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+          }, function() {
+          item.component.removeItem(item);
+        });
+      }
+
+
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
@@ -404,6 +418,20 @@ function enhanceQuestions(view) {
           answers: view.text.aria.answers
         }
       },
+
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+        // Currently not used but added for future option and consistency
+        // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.open({
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          ok: view.text.dialogs.button_delete_option
+          }, function() {
+          item.component.removeItem(item);
+        });
+      }
+
 
     });
     view.addLastPointHandler(question.menu.activator.$node);
