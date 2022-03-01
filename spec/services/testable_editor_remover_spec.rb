@@ -13,6 +13,7 @@ RSpec.describe TestableEditorRemover do
         { config: 'configmap', name: 'testable-editor-to-remove-config-map' },
         { config: 'deployment', name: 'testable-editor-to-remove-web-test' },
         { config: 'deployment', name: 'testable-editor-to-remove-workers-test' },
+        { config: 'hpa', name: 'testable-editor-to-remove-web-test' },
         { config: 'ingress', name: 'testable-editor-to-remove-ing-test' },
         { config: 'service', name: 'testable-editor-to-remove-svc-test' },
         { config: 'servicemonitor', name: 'testable-editor-to-remove-service-monitor-test' }

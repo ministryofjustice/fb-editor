@@ -333,7 +333,7 @@ jobs:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 3
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
