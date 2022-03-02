@@ -354,6 +354,7 @@ module CommonSteps
 
   def then_I_should_not_be_able_to_add_page(page)
     editor.preview_page_images.first.hover
+    sleep(1)
     editor.three_dots_button.click
     editor.add_page_here_link.click
     expect(editor.text).not_to include(page)
