@@ -815,7 +815,7 @@ function applyBranchFlowConnectorPaths($overview) {
             if(up) {
               if(nextColumn) {
 
-                new ConnectorPath.DownForwardUpForwardPath({
+                new ConnectorPath.DownForwardUpPath({
                   from_x: branchX - (branchWidth / 2),
                   from_y: branchY,
                   to_x: destinationX,
