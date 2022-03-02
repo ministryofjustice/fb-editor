@@ -336,9 +336,10 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
+    #sleep 1 # Arbitrary delay, possibly required due to focus issues
     # assuming the last two pages are checkanswers and confirmation, always pick
     # the page directly before the checkanswers page
+    editor.wait_until_preview_page_images_visible
     editor.preview_page_images[-2].hover
     editor.three_dots_button.click
   end
