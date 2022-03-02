@@ -725,7 +725,6 @@ class EditableComponentCollectionItem extends EditableComponentBase {
   }
 
   remove() {
-    console.log('sdjkm,bkjd');
     if(this._config.onItemRemoveConfirmation) {
       // If we have confirgured a way to confirm first...
       safelyActivateFunction(this._config.onItemRemoveConfirmation, this);

@@ -66,30 +66,6 @@ feature 'Edit single question page' do
     then_I_should_see_my_changes_on_preview
   end
 
-  scenario 'when editing radio component' do
-    given_I_have_a_single_question_page_with_radio
-    and_I_have_optional_section_heading_text
-    when_I_update_the_question_name
-    and_I_update_the_options
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    preview_form = then_I_should_see_my_changes_on_preview
-    and_I_should_see_the_options_that_I_added(preview_form)
-  end
-
-  scenario 'when editing checkboxes component' do
-    given_I_have_a_single_question_page_with_checkboxes
-    and_I_have_optional_section_heading_text
-    when_I_update_the_question_name
-    and_I_update_the_options
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    preview_form = then_I_should_see_my_changes_on_preview
-    and_I_should_see_the_options_that_I_added(preview_form)
-  end
-
   scenario 'when editing email component' do
     given_I_have_a_single_question_page_with_email
     and_I_have_optional_section_heading_text
@@ -118,11 +94,6 @@ feature 'Edit single question page' do
     when_I_add_the_page
   end
 
-  def given_I_have_a_single_question_page_with_checkboxes
-    given_I_add_a_single_question_page_with_checkboxes
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
 
   def given_I_have_a_single_question_page_with_email
     given_I_add_a_single_question_page_with_email

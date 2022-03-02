@@ -79,6 +79,10 @@ class RadiosQuestion extends Question {
           activatedMenu.container.$node.remove();
         }
       },
+      onItemRemoveConfirmation: function(item) {
+        // @item (EditableComponentItem) Item to be deleted.
+        // Runs before onItemRemove when removing an editable Collection item.
+      }
 
     }, config));
 
