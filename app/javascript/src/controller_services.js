@@ -31,6 +31,7 @@ const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
+const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class ServicesController extends DefaultController {
@@ -68,7 +69,7 @@ ServicesController.edit = function() {
   }
 
   // Reverse the Brief flash of content quickfix.
-  $("#main-content").css("visibility", "visible");
+  $("#main-content").addClass(JS_ENHANCEMENT_DONE);
 }
 
 
@@ -626,11 +627,11 @@ function applyOverviewScroll($overview) {
 
   $(window).on("resize", function() {
     clearTimeout(timeout);
-    $main.css("visibility", "hidden");
+    $main.removeClass(JS_ENHANCEMENT_DONE);
     timeout = setTimeout(function() {
       $container.get(0).style = ""; // reset everything
       adjustScrollDimensionsAndPosition($container);
-      $main.css("visibility", "visible");
+      $main.addClass(JS_ENHANCEMENT_DONE);
     }, 1500);
   });
 }
@@ -691,7 +692,7 @@ function applyPageFlowConnectorPaths($overview) {
       from_y: fromY,
       to_x: toX,
       to_y: toY,
-      via_x: COLUMN_SPACING - 20 // 25 because we don't want lines to start at edge of column space
+      via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
       }, {
       from: $item.data("instance"),
       to: $next.data("instance"),
@@ -736,8 +737,9 @@ function applyBranchFlowConnectorPaths($overview) {
 
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
-      var conditionX = (branchWidth / 2) + $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
+      var conditionX = $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
+      var halfBranchNodeWidth = (branchWidth / 2);
       var conditionColumn = condition.column;
       var conditionRow = condition.row;
       var destinationColumn = destination.column;
@@ -759,15 +761,27 @@ function applyBranchFlowConnectorPaths($overview) {
 
       if(backward || sameColumn) {
 
-        // If on the same row but destination  behind the current condition
-        new ConnectorPath.DownForwardDownBackwardUpPath({
-          from_x: branchX - (branchWidth / 2),
-          from_y: branchY,
-          to_x: destinationX,
-          to_y: destinationY,
-          via_x: conditionX,
-          via_y: conditionY
-        }, config);
+        // If on the same row but destination behind the current condition
+        if(firstConditionItem) {
+          new ConnectorPath.ForwardDownBackwardUpPath({
+            from_x: branchX,
+            from_y: branchY - (rowHeight / 4),
+            to_x: destinationX,
+            to_y: destinationY,
+            via_x: conditionX,
+            via_y: conditionY
+          }, config);
+        }
+        else {
+          new ConnectorPath.DownForwardDownBackwardUpPath({
+            from_x: branchX - (branchWidth / 2),
+            from_y: branchY,
+            to_x: destinationX,
+            to_y: destinationY,
+            via_x: conditionX + halfBranchNodeWidth,
+            via_y: conditionY
+          }, config);
+        }
       }
       else {
         // FORWARD
@@ -807,18 +821,19 @@ function applyBranchFlowConnectorPaths($overview) {
                   from_y: branchY,
                   to_x: destinationX,
                   to_y: destinationY,
-                  via_x: conditionX,
+                  via_x: conditionX + halfBranchNodeWidth,
                   via_y: conditionY
                 }, config);
               }
               else {
                 // NOT NEXT COLUMN
+
                 new ConnectorPath.DownForwardUpForwardDownPath({
                   from_x: branchX - (branchWidth / 2),
                   from_y: branchY,
                   to_x: destinationX,
                   to_y: destinationY,
-                  via_x: conditionX,
+                  via_x: conditionX + halfBranchNodeWidth,
                   via_y: conditionY
                 }, config);
               }
@@ -831,7 +846,7 @@ function applyBranchFlowConnectorPaths($overview) {
                 from_y: branchY,
                 to_x: destinationX,
                 to_y: destinationY,
-                via_x: conditionX,
+                via_x: conditionX + halfBranchNodeWidth,
                 via_y: conditionY
               }, config);
             }
@@ -943,7 +958,7 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
     if(forward) {
       if(up) {
         if(destinationInNextColumn) {
-          new ConnectorPath.ForwardUpPath(points, config);
+          new ConnectorPath.ForwardUpForwardPath(points, config);
         }
         else {
           new ConnectorPath.ForwardUpForwardDownPath(points, config);

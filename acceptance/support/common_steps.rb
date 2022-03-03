@@ -1,3 +1,4 @@
+# coding: utf-8
 module CommonSteps
   OPTIONAL_TEXT = [
     I18n.t('default_text.section_heading'),
@@ -171,6 +172,10 @@ module CommonSteps
 
   def and_I_return_to_flow_page
     editor.pages_link.click
+    using_wait_time 6 do
+      # ... Changed Capybara.default_wait_time in this block scope.
+      find("#main-content.jsdone")
+    end
   end
 
   def and_I_change_the_page_heading(heading)
