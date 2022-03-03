@@ -172,9 +172,14 @@ module CommonSteps
 
   def and_I_return_to_flow_page
     editor.pages_link.click
-    using_wait_time 6 do
-      # ... Changed Capybara.default_wait_time in this block scope.
-      find("#main-content.jsdone")
+
+    # Make sure the page is there and ready.
+    using_wait_time 3 do
+      # Ignore Capybara.default_wait_time in this block scope.
+      # We're looking for the <main> element to be visible which
+      # will be a signal that JS processing (which initialy hides
+      # it) has finished (so JS unhides it).
+      find("#main-content", visible:true)
     end
   end
 
