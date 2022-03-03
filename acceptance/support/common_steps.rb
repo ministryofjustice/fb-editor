@@ -179,7 +179,7 @@ module CommonSteps
       # We're looking for the <main> element to be visible which
       # will be a signal that JS processing (which initialy hides
       # it) has finished (so JS unhides it).
-      find("#main-content", visible:true)
+      find("#main-content.jsdone")
     end
   end
 
