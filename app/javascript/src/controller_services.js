@@ -31,6 +31,7 @@ const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
+const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class ServicesController extends DefaultController {
@@ -68,7 +69,7 @@ ServicesController.edit = function() {
   }
 
   // Reverse the Brief flash of content quickfix.
-  $("#main-content").css("visibility", "visible");
+  $("#main-content").addClass(JS_ENHANCEMENT_DONE);
 }
 
 
@@ -626,11 +627,11 @@ function applyOverviewScroll($overview) {
 
   $(window).on("resize", function() {
     clearTimeout(timeout);
-    $main.css("visibility", "hidden");
+    $main.removeClass(JS_ENHANCEMENT_DONE);
     timeout = setTimeout(function() {
       $container.get(0).style = ""; // reset everything
       adjustScrollDimensionsAndPosition($container);
-      $main.css("visibility", "visible");
+      $main.addClass(JS_ENHANCEMENT_DONE);
     }, 1500);
   });
 }

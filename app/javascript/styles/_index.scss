@@ -501,7 +501,6 @@ html {
  * ------------------------ */
 
 .services-edit {
-
   main {
     // Quickfix for Brief flash of content not ready for display.
     // This can be reversed when slow or view reliant JS has
@@ -510,6 +509,10 @@ html {
     // corresponding JS controller+action function to see where it
     // is turned off/reversed.
     visibility: hidden;
+
+    &.jsdone {
+      visibility: visible;
+    }
   }
 
   .ui-widget-overlay {
