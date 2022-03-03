@@ -32,6 +32,7 @@ const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
 const SELECTOR_FLOW_DETACHED_GROUP = ".flow-detached-group";
+const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class ServicesController extends DefaultController {
@@ -72,7 +73,7 @@ ServicesController.edit = function() {
   addServicesContentScrollContainer(view);
 
   // Reverse the Brief flash of content quickfix.
-  $("#main-content").css("visibility", "visible");
+  $("#main-content").addClass(JS_ENHANCEMENT_DONE);
 }
 
 
@@ -640,23 +641,26 @@ function addServicesContentScrollContainer(view) {
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
 
-    // Hide the content and reset things
-    $main.css("visibility", "hidden");
-    window.scrollTo(0,0);
-    $header.get(0).style = "";
-    $nav.get(0).style = "";
-    $title.get(0).style = "";
-    $button.get(0).style = "";
-    $footer.get(0).style = "";
-    $footerContent.get(0).style = "";
+    // Hide the content before recalculation
+    $main.removeClass(JS_ENHANCEMENT_DONE);
 
     // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
     clearTimeout(timeout);
     timeout = setTimeout(function() {
+
+      // Reset everything
+      window.scrollTo(0,0);
+      $header.get(0).style = "";
+      $nav.get(0).style = "";
+      $title.get(0).style = "";
+      $button.get(0).style = "";
+      $footer.get(0).style = "";
+      $footerContent.get(0).style = "";
+
       adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
-     // Clear the view blocker because we're done shifting stuff.
-     $main.css("visibility", "visible");
+      // Finished so reveal updated content
+      $main.addClass(JS_ENHANCEMENT_DONE);
     }, 750);
   });
 }
