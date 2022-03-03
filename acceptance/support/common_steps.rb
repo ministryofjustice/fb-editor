@@ -174,12 +174,12 @@ module CommonSteps
     editor.pages_link.click
 
     # Make sure the page is there and ready.
-    using_wait_time 3 do
+    using_wait_time 6 do
       # Ignore Capybara.default_wait_time in this block scope.
       # We're looking for the <main> element to be visible which
       # will be a signal that JS processing (which initialy hides
       # it) has finished (so JS unhides it).
-      find("#main-content.jsdone")
+      find("#main-content", visible:true)
     end
   end
 
