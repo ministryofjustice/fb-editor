@@ -72,7 +72,7 @@ ServicesController.edit = function() {
   addServicesContentScrollContainer(view);
 
   // Reverse the Brief flash of content quickfix.
-  $("#main-content").addClass(JS_ENHANCEMENT_DONE);
+  $("#main-content").css("visibility", "visible");
 }
 
 
