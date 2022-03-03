@@ -43,7 +43,7 @@ class PagesController < FormController
       :page
     ).permit(
       :page_url, :page_type, :component_type, :add_page_after, :conditional_uuid
-    ).merge(common_params)
+    ).merge(parameterize_url).merge(common_params)
   end
 
   def page_update_params
@@ -138,5 +138,9 @@ class PagesController < FormController
 
   def component_collection
     add_extra_component ? EXTRA_COMPONENTS : COMPONENTS
+  end
+
+  def parameterize_url
+    { page_url: params[:page][:page_url].parameterize }
   end
 end
