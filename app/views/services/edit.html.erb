@@ -22,8 +22,9 @@
 <% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
   <section id="flow-detached" data-component="Expander">
     <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
+
     <% @detached_flows.each do |detached_flow| %>
-      <div class="flow-detached-group">
+          <div class="flow-detached-group">
         <% detached_flow.each do |column| %>
           <div class="column">
             <% column.each_with_index do |flow, index| %>
@@ -40,55 +41,6 @@
 <%# Section for static/standalone pages (e.g. T&Cs) %>
 <%= render partial: 'partials/standalone' %>
 
-
-<%# statically written menu template used for each item menu %>
-<ul class="component-activated-menu govuk-navigation"
-    data-activator-classname="flow-add-page-button"
-    data-activator-text="<%= t('pages.create') %>"
-    data-component="PageAdditionMenu">
-  <li>
-    <span>Single question page</span>
-    <ul class="govuk-navigation">
-      <li data-page-type="singlequestion"
-          data-component-type="text"><a href="#add-page">Text</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="textarea"><a href="#add-page">Textarea</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="email"><a href="#add-page">Email address</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="number"><a href="#add-page">Number</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="date"><a href="#add-page">Date</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="radios"><a href="#add-page">Radio buttons</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="checkboxes"><a href="#add-page">Checkboxes</a></li>
-      <li data-page-type="singlequestion"
-          data-component-type="upload"><a href="#add-page">File upload</a></li>
-    </ul>
-  </li>
-  <li data-page-type="multiplequestions"><a href="#add-page">Multiple question page</a></li>
-  <% if ENV['BRANCHING'] == 'enabled' %>
-    <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
-    <% end %>
-    <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
-    <% end %>
-  <% else %>
-    <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page">Check answers page</a></li>
-    <% end %>
-    <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page">Confirmation page</a></li>
-    <% end %>
-  <% end%>
-  <li data-page-type="content"><a href="#add-page">Content page</a></li>
-  <% if ENV['BRANCHING'] == 'enabled' %>
-    <li data-page-type="exit"><a href="#add-page">Exit page</a></li>
-  <% end %>
-</ul>
-
 <%# Add page component dialog template %>
 <div class="component-dialog-form"
      data-component="PageAdditionDialog"
@@ -97,6 +49,10 @@
     <%= f.hidden_field :add_page_after, value: f.object.add_page_after.nil? ? '' : f.object.add_page_after %>
     <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
     <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
+
+    <%# For when a user adds a page directly after a branch using the connection menu %>
+    <%= f.hidden_field :conditional_uuid, value: '' %>
+
     <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
       <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
       <span class="govuk-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>

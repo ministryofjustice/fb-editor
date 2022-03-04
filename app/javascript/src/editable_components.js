@@ -797,8 +797,9 @@ class EditableCollectionItemRemover {
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
-  html = sanitiseHtml(html);
-  return converter.makeMarkdown(html);
+  var cleaned = sanitiseHtml(html);
+  var markdown = converter.makeMarkdown(cleaned);
+  return sanitiseMarkdown(markdown);
 }
 
 /* Extremely simple function to safely convert target elements, 
@@ -810,6 +811,15 @@ function convertToMarkdown(html) {
 function sanitiseHtml(html) {
   html = html.replace(/<([\/\s])?script[^\<\>]*?>/mig, "&lt;$1script&gt;");
   return html;
+}
+
+/* Opportunity safely strip out anything that we don't want here.
+ * 1. Something in makeMarkdown is adding <!-- --> markup to the result so we're trying to get rid of it.
+ * 2. ...
+ **/
+function sanitiseMarkdown(markdown) {
+  markdown = markdown.replace(/\n<!--.*?-->/mig, "");
+  return markdown;
 }
 
 /* Convert Markdown to HTML by tapping into third-party code.
