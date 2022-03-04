@@ -58,7 +58,7 @@ class PagesController extends DefaultController {
  * ------------------------------ */
 PagesController.edit = function() {
   var view = this;
-  var dataController = new DataController();
+  var dataController = new DataController(view);
 
   this.$editable = $(".fb-editable");
   this.dataController = dataController;
@@ -129,18 +129,26 @@ PagesController.create = function() {
 
 
 class DataController {
-  constructor() {
+  constructor(view) {
     var controller = this;
     var $form = $("#editContentForm");
+    this.text = view.text;
+
+    $form.find(":submit").on("click", (event) => {
+      $(event.target).prop("value", this.text.actions.saving );
+    });
+
     $form.on("submit", controller.update);
     this.$form = $form;
   }
 
   saveRequired(required) {
-    if(required) {
+    if(required) { 
+      this.$form.find(":submit").prop("value", this.text.actions.save );
       this.$form.find(":submit").prop("disabled", false);
     }
     else {
+      this.$form.find(":submit").prop("value", this.text.actions.saved );
       this.$form.find(":submit").prop("disabled", true);
     }
   }
