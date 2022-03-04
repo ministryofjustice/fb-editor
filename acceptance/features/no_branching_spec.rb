@@ -41,19 +41,19 @@ feature 'No branching' do
 
   def then_I_should_not_see_the_change_destination_link
     editor.hover_preview('Service name goes here')
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
     expect(page.text).not_to include(I18n.t('actions.change_destination'))
   end
 
   def then_I_should_not_see_the_add_branching_link
     editor.hover_preview('Service name goes here')
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
     expect(page.text).not_to include(I18n.t('actions.add_branch'))
   end
 
   def then_I_should_not_see_the_add_exit_page_link
     editor.hover_preview('Service name goes here')
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
     expect(page.text).not_to include(I18n.t('page.exit'))
   end
 end

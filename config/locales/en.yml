@@ -90,7 +90,6 @@ en:
     saving: 'Saving...'
     saved: 'Saved'
     continue: 'Continue'
-    add_page: 'Add page here'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
     add_branch: 'Add branching'

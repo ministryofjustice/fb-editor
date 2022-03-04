@@ -26,12 +26,12 @@ feature 'Preview page' do
   scenario 'preview pages' do
     given_I_have_a_single_question_page_with_text
     and_I_return_to_flow_page
-    preview_page = when_I_preview_the_page
+    preview_page = when_I_preview_the_page('Question')
     then_I_should_preview_the_page(preview_page)
   end
 
   def when_I_preview_the_start_page
-    editor.preview_page_images.first.hover
+    editor.flow_thumbnail('Service name goes here').hover
     when_I_click_preview_page
   end
 
@@ -87,7 +87,7 @@ feature 'Preview page' do
   end
 
   def when_I_preview_the_upload_page
-    editor.preview_page_images[1].hover
+    editor.flow_thumbnail('Question').hover
     when_I_click_preview_page
   end
 end

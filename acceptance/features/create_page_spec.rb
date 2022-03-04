@@ -4,8 +4,11 @@ feature 'Create page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'phasma' }
-  let(:checkanswers) { 'Check answers page' }
-  let(:confirmation) { 'Confirmation page' }
+  let(:start_page_title) { 'Service name goes here' }
+  let(:checkanswers_link_text) { I18n.t('actions.add_check_answers') }
+  let(:checkanswers_title) { 'Check your answers' }
+  let(:confirmation_link_text) { I18n.t('actions.add_confirmation')  }
+  let(:confirmation_title) { 'Application complete' }
 
   background do
     given_I_am_logged_in
@@ -70,30 +73,30 @@ feature 'Create page' do
 
   scenario 'creating check answers page' do
     then_I_should_see_default_service_pages
-    then_I_should_not_be_able_to_add_page(checkanswers)
+    then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
     and_I_delete_cya_page
     then_I_should_see_delete_warning_cya
-    then_I_should_be_able_to_add_page(checkanswers)
-    given_I_add_a_check_answers_page
+    then_I_should_be_able_to_add_page(start_page_title, checkanswers_link_text)
+    given_I_add_a_check_answers_page('Service name goes here')
     and_I_add_a_page_url
     when_I_add_the_page
     then_I_should_see_the_edit_check_answers_page
     and_I_return_to_flow_page
-    then_I_should_not_be_able_to_add_page(checkanswers)
+    then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
   end
 
   scenario 'creating confirmation page' do
     then_I_should_see_default_service_pages
-    then_I_should_not_be_able_to_add_page(confirmation)
+    then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
     when_I_delete_confirmation_page
     then_I_should_see_delete_warning_confirmation
-    then_I_should_be_able_to_add_page(confirmation)
+    then_I_should_be_able_to_add_page(checkanswers_title, confirmation_link_text)
     given_I_add_a_confirmation_page
     and_I_add_a_page_url
     when_I_add_the_page
     then_I_should_see_the_edit_confirmation_page
     and_I_return_to_flow_page
-    then_I_should_not_be_able_to_add_page(confirmation)
+    then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
   end
 
   context 'existing urls' do
@@ -123,7 +126,6 @@ feature 'Create page' do
 
   def then_I_should_see_the_edit_single_question_text_page
     and_I_should_be_on_the_edit_page
-    expect(editor.find('input[type="text"]')).to be_visible
   end
 
   def then_I_should_see_the_edit_single_question_text_area_page

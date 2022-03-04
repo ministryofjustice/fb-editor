@@ -59,8 +59,7 @@ module BranchingSteps
   end
 
   def and_I_want_to_add_branching(url)
-    page.find('.flow-thumbnail', text: url).hover
-    editor.three_dots_button.click
+    editor.connection_menu(url).click
     and_I_add_branching_to_the_page
     then_I_should_see_the_branching_page
   end
@@ -231,10 +230,10 @@ module BranchingSteps
     and_I_add_a_page_url(url)
     when_I_add_the_page
     editor.question_heading.first.set(url.underscore.humanize)
-  
-    and_I_add_the_component(editor.add_radio)
-    and_I_add_the_component(editor.add_checkboxes)
-    
+
+    and_I_add_the_component(I18n.t('components.list.radios'))
+    and_I_add_the_component(I18n.t('components.list.checkboxes'))
+
     and_I_change_the_component(
       'Question 1',
       component: 0,
@@ -245,7 +244,7 @@ module BranchingSteps
       'Question 2',
       component: 1,
       tag: 'legend',
-      options: ['Thor','Hulk'], 
+      options: ['Thor','Hulk'],
     )
 
     when_I_save_my_changes
@@ -253,8 +252,7 @@ module BranchingSteps
   end
 
   def given_I_have_a_branching_point_one
-    editor.hover_preview('Page b')
-    editor.three_dots_button.click
+    editor.connection_menu('Page b').click
     and_I_add_branching_to_the_page
 
     # Go to page c if Page b is Thor
@@ -279,9 +277,7 @@ module BranchingSteps
   end
 
   def given_I_have_a_branching_point_two
-    editor.preview_page_images.first.hover
-    editor.hover_preview('Page g')
-    editor.three_dots_button.click
+    editor.connection_menu('Page g').click
     and_I_add_branching_to_the_page
 
     # Go to page h if Page g is Thor

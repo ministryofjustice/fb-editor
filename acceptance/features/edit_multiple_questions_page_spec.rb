@@ -38,11 +38,11 @@ feature 'Edit multiple questions page' do
 
   scenario 'adding and updating components' do
     given_I_have_a_multiple_questions_page
-    and_I_add_the_component(editor.add_text)
-    and_I_add_the_component(editor.add_text_area)
-    and_I_add_the_component(editor.add_email)
-    and_I_add_the_component(editor.add_radio)
-    and_I_add_the_component(editor.add_checkboxes)
+    and_I_add_the_component(I18n.t('components.list.text'))
+    and_I_add_the_component(I18n.t('components.list.textarea'))
+    and_I_add_the_component(I18n.t('components.list.email'))
+    and_I_add_the_component(I18n.t('components.list.radios'))
+    and_I_add_the_component(I18n.t('components.list.checkboxes'))
     and_I_update_the_components
     when_I_save_my_changes
     and_I_return_to_flow_page
@@ -52,8 +52,8 @@ feature 'Edit multiple questions page' do
 
   scenario 'deleting a text component' do
     given_I_have_a_multiple_questions_page
-    and_I_add_the_component(editor.add_text)
-    and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(I18n.t('components.list.text'))
+    and_I_add_the_component(I18n.t('components.list.textarea'))
     and_I_change_the_text_component(text_component_question)
     when_I_save_my_changes
     when_I_want_to_select_component_properties('h2', text_component_question)
@@ -64,9 +64,9 @@ feature 'Edit multiple questions page' do
 
   scenario 'deleting an email component' do
     given_I_have_a_multiple_questions_page
-    and_I_add_the_component(editor.add_text)
-    and_I_add_the_component(editor.add_text_area)
-    and_I_add_the_component(editor.add_email)
+    and_I_add_the_component(I18n.t('components.list.text'))
+    and_I_add_the_component(I18n.t('components.list.textarea'))
+    and_I_add_the_component(I18n.t('components.list.email'))
     and_I_change_the_email_component(email_component_question)
     when_I_save_my_changes
     when_I_want_to_select_component_properties('h2', email_component_question)
@@ -93,7 +93,7 @@ feature 'Edit multiple questions page' do
     given_I_have_a_form_with_pages
     and_I_edit_the_page(url: 'Page g')
     when_I_want_to_select_component_properties('h2', 'Question 1')
-    and_I_want_to_delete_a_component('Question 1')
+   and_I_want_to_delete_a_component('Question 1')
     and_the_component_is_deleted('Question 1', remaining: 1)
   end
 
@@ -102,12 +102,12 @@ feature 'Edit multiple questions page' do
     and_I_edit_the_page(url: 'Page g')
     when_I_want_to_select_component_properties('h2', 'Question 2')
     and_I_want_to_delete_a_branching_component('Question 2')
-    and_the_component_is_not_deleted('Question 2', remaining: 2) 
+    and_the_component_is_not_deleted('Question 2', remaining: 2)
   end
 
   def then_I_add_a_content_component(content:)
     and_I_add_a_component
-    editor.add_content.click
+    and_I_add_a_content_area
     expect(editor.first_component.text).to eq(optional_content)
     when_I_change_editable_content(editor.first_component, content: content)
   end
@@ -130,12 +130,12 @@ feature 'Edit multiple questions page' do
   end
 
   def and_the_component_is_deleted(question, remaining:)
-    expect(page).to_not have_selector('h2', text: question) 
+    expect(page).to_not have_selector('h2', text: question)
     expect(page).to have_selector('.Question', count: remaining)
   end
 
   def and_the_component_is_not_deleted(question, remaining: )
-    expect(page).to have_selector('h2', text: question) 
+    expect(page).to have_selector('h2', text: question)
     expect(page).to have_selector('.Question', count: remaining)
   end
 end

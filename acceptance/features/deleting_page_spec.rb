@@ -6,6 +6,7 @@ feature 'Deleting page' do
   let(:exit_url) { 'exit' }
   let(:exit_page_title) { 'Exit page' }
   let(:page_url) { 'dooku' }
+  let(:question_title) { 'Question' }
 
   background do
     given_I_am_logged_in
@@ -74,7 +75,7 @@ feature 'Deleting page' do
 
   def and_I_click_to_delete_branching_point_one
     editor.hover_branch('Branching point 1')
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
     editor.delete_branch_link.click
   end
 
@@ -108,15 +109,13 @@ feature 'Deleting page' do
   end
 
   def and_I_want_to_delete_a_branch_destination_page
-    editor.hover_preview('Page c')
-    editor.three_dots_button.click
+    editor.flow_thumbnail('Page c').hover
+    and_I_click_on_the_three_dots
     editor.delete_page_link.click
-    sleep 0.5
   end
 
   def when_I_delete_the_branch_destination_page
     editor.delete_and_update_branching_link.click
-    sleep 0.5
   end
 
   def then_I_should_not_see_the_deleted_page_in_the_flow
@@ -129,25 +128,23 @@ feature 'Deleting page' do
   end
 
   def and_I_want_to_delete_the_page_that_I_created
-    editor.preview_page_images.last.hover
-    editor.three_dots_button.click
+    editor.flow_thumbnail(question_title).hover
+    and_I_click_on_the_three_dots
   end
 
   def when_I_delete_the_page
     editor.delete_page_link.click
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    editor.delete_page_modal_button.click
+    and_I_click_delete
   end
 
   def try_to_delete_page(page_name)
-    editor.hover_preview(page_name)
-    editor.three_dots_button.click
+    editor.flow_thumbnail(page_name).hover
+    and_I_click_on_the_three_dots
     editor.delete_page_link.click
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
   end
 
   def then_I_should_not_see_the_deleted_page_anymore
-    expect(editor.form_urls.count).to eq(3)
+    expect(editor.form_urls).to_not include(question_title)
   end
 
   def and_I_update_the_exit_page_question
@@ -161,8 +158,8 @@ feature 'Deleting page' do
     when_I_save_my_changes
   end
 
-  def then_I_should_see_the_delete_page_no_default_next_modal
-    expect(page.text).to include(
+  def then_I_should_see_the_delete_page_no_default_next_modal  
+    expect(page.find('.ui-dialog').text).to include(
       I18n.t(
         'pages.delete_modal.delete_branch_destination_page_no_default_next_message'
       )

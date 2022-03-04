@@ -3,6 +3,7 @@ require_relative '../spec_helper'
 feature 'Add page in the middle flow' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
+  let(:start_page) { 'Service name goes here' }
   let(:page_url) { 'palpatine' }
   let(:question) { 'We Both Love Soup And Snow Peas' }
   let(:form_urls) do
@@ -32,11 +33,9 @@ feature 'Add page in the middle flow' do
   end
 
   def when_I_add_a_single_question_page_with_radio_after_start(url:)
-    editor.preview_page_images.first.hover
-    editor.three_dots_button.click
-    editor.add_page_here_link.click
+    editor.connection_menu(start_page).click
     editor.add_single_question.hover
-    editor.add_radio.click
+    editor.add_component(I18n.t('components.list.radios')).click
     editor.page_url_field.set(url)
     when_I_add_the_page
     # expect to be on the page created (radio component page)

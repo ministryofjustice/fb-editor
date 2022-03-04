@@ -31,8 +31,7 @@ feature 'Deleting page' do
   end
 
   def given_I_want_to_change_destination_of_a_page(page)
-    editor.hover_preview(page)
-    editor.three_dots_button.click
+    editor.connection_menu(page).click
     editor.change_destination_link.click
   end
 

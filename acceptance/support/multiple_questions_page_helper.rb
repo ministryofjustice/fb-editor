@@ -8,7 +8,7 @@ module MultipleQuestionsPageHelper
   def and_I_add_the_component(component)
     and_I_add_a_component
     and_I_add_a_question
-    component.click
+    find(:link, component).click
   end
 
   def and_I_add_a_multiple_page_content_component
@@ -90,7 +90,7 @@ module MultipleQuestionsPageHelper
     ).to eq(I18n.t('questions.delete_modal.can_not_delete_message'))
     editor.find(:css, '.ui-dialog-titlebar-close').click
   end
-  
+
   def and_I_want_to_delete_a_content_component
     and_I_click_the_delete_link
     expect(
