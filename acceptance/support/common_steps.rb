@@ -171,6 +171,7 @@ module CommonSteps
   end
 
   def and_I_return_to_flow_page
+    page.find('#main-content', visible: true)
     editor.pages_link.click
     using_wait_time 6 do
       # ... Changed Capybara.default_wait_time in this block scope.
@@ -341,9 +342,9 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
     # assuming the last two pages are checkanswers and confirmation, always pick
     # the page directly before the checkanswers page
+    find('#main-content', visible: true)
     editor.preview_page_images[-2].hover
     editor.three_dots_button.click
   end
@@ -358,6 +359,7 @@ module CommonSteps
   end
 
   def then_I_should_not_be_able_to_add_page(page)
+    find('#main-content', visible: true)
     editor.preview_page_images.first.hover
     sleep(1)
     editor.three_dots_button.click
@@ -366,6 +368,7 @@ module CommonSteps
   end
 
   def then_I_should_be_able_to_add_page(page)
+    find('#main-content', visible: true)
     editor.preview_page_images.first.hover
     editor.three_dots_button.click
     editor.add_page_here_link.click
