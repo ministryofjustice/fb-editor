@@ -528,12 +528,18 @@ html {
     }
   }
 
-  .FlowItemMenu {
+  .ConnectionMenuActivator {
     z-index: 4;
   }
 
-  .ui-dialog {
+
+  .FlowItemMenu,
+  .ConnectionMenu {
     z-index: 5;
+  }
+
+  .ui-dialog {
+    z-index: 6;
   }
 }
 
@@ -661,9 +667,29 @@ html {
   opacity: 1;
 }
 
+.ConnectionMenuActivator {
+  display: inline-block;
+  left: calc(100% + 10px);
+  // opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 46px;
+
+  &.branch-connection-menu-activator {
+    left: calc(100% - 24px);
+    top: -17px;
+  }
+  
+  &:after {
+    content: '+';
+    top: -22px;
+  }
+}
+
 .flow-condition {
   @include list_reset;
-  margin: 0 50px;
+  margin: 0 100px 0 0;
+  padding: 0 25px;
   text-align: center;
   width: 300px;
 
@@ -714,7 +740,6 @@ html {
 
 .flow-page {
   height: 250px;
-  overflow: hidden;
   vertical-align: middle;
   width: 200px;
 }
