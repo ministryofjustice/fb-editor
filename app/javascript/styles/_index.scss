@@ -11,11 +11,6 @@
 
 /* General rules
  * ------------- */
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 html {
   background-color: govuk-colour("light-grey");
   min-height: 100%;
@@ -42,16 +37,6 @@ html {
 #main-content {
   position: relative;
   min-height: 55vh;
-
-  // Quickfix for Brief flash of content not ready for display.
-  // This can be reversed when slow or view reliant JS has
-  // finished running. We're using the controller name + action
-  // so we can use it only where actually needed. Find the
-  // corresponding JS controller+action function to see where it
-  // is turned off/reversed.
-  &.services-edit {
-    visibility: hidden;
-  }
 }
 
 
@@ -501,6 +486,15 @@ html {
  * ------------------------ */
 
 .services-edit {
+  h1 {
+    clear: both;
+    z-index: 1;
+
+    @include govuk-media-query($from: tablet) {
+      clear: none;
+    }
+  }
+
   main {
     // Quickfix for Brief flash of content not ready for display.
     // This can be reversed when slow or view reliant JS has
@@ -515,7 +509,16 @@ html {
     }
   }
 
-  .ui-widget-overlay {
+  // Fix z-index issues because calculations for Branch FlowConnectorPath elements start
+  // their lines from centre of a Branch Node, which places them directly over those
+  // elements, without this workaround in place (easier to fix z-index than calculations).
+  // Also includes some elements that gained position:fixed because they fell off the view.
+  .FlowConnectorLine,
+  .FlowConnectorPath,
+  .govuk-header,
+  .govuk-navigation-app,
+  .ui-widget-overlay,
+  .fb-preview-button {
     z-index: 1;
   }
 
@@ -542,7 +545,6 @@ html {
     z-index: 6;
   }
 }
-
 
 .FlowConnectorLine,
 .FlowConnectorPath {
@@ -595,13 +597,6 @@ html {
   overflow: hidden;
   position: absolute;
   top: calc(125px - 43px);
-}
-
-.FlowOverviewScrollFrame {
-  // Dimensions are calculated by JS
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: relative;
 }
 
 .flow-add-page-button {
@@ -812,6 +807,7 @@ html {
 }
 
 #flow-detached {
+  background-color: govuk-colour("white");
   margin-bottom: 100px;
   overflow: visible;
 
@@ -819,17 +815,13 @@ html {
     display: inline-block;
   }
 
-  .Expander_container {
-    @include govuk-width-container($govuk-page-width);
-  }
-
   .flow-detached-group {
-    margin: 0 30px;
     position: relative;
   }
 }
 
 #flow-overview {
+  background-color: govuk-colour("white");
   margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
   position: relative;
@@ -842,6 +834,15 @@ html {
     margin-right: govuk-spacing(9);
     width: 200px;
   }
+}
+
+#ServicesContentScrollContainer {
+  // Due to layout element of GDS templates, the scroll dimensions
+  // need to be calculated by JS (cannot just use width:100%).
+  background-color: govuk-colour("white");
+  box-sizing: border-box;
+  overflow: visible;
+  position: relative;
 }
 
 

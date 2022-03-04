@@ -29,6 +29,7 @@ const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
+const SELECTOR_FLOW_DETACHED_GROUP = ".flow-detached-group";
 const JS_ENHANCEMENT_DONE = "jsdone";
 
 
@@ -53,6 +54,7 @@ ServicesController.edit = function() {
   var view = this; // Just making it easlier to understand the context.
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
+  view.$flowStandalone = $("#flow-standalone-pages");
 
   createPageAdditionDialog(view);
   createPageMenus(view);
@@ -65,7 +67,8 @@ ServicesController.edit = function() {
     layoutDetachedItemsOveriew(view);
   }
 
-  createConnectionMenus(view); 
+  createConnectionMenus(view);
+  addServicesContentScrollContainer(view);
 
   // Reverse the Brief flash of content quickfix.
   $("#main-content").addClass(JS_ENHANCEMENT_DONE);
@@ -209,7 +212,6 @@ function layoutFormFlowOverview(view) {
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
-  applyOverviewScroll($container);
 }
 
 
@@ -236,28 +238,13 @@ function layoutFormFlowOverview(view) {
 **/
 function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
-  var $title = $("h2", $container);
-  var offsetLeft = $container.offset().left;
   var expander = $container.data("instance"); // Element is set as an Expander Component.
 
   // Make sure it's open on page load
   expander.open();
 
-  // Expand the width of the section.
-  $container.css({
-    left:  ~(offsetLeft),
-    position: "relative",
-    width: window.innerWidth
-  });
-
-  // Compensate for previous change.
-  $title.css({
-    left: offsetLeft + "px",
-    position: "relative"
-  });
-
   // Add required scrolling to layout groups.
-  $(".flow-detached-group", $container).each(function() {
+  $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
     createAndPositionFlowItems($group);
     adjustOverviewHeight($group);
@@ -267,7 +254,6 @@ function layoutDetachedItemsOveriew(view) {
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
     adjustOverviewWidth($group);
-    applyOverviewScroll($group);
   });
 }
 
@@ -447,28 +433,70 @@ function adjustOverviewWidth($overview) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * To try and fix scrolling issues for the form overview
- * when there are too many thumbnails to fix on the one page view.
+ * To try and fix scrolling issues for the ServicresEdit page
+ * when flow overview areas extend beyond the restricted width
+ * of the main content area.
+ * @view (Object) Reference to the overall view instance of Services#edit action.
+ *
+ * Note: Way too much CSS manipulation here but we're trying to deal with dynamic
+ * situations that cannot really be done (easily/at all??) with a stylesheet.
  **/
-function applyOverviewScroll($overview) {
-  var $container = $("<div></div>");
+function addServicesContentScrollContainer(view) {
+  var $container = $("<div id=\"ServicesContentScrollContainer\"></div>");
+  var $html = $("html");
+  var $body = $("body");
   var $main = $("#main-content");
+  var $title = $("h1");
+  var $button = $(".fb-preview-button");
+  var $header = $("header");
+  var $nav = $("#form-navigation");
+  var $footer = $("footer");
+  var $footerContent = $footer.find(".govuk-width-container"); // Terrible lookup but we're dealing with GDS class names
   var timeout;
 
-  $container.addClass("FlowOverviewScrollFrame");
-  $overview.before($container);
-  $container.append($overview);
+  // Make adjustments to layout elements.
+  view.$flowOverview.before($container);
+  $container.append(view.$flowOverview);
+  $container.append(view.$flowDetached);
+  $container.append(view.$flowStandalone);
 
-  adjustScrollDimensionsAndPosition($container);
+  // Would prefer this in stylesheet but doing it here to detect and copy
+  // any GDS dynamic values in use or quickly implement only when the
+  // scrollable area is in play (without doing element detaction and css
+  // class variants, etc.
+  // Removing the <html> (grey) background that was for the footer.
+  // And overriding GDS set margin-bottom that exposes <html> area.
+  $html.css("background-color", "white");
+  $body.css("margin-bottom", "0px");
+  $footer.css("position", "relative");
 
+  // Make adjustments based on content.
+  adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+
+  // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
-    clearTimeout(timeout);
+
+    // Hide the content before recalculation
     $main.removeClass(JS_ENHANCEMENT_DONE);
+
+    // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
+    clearTimeout(timeout);
     timeout = setTimeout(function() {
-      $container.get(0).style = ""; // reset everything
-      adjustScrollDimensionsAndPosition($container);
+
+      // Reset everything
+      window.scrollTo(0,0);
+      $header.get(0).style = "";
+      $nav.get(0).style = "";
+      $title.get(0).style = "";
+      $button.get(0).style = "";
+      $footer.get(0).style = "";
+      $footerContent.get(0).style = "";
+
+      adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+
+      // Finished so reveal updated content
       $main.addClass(JS_ENHANCEMENT_DONE);
-    }, 1500);
+    }, 750);
   });
 }
 
@@ -476,29 +504,82 @@ function applyOverviewScroll($overview) {
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Sort out the required dimensions and position for the scrollable area.
+ * @$container (jQuery node) The dynamically added container applied to main scrollable content.
  **/
-function adjustScrollDimensionsAndPosition($container) {
-  const margin = 30; // Based on assumed 30x2 padding (TODO: figure out dynamic/auto method not hardcoded).
-  const menuSpacer = 50; // Arbitrary number designed to allow any context menu to fit in container width.
-  var viewWidth = window.innerWidth - (margin * 2);
-  var containerWidth = $container.get(0).scrollWidth;
-  var offsetLeft = $container.offset().left;
+function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent) {
+  var viewWidth = window.innerWidth;
+  var mainLeft = $main.offset().left;
+  var headerTop = $header.position().top;
+  var navTop = $nav.position().top;
+  var titleTop = $title.offset().top;
+  var buttonTop = $button.offset().top;
+  var containerTop = titleTop + $title.outerHeight();
+  var containerWidth = mainLeft + $container.get(0).scrollWidth;
 
+  // Remove any existing event if calling for second time.
+  $(document).off("scroll.adjustScrollDimensionsAndPosition");
+
+  // Fix/update the position of some elements (the order is important).
+  $title.css({
+    left: mainLeft + "px",
+    position: "fixed",
+    top: titleTop + "px"
+  });
+
+  $button.css({
+    right: mainLeft + "px",
+    position: "fixed",
+    top: buttonTop + "px"
+  });
+
+  $nav.css({
+    "border-bottom": "110px solid white",
+    position: "fixed",
+    top: navTop + "px",
+    width: "100%"
+  });
+
+  $header.css({
+    position: "fixed",
+    top: headerTop + "px",
+    width: "100%"
+  });
+
+  // If scroll is not enough we need to stretch the footer horizontally.
   if(containerWidth > viewWidth) {
-    // position container width to max left and constrain width
-    $container.css({
-      left: ~(offsetLeft - margin) + "px",
-      padding: "0 " + menuSpacer + " 0 0", // 100 is just arbitrary  extra spacing for opening menus
-      width: viewWidth + "px"
-    });
+    $footer.css("width", containerWidth + "px");
   }
   else {
-    // centre the container
-    $container.css({
-      left: ~(offsetLeft - ((viewWidth - containerWidth) / 2)) + "px",
-      width: containerWidth + "px"
-    });
+    $footer.css("width", viewWidth + "px");
   }
+
+  // If content length is not enought we need to stretch the footer vertically.
+  if($body.height() < window.outerHeight) {
+    $footer.height(window.outerHeight - $body.height() + 30); // Hack! 30px extra is guess as not adding up.
+  }
+
+  // Make sure the content aligns to left as thought centred to viewport not full width of scroll.
+  $footerContent.css({
+    "margin-left": mainLeft + "px",
+    "max-width": $main.width() + "px"
+  });
+
+  // Now adjust the scroll container.
+  $container.css({
+    "margin-top": containerTop + "px", // This one because we fixed elements above.
+    "padding-left": mainLeft + "px",
+    left: ~(mainLeft - 2) + "px",
+    width: (viewWidth - 6) + "px"
+  });
+
+  // Need the header (and others) to stay put horizontally but not vertically.
+  $(document).on("scroll.adjustScrollDimensionsAndPosition", function() {
+    var y = ~window.scrollY;
+    $header.css("top", (y) + "px");
+    $nav.css("top", (y + navTop) + "px");
+    $title.css("top", (y + titleTop) + "px");
+    $button.css("top", (y + buttonTop) + "px");
+  });
 }
 
 
@@ -740,7 +821,7 @@ function adjustOverlappingFlowConnectorPaths($overview) {
   var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
   var somethingMoved;
   var numberOfPaths = $paths.length;
-  var keepChecking = $paths.length > 0; 
+  var keepChecking = $paths.length > 1;
   var loopCount = 1;
 
   do {
