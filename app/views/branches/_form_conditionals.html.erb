@@ -8,6 +8,7 @@
     </ul>
 
     <%= render 'form_expressions', conditional: conditional %>
+    <button class="govuk-link condition-injector"><%= t('branches.condition_add') %></button>
 
     <div class="destination">
       <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>">
@@ -43,6 +44,5 @@
         </select>
       </div>
     </div>
-    <button class="govuk-link condition-injector"><%= t('branches.condition_add') %></button>
   </div>
 <% end %>
