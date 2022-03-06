@@ -192,8 +192,8 @@ html {
 }
 
 .BranchCondition {
-  margin-left: 100px;
   overflow: hidden;
+  padding-left: 13px;
   padding-right: 75px;
   position: relative;
 
@@ -202,7 +202,7 @@ html {
     content: "";
     display: block;
     height: calc(100% - #{govuk-spacing(6)});
-    right: calc(85% + #{govuk-spacing(6)});
+    right: calc(85% + #{govuk-spacing(3)});
     position: absolute;
     top: 0;
     width: 5px;
@@ -304,10 +304,11 @@ html {
   width: 85%;
 
   label {
+    @include govuk-font($size: 24);
+
     display: inline;
     font-weight: bold;
     left: 0;
-    line-height: 40px;
     margin-right: govuk-spacing(2);
     position: absolute;
     top: 0;
