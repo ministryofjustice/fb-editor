@@ -239,10 +239,33 @@ class BranchInjector {
  * It also alters the HTML by swapping in target points for adding
  * the required information in the right places.
  *
+ * IMPORTANT: There should always be at least one .condition element in
+ * the page content. This code fell over when, possibly due to an unfixed
+ * bug, the html variable couldn't get some code, due to the target node
+ * not having a .condition to find. To compensate (without fixing any
+ * underlying issue that is in a separate ticket) the code has been
+ * updated to try and find any .condition element if the preferred item
+ * cannot be found. This is purely a second-chance addition and will
+ * likely not fix the page should an incorrect scenario occur. It will,
+ * however, have a chance to make it look better (less broken).
+ *
  * @$node (jQuery Node) HTML that will form the Branch
  **/
 function createBranchConditionTemplate($node) {
-  var html = $node.find(".condition").get(0).outerHTML;
+  var $condition = $node.find(".condition");
+  var html = "";
+
+  // See IMPORTANT, above.
+  if($condition.length == 0) {
+    $condition = $(".condition");
+  }
+
+  // We hope to have something but wrapping in test just in case we do not.
+  if($condition.length) {
+    html = $(".condition").get(0).outerHTML;
+  }
+
+  // html is a string, either empty or populated, so we should be safe from here.
   html = html.replace(
           /branch_conditionals_attributes_0_expressions_attributes_0_component/mig,
           "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_component");
