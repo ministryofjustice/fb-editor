@@ -167,6 +167,12 @@ html {
     right: govuk-spacing(4);
     top: govuk-spacing(5);
   }
+
+  .name {
+    span {
+      display: inline;
+    }
+  }
 }
 
 .BranchAnswer {
