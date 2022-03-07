@@ -58,7 +58,7 @@ ServicesController.edit = function() {
 
   createPageAdditionDialog(view);
   createPageMenus(view);
-
+  createConnectionMenus(view);
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
   }
@@ -67,7 +67,6 @@ ServicesController.edit = function() {
     layoutDetachedItemsOveriew(view);
   }
 
-  createConnectionMenus(view);
   addServicesContentScrollContainer(view);
 
   // Reverse the Brief flash of content quickfix.
@@ -554,8 +553,8 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
   }
 
   // If content length is not enought we need to stretch the footer vertically.
-  if($body.height() < window.outerHeight) {
-    $footer.height(window.outerHeight - $body.height() + 30); // Hack! 30px extra is guess as not adding up.
+  if($body.outerHeight() < window.innerHeight) {
+    $footer.height($footer.height() + (window.innerHeight - $body.outerHeight()));
   }
 
   // Make sure the content aligns to left as thought centred to viewport not full width of scroll.
