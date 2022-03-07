@@ -87,6 +87,8 @@ en:
   actions:
     edit: 'Edit'
     save: 'Save'
+    saving: 'Saving...'
+    saved: 'Saved'
     continue: 'Continue'
     add_page: 'Add page here'
     publish_to_test: 'Publish to Test'
