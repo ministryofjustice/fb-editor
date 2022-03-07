@@ -124,4 +124,49 @@ RSpec.describe PagesController do
       end
     end
   end
+
+  describe '#page_creation_params' do
+    let(:common_params) { {} }
+    let(:params) do
+      {
+        add_page_after: '67890',
+        page_type: 'singlequestion',
+        component_type: 'text',
+        page_url: 'my first page'
+      }
+    end
+
+    before do
+      allow(controller).to receive(:params).and_return(
+        ActionController::Parameters.new(page: params).merge(common_params)
+      )
+      allow(controller).to receive(:service_metadata).and_return(service_metadata)
+    end
+
+    context 'when page url includes spaces' do
+      let(:expected_url) { 'my-first-page' }
+
+      it 'parameterizes the page_url param' do
+        expect(controller.page_creation_params.fetch(:page_url)).to eq(expected_url)
+      end
+    end
+
+    context 'when page url has special characters' do
+      let(:params) { { page_url: '(£$%*hello@£$hello£$@$' } }
+      let(:expected_url) { 'hello-hello' }
+
+      it 'parameterizes the page_url param' do
+        expect(controller.page_creation_params.fetch(:page_url)).to eq(expected_url)
+      end
+    end
+
+    context 'when page url has only special characters' do
+      let(:params) { { page_url: '(£$%*@£$£$@$' } }
+      let(:expected_url) { '' }
+
+      it 'parameterizes the page_url param' do
+        expect(controller.page_creation_params.fetch(:page_url)).to eq(expected_url)
+      end
+    end
+  end
 end
