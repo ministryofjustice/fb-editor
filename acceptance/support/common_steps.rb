@@ -17,28 +17,26 @@ module CommonSteps
     editor.load
     editor.sign_in_button.click
 
-    using_wait_time 10 do
-      if ENV['CI_MODE'].present?
-        expect(page).to have_content('Please select the log in option that matches your work email')
+    if ENV['CI_MODE'].present?
+      expect(page).to have_content('Please select the log in option that matches your work email')
 
-        # Executing javascript directly as the fields and button are hidden on the
-        # login page for the moment
-        editor.execute_script(
-          "document.getElementById('email').value = '#{ENV['ACCEPTANCE_TESTS_USER']}'"
-        )
-        editor.execute_script(
-          "document.getElementById('password').value = '#{ENV['ACCEPTANCE_TESTS_PASSWORD']}'"
-        )
-        editor.execute_script(
-          "document.getElementById('btn-login').click()"
-        )
-      else
-        editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
-        editor.sign_in_submit.click
-      end
-
-      expect(page).to have_content(I18n.t('services.create'))
+      # Executing javascript directly as the fields and button are hidden on the
+      # login page for the moment
+      editor.execute_script(
+        "document.getElementById('email').value = '#{ENV['ACCEPTANCE_TESTS_USER']}'"
+      )
+      editor.execute_script(
+        "document.getElementById('password').value = '#{ENV['ACCEPTANCE_TESTS_PASSWORD']}'"
+      )
+      editor.execute_script(
+        "document.getElementById('btn-login').click()"
+      )
+    else
+      editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
+      editor.sign_in_submit.click
     end
+
+    expect(page).to have_content(I18n.t('services.create'))
   end
 
   def given_I_have_a_service(service = service_name)
@@ -164,6 +162,7 @@ module CommonSteps
 
   def and_I_return_to_flow_page
     editor.pages_link.click
+    sleep 0.5 
     page.find('#main-content', visible: true)
   end
 
@@ -336,8 +335,8 @@ module CommonSteps
   end
 
   def and_I_click_on_the_connection_menu
+    find('#main-content', visible: true)
     editor.all('.connection-menu-activator').last.click
-    # editor.connection_menu.click
   end
 
   def and_I_click_delete
@@ -357,16 +356,12 @@ module CommonSteps
 
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
-    # editor.flow_thumbnail(page_title).hover
-    # and_I_click_on_the_connection_menu
     editor.connection_menu(page_title).click
     expect(editor.text).not_to include(page_link)
   end
 
   def then_I_should_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
-    # editor.flow_thumbnail(page_title).hover
-    # and_I_click_on_the_connection_menu
     editor.connection_menu(page_title).click
     expect(editor.text).to include(page_link)
   end
