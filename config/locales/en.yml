@@ -123,7 +123,7 @@ en:
       and: 'And'
     goto: Go to
     select_destination: '--- Select next page ---'
-    select_question: '--Select a question--'
+    select_question: '-- Select a question --'
     conditional_title: 'Branch '
     title_otherwise: 'Otherwise,'
     hint_otherwise: 'if none of the above'
