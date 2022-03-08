@@ -1,6 +1,5 @@
 <%= conditional.fields_for :expressions do |expression| %>
   <div class="condition govuk-form-group
-              <%= expression.object.errors[:component].empty? ? '' : 'error' %>
               <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>
               "
               data-expression-index="<%= expression.index %>">
