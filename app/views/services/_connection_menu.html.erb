@@ -37,7 +37,7 @@
         <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
     <% end %>
 
-    <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && item[:next].blank?  %>
+   <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page.uuid) %> 
       <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
       
