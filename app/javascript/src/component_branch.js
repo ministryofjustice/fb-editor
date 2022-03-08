@@ -268,6 +268,7 @@ class BranchQuestion {
            this.enable(); 
            break;
       default:
+           this.enable(); 
            // Just trigger an event
            $(document).trigger(EVENT_QUESTION_CHANGE, this.condition.branch);
     }
