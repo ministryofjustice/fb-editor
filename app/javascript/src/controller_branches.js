@@ -252,17 +252,24 @@ class BranchInjector {
  * @$node (jQuery Node) HTML that will form the Branch
  **/
 function createBranchConditionTemplate($node) {
-  var $condition = $node.find(".condition");
+  var $condition = $node.find(".condition").clone();
   var html = "";
 
   // See IMPORTANT, above.
   if($condition.length == 0) {
-    $condition = $(".condition");
+    $condition = $(".condition").clone();
   }
 
   // We hope to have something but wrapping in test just in case we do not.
   if($condition.length) {
-    html = $(".condition").get(0).outerHTML;
+
+    // First clean up some stuff.
+    $condition.find(".govuk-error-message").remove();
+    $condition.removeClass("error");
+    $condition.removeClass("govuk-form-group--error");
+
+    // Now take a copy of the HTML.
+    html = $condition.get(0).outerHTML;
   }
 
   // html is a string, either empty or populated, so we should be safe from here.
