@@ -10,39 +10,37 @@
     <%= render 'form_expressions', conditional: conditional %>
     <button class="govuk-link condition-injector"><%= t('branches.condition_add') %></button>
 
-    <div class="destination">
-      <div class="govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>">
-        <% conditional.object.errors[:next].each do |message| %>
-          <span class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></span>
-        <% end %>
+    <div class="destination govuk-form-group <%= conditional.object.errors[:next].empty? ? '' : 'govuk-form-group--error' %>">
+      <% conditional.object.errors[:next].each do |message| %>
+        <span class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></span>
+      <% end %>
 
-        <label class="govuk-label"
-          for="branch_conditionals_attributes_<%= conditional.index %>_next">
-          <%= t('branches.goto') %></label>
-        <select class="govuk-select"
-          name="branch[conditionals_attributes][<%= conditional.index %>][next]"
-          id="branch_conditionals_attributes_<%= conditional.index %>_next">
-          <% if conditional.object.next.nil? %>
-            <option value=""><%= t('branches.select_destination') %></option>
-          <% end %>
+      <label class="govuk-label"
+        for="branch_conditionals_attributes_<%= conditional.index %>_next">
+        <%= t('branches.goto') %></label>
+      <select class="govuk-select"
+        name="branch[conditionals_attributes][<%= conditional.index %>][next]"
+        id="branch_conditionals_attributes_<%= conditional.index %>_next">
+        <% if conditional.object.next.nil? %>
+          <option value=""><%= t('branches.select_destination') %></option>
+        <% end %>
+        <%= render partial: "destinations_list",
+                  locals: {
+                    destinations: @branch.main_destinations,
+                    selected: conditional.object.next
+                  }
+        %>
+        <% if @branch.detached_destinations.present? %>
+          <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
           <%= render partial: "destinations_list",
                     locals: {
-                      destinations: @branch.main_destinations,
+                      destinations: @branch.detached_destinations,
                       selected: conditional.object.next
                     }
           %>
-          <% if @branch.detached_destinations.present? %>
-            <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
-            <%= render partial: "destinations_list",
-                      locals: {
-                        destinations: @branch.detached_destinations,
-                        selected: conditional.object.next
-                      }
-            %>
-            </optgroup>
-          <% end %>
-        </select>
-      </div>
+          </optgroup>
+        <% end %>
+      </select>
     </div>
   </div>
 <% end %>
