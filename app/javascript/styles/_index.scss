@@ -219,6 +219,7 @@ html {
 
 .BranchCondition {
   margin-top: govuk-spacing(6);
+  padding-left: govuk-spacing(3);
   position: relative;
 
   &:after {
@@ -234,10 +235,6 @@ html {
   }
 
   &.error {
-    label {
-      padding-left: govuk-spacing(3);
-    }
-
     &:after {
       background-color: $govuk-error-colour;
     }
@@ -315,6 +312,10 @@ html {
 
   @include govuk-media-query($until: tablet) {
   }
+}
+
+.BranchDestination {
+  padding-left: govuk-spacing(3);
 }
 
 .branch-actions {
