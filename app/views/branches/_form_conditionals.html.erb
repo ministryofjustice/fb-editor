@@ -21,9 +21,7 @@
       <select class="govuk-select"
         name="branch[conditionals_attributes][<%= conditional.index %>][next]"
         id="branch_conditionals_attributes_<%= conditional.index %>_next">
-        <% if conditional.object.next.nil? %>
-          <option value=""><%= t('branches.select_destination') %></option>
-        <% end %>
+        <option value=""><%= t('branches.select_destination') %></option>
         <%= render partial: "destinations_list",
                   locals: {
                     destinations: @branch.main_destinations,
