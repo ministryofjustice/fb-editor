@@ -221,10 +221,6 @@ html {
   margin-top: govuk-spacing(6);
   position: relative;
 
-  p {
-    margin-top: 0;
-  }
-
   &:after {
     background-color: $govuk-border-colour;
     content: "";
@@ -249,10 +245,6 @@ html {
 
   &.condition_0 {
     margin-top: 0;
-  }
-
-  &.govuk-form-group--error .BranchQuestion {
-    padding-left: calc(15% - 13px);
   }
 
   & + .BranchCondition {
@@ -301,7 +293,7 @@ html {
   }
 }
 
-.BranchDestination,
+.BranchDestination .fields,
 .BranchQuestion {
   padding-left: 15%;
   position: relative;
@@ -312,7 +304,6 @@ html {
     display: inline-block;
     font-weight: bold;
     left: 0;
-    padding-left: govuk-spacing(3);
     position: absolute;
     top: 5px;
   }
@@ -1005,13 +996,13 @@ html {
 .govuk-form-group--error,
 .error {
 
-  label {
-    padding-left: 0;
-  }
-
   option {
     color: $govuk-text-colour;
     font-weight: normal;
+  }
+
+  p {
+    margin-top: 0;
   }
 
   select {
