@@ -154,13 +154,12 @@ html {
 .Branch,
 #branch-otherwise {
   @include container_panel;
-
-  padding: govuk-spacing(3) govuk-spacing(4) 1px govuk-spacing(4);
-  position: relative;
-
   @include govuk-media-query($until: tablet) {
     padding-right: govuk-spacing(5);
   }
+
+  padding-right: 100px;
+  position: relative;
 
   .ActivatedMenu_Activator {
     position: absolute;
@@ -173,21 +172,40 @@ html {
       display: inline;
     }
   }
+
+  .error-message {
+    color: $govuk-error-colour;
+    font-weight: bold;
+    margin: govuk-spacing(3) 0 0 0;
+  }
+
+  .govuk-form-group {
+    border-left: $govuk-border-width-form-group-error solid govuk-colour("light-grey");
+    margin-bottom: govuk-spacing(7);
+  }
+
+  .govuk-form-group--error {
+    border-left-color: $govuk-error-colour;
+
+    &:after {
+      display: none;
+    }
+  }
 }
 
 .BranchAnswer {
   clear: both;
-  float: right;
-  margin-bottom: govuk-spacing(6);
+  margin-left: 15%;
+  padding-top: govuk-spacing(7);
   width: 85%;
 
   select {
     &:first-child {
-      width: 35%;
+      margin-right: 18px;
+      width: calc(40% - 22px);
     }
 
     &:last-child {
-      float: right;
       width: 60%;
     }
   }
@@ -200,24 +218,30 @@ html {
 }
 
 .BranchCondition {
-  overflow: hidden;
   margin-top: govuk-spacing(6);
-  padding-left: 13px;
-  padding-right: 75px;
   position: relative;
+
+  p {
+    margin-top: 0;
+  }
 
   &:after {
     background-color: $govuk-border-colour;
     content: "";
     display: block;
-    height: calc(100% - #{govuk-spacing(6)});
-    right: calc(85% + #{govuk-spacing(3)});
+    height: 100%;
+    left: 12%;
     position: absolute;
+    right: calc(85% + #{govuk-spacing(1)});
     top: 0;
     width: 5px;
   }
 
   &.error {
+    label {
+      padding-left: govuk-spacing(3);
+    }
+
     &:after {
       background-color: $govuk-error-colour;
     }
@@ -227,9 +251,12 @@ html {
     margin-top: 0;
   }
 
-  .error-message {
-    color: $govuk-error-colour;
-    font-weight: bold;
+  &.govuk-form-group--error .BranchQuestion {
+    padding-left: calc(15% - 13px);
+  }
+
+  & + .BranchCondition {
+    margin-top: govuk-spacing(9);
   }
 
   @include govuk-media-query($until: tablet) {
@@ -242,7 +269,6 @@ html {
     }
 
     select {
-      float: none;
       width: 100%;
     }
   }
@@ -252,7 +278,8 @@ html {
   @include button_as_link;
   background-color: transparent;
   margin-bottom: govuk-spacing(7);
-  margin-left: 100px;
+  margin-left: calc(15% + #{govuk-spacing(3)});
+  margin-top: govuk-spacing(4);
 
   @include govuk-media-query($until: tablet) {
     margin-left: 0;
@@ -265,7 +292,7 @@ html {
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
-  right: govuk-spacing(5);
+  right: -50px;
   top: 0;
 
   &:focus,
@@ -275,82 +302,33 @@ html {
 }
 
 .BranchDestination,
-#branch-otherwise .destination {
-  margin-right: 75px;
-  padding-left: 100px;
+.BranchQuestion {
+  padding-left: 15%;
   position: relative;
 
   label {
     @include govuk-font($size: 24);
 
+    display: inline-block;
     font-weight: bold;
-    display: inline;
-    left: govuk-spacing(4);
-    margin-right: govuk-spacing(2);
+    left: 0;
+    padding-left: govuk-spacing(3);
     position: absolute;
-    top: 4px;
+    top: 5px;
   }
 
-  select {
-    float: right;
-    height: auto;
+  select,
+  .error-message {
     width: 100%;
   }
 
   @include govuk-media-query($until: tablet) {
-    & {
-      padding-left: 0;
-    }
-
-    select {
-      float: none;
-      width: 100%;
-    }
-  }
-}
-
-.BranchQuestion {
-  float: right;
-  width: 85%;
-
-  label {
-    @include govuk-font($size: 24);
-
-    display: inline;
-    font-weight: bold;
-    left: govuk-spacing(4);
-    margin-right: govuk-spacing(2);
-    position: absolute;
-    top: 0;
-    vertical-align: middle;
-  }
-
-  select {
-    width: 100%;
-  }
-
-  &.govuk-form-group {
-    margin-bottom: govuk-spacing(7);
-  }
-
-  &.govuk-form-group--error {
-    border-left: none;
-  }
-
-  @include govuk-media-query($until: tablet) {
-    & {
-      margin-left: 0;
-      width: 100%;
-    }
-
-    select {
-      float: none;
-    }
   }
 }
 
 .branch-actions {
   @include container_panel;
+  padding-bottom: govuk-spacing(4);
 }
 
 .branches {
@@ -1024,15 +1002,22 @@ html {
 
 /* Override or enhance GovUK styles
  * -------------------------------- */
-.govuk-form-group--error {
+.govuk-form-group--error,
+.error {
+
+  label {
+    padding-left: 0;
+  }
 
   option {
     color: $govuk-text-colour;
+    font-weight: normal;
   }
 
   select {
     border-color: $govuk-error-colour;
     color: $govuk-error-colour;
+    font-weight: bold;
   }
 
   .govuk-input {
@@ -1078,7 +1063,11 @@ html {
   }
 }
 
-.govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
-.govuk-radios__input:disabled + .govuk-radios__label {
+.govuk-radios__input:disabled + .govuk-radios__label,
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
 	opacity: 1;
+}
+
+.govuk-select {
+  background-color: govuk-colour("white");
 }

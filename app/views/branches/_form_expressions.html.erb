@@ -1,13 +1,15 @@
 <%= conditional.fields_for :expressions do |expression| %>
-  <div class="condition <%= expression.object.errors[:component].empty? ? '' : 'error' %>" data-expression-index="<%= expression.index %>">
-    <div class="question govuk-form-group
-      <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>">
+  <div class="condition govuk-form-group
+              <%= expression.object.errors[:component].empty? ? '' : 'govuk-form-group--error' %>
+              "
+              data-expression-index="<%= expression.index %>">
+
+    <% expression.object.errors[:component].each do |message| %>
+      <p class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></p>
+    <% end %>
+
+    <div class="question">
       <%= expression.label :component, t('branches.expression.if'), { class: "govuk-label" } %>
-
-      <% expression.object.errors[:component].each do |message| %>
-        <span class="govuk-error-message"><%= message + (conditional.index + 1).to_s %></span>
-      <% end %>
-
       <%= expression.select :component,
         @branch.previous_questions,
         { include_blank: t('branches.select_question') },
@@ -27,5 +29,6 @@
         %>
     <% end %>
     <button class="condition-remover destructive"><%= t('branches.condition_remove') %></button>
+
   </div>
 <% end %>
