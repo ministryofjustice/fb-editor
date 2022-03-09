@@ -13,13 +13,12 @@
     <%= t('branches.title_otherwise') %>
     <span class="name govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
   </p>
-  <div class="destination">
-    <div class="govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
+  <div class="destination govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
+    <% @branch.errors[:default_next].each do |message| %>
+      <p class="govuk-error-message"><%= message %></p>
+    <% end %>
 
-      <% @branch.errors[:default_next].each do |message| %>
-        <span class="govuk-error-message"><%= message %></span>
-      <% end %>
-
+    <div class="fields">
       <label class="govuk-label" for="branch_default_next"><%= t('branches.goto') %></label>
       <select class="govuk-select" name="branch[default_next]" id="branch_default_next">
         <%= render partial: "destinations_list",

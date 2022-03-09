@@ -49,6 +49,7 @@ class BranchDestination {
     this.$node.find(this._config.selector_error_messsage).remove();
 
     // Next clear any added error classes designed to pick up error css.
+    this.$node.removeClass(classes);
     for(var i=0; i < classes.length; ++i) {
       this.$node.find("." + classes[i]).removeClass(classes[i]);
     }
