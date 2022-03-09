@@ -23,7 +23,7 @@
   <section id="flow-detached" data-component="Expander">
     <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
     <p class="help">
-      <a target="_blank" href="https://moj-forms.service.justice.gov.uk/user-guide/branching-and-flow-management.html#reconnect-unconnected" class="govuk-link">How do I reconnect these?</a>
+      <a target="_blank" href="https://moj-forms.service.justice.gov.uk/branching#reconnect-unconnected" class="govuk-link"><%= t('pages.flow.reconnect_hint') -%></a>
     </p>
     <% @detached_flows.each do |detached_flow| %>
           <div class="flow-detached-group">
