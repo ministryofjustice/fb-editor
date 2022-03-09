@@ -244,7 +244,7 @@ jobs:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
@@ -285,7 +285,7 @@ jobs:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
