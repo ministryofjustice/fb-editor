@@ -265,10 +265,10 @@ class BranchQuestion {
            break;
       case false:
            this.error("unsupported");
-           this.enable(); 
+           this.enable();
            break;
       default:
-           this.enable(); 
+           this.enable();
            // Just trigger an event
            $(document).trigger(EVENT_QUESTION_CHANGE, this.condition.branch);
     }
@@ -279,13 +279,15 @@ class BranchQuestion {
 
     // First clear anything added by error() method.
     this.condition.$node.removeClass("error");
+    this.condition.$node.removeClass(this._config.css_classes_error);
+
     if(this._$error && this._$error.length > 0) {
       this._$error.remove();
       this._$error = null;
     }
 
     // Second remove any template injected error messages identified by config.
-    this.$node.find(this._config.selector_error_messsage).remove();
+    this.condition.$node.find(this._config.selector_error_messsage).remove();
 
     // Lastley remove any template injected error message classes identified by config.
     for(var i=0; i < classes.length; ++i) {

@@ -192,7 +192,6 @@ BranchesController.addBranchEventListeners = function(view) {
   });
 }
 
-
 /* Creates a BranchInjector object from passed $node.
  * BranchInjectors fetch new HTML for a branch that will
  * be added to the DOM and turned into a Branch object.
@@ -265,7 +264,6 @@ function createBranchConditionTemplate($node) {
 
     // First clean up some stuff.
     $condition.find(".govuk-error-message").remove();
-    $condition.removeClass("error");
     $condition.removeClass("govuk-form-group--error");
 
     // Now take a copy of the HTML.
