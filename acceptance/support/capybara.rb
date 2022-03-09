@@ -11,4 +11,4 @@ Capybara.current_session.driver.reset!
 Capybara.default_host = ENV['ACCEPTANCE_TESTS_EDITOR_APP']
 Capybara.app_host = ENV['ACCEPTANCE_TESTS_EDITOR_APP']
 Capybara.run_server = false
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 15

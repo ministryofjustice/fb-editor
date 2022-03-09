@@ -18,7 +18,6 @@ module CommonSteps
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
-      sleep(3)
       expect(page).to have_content('Please select the log in option that matches your work email')
 
       # Executing javascript directly as the fields and button are hidden on the
@@ -37,7 +36,6 @@ module CommonSteps
       editor.sign_in_submit.click
     end
 
-    sleep(3)
     expect(page).to have_content(I18n.t('services.create'))
   end
 
@@ -75,48 +73,46 @@ module CommonSteps
 
   def given_I_add_a_single_question_page_with_text
     given_I_want_to_add_a_single_question_page
-    editor.add_text.click
+    editor.add_component(I18n.t('components.list.text')).click
   end
 
   def given_I_add_a_single_question_page_with_text_area
     given_I_want_to_add_a_single_question_page
-    editor.add_text_area.click
+    editor.add_component(I18n.t('components.list.textarea')).click
   end
 
   def given_I_add_a_single_question_page_with_number
     given_I_want_to_add_a_single_question_page
-    editor.add_number.click
+    editor.add_component(I18n.t('components.list.number')).click
   end
 
   def given_I_add_a_single_question_page_with_upload
     given_I_want_to_add_a_single_question_page
-    editor.add_file_upload.click
+    editor.add_component(I18n.t('components.list.upload')).click
   end
 
   def given_I_add_a_single_question_page_with_date
     given_I_want_to_add_a_single_question_page
-    editor.add_date.click
+    editor.add_component(I18n.t('components.list.date')).click
   end
 
   def given_I_add_a_single_question_page_with_radio
     given_I_want_to_add_a_single_question_page
-    editor.add_radio.click
+    editor.add_component(I18n.t('components.list.radios')).click
   end
 
   def given_I_add_a_single_question_page_with_checkboxes
     given_I_want_to_add_a_single_question_page
-    editor.add_checkboxes.click
+    editor.add_component(I18n.t('components.list.checkboxes')).click
   end
 
   def given_I_add_a_single_question_page_with_email
     given_I_want_to_add_a_single_question_page
-    editor.add_email.click
+    editor.add_component(I18n.t('components.list.email')).click
   end
 
-  def given_I_add_a_check_answers_page
-    editor.preview_page_images.first.hover
-    editor.three_dots_button.click
-    editor.add_page_here_link.click
+  def given_I_add_a_check_answers_page(page_title)
+    editor.connection_menu(page_title).click
     editor.add_check_answers.click
   end
 
@@ -125,17 +121,17 @@ module CommonSteps
   end
 
   def given_I_add_a_content_page
-    given_I_want_to_add_a_page
+    and_I_click_on_the_connection_menu
     editor.add_content_page.click
   end
 
   def given_I_add_a_multiple_question_page
-    given_I_want_to_add_a_page
+    and_I_click_on_the_connection_menu
     editor.add_multiple_question.click
   end
 
   def given_I_add_a_confirmation_page
-    given_I_want_to_add_a_page
+    and_I_click_on_the_connection_menu
     editor.add_confirmation.click
   end
 
@@ -144,21 +140,15 @@ module CommonSteps
   end
 
   def given_I_add_an_exit_page
-    given_I_want_to_add_a_page
+    and_I_click_on_the_connection_menu
     editor.add_exit.click
     and_I_add_a_page_url(exit_url)
     when_I_add_the_page
   end
 
   def given_I_want_to_add_a_single_question_page
-    given_I_want_to_add_a_page
-    editor.add_exit.hover # This is to prevent menu overlay and hiding text
+    and_I_click_on_the_connection_menu
     editor.add_single_question.hover
-  end
-
-  def given_I_want_to_add_a_page
-    and_I_click_on_the_three_dots
-    editor.add_page_here_link.click
   end
 
   def and_I_edit_the_service
@@ -171,17 +161,9 @@ module CommonSteps
   end
 
   def and_I_return_to_flow_page
-    page.find('#main-content', visible: true)
     editor.pages_link.click
-
-    # Make sure the page is there and ready.
-    using_wait_time 6 do
-      # Ignore Capybara.default_wait_time in this block scope.
-      # We're looking for the <main> element to be visible which
-      # will be a signal that JS processing (which initialy hides
-      # it) has finished (so JS unhides it).
-      find("#main-content", visible:true)
-    end
+    sleep 0.5 
+    page.find('#main-content', visible: true)
   end
 
   def and_I_change_the_page_heading(heading)
@@ -216,13 +198,13 @@ module CommonSteps
     editor.add_page_submit_button.last.click
   end
 
-  def when_I_preview_the_page
-    editor.preview_page_images[-2].hover
+  def when_I_preview_the_page(page_title)
+    editor.flow_thumbnail(page_title).hover
     when_I_click_preview_page
   end
 
   def when_I_click_preview_page
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
 
     window_opened_by do
       editor.preview_page_link.click
@@ -231,7 +213,9 @@ module CommonSteps
 
   def then_I_should_preview_the_page(preview_page)
     within_window(preview_page) do
-      expect(page.find('[type="submit"]')).to_not be_disabled
+      expect(
+        page.find('button', text: 'Continue')
+      ).to_not be_disabled
       expect(page.text).to include('Question')
       then_I_should_not_see_optional_text
       yield if block_given?
@@ -347,11 +331,18 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    # assuming the last two pages are checkanswers and confirmation, always pick
-    # the page directly before the checkanswers page
-    find('#main-content', visible: true)
-    editor.preview_page_images[-2].hover
     editor.three_dots_button.click
+  end
+
+  def and_I_click_on_the_connection_menu
+    find('#main-content', visible: true)
+    editor.all('.connection-menu-activator').last.click
+  end
+
+  def and_I_click_delete
+    within('.ui-dialog') do
+      editor.delete_page_modal_button.click
+    end
   end
 
   def then_I_should_only_see_three_options_on_page_menu
@@ -363,21 +354,16 @@ module CommonSteps
     ])
   end
 
-  def then_I_should_not_be_able_to_add_page(page)
+  def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
-    editor.preview_page_images.first.hover
-    sleep(1)
-    editor.three_dots_button.click
-    editor.add_page_here_link.click
-    expect(editor.text).not_to include(page)
+    editor.connection_menu(page_title).click
+    expect(editor.text).not_to include(page_link)
   end
 
-  def then_I_should_be_able_to_add_page(page)
+  def then_I_should_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
-    editor.preview_page_images.first.hover
-    editor.three_dots_button.click
-    editor.add_page_here_link.click
-    expect(editor.text).to include(page)
+    editor.connection_menu(page_title).click
+    expect(editor.text).to include(page_link)
   end
 
   def then_I_should_see_default_service_pages
@@ -389,38 +375,38 @@ module CommonSteps
   end
 
   def and_I_delete_cya_page
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
-    editor.hover_preview('Check your answers')
-    editor.three_dots_button.click
+    editor.flow_thumbnail('Check your answers').hover
+    and_I_click_on_the_three_dots
     editor.delete_page_link.click
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
-    editor.delete_page_modal_button.click
+    and_I_click_delete
   end
 
   def when_I_delete_confirmation_page
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
-    editor.hover_preview('Application complete')
-    editor.three_dots_button.click
+    editor.flow_thumbnail('Application complete').hover
+    and_I_click_on_the_three_dots
     editor.delete_page_link.click
-    sleep 1 # Arbitrary delay, possibly required due to focus issues
-    editor.delete_page_modal_button.click
+    and_I_click_delete
   end
 
   def then_I_should_not_see_delete_warnings
+    find('#main-content', visible: true)
     expect(editor.text).not_to include(DELETE_WARNING[0])
     expect(editor.text).not_to include(DELETE_WARNING[1])
     expect(editor.text).not_to include(DELETE_WARNING[2])
   end
 
   def then_I_should_see_delete_warning_cya
+    find('#main-content', visible: true)
     expect(editor.text).to include(DELETE_WARNING[0])
   end
 
   def then_I_should_see_delete_warning_confirmation
+    find('#main-content', visible: true)
     expect(editor.text).to include(DELETE_WARNING[1])
   end
 
   def then_I_should_see_delete_warning_both
+    find('#main-content', visible: true)
     expect(editor.text).to include(DELETE_WARNING[2])
   end
 end

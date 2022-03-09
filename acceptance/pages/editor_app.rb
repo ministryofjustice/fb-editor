@@ -11,10 +11,12 @@ class EditorApp < SitePrism::Page
 
   # landing page
   element :sign_in_button, :button, 'Sign in'
+  ########
 
   # localhost
   element :sign_in_email_field, :field, 'Email:'
   element :sign_in_submit, :button, 'Sign In'
+  ########
 
   # Auth0
   # currently not used as we are interacting with the fields using JS
@@ -22,11 +24,15 @@ class EditorApp < SitePrism::Page
   element :email_address_field, :field, 'Email'
   element :password_field, :field, 'Password'
   element :login_continue_button, :button, 'Log In'
+  ########
 
+  # Your forms
   element :service_name, '#form-navigation-heading'
   element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
   element :create_service_button, :button, I18n.t('services.create')
+  # End Your forms
 
+  # Pages flow
   element :footer_pages_link, 'h2', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'cookies'
 
@@ -45,24 +51,22 @@ class EditorApp < SitePrism::Page
   element :new_page_form, '#new_page', visible: false
 
   element :add_page, :button, I18n.t('pages.create')
-  element :add_single_question,
-          :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Single question page')]"
+  element :add_single_question, 'span.ui-menu-item-wrapper', text: I18n.t('actions.add_single_question'), visible: true
   element :add_multiple_question,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Multiple question page')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_multi_question')}')]"
   element :add_check_answers,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Check answers page')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_check_answers')}')]"
   element :add_confirmation,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Confirmation page')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_confirmation')}')]"
   element :add_content_page,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content page')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_content')}')]"
   element :add_exit,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Exit page')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_exit')}')]"
 
   element :add_a_component_button, :link, I18n.t('components.actions.add_component')
   element :question_component,
@@ -77,18 +81,74 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"
 
-  element :add_text, :link, I18n.t('components.list.text'), visible: false
-  element :add_text_area, :link, I18n.t('components.list.textarea'), visible: false
-  element :add_number, :link, I18n.t('components.list.number'), visible: false
-  element :add_file_upload, :link, I18n.t('components.list.upload'), visible: false
-  element :add_date, :link, I18n.t('components.list.date'), visible: false
-  element :add_radio, :link, I18n.t('components.list.radios'), visible: false
-  element :add_checkboxes, :link, I18n.t('components.list.checkboxes'), visible: false
-  element :add_content, :link, I18n.t('components.menu.content_area'), visible: false
-  element :add_email, :link, I18n.t('components.list.email'), visible: false
-
   elements :add_page_submit_button, :button, I18n.t('pages.create')
-  element :save_page_button, :xpath, '//input[@value="Save"]'
+  elements :form_pages, '#flow-overview .flow-item'
+  elements :form_urls, '#flow-overview .flow-item a.govuk-link'
+  elements :flow_items, '#flow-overview .flow-item', visible: true
+  elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
+
+  def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
+    preview_page_images.map do |page_flow|
+      page_flow.text.gsub("Edit:\n", '')
+    end
+  end
+
+  element :three_dots_button, '.flow-menu-activator'
+  element :preview_page_link, :link, I18n.t('actions.preview_page')
+  element :add_page_here_link, :link, I18n.t('actions.add_page')
+  element :delete_page_link, :link, I18n.t('actions.delete_page')
+  element :delete_page_modal_button, :link, I18n.t('dialogs.button_delete'), visible: true
+  element :branching_link, :link, I18n.t('actions.add_branch')
+
+  def unconnected_flow
+    find('#main-content', visible: true)
+    flow = detached_flow.map { |element| element.text.gsub("Edit:\n", '').split("\n") }
+    flow.flatten.uniq.reject { |f| f == I18n.t('pages.create') }
+  end
+
+  def flow_thumbnail(title)
+    preview_page_images.find { |p| p.text.include?(title) }
+  end
+  
+  def flow_article(title)
+    flow_items.find { |p| p.text.include?(title) }
+  end
+
+  def connection_menu(title)
+    flow_article(title).find('.connection-menu-activator')
+  end
+
+  def add_component(type)
+    add_single_question.hover
+    find(:link, type, visible: true)
+  end
+
+  def click_branch(branch_title)
+    page_flow_item('.flow-branch', branch_title).click
+  end
+
+  def hover_branch(branch_title)
+    hover_page_flow('.flow-branch', content: branch_title)
+  end
+
+  def hover_page_flow(html_class, content:)
+    page_flow_item(html_class, content).hover
+  end
+
+  def page_flow_item(html_class, content)
+    page.all(html_class).find do |element|
+      element.text.include?(content)
+    end
+  end
+
+  def unconnected_expand_link
+    page.all('h2.Expander_Activator').find do |element|
+      element.text == 'Unconnected'
+    end
+  end
+  # End pages flow
+
+  element :save_page_button,  '#fb-editor-save'
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
@@ -110,16 +170,6 @@ class EditorApp < SitePrism::Page
   data_content_id :first_component, 'page[components[0]]'
   data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
-
-  elements :form_pages, '#flow-overview .flow-item'
-  elements :form_urls, '#flow-overview .flow-item a.govuk-link'
-  elements :preview_page_images, '#flow-overview .flow-item img.body'
-  element :three_dots_button, '.flow-menu-activator'
-  element :preview_page_link, :link, I18n.t('actions.preview_page')
-  element :add_page_here_link, :link, I18n.t('actions.add_page')
-  element :delete_page_link, :link, I18n.t('actions.delete_page')
-  element :delete_page_modal_button, :link, I18n.t('dialogs.button_delete')
-  element :branching_link, :link, I18n.t('actions.add_branch')
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
@@ -149,12 +199,6 @@ class EditorApp < SitePrism::Page
 
   elements :detached_flow, '.flow-detached-group .flow-item'
 
-  def unconnected_flow
-    detached_flow.map do |element|
-      element.text.gsub("Edit:\n", '').split("\n")
-    end.flatten.uniq
-  end
-
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end
@@ -165,39 +209,5 @@ class EditorApp < SitePrism::Page
 
   def branch_title(index)
     find("div[data-conditional-index='#{index}'] p")
-  end
-
-  def hover_preview(page_title)
-    hover_page_flow('.flow-thumbnail', content: page_title)
-  end
-
-  def click_branch(branch_title)
-    page_flow_item('.flow-branch', branch_title).click
-  end
-
-  def hover_branch(branch_title)
-    hover_page_flow('.flow-branch', content: branch_title)
-  end
-
-  def hover_page_flow(html_class, content:)
-    page_flow_item(html_class, content).hover
-  end
-
-  def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
-    page.all(html_class).map do |page_flow|
-      page_flow.text.gsub("Edit:\n", '')
-    end
-  end
-
-  def page_flow_item(html_class, content)
-    page.all(html_class).find do |element|
-      element.text.include?(content)
-    end
-  end
-
-  def unconnected_expand_link
-    page.all('h2.Expander_Activator').find do |element|
-      element.text == 'Unconnected'
-    end
   end
 end

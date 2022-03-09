@@ -29,9 +29,9 @@
                 data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
           </ul>
         </li>
-        
+
         <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
-        
+
         <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
 
         <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
@@ -40,7 +40,7 @@
    <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page.uuid) %> 
       <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
-      
+
     <% if item[:type] == 'page.checkanswers' %>
       <% if service.confirmation_page.present? %>
         <% if !@publish_warning&.confirmation_in_main_flow? %>
@@ -94,16 +94,16 @@
               data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
         </ul>
       </li>
-      
+
       <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
-      
+
       <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
     <% end %>
 
     <% unless service.checkanswers_page.present? %>
       <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
- 
+
     <% unless service.confirmation_page.present? %>
       <li data-page-type="confirmation"><a href="#add-page"><%= t('actions.add_confirmation') -%></a></li>
     <% end %>

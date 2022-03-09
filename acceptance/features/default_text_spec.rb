@@ -4,6 +4,7 @@ feature 'Default text' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'star-wars-question' }
+  let(:question_title) { 'Question' }
   let(:question) do
     'Which program do Jedi use to open PDF files?'
   end
@@ -20,7 +21,7 @@ feature 'Default text' do
     given_I_have_a_single_question_page_with_text
     then_I_should_see_default_text
     and_I_return_to_flow_page
-    preview_page = when_I_preview_the_page
+    preview_page = when_I_preview_the_page(question_title)
     then_I_should_preview_the_page(preview_page) do
       and_I_should_not_see_the_default_text
       and_I_should_not_see_the_optional_section_heading_text
@@ -32,7 +33,7 @@ feature 'Default text' do
     when_I_customise_hint
     when_I_save_my_changes
     and_I_return_to_flow_page
-    preview_page = when_I_preview_the_page
+    preview_page = when_I_preview_the_page(question_title)
     then_I_should_preview_the_page(preview_page) do
       and_I_see_the_custom_hint
     end
@@ -42,7 +43,7 @@ feature 'Default text' do
     given_I_have_a_single_question_page_with_radio
     then_I_should_see_default_text_in_label_and_options
     and_I_return_to_flow_page
-    preview_page = when_I_preview_the_page
+    preview_page = when_I_preview_the_page(question_title)
     then_I_should_preview_the_page(preview_page) do
       and_I_should_not_see_the_default_text
     end
@@ -53,7 +54,7 @@ feature 'Default text' do
     when_I_customise_all_hints
     when_I_save_my_changes
     and_I_return_to_flow_page
-    preview_page = when_I_preview_the_page
+    preview_page = when_I_preview_the_page(question_title)
     then_I_should_preview_the_page(preview_page) do
       and_I_see_all_custom_hints
     end

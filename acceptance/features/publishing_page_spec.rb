@@ -50,8 +50,7 @@ feature 'Branching errors' do
   scenario 'when visiting the publishing page without confirmation page present' do
     given_I_have_a_single_question_page_with_upload
     and_I_return_to_flow_page
-    # this will fail when we implement disconnected pages warning
-    and_I_add_an_exit_page_after_cya_page
+    when_I_delete_confirmation_page
     when_I_visit_the_publishing_page
     then_I_should_be_on_the_publishing_page
     then_I_should_not_see_warning_both_text
@@ -69,15 +68,6 @@ feature 'Branching errors' do
     buttons_text = page.all(:css, 'input.fb-govuk-button', visible: false).map(&:value)
     expect(buttons_text).to include(I18n.t('publish.test.button'))
     expect(buttons_text).to include(I18n.t('publish.live.button'))
-  end
-
-  def and_I_add_an_exit_page_after_cya_page
-    editor.preview_page_images.last.hover
-    editor.three_dots_button.click
-    editor.add_page_here_link.click
-    editor.add_exit.click
-    and_I_add_a_page_url(exit_url)
-    when_I_add_the_page
   end
 
   def then_I_should_not_see_warning_both_text

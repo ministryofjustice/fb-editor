@@ -59,11 +59,11 @@ feature 'Preview form' do
     and_I_add_a_page_url('multi')
     when_I_add_the_page
     and_I_change_the_page_heading(multiple_page_heading)
-    and_I_add_the_component(editor.add_text)
+    and_I_add_the_component(I18n.t('components.list.text'))
     and_I_change_the_text_component(text_component_question)
     when_I_update_the_question_name('Multiple Question page')
     and_I_add_a_multiple_page_content_component(content: content_component)
-    and_I_add_the_component(editor.add_text_area)
+    and_I_add_the_component(I18n.t('components.list.textarea'))
     and_I_change_the_textarea_component(textarea_component_question, component: 2)
     when_I_save_my_changes
     and_I_return_to_flow_page

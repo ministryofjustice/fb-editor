@@ -18,7 +18,6 @@ feature 'New branch page' do
     then_I_should_be_on_the_correct_branch_page('new')
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')
     then_I_should_see_text(I18n.t('branches.title_otherwise'))
-    then_I_should_see_text(I18n.t('branches.hint_otherwise'))
 
     and_I_select_the_destination_page_dropdown
     then_I_should_not_see_unconnected_pages

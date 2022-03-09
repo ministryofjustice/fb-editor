@@ -40,9 +40,8 @@ feature 'Edit confirmation pages' do
   end
 
   def and_I_click_on_the_confirmation_page_three_dots # confirmation page does not have 'img.body'
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
     page.find('.flow-thumbnail', text: confirmation_heading).hover
-    editor.three_dots_button.click
+    and_I_click_on_the_three_dots
   end
 
   def and_I_click_edit_page

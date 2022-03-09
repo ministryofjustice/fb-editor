@@ -240,28 +240,11 @@ jobs:
             K8S_NAMESPACE: formbuilder-saas-test
           command: './deploy-scripts/bin/deploy-eks'
       - slack/status: *slack_status
-  deploy_to_test_no_branching_eks:
-    working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
-    steps:
-      - checkout
-      - setup_remote_docker: *remote_docker
-      - add_ssh_keys: *ssh_keys
-      - run: *base_environment_variables
-      - run: *deploy_scripts
-      - run:
-          name: deploy to test no branching
-          environment:
-            APPLICATION_NAME: fb-editor
-            PLATFORM_ENV: test
-            K8S_NAMESPACE: formbuilder-saas-test
-            DISABLE_BRANCHING: 'true'
-          command: './deploy-scripts/bin/deploy-eks'
   acceptance_tests_eks:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
@@ -285,7 +268,6 @@ jobs:
             source $BASH_ENV
 
             TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
-            TO_EXCLUDE=acceptance/features/no_branching_spec.rb
             FILTERED_TESTFILES=$(printf '%s\n' "${TESTFILES//$TO_EXCLUDE/}")
 
             echo '***********'
@@ -299,41 +281,11 @@ jobs:
       - store_test_results:
           path: ~/acceptance
       - slack/status: *slack_status
-  acceptance_tests_no_branching_eks:
-    docker: *test_image
-    resource_class: large
-    environment: *test_environment
-    steps:
-      - checkout
-      - ruby/install-deps
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - run:
-          name: Check browser tools install
-          command: |
-            google-chrome --version
-            chromedriver --version
-      - run: *wait_for_db
-      - run: *db_setup
-      - run:
-          name: Run no branching acceptance tests
-          command: |
-            EDITOR_APP=https://fb-editor-test-no-branching.apps.live.cloud-platform.service.justice.gov.uk
-            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
-            echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
-            echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
-            echo 'export CI_MODE=true' >> $BASH_ENV
-            source $BASH_ENV
-
-            bundle exec rspec --format progress \
-              --format RspecJunitFormatter \
-              acceptance/features/no_branching_spec.rb
-      - slack/status: *testable_slack_status
   testable_branch_acceptance_tests:
     docker: *test_image
     resource_class: large
     environment: *test_environment
-    parallelism: 5
+    parallelism: 7
     steps:
       - checkout
       - ruby/install-deps
@@ -357,7 +309,6 @@ jobs:
             source $BASH_ENV
 
             TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
-            TO_EXCLUDE=acceptance/features/no_branching_spec.rb
             FILTERED_TESTFILES=$(printf '%s\n' "${TESTFILES//$TO_EXCLUDE/}")
 
             echo '***********'
@@ -445,27 +396,18 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
-      - deploy_to_test_no_branching_eks:
-          requires:
-            - build_web_image
-            - build_workers_image
       - acceptance_tests_eks:
           requires:
             - deploy_to_test_eks
-      - acceptance_tests_no_branching_eks:
-          requires:
-            - deploy_to_test_no_branching_eks
       # - slack/approval-notification:
       #     message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
       #     include_job_number_field: false
       #     requires:
       #       - acceptance_tests_eks
-      #       - acceptance_tests_no_branching_eks
       # - confirm_live_deploy:
       #     type: approval
       #     requires:
       #       - acceptance_tests_eks
-      #       - acceptance_tests_no_branching_eks
       # - deploy_to_live_eks:
       #     requires:
       #       - confirm_live_deploy

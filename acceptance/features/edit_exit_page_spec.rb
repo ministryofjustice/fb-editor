@@ -109,8 +109,7 @@ feature 'Edit exit pages' do
   end
 
   def and_I_click_on_the_exit_page_three_dots
-    sleep 0.5 # Arbitrary delay, possibly required due to focus issues
-    editor.preview_page_images.last.hover
-    editor.three_dots_button.click
+    editor.flow_thumbnail(exit_heading).hover
+    and_I_click_on_the_three_dots
   end
 end
