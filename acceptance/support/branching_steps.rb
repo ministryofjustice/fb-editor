@@ -28,12 +28,14 @@ module BranchingSteps
     and_I_return_to_flow_page
   end
 
-  def then_I_can_add_and_delete_conditionals_and_expressions
+  def then_I_can_add_conditionals_and_expressions
     and_I_add_another_condition
     then_I_should_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_see_another_question_list
     then_I_should_see_the_delete_condition_button
+  end
 
+  def then_I_can_delete_conditionals_and_expressions
     and_I_delete_the_condition
     then_I_should_not_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_not_see_text(I18n.t('branches.condition_remove'))
@@ -293,5 +295,10 @@ module BranchingSteps
 
     editor.save_button.click
     and_I_return_to_flow_page
+  end
+
+  # Error summary #
+  def then_I_should_not_see_an_error_summary
+    expect(page).not_to have_selector('.govuk-error-summary')
   end
 end

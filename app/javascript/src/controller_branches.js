@@ -269,16 +269,14 @@ function createBranchConditionTemplate($node) {
     // Now take a copy of the HTML.
     html = $condition.get(0).outerHTML;
   }
-
   // html is a string, either empty or populated, so we should be safe from here.
   html = html.replace(
-          /branch_conditionals_attributes_0_expressions_attributes_0_component/mig,
-          "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_component");
+          /branch_conditionals_attributes_0_expressions_attributes_0_(component|operator|field)/mig,
+          "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_$1");
   html = html.replace(
-          /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[component\]/mig,
-          "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][component]");
+          /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[(component|operator|field)\]/mig,
+          "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][$1]");
   return html;
 }
-
 
 module.exports = BranchesController;
