@@ -58,7 +58,7 @@ jobs:
           POSTGRES_DB: editor_local
           POSTGRES_PASSWORD: password
           POSTGRES_USER: postgres
-        image: 'circleci/postgres:12.4'
+        image: 'cimg/postgres:12.9'
     environment: &test_environment
       BUNDLE_JOBS: '3'
       BUNDLE_RETRY: '3'
