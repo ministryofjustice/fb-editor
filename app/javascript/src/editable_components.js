@@ -713,6 +713,10 @@ class EditableComponentCollectionItem extends EditableComponentBase {
       selectorElementHint: config.selectorComponentCollectionItemHint
     }, config));
 
+    if(!config.preserveItem) {
+      createEditableCollectionItemMenu(this, config);
+    }
+
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
       $node.addClass(config.editClassname);
     });
@@ -720,10 +724,6 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     $node.on("blur.EditableComponentCollectionItem", "*", function() {
       $node.removeClass(config.editClassname);
     });
-
-    if(!config.preserveItem) {
-      createEditableCollectionItemMenu(this, config);
-    }
 
     this.component = editableCollectionFieldComponent;
     $node.addClass("EditableComponentCollectionItem");

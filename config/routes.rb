@@ -67,8 +67,8 @@ Rails.application.routes.draw do
 
         resources :questions, only: [] do
           get '/destroy-message', to: 'questions#destroy_message', as: :destroy_message
-          resources :options, only: [] do
-            get '/destroy-message', to: 'options#destroy_message', as: :destroy_message
+          resources :question_options, only: [] do
+            get '/destroy-message', to: 'question_options#destroy_message', as: :destroy_message
           end
         end
       end

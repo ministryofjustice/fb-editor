@@ -86,8 +86,6 @@ class EditableCollectionItemMenu extends ActivatedMenu {
         })
       }
     })
-
-    //this.collectionItem.remove();
   }
 }
 

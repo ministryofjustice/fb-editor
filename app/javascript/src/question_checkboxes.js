@@ -18,9 +18,7 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const uniqueString = utilities.uniqueString;
 const Question = require('./question');
-const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
@@ -58,14 +56,6 @@ class CheckboxesQuestion extends Question {
       onItemAdd: function($node) {
         // @$node (jQuery node) Node (instance.$node) that has been added.
         // Runs after adding a new Collection item.
-        // This adjust the view to wrap Remove button with desired menu component.
-        //
-        // This is not very good but expecting it to get significant rework when
-        // we add more menu items (not for MVP).
-        createEditableCollectionItemMenu($node.data('instance'), {
-          activator_text: config.text.edit,
-          classnames: "editableCollectionItemControls"
-        });
       },
       onItemRemove: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
@@ -84,39 +74,14 @@ class CheckboxesQuestion extends Question {
       }
     }, config));
 
+    $node.addClass("CheckboxesQuestion");
 
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
-    $(".EditableComponentCollectionItem").each(function() {
-      createEditableCollectionItemMenu($(this).data('instance'), {
-       activator_text: config.text.edit,
-        classnames: "editableCollectionItemMenu"
-      });
-    }).parent().attr("aria-label", config.text.aria.answers);
+    $(".EditableComponentCollectionItem").parent().attr("aria-label", config.text.aria.answers);
 
-    $node.addClass("CheckboxesQuestion");
     this._preservedItemCount = 1;
   }
 }
-
-
-function createEditableCollectionItemMenu(item, config) { 
-  var template = $("[data-component-template=EditableCollectionItemMenu]");
-  var $ul = $(template.html());
-
-  item.$node.append($ul);
-  
-  let menu = new EditableCollectionItemMenu($ul, {
-      activator_text: config.activator_text,
-      container_id: uniqueString("activatedMenu-"),
-      collectionItem: item,
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
-      }
-    });
-
-    item.$node.data("ActivatedMenu", menu);
-}
-
 
 module.exports = CheckboxesQuestion;

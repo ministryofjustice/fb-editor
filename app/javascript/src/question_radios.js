@@ -18,9 +18,7 @@
 
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
-const uniqueString = utilities.uniqueString;
 const Question = require('./question');
-const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
@@ -58,10 +56,6 @@ class RadiosQuestion extends Question {
       onItemAdd: function($node) {
         // @$node (jQuery node) Node (instance.$node) that has been added.
         // Runs after adding a new Collection item.
-        // This adjust the view to wrap Remove button with desired menu component.
-        //
-        // This is not very good but expecting it to get significant rework when
-        // we add more menu items (not for MVP).
       },
       onItemRemove: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
@@ -78,7 +72,6 @@ class RadiosQuestion extends Question {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before onItemRemove when removing an editable Collection item.
       }
-
     }, config));
 
     $node.addClass("RadiosQuestion");
@@ -90,9 +83,5 @@ class RadiosQuestion extends Question {
     this._preservedItemCount = 2;
   }
 }
-
-
-
-
 
 module.exports = RadiosQuestion;
