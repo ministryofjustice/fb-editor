@@ -17,6 +17,7 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
+const uniqueString = utilities.uniqueString;
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
@@ -29,6 +30,7 @@ const converter = new showdown.Converter({
                     tables: true,
                     disableForced4SpacesIndentedSublists: true
                   });
+const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
 
 showdown.setFlavor('github');
 
@@ -567,6 +569,9 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     $lastItem.after($clone);
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
+
+    createEditableCollectionItemMenu(this, this._config);
+
     safelyActivateFunction(this._config.onItemAdd, $clone);
     this.emitSaveRequired();
   }
@@ -708,10 +713,6 @@ class EditableComponentCollectionItem extends EditableComponentBase {
       selectorElementHint: config.selectorComponentCollectionItemHint
     }, config));
 
-    if(!config.preserveItem) {
-      new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
-    }
-
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
       $node.addClass(config.editClassname);
     });
@@ -719,6 +720,10 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     $node.on("blur.EditableComponentCollectionItem", "*", function() {
       $node.removeClass(config.editClassname);
     });
+
+    if(!config.preserveItem) {
+      createEditableCollectionItemMenu(this, config);
+    }
 
     this.component = editableCollectionFieldComponent;
     $node.addClass("EditableComponentCollectionItem");
@@ -761,37 +766,23 @@ class EditableCollectionItemInjector {
   }
 }
 
+function createEditableCollectionItemMenu(item, config) { 
+  var template = $("[data-component-template=EditableCollectionItemMenu]");
+  var $ul = $(template.html());
 
-class EditableCollectionItemRemover {
-  constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
-    var conf = mergeObjects({}, config);
-    var text = mergeObjects({ itemRemove: 'remove' }, config.text);
-    var $node = $(createElement("button", text.itemRemove, conf.classes));
-
-    $node.data("instance", this);
-    $node.addClass("EditableCollectionItemRemover");
-    $node.attr("type", "button");
-    $node.on("click.EditableCollectionItemRemover", function(e) {
-      e.preventDefault();
-      editableCollectionItem.remove();
-    });
-
-    // Close on ENTER || SPACE
-    $node.on("keydown.EditableCollectionItemRemover", function(e) {
-      e.preventDefault();
-      if(e.which == 13 || e.which == 32) {
-        editableCollectionItem.remove();
+  item.$node.append($ul);
+  
+  let menu = new EditableCollectionItemMenu($ul, {
+      activator_text: config.text.edit,
+      container_id: uniqueString("activatedMenu-"),
+      collectionItem: item,
+      menu: {
+        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
 
-    editableCollectionItem.$node.append($node);
-
-    this.component = editableCollectionFieldComponent;
-    this.item = editableCollectionItem;
-    this.$node = $node;
-  }
+    item.$node.data("ActivatedMenu", menu);
 }
-
 
 /* Convert HTML to Markdown by tapping into third-party code.
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.

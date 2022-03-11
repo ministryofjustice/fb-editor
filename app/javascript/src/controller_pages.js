@@ -401,12 +401,16 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
+        
         view.dialogConfirmationDelete.open({
           heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
           ok: view.text.dialogs.button_delete_option
           }, function() {
           item.component.removeItem(item);
         });
+
+        
+        
       }
 
 

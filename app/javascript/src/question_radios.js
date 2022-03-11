@@ -20,7 +20,7 @@ const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const uniqueString = utilities.uniqueString;
 const Question = require('./question');
-const ActivatedMenu = require('./component_activated_menu');
+const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
@@ -62,16 +62,11 @@ class RadiosQuestion extends Question {
         //
         // This is not very good but expecting it to get significant rework when
         // we add more menu items (not for MVP).
-        collectionItemControlsInActivatedMenu($node, {
-          activator_text: config.text.edit,
-          classnames: "editableCollectionItemControls"
-        });
       },
       onItemRemove: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before removing an editable Collection item.
         // Provides an opportunity for clean up.
-        console.log('remove');
         var activatedMenu = item.$node.data("ActivatedMenu");
         if(activatedMenu) {
           activatedMenu.activator.$node.remove();
@@ -90,12 +85,7 @@ class RadiosQuestion extends Question {
 
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
-    $(".EditableComponentCollectionItem").each(function() {
-      collectionItemControlsInActivatedMenu($(this), {
-       activator_text: config.text.edit,
-        classnames: "editableCollectionItemControls"
-      });
-    }).parent().attr("aria-label", config.text.aria.answers);
+    $(".EditableComponentCollectionItem").parent().attr("aria-label", config.text.aria.answers);
 
     this._preservedItemCount = 2;
   }
@@ -103,36 +93,6 @@ class RadiosQuestion extends Question {
 
 
 
-/* Finds elements to wrap in Activated Menu component.
- * Best used for dynamically generated elements that have been injected into the page
- * through JS enhancement. If items existed in the template code, you could probably
- * just use an easier method such as applyMenus() function.
- *
- * This function will basically find desired elments, wrap each one with an <li> tag,
- * add those to a new <ul> element, and then create an ActivateMenu component from
- * that structure.
- *
- * @selector (String) jQuery compatible selector to find elements for menu inclusion.
- * @$node  (jQuery node) Wrapping element/container that should hold the elements sought.
- * effects and wraps them with the required functionality.
- **/
-function collectionItemControlsInActivatedMenu($item, config) {
-  var $elements = $(".EditableCollectionItemRemover", $item);
-  if($elements.length) {
-    $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
-    $elements.wrap("<li></li>");
-    let menu = new ActivatedMenu($elements.parents("ul"), {
-      activator_text: config.activator_text,
-      container_classname: config.classnames,
-      container_id: uniqueString("activatedMenu-"),
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
-      }
-    });
-
-    $item.data("ActivatedMenu", menu);
-  }
-}
 
 
 module.exports = RadiosQuestion;
