@@ -158,34 +158,34 @@ RSpec.describe Expression do
   end
 
   describe '#name_attr' do
-    let(:expected_name) do
-      'branch[conditionals_attributes][1][expressions_attributes][0][answer]'
-    end
+    let(:attributes) { %w[answer component operator field] }
 
-    it 'constucts the correct name attribute' do
-      expect(
-        expression.name_attr(
-          conditional_index: 1,
-          expression_index: 0,
-          attribute: 'answer'
-        )
-      ).to eq(expected_name)
+    it 'constructs the correct name attribute' do
+      attributes.each do |attribute|
+        expect(
+          expression.name_attr(
+            conditional_index: 1,
+            expression_index: 0,
+            attribute: attribute
+          )
+        ).to eq("branch[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
+      end
     end
   end
 
   describe '#id_attr' do
-    let(:expected_id) do
-      'branch_conditionals_attributes_0_expressions_attributes_1_operator'
-    end
+    let(:attributes) { %w[component operator field] }
 
     it 'constructs the correct id attribute' do
-      expect(
-        expression.id_attr(
-          conditional_index: 0,
-          expression_index: 1,
-          attribute: 'operator'
-        )
-      ).to eq(expected_id)
+      attributes.each do |attribute|
+        expect(
+          expression.id_attr(
+            conditional_index: 0,
+            expression_index: 1,
+            attribute: attribute
+          )
+        ).to eq("branch_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
+      end
     end
   end
 

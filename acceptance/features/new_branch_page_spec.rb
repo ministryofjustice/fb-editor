@@ -77,7 +77,8 @@ feature 'New branch page' do
       'Which flavours of ice cream have you eaten?'
     )
 
-    then_I_can_add_and_delete_conditionals_and_expressions
+    then_I_can_add_conditionals_and_expressions
+    then_I_can_delete_conditionals_and_expressions
 
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')

@@ -44,7 +44,47 @@ feature 'New branch page' do
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')
 
-    then_I_can_add_and_delete_conditionals_and_expressions
+    then_I_can_add_conditionals_and_expressions
+
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][2][component]',
+      'What is your favourite hobby?'
+    )
+
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][2][operator]',
+      'is not'
+    )
+
+    and_I_choose_an_option(
+      'branch[conditionals_attributes][0][expressions_attributes][2][field]',
+      'Sewing'
+    )
+
+    when_I_save_my_changes
+    then_I_should_not_see_an_error_summary
+
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
+      'is'
+    )
+
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
+      'Hiking'
+    )
+
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][1][operator]',
+      'is not'
+    )
+
+    then_I_should_see_the_field_option(
+      'branch[conditionals_attributes][0][expressions_attributes][1][field]',
+      'Sewing'
+    )
+
+    then_I_can_delete_conditionals_and_expressions
 
     and_I_choose_an_option(
       'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
@@ -113,7 +153,8 @@ feature 'New branch page' do
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')
 
-    then_I_can_add_and_delete_conditionals_and_expressions
+    then_I_can_add_conditionals_and_expressions
+    then_I_can_delete_conditionals_and_expressions
 
     when_I_save_my_changes
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')
