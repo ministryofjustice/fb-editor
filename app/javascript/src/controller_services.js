@@ -357,7 +357,7 @@ function adjustOverviewHeight($overview) {
   // then the topOverlap will have capture the measurement of by how much.
   // Move the overview area down to avoid paths overlapping content above.
   if(topOverlap > 0) {
-    $overview.css("top", topOverlap + "px");
+    $overview.css("margin-top", topOverlap + "px");
   }
 
   // Adjustment to make the height over overview area contain the height
