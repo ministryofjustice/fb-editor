@@ -53,10 +53,14 @@ module ApplicationHelper
   end
 
   def moj_forms_team?
+    return if current_user.blank?
+
     Rails.application.config.moj_forms_team.include?(current_user.email)
   end
 
   def moj_forms_dev?
+    return if current_user.blank?
+
     Rails.application.config.moj_forms_devs.include?(current_user.email)
   end
 
