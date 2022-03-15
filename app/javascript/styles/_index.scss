@@ -809,10 +809,6 @@ html {
     margin: 0 0 38px 0;
   } 
 
-  .Expander_container {
-    @include govuk-width-container($govuk-page-width);
-  }
-
   .flow-detached-group {
     position: relative;
   }
