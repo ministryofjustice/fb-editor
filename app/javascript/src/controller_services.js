@@ -55,10 +55,12 @@ ServicesController.edit = function() {
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
   view.$flowStandalone = $("#flow-standalone-pages");
+  view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
 
   createPageAdditionDialog(view);
   createPageMenus(view);
   createConnectionMenus(view);
+
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
   }
@@ -197,16 +199,16 @@ function createConnectionMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
-  createAndPositionFlowItems($container);
+  createAndPositionFlowItems(view, $container);
 
   // TEMPORARY: BRANCHING FEATURE FLAG
   if(!view.features.branching) {
     positionAddPageButton();
   }
   adjustOverviewHeight($container);
-  applyPageFlowConnectorPaths($container);
-  applyBranchFlowConnectorPaths($container);
-  applyRouteEndFlowConnectorPaths($container);
+  applyPageFlowConnectorPaths(view, $container);
+  applyBranchFlowConnectorPaths(view, $container);
+  applyRouteEndFlowConnectorPaths(view, $container);
   adjustOverlappingFlowConnectorPaths($container);
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
@@ -245,10 +247,10 @@ function layoutDetachedItemsOveriew(view) {
   // Add required scrolling to layout groups.
   $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
-    createAndPositionFlowItems($group);
+    createAndPositionFlowItems(view, $group);
     adjustOverviewHeight($group);
-    applyPageFlowConnectorPaths($group);
-    applyBranchFlowConnectorPaths($group);
+    applyPageFlowConnectorPaths(view, $group);
+    applyBranchFlowConnectorPaths(view, $group);
     adjustOverlappingFlowConnectorPaths($group);
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
@@ -262,9 +264,9 @@ function layoutDetachedItemsOveriew(view) {
  * Main function to find and position flow items (pages/branches/spacers)
  * within an overview layout.
 **/
-function createAndPositionFlowItems($overview) {
+function createAndPositionFlowItems(view, $overview) {
   var $columns = $(".column", $overview);
-  var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
+  var rowHeight = view.page.flowItemsRowHeight;
   var left = 0;
 
   // Loop over found columns created from the flow
@@ -590,9 +592,9 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
  * Note: Due to Branches working a little differently in terms of arrow
  * design, they are excluded from this function and put in one of their own.
  **/
-function applyPageFlowConnectorPaths($overview) {
+function applyPageFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next]:not([data-next="trailing-route"])');
-  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
+  var rowHeight = view.page.flowItemsRowHeight;
 
   $items.each(function() {
     var $item = $(this);
@@ -628,9 +630,9 @@ function applyPageFlowConnectorPaths($overview) {
  * Note: Branches arrows are a bit different from those between pages, so
  * dealing with them separately from other page arrows.
  **/
-function applyBranchFlowConnectorPaths($overview) {
+function applyBranchFlowConnectorPaths(view, $overview) {
+  var rowHeight = view.page.flowItemsRowHeight;
   var $flowItemElements = $overview.find(SELECTOR_FLOW_ITEM);
-  var rowHeight = utilities.maxHeight($flowItemElements);
 
   $flowItemElements.filter(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
@@ -773,9 +775,9 @@ function applyBranchFlowConnectorPaths($overview) {
     });
   });
 }
-function applyRouteEndFlowConnectorPaths($overview) {
+function applyRouteEndFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next="trailing-route"]');
-  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
+  var rowHeight = view.page.flowItemsRowHeight;
 
   $items.each(function() {
     var $item = $(this);
