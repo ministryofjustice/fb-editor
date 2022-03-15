@@ -535,8 +535,10 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     }, config));
 
     var text = config.text || {}; // Make sure it exists to avoid errors later on.
-
+    
+    this.items = [];
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
+    
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
 
@@ -567,10 +569,10 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
     $lastItem.after($clone);
-    EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
+    this.items.push(new EditableComponentCollectionItem(this, $clone, this.$itemTemplate.data("config")));
     EditableCollectionFieldComponent.updateItems.call(this);
 
-    createEditableCollectionItemMenu(this, this._config);
+    this.menu = createEditableCollectionItemMenu(this, this._config);
 
     safelyActivateFunction(this._config.onItemAdd, $clone);
     this.emitSaveRequired();
@@ -642,21 +644,9 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function(config
 
     // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
     if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
-      EditableCollectionFieldComponent.addItem.call(component, $(this), itemConfig);
+      component.items.push(new EditableComponentCollectionItem(component, $(this), itemConfig));
     }
   });
-}
-
-/* Private function
- * Enhance an item and add to this.items array.
- * $node (jQuery node) Should be a clone of this.itemTemplate
- * config (Object) key/value pairs for extra information.
- **/
-EditableCollectionFieldComponent.addItem = function($node, config) {
-  if(!this.items) { this.items = []; } // Should be true on first call only.
-  this.items.push(new EditableComponentCollectionItem(this, $node, config));
-
-  // TODO: need to update the data on each item so _id and value are different.
 }
 
 /* Private function
@@ -714,7 +704,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     }, config));
 
     if(!config.preserveItem) {
-      createEditableCollectionItemMenu(this, config);
+       this.menu = createEditableCollectionItemMenu(this, config);
     }
 
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
@@ -744,6 +734,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     // Doesn't need super because we're not writing to hidden input.
     this.content = this._elements;
   }
+
 }
 
 
@@ -780,8 +771,8 @@ function createEditableCollectionItemMenu(item, config) {
         position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
-
-    item.$node.data("ActivatedMenu", menu);
+    
+  return menu;
 }
 
 /* Convert HTML to Markdown by tapping into third-party code.

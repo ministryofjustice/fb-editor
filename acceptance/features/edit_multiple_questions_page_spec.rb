@@ -93,7 +93,7 @@ feature 'Edit multiple questions page' do
     given_I_have_a_form_with_pages
     and_I_edit_the_page(url: 'Page g')
     when_I_want_to_select_component_properties('h2', 'Question 1')
-   and_I_want_to_delete_a_component('Question 1')
+    and_I_want_to_delete_a_component('Question 1')
     and_the_component_is_deleted('Question 1', remaining: 1)
   end
 

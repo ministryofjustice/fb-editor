@@ -104,8 +104,8 @@ feature 'Edit single radios question page' do
 
   def and_I_delete_an_option(option_label)
     when_I_want_to_select_component_properties('label', option_label)
-    click_button(I18n.t('question.menu.remove'))
-    expect(page).to have_selector('.DialogConfirmation')
+    page.find('span', text: I18n.t('question.menu.remove')).click
+    expect(page).to have_selector('.ui-dialog')
     click_button(I18n.t('dialogs.button_delete_option'))
     expect(page).to_not have_text(option_label)
   end

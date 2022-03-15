@@ -53,10 +53,6 @@ class RadiosQuestion extends Question {
          $node.find("label").text(config.text.option);
          $node.find("span").text(config.text.optionHint);
       },
-      onItemAdd: function($node) {
-        // @$node (jQuery node) Node (instance.$node) that has been added.
-        // Runs after adding a new Collection item.
-      },
       onItemRemove: function(item) {
         // @item (EditableComponentItem) Item to be deleted.
         // Runs before removing an editable Collection item.
@@ -78,7 +74,8 @@ class RadiosQuestion extends Question {
 
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
-    $(".EditableComponentCollectionItem").parent().attr("aria-label", config.text.aria.answers);
+    $node.find(".EditableComponentCollectionItem").first().parent().attr("aria-label", config.text.aria.answers);
+    
 
     this._preservedItemCount = 2;
   }
