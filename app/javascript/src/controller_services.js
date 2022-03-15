@@ -20,6 +20,8 @@
 const utilities = require('./utilities');
 const FormDialog = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
+const FlowItem = require('./component_flow_item');
+const FlowConditionItem = require('./component_flow_condition_item');
 const ConnectorPath = require('./component_flow_connector_path');
 const PageMenu = require('./component_page_menu');
 const ConnectionMenu = require('./component_connection_menu');
@@ -75,50 +77,6 @@ ServicesController.edit = function() {
   $("#main-content").addClass(JS_ENHANCEMENT_DONE);
 }
 
-
-/* VIEW SPECIFIC COMPONENT:
- * ------------------------
- * Positionable item in the flow
- **/
-class FlowItem {
-  constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowItem");
-
-    this.$node = $node;
-    this.id = $node.attr("data-fb-id");
-    this.next = $node.attr("data-next");
-    this.row = config.row;
-    this.column = config.column;
-    this.coords = {
-      x_in: config.x_in,
-      x_out: config.x_out,
-      y: config.y,
-    };
-
-  }
-}
-
-
-/* VIEW SPECIFIC COMPONENT:
- * ------------------------
- * Simple item to mimic FlowItem-like object but for the branch conditions.
- * Could also be renamed FlowBranchCondition class but we're trying to
- * highlight the similarities to a FlowItem (which could also be split into
- * two separate classes of FlowPage and FlowBranch but keeping things simple).
- **/
-class FlowConditionItem {
-  constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowConditionItem");
-
-    this.$node = $node;
-    this.from = $node.attr("data-from");
-    this.next = $node.attr("data-next");
-    this.row = config.row;
-    this.column = config.column;
-  }
-}
 
 /* VIEW SETUP FUNCTION:
  * --------------------
@@ -288,6 +246,8 @@ function createAndPositionFlowItems(view, $overview) {
 
       // Creates FlowItem instances (boxes and diamonds) with positions data.
       new FlowItem($item, {
+        id: $item.attr("data-fb-id"),
+        next: $item.attr("data-next"),
         x_in: left,
         x_out: left + $item.outerWidth(),
         y: top + (rowHeight / 4),
@@ -317,6 +277,8 @@ function createAndPositionFlowItems(view, $overview) {
 
         // Creates FlowConditionItem instances (speach bubbles) with simple data.
         new FlowConditionItem($condition, {
+          $form: $condition.attr("data-from"),
+          next: $condition.attr("data-next"),
           column: column,
           row: row + index
         });
