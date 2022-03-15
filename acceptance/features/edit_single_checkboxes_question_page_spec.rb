@@ -61,6 +61,15 @@ feature 'Edit single radios question page' do
     and_I_should_see_the_options_that_I_added(preview_form, options_after_deletion)
   end
 
+  scenario 'when deleting an option used for branching' do
+    given_I_have_a_form_with_pages
+    and_I_edit_the_page(url: 'Page b')
+    when_I_want_to_select_component_properties('label', 'Hulk')
+    page.find('span', text: I18n.t('question.menu.remove')).click
+    expect(page).to have_selector('.ui-dialog')
+    expect(page.text).to include(I18n.t('question_items.delete_modal.can_not_delete_heading')) 
+  end
+
   def given_I_have_a_single_question_page_with_checkboxes
     given_I_add_a_single_question_page_with_checkboxes
     and_I_add_a_page_url
@@ -110,8 +119,8 @@ feature 'Edit single radios question page' do
 
   def and_I_delete_an_option(option_label)
     when_I_want_to_select_component_properties('label', option_label)
-    click_button(I18n.t('question.menu.remove'))
-    expect(page).to have_selector('.DialogConfirmation')
+    page.find('span', text: I18n.t('question.menu.remove')).click
+    expect(page).to have_selector('.ui-dialog')
     click_button(I18n.t('dialogs.button_delete_option'))
     expect(page).to_not have_text(option_label)
   end

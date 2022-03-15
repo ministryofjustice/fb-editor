@@ -17,6 +17,7 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
+const uniqueString = utilities.uniqueString;
 const safelyActivateFunction = utilities.safelyActivateFunction;
 const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
 const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
@@ -29,6 +30,7 @@ const converter = new showdown.Converter({
                     tables: true,
                     disableForced4SpacesIndentedSublists: true
                   });
+const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
 
 showdown.setFlavor('github');
 
@@ -533,8 +535,10 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     }, config));
 
     var text = config.text || {}; // Make sure it exists to avoid errors later on.
-
+    
+    this.items = [];
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
+    
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
 
@@ -565,8 +569,11 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
     $lastItem.after($clone);
-    EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
+    this.items.push(new EditableComponentCollectionItem(this, $clone, this.$itemTemplate.data("config")));
     EditableCollectionFieldComponent.updateItems.call(this);
+
+    this.menu = createEditableCollectionItemMenu(this, this._config);
+
     safelyActivateFunction(this._config.onItemAdd, $clone);
     this.emitSaveRequired();
   }
@@ -637,21 +644,9 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function(config
 
     // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
     if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
-      EditableCollectionFieldComponent.addItem.call(component, $(this), itemConfig);
+      component.items.push(new EditableComponentCollectionItem(component, $(this), itemConfig));
     }
   });
-}
-
-/* Private function
- * Enhance an item and add to this.items array.
- * $node (jQuery node) Should be a clone of this.itemTemplate
- * config (Object) key/value pairs for extra information.
- **/
-EditableCollectionFieldComponent.addItem = function($node, config) {
-  if(!this.items) { this.items = []; } // Should be true on first call only.
-  this.items.push(new EditableComponentCollectionItem(this, $node, config));
-
-  // TODO: need to update the data on each item so _id and value are different.
 }
 
 /* Private function
@@ -709,7 +704,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     }, config));
 
     if(!config.preserveItem) {
-      new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
+       this.menu = createEditableCollectionItemMenu(this, config);
     }
 
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
@@ -739,6 +734,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     // Doesn't need super because we're not writing to hidden input.
     this.content = this._elements;
   }
+
 }
 
 
@@ -761,37 +757,23 @@ class EditableCollectionItemInjector {
   }
 }
 
+function createEditableCollectionItemMenu(item, config) { 
+  var template = $("[data-component-template=EditableCollectionItemMenu]");
+  var $ul = $(template.html());
 
-class EditableCollectionItemRemover {
-  constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
-    var conf = mergeObjects({}, config);
-    var text = mergeObjects({ itemRemove: 'remove' }, config.text);
-    var $node = $(createElement("button", text.itemRemove, conf.classes));
-
-    $node.data("instance", this);
-    $node.addClass("EditableCollectionItemRemover");
-    $node.attr("type", "button");
-    $node.on("click.EditableCollectionItemRemover", function(e) {
-      e.preventDefault();
-      editableCollectionItem.remove();
-    });
-
-    // Close on ENTER || SPACE
-    $node.on("keydown.EditableCollectionItemRemover", function(e) {
-      e.preventDefault();
-      if(e.which == 13 || e.which == 32) {
-        editableCollectionItem.remove();
+  item.$node.append($ul);
+  
+  let menu = new EditableCollectionItemMenu($ul, {
+      activator_text: config.text.edit,
+      container_id: uniqueString("activatedMenu-"),
+      collectionItem: item,
+      menu: {
+        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
-
-    editableCollectionItem.$node.append($node);
-
-    this.component = editableCollectionFieldComponent;
-    this.item = editableCollectionItem;
-    this.$node = $node;
-  }
+    
+  return menu;
 }
-
 
 /* Convert HTML to Markdown by tapping into third-party code.
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.

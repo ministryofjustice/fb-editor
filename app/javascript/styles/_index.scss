@@ -433,11 +433,10 @@ html {
   }
 }
 
-.editableCollectionItemControls {
+.EditableCollectionItemMenu {
   z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
 
   .ActivatedMenu_Menu {
-    border: none;
     width: auto;
   }
 }

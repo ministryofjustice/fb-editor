@@ -45,7 +45,7 @@ en:
     heading_delete_no_default_next: 'You cannot delete this page yet'
     heading_delete_branch: Delete branch?
     heading_delete_condtition: Delete condition?
-    heading_delete_option: 'Delete the option "%{option label}"?'
+    heading_delete_option: 'Delete the option "%{label}"?'
     message: General message here
     message_delete: 'This cannot be undone'
     message_delete_branch: 'This cannot be undone'
@@ -136,6 +136,10 @@ en:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
       can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first, then try again.'
+  question_items:
+    delete_modal:
+      can_not_delete_heading: 'You cannot delete this option yet'
+      can_not_delete_message: 'You cannot delete this option because it is used in a branching condition. Update the branching point first, then try again.'
   pages:
     flow:
       heading: 'Pages flow'

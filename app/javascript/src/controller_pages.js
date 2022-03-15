@@ -408,8 +408,6 @@ function enhanceQuestions(view) {
           item.component.removeItem(item);
         });
       }
-
-
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
