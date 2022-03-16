@@ -63,6 +63,7 @@ PagesController.edit = function() {
   this.$editable = $(".fb-editable");
   this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
+   
 
   workaroundForDefaultText(view);
   enhanceContent(view);
@@ -113,6 +114,7 @@ PagesController.edit = function() {
 
   addQuestionMenuListeners(view);
   addContentMenuListeners(view);
+  addEditableComponentItemMenuListeners(view) 
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
@@ -260,6 +262,52 @@ function addQuestionMenuListeners(view) {
     view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
+  });
+}
+
+function addEditableComponentItemMenuListeners(view) {
+  view.$document.on('EditableCollectionItemMenuSelectionRemove', function(event, details) {
+    var { selectedItem, collectionItem } = details;
+
+    var dialog = view.dialog;
+    var path = selectedItem.data('api-path');
+
+    var questionUuid =  collectionItem.component.data._uuid;
+    var optionUuid =  collectionItem.data._uuid; 
+
+    var url = utilities.stringInject(path, { 
+      'question_uuid': questionUuid, 
+      'option_uuid': optionUuid ?? 'new', 
+    });
+
+    if( !optionUuid ) {
+      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
+    }
+
+    if( collectionItem.component.canHaveItemsRemoved() ) {
+      new DialogApiRequest(url, {
+        activator: selectedItem,
+        closeOnClickSelector: ".govuk-button",
+        build: function(dialog) {
+          dialog.$node.find("[data-method=delete]").on("click", function(e) {
+            e.preventDefault();
+            collectionItem.component.removeItem(collectionItem)
+          })
+        }
+      });
+    } else {
+      let dialogContent = '';
+      if (collectionItem.type == 'radios') {
+        dialogContent = view.text.dialogs.message_delete_radio_min;
+      } else if (collectionItem.type == 'checkboxes') {
+        dialogContent = view.text.dialogs.message_delete_checkbox_min;
+      } 
+      dialog.open({
+        heading: view.text.dialogs.heading_can_not_delete_option,
+        content: dialogContent,
+        ok: view.text.dialogs.button_understood,
+      });
+    }
   });
 }
 

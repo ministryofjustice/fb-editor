@@ -140,6 +140,9 @@ en:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this option yet'
       can_not_delete_message: 'You cannot delete this option because it is used in a branching condition. Update the branching point first, then try again.'
+    min_items_modal:
+      can_not_delete_radios_message: 'Radios questions require a minimum of 2 answers'
+      can_not_delete_checkboxes_message: 'Checkboxes questions require a minimum of 1 answer'
   pages:
     flow:
       heading: 'Pages flow'

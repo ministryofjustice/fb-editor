@@ -48,51 +48,17 @@ class EditableCollectionItemMenu extends ActivatedMenu {
   }
 
   selection(event, item) {
-    var action = item.data("action");
+    let action = item.data("action");
     this.selectedItem = item;
 
     event.preventDefault();
     switch(action) {
       case "remove":
-           this.remove(item);
-           break;
-    }
-  }
-
-  remove(menuItem) {
-    var path = menuItem.data('api-path');
-    var collectionItem = this.collectionItem
-
-    var questionUuid =  collectionItem.component.data._uuid;
-    var optionUuid =  collectionItem.data._uuid; 
-
-    var url = utilities.stringInject(path, { 
-      'question_uuid': questionUuid, 
-      'option_uuid': optionUuid ?? 'new', 
-    });
-
-    if( !optionUuid ) {
-      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
-    }
-
-    if( collectionItem.component.canHaveItemsRemoved() ) {
-      new DialogApiRequest(url, {
-        activator: menuItem,
-        closeOnClickSelector: ".govuk-button",
-        build: function(dialog) {
-          dialog.$node.find("[data-method=delete]").on("click", function(e) {
-            e.preventDefault();
-            collectionItem.component.removeItem(collectionItem)
-          })
-        }
-      });
-    } else {
-      console.log(this._config.view.dialog);
-      this._config.view.dialog.open({
-        heading: 'This option cannot be removed',
-        content: 'Radio questions require a minimum of 2 answers.',
-        ok: 'Understood'
-      });
+        $(document).trigger("EditableCollectionItemMenuSelectionRemove", { 
+          selectedItem: item,
+          collectionItem: this.collectionItem
+        });
+        break;
     }
   }
 }
