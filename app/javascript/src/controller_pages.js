@@ -384,6 +384,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     var question = new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,
@@ -415,6 +416,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     var question = new RadiosQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,

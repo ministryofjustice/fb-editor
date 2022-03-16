@@ -20,6 +20,7 @@ const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
 const DialogApiRequest = require('./component_dialog_api_request');
+const Dialog = require('./component_dialog');
 
 
 class EditableCollectionItemMenu extends ActivatedMenu {
@@ -58,8 +59,8 @@ class EditableCollectionItemMenu extends ActivatedMenu {
     }
   }
 
-  remove(item) {
-    var path = item.data('api-path');
+  remove(menuItem) {
+    var path = menuItem.data('api-path');
     var collectionItem = this.collectionItem
 
     var questionUuid =  collectionItem.component.data._uuid;
@@ -73,19 +74,26 @@ class EditableCollectionItemMenu extends ActivatedMenu {
     if( !optionUuid ) {
       url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
     }
-  
-    console.log(url);
 
-    new DialogApiRequest(url, {
-      activator: item,
-      closeOnClickSelector: ".govuk-button",
-      build: function(dialog) {
-        dialog.$node.find("[data-method=delete]").on("click", function(e) {
-          e.preventDefault();
-          collectionItem.component.removeItem(collectionItem)
-        })
-      }
-    })
+    if( collectionItem.component.canHaveItemsRemoved() ) {
+      new DialogApiRequest(url, {
+        activator: menuItem,
+        closeOnClickSelector: ".govuk-button",
+        build: function(dialog) {
+          dialog.$node.find("[data-method=delete]").on("click", function(e) {
+            e.preventDefault();
+            collectionItem.component.removeItem(collectionItem)
+          })
+        }
+      });
+    } else {
+      console.log(this._config.view.dialog);
+      this._config.view.dialog.open({
+        heading: 'This option cannot be removed',
+        content: 'Radio questions require a minimum of 2 answers.',
+        ok: 'Understood'
+      });
+    }
   }
 }
 

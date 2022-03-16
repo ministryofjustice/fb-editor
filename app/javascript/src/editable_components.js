@@ -563,16 +563,20 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     }
   }
 
+  canHaveItemsRemoved() {
+    return this.items.length > this._preservedItemCount;
+  }
+
   // Dynamically adds an item to the components collection
   addItem() {
     // Component should always have at least one item, otherwise something is very wrong.
     var $lastItem = this.items[this.items.length - 1].$node;
     var $clone = this.$itemTemplate.clone();
     $lastItem.after($clone);
-    this.items.push(new EditableComponentCollectionItem(this, $clone, this.$itemTemplate.data("config")));
+    var item = new EditableComponentCollectionItem(this, $clone, this.$itemTemplate.data("config"));
+    item.menu = createEditableCollectionItemMenu(this, this._config);
+    this.items.push(item);
     EditableCollectionFieldComponent.updateItems.call(this);
-
-    this.menu = createEditableCollectionItemMenu(this, this._config);
 
     safelyActivateFunction(this._config.onItemAdd, $clone);
     this.emitSaveRequired();
@@ -644,7 +648,9 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function(config
 
     // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
     if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
-      component.items.push(new EditableComponentCollectionItem(component, $(this), itemConfig));
+      var item = new EditableComponentCollectionItem(component, $(this), itemConfig);
+      item.menu = createEditableCollectionItemMenu(component, component._config);
+      component.items.push(item);
     }
   });
 }
@@ -703,9 +709,7 @@ class EditableComponentCollectionItem extends EditableComponentBase {
       selectorElementHint: config.selectorComponentCollectionItemHint
     }, config));
 
-    if(!config.preserveItem) {
-       this.menu = createEditableCollectionItemMenu(this, config);
-    }
+    this.menu = createEditableCollectionItemMenu(this, config);
 
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
       $node.addClass(config.editClassname);
@@ -762,17 +766,17 @@ function createEditableCollectionItemMenu(item, config) {
   var $ul = $(template.html());
 
   item.$node.append($ul);
+
   
-  let menu = new EditableCollectionItemMenu($ul, {
+  return new EditableCollectionItemMenu($ul, {
       activator_text: config.text.edit,
       container_id: uniqueString("activatedMenu-"),
       collectionItem: item,
+      view: config.view,
       menu: {
         position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
-    
-  return menu;
 }
 
 /* Convert HTML to Markdown by tapping into third-party code.
