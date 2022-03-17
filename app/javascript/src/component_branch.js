@@ -25,6 +25,8 @@ const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
  * @config (Object) Configurable key/value pairs.
  **/
 class Branch {
+  #config;
+
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
@@ -38,7 +40,7 @@ class Branch {
     $node.addClass("Branch");
     $node.data("instance", this);
 
-    this._config = conf;
+    this.#config = conf;
     this._conditionCount = 0;
     this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
@@ -49,7 +51,7 @@ class Branch {
     this.remover = new BranchRemover($remover, conf);
 
     // Create BranchCondition instance found in Branch.
-    this.$node.find(this._config.selector_condition).each(function(index) {
+    this.$node.find(this.#config.selector_condition).each(function(index) {
       var condition = new BranchCondition($(this), conf);
       if(index == 0) {
         condition.$node.find(".BranchConditionRemover").hide(); // So we always have one condition.
@@ -66,13 +68,13 @@ class Branch {
   }
 
   addCondition() {
-    var template = utilities.stringInject(this._config.template_condition, {
+    var template = utilities.stringInject(this.#config.template_condition, {
       branch_index: this._index,
       condition_index: ++this._conditionCount
     });
 
     var $condition = $(template);
-    var condition = new BranchCondition($condition, this._config);
+    var condition = new BranchCondition($condition, this.#config);
     this._conditions[$condition.attr("id")] = condition;
     this.conditionInjector.$node.before($condition);
   }
@@ -96,6 +98,8 @@ class Branch {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchCondition {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
     var $remover = $(conf.selector_condition_remove, $node);
@@ -108,7 +112,7 @@ class BranchCondition {
     $node.data("instance", this);
     $node.append($remover);
 
-    this._config = conf;
+    this.#config = conf;
     this._index = conf.branch._conditionCount;
     this.$node = $node;
     this.branch = conf.branch;
@@ -120,16 +124,16 @@ class BranchCondition {
   update(component, callback) {
     var url;
     if(component) {
-      url = utilities.stringInject(this._config.expression_url, {
+      url = utilities.stringInject(this.#config.expression_url, {
         component_id: component,
-        conditionals_index: this._config.branch._index,
+        conditionals_index: this.#config.branch._index,
         expressions_index: this._index
       });
 
       utilities.updateDomByApiRequest(url, {
         target: this.$node,
         done: ($node) => {
-          this.answer = new BranchAnswer($node, this._config);
+          this.answer = new BranchAnswer($node, this.#config);
           utilities.safelyActivateFunction(callback);
         }
       });
@@ -151,6 +155,8 @@ class BranchCondition {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchConditionInjector {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
@@ -161,7 +167,7 @@ class BranchConditionInjector {
       conf.branch.addCondition();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.branch = conf.branch;
     this.$node = $node;
   }
@@ -176,6 +182,8 @@ class BranchConditionInjector {
  *                       }
  **/
 class BranchConditionRemover {
+  #config;
+
   constructor($node, config) {
     var remover = this;
     var conf = utilities.mergeObjects({ condition: this }, config);
@@ -188,17 +196,17 @@ class BranchConditionRemover {
       remover.confirm();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.condition = conf.condition;
     this.$node = $node;
   }
 
   confirm() {
-    var dialog = this._config.dialog_delete;
-    var text = this._config.view.text;
+    var dialog = this.#config.dialog_delete;
+    var text = this.#config.view.text;
     if(dialog) {
       // If we have set a confirmation dialog, use it...
-      this._config.dialog_delete.open({
+      this.#config.dialog_delete.open({
         heading: text.dialogs.heading_delete_condition,
         content: text.dialogs.message_delete_condition,
         ok: text.dialogs.button_delete_condition
@@ -211,7 +219,7 @@ class BranchConditionRemover {
   }
 
   activate() {
-    this._config.branch.removeCondition(this._config.condition.$node.attr("id"));
+    this.#config.branch.removeCondition(this.#config.condition.$node.attr("id"));
   }
 }
 
@@ -221,6 +229,8 @@ class BranchConditionRemover {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchQuestion {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({
       css_classes_error: ""
@@ -239,7 +249,7 @@ class BranchQuestion {
       $node.find("label").text(config.question_label);
     }
 
-    this._config = conf;
+    this.#config = conf;
     this.condition = conf.condition;
     this.$node = $node;
   }
@@ -275,11 +285,11 @@ class BranchQuestion {
   }
 
   clearErrorState() {
-    var classes = this._config.css_classes_error.split(" ");
+    var classes = this.#config.css_classes_error.split(" ");
 
     // First clear anything added by error() method.
     this.condition.$node.removeClass("error");
-    this.condition.$node.removeClass(this._config.css_classes_error);
+    this.condition.$node.removeClass(this.#config.css_classes_error);
 
     if(this._$error && this._$error.length > 0) {
       this._$error.remove();
@@ -287,7 +297,7 @@ class BranchQuestion {
     }
 
     // Second remove any template injected error messages identified by config.
-    this.condition.$node.find(this._config.selector_error_messsage).remove();
+    this.condition.$node.find(this.#config.selector_error_messsage).remove();
 
     // Lastley remove any template injected error message classes identified by config.
     for(var i=0; i < classes.length; ++i) {
@@ -300,7 +310,7 @@ class BranchQuestion {
 
   error(type) {
     var $error = $("<p class=\"error-message\"></p>");
-    var errors = this._config.view.text.errors.branches;
+    var errors = this.#config.view.text.errors.branches;
     switch(type) {
       case "unsupported": $error.text(errors.unsupported_question);
         break;
@@ -319,12 +329,14 @@ class BranchQuestion {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchAnswer {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({}, config);
 
     $node.addClass("BranchAnswer");
     $node.data("instance", this);
-    this._config = conf;
+    this.#config = conf;
     this.$node = $node;
     
     this.showHideAnswers();
@@ -357,6 +369,8 @@ class BranchAnswer {
  * a specified branch node from the DOM.
  **/
 class BranchRemover {
+  #config;
+
   constructor($node, config) {
     var remover = this;
     var conf = utilities.mergeObjects({}, config);
@@ -369,17 +383,17 @@ class BranchRemover {
       remover.confirm();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.branch = conf.branch;
     this.$node = $node;
   }
 
   confirm() {
-    var dialog = this._config.dialog_delete;
-    var text = this._config.view.text;
+    var dialog = this.#config.dialog_delete;
+    var text = this.#config.view.text;
     if(dialog) {
       // If we have set a confirmation dialog, use it...
-      this._config.dialog_delete.open({
+      this.#config.dialog_delete.open({
         heading: text.dialogs.heading_delete_branch,
         content: text.dialogs.message_delete_branch,
         ok: text.dialogs.button_delete_branch
@@ -392,7 +406,7 @@ class BranchRemover {
   }
 
   activate() {
-    this._config.branch.destroy();
+    this.#config.branch.destroy();
   }
 }
 
