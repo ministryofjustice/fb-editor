@@ -28,6 +28,7 @@ class Branch {
   #config;
   #conditionCount;
   #conditions;
+  #index;
 
   constructor($node, config) {
     var branch = this;
@@ -45,9 +46,9 @@ class Branch {
     this.#config = conf;
     this.#conditionCount = 0;
     this.#conditions = {}; // Add only conditions that you want deletable to this.
+    this.#index = Number(conf.branch_index);
     this.$node = $node;
     this.view = conf.view;
-    this._index = Number(conf.branch_index);
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.remover = new BranchRemover($remover, conf);
@@ -66,7 +67,7 @@ class Branch {
   }
 
   get index() {
-    return this._index;
+    return this.#index;
   }
 
   get conditionCount() {
@@ -75,7 +76,7 @@ class Branch {
 
   addCondition() {
     var template = utilities.stringInject(this.#config.template_condition, {
-      branch_index: this._index,
+      branch_index: this.#index,
       condition_index: ++this.#conditionCount
     });
 
@@ -105,6 +106,7 @@ class Branch {
  **/
 class BranchCondition {
   #config;
+  #index;
 
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
@@ -119,7 +121,7 @@ class BranchCondition {
     $node.append($remover);
 
     this.#config = conf;
-    this._index = conf.branch.conditionCount;
+    this.#index = conf.branch.conditionCount;
     this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
@@ -127,13 +129,17 @@ class BranchCondition {
     this.answer = new BranchAnswer($node.find(conf.selector_answer), conf);
   }
 
+  get index() {
+    return this.#index;
+  }
+
   update(component, callback) {
     var url;
     if(component) {
       url = utilities.stringInject(this.#config.expression_url, {
         component_id: component,
-        conditionals_index: this.#config.branch._index,
-        expressions_index: this._index
+        conditionals_index: this.#config.branch.index,
+        expressions_index: this.#index
       });
 
       utilities.updateDomByApiRequest(url, {
@@ -236,6 +242,7 @@ class BranchConditionRemover {
  **/
 class BranchQuestion {
   #config;
+  #index;
 
   constructor($node, config) {
     var conf = utilities.mergeObjects({
@@ -251,7 +258,7 @@ class BranchQuestion {
       this.change(supported, select.value);
     });
 
-    if(conf.condition._index > 0) {
+    if(conf.condition.index > 0) {
       $node.find("label").text(config.question_label);
     }
 
