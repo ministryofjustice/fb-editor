@@ -233,9 +233,9 @@ class ActivatedMenuContainer {
 
     // Allow component public functions to be triggered from the jQuery object without
     // jumping through all the hoops of creating/using a jQuery widget.
-    // e.g. use  $("blah").trigger("component.open")
+    // e.g. use $("#myMenuContainerNode").trigger("component.open")
     $node.on("component.open", (event, position) => menu.open(position) );
-    $node.on("component.close", (event, position) => menu.open(position) );
+    $node.on("component.close", () => menu.close() );
 
     // Add Container to DOM then put the menu inside it.
     // Lastly, move to just inside body for z-index reasons.
