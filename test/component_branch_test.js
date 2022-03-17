@@ -456,11 +456,6 @@ describe("Branch", function () {
       expect(instance.$node.length).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      expect(question._config).to.exist;
-      expect(question._config.selector_question).to.equal(BRANCH_QUESTION_SELECTOR);
-    });
-
     describe("clearErrorState", function() {
       var $condition;
 
@@ -694,12 +689,6 @@ describe("Branch", function () {
       expect(instance).to.exist;
       expect(instance.$node.length).to.equal(1);
     });
-
-    it("should make (public but indicated as) private reference to config", function() {
-      var instance = $answer.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.expression_url).to.equal(EXPRESSION_URL);
-    });
   });
 
   describe("BranchRemover", function() {
@@ -732,13 +721,6 @@ describe("Branch", function () {
       var instance = $remover.data("instance");
       expect(instance).to.exist;
       expect(instance.$node.length).to.equal(1);
-    });
-
-    it("should make (public but indicated as) private reference to config", function() {
-      var instance = $remover.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.selector_branch_remove).to.exist;
-      expect(instance._config.selector_branch_remove).to.equal(BRANCH_REMOVE_SELECTOR);
     });
 
     it("should call the branch.destroy method", function() {
