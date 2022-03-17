@@ -26,6 +26,7 @@ const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
  **/
 class Branch {
   #config;
+  #conditionCount;
 
   constructor($node, config) {
     var branch = this;
@@ -41,7 +42,7 @@ class Branch {
     $node.data("instance", this);
 
     this.#config = conf;
-    this._conditionCount = 0;
+    this.#conditionCount = 0;
     this._conditions = {}; // Add only conditions that you want deletable to this.
     this.$node = $node;
     this.view = conf.view;
@@ -57,7 +58,7 @@ class Branch {
         condition.$node.find(".BranchConditionRemover").hide(); // So we always have one condition.
       }
       branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
-      branch._conditionCount++;
+      branch.#conditionCount++;
     });
 
     $(document).trigger('BranchCreate', this);
@@ -67,10 +68,14 @@ class Branch {
     return this._index;
   }
 
+  get conditionCount() {
+    return this.#conditionCount;
+  }
+
   addCondition() {
     var template = utilities.stringInject(this.#config.template_condition, {
       branch_index: this._index,
-      condition_index: ++this._conditionCount
+      condition_index: ++this.#conditionCount
     });
 
     var $condition = $(template);
@@ -113,7 +118,7 @@ class BranchCondition {
     $node.append($remover);
 
     this.#config = conf;
-    this._index = conf.branch._conditionCount;
+    this._index = conf.branch.conditionCount;
     this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
