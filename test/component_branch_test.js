@@ -402,7 +402,7 @@ describe("Branch", function () {
       var check, branch, originalRemoveCondition;
 
       before(function() {
-        branch = remover._config.branch;
+        branch = remover.condition.branch;
         originalRemoveCondition = branch.removeCondition;
         branch.removeCondition = function() {
           check += 1;
