@@ -30,6 +30,13 @@ class Branch {
   #conditions;
   #index;
 
+  #conditionTemplate() {
+    return utilities.stringInject(this.#config.template_condition, {
+      branch_index: this.#index,
+      condition_index: ++this.#conditionCount
+    });
+  }
+
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
@@ -75,11 +82,7 @@ class Branch {
   }
 
   addCondition() {
-    var template = utilities.stringInject(this.#config.template_condition, {
-      branch_index: this.#index,
-      condition_index: ++this.#conditionCount
-    });
-
+    var template = this.#conditionTemplate();
     var $condition = $(template);
     var condition = new BranchCondition($condition, this.#config);
     this.#conditions[$condition.attr("id")] = condition;
