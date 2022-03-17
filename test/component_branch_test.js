@@ -24,7 +24,7 @@ describe("Branch", function () {
   const INDEX_BRANCH = 4;
   var global_test_branch;
 
-  function createBranch(id) {
+  function createBranch(id, config) {
     var html = `<div class="branch" id="` + id + `">
         <p>Branch ...</p>
         <ul class="govuk-navigation component-activated-menu">
@@ -62,7 +62,7 @@ describe("Branch", function () {
       </div>`;
 
     var $node = $(html);
-    var branch = new Branch($node, {
+    var conf = {
       branch_index: INDEX_BRANCH,
       css_classes_error: ERROR_CLASSNAME_1 + " " + ERROR_CLASSNAME_2,
       selector_answer: BRANCH_ANSWER_SELECTOR,
@@ -97,12 +97,21 @@ describe("Branch", function () {
           }
         }
       }
-    });
+    }
+
+    // Include any passed config items.
+    if(config) {
+      for(var prop in config) {
+        if(config.hasOwnProperty(prop)) {
+          conf[prop] = config[prop];
+        }
+      }
+    }
 
     return {
       html: html,
       $node: $node,
-      branch: branch
+      branch: new Branch($node, conf)
     }
   }
 
@@ -153,19 +162,14 @@ describe("Branch", function () {
       expect(global_test_branch.index).to.equal(INDEX_BRANCH);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      expect(global_test_branch._config).to.exist;
-      expect(global_test_branch._config.selector_condition).to.equal(BRANCH_CONDITION_SELECTOR);
+    it("should make private condition counter value available", function() {
+      expect(global_test_branch.conditionCount).to.exist;
+      expect(global_test_branch.conditionCount).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to condition counter value", function() {
-      expect(global_test_branch._conditionCount).to.exist;
-      expect(global_test_branch._conditionCount).to.equal(1);
-    });
-
-    it("should make (public but indicated as) private index value", function() {
-      expect(global_test_branch._index).to.exist;
-      expect(global_test_branch._index).to.equal(INDEX_BRANCH);
+    it("should make private index value available", function() {
+      expect(global_test_branch.index).to.exist;
+      expect(global_test_branch.index).to.equal(INDEX_BRANCH);
     });
   });
 
@@ -217,15 +221,9 @@ describe("Branch", function () {
       expect(instance.answer.$node.length).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
+    it("should make private index value available", function() {
       var instance = $condition.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.selector_condition).to.equal(BRANCH_CONDITION_SELECTOR);
-    });
-
-    it("should make (public but indicated as) private reference to index value", function() {
-      var instance = $condition.data("instance");
-      expect(instance._index).to.equal(0);
+      expect(instance.index).to.equal(0);
     });
 
     describe("update", function() {
@@ -313,16 +311,6 @@ describe("Branch", function () {
       expect($injector.data("instance")).to.equal(global_test_branch.conditionInjector);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      var instance = $injector.data("instance");
-      expect(instance._config).to.exist;
-      expect(instance._config.view).to.exist;
-      expect(instance._config.view.text).to.exist;
-      expect(instance._config.view.text.branches).to.exist;
-      expect(instance._config.view.text.branches.condition_add).to.exist;
-      expect(instance._config.view.text.branches.condition_add).to.equal(TEXT_ADD_CONDITION);
-    });
-
     it("should make the branch public", function() {
       var instance = $injector.data("instance");
       expect(instance.branch).to.exist;
@@ -370,11 +358,6 @@ describe("Branch", function () {
       expect(remover.condition.$node.length).to.equal(1);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      expect(remover._config).to.exist;
-      expect(remover._config.view.text.branches.condition_remove).to.equal(TEXT_REMOVE_CONDITION);
-    });
-
     describe("confirm", function() {
       it("should run the activate function if no dialog exists in config", function() {
         var check = 1;
@@ -392,17 +375,26 @@ describe("Branch", function () {
 
       it("should open a dialog if one exists in config", function() {
         var check = 1;
-        var dialog = {
-          open: function() {
-            check += 1;
+        var confirmTest = createBranch("confirmTest", {
+          dialog_delete: {
+            open: function() {
+              ++check;
+            }
           }
-        }
+        });
+
+        var $confirmTestCondition = $(BRANCH_CONDITION_SELECTOR, confirmTest.$node);
+        var confirmTestRemover = $confirmTestCondition.data("instance").remover;
 
         expect(check).to.equal(1);
 
-        remover._config.dialog_delete = dialog;
-        remover.confirm();
+        //remover._config.dialog_delete = dialog;
+        confirmTestRemover.confirm();
         expect(check).to.equal(2);
+
+        // clean up
+        confirmTest.$node.remove();
+        confirmTest = null;
       });
     });
 
