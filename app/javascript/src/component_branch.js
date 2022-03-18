@@ -37,6 +37,12 @@ class Branch {
     });
   }
 
+  #createCondition($node) {
+    var condition = new BranchCondition($node, this.#config);
+    this.#conditions[$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
+    this.#conditionCount++;
+  }
+
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
@@ -62,12 +68,11 @@ class Branch {
 
     // Create BranchCondition instance found in Branch.
     this.$node.find(this.#config.selector_condition).each(function(index) {
-      var condition = new BranchCondition($(this), conf);
+      var $node = $(this);
+      branch.#createCondition($node);
       if(index == 0) {
-        condition.$node.find(".BranchConditionRemover").hide(); // So we always have one condition.
+        $node.find(".BranchConditionRemover").hide(); // So we always have one condition.
       }
-      branch.#conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
-      branch.#conditionCount++;
     });
 
     $(document).trigger('BranchCreate', this);
@@ -82,11 +87,9 @@ class Branch {
   }
 
   addCondition() {
-    var template = this.#conditionTemplate();
-    var $condition = $(template);
-    var condition = new BranchCondition($condition, this.#config);
-    this.#conditions[$condition.attr("id")] = condition;
-    this.conditionInjector.$node.before($condition);
+    var $node = $(this.#conditionTemplate());
+    this.#createCondition($node);
+    this.conditionInjector.$node.before($node);
   }
 
   removeCondition(id) {
