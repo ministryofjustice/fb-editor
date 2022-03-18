@@ -93,9 +93,8 @@ class Branch {
   }
 
   removeCondition(id) {
-    var $condition = this.$node.find("#" + id);
+    this.#conditions[id].$node.remove();
     delete this.#conditions[id];
-    $condition.remove();
   }
 
   destroy() {
