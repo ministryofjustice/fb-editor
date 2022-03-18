@@ -26,32 +26,27 @@ const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
  **/
 class Branch {
   #config;
-  #conditionCount;
-  #conditions;
-  #index;
+  #conditions; // Stores created BranchConditions
+  #conditionCount; // TODO: Maybe remove if we can find way to use the #conditions.length
+  #index; // Index number of the Branch
 
   #conditionTemplate() {
     return utilities.stringInject(this.#config.template_condition, {
       branch_index: this.#index,
-      condition_index: ++this.#conditionCount
+      condition_index: ++this.#conditionCount // Really we want to get rid of this and use BranchCondition.index only
     });
   }
 
   #createCondition($node) {
     var condition = new BranchCondition($node, this.#config);
-    this.#conditions[$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
-    this.#conditionCount++;
-    this.#update();
+    this.#conditions.push(condition);
+    this.#updateConditions();
   }
 
-  #update() {
-    // Show all removers only if we have more than one condition.
-    var $firstRemoverButton = this.$node.find(".BranchConditionRemover").eq(0);
-    if(this.conditionCount > 1) {
-      $firstRemoverButton.show();
-    }
-    else {
-      $firstRemoverButton.hide();
+  #updateConditions() {
+    // Reindex the conditions
+    for(var i=0; i<this.#conditions.length; ++i) {
+      this.#conditions[i].index = i;
     }
   }
 
@@ -69,8 +64,8 @@ class Branch {
     $node.data("instance", this);
 
     this.#config = conf;
-    this.#conditionCount = 0;
-    this.#conditions = {}; // Add only conditions that you want deletable to this.
+    this.#conditions = [];
+    this.#conditionCount = this.#conditions.length; // At this point it is always zero
     this.#index = Number(conf.branch_index);
     this.$node = $node;
     this.view = conf.view;
@@ -101,10 +96,10 @@ class Branch {
     this.conditionInjector.$node.before($node);
   }
 
-  removeCondition(id) {
-    this.#conditions[id].$node.remove();
-    this.#update();
-    delete this.#conditions[id];
+  removeCondition(i) {
+    this.#conditions[i].$node.remove(); // Remove from DOM
+    this.#conditions.splice(i, 1); // Remove item at i
+    this.#updateConditions();
   }
 
   destroy() {
@@ -146,6 +141,21 @@ class BranchCondition {
 
   get index() {
     return this.#index;
+  }
+
+  set index(value) {
+    this.#index = value;
+
+    // Note: We should really have something here that also updates the
+    // attributes used in form submission so they take into account any
+    // changes to index values, but that's not currently how things are
+    // handled in the frontend. Because we're giving control to the
+    // server, so long as the required node attributes are different in
+    // the HTML, the server will sort out a proper index order and that
+    // will be seen after form submit and page is refreshed. If things
+    // were to change and frontend had to control such matters, this
+    // is the place where things should start. That is why this function
+    // exists and/or only currently does the one-liner action above.
   }
 
   update(component, callback) {
@@ -246,7 +256,7 @@ class BranchConditionRemover {
   }
 
   activate() {
-    this.#config.branch.removeCondition(this.#config.condition.$node.attr("id"));
+    this.#config.branch.removeCondition(this.#config.condition.index);
   }
 }
 
