@@ -56,6 +56,8 @@ class Branch {
     else {
       this.$node.removeClass("singleBranchCondition");
     }
+
+    this.$node.trigger("UpdateConditions");
   }
 
   constructor($node, config) {

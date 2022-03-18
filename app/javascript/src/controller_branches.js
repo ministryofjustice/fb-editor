@@ -155,6 +155,15 @@ BranchesController.createBranch = function($node) {
     view: view
   });
 
+  branch.$node.on("UpdateConditions", function() {
+    // Since the first Question label should be IF with the 
+    // following ones AND, we have a visual update issue when
+    // we delete the first one. This leaves us with AND, AND...
+    // instead of IF, AND. This listener will correct found
+    // incorrect labelling situations.
+    branch.$node.find(BRANCH_QUESTION_SELECTOR + " label").eq(0).text(view.text.branches.label_question_if);
+  });
+
   if(branch.$node.find(".BranchAnswer").length < 1) {
     branch.$node.find(".BranchConditionInjector").hide();
   }
