@@ -41,6 +41,18 @@ class Branch {
     var condition = new BranchCondition($node, this.#config);
     this.#conditions[$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
     this.#conditionCount++;
+    this.#update();
+  }
+
+  #update() {
+    // Show all removers only if we have more than one condition.
+    var $firstRemoverButton = this.$node.find(".BranchConditionRemover").eq(0);
+    if(this.conditionCount > 1) {
+      $firstRemoverButton.show();
+    }
+    else {
+      $firstRemoverButton.hide();
+    }
   }
 
   constructor($node, config) {
@@ -70,9 +82,6 @@ class Branch {
     this.$node.find(this.#config.selector_condition).each(function(index) {
       var $node = $(this);
       branch.#createCondition($node);
-      if(index == 0) {
-        $node.find(".BranchConditionRemover").hide(); // So we always have one condition.
-      }
     });
 
     $(document).trigger('BranchCreate', this);
@@ -94,6 +103,7 @@ class Branch {
 
   removeCondition(id) {
     this.#conditions[id].$node.remove();
+    this.#update();
     delete this.#conditions[id];
   }
 
