@@ -766,7 +766,7 @@ describe("Branch", function () {
       var check, branch, originalDestroy;
 
       before(function() {
-        branch = remover._config.branch;
+        branch = remover.branch;
         originalDestroy = branch.destroy;
         branch.destroy = function() {
           check += 1;
