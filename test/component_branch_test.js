@@ -388,7 +388,6 @@ describe("Branch", function () {
 
         expect(check).to.equal(1);
 
-        //remover._config.dialog_delete = dialog;
         confirmTestRemover.confirm();
         expect(check).to.equal(2);
 
@@ -468,16 +467,6 @@ describe("Branch", function () {
       afterEach(function() {
         $question.find(".error-message").remove();
         question._$error = null;
-      });
-
-      it("should find configured error message selector", function() {
-        expect(question._config.selector_error_messsage).to.exist;
-        expect(question._config.selector_error_messsage).to.equal("." + BRANCH_ERROR_MESSAGE_CLASSNAME);
-      });
-
-      it("should find configured error classes", function() {
-        expect(question._config.css_classes_error).to.exist;
-        expect(question._config.css_classes_error).to.equal(ERROR_CLASSNAME_1 + " " + ERROR_CLASSNAME_2);
       });
 
       it("should remove the inserted error node", function() {
