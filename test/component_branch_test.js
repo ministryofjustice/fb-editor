@@ -162,11 +162,6 @@ describe("Branch", function () {
       expect(global_test_branch.index).to.equal(INDEX_BRANCH);
     });
 
-    it("should make private condition counter value available", function() {
-      expect(global_test_branch.conditionCount).to.exist;
-      expect(global_test_branch.conditionCount).to.equal(1);
-    });
-
     it("should make private index value available", function() {
       expect(global_test_branch.index).to.exist;
       expect(global_test_branch.index).to.equal(INDEX_BRANCH);

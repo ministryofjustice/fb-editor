@@ -33,7 +33,7 @@ class Branch {
   #conditionTemplate() {
     return utilities.stringInject(this.#config.template_condition, {
       branch_index: this.#index,
-      condition_index: ++this.#conditionCount // Really we want to get rid of this and use BranchCondition.index only
+      condition_index: ++this.#conditionCount // Need unique value only but would be nice to use BranchCondition.index instead.
     });
   }
 
@@ -75,7 +75,7 @@ class Branch {
 
     this.#config = conf;
     this.#conditions = [];
-    this.#conditionCount = this.#conditions.length; // At this point it is always zero
+    this.#conditionCount = 0;
     this.#index = Number(conf.branch_index);
     this.$node = $node;
     this.view = conf.view;
@@ -94,10 +94,6 @@ class Branch {
 
   get index() {
     return this.#index;
-  }
-
-  get conditionCount() {
-    return this.#conditionCount;
   }
 
   addCondition() {
@@ -141,7 +137,6 @@ class BranchCondition {
     $node.append($remover);
 
     this.#config = conf;
-    this.#index = conf.branch.conditionCount;
     this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
