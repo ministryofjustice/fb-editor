@@ -384,11 +384,11 @@ describe("Branch", function () {
         });
 
         var $confirmTestCondition = $(BRANCH_CONDITION_SELECTOR, confirmTest.$node);
-        var confirmTestRemover = $confirmTestCondition.data("instance").remover;
+        var branchConditionConfirmTestRemover = $confirmTestCondition.data("instance").remover;
 
         expect(check).to.equal(1);
 
-        confirmTestRemover.confirm();
+        branchConditionConfirmTestRemover.confirm();
         expect(check).to.equal(2);
 
         // clean up
@@ -743,17 +743,22 @@ describe("Branch", function () {
 
       it("should open a dialog if one exists in config", function() {
         var check = 1;
-        var dialog = {
-          open: function() {
-            check += 1;
+        var confirmTestBranch = createBranch("confirmTestBranch", {
+          dialog_delete: {
+            open: function() {
+              ++check;
+            }
           }
-        }
+        });
 
         expect(check).to.equal(1);
 
-        remover._config.dialog_delete = dialog;
-        remover.confirm();
+        confirmTestBranch.branch.remover.confirm();
         expect(check).to.equal(2);
+
+        // clean up
+        confirmTestBranch.$node.remove();
+        confirmTestBranch = null;
       });
     });
 
