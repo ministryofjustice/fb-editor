@@ -76,7 +76,7 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
 
-  element :question_three_dots_button, '.ActivatedMenu_Activator'
+  element :question_three_dots_button, '.ActivatedMenu_Activator', visible: true
   element :required_question,
           :xpath,
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"

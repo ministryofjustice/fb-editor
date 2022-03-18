@@ -14,7 +14,7 @@ feature 'Edit single radios question page' do
     ['Adobe-wan Kenobi', 'PDFinn', 'Jar Jar Binks']
   end
   let(:options_after_deletion) do
-    ['Adobe-wan Kenobi', 'PDFinn']
+    ['Adobe-wan Kenobi', 'Jar Jar Binks']
   end
   let(:section_heading) { 'I open at the close' }
   let(:default_section_heading) { I18n.t('default_text.section_heading') }
@@ -51,9 +51,15 @@ feature 'Edit single radios question page' do
     given_I_have_a_single_question_page_with_radio
     when_I_update_the_question_name
     and_I_update_the_options
+    and_I_want_to_delete_an_option('PDFinn')
+    then_I_should_see_the_modal(
+      I18n.t('question_items.delete_modal.can_not_delete_heading'),
+      I18n.t('question_items.min_items_modal.can_not_delete_radios_message')
+    )
+    and_I_close_the_modal(I18n.t('dialogs.button_understood'))
     and_I_add_an_option('Jar Jar Binks')
     then_I_should_see_the_options(options_after_addition)
-    and_I_delete_an_option('Jar Jar Binks')
+    and_I_delete_an_option('PDFinn')
     then_I_should_see_the_options(options_after_deletion)
     and_I_return_to_flow_page
     preview_form = then_I_should_see_my_changes_on_preview
@@ -102,10 +108,17 @@ feature 'Edit single radios question page' do
     when_I_save_my_changes
   end
 
-  def and_I_delete_an_option(option_label)
+  def and_I_want_to_delete_an_option(option_label)
     when_I_want_to_select_component_properties('label', option_label)
     page.find('span', text: I18n.t('question.menu.remove')).click
-    expect(page).to have_selector('.ui-dialog')
+  end
+
+  def and_I_delete_an_option(option_label)
+    and_I_want_to_delete_an_option(option_label)
+    then_I_should_see_the_modal(
+             I18n.t('dialogs.heading_delete_option', label: option_label),
+             I18n.t('dialogs.message_delete')
+    )
     click_button(I18n.t('dialogs.button_delete_option'))
     expect(page).to_not have_text(option_label)
   end
@@ -134,6 +147,7 @@ feature 'Edit single radios question page' do
       expect(page.text).to include(option)
     end
   end
+
 
   def then_I_should_see_my_changes_on_preview
     preview_form = and_I_preview_the_form

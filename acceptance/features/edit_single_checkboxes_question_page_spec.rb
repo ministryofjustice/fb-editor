@@ -12,10 +12,10 @@ feature 'Edit single radios question page' do
     ['Adobe-wan Kenobi', 'PDFinn']
   end
   let(:options_after_addition) do
-    ['Adobe-wan Kenobi', 'PDFinn', 'Jar Jar Binks']
+    ['Adobe-wan Kenobi', 'Jar Jar Binks']
   end
   let(:options_after_deletion) do
-    ['Adobe-wan Kenobi', 'PDFinn']
+    ['Adobe-wan Kenobi']
   end
   let(:section_heading) { 'I open at the close' }
   let(:default_section_heading) { I18n.t('default_text.section_heading') }
@@ -42,7 +42,7 @@ feature 'Edit single radios question page' do
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_add_an_option('Jar Jar Binks')
-    then_I_should_see_the_options(options_after_addition)
+    then_I_should_see_the_options(initial_options.push('Jar Jar Binks'))
     and_I_return_to_flow_page
     preview_form = then_I_should_see_my_changes_on_preview
     and_I_should_see_the_options_that_I_added(preview_form, options_after_addition)
@@ -52,6 +52,13 @@ feature 'Edit single radios question page' do
     given_I_have_a_single_question_page_with_checkboxes
     when_I_update_the_question_name
     and_I_update_the_options
+    and_I_delete_an_option('PDFinn')
+    and_I_want_to_delete_an_option('Adobe-wan Kenobi')
+    then_I_should_see_the_modal(
+      I18n.t('question_items.delete_modal.can_not_delete_heading'),
+      I18n.t('question_items.min_items_modal.can_not_delete_checkboxes_message')
+    )
+    and_I_close_the_modal(I18n.t('dialogs.button_understood'))
     and_I_add_an_option('Jar Jar Binks')
     then_I_should_see_the_options(options_after_addition)
     and_I_delete_an_option('Jar Jar Binks')
@@ -113,14 +120,21 @@ feature 'Edit single radios question page' do
 
   def and_I_add_an_option(option_label)
     click_button(I18n.t('actions.option_add'))
-    page.find('label', text: I18n.t('default_text.option')).base.send_keys(option_label)
+    page.find('label', text: I18n.t('default_text.option')).set('').base.send_keys(option_label)
     when_I_save_my_changes
   end
 
-  def and_I_delete_an_option(option_label)
+  def and_I_want_to_delete_an_option(option_label)
     when_I_want_to_select_component_properties('label', option_label)
     page.find('span', text: I18n.t('question.menu.remove')).click
-    expect(page).to have_selector('.ui-dialog')
+  end
+
+  def and_I_delete_an_option(option_label)
+    and_I_want_to_delete_an_option(option_label)
+    then_I_should_see_the_modal(
+             I18n.t('dialogs.heading_delete_option', label: option_label),
+             I18n.t('dialogs.message_delete')
+    )
     click_button(I18n.t('dialogs.button_delete_option'))
     expect(page).to_not have_text(option_label)
   end

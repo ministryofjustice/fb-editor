@@ -19,8 +19,6 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
-const DialogApiRequest = require('./component_dialog_api_request');
-const Dialog = require('./component_dialog');
 
 
 class EditableCollectionItemMenu extends ActivatedMenu {

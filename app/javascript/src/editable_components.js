@@ -612,7 +612,6 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
       if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
         var item = new EditableComponentCollectionItem(component, $(this), itemConfig);
-        item.menu = createEditableCollectionItemMenu(component, component._config);
         component.items.push(item);
       }
     });
@@ -662,7 +661,6 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     var $clone = this.$itemTemplate.clone();
     $lastItem.after($clone);
     var item = new EditableComponentCollectionItem(this, $clone, this.$itemTemplate.data("config"));
-    item.menu = createEditableCollectionItemMenu(this, this._config);
     this.items.push(item);
     this.#updateItems();
 

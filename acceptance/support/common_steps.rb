@@ -409,4 +409,20 @@ module CommonSteps
     find('#main-content', visible: true)
     expect(editor.text).to include(DELETE_WARNING[2])
   end
+
+  def then_I_should_see_the_modal(modal_title, modal_text) 
+    expect(page).to have_selector('.ui-dialog', visible: true)
+    within('.ui-dialog', visible: true) do 
+      expect(page).to have_content modal_title
+      expect(page).to have_content modal_text
+    end
+  end
+
+  def and_I_close_the_modal(button_text=nil)
+    if button_text
+      click_button(button_text); 
+    else
+      click_button('.ui-dialog-titlebar-close')
+    end
+  end
 end
