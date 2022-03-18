@@ -6,6 +6,11 @@
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options
  **/
+const {
+  pasteAsPlainText,
+  singleLineInputRestrictions,
+} = require('./editable_utilities');
+
 const EditableBase = require('./editable_base');
 
 class EditableElement extends EditableBase {

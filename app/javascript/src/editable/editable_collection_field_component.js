@@ -50,8 +50,16 @@
  *
  * </div>
  **/
+const { 
+  mergeObjects, 
+  safelyActivateFunction, 
+} = require('../utilities');
+
+const { createEditableCollectionItemMenu } = require('./editable_utilities');
 
 const EditableComponentBase = require('./editable_component_base');
+const EditableCollectionItemInjector = require('./editable_collection_item_injector');
+const EditableComponentCollectionItem = require('./editable_component_collection_item');
 
 class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {

@@ -1,26 +1,5 @@
 
-/**
- * Editable Components
- * ----------------------------------------------------
- * Description:
- * Enhance target elements (components) with editable update/save properties.
- *
- * Requires: jQuery
- * Documentation:
- *
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
- **/
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const createElement = utilities.createElement;
-const uniqueString = utilities.uniqueString;
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const EditableCollectionItemMenu = require('../component_editable_collection_item_menu');
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -30,29 +9,16 @@ const converter = new showdown.Converter({
                     tables: true,
                     disableForced4SpacesIndentedSublists: true
                   });
-const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
-
-const EditableBase = require('./editable/editable_base');
-const EditableCollectionFieldComponent = require('./editable/editable_collection_field_component');
-const EditableCollectionItemInjector = require('./editable/editable_collection_item_injector');
-const EditableComponentBase = require('./editable/editable_component_base');
-const EditableContent = require('./editable/editable_content');
-const EditableElement = require('./editable/editable_element');
-const EditableGroupFieldComponent = require('./editable/editable_group_field_component');
-const EditableTextFieldComponent = require('./editable/editable_text_field_component');
-const EditableTextAreaComponent = require('./editable/editable_textarea_field_component');
+const { uniqueString } = require('../utilities');
 
 showdown.setFlavor('github');
 
-
-
-
+// This shouldn't be here!
 function createEditableCollectionItemMenu(item, config) { 
   var template = $("[data-component-template=EditableCollectionItemMenu]");
   var $ul = $(template.html());
 
   item.$node.append($ul);
-
   
   return new EditableCollectionItemMenu($ul, {
       activator_text: config.text.edit,
@@ -63,6 +29,15 @@ function createEditableCollectionItemMenu(item, config) {
         position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
+}
+
+/* Convert Markdown to HTML by tapping into third-party code.
+ * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
+ **/
+function convertToHtml(markdown) {
+  var html = converter.makeHtml(markdown);
+  html = sanitiseHtml(html);
+  return html;
 }
 
 /* Convert HTML to Markdown by tapping into third-party code.
@@ -94,14 +69,6 @@ function sanitiseMarkdown(markdown) {
   return markdown;
 }
 
-/* Convert Markdown to HTML by tapping into third-party code.
- * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
- **/
-function convertToHtml(markdown) {
-  var html = converter.makeHtml(markdown);
-  html = sanitiseHtml(html);
-  return html;
-}
 
 /* Single Line Input Restrictions
  *Browser contentEditable mode means some pain in trying to prevent
@@ -143,44 +110,12 @@ function pasteAsPlainText(event) {
   }
 }
 
-
-/* Determin what type of node is passed and create editable content type
- * to match.
- *
- * @$node ($jQuery node) REQUIRED - jQuery wrapped HTML element to become editable content.
- * @config (Object) Properties passed for any configuration.
- **/
-function editableComponent($node, config) {
-  var klass;
-  switch(config.type) {
-    case "element":
-      klass = EditableElement;
-      break;
-    case "content":
-      klass = EditableContent;
-      break;
-    case "text":
-    case "email":
-    case "number":
-    case "upload":
-      klass = EditableTextFieldComponent;
-      break;
-    case "textarea":
-      klass = EditableTextareaFieldComponent;
-      break;
-    case "date":
-      klass = EditableGroupFieldComponent;
-      break;
-    case "radios":
-    case "checkboxes":
-      klass = EditableCollectionFieldComponent;
-      break;
-  }
-  return new klass($node, config);
-}
-
-
-// Make available for importing.
-module.exports =  {
-  editableComponent: editableComponent,
+module.exports = {
+  convertToHtml: convertToHtml,
+  convertToMarkdown: convertToMarkdown,
+  createEditableCollectionItemMenu: createEditableCollectionItemMenu,
+  sanitiseHtml: sanitiseHtml,
+  sanitiseMarkdown: sanitiseMarkdown,
+  singleLineInputRestrictions: singleLineInputRestrictions,
+  pasteAsPlainText: pasteAsPlainText,
 }

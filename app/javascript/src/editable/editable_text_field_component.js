@@ -25,6 +25,7 @@
  *   <input name="answers[single-question_text_1]" type="text">
  * </div>
  **/
+const { mergeObjects } = require('../utilities');
 const EditableComponentBase = require('./editable_component_base');
 
 class EditableTextFieldComponent extends EditableComponentBase {
@@ -40,3 +41,5 @@ class EditableTextFieldComponent extends EditableComponentBase {
     $node.addClass("EditableTextFieldComponent");
   }
 }
+
+module.exports = EditableTextFieldComponent;

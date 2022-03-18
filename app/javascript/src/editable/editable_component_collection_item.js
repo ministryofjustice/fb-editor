@@ -12,10 +12,15 @@
  * config.onItemRemoveConfirmation (Function) An action passed the item.
  *
  **/
-const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
+const {
+  mergeObjects,
+  safelyActivateFunction,
+} = require('../utilities'); 
+
+const { createEditableCollectionItemMenu } = require('./editable_utilities');
+
 const EditableComponentBase = require('./editable_component_base');
-const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
+const EditableCollectionItemMenu = require('../component_editable_collection_item_menu');
 
 class EditableComponentCollectionItem extends EditableComponentBase {
   constructor(editableCollectionFieldComponent, $node, config) {

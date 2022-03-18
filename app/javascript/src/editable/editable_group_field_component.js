@@ -34,7 +34,7 @@
  *   </fieldset>
  * </div>
  **/
-
+const { mergeObjects } = require('../utilities');
 const EditableComponentBase = require('./editable_component_base');
 
 class EditableGroupFieldComponent extends EditableComponentBase {

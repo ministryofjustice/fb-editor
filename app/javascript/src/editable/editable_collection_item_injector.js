@@ -1,6 +1,9 @@
-const utilities = require('../utilities');
-const mergeObjects = utilities.mergeObjects;
-const createElement = utilities.createElement;
+
+const {
+  mergeObjects,
+  createElement,
+} = require('../utilities');
+
 const editableCollectionFieldComponent = require('./editable_collection_field_component');
 
 class EditableCollectionItemInjector {

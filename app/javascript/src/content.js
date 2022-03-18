@@ -14,11 +14,8 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const editableComponent = require('./editable_components').editableComponent;
+const { mergeObjects } = require('./utilities'); 
+const editableComponent = require('./editable/editable_component')
 const ContentMenu = require('./component_activated_content_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";

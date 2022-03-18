@@ -8,6 +8,11 @@
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
  **/
+const {
+  convertToHtml,
+  convertToMarkdown,
+  sanitiseHtml,
+} = require('./editable_utilities');
 
 const EditableElement = require('./editable_element');
 

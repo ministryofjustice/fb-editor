@@ -186,7 +186,7 @@ function updateHiddenInputOnForm($form, name, content) {
  * @name    (String) Used as the name attribute on input[hidden] form elements.
  * @content (String) instance.content value added to input[hidden] field.
  **/
-function addHiddenInpuElementToForm($form, name, content) {
+function addHiddenInputElementToForm($form, name, content) {
   var $input = $("<input type=\"hidden\" name=\"" + name + "\" />");
   $form.prepend($input);
   $input.val(content);
@@ -348,7 +348,7 @@ module.exports  = {
   findFragmentIdentifier: findFragmentIdentifier,
   meta: meta,
   post: post,
-  addHiddenInpuElementToForm: addHiddenInpuElementToForm,
+  addHiddenInputElementToForm: addHiddenInputElementToForm,
   updateHiddenInputOnForm: updateHiddenInputOnForm,
   property: property,
   isBoolean: isBoolean,

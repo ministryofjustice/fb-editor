@@ -10,6 +10,7 @@
  **/
 
 const EditableBase = require('./editable_base');
+const EditableElement = require('./editable_element');
 
 class EditableComponentBase extends EditableBase {
   constructor($node, config, elements) {

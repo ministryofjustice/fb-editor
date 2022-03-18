@@ -25,7 +25,7 @@
  *   <textarea name="answers[single-question_textarea_1]"></textarea>
  * </div>
  **/
-
+const { mergeObjects } = require('../utilities');
 const EditableComponentBase = require('./editable_component_base');
 
 class EditableTextareaFieldComponent extends EditableComponentBase {
@@ -38,4 +38,4 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
   }
 }
 
-module.exports = EditableComponentBase;
+module.exports = EditableTextareaFieldComponent;

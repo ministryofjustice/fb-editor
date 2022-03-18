@@ -10,6 +10,11 @@
  *                    type: 'editableContentType'
  *                  }
  **/
+const { 
+  addHiddenInputElementToForm, 
+  updateHiddenInputOnForm 
+} = require('../utilities');
+
 class EditableBase {
   constructor($node, config) {
     this._config = config || {};
@@ -32,7 +37,7 @@ class EditableBase {
     if($input.length) {
       $input.remove();
     }
-    addHiddenInpuElementToForm(this._config.form, "delete_components[]", this._config.data._uuid);
+    addHiddenInputElementToForm(this._config.form, "delete_components[]", this._config.data._uuid);
   }
 
   save() {
