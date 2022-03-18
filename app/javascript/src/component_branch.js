@@ -48,6 +48,14 @@ class Branch {
     for(var i=0; i<this.#conditions.length; ++i) {
       this.#conditions[i].index = i;
     }
+
+    // Set whether it is the only one, or not.
+    if(this.#conditions.length < 2) {
+      this.$node.addClass("singleBranchCondition");
+    }
+    else {
+      this.$node.removeClass("singleBranchCondition");
+    }
   }
 
   constructor($node, config) {

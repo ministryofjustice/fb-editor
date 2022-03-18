@@ -191,6 +191,12 @@ html {
       display: none;
     }
   }
+
+  &.singleBranchCondition {
+    .BranchConditionRemover {
+      display: none;
+    }
+  }
 }
 
 .BranchAnswer {
