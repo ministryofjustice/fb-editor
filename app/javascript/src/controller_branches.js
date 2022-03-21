@@ -11,6 +11,7 @@
  *       https://api.jqueryui.com/
  *
  *     - TODO:
+ *       /documentation/services/editor/javascript/controller-branches.html
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
@@ -19,7 +20,8 @@
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
 const ActivatedMenu = require('./component_activated_menu');
-const { Branch, BranchInjector } = require('./component_branch');
+const Branch = require('./component_branch');
+const BranchInjector = require('./component_branch_injector');
 const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_ANSWER_SELECTOR = ".answer";
@@ -59,9 +61,9 @@ class BranchesController extends DefaultController {
     this.#branchIndex = index;
   }
 
-   /* ACTION SETUP:
-    * Setup view for the create (new) action
-    **/
+  /* ACTION SETUP:
+   * Setup view for the create (new) action
+   **/
   create() {
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
@@ -282,5 +284,6 @@ function createBranchConditionTemplate($node) {
           "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][$1]");
   return html;
 }
+
 
 module.exports = BranchesController;
