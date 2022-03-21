@@ -147,22 +147,22 @@ describe('Utilities', function () {
     });
   });
 
-  describe('addHiddenInpuElementToForm', function() {
+  describe('addHiddenInputElementToForm', function() {
     before(function() {
       var $form = $('<form></form>');
-      $form.attr('id', 'addHiddenInpuElementToForm');
+      $form.attr('id', 'addHiddenInputElementToForm');
       $(document.body).append($form);
     });
 
     it('should add a new hidden form element to specified form if does not exist', function() {
-      var $form = $('#addHiddenInpuElementToForm');
-      utilities.addHiddenInpuElementToForm($form, 'field1', 'field-1-content');
+      var $form = $('#addHiddenInputElementToForm');
+      utilities.addHiddenInputElementToForm($form, 'field1', 'field-1-content');
 
       assert.equal($form.find('[name=\'field1\']').val(), 'field-1-content');
     });
 
     after(function() {
-      $('#addHiddenInpuElementToForm').remove();
+      $('#addHiddenInputElementToForm').remove();
     });
   });
 
@@ -175,7 +175,7 @@ describe('Utilities', function () {
 
     it('should update an existing hidden form element', function() {
       var $form1 = $('#updateHiddenInputOnForm');
-      utilities.addHiddenInpuElementToForm($form1, 'field2', 'field-2-content');
+      utilities.addHiddenInputElementToForm($form1, 'field2', 'field-2-content');
 
       assert.equal($form1.find('[name=\'field2\']').val(), 'field-2-content');
 
