@@ -79,7 +79,9 @@ class BranchesController extends DefaultController {
 }
 
 
-/* Find and enhance all current branches.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance all current branches.
  **/
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
@@ -95,7 +97,9 @@ BranchesController.enhanceCurrentBranches = function($branches) {
 }
 
 
-/* Find and enhance all elements that can add a new branch.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance all elements that can add a new branch.
  **/
 BranchesController.enhanceBranchInjectors = function($injectors) {
   var view = this;
@@ -105,7 +109,9 @@ BranchesController.enhanceBranchInjectors = function($injectors) {
 }
 
 
-/* Find and enhance 'otherwise' destination with same/similar functionality
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance 'otherwise' destination with same/similar functionality
  * to destination elmements found within Branch elements.
  **/
 BranchesController.enhanceBranchOtherwise = function($otherwise) {
@@ -124,7 +130,6 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
  * functionality.
  **/
 BranchesController.addBranchMenu = function(branch) {
-  //var branch = args[0];
   var $form = branch.$node.parent("form");
   var $ul = branch.$node.find(".component-activated-menu");
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
@@ -141,13 +146,14 @@ BranchesController.addBranchMenu = function(branch) {
 }
 
 
-/* Creates a new branch from a passed element and keeps
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Creates a new branch from a passed element and keeps
  * track of number of branches
  **/
 BranchesController.createBranch = function($node) {
   var view = this;
   var index = ++view.branchIndex;
-
   var branch = new Branch($node, {
     index: index,
     css_classes_error: CSS_CLASS_ERRORS,
@@ -232,9 +238,6 @@ BranchesController.addBranchEventListeners = function(view) {
   });
 }
 
-
-/* Creates a menu to control options for branches in the view
- **/
 
 /* We are creating new BranchCondition instances based on the original
  * HTML found. So that we can make each inserted component unique, we
