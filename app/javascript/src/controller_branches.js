@@ -86,13 +86,7 @@ class BranchesController extends DefaultController {
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
   $branches.each(function(index) {
-    var branch = BranchesController.createBranch.call(view, $(this));
-
-    // Remove the delete button to ensure we always have a default
-    // branch with one condition.
-    if(index == 0) {
-      branch.$node.find(".BranchRemover").eq(0).hide();
-    }
+    BranchesController.createBranch.call(view, $(this));
   });
 }
 
@@ -133,16 +127,14 @@ BranchesController.addBranchMenu = function(branch) {
   var $form = branch.$node.parent("form");
   var $ul = branch.$node.find(".component-activated-menu");
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
-  if(!first) {
-    new ActivatedMenu($ul, {
-      activator_text: app.text.branches.branch_edit,
-      container_classname: "SomeClassName",
-      container_id: utilities.uniqueString("activated-menu-"),
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
-      }
-    });
-  }
+  new ActivatedMenu($ul, {
+    activator_text: app.text.branches.branch_edit,
+    container_classname: "SomeClassName",
+    container_id: utilities.uniqueString("activated-menu-"),
+    menu: {
+      position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
+    }
+  });
 }
 
 
