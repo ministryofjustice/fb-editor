@@ -76,7 +76,7 @@ class Branch {
     this.#config = conf;
     this.#conditions = [];
     this.#conditionCount = 0;
-    this.#index = Number(conf.branch_index);
+    this.#index = Number(conf.index);
     this.$node = $node;
     this.view = conf.view;
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
@@ -453,6 +453,38 @@ class BranchRemover {
   }
 }
 
+
+/* Creates a BranchInjector object from passed $node.
+ * BranchInjectors fetch new HTML for a branch that will
+ * be added to the DOM and turned into a Branch object.
+ **/
+class BranchInjector {
+  #config;
+
+  constructor($node, config) {
+    var injector = this;
+    var conf = utilities.mergeObjects({}, config);
+
+    this.#config = conf;
+    $node.on("click", function(e) {
+      e.preventDefault();
+      injector.add();
+    });
+  }
+
+  add() {
+    // This should really be something like `new Branch(); and stuff` here
+    // but, because much of it is haneled by the view and design requirements,
+    // we're just triggering an event to allow the document to know it is
+    // required. The view controller can pick up on this request for action
+    // and make DOM adjustments based on what it needs to happen, passing
+    // appropriate params to the available `new Branch()` fucntionality.
+    $(document.body).trigger("BranchInjector_Add");
+  }
+}
+
+
+
 // Make available for importing.
-module.exports = Branch;
+export { Branch, BranchInjector }
 

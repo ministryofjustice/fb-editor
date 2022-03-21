@@ -19,7 +19,7 @@
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
 const ActivatedMenu = require('./component_activated_menu');
-const Branch = require('./component_branch');
+const { Branch, BranchInjector } = require('./component_branch');
 const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_ANSWER_SELECTOR = ".answer";
@@ -36,6 +36,8 @@ const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Spac
 
 
 class BranchesController extends DefaultController {
+  #branchIndex = 0;
+
   constructor(app) {
     super(app);
     this.api = app.api;
@@ -49,14 +51,22 @@ class BranchesController extends DefaultController {
     }
   }
 
-   /* Setup view for the create (new) action
-   **/
+  get branchIndex() {
+    return this.#branchIndex;
+  }
+
+  set branchIndex(index) {
+    this.#branchIndex = index;
+  }
+
+   /* ACTION SETUP:
+    * Setup view for the create (new) action
+    **/
   create() {
     var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
     var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
-    this._branchCount = 0;
     this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
 
     BranchesController.addBranchEventListeners(this)
@@ -79,7 +89,6 @@ BranchesController.enhanceCurrentBranches = function($branches) {
     if(index == 0) {
       branch.$node.find(".BranchRemover").eq(0).hide();
     }
-
   });
 }
 
@@ -89,9 +98,7 @@ BranchesController.enhanceCurrentBranches = function($branches) {
 BranchesController.enhanceBranchInjectors = function($injectors) {
   var view = this;
   $injectors.each(function() {
-    new BranchInjector($(this), {
-      view: view
-    });
+    new BranchInjector($(this));
   });
 }
 
@@ -137,8 +144,10 @@ BranchesController.addBranchMenu = function(branch) {
  **/
 BranchesController.createBranch = function($node) {
   var view = this;
+  var index = ++view.branchIndex;
+
   var branch = new Branch($node, {
-    branch_index: this._branchCount,
+    index: index,
     css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
@@ -167,7 +176,10 @@ BranchesController.createBranch = function($node) {
   if(branch.$node.find(".BranchAnswer").length < 1) {
     branch.$node.find(".BranchConditionInjector").hide();
   }
-  this._branchCount++;
+
+  // Register/update the index tracker.
+  view.branchIndex = index;
+
   return branch;
 }
 
@@ -181,9 +193,26 @@ BranchesController.removeBranchCombinator = function(node) {
     $(node).prev('.branch-or').first().remove();
 }
 
+
+/* Add document level listeners for adjusting the view based on Branch events.
+ **/
 BranchesController.addBranchEventListeners = function(view) {
   view.$document.on('BranchRemove', function(event, node){
     BranchesController.removeBranchCombinator.call(view, node);
+  });
+
+  view.$document.on("BranchInjector_Add", function() {
+    var url = utilities.stringInject(view.api.new_conditional, {
+      conditional_index: String(view.branchIndex - 1) // Because BE adds +1 (also BE calls Branches Conditionals - yes, confusing!)
+    });
+
+    utilities.updateDomByApiRequest(url, {
+      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
+      type: "after",
+      done: function ($node) {
+        BranchesController.createBranch.call(view, $node);
+      }
+    });
   });
 
   view.$document.on('BranchCreate', function(event, branch) {
@@ -199,40 +228,6 @@ BranchesController.addBranchEventListeners = function(view) {
       branch.$node.find(".BranchConditionInjector").hide();
     }
   });
-}
-
-/* Creates a BranchInjector object from passed $node.
- * BranchInjectors fetch new HTML for a branch that will
- * be added to the DOM and turned into a Branch object.
- **/
-class BranchInjector {
-  constructor($node, config) {
-    var injector = this;
-    var conf = utilities.mergeObjects({}, config);
-    this.view = conf.view;
-    this._config = conf;
-    $node.on("click", function(e) {
-      e.preventDefault();
-      injector.add();
-    });
-  }
-
-  /* Gets HTML for a new branch from api request
-   **/
-  add() {
-    var view = this.view;
-    var url = utilities.stringInject(this.view.api.new_conditional, {
-      conditional_index: String(this.view._branchCount - 1) // Because BE adds +1
-    });
-
-    utilities.updateDomByApiRequest(url, {
-      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
-      type: "after",
-      done: function ($node) {
-        BranchesController.createBranch.call(view, $node);
-      }
-    });
-  }
 }
 
 
