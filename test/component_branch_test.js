@@ -63,7 +63,7 @@ describe("Branch", function () {
 
     var $node = $(html);
     var conf = {
-      branch_index: INDEX_BRANCH,
+      index: INDEX_BRANCH,
       css_classes_error: ERROR_CLASSNAME_1 + " " + ERROR_CLASSNAME_2,
       selector_answer: BRANCH_ANSWER_SELECTOR,
       selector_branch_remove: BRANCH_REMOVE_SELECTOR,
@@ -158,11 +158,6 @@ describe("Branch", function () {
     });
 
     it("should make the index value public", function() {
-      expect(global_test_branch.index).to.exist;
-      expect(global_test_branch.index).to.equal(INDEX_BRANCH);
-    });
-
-    it("should make private index value available", function() {
       expect(global_test_branch.index).to.exist;
       expect(global_test_branch.index).to.equal(INDEX_BRANCH);
     });
