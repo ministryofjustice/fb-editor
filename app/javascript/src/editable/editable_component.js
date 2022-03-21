@@ -13,12 +13,12 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-const EditableCollectionFieldComponent = require('./editable_collection_field_component');
-const EditableContent = require('./editable_content');
-const EditableElement = require('./editable_element');
-const EditableGroupFieldComponent = require('./editable_group_field_component');
-const EditableTextFieldComponent = require('./editable_text_field_component');
-const EditableTextareaFieldComponent = require('./editable_textarea_field_component');
+import { EditableCollectionFieldComponent } from './editable_collection_field_component';
+import { EditableContent } from './editable_content';
+import { EditableElement } from './editable_element';
+import { EditableGroupFieldComponent } from './editable_group_field_component';
+import { EditableTextFieldComponent } from './editable_text_field_component';
+import { EditableTextareaFieldComponent } from './editable_textarea_field_component';
 
 /* Determine what type of node is passed and create editable content type
  * to match.
@@ -26,7 +26,7 @@ const EditableTextareaFieldComponent = require('./editable_textarea_field_compon
  * @$node ($jQuery node) REQUIRED - jQuery wrapped HTML element to become editable content.
  * @config (Object) Properties passed for any configuration.
  **/
-function editableComponent($node, config) {
+export function editableComponent($node, config) {
   var klass;
   switch(config.type) {
     case "element":
@@ -55,5 +55,3 @@ function editableComponent($node, config) {
   return new klass($node, config);
 }
 
-// Make available for importing.
-module.exports =  editableComponent;

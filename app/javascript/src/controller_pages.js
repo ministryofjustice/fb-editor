@@ -23,7 +23,7 @@ const {
 
 const ActivatedMenu = require('./component_activated_menu');
 
-const EditableElement = require('./editable/editable_element');
+import { EditableElement } from './editable/editable_element';
 const Content = require('./content');
 
 const CheckboxesQuestion = require('./question_checkboxes');

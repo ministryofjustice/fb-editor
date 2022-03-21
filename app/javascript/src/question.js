@@ -15,7 +15,7 @@
  *
  **/
 const { mergeObjects } = require('./utilities');
-const editableComponent = require('./editable/editable_component');
+import { editableComponent } from './editable/editable_component';
 const QuestionMenu = require('./component_activated_question_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";

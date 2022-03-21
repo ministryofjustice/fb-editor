@@ -1,5 +1,5 @@
 
-const EditableCollectionItemMenu = require('../component_editable_collection_item_menu');
+import { EditableCollectionItemMenu } from '../component_editable_collection_item_menu';
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -110,12 +110,12 @@ function pasteAsPlainText(event) {
   }
 }
 
-module.exports = {
-  convertToHtml: convertToHtml,
-  convertToMarkdown: convertToMarkdown,
-  createEditableCollectionItemMenu: createEditableCollectionItemMenu,
-  sanitiseHtml: sanitiseHtml,
-  sanitiseMarkdown: sanitiseMarkdown,
-  singleLineInputRestrictions: singleLineInputRestrictions,
-  pasteAsPlainText: pasteAsPlainText,
+export {
+  convertToHtml,
+  convertToMarkdown,
+  createEditableCollectionItemMenu,
+  sanitiseHtml,
+  sanitiseMarkdown,
+  singleLineInputRestrictions,
+  pasteAsPlainText,
 }

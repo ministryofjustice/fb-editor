@@ -35,9 +35,9 @@
  * </div>
  **/
 const { mergeObjects } = require('../utilities');
-const EditableComponentBase = require('./editable_component_base');
+import { EditableComponentBase } from './editable_component_base';
 
-class EditableGroupFieldComponent extends EditableComponentBase {
+export class EditableGroupFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
@@ -56,5 +56,3 @@ class EditableGroupFieldComponent extends EditableComponentBase {
     this.data.hint = elements.hint.content;
   }
 }
-
-module.exports = EditableGroupFieldComponent;

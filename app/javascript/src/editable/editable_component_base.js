@@ -9,10 +9,12 @@
  *
  **/
 
-const EditableBase = require('./editable_base');
-const EditableElement = require('./editable_element');
+// const EditableBase = require('./editable_base');
+// const EditableElement = require('./editable_element');
+import { EditableBase } from './editable_base';
+import { EditableElement } from './editable_element';
 
-class EditableComponentBase extends EditableBase {
+export class EditableComponentBase extends EditableBase {
   constructor($node, config, elements) {
     super($node, config);
     this.data = config.data;
@@ -59,5 +61,3 @@ class EditableComponentBase extends EditableBase {
     }
   }
 }
-
-module.exports = EditableComponentBase;

@@ -4,9 +4,7 @@ const {
   createElement,
 } = require('../utilities');
 
-const editableCollectionFieldComponent = require('./editable_collection_field_component');
-
-class EditableCollectionItemInjector {
+export class EditableCollectionItemInjector {
   constructor(editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ itemAdd: 'add' }, config.text);
@@ -25,4 +23,3 @@ class EditableCollectionItemInjector {
   }
 }
 
-module.exports = EditableCollectionItemInjector;

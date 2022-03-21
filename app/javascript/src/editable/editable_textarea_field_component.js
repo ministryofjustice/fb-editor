@@ -26,9 +26,9 @@
  * </div>
  **/
 const { mergeObjects } = require('../utilities');
-const EditableComponentBase = require('./editable_component_base');
+import { EditableComponentBase } from './editable_component_base';
 
-class EditableTextareaFieldComponent extends EditableComponentBase {
+export class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
@@ -37,5 +37,3 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
     $node.addClass("EditableTextareaFieldComponent");
   }
 }
-
-module.exports = EditableTextareaFieldComponent;

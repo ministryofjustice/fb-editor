@@ -26,9 +26,9 @@
  * </div>
  **/
 const { mergeObjects } = require('../utilities');
-const EditableComponentBase = require('./editable_component_base');
+import { EditableComponentBase } from './editable_component_base';
 
-class EditableTextFieldComponent extends EditableComponentBase {
+export class EditableTextFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     // TODO: Potential future addition...
     //       Maybe make this EditableAttribute instance when class is
@@ -41,5 +41,3 @@ class EditableTextFieldComponent extends EditableComponentBase {
     $node.addClass("EditableTextFieldComponent");
   }
 }
-
-module.exports = EditableTextFieldComponent;

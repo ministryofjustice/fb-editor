@@ -17,12 +17,11 @@ const {
   safelyActivateFunction,
 } = require('../utilities'); 
 
-const { createEditableCollectionItemMenu } = require('./editable_utilities');
+import { createEditableCollectionItemMenu } from './editable_utilities';
 
-const EditableComponentBase = require('./editable_component_base');
-const EditableCollectionItemMenu = require('../component_editable_collection_item_menu');
+import { EditableComponentBase } from './editable_component_base';
 
-class EditableComponentCollectionItem extends EditableComponentBase {
+export class EditableComponentCollectionItem extends EditableComponentBase {
   constructor(editableCollectionFieldComponent, $node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorComponentCollectionItemLabel,
@@ -60,5 +59,3 @@ class EditableComponentCollectionItem extends EditableComponentBase {
   }
 
 }
-
-module.exports = EditableComponentCollectionItem;

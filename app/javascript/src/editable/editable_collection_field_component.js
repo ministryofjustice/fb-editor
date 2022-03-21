@@ -55,21 +55,17 @@ const {
   safelyActivateFunction, 
 } = require('../utilities');
 
-const { createEditableCollectionItemMenu } = require('./editable_utilities');
+import { EditableComponentBase } from './editable_component_base';
+import { EditableCollectionItemInjector } from './editable_collection_item_injector';
+import { EditableComponentCollectionItem } from './editable_component_collection_item';
 
-const EditableComponentBase = require('./editable_component_base');
-const EditableCollectionItemInjector = require('./editable_collection_item_injector');
-const EditableComponentCollectionItem = require('./editable_component_collection_item');
-
-class EditableCollectionFieldComponent extends EditableComponentBase {
+export class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, mergeObjects({
       selectorElementLabel: config.selectorLabel,
       selectorElementHint: config.selectorHint
     }, config));
 
-    var text = config.text || {}; // Make sure it exists to avoid errors later on.
-    
     this.items = [];
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     
@@ -221,4 +217,3 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   }
 }
 
-module.exports = EditableCollectionFieldComponent;

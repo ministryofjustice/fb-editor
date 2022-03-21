@@ -6,14 +6,14 @@
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options
  **/
-const {
+import {
   pasteAsPlainText,
   singleLineInputRestrictions,
-} = require('./editable_utilities');
+}  from './editable_utilities';
 
-const EditableBase = require('./editable_base');
+import { EditableBase } from './editable_base';
 
-class EditableElement extends EditableBase {
+export class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
@@ -79,5 +79,3 @@ class EditableElement extends EditableBase {
     this.$node.focus();
   }
 }
-
-module.exports = EditableElement;

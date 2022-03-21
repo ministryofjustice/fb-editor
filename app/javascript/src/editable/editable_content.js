@@ -8,15 +8,15 @@
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
  **/
-const {
+import {
   convertToHtml,
   convertToMarkdown,
   sanitiseHtml,
-} = require('./editable_utilities');
+} from './editable_utilities';
 
-const EditableElement = require('./editable_element');
+import { EditableElement } from './editable_element';
 
-class EditableContent extends EditableElement {
+export class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
     var $input = $("<textarea class=\"input\"></textarea>");
@@ -126,5 +126,3 @@ class EditableContent extends EditableElement {
     this.$output.html(convertToHtml(content));
   }
 }
-
-module.exports = EditableContent;

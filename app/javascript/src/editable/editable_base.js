@@ -15,7 +15,7 @@ const {
   updateHiddenInputOnForm 
 } = require('../utilities');
 
-class EditableBase {
+export class EditableBase {
   constructor($node, config) {
     this._config = config || {};
     this.type = config.type;
@@ -48,5 +48,3 @@ class EditableBase {
     $(document).trigger("SaveRequired");
   }
 }
-
-module.exports = EditableBase;

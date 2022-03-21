@@ -21,7 +21,7 @@ const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
 
 
-class EditableCollectionItemMenu extends ActivatedMenu {
+export class EditableCollectionItemMenu extends ActivatedMenu {
   constructor($node, config) {
     super($node, mergeObjects({
       activator_text: "",
@@ -61,4 +61,3 @@ class EditableCollectionItemMenu extends ActivatedMenu {
   }
 }
 
-module.exports = EditableCollectionItemMenu;
