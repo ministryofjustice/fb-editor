@@ -248,9 +248,12 @@ function removeBranchCombinator($node) {
 /* Add document level listeners for adjusting the view based on Branch events.
  **/
 BranchesController.addBranchEventListeners = function(view) {
-  view.$document.on('BranchRemove', function(event, node){
-    removeBranchCombinator($(node));
+  view.$document.on("Branch_Destroy", function(event, branch){
     updateBranches(view);
+  });
+
+  view.$document.on("BranchRemover_Activate", function(event, remover) {
+    removeBranchCombinator(remover.branch.$node);
   });
 
   view.$document.on("BranchInjector_Add", function() {

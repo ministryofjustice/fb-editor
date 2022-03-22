@@ -108,8 +108,11 @@ class Branch {
   }
 
   destroy() {
+    // 1. Anything specifig to this function here.
     this.$node.remove();
-    $(document).trigger('BranchRemove', this.$node);
+
+    // 2. Then trigger the related event for listeners.
+    $(document).trigger('Branch_Destroy', this);
   }
   
 }
@@ -463,7 +466,14 @@ class BranchRemover {
   }
 
   activate() {
-    this.#config.branch.destroy();
+    // 1. Anything specific to this function here.
+    // ... nothing ...
+
+    // 2. Then trigger the related event for listeners.
+    $(document).trigger("BranchRemover_Activate", this);
+
+    // 3. Finally pass off to the branch.
+    this.branch.destroy();
   }
 }
 
