@@ -74,6 +74,7 @@ class BranchesController extends DefaultController {
     var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
     this.branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
+
     BranchesController.addBranchEventListeners(this)
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
@@ -131,9 +132,8 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
  * track of number of branches
  **/
  function createBranch(view, $node) {
-  var index = ++view.branchIndex;
   var branch = new Branch($node, {
-    index: index,
+    index: view.branchIndex,
     css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
@@ -145,9 +145,9 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: view.api.get_expression,
     question_label: view.text.branches.label_question_and,
-    template_condition: view.branchConditionTemplate,
     dialog_delete: view.dialogConfirmationDelete,
-    view: view
+    view: view,
+    template_condition: view.branchConditionTemplate,
   });
 
   // Add new branch view changes.
@@ -155,7 +155,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   branch.$node.before("<p class=\"branch-or\">or</p>");
 
   // Register/update the index tracker.
-  view.branchIndex = index;
+  view.branchIndex = view.branchIndex + 1;
 
   // Since the first Question label should be IF with the
   // following ones AND, we have a visual update issue when

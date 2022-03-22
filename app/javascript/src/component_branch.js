@@ -29,36 +29,6 @@ class Branch {
   #conditionCount; // TODO: Maybe remove if we can find way to use the #conditions.length
   #index; // Index number of the Branch
 
-  #conditionTemplate() {
-    return utilities.stringInject(this.#config.template_condition, {
-      branch_index: this.#index,
-      condition_index: ++this.#conditionCount // Need unique value only but would be nice to use BranchCondition.index instead.
-    });
-  }
-
-  #createCondition($node) {
-    var condition = new BranchCondition($node, this.#config);
-    this.#conditions.push(condition);
-    this.#updateConditions();
-  }
-
-  #updateConditions() {
-    // Reindex the conditions
-    for(var i=0; i<this.#conditions.length; ++i) {
-      this.#conditions[i].index = i;
-    }
-
-    // Set whether it is the only one, or not.
-    if(this.#conditions.length < 2) {
-      this.$node.addClass("singleBranchCondition");
-    }
-    else {
-      this.$node.removeClass("singleBranchCondition");
-    }
-
-    this.$node.trigger("UpdateConditions");
-  }
-
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
@@ -85,25 +55,31 @@ class Branch {
     // Create BranchCondition instance found in Branch.
     this.$node.find(this.#config.selector_condition).each(function(index) {
       var $node = $(this);
+      branch.#conditionCount = index;
       branch.#createCondition($node);
     });
 
     $(document).trigger('BranchCreate', this);
   }
 
-  get index() {
-    return this.#index;
-  }
-
   addCondition() {
-    var $node = $(this.#conditionTemplate());
+    var $node = $(utilities.stringInject(this.#config.template_condition, {
+      branch_index: this.#index,
+      condition_index: ++this.#conditionCount // Need unique value only but would be nice to use BranchCondition.index instead.
+    }));
+
     this.#createCondition($node);
     this.conditionInjector.$node.before($node);
   }
 
-  removeCondition(i) {
-    this.#conditions[i].$node.remove(); // Remove from DOM
-    this.#conditions.splice(i, 1); // Remove item at i
+  removeCondition(condition) {
+    // Find and remove from conditions array
+    for(var i=0; i<this.#conditions.length; ++i) {
+      if(this.#conditions[i] == condition) {
+        this.#conditions.splice(i, 1);
+      }
+    }
+
     this.#updateConditions();
   }
 
@@ -114,7 +90,27 @@ class Branch {
     // 2. Then trigger the related event for listeners.
     $(document).trigger('Branch_Destroy', this);
   }
-  
+
+  #createCondition($node) {
+    var condition = new BranchCondition($node, utilities.mergeObjects({
+      index: this.#conditionCount
+    }, this.#config));
+
+    this.#conditions.push(condition);
+    this.#updateConditions();
+  }
+
+  #updateConditions() {
+    // Set whether it is the only one, or not.
+    if(this.#conditions.length < 2) {
+      this.$node.addClass("singleBranchCondition");
+    }
+    else {
+      this.$node.removeClass("singleBranchCondition");
+    }
+
+    this.$node.trigger("UpdateConditions");
+  }
 }
 
 
@@ -139,6 +135,7 @@ class BranchCondition {
     $node.append($remover);
 
     this.#config = conf;
+    this.#index = conf.index;
     this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
@@ -146,32 +143,13 @@ class BranchCondition {
     this.answer = new BranchAnswer($node.find(conf.selector_answer), conf);
   }
 
-  get index() {
-    return this.#index;
-  }
-
-  set index(value) {
-    this.#index = value;
-
-    // Note: We should really have something here that also updates the
-    // attributes used in form submission so they take into account any
-    // changes to index values, but that's not currently how things are
-    // handled in the frontend. Because we're giving control to the
-    // server, so long as the required node attributes are different in
-    // the HTML, the server will sort out a proper index order and that
-    // will be seen after form submit and page is refreshed. If things
-    // were to change and frontend had to control such matters, this
-    // is the place where things should start. That is why this function
-    // exists and/or only currently does the one-liner action above.
-  }
-
   update(component, callback) {
     var url;
     if(component) {
       url = utilities.stringInject(this.#config.expression_url, {
         component_id: component,
-        conditionals_index: this.#config.branch.index,
-        expressions_index: this.#index
+        conditionals_index: this.branch.index,
+        expressions_index: this.#index // TODO... STEVEN rename these because they are confusing
       });
 
       utilities.updateDomByApiRequest(url, {
@@ -190,6 +168,11 @@ class BranchCondition {
       this.answer.$node.remove();
       this.answer = null;
     }
+  }
+
+  destroy() {
+    this.branch.removeCondition(this);
+    this.$node.remove();
   }
 }
 
@@ -263,7 +246,7 @@ class BranchConditionRemover {
   }
 
   activate() {
-    this.#config.branch.removeCondition(this.#config.condition.index);
+    this.condition.destroy();
   }
 }
 
@@ -311,6 +294,7 @@ class BranchQuestion {
     var branch = this.condition.branch;
     this.clearErrorState();
     this.condition.clear();
+
     switch(supported) {
       case true:
            this.condition.update(value, () =>  {
@@ -323,9 +307,9 @@ class BranchQuestion {
            this.enable();
            break;
       default:
-           this.enable();
            // Just trigger an event
-           $(document).trigger(EVENT_QUESTION_CHANGE, this.condition.branch);
+           $(document).trigger(EVENT_QUESTION_CHANGE, branch);
+           this.enable();
     }
   }
 
