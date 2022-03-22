@@ -324,6 +324,12 @@ html {
   padding-left: govuk-spacing(3);
 }
 
+.BranchRemover {
+  &.disabled {
+    display: none;
+  }
+}
+
 .branch-actions {
   @include container_panel;
   padding-bottom: govuk-spacing(4);

@@ -412,6 +412,7 @@ class BranchAnswer {
  **/
 class BranchRemover {
   #config;
+  #disabled = false;
 
   constructor($node, config) {
     var remover = this;
@@ -428,6 +429,20 @@ class BranchRemover {
     this.#config = conf;
     this.branch = conf.branch;
     this.$node = $node;
+  }
+
+  disable() {
+    this.$node.addClass("disabled");
+    this.#disabled = true;
+  }
+
+  enable() {
+    this.$node.removeClass("disabled");
+    this.#disabled = false;
+  }
+
+  isDisabled() {
+    return this.#disabled;
   }
 
   confirm() {
