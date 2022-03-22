@@ -156,11 +156,6 @@ describe("Branch", function () {
     it("should make the condition injector public", function() {
       expect(global_test_branch.conditionInjector).to.exist;
     });
-
-    it("should make the index value public", function() {
-      expect(global_test_branch.index).to.exist;
-      expect(global_test_branch.index).to.equal(INDEX_BRANCH);
-    });
   });
 
   describe("BranchCondition", function() {
@@ -209,11 +204,6 @@ describe("Branch", function () {
       var instance = $condition.data("instance");
       expect(instance.answer).to.exist;
       expect(instance.answer.$node.length).to.equal(1);
-    });
-
-    it("should make private index value available", function() {
-      var instance = $condition.data("instance");
-      expect(instance.index).to.equal(0);
     });
 
     describe("update", function() {
@@ -314,106 +304,6 @@ describe("Branch", function () {
     });
   });
 
-  describe("BranchConditionRemover", function() {
-    var $remover, remover;
-
-    before(function() {
-      var $condition = $(BRANCH_CONDITION_SELECTOR);
-      $remover = $condition.find("button").eq(0);
-      remover = $remover.data("instance");
-    });
-
-    it("should have basic HTML in place", function() {
-      expect($remover.length).to.equal(1);
-      expect($remover.get(0).nodeName.toLowerCase()).to.equal("button");
-    });
-
-    it("should have the component class name present", function() {
-      expect($remover.hasClass("BranchConditionRemover")).to.be.true;
-    });
-
-    it("should make the $node public", function() {
-      expect(remover.$node).to.exist;
-      expect(remover.$node.length).to.equal(1);
-      expect(remover.$node.get(0)).to.equal($remover.get(0));
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      expect(remover).to.exist;
-      expect(remover.$node.length).to.equal(1);
-    });
-
-    it("should make a public reference to connected condition", function() {
-      expect(remover.condition).to.exist;
-      expect(remover.condition.$node.length).to.equal(1);
-    });
-
-    describe("confirm", function() {
-      it("should run the activate function if no dialog exists in config", function() {
-        var check = 1;
-        var originalActivateMethod = remover.activate;
-        remover.activate = function() {
-          check += 1;
-        }
-
-        expect(check).to.equal(1);
-        remover.confirm();
-        expect(check).to.equal(2);
-
-        remover.activate = originalActivateMethod;
-      });
-
-      it("should open a dialog if one exists in config", function() {
-        var check = 1;
-        var confirmTest = createBranch("confirmTest", {
-          dialog_delete: {
-            open: function() {
-              ++check;
-            }
-          }
-        });
-
-        var $confirmTestCondition = $(BRANCH_CONDITION_SELECTOR, confirmTest.$node);
-        var branchConditionConfirmTestRemover = $confirmTestCondition.data("instance").remover;
-
-        expect(check).to.equal(1);
-
-        branchConditionConfirmTestRemover.confirm();
-        expect(check).to.equal(2);
-
-        // clean up
-        confirmTest.$node.remove();
-        confirmTest = null;
-      });
-    });
-
-    describe("activate", function() {
-      var check, branch, originalRemoveCondition;
-
-      before(function() {
-        branch = remover.condition.branch;
-        originalRemoveCondition = branch.removeCondition;
-        branch.removeCondition = function() {
-          check += 1;
-        }
-      });
-
-      after(function() {
-        branch.removeCondition = originalRemoveCondition;
-      });
-
-      it("should call branch.removeCondition() method", function() {
-        check = 1;
-
-        // First check value is correct...
-        expect(check).to.equal(1);
-
-        // Activate method and check value has increased.
-        remover.activate();
-        expect(check).to.equal(2);
-      });
-    });
-  });
 
   describe("BranchQuestion", function() {
     var $question, question;
@@ -617,6 +507,108 @@ describe("Branch", function () {
         // Remove to clean up
         $(".error-message").remove();
         expect($(".error-message").length).to.equal(0);
+      });
+    });
+  });
+
+
+  describe("BranchConditionRemover", function() {
+    var $remover, remover;
+
+    before(function() {
+      var $condition = $(BRANCH_CONDITION_SELECTOR);
+      $remover = $condition.find("button").eq(0);
+      remover = $remover.data("instance");
+    });
+
+    it("should have basic HTML in place", function() {
+      expect($remover.length).to.equal(1);
+      expect($remover.get(0).nodeName.toLowerCase()).to.equal("button");
+    });
+
+    it("should have the component class name present", function() {
+      expect($remover.hasClass("BranchConditionRemover")).to.be.true;
+    });
+
+    it("should make the $node public", function() {
+      expect(remover.$node).to.exist;
+      expect(remover.$node.length).to.equal(1);
+      expect(remover.$node.get(0)).to.equal($remover.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      expect(remover).to.exist;
+      expect(remover.$node.length).to.equal(1);
+    });
+
+    it("should make a public reference to connected condition", function() {
+      expect(remover.condition).to.exist;
+      expect(remover.condition.$node.length).to.equal(1);
+    });
+
+    describe("confirm", function() {
+      it("should run the activate function if no dialog exists in config", function() {
+        var check = 1;
+        var originalActivateMethod = remover.activate;
+        remover.activate = function() {
+          check += 1;
+        }
+
+        expect(check).to.equal(1);
+        remover.confirm();
+        expect(check).to.equal(2);
+
+        remover.activate = originalActivateMethod;
+      });
+
+      it("should open a dialog if one exists in config", function() {
+        var check = 1;
+        var confirmTest = createBranch("confirmTest", {
+          dialog_delete: {
+            open: function() {
+              ++check;
+            }
+          }
+        });
+
+        var $confirmTestCondition = $(BRANCH_CONDITION_SELECTOR, confirmTest.$node);
+        var branchConditionConfirmTestRemover = $confirmTestCondition.data("instance").remover;
+
+        expect(check).to.equal(1);
+
+        branchConditionConfirmTestRemover.confirm();
+        expect(check).to.equal(2);
+
+        // clean up
+        confirmTest.$node.remove();
+        confirmTest = null;
+      });
+    });
+
+    describe("activate", function() {
+      var check, branch, originalRemoveCondition;
+
+      before(function() {
+        branch = remover.condition.branch;
+        originalRemoveCondition = branch.removeCondition;
+        branch.removeCondition = function() {
+          check += 1;
+        }
+      });
+
+      after(function() {
+        branch.removeCondition = originalRemoveCondition;
+      });
+
+      it("should call branch.removeCondition() method", function() {
+        check = 1;
+
+        // First check value is correct...
+        expect(check).to.equal(1);
+
+        // Activate method and check value has increased.
+        remover.activate();
+        expect(check).to.equal(2);
       });
     });
   });
