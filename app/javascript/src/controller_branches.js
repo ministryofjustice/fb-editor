@@ -61,16 +61,19 @@ class BranchesController extends DefaultController {
     this.#branchIndex = index;
   }
 
+  get branchNodes() {
+    return $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+  }
+
   /* ACTION SETUP:
    * Setup view for the create (new) action
    **/
   create() {
-    var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+    var $branches = this.branchNodes;
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
     var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
-    this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
-
+    this.branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
     BranchesController.addBranchEventListeners(this)
     BranchesController.enhanceCurrentBranches.call(this, $branches);
     BranchesController.enhanceBranchInjectors.call(this, $injectors);
@@ -88,6 +91,8 @@ BranchesController.enhanceCurrentBranches = function($branches) {
   $branches.each(function(index) {
     createBranch(view, $(this));
   });
+
+  updateBranches(view);
 }
 
 
@@ -140,7 +145,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: view.api.get_expression,
     question_label: view.text.branches.label_question_and,
-    template_condition: view._branchConditionTemplate,
+    template_condition: view.branchConditionTemplate,
     dialog_delete: view.dialogConfirmationDelete,
     view: view
   });
@@ -187,6 +192,33 @@ function addBranchMenu(branch) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
+ * Any actions that need to happen across all branches can be put here.
+ *
+ * 1. Design calls for the first item to hide it's delete button,
+ *    unless there is more than one Branch visible on screen.
+ **/
+function updateBranches(view) {
+
+  // 1. (see above) Quite horrible but there are currently issues being overlooked with the design.
+  //    The desire is to hide the whole Branch menu activator when we do not want to delete the branch
+  //    but that doesn't take into account future situations where more than a delete item could be
+  //    part of the menu. For that reason, the BranchRemover has been updated with enable/disable
+  //    functionality that currently just adds a relevant class name so it's appearance can be
+  //    altered to suit. For now, to cater for the more radical 'hide the whole menu' approach, this
+  //    code is also adding a specific (rubbish jQuery/DOM based) alteration to achieve the design.
+  if(view.branchNodes.length > 1) {
+    view.branchNodes.eq(0).find(".ActivatedMenu_Activator").show();
+    view.branchNodes.eq(0).data("instance").remover.enable();
+  }
+  else {
+    view.branchNodes.eq(0).find(".ActivatedMenu_Activator").hide();
+    view.branchNodes.eq(0).data("instance").remover.disable();
+  }
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
  * Design calls for the text 'or' between each branch component.
  **/
 function addBranchCombinator(branch) {
@@ -206,6 +238,7 @@ BranchesController.removeBranchCombinator = function(node) {
 BranchesController.addBranchEventListeners = function(view) {
   view.$document.on('BranchRemove', function(event, node){
     BranchesController.removeBranchCombinator.call(view, node);
+    updateBranches(view);
   });
 
   view.$document.on("BranchInjector_Add", function() {
@@ -214,10 +247,11 @@ BranchesController.addBranchEventListeners = function(view) {
     });
 
     utilities.updateDomByApiRequest(url, {
-      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
+      target: view.branchNodes.last(),
       type: "after",
       done: function ($node) {
         createBranch(view, $node);
+        updateBranches(view);
       }
     });
   });
