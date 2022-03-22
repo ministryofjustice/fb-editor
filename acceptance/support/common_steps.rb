@@ -156,6 +156,15 @@ module CommonSteps
     editor.edit_service_link(service_name).click
   end
 
+  def and_I_add_a_content_page(page_title)
+    given_I_add_a_content_page
+    and_I_add_a_page_url(page_title)
+    when_I_add_the_page
+    and_I_change_the_page_heading(page_title)
+    when_I_save_my_changes
+    and_I_return_to_flow_page
+  end
+
   def and_I_edit_the_page(url:)
     page.find('.govuk-link', text: url).click
   end
