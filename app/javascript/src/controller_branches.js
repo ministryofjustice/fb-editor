@@ -321,7 +321,11 @@ function createBranchConditionTemplate($node) {
     // Now take a copy of the HTML.
     html = $condition.get(0).outerHTML;
   }
+
   // html is a string, either empty or populated, so we should be safe from here.
+  // We are going to find the important data values from the cloned element and replace
+  // the number (index) parts with a finder label the FE code can search and replace on
+  // when we build new BranchConditions from this template html.
   html = html.replace(
           /branch_conditionals_attributes_0_expressions_attributes_0_(component|operator|field)/mig,
           "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_$1");
