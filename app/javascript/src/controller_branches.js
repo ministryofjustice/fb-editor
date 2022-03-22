@@ -86,7 +86,7 @@ class BranchesController extends DefaultController {
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
   $branches.each(function(index) {
-    BranchesController.createBranch.call(view, $(this));
+    createBranch(view, $(this));
   });
 }
 
@@ -120,10 +120,57 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
 }
 
 
-/* Find branch menu element and wrap with ActivatedMenu
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Creates a new branch from a passed element and keeps
+ * track of number of branches
+ **/
+ function createBranch(view, $node) {
+  var index = ++view.branchIndex;
+  var branch = new Branch($node, {
+    index: index,
+    css_classes_error: CSS_CLASS_ERRORS,
+    selector_answer: BRANCH_ANSWER_SELECTOR,
+    selector_branch_remove: BRANCH_REMOVE_SELECTOR,
+    selector_condition: BRANCH_CONDITION_SELECTOR,
+    selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
+    selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
+    selector_destination: BRANCH_DESTINATION_SELECTOR,
+    selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
+    selector_question: BRANCH_QUESTION_SELECTOR,
+    expression_url: view.api.get_expression,
+    question_label: view.text.branches.label_question_and,
+    template_condition: view._branchConditionTemplate,
+    dialog_delete: view.dialogConfirmationDelete,
+    view: view
+  });
+
+  // Since the first Question label should be IF with the
+  // following ones AND, we have a visual update issue when
+  // we delete the first one. This leaves us with AND, AND...
+  // instead of IF, AND. This listener will correct found
+  // incorrect labelling situations.
+  branch.$node.on("UpdateConditions", function() {
+    branch.$node.find(BRANCH_QUESTION_SELECTOR + " label").eq(0).text(view.text.branches.label_question_if);
+  });
+
+  // Add new branch view changes.
+  addBranchMenu(branch);
+  addBranchCombinator(branch);
+
+  // Register/update the index tracker.
+  view.branchIndex = index;
+
+  return branch;
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Find branch menu element and wrap with ActivatedMenu
  * functionality.
  **/
-BranchesController.addBranchMenu = function(branch) {
+function addBranchMenu(branch) {
   var $form = branch.$node.parent("form");
   var $ul = branch.$node.find(".component-activated-menu");
   var first = $(".Branch", $form).get(0) == branch.$node.get(0);
@@ -140,54 +187,14 @@ BranchesController.addBranchMenu = function(branch) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * Creates a new branch from a passed element and keeps
- * track of number of branches
+ * Design calls for the text 'or' between each branch component.
  **/
-BranchesController.createBranch = function($node) {
-  var view = this;
-  var index = ++view.branchIndex;
-  var branch = new Branch($node, {
-    index: index,
-    css_classes_error: CSS_CLASS_ERRORS,
-    selector_answer: BRANCH_ANSWER_SELECTOR,
-    selector_branch_remove: BRANCH_REMOVE_SELECTOR,
-    selector_condition: BRANCH_CONDITION_SELECTOR,
-    selector_condition_add: BRANCH_CONDITION_ADD_SELECTOR,
-    selector_condition_remove: BRANCH_CONDITION_REMOVE_SELECTOR,
-    selector_destination: BRANCH_DESTINATION_SELECTOR,
-    selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
-    selector_question: BRANCH_QUESTION_SELECTOR,
-    expression_url: this.api.get_expression,
-    question_label: this.text.branches.label_question_and,
-    template_condition: this._branchConditionTemplate,
-    dialog_delete: view.dialogConfirmationDelete,
-    view: view
-  });
-
-  branch.$node.on("UpdateConditions", function() {
-    // Since the first Question label should be IF with the 
-    // following ones AND, we have a visual update issue when
-    // we delete the first one. This leaves us with AND, AND...
-    // instead of IF, AND. This listener will correct found
-    // incorrect labelling situations.
-    branch.$node.find(BRANCH_QUESTION_SELECTOR + " label").eq(0).text(view.text.branches.label_question_if);
-  });
-
-  if(branch.$node.find(".BranchAnswer").length < 1) {
-    branch.$node.find(".BranchConditionInjector").hide();
-  }
-
-  // Register/update the index tracker.
-  view.branchIndex = index;
-
-  return branch;
-}
-
-BranchesController.addBranchCombinator = function(branch) {
+function addBranchCombinator(branch) {
   if( branch.index != 0 ) {
     branch.$node.before("<p class=\"branch-or\">or</p>");
   }
 }
+
 
 BranchesController.removeBranchCombinator = function(node) {
     $(node).prev('.branch-or').first().remove();
@@ -210,14 +217,9 @@ BranchesController.addBranchEventListeners = function(view) {
       target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
       type: "after",
       done: function ($node) {
-        BranchesController.createBranch.call(view, $node);
+        createBranch(view, $node);
       }
     });
-  });
-
-  view.$document.on('BranchCreate', function(event, branch) {
-    BranchesController.addBranchMenu(branch);
-    BranchesController.addBranchCombinator(branch);
   });
 
   view.$document.on('BranchQuestionChange', function(event, branch) {
