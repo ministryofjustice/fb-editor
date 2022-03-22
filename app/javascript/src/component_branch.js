@@ -108,8 +108,8 @@ class Branch {
   }
 
   destroy() {
-    $(document).trigger('BranchRemove', this.$node );
     this.$node.remove();
+    $(document).trigger('BranchRemove', this.$node);
   }
   
 }

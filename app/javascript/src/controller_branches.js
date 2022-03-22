@@ -150,6 +150,13 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     view: view
   });
 
+  // Add new branch view changes.
+  addBranchMenu(branch);
+  branch.$node.before("<p class=\"branch-or\">or</p>");
+
+  // Register/update the index tracker.
+  view.branchIndex = index;
+
   // Since the first Question label should be IF with the
   // following ones AND, we have a visual update issue when
   // we delete the first one. This leaves us with AND, AND...
@@ -158,13 +165,6 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   branch.$node.on("UpdateConditions", function() {
     branch.$node.find(BRANCH_QUESTION_SELECTOR + " label").eq(0).text(view.text.branches.label_question_if);
   });
-
-  // Add new branch view changes.
-  addBranchMenu(branch);
-  addBranchCombinator(branch);
-
-  // Register/update the index tracker.
-  view.branchIndex = index;
 
   return branch;
 }
@@ -193,11 +193,16 @@ function addBranchMenu(branch) {
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Any actions that need to happen across all branches can be put here.
+ * Called after both branch create and destroy actions.
  *
  * 1. Design calls for the first item to hide it's delete button,
  *    unless there is more than one Branch visible on screen.
+ *
+ * 2. Remove any inserted 'or' text that lingers in the wrong place
+ *    after a Branch removal action.
  **/
 function updateBranches(view) {
+  var $first = view.branchNodes.eq(0);
 
   // 1. (see above) Quite horrible but there are currently issues being overlooked with the design.
   //    The desire is to hide the whole Branch menu activator when we do not want to delete the branch
@@ -207,13 +212,16 @@ function updateBranches(view) {
   //    altered to suit. For now, to cater for the more radical 'hide the whole menu' approach, this
   //    code is also adding a specific (rubbish jQuery/DOM based) alteration to achieve the design.
   if(view.branchNodes.length > 1) {
-    view.branchNodes.eq(0).find(".ActivatedMenu_Activator").show();
-    view.branchNodes.eq(0).data("instance").remover.enable();
+    $first.find(".ActivatedMenu_Activator").show();
+    $first.data("instance").remover.enable();
   }
   else {
-    view.branchNodes.eq(0).find(".ActivatedMenu_Activator").hide();
-    view.branchNodes.eq(0).data("instance").remover.disable();
+    $first.find(".ActivatedMenu_Activator").hide();
+    $first.data("instance").remover.disable();
   }
+
+  // 2. Remove first 'or'.
+  removeBranchCombinator(view.branchNodes.eq(0));
 }
 
 
@@ -228,8 +236,12 @@ function addBranchCombinator(branch) {
 }
 
 
-BranchesController.removeBranchCombinator = function(node) {
-    $(node).prev('.branch-or').first().remove();
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Help to manage design requirement for 'or' text between branches.
+ **/
+function removeBranchCombinator($node) {
+  $node.prev('.branch-or').first().remove();
 }
 
 
@@ -237,7 +249,7 @@ BranchesController.removeBranchCombinator = function(node) {
  **/
 BranchesController.addBranchEventListeners = function(view) {
   view.$document.on('BranchRemove', function(event, node){
-    BranchesController.removeBranchCombinator.call(view, node);
+    removeBranchCombinator($(node));
     updateBranches(view);
   });
 
