@@ -1,8 +1,15 @@
 <script>
   var app = {
     api: {
-      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{conditional_index}",
-      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{conditionals_index}/expressions/#{expressions_index}",
+      // FE terminology    | BE terminology
+      // --------------------------------------------------------
+      // Branching Node    | Branch
+      // Branch            | Conditional
+      // BranchCondition   | Expression
+      // BranchQuestion    | (Expression Answers) Component
+      // BranchAnswer      | (Expression Answers) Operator+Field
+      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{branch_index}",
+      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{branch_index}/expressions/#{condition_index}",
       // Feaures switches here (as per example below).
       features: {
         /* example: <%= ENV['EXAMPLE_FEATURE'] == 'enabled' %> */

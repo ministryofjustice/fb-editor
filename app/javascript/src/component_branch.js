@@ -16,7 +16,7 @@
 
 const utilities = require('./utilities');
 const BranchDestination = require('./component_branch_destination');
-const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
+const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
 
 
 /* Branch component
@@ -62,12 +62,18 @@ class Branch {
     $(document).trigger('BranchCreate', this);
   }
 
+  get index() {
+    return this.#index;
+  }
+
   addCondition() {
+    var index = this.#conditionCount + 1;
     var $node = $(utilities.stringInject(this.#config.template_condition, {
       branch_index: this.#index,
-      condition_index: ++this.#conditionCount // Need unique value only but would be nice to use BranchCondition.index instead.
+      condition_index: index // Need unique value only but would be nice to use BranchCondition.index instead.
     }));
 
+    this.#conditionCount = index;
     this.#createCondition($node);
     this.conditionInjector.$node.before($node);
   }
@@ -92,9 +98,9 @@ class Branch {
   }
 
   #createCondition($node) {
-    var condition = new BranchCondition($node, utilities.mergeObjects({
+    var condition = new BranchCondition($node, utilities.mergeObjects(this.#config, {
       index: this.#conditionCount
-    }, this.#config));
+    }));
 
     this.#conditions.push(condition);
     this.#updateConditions();
@@ -148,8 +154,8 @@ class BranchCondition {
     if(component) {
       url = utilities.stringInject(this.#config.expression_url, {
         component_id: component,
-        conditionals_index: this.branch.index,
-        expressions_index: this.#index // TODO... STEVEN rename these because they are confusing
+        branch_index: this.branch.index,
+        condition_index: this.#index
       });
 
       utilities.updateDomByApiRequest(url, {
@@ -294,7 +300,6 @@ class BranchQuestion {
     var branch = this.condition.branch;
     this.clearErrorState();
     this.condition.clear();
-
     switch(supported) {
       case true:
            this.condition.update(value, () =>  {

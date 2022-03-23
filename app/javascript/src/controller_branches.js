@@ -258,7 +258,7 @@ BranchesController.addBranchEventListeners = function(view) {
 
   view.$document.on("BranchInjector_Add", function() {
     var url = utilities.stringInject(view.api.new_conditional, {
-      conditional_index: String(view.branchIndex - 1) // Because BE adds +1 (also BE calls Branches Conditionals - yes, confusing!)
+      branch_index: String(view.branchIndex - 1) // Because BE adds +1 (also BE calls Branches Conditionals - yes, confusing!)
     });
 
     utilities.updateDomByApiRequest(url, {
@@ -271,7 +271,7 @@ BranchesController.addBranchEventListeners = function(view) {
     });
   });
 
-  view.$document.on('BranchQuestionChange', function(event, branch) {
+  view.$document.on('BranchQuestion_Change', function(event, branch) {
     if(branch.$node.find(".BranchAnswer").length > 0) {
       branch.$node.find(".BranchConditionInjector").show();
     }
