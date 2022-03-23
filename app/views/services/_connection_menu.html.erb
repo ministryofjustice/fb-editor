@@ -32,11 +32,13 @@
       <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
 
       <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
-
-      <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
+      
+      <% unless item[:type] == 'page.start' %>
+        <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
+      <% end %>
     <% end %>
 
-   <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page&.uuid) %>
+    <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page&.uuid) %>
       <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
     <% end %>
 
@@ -58,13 +60,13 @@
       <% unless item[:type] == 'page.start' %>
         <li data-action="link">
           <%= link_to t('services.branch'),
-          new_branches_path(service.service_id, item[:uuid]) %>
+            new_branches_path(service.service_id, item[:uuid]) %>
         </li>
       <% end %>
 
       <li data-action="destination">
         <%= link_to t('actions.change_destination'),
-        new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
+          new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
       </li>
     <% end %>
 </ul>
