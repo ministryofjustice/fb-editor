@@ -63,6 +63,7 @@ PagesController.edit = function() {
   this.$editable = $(".fb-editable");
   this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
+   
 
   workaroundForDefaultText(view);
   enhanceContent(view);
@@ -113,6 +114,7 @@ PagesController.edit = function() {
 
   addQuestionMenuListeners(view);
   addContentMenuListeners(view);
+  addEditableComponentItemMenuListeners(view) 
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
@@ -263,6 +265,52 @@ function addQuestionMenuListeners(view) {
   });
 }
 
+function addEditableComponentItemMenuListeners(view) {
+  view.$document.on('EditableCollectionItemMenuSelectionRemove', function(event, details) {
+    var { selectedItem, collectionItem } = details;
+
+    var dialog = view.dialog;
+    var path = selectedItem.data('api-path');
+
+    var questionUuid =  collectionItem.component.data._uuid;
+    var optionUuid =  collectionItem.data._uuid; 
+
+    var url = utilities.stringInject(path, { 
+      'question_uuid': questionUuid, 
+      'option_uuid': optionUuid ?? 'new', 
+    });
+
+    if( !optionUuid ) {
+      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
+    }
+
+    if( collectionItem.component.canHaveItemsRemoved() ) {
+      new DialogApiRequest(url, {
+        activator: selectedItem,
+        closeOnClickSelector: ".govuk-button",
+        build: function(dialog) {
+          dialog.$node.find("[data-method=delete]").on("click", function(e) {
+            e.preventDefault();
+            collectionItem.component.removeItem(collectionItem)
+          })
+        }
+      });
+    } else {
+      let dialogContent = '';
+      if (collectionItem.type == 'radios') {
+        dialogContent = view.text.dialogs.message_delete_radio_min;
+      } else if (collectionItem.type == 'checkboxes') {
+        dialogContent = view.text.dialogs.message_delete_checkbox_min;
+      } 
+      dialog.open({
+        heading: view.text.dialogs.heading_can_not_delete_option,
+        content: dialogContent,
+        ok: view.text.dialogs.button_understood,
+      });
+    }
+  });
+}
+
 
 /* Content Menu needs to interact with Dialog components before
  * running any action, so we need to work with listeners to coordinate
@@ -384,6 +432,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     var question = new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,
@@ -415,6 +464,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     var question = new RadiosQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,

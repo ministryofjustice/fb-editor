@@ -19,7 +19,6 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const ActivatedMenu = require('./component_activated_menu');
-const DialogApiRequest = require('./component_dialog_api_request');
 
 
 class EditableCollectionItemMenu extends ActivatedMenu {
@@ -47,45 +46,18 @@ class EditableCollectionItemMenu extends ActivatedMenu {
   }
 
   selection(event, item) {
-    var action = item.data("action");
+    let action = item.data("action");
     this.selectedItem = item;
 
     event.preventDefault();
     switch(action) {
       case "remove":
-           this.remove(item);
-           break;
+        $(document).trigger("EditableCollectionItemMenuSelectionRemove", { 
+          selectedItem: item,
+          collectionItem: this.collectionItem
+        });
+        break;
     }
-  }
-
-  remove(item) {
-    var path = item.data('api-path');
-    var collectionItem = this.collectionItem
-
-    var questionUuid =  collectionItem.component.data._uuid;
-    var optionUuid =  collectionItem.data._uuid; 
-
-    var url = utilities.stringInject(path, { 
-      'question_uuid': questionUuid, 
-      'option_uuid': optionUuid ?? 'new', 
-    });
-
-    if( !optionUuid ) {
-      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
-    }
-  
-    console.log(url);
-
-    new DialogApiRequest(url, {
-      activator: item,
-      closeOnClickSelector: ".govuk-button",
-      build: function(dialog) {
-        dialog.$node.find("[data-method=delete]").on("click", function(e) {
-          e.preventDefault();
-          collectionItem.component.removeItem(collectionItem)
-        })
-      }
-    })
   }
 }
 
