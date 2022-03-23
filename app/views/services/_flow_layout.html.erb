@@ -9,16 +9,14 @@
     </article>
 
   <% elsif item[:type] == 'warning' %>
-    <% if ENV['BRANCHING'] == 'enabled' %>
-    <div class="govuk-warning-text">
-        <article class="flow-item flow-warning" aria-hidden="true">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span><%= item[:content] %></span>
-          </strong>
-        </article>
-      </div>
-    <% end %>
+  <div class="govuk-warning-text">
+      <article class="flow-item flow-warning" aria-hidden="true">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+          <span><%= item[:content] %></span>
+        </strong>
+      </article>
+    </div>
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>
@@ -48,7 +46,7 @@
                     <span class="condition-operator"><%= t("branches.expression.and") -%></span>
                   <% end %>
                 <% end %>
-              </div> 
+              </div>
               <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
             </li>
           <% end %>

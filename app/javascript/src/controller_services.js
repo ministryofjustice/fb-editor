@@ -158,11 +158,6 @@ function createConnectionMenus(view) {
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
   createAndPositionFlowItems(view, $container);
-
-  // TEMPORARY: BRANCHING FEATURE FLAG
-  if(!view.features.branching) {
-    positionAddPageButton();
-  }
   adjustOverviewHeight($container);
   applyPageFlowConnectorPaths(view, $container);
   applyBranchFlowConnectorPaths(view, $container);
