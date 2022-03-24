@@ -66,6 +66,10 @@ class Branch {
     return this.#index;
   }
 
+  get conditions() {
+    return this.#conditions;
+  }
+
   addCondition() {
     var index = this.#conditionCount + 1;
     var $node = $(utilities.stringInject(this.#config.template_condition, {
@@ -279,13 +283,14 @@ class BranchQuestion {
       this.change(supported, select.value);
     });
 
-    if(conf.condition.index > 0) {
-      $node.find("label").text(config.question_label);
-    }
-
     this.#config = conf;
     this.condition = conf.condition;
     this.$node = $node;
+  }
+
+  set label(label) {
+console.log(this.$node);
+    this.$node.find("label").text(label);
   }
 
   disable() {

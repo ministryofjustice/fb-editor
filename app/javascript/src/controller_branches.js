@@ -145,7 +145,6 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: view.api.get_expression,
-    question_label: view.text.branches.label_question_and,
     dialog_delete: view.dialogConfirmationDelete,
     view: view,
     template_condition: view.branchConditionTemplate,
@@ -165,7 +164,14 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   // instead of IF, AND. This listener will correct found
   // incorrect labelling situations.
   branch.$node.on("UpdateConditions", function() {
-    branch.$node.find(BRANCH_QUESTION_SELECTOR + " label").eq(0).text(view.text.branches.label_question_if);
+    for(var i=0; i<branch.conditions.length; ++i) {
+      if(i == 0) {
+        branch.conditions[i].question.label = view.text.branches.label_question_if;
+      }
+      else {
+        branch.conditions[i].question.label = view.text.branches.label_question_and;
+      }
+    }
   });
 
   return branch;
