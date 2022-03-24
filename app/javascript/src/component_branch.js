@@ -289,7 +289,6 @@ class BranchQuestion {
   }
 
   set label(label) {
-console.log(this.$node);
     this.$node.find("label").text(label);
   }
 
