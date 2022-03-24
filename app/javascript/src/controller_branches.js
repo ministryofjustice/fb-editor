@@ -103,7 +103,6 @@ BranchesController.enhanceCurrentBranches = function($branches) {
  * Find and enhance all elements that can add a new branch.
  **/
 BranchesController.enhanceBranchInjectors = function($injectors) {
-  var view = this;
   $injectors.each(function() {
     new BranchInjector($(this));
   });
@@ -152,7 +151,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
 
   // Add new branch view changes.
   addBranchMenu(branch);
-  branch.$node.before("<p class=\"branch-or\">or</p>");
+  addBranchCombinator(branch)
   $(document).trigger(EVENT_QUESTION_CHANGE, branch); // Need to set initial state of 'BranchConditionInjector'
 
   // Register/update the index tracker.
@@ -186,7 +185,6 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
 function addBranchMenu(branch) {
   var $form = branch.$node.parent("form");
   var $ul = branch.$node.find(".component-activated-menu");
-  var first = $(".Branch", $form).get(0) == branch.$node.get(0);
   new ActivatedMenu($ul, {
     activator_text: app.text.branches.branch_edit,
     container_classname: "SomeClassName",
@@ -238,9 +236,7 @@ function updateBranches(view) {
  * Design calls for the text 'or' between each branch component.
  **/
 function addBranchCombinator(branch) {
-  if( branch.index != 0 ) {
-    branch.$node.before("<p class=\"branch-or\">or</p>");
-  }
+  branch.$node.before("<p class=\"branch-or\">or</p>");
 }
 
 
