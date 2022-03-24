@@ -35,6 +35,7 @@ const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
 const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
+const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
 
 
 class BranchesController extends DefaultController {
@@ -153,6 +154,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   // Add new branch view changes.
   addBranchMenu(branch);
   branch.$node.before("<p class=\"branch-or\">or</p>");
+  $(document).trigger(EVENT_QUESTION_CHANGE, branch); // Need to set initial state of 'BranchConditionInjector'
 
   // Register/update the index tracker.
   view.branchIndex = view.branchIndex + 1;
@@ -271,7 +273,7 @@ BranchesController.addBranchEventListeners = function(view) {
     });
   });
 
-  view.$document.on('BranchQuestion_Change', function(event, branch) {
+  view.$document.on(EVENT_QUESTION_CHANGE, function(event, branch) {
     if(branch.$node.find(".BranchAnswer").length > 0) {
       branch.$node.find(".BranchConditionInjector").show();
     }
