@@ -21,8 +21,8 @@
 
     <% if item[:type] == 'flow.branch' %>
       <article class="flow-item flow-branch" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>">
-        <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
-        <map name="thumbnail-<%= index %>" aria-hidden="true">
+        <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{item[:uuid]}" %>
+        <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
           <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
         </map>
         <%= flow_text_link(item) %>
