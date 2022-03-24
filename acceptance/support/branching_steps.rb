@@ -32,11 +32,11 @@ module BranchingSteps
     and_I_add_another_condition
     then_I_should_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_see_another_question_list
-    then_I_should_see_the_delete_condition_button
+    then_I_should_see_multiple_delete_condition_buttons
   end
 
   def then_I_can_delete_conditionals_and_expressions
-    and_I_delete_the_condition
+    and_I_delete_the_last_condition
     then_I_should_not_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_not_see_text(I18n.t('branches.condition_remove'))
 
@@ -138,8 +138,8 @@ module BranchingSteps
     editor.add_condition.click
   end
 
-  def and_I_delete_the_condition
-    editor.remove_condition.click
+  def and_I_delete_the_last_condition
+    editor.last_condition_remover.click
     editor.remove_condition_button.click
   end
 
@@ -190,6 +190,10 @@ module BranchingSteps
 
   def then_I_should_see_the_delete_condition_button
     page_with_css('button.condition-remover', I18n.t('branches.condition_remove'))
+  end
+
+  def then_I_should_see_multiple_delete_condition_buttons
+    expect(page).to have_css("button.condition-remover", :minimum => 2)
   end
 
   def then_I_should_not_see_the_operator(text)

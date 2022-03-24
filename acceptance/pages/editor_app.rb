@@ -172,8 +172,7 @@ class EditorApp < SitePrism::Page
   data_content_id :first_extra_component, 'page[extra_components[0]]'
 
   element :add_condition, :button, I18n.t('branches.condition_add')
-  element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
-  element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
+  element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
   element :add_another_branch, :link, I18n.t('branches.branch_add')
   element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
   element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
@@ -209,5 +208,10 @@ class EditorApp < SitePrism::Page
 
   def branch_title(index)
     find("div[data-conditional-index='#{index}'] p")
+  end
+
+  # When two BranchConditions visible we have two BranchRemover (bin icons) available
+  def last_condition_remover
+    all('.condition-remover').last
   end
 end
