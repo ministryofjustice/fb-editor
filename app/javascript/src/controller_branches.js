@@ -36,6 +36,8 @@ const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
 const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
 const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
+const EVENT_BRANCH_REMOVER_ACTION = "BranchRemover_Action"
+const EVENT_BRANCH_REMOVER_CONFIRM = "BranchRemover_Confirm";
 
 
 class BranchesController extends DefaultController {
@@ -145,8 +147,9 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_question: BRANCH_QUESTION_SELECTOR,
     expression_url: view.api.get_expression,
     dialog_delete: view.dialogConfirmationDelete,
-    view: view,
     template_condition: view.branchConditionTemplate,
+    confirmation_remove: true,
+    view: view,
   });
 
   // Add new branch view changes.
@@ -256,7 +259,7 @@ BranchesController.addBranchEventListeners = function(view) {
     updateBranches(view);
   });
 
-  view.$document.on("BranchRemover_Activate", function(event, remover) {
+  view.$document.on(EVENT_BRANCH_REMOVER_ACTION, function(event, remover) {
     removeBranchCombinator(remover.branch.$node);
   });
 
@@ -273,6 +276,16 @@ BranchesController.addBranchEventListeners = function(view) {
         updateBranches(view);
       }
     });
+  });
+
+  // We want to present a Confirmation Dialog before removing the Branch.
+  view.$document.on(EVENT_BRANCH_REMOVER_CONFIRM, function(event, data) {
+    console.log(data);
+      view.dialogConfirmationDelete.open({
+        heading: view.text.dialogs.heading_delete_branch,
+        content: view.text.dialogs.message_delete_branch,
+        ok: view.text.dialogs.button_delete_branch
+      }, data.action);
   });
 
   view.$document.on(EVENT_QUESTION_CHANGE, function(event, branch) {

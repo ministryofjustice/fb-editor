@@ -6,10 +6,10 @@
  * Creates a branch object from HTML in source
  *
  * Documentation:
+ *   [SOURCE] https://github.com/ministryofjustice/moj-forms-tech-docs/ ...
+ *   [VIEW  ] https://ministryofjustice.github.io/moj-forms-tech-docs/ ...
  *
- *     - TODO:
- *       /documentation/services/editor/javascript/component-branch.html
- *       (steven.burnell@digital.justice.gov.uk to add).
+ *        ... documentation/services/editor/javascript/component-branch.html
  *
  **/
 
@@ -419,7 +419,7 @@ class BranchRemover {
     $node.attr("aria-controls", conf.branch.$node.attr("id"));
     $node.on("click", (e) => {
       e.preventDefault();
-      remover.confirm();
+      remover.activate();
     });
 
     this.#config = conf;
@@ -441,32 +441,33 @@ class BranchRemover {
     return this.#disabled;
   }
 
-  confirm() {
-    var dialog = this.#config.dialog_delete;
-    var text = this.#config.view.text;
-    if(dialog) {
-      // If we have set a confirmation dialog, use it...
-      this.#config.dialog_delete.open({
-        heading: text.dialogs.heading_delete_branch,
-        content: text.dialogs.message_delete_branch,
-        ok: text.dialogs.button_delete_branch
-      }, this.activate.bind(this));
-    }
-    else {
-      // ... otherwise just activate the functionality.
-      this.activate();
-    }
+  #action() {
+    // 1. Trigger the related event for listeners.
+    $(document).trigger("BranchRemover_Action", this);
+
+    // 2. Finally pass off to the branch.
+    this.branch.destroy();
   }
 
+  // If a dialog confirmation action is required then we then trigger an event
+  // to be picked up by the view. We pass the BranchRemover instance and the
+  // required remover action to be handled by the view controller code.
+  #confirm() {
+    var remover = this;
+    $(document).trigger("BranchRemover_Confirm", {
+      instance: remover,
+      action: remover.#action.bind(remover)
+    });
+  }
+
+  // Check if confirmation is required or just run the action
   activate() {
-    // 1. Anything specific to this function here.
-    // ... nothing ...
-
-    // 2. Then trigger the related event for listeners.
-    $(document).trigger("BranchRemover_Activate", this);
-
-    // 3. Finally pass off to the branch.
-    this.branch.destroy();
+    if(this.#config.confirmation_remove) {
+      this.#confirm();
+    }
+    else {
+      this.#action();
+    }
   }
 }
 
