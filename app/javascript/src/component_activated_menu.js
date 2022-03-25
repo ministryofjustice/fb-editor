@@ -20,6 +20,9 @@ const mergeObjects = utilities.mergeObjects;
 const createElement = utilities.createElement;
 const uniqueString = utilities.uniqueString;
 
+const tabbable = require('tabbable').tabbable;
+
+const ITEMS_SELECTOR = '> li';
 
 class ActivatedMenu {
   constructor($menu, config) {
@@ -43,6 +46,7 @@ class ActivatedMenu {
 
     this._state = {
       open: false,
+      submenuOpen: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
                      // See config._position (above) and jQueryUI documentation
@@ -50,8 +54,8 @@ class ActivatedMenu {
     }
 
     this.container.$node.addClass("ActivatedMenu"); // Also add the main component class.
-    this.$node.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
     this.$node.addClass("ActivatedMenu_Menu");
+    this.initializeAria();
     this.$node.data("instance", this); // Add reference for instance from original node.
     this.container.$node.css("width", this.$node.width() + "px"); // Required for alternative positioning.
 
@@ -59,14 +63,41 @@ class ActivatedMenu {
     ActivatedMenu.setMenuOpenPosition.call(this);
 
     this.close();
+
+    this.$currentMenu = this.$node;
+    this.currentFocusIndex = 0;
+  }
+
+  initializeAria() { 
+    this.$node.attr("role", "menu");
+    this.$node.attr("aria-labelledby", this.activator.$node.attr("id"));
+    // this.$node.attr("tabindex", "-1");
+    this.$node.find("li").each( function() {
+      var item = $(this).find(' > :first-child');
+      var role = $(item).attr("role");
+
+      if(!role) {
+        $(item).attr("role", "menuitem");
+        $(item).attr("tabindex", "-1");
+        $(item).attr("id", uniqueString("menuItem"));
+      }
+
+      var $submenu = $(item).siblings('ul').first();
+      if($submenu.length) {
+        $submenu.attr("role", "menu");
+        $submenu.hide();
+        $(item).attr("aria-haspopup", "menu");
+        $(item).attr("aria-expanded", "false");
+      }
+    });
   }
 
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
-  open(position) {
-    if(position) {
+  open(config = {}) {
+    if(config.position) {
       // Use the passed postion values, without question.
-      ActivatedMenu.setMenuOpenPosition.call(this, position);
+      ActivatedMenu.setMenuOpenPosition.call(this, config.position);
     }
     else {
       // Try to use the default position values, which will
@@ -78,19 +109,26 @@ class ActivatedMenu {
       //       element on our menu (see container.$node).
       //       We have to manually move the container to
       //       set the desired position.
-      ActivatedMenu.calculateMenuOpenPosition.call(this);
+      ActivatedMenu.calculateMenuOpenPosition.call(this, this.activator.$node);
     }
 
     this.container.$node.position(this._state.position);
     this.container.$node.show();
-    this.$node.find(".ui-menu-item:first > :first-child").focus();
     this.activator.$node.addClass("active");
     this.activator.$node.attr("aria-expanded", true);
     this._state.open = true;
+
+    if(config.focus && config.focus == 'last') {
+      this.focus(this.$currentMenu.find(ITEMS_SELECTOR).length-1);
+     } else {
+      this.focus();
+    }
   }
+
 
   // Method
   close() {
+    this.closeAllSubmenus();
     this._state.open = false;
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
@@ -100,6 +138,83 @@ class ActivatedMenu {
     // component._state.position back to default.
     ActivatedMenu.resetMenuOpenPosition.call(this);
   }
+
+  activateItem($item) {
+    console.log($item);
+    var $subMenu = $item.find('ul').first();
+    console.log($subMenu);
+    if($subMenu.length) {
+      this.openSubmenu($subMenu);
+    } else {
+      this.$node.trigger("menuselect", { item: $item } );
+    }
+  }
+
+  openSubmenu($menu) { 
+    this.closeAllSubmenus();
+    if($menu) {
+      var $parent = $menu.parent();
+      console.log($parent);
+
+      $menu.show();
+
+      $menu.position({
+        my: "left top",
+        at: "right top",
+        of: $parent,
+        collision: "flip"
+      });
+
+      this.$currentMenu = $menu;
+      this.focus();
+      this._state.submenuOpen = true;
+    }
+  }
+
+  closeSubmenu() {
+    var parentItem = this.$currentMenu.parent();
+    this.$currentMenu.hide();
+    this._state.submenuOpen = false;
+    this.$currentMenu = $(parentItem).parent('ul[role="menu"]');
+    var $items = $(this.$currentMenu.find(ITEMS_SELECTOR));
+    var index = $items.index(parentItem);
+    this.focus(index);
+  }
+
+  closeAllSubmenus() {
+    var $subMenus = this.$node.find('ul[role="menu"]');
+    $subMenus.each(function() {
+      $(this).hide();
+    });
+    this._state.submenuOpen = false;
+    this.$currentMenu = this.$node;
+    this.currentFocusIndex = 0;
+  }
+  
+  focus(index = 0) {
+    var $items = $(this.$currentMenu.find(ITEMS_SELECTOR));
+
+    if( index > $items.length - 1 ) {
+      index = 0;
+    }
+    if( index < 0 ) {
+      index = $items.length - 1;
+    }
+    this.currentFocusIndex = index;
+    var $item = $($items[index]);
+    $item.find(' > :first-child').focus();
+    this.$currentMenu.attr('aria-activedescendant', $item.attr('id'));
+  }
+
+  focusNext(){
+    this.focus( this.currentFocusIndex + 1 ); 
+  }
+
+  focusPrev() {
+    this.focus( this.currentFocusIndex - 1 ); 
+  }
+
+
 }
 
 /* Private function
@@ -109,24 +224,89 @@ class ActivatedMenu {
 ActivatedMenu.bindMenuEventHandlers = function() {
   var component = this;
 
+  this.$node.on("click", (event) => {
+    console.log(event);
+    this.activateItem( $(event.target).parent() );
+  });
+
   // Main (generated) activator uses this event to
   // open the menu.
 
-  this.$node.on("mouseout", (event) => {
-    // event.currentTarget will be the menu (UL) element.
-    // check if relatedTarget is not a child element.
-    component._state.close = true;
-    if(!$.contains(event.currentTarget, event.relatedTarget)) {
-      setTimeout(function(e) {
-        if(component._state.close) {
-          component.close();
-        }
-      }, 250);
-    }
-  });
+  // this.$node.on("mouseout", (event) => {
+  //   // event.currentTarget will be the menu (UL) element.
+  //   // check if relatedTarget is not a child element.
+  //   component._state.close = true;
+  //   if(!$.contains(event.currentTarget, event.relatedTarget)) {
+  //     setTimeout(function(e) {
+  //       if(component._state.close) {
+  //         component.close();
+  //       }
+  //     }, 250);
+  //   }
+  // });
 
-  this.$node.on("mouseover", (event) => {
-    component._state.close = false;
+  // this.$node.on("mouseover", (event) => {
+  //   component._state.close = false;
+  // });
+
+  this.$node.on('keydown', (event) => {
+    if(this._state.open) {
+      let key = event.originalEvent.key;
+      let shiftKey = event.originalEvent.shiftKey;
+
+      switch(key) {
+        case 'Home':
+          this.focus(0);
+          break;
+        case 'End':
+          this.focus(this.$items.length -1);
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          this.focusNext();
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          this.focusPrev();
+          break;
+        case 'ArrowRight':
+          var $items = $(this.$currentMenu.find(ITEMS_SELECTOR));
+          var $subMenu = $($items[this.currentFocusIndex]).find('ul.ui-menu').first();
+          console.log($subMenu);
+          if($subMenu) {
+            this.openSubmenu($subMenu);
+          }
+          break;
+        case 'Escape': 
+          if( this._state.submenuOpen ) {
+            this.closeSubmenu();
+          } else {
+            this.close();
+            this.activator.$node.focus();
+          }
+          break;
+        case 'Enter':
+        case 'Space':
+          event.preventDefault();
+          var $items = $(this.$currentMenu.find(ITEMS_SELECTOR));
+          var $selectedItem = $($items[this.currentFocusIndex]);
+          
+          this.activateItem($selectedItem);
+          break;
+        case 'Tab':
+          event.preventDefault();
+          let tabbableElements = tabbable(document, { displayCheck: 'full' })
+          let index = tabbableElements.indexOf(this.activator.$node[0]);
+          //focus on the next item after the actvator node
+          if( shiftKey ) {
+            tabbableElements[index-1].focus();
+          } else {
+            tabbableElements[index+1].focus();
+          }
+          this.close();
+          break; 
+      }
+    }
   });
 
 
@@ -181,8 +361,8 @@ ActivatedMenu.setMenuOpenPosition = function(position) {
  * position values, but tries to calculate if needs to reverse
  * the open position based on if the activator is too far right.
  **/
-ActivatedMenu.calculateMenuOpenPosition = function() {
-  var activatorLeft = this.activator.$node.offset().left;
+ActivatedMenu.calculateMenuOpenPosition = function($activator) {
+  var activatorLeft = $activator.offset().left;
   var rightBoundary = window.innerWidth;
   var menuWidth = this.$node.outerWidth();
 
@@ -190,7 +370,7 @@ ActivatedMenu.calculateMenuOpenPosition = function() {
     ActivatedMenu.setMenuOpenPosition.call(this, {
       my: "right top",
       at: "right bottom",
-      of: this.activator.$node
+      of: $activator
     });
   }
   else {
@@ -276,23 +456,30 @@ class ActivatedMenuActivator {
 
     $node.on("keydown", (e) => {
       // TODO: Add more for keyboard support
-      // console.log("e.which: , ", e.which);
-
-      // ESC
-      if(e.which == 27) {
-        menu.close();
+      let key = e.originalEvent.key;
+      
+      switch(key) {
+        case 'Enter':
+        case 'Space':
+        case 'ArrowDown':
+          e.preventDefault();
+          menu._state.activator = e.currentTarget;
+          menu.open();
+          break;
+        case 'ArrowUp':
+          menu._state.activator = e.currentTarget;
+          menu.open({ focus: 'last'}); 
+          break;
+        case 'Escape': 
+          menu.close();
+          break;
       }
-
-      // DOWN
-      if(e.which == 40) {
-        menu.open();
-      }
-
     });
 
     menu.$node.before($node);
     $node.addClass("ActivatedMenu_Activator");
     $node.attr("aria-haspopup", "menu");
+    $node.attr("id", uniqueString("menuActivator"));
     $node.attr("aria-controls", config.container_id);
 
     this.$node = $node;

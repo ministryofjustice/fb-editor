@@ -40,11 +40,11 @@ class ContentMenu extends ActivatedMenu {
     this.component = component;
   }
 
-  open(position) {
+  open(config) {
     if(this.component) {
       this.component.$node.addClass("active");
     }
-    super.open(position);
+    super.open(config);
   }
 
   close() {

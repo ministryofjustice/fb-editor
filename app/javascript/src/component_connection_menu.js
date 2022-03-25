@@ -15,6 +15,7 @@ class ConnectionMenu extends ActivatedMenu {
 
     // Register event handler for selection of menu item.
     $node.on("menuselect", (event, ui) => {
+      console.log(ui.item);
       this.selection(event, ui.item);
     });
 
@@ -29,7 +30,7 @@ class ConnectionMenu extends ActivatedMenu {
 
     var action = item.data("action");
     
-    event.preventDefault();
+    // event.preventDefault();
 
     switch(action) {
       case "none":

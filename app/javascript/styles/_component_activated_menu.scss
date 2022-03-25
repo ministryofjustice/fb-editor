@@ -34,6 +34,8 @@
 }
 
 .ActivatedMenu_Menu {
+
+
   a, span {
     @include button_type_link;
     border: none;
@@ -49,6 +51,10 @@
     }
 
     &:focus {
+      //@include focus;
+      background-color: govuk-colour("blue");
+      color: govuk-colour("white");
+      outline: none;
       box-shadow: none;
     }
   }
@@ -69,6 +75,9 @@
         vertical-align: middle;
       }
     }
+  }
+  li:focus {
+
   }
 
   &, li > ul {

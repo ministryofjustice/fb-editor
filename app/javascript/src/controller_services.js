@@ -130,7 +130,7 @@ function createConnectionMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { at: "left top" }
       }
     });
 
