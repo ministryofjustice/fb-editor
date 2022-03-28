@@ -79,17 +79,6 @@ function createBranch(id, config) {
           <a class="branch-remover">` + constants.TEXT_BRANCH_REMOVE + `</a>
         </li>
       </ul>
-      <div class="destination">
-        <div class="form-group">
-          <label for="branch_next">Go to</label>
-          <select id="branch_next">
-            <option value="">--- Select a destination page ---</option>
-            <option value="618a037b">Service name goes here</option>
-            <option value="088dcdbe">Question</option>
-            <option value="4d707045">Title</option>
-          </select>
-        </div>
-      </div>
       <div class="condition">
         <div class="question">
           <label for="branch_1">If</label>
@@ -106,19 +95,30 @@ function createBranch(id, config) {
         <button class="condition-remover">` + constants.TEXT_REMOVE_BRANCH + `</button>
       </div>
       <button class="condition-injector">` + constants.TEXT_CONDITION_ADD + `</button>
+      <div class="destination">
+        <div class="form-group">
+          <label for="branch_next">Go to</label>
+          <select id="branch_next">
+            <option value="">--- Select a destination page ---</option>
+            <option value="618a037b">Service name goes here</option>
+            <option value="088dcdbe">Question</option>
+            <option value="4d707045">Title</option>
+          </select>
+        </div>
+      </div>
     </div>`;
 
   var $node = $(html);
   var conf = {
                index: 4,
                css_classes_error: constants.ERROR_CLASSNAME_1 + " " + constants.CLASSNAME_ERROR_2,
-               selector_answer: constants.SELECTOR_BRANCH_ANSWER,
-               selector_branch_remove: constants.SELECTOR_BRANCH_REMOVE,
-               selector_condition: constants.SELECTOR_BRANCH_CONDITION,
-               selector_condition_add: constants.SELECTOR_BRANCH_CONDITION_ADD,
-               selector_condition_remove: constants.SELECTOR_BRANCH_CONDITION_REMOVE,
-               selector_destination: constants.SELECTOR_BRANCH_DESTINATION,
-               selector_question: constants.SELECTOR_BRANCH_QUESTION,
+               selector_answer: constants.SELECTOR_PRE_BRANCH_ANSWER,
+               selector_branch_remove: constants.SELECTOR_PRE_BRANCH_REMOVE,
+               selector_condition: constants.SELECTOR_PRE_BRANCH_CONDITION,
+               selector_condition_add: constants.SELECTOR_PRE_BRANCH_CONDITION_ADD,
+               selector_condition_remove: constants.SELECTOR_PRE_BRANCH_CONDITION_REMOVE,
+               selector_destination: constants.SELECTOR_PRE_BRANCH_DESTINATION,
+               selector_question: constants.SELECTOR_PRE_BRANCH_QUESTION,
                selector_error_messsage: "." + constants.CLASSNAME_BRANCH_ERROR_MESSAGE,
                expression_url: constants.URL_EXPRESSION,
                question_label: constants.LABEL_QUESTION_AND,
