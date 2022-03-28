@@ -4,7 +4,7 @@ describe("Branch", function () {
 
   const helpers = require("./branch_helpers.js");
   const c = helpers.constants;
-  const COMPONENT_ID = "testing-branch";
+  const COMPONENT_ID = "branch-for-testing-branch";
 
   var branch;
 
