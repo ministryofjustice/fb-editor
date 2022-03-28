@@ -114,7 +114,8 @@ function createPageMenus(view) {
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { 
-          //at: "right+2 top-2" 
+          my: "left top",
+          at: "left top",
         }
       }
     });
@@ -133,8 +134,8 @@ function createConnectionMenus(view) {
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { 
-          //my: "left top",
-          //at: "left top",
+          my: "left top",
+          at: "left top",
         }
       }
     });

@@ -51,9 +51,7 @@
     }
 
     &:focus {
-      //@include focus;
-      background-color: govuk-colour("blue");
-      color: govuk-colour("white");
+      @include focus;
       outline: none;
       box-shadow: none;
     }
@@ -76,9 +74,7 @@
       }
     }
   }
-  li:focus {
 
-  }
 
   &, li > ul {
     border: govuk-colour("blue") solid 2px;
