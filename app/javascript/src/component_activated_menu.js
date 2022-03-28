@@ -30,11 +30,15 @@ class ActivatedMenu {
       config.container_id = uniqueString("menu");
     }
 
+    console.log(config);
+
     this.$node = $menu;
     this._config = mergeObjects({ menu: {} }, config);
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
 
+    console.log(config.menu.position);
+  
     this._position = mergeObjects({
       // Default position settings (can be set on instantiation or overide
       // on-the-fly by passing to component.open() function. Passing in a
@@ -42,7 +46,9 @@ class ActivatedMenu {
       my: "left top",
       at: "left bottom",
       of: this.activator.$node
-    }, property(config, "menu._position") );
+    }, property(config, "menu.position") );
+
+    console.log(this._position);
 
     this._state = {
       open: false,
@@ -232,22 +238,22 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // Main (generated) activator uses this event to
   // open the menu.
 
-  // this.$node.on("mouseout", (event) => {
-  //   // event.currentTarget will be the menu (UL) element.
-  //   // check if relatedTarget is not a child element.
-  //   component._state.close = true;
-  //   if(!$.contains(event.currentTarget, event.relatedTarget)) {
-  //     setTimeout(function(e) {
-  //       if(component._state.close) {
-  //         component.close();
-  //       }
-  //     }, 250);
-  //   }
-  // });
+  this.$node.on("mouseout", (event) => {
+    // event.currentTarget will be the menu (UL) element.
+    // check if relatedTarget is not a child element.
+    component._state.close = true;
+    if(!$.contains(event.currentTarget, event.relatedTarget)) {
+      setTimeout(function(e) {
+        if(component._state.close) {
+          component.close();
+        }
+      }, 100);
+    }
+  });
 
-  // this.$node.on("mouseover", (event) => {
-  //   component._state.close = false;
-  // });
+  this.$node.on("mouseover", (event) => {
+    component._state.close = false;
+  });
 
   this.$node.on('keydown', (event) => {
     if(this._state.open) {
