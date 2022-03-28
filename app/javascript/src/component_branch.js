@@ -22,6 +22,9 @@ const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
 /* Branch component
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
  * @config (Object) Configurable key/value pairs.
+ *                  {
+ *                    css_classes_error: <Removes error classes on component and removes injected error elements by class match>
+ *                  }
  **/
 class Branch {
   #config;
@@ -337,7 +340,7 @@ class BranchQuestion {
     // Second remove any template injected error messages identified by config.
     this.condition.$node.find(this.#config.selector_error_messsage).remove();
 
-    // Lastley remove any template injected error message classes identified by config.
+    // Lastly remove any template injected error message classes identified by config.
     for(var i=0; i < classes.length; ++i) {
       if(classes[i].length > 0) {
         this.$node.removeClass(classes[i]);
