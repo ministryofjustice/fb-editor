@@ -434,7 +434,7 @@ html {
 }
 
 .EditableCollectionItemMenu {
-  z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
+  z-index: 2; // Attempt to prevent focus difficulty with GovUK radio inputs.
 
   .ActivatedMenu_Menu {
     width: auto;

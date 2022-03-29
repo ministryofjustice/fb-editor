@@ -42,6 +42,7 @@ class EditableCollectionItemMenu extends ActivatedMenu {
       $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
     }
 
+    this.container.$node.addClass("EditableCollectionItemMenu");
     this.collectionItem = config.collectionItem;
   }
 
@@ -57,7 +58,15 @@ class EditableCollectionItemMenu extends ActivatedMenu {
           collectionItem: this.collectionItem
         });
         break;
+      case "close":
+        this.close();
+        break;
     }
+  }
+
+  close() {
+    super.close(); 
+    this.activator.$node.removeClass("active");
   }
 }
 

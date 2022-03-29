@@ -58,6 +58,9 @@ class QuestionMenu extends ActivatedMenu {
       case "required":
           this.required();
           break;
+      case "close":
+        this.close();
+        break;
     }
   }
 
@@ -67,6 +70,11 @@ class QuestionMenu extends ActivatedMenu {
 
   required() {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
+  }
+
+  close() {
+    super.close(); 
+    this.activator.$node.removeClass("active");
   }
 
   /* Change required option state for view purpose

@@ -187,6 +187,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // open the menu.
 
   this.$node.on("mouseout", (event) => {
+    console.log('menu mouseout');
     // event.currentTarget will be the menu (UL) element.
     // check if relatedTarget is not a child element.
     component._state.close = true;
@@ -200,6 +201,7 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   });
 
   this.$node.on("mouseover", (event) => {
+    console.log('menu mouseover');
     component._state.close = false;
   });
 

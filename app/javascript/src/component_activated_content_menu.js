@@ -71,6 +71,7 @@ class ContentMenu extends ActivatedMenu {
       this.component.$node.removeClass("active");
     }
     super.close();
+    this.activator.$node.removeClass("active");
   }
 
   remove() {
