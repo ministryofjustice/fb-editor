@@ -33,7 +33,7 @@ class ActivatedMenu {
 
 
     this.$node = $menu;
-    this._config = mergeObjects({ menu: {} }, config);
+    this._config = config;
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
 
@@ -46,12 +46,11 @@ class ActivatedMenu {
       at: "left bottom",
       of: this.activator.$node,
       collision: "flip"
-    }, property(config, "menu.position") );
+    }, property(this._config, "menu.position") );
 
 
     this._state = {
       open: false,
-      submenuOpen: false,
       position: null // Default is empty - update this dynamically by passing
                      // to component.open() - will be reset on component.close()
                      // See config._position (above) and jQueryUI documentation
@@ -70,10 +69,7 @@ class ActivatedMenu {
 
     this.close();
 
-
-
     this.$items = this.$node.find(ITEMS_SELECTOR);
-    this.$currentMenu = this.$node;
     this.currentFocusIndex = 0;    
     this.initializeMenuItems();
   }
@@ -93,6 +89,7 @@ class ActivatedMenu {
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
   open(config = {}) {
+
     if(config.position) {
       // Use the passed postion values, without question.
       ActivatedMenu.setMenuOpenPosition.call(this, config.position);
@@ -109,7 +106,9 @@ class ActivatedMenu {
       //       set the desired position.
       ActivatedMenu.calculateMenuOpenPosition.call(this, this.activator.$node);
     }
-
+    console.log('this._config: ', this._config);
+    console.log('this._position: ', this._position);
+    console.log('_state.position: ', this._state.position);
     this.container.$node.position(this._state.position);
     this.container.$node.show();
     this.activator.$node.addClass("active");
@@ -123,25 +122,20 @@ class ActivatedMenu {
     this._state.open = false;
     this.container.$node.hide();
     this.activator.$node.removeClass("active");
-    this.activator.$node.attr("aria-expanded", false);
+    this.activator.$node.removeAttr("aria-expanded");
+    this.activator.$node.focus();
 
     // Reset any externally/temporary setting of
     // component._state.position back to default.
     ActivatedMenu.resetMenuOpenPosition.call(this);
   }
 
-  inSubmenu() {
-    return this.$currentMenu.get(0) != this.$node.get(0);
-  }
 
   closeAllSubmenus() {
     var $subMenus = this.$node.find('ul[role="menu"]');
     $subMenus.each(function() {
       $(this).hide();
     });
-    this._state.submenuOpen = false;
-    this.$currentMenu = this.$node;
-    this.currentFocusIndex = 0;
   }
   
   focus(index = 0) {
@@ -213,19 +207,18 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     if(this._state.open) {
       let key = event.originalEvent.key;
       let shiftKey = event.originalEvent.shiftKey;
-      let $items = $(this.$currentMenu.find(ITEMS_SELECTOR));
-      let $selectedItem = $($items[this.currentFocusIndex]);
 
       switch(key) {
         case 'Home':
+          event.preventDefault();
           this.focus(0);
           break;
         case 'End':
-          this.focus(this.$items.length -1);
+          event.preventDefault();
+          this.focusLast();
           break;
         case 'ArrowDown':
           event.preventDefault();
-          console.log('menu down');
           this.focusNext();
           break;
         case 'ArrowUp':
@@ -258,20 +251,24 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   if(this._config.selection_event) {
     let component = this;
     component.$node.on("menuselect", function(event, ui) {
+      console.log(event);
       var e = event.originalEvent;
+      var original = {};
 
-      if(component._config.preventDefault) {
-         e.preventDefault();
+      if(e) {
+        if(component._config.preventDefault) {
+          e.preventDefault();
+          original.element = e.target;
+          original.event = e;
+        }
       }
+
 
       $(document).trigger(component._config.selection_event, {
         activator: ui.item,
         menu: event.currentTarget,
         component: component,
-        original: {
-          element: e.target,
-          event: e
-        }
+        original: original
       });
     });
   }

@@ -88,37 +88,45 @@ class ActivatedMenuSubmenu {
       }
     });
 
+    this.$node.on("mouseover", (event) => {
+      component.state.closing = false;
+    });
 
     this.$node.on('keydown', (event) => {
 
       if(this.state.open) {
-        event.preventDefault();
         let key = event.originalEvent.key;
         let shiftKey = event.originalEvent.shiftKey;
 
         switch(key) {
           case 'Home':
+            event.preventDefault();
             event.stopImmediatePropagation();
             this.focus(0);
             break;
           case 'End':
+            event.preventDefault();
             event.stopImmediatePropagation();
             this.focus(this.$items.length -1);
             break;
           case 'ArrowDown':
+            event.preventDefault();
             event.stopImmediatePropagation();
             console.log('submenu down');
             this.focusNext();
             break;
           case 'ArrowUp':
+            event.preventDefault();
             event.stopImmediatePropagation();
             this.focusPrev();
             break;
           case 'ArrowLeft':
+            event.preventDefault();
             this.close();
             this.parent.menu.focusItem(this.parent.$node);
             break;
           case 'Escape': 
+            event.preventDefault();
             event.stopImmediatePropagation();
             this.close();
             this.parent.menu.focusItem(this.parent.$node);

@@ -121,7 +121,13 @@ function createQuestionMenu() {
   return new QuestionMenu($ul, {
     activator_text: template.data("activator-text"),
     $target: question.$heading,
-    question: question
+    question: question,
+    menu: {
+      position: { 
+        my: "left top",
+        at: "left top",
+      }
+    }
   });
 }
 

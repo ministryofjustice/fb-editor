@@ -779,7 +779,9 @@ function createEditableCollectionItemMenu(item, config) {
       collectionItem: item,
       view: config.view,
       menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
+        position: { 
+          my: "left top", 
+          at: "left top" } 
       }
     });
 }

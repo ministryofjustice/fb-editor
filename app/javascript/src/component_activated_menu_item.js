@@ -8,6 +8,7 @@ class ActivatedMenuItem {
     this.$node = $node;
     this.submenu = false;
     this.menu = menu;
+    this.state = {};
 
     this.setSubmenu();
     this.initializeAria();
@@ -50,16 +51,16 @@ class ActivatedMenuItem {
     var item = this;
 
     this.$node.on("click", (event) => {
+      event.preventDefault();
       this.activate( );
     });
 
     this.$node.on("mouseenter", (event) => {
-      console.log(this);
       if(this.hasSubmenu()) {
         setTimeout(function(e) {
           console.log('item mouseover - open submenu', item);
           item.submenu.open(); 
-        }, 100);
+        }, 50);
       } 
     });
 
@@ -70,7 +71,7 @@ class ActivatedMenuItem {
             setTimeout(function(e) {
               console.log('item mouseout - close submenu', item);
               item.submenu.close(); 
-            }, 100);
+            }, 50);
           }
         }
       }
@@ -79,25 +80,27 @@ class ActivatedMenuItem {
     this.$node.on("keydown", (event) => {
       
       if(this.menu.isOpen()) {
-        event.preventDefault();
-        let key = event.originalEvent.key;
+        let key = event.originalEvent.code;
         let shiftKey = event.originalEvent.shiftKey;
 
         switch(key) {
           case 'ArrowRight':
+            event.preventDefault();
             if( this.hasSubmenu ) {
               this.submenu.open(); 
               this.submenu.focus();
             } 
             break;
           case 'Enter':
-          case ' ': 
-            console.log('item enter or space');
+          case 'Space': 
+            event.preventDefault();
             if( this.hasSubmenu() ) {
               this.submenu.open();
               this.submenu.focus();
             } else {
+              this.menu.activator.$node.focus();
               this.activate();
+              this.menu.close();
             }
             break;
         }

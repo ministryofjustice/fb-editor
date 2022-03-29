@@ -180,7 +180,7 @@ class AddComponent {
       preventDefault: true, // Stops the default action of triggering element.
       activator: $button,
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { at: "left top" }
       }
     });
 
