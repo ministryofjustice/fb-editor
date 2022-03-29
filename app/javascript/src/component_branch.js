@@ -159,7 +159,7 @@ class BranchCondition {
   update(component, callback) {
     var url;
     if(component) {
-      url = utilities.stringInject(this.#config.expression_url, {
+      url = utilities.stringInject(this.#config.answer_url, {
         component_id: component,
         branch_index: this.branch.index,
         condition_index: this.#index

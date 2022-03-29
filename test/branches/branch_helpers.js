@@ -29,7 +29,7 @@ const constants = {
   TEXT_LABEL_QUESTION_AND: "And",
   TEXT_LABEL_QUESTION_IF: "If",
 
-  URL_EXPRESSION: "/not/needed"
+  URL_ANSWER: "/not/needed"
 }
 
 
@@ -120,7 +120,7 @@ function createBranch(id, config) {
                selector_destination: constants.SELECTOR_PRE_BRANCH_DESTINATION,
                selector_question: constants.SELECTOR_PRE_BRANCH_QUESTION,
                selector_error_messsage: "." + constants.CLASSNAME_BRANCH_ERROR_MESSAGE,
-               expression_url: constants.URL_EXPRESSION,
+               answer_url: constants.URL_ANSWER,
                question_label: constants.LABEL_QUESTION_AND,
                template_condition: "<div class=\"condition\">dummy</div>",
                confirmation_remove: false,

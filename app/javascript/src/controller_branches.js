@@ -145,7 +145,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_destination: BRANCH_DESTINATION_SELECTOR,
     selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
-    expression_url: view.api.get_expression,
+    answer_url: view.api.get_expression,
     dialog_delete: view.dialogConfirmationDelete,
     template_condition: view.branchConditionTemplate,
     confirmation_remove: true,
