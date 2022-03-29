@@ -121,8 +121,7 @@ function createBranch(id, config) {
                selector_question: constants.SELECTOR_PRE_BRANCH_QUESTION,
                selector_error_messsage: "." + constants.CLASSNAME_BRANCH_ERROR_MESSAGE,
                answer_url: constants.URL_ANSWER,
-               question_label: constants.LABEL_QUESTION_AND,
-               template_condition: "<div class=\"condition\">dummy</div>",
+               template_url_condition: "<div class=\"condition\">dummy</div>",
                confirmation_remove: false,
                view: view
              }

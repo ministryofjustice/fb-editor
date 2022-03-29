@@ -75,7 +75,7 @@ class Branch {
 
   addCondition() {
     var index = this.#conditionCount + 1;
-    var $node = $(utilities.stringInject(this.#config.template_condition, {
+    var $node = $(utilities.stringInject(this.#config.template_url_condition, {
       branch_index: this.#index,
       condition_index: index // Need unique value only but would be nice to use BranchCondition.index instead.
     }));
