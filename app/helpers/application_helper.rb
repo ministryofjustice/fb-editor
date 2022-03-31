@@ -37,7 +37,6 @@ module ApplicationHelper
     end
   end
 
-  # START: Remove once new service flow page is finished
   def flow_thumbnail(page)
     type = if page.components.blank?
              page.type.gsub('page.', '')
@@ -46,7 +45,6 @@ module ApplicationHelper
            end
     flow_thumbnail_link(uuid: page.uuid, thumbnail: type, title: page.title)
   end
-  # END: Remove once new service flow page is finished
 
   def flow_title(flow_object)
     flow_object.title || service.find_page_by_uuid(flow_object.uuid).title
