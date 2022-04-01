@@ -24,7 +24,7 @@ describe("BranchConditionInjector", function() {
   });
 
 
-  it.only("should have the basic HTML in place", function() {
+  it("should have the basic HTML in place", function() {
     expect($injector).to.exist;
     expect($injector.length).to.equal(1);
     expect($injector.text()).to.equal(c.TEXT_CONDITION_ADD);
@@ -36,26 +36,26 @@ describe("BranchConditionInjector", function() {
   });
 
   it("should make the $node public", function() {
-    expect(global_test_branch.conditionInjector).to.exist;
-    expect(global_test_branch.conditionInjector.$node).to.exist;
-    expect(global_test_branch.conditionInjector.$node.length).to.equal(1);
+    expect(branch.conditionInjector).to.exist;
+    expect(branch.conditionInjector.$node).to.exist;
+    expect(branch.conditionInjector.$node.length).to.equal(1);
   });
 
   it("should make the instance available as data on the $node", function() {
-    expect(global_test_branch.conditionInjector).to.exist;
+    expect(branch.conditionInjector).to.exist;
     expect($injector.data("instance")).to.exist;
-    expect($injector.data("instance")).to.equal(global_test_branch.conditionInjector);
+    expect($injector.data("instance")).to.equal(branch.conditionInjector);
   });
 
   it("should make the branch public", function() {
     var instance = $injector.data("instance");
     expect(instance.branch).to.exist;
-    expect(instance.branch).to.equal(global_test_branch);
+    expect(instance.branch).to.equal(branch);
   });
 
   it("should add a condition when clicked", function() {
-    expect(global_test_branch.$node.find(".condition").length).to.equal(1);
+    expect(branch.$node.find(c.SELECTOR_PRE_BRANCH_CONDITION).length).to.equal(1);
     $injector.click();
-    expect(global_test_branch.$node.find(".condition").length).to.equal(2);
+    expect(branch.$node.find(c.SELECTOR_PRE_BRANCH_CONDITION).length).to.equal(2);
   });
 });

@@ -113,15 +113,15 @@ function createBranch(id, config) {
                index: 4,
                css_classes_error: constants.ERROR_CLASSNAME_1 + " " + constants.CLASSNAME_ERROR_2,
                selector_answer: constants.SELECTOR_PRE_BRANCH_ANSWER,
-               selector_branch_remove: constants.SELECTOR_PRE_BRANCH_REMOVE,
+               selector_branch_remove: constants.SELECTOR_PRE_BRANCH_REMOVER,
                selector_condition: constants.SELECTOR_PRE_BRANCH_CONDITION,
-               selector_condition_add: constants.SELECTOR_PRE_BRANCH_CONDITION_ADD,
+               selector_condition_add: constants.SELECTOR_PRE_BRANCH_CONDITION_INJECTOR,
                selector_condition_remove: constants.SELECTOR_PRE_BRANCH_CONDITION_REMOVE,
                selector_destination: constants.SELECTOR_PRE_BRANCH_DESTINATION,
                selector_question: constants.SELECTOR_PRE_BRANCH_QUESTION,
                selector_error_messsage: "." + constants.CLASSNAME_BRANCH_ERROR_MESSAGE,
                answer_url: constants.URL_ANSWER,
-               template_url_condition: "<div class=\"condition\">dummy</div>",
+               template_condition: "<div class=\"condition\">dummy</div>",
                confirmation_remove: false,
                view: view
              }
