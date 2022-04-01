@@ -149,7 +149,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
     selector_question: BRANCH_QUESTION_SELECTOR,
     answer_url: view.api.get_expression,
     dialog_delete: view.dialogConfirmationDelete,
-    template_url_condition: view.branchConditionTemplate,
+    template_condition: view.branchConditionTemplate,
     confirmation_remove: true,
     view: view,
   });
@@ -322,7 +322,7 @@ BranchesController.addBranchEventListeners = function(view) {
  * @$node (jQuery Node) HTML that will form the Branch
  **/
 function createBranchConditionTemplate($node) {
-  var $condition = $node.find(".condition").clone();
+  var $condition = $node.find(".condition").eq(0).clone();
   var html = "";
 
   // See IMPORTANT, above.
@@ -336,6 +336,10 @@ function createBranchConditionTemplate($node) {
     // First clean up some stuff.
     $condition.find(".govuk-error-message").remove();
     $condition.removeClass("govuk-form-group--error");
+
+    // Should not have a question selected so also get rid of answers from cloning.
+    $condition.find(".answer").remove();
+    $condition.find("option").attr("selected", false).eq(0).attr("selected", true);
 
     // Now take a copy of the HTML.
     html = $condition.get(0).outerHTML;
