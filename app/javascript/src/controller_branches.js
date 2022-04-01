@@ -35,6 +35,7 @@ const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
 const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
+const EVENT_BRANCH_UPDATE_CONDITIONS = "Branch_UpdateConditions";
 const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
 const EVENT_BRANCH_REMOVER_ACTION = "BranchRemover_Action"
 const EVENT_BRANCH_REMOVER_CONFIRM = "BranchRemover_Confirm";
@@ -93,7 +94,8 @@ class BranchesController extends DefaultController {
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
   $branches.each(function(index) {
-    createBranch(view, $(this));
+    var branch = createBranch(view, $(this));
+    branch.$node.trigger(EVENT_BRANCH_UPDATE_CONDITIONS);
   });
 
   updateBranches(view);
@@ -165,7 +167,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   // we delete the first one. This leaves us with AND, AND...
   // instead of IF, AND. This listener will correct found
   // incorrect labelling situations.
-  branch.$node.on("UpdateConditions", function() {
+  branch.$node.on(EVENT_BRANCH_UPDATE_CONDITIONS, function() {
     for(var i=0; i<branch.conditions.length; ++i) {
       if(i == 0) {
         branch.conditions[i].question.label = view.text.branches.label_question_if;

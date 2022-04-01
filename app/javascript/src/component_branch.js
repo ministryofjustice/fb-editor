@@ -122,7 +122,7 @@ class Branch {
       this.$node.removeClass("singleBranchCondition");
     }
 
-    this.$node.trigger("UpdateConditions");
+    this.$node.trigger("Branch_UpdateConditions");
   }
 }
 
