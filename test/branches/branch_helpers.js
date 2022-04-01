@@ -116,7 +116,7 @@ function createBranch(id, config) {
                selector_branch_remove: constants.SELECTOR_PRE_BRANCH_REMOVER,
                selector_condition: constants.SELECTOR_PRE_BRANCH_CONDITION,
                selector_condition_add: constants.SELECTOR_PRE_BRANCH_CONDITION_INJECTOR,
-               selector_condition_remove: constants.SELECTOR_PRE_BRANCH_CONDITION_REMOVE,
+               selector_condition_remove: constants.SELECTOR_PRE_BRANCH_CONDITION_REMOVER,
                selector_destination: constants.SELECTOR_PRE_BRANCH_DESTINATION,
                selector_question: constants.SELECTOR_PRE_BRANCH_QUESTION,
                selector_error_messsage: "." + constants.CLASSNAME_BRANCH_ERROR_MESSAGE,
