@@ -1,7 +1,7 @@
 require("../setup");
 
 
-describe("BranchQuestino", function() {
+describe("BranchQuestion", function() {
 
   const helpers = require("./branch_helpers.js");
   const c = helpers.constants;
