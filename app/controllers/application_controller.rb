@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :service
 
+  def grid
+    @grid ||= MetadataPresenter::Grid.new(service)
+  end
+  helper_method :grid
+
   def editable?
     !request.script_name.include?('preview')
   end

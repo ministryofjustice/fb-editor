@@ -1,0 +1,20 @@
+<div class="component-dialog-api-request">
+  <%= form_for @move, url: api_service_flow_move_path(service.service_id, @move.to_move_uuid) do |f| %>
+    <div class="govuk-form-group ">
+      <%= f.hidden_field :previous_flow_uuid, value: @move.previous_flow_uuid %>
+      <%= f.hidden_field :branch_uuid, value: '' %>
+      <%= f.hidden_field :conditional_uuid, value: '' %>
+      <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
+      <p> <%= t('dialogs.move.lede') %></p>
+      <div class="govuk-form-group">
+        <select class="govuk-select" name="target_uuid" id="target_uuid">
+          <% @move.targets.each do |target| %>
+            <option value="<%= target[:target_uuid] %>" data-branch-uuid="<%= target[:branch_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>">
+              <%= target[:title] %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+  <% end %>
+</div>
