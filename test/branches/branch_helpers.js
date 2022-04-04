@@ -12,7 +12,7 @@ const constants = {
   SELECTOR_PRE_BRANCH_CONDITION_REMOVER: ".condition-remover",
   SELECTOR_PRE_BRANCH_QUESTION: ".question",
   SELECTOR_PRE_BRANCH_ANSWER: ".answer",
-  SELECTOR_PRE_BRANCH_REMOVE: ".branch-remover",
+  SELECTOR_PRE_BRANCH_REMOVER: ".branch-remover",
 
   SELECTOR_BRANCH_DESTINATION: ".BranchDestination",
   SELECTOR_BRANCH_CONDITION: ".BranchCondition",
@@ -20,7 +20,7 @@ const constants = {
   SELECTOR_BRANCH_CONDITION_REMOVER: ".BranchConditionRemover",
   SELECTOR_BRANCH_QUESTION: ".BranchQuestion",
   SELECTOR_BRANCH_ANSWER: ".BranchAnswer",
-  SELECTOR_BRANCH_REMOVE: ".BranchRemover",
+  SELECTOR_BRANCH_REMOVER: ".BranchRemover",
 
   TEXT_BRANCH_REMOVE: "remove branch text",
   TEXT_CONDITION_ADD: "add condition text",
