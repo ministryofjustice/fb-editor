@@ -20,6 +20,7 @@ const {
   createElement,
   uniqueString
 } = require('../../utilities');
+
 const tabbable = require('tabbable');
 const ActivatedMenuItem = require('./activated_menu_item');
 const ActivatedMenuActivator = require('./activated_menu_activator');

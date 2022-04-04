@@ -32,8 +32,6 @@ class ConnectionMenu extends ActivatedMenu {
 
     var action = item.data("action");
     
-    // event.preventDefault();
-
     switch(action) {
       case "none":
         // null action e.g. when we show submenu
