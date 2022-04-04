@@ -114,7 +114,7 @@ PagesController.edit = function() {
 
   addQuestionMenuListeners(view);
   addContentMenuListeners(view);
-  addEditableComponentItemMenuListeners(view) 
+  addEditableComponentItemMenuListeners(view);
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );

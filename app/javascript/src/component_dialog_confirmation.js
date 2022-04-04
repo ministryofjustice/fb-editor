@@ -75,7 +75,7 @@ class DialogConfirmation extends Dialog {
     }
 
     this._config = conf;
-    this._action = function() {} // Should be overwritten in open()
+    this._action = function() {}; // Should be overwritten in open()
     this.$node = $node;
   }
 
