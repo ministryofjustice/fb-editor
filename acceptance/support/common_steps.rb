@@ -336,7 +336,7 @@ module CommonSteps
 
   def when_I_want_to_select_component_properties(attribute, text)
     page.find(attribute, text: text).click
-    page.first('.ActivatedMenu_Activator').click
+    page.first('.ActivatedMenu_Activator', visible: true).click
   end
 
   def and_I_click_on_the_three_dots
