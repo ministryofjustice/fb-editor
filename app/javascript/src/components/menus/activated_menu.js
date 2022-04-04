@@ -44,7 +44,7 @@ class ActivatedMenu {
       // on-the-fly by passing to component.open() function. Passing in a
       // position object will set the temporary value this._state.position.
       my: "left top",
-      at: "left bottom",
+      at: "left top",
       of: this.activator.$node,
       collision: "flip"
     }, property(this._config, "menu.position") );
@@ -89,7 +89,7 @@ class ActivatedMenu {
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
   open(config = {}) {
-
+    console.log(config.position);
     if(config.position) {
       // Use the passed postion values, without question.
       ActivatedMenu.setMenuOpenPosition.call(this, config.position);
@@ -298,14 +298,15 @@ ActivatedMenu.setMenuOpenPosition = function(position) {
  * the open position based on if the activator is too far right.
  **/
 ActivatedMenu.calculateMenuOpenPosition = function($activator) {
-  var activatorLeft = $activator.offset().left;
+  // var activatorLeft = $activator.offset().left;
+  var activatorLeft = $activator[0].getBoundingClientRect().left;
   var rightBoundary = window.innerWidth;
   var menuWidth = this.$node.outerWidth();
 
   if(rightBoundary - activatorLeft < menuWidth) {
     ActivatedMenu.setMenuOpenPosition.call(this, {
       my: "right top",
-      at: "right bottom",
+      at: "right top",
       of: $activator
     });
   }

@@ -63,13 +63,7 @@ class ActivatedMenuActivator {
   #bindEventHandlers() {
     this.$node.on("click.ActivatedMenuActivator", (event) => {
       this.menu._state.activator = event.currentTarget;
-      this.menu.open({
-        position: {
-          at: "left top",
-          my: "left top",
-          of: this.$node,
-        }
-      });
+      this.menu.open();
     });
 
     this.$node.on("focus", (event) => {
