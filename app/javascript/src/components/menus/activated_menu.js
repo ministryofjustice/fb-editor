@@ -14,14 +14,16 @@
  *
  **/
 
-const utilities = require('./utilities');
-const property = utilities.property;
-const mergeObjects = utilities.mergeObjects;
-const createElement = utilities.createElement;
-const uniqueString = utilities.uniqueString;
-const ActivatedMenuItem = require('./component_activated_menu_item');
-
-const tabbable = require('tabbable').tabbable;
+const {
+  property,
+  mergeObjects,
+  createElement,
+  uniqueString
+} = require('../../utilities');
+const tabbable = require('tabbable');
+const ActivatedMenuItem = require('./activated_menu_item');
+const ActivatedMenuActivator = require('./activated_menu_activator');
+const ActivatedMenuContainer = require('./activated_menu_container');
 
 const ITEMS_SELECTOR = '> li';
 
@@ -31,12 +33,10 @@ class ActivatedMenu {
       config.container_id = uniqueString("menu");
     }
 
-
     this.$node = $menu;
     this._config = config;
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
-
   
     this._position = mergeObjects({
       // Default position settings (can be set on instantiation or overide
@@ -47,7 +47,6 @@ class ActivatedMenu {
       of: this.activator.$node,
       collision: "flip"
     }, property(this._config, "menu.position") );
-
 
     this._state = {
       open: false,
@@ -106,9 +105,6 @@ class ActivatedMenu {
       //       set the desired position.
       ActivatedMenu.calculateMenuOpenPosition.call(this, this.activator.$node);
     }
-    console.log('this._config: ', this._config);
-    console.log('this._position: ', this._position);
-    console.log('_state.position: ', this._state.position);
     this.container.$node.position(this._state.position);
     this.container.$node.show();
     this.activator.$node.addClass("active");
@@ -187,7 +183,6 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // open the menu.
 
   this.$node.on("mouseout", (event) => {
-    console.log('menu mouseout');
     // event.currentTarget will be the menu (UL) element.
     // check if relatedTarget is not a child element.
     component._state.close = true;
@@ -201,7 +196,6 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   });
 
   this.$node.on("mouseover", (event) => {
-    console.log('menu mouseover');
     component._state.close = false;
   });
 
@@ -253,7 +247,6 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   if(this._config.selection_event) {
     let component = this;
     component.$node.on("menuselect", function(event, ui) {
-      console.log(event);
       var e = event.originalEvent;
       var original = {};
 
@@ -342,93 +335,7 @@ ActivatedMenu.resetMenuOpenPosition = function() {
   node.style.position = "";
   this._state.position = null; // Reset because this one is set on-the-fly
 }
-
-class ActivatedMenuContainer {
-  constructor(menu, config) {
-    var $node = $(createElement("div", "", "ActivatedMenu_Container"));
-
-    $node.attr("id", config.container_id);
-    if(config.container_classname) {
-      $node.addClass(config.container_classname);
-    }
-
-    // Allow component public functions to be triggered from the jQuery object without
-    // jumping through all the hoops of creating/using a jQuery widget.
-    // e.g. use $("#myMenuContainerNode").trigger("component.open")
-    $node.on("component.open", (event, position) => menu.open(position) );
-    $node.on("component.close", () => menu.close() );
-
-    // Add Container to DOM then put the menu inside it.
-    // Lastly, move to just inside body for z-index reasons.
-    menu.$node.before($node);
-    $node.append(menu.$node);
-    $(document.body).append($node);
-
-    this.$node = $node;
-    this.$node.data("instance", this);
-    this.menu = menu;
-  }
-}
-
-
-class ActivatedMenuActivator {
-  constructor(menu, config) {
-    var $node = config.activator;
-
-    if(!$node || $node.length < 1) {
-      $node = $(createElement("button", config.activator_text, config.activator_classname));
-      $node.attr("type", "button");
-    }
-
-    $node.on("click.ActivatedMenuActivator", (event) => {
-      menu._state.activator = event.currentTarget;
-      menu.open();
-    });
-
-    $node.on("focus", (e) => {
-      $node.addClass("active");
-    });
-
-    $node.on("blur", (e) => {
-      if(!menu._state.open) {
-        $node.removeClass("active");
-      }
-    });
-
-    $node.on("keydown", (e) => {
-      let key = e.originalEvent.code;
-      
-      switch(key) {
-        case 'Enter':
-        case 'Space':
-        case 'ArrowDown':
-          e.preventDefault();
-          menu._state.activator = e.currentTarget;
-          menu.open();
-          menu.focus();
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          menu._state.activator = e.currentTarget;
-          menu.open(); 
-          menu.focusLast();
-          break;
-      }
-    });
-
-    menu.$node.before($node);
-    $node.addClass("ActivatedMenu_Activator");
-    $node.attr("aria-haspopup", "menu");
-    $node.attr("id", uniqueString("menuActivator"));
-    $node.attr("aria-controls", config.container_id);
-
-    this.$node = $node;
-    this.$node.data("instance", this);
-    this.menu = menu;
-  }
-}
-
-
-// Make available for importing.
 module.exports = ActivatedMenu;
+
+
 

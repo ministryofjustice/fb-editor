@@ -14,13 +14,14 @@
  **/
 
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const createElement = utilities.createElement;
-const uniqueString = utilities.uniqueString;
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const addHiddenInpuElementToForm = utilities.addHiddenInpuElementToForm;
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
+const { 
+  mergeObjects, 
+  createElement, 
+  uniqueString, 
+  safelyActivateFunction,
+  addHiddenInpuElementToForm,
+  updateHiddenInputOnForm
+} = require('./utilities'); 
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -30,7 +31,7 @@ const converter = new showdown.Converter({
                     tables: true,
                     disableForced4SpacesIndentedSublists: true
                   });
-const EditableCollectionItemMenu = require('./component_editable_collection_item_menu');
+const EditableCollectionItemMenu = require('./components/menus/editable_collection_item_menu');
 
 showdown.setFlavor('github');
 

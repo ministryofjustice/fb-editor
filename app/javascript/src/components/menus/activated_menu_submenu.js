@@ -1,5 +1,5 @@
-const utilities = require('./utilities');
-const uniqueString = utilities.uniqueString;
+const { uniqueString } = require('../../utilities');
+
 const ITEMS_SELECTOR = '> li';
 
 class ActivatedMenuSubmenu {
@@ -28,7 +28,6 @@ class ActivatedMenuSubmenu {
 
 
     open() {
-      console.log('open submenu', this.$node);
       this.state.open = true;
       this.$node.show();
       this.parent.$node.find('> :first-child').attr("aria-expanded", "true");
@@ -41,7 +40,6 @@ class ActivatedMenuSubmenu {
     }
 
     close() {
-      console.log('close submenu', this.$node);
       this.state.open = false;
       this.$node.hide();
       this.parent.$node.find('> :first-child').attr("aria-expanded", "false");
@@ -80,7 +78,6 @@ class ActivatedMenuSubmenu {
       component.state.closing = true;
       if(!$.contains(event.currentTarget, event.relatedTarget)) {
         setTimeout(function(e) {
-          console.log('submenu mouseout  - close', component);
           if(component.state.closing) {
             component.close();
           }
@@ -112,7 +109,6 @@ class ActivatedMenuSubmenu {
           case 'ArrowDown':
             event.preventDefault();
             event.stopImmediatePropagation();
-            console.log('submenu down');
             this.focusNext();
             break;
           case 'ArrowUp':

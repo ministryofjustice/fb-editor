@@ -2,7 +2,7 @@ require("./setup");
 
 describe("ActivatedMenu", function() {
 
-  const ActivatedMenu = require("../app/javascript/src/component_activated_menu");
+  const ActivatedMenu = require("../app/javascript/src/components/menus/activated_menu");
   const COMPONENT_CLASSNAME = "ActivatedMenu";
   const CONTAINER_ID = "activated-menu-test-container-id";
   const CONTAINER_CLASSNAME = "activated-menu-test-classname and-another-activated-menu-classname";
@@ -42,6 +42,7 @@ describe("ActivatedMenu", function() {
 
     var $button = $("<button></button>");
     $button.attr("id", ACTIVATOR_ID);
+    $button.addClass(ACTIVATOR_CLASSNAME);
     $(document.body).append($ul);
     $(document.body).append($button);
 
@@ -58,7 +59,6 @@ describe("ActivatedMenu", function() {
   });
 
   after(function() {
-    menu.$node.menu("destroy");
     menu.$node.remove();
     menu.activator.$node.remove();
     menu.container.$node.remove();
@@ -159,12 +159,13 @@ describe("ActivatedMenu", function() {
       expect(menu._state.open).to.be.false;
     });
 
-    it("should remove the class 'active' from the activator on close()", function() {
+    it("should place focus on the activator on close()", function() {
       menu.open();
       expect(menu.activator.$node.hasClass("active")).to.be.true;
 
       menu.close();
-      expect(menu.activator.$node.hasClass("active")).to.be.false;
+      expect(menu.activator.$node.hasClass("active")).to.be.true;
+      expect(document.activeElement).to.eql(menu.activator.$node[0]);
     });
 
     /* TODO: Test is on hold because we cannot use jsDom
@@ -185,7 +186,7 @@ describe("ActivatedMenu", function() {
 
       expect(value).to.equal(1);
 
-      menu.$node.find("li > a").eq(0).click();
+      menu.$node.find("li > :first-child").eq(0).click();
       expect(value).to.equal(2);
     });
   });
@@ -233,7 +234,7 @@ describe("ActivatedMenu", function() {
       expect(menu.activator).to.exist;
       expect(menu.activator.$node).to.exist;
       expect(menu.activator.$node.length).to.equal(1);
-      expect(menu.activator.$node.get(0)).to.equal($("#" + ACTIVATOR_ID).get(0));
+      expect(menu.activator.$node.get(0)).to.equal($("." + ACTIVATOR_CLASSNAME).get(0));
     });
 
     it("should make the $node public", function() {
@@ -286,7 +287,6 @@ describe("ActivatedMenu", function() {
     });
 
     after(function() {
-      menu_creating_activator.$node.menu("destroy");
       menu_creating_activator.$node.remove();
       menu_creating_activator.activator.$node.remove();
       menu_creating_activator.container.$node.remove();

@@ -16,10 +16,11 @@
  **/
 
 
-const utilities = require('./utilities');
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require('./component_activated_menu');
-
+const  { 
+  updateHiddenInputOnForm,
+  stringInject,
+}  = require('./utilities');
+const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const Content = require('./content');
@@ -275,7 +276,7 @@ function addEditableComponentItemMenuListeners(view) {
     var questionUuid =  collectionItem.component.data._uuid;
     var optionUuid =  collectionItem.data._uuid; 
 
-    var url = utilities.stringInject(path, { 
+    var url = stringInject(path, { 
       'question_uuid': questionUuid, 
       'option_uuid': optionUuid ?? 'new', 
     });

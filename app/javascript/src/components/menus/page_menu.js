@@ -1,9 +1,9 @@
-
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
-const DialogApiRequest = require('./component_dialog_api_request');
+const {
+  mergeObjects,
+  post
+} = require('../../utilities');
+const ActivatedMenu =require('./activated_menu');
+const DialogApiRequest = require('../../component_dialog_api_request');
 
 class PageMenu extends ActivatedMenu {
   constructor($node, config) {
@@ -25,9 +25,9 @@ class PageMenu extends ActivatedMenu {
 
    // Handle item selections on the form step context menu elements.
   selection(event, item) {
+    event.preventDefault();
     var action = item.data("action");
 
-    event.preventDefault();
     switch(action) {
       case "preview":
            this.previewPage(item);
@@ -112,11 +112,10 @@ class PageMenu extends ActivatedMenu {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
-          utilities.post(this.href, { _method: "delete" });
+          post(this.href, { _method: "delete" });
         });
       }
     });
   }
 }
-
-module.exports = PageMenu
+module.exports = PageMenu; 

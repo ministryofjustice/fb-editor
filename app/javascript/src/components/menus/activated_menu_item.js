@@ -1,7 +1,6 @@
 
-const utilities = require('./utilities');
-const uniqueString = utilities.uniqueString;
-const ActivatedMenuSubmenu = require('./component_activated_menu_submenu');
+const { uniqueString } = require('../../utilities');
+const ActivatedMenuSubmenu =require('./activated_menu_submenu');
 
 class ActivatedMenuItem {
   constructor($node, menu) {
@@ -58,7 +57,6 @@ class ActivatedMenuItem {
     this.$node.on("mouseenter", (event) => {
       if(this.hasSubmenu()) {
         setTimeout(function(e) {
-          console.log('item mouseover - open submenu', item);
           item.submenu.open(); 
         }, 50);
       } 
@@ -69,7 +67,6 @@ class ActivatedMenuItem {
         if( this.submenu.isOpen() ) {
           if(!$.contains(event.currentTarget, event.relatedTarget)) {
             setTimeout(function(e) {
-              console.log('item mouseout - close submenu', item);
               item.submenu.close(); 
             }, 50);
           }
@@ -108,5 +105,4 @@ class ActivatedMenuItem {
     });
   }
 }
-
 module.exports = ActivatedMenuItem;

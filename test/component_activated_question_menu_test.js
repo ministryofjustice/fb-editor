@@ -3,7 +3,7 @@ const expect = require("chai").expect;
 
 describe("QuestionMenu", function() {
 
-  const QuestionMenu = require("../app/javascript/src/component_activated_question_menu");
+  const QuestionMenu = require("../app/javascript/src/components/menus/question_menu");
   const COMPONENT_CLASSNAME = "QuestionMenu";
   const CONTAINER_ID = "activated-question-menu-test-container-id";
   const CONTAINER_CLASSNAME = "activated-question-menu-test-classname and-another-activated-menu-classname";
@@ -68,7 +68,6 @@ describe("QuestionMenu", function() {
   after(function() {
     menu.question.$node.remove();
     menu.question = null;
-    menu.$node.menu("destroy");
     menu.$node.remove();
     menu.activator.$node.remove();
     menu.container.$node.remove();

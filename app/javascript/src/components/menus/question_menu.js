@@ -1,9 +1,8 @@
-
 /**
- * Activated Editable Collection Item Menu Component
+ * Activated Question Menu Component
  * ----------------------------------------------------
  * Description:
- * Enhances Activated Menu component for specific Editable Collection Item Menu.
+ * Enhances Activated Menu component for specific Question Property Menu.
  *
  * Documentation:
  *
@@ -14,19 +13,16 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
+const { mergeObjects }  = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
 
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
-
-
-class EditableCollectionItemMenu extends ActivatedMenu {
+class QuestionMenu extends ActivatedMenu {
   constructor($node, config) {
     super($node, mergeObjects({
       activator_text: "",
       $target: $(), // Used in placing the activator
-      collectionItem: {},
+      question: {}, // TODO: Not sure if we should do this way
       view: {},
       onSetRequired: function(){} // Called at end of set required function
     }, config));
@@ -42,32 +38,51 @@ class EditableCollectionItemMenu extends ActivatedMenu {
       $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
     }
 
-    this.container.$node.addClass("EditableCollectionItemMenu");
-    this.collectionItem = config.collectionItem;
+    this.container.$node.addClass("QuestionMenu");
+    this.question = config.question;
+    this.setRequiredViewState();
   }
 
   selection(event, item) {
-    let action = item.data("action");
+    var action = item.data("action");
     this.selectedItem = item;
 
     event.preventDefault();
     switch(action) {
       case "remove":
-        $(document).trigger("EditableCollectionItemMenuSelectionRemove", { 
-          selectedItem: item,
-          collectionItem: this.collectionItem
-        });
-        break;
+           this.remove();
+           break;
+      case "required":
+          this.required();
+          break;
       case "close":
         this.close();
         break;
     }
   }
 
+  remove() {
+    $(document).trigger("QuestionMenuSelectionRemove", this.question);
+  }
+
+  required() {
+    $(document).trigger("QuestionMenuSelectionRequired", this.question);
+  }
+
   close() {
     super.close(); 
     this.activator.$node.removeClass("active");
   }
-}
 
-module.exports = EditableCollectionItemMenu;
+  /* Change required option state for view purpose
+   **/
+  setRequiredViewState() {
+    if(this.question.data.validation.required) {
+      $("[data-action=required]").addClass("on");
+    }
+    else {
+      $("[data-action=required]").removeClass("on");
+    }
+  }
+}
+module.exports = QuestionMenu; 

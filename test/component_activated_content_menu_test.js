@@ -2,7 +2,7 @@ require("./setup");
 
 describe("ContentMenu", function() {
 
-  const ContentMenu = require("../app/javascript/src/component_activated_content_menu");
+  const ContentMenu = require("../app/javascript/src/components/menus/content_menu");
   const COMPONENT_CLASSNAME = "ContentMenu";
   const CONTAINER_ID = "activated-content-menu-test-container-id";
   const CONTAINER_CLASSNAME = "activated-content-menu-test-classname and-another-activated-menu-classname";
@@ -62,7 +62,6 @@ describe("ContentMenu", function() {
   });
 
   after(function() {
-    content.menu.$node.menu("destroy");
     content.menu.activator.$node.remove();
     content.menu.container.$node.remove();
     content.menu.$node.remove();

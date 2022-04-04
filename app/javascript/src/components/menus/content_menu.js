@@ -13,13 +13,11 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-
-
-const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
-
+const {
+  safelyActivateFunction,
+  mergeObjects
+} = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
 
 class ContentMenu extends ActivatedMenu {
   constructor(component, $node, config) {
@@ -79,5 +77,4 @@ class ContentMenu extends ActivatedMenu {
   }
 }
 
-
-module.exports = ContentMenu;
+module.exports = ContentMenu; 
