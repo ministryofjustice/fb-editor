@@ -1,3 +1,22 @@
+/**
+ * Activated Menu Activator
+ * ----------------------------------------------------
+ * Description
+ * Adds behaviour to activated an Activated Menu.  Can either be passed an
+ * element to enhance as part of the config, or will create and insert a
+ * <button> element.
+ *
+ * Configuration
+ * The constructor object accept the same configuration object as an Activated
+ * Menu.  The relevant keys are:
+ *  - activator (jQuery) object that will be enhanced into an
+ *                       ActivatedMenuActivator.  If none is provided, an element
+ *                       will be created and inserted.
+ *  - activator_classname (string) class(es) to be added to the created activator
+ *  - activator_text (string) accessible label for the created activator element
+ *
+ **/
+
 const {
   createElement,
   uniqueString
@@ -8,14 +27,13 @@ class ActivatedMenuActivator {
   #className;
 
   /**
-   * 
    * @param {ActivatedMenu} the menu instance to be activated
-   * @param {object} configuration object 
+   * @param {object} ActivatedMenu configuration object 
    */
   constructor(menu, config) {
     let $node = config.activator;
     this.#config = config;
-    this.#className = "ActivatedMenu_Activator";
+    this.#className = "ActivatedMenuActivator";
     this.menu = menu;
     this.$node = this.#insertNode($node);
     this.$node.data("instance", this);
@@ -27,7 +45,6 @@ class ActivatedMenuActivator {
    /**
     * Inserts the activator button into the DOM before the menu
     * if $node is not provided it will be created
-    *
     * @param {jQuery|undefined} $node jquery node for the button
     * @return {jQuery} button node 
     */
@@ -45,13 +62,15 @@ class ActivatedMenuActivator {
     * @return {jQuery} 
     */
   #createNode() {
-      let $node = $(createElement("button", this.#config.activator_text, this.#config.activator_classname));
+      const $node = $(
+        createElement("button", 
+                      this.#config.activator_text, 
+                      this.#config.activator_classname
+        )
+      );
       return $node;
   }
 
-   /**
-    * Enhance the DOM element to add all required classes and attributes
-    */
   #addAttributes() {
     this.$node.addClass(this.#className);
     this.$node.attr("type", "button");
@@ -62,7 +81,7 @@ class ActivatedMenuActivator {
 
   #bindEventHandlers() {
     this.$node.on("click.ActivatedMenuActivator", (event) => {
-      this.menu._state.activator = event.currentTarget;
+      this.menu.currentActivator = event.currentTarget;
       this.menu.open();
     });
 
@@ -71,7 +90,7 @@ class ActivatedMenuActivator {
     });
 
     this.$node.on("blur", (event) => {
-      if(!this.menu._state.open) {
+      if(!this.menu.state.open) {
         this.$node.removeClass("active");
       }
     });
@@ -85,14 +104,14 @@ class ActivatedMenuActivator {
         case 'ArrowDown':
           event.preventDefault();
 
-          this.menu._state.activator = event.currentTarget;
+          this.menu.currentActivator = event.currentTarget;
           this.menu.open();
           this.menu.focus();
           break;
         case 'ArrowUp':
           event.preventDefault();
 
-          this.menu._state.activator = event.currentTarget;
+          this.menu.currentActivator = event.currentTarget;
           this.menu.open(); 
           this.menu.focusLast();
           break;

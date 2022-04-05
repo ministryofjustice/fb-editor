@@ -15,14 +15,6 @@ describe("QuestionMenu", function() {
   const TEST_SELECTION_EVENT_NAME = "QuestionMenuTestSelectionEventName";
   var menu, question;
 
-  /* Function to manually simulate closed state menu in
-   * case any test leaves open when that is not required.
-   **/
-  function simulateClosed(menu) {
-    menu._state.open = false;
-    menu.container.$node.get(0).style.display = "none";
-    menu.activator.$node.removeClass("active");
-  }
 
   /* Function to fake a generic question good enough
    * only for testing purpose.
@@ -63,6 +55,10 @@ describe("QuestionMenu", function() {
       container_classname: CONTAINER_CLASSNAME,
       selection_event: TEST_SELECTION_EVENT_NAME
     });
+  });
+
+  beforeEach(function() {
+    menu.close();
   });
 
   after(function() {
@@ -106,27 +102,49 @@ describe("QuestionMenu", function() {
       expect(menu.$node.data("instance")).to.equal(menu);
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      expect(menu._config).to.exist;
-      expect(menu._config.question).to.exist;
+    it("should be able to get menu config", function() {
+      expect(menu.config).to.exist;
+      expect(menu.config.activator_text).to.exist;
+      expect(menu.config.activator_text).to.equal(ACTIVATOR_TEXT);
     });
 
-    it("should make (public but indicated as) private reference to position", function() {
-      expect(menu._position).to.exist;
-      expect(menu._position.my).to.exist;
-      expect(menu._position.my).to.equal("left top");
-      expect(menu._position.at).to.exist;
-      expect(menu._position.at).to.equal("left bottom");
-      expect(menu._position.of).to.exist;
+    it("should not be able set menu config", function() {
+      menu.config = {
+        activator_text: "nope",
+      };
+      expect(menu.config.activator_text).to.equal(ACTIVATOR_TEXT);
     });
 
-    it("should make (public but indicated as) private reference to state", function() {
-      expect(menu._state).to.exist;
-      expect(menu._state.open).to.exist;
+    it("should be able to get menu position", function() {
+      expect(menu.position).to.exist;
+      expect(menu.position.my).to.exist;
+      expect(menu.position.my).to.equal("left top");
+      expect(menu.position.at).to.exist;
+      expect(menu.position.at).to.equal("left top");
+      expect(menu.position.of).to.exist;
+    });
+
+    it("should not be able set menu position", function() {
+      menu.position = {
+        my: "bottom right",
+      };
+      expect(menu.position.my).to.equal("left top");
+    });
+
+
+    it("should be able to get menu state", function() {
+      expect(menu.state).to.exist;
+      expect(menu.state.open).to.exist;
+    });
+
+    it("should not be able set menu state", function() {
+      menu.state = {
+        open: true,
+      };
+      expect(menu.state.open).to.be.false;
     });
 
     it("should open the menu by the open() method", function() {
-      simulateClosed(menu);
       expect(menu.container.$node.get(0).style.display).to.equal("none");
 
       menu.open();
@@ -134,19 +152,14 @@ describe("QuestionMenu", function() {
     });
 
     it("should set the state.open to true when open() is activated", function() {
-      simulateClosed(menu);
-      expect(menu._state.open).to.be.false;
+      expect(menu.state.open).to.be.false;
 
       menu.open();
-      expect(menu._state.open).to.be.true;
+      expect(menu.state.open).to.be.true;
     });
 
     it("should add the class 'active' to the activator on open()", function() {
-      simulateClosed(menu);
-
-      expect(menu._state.open).to.be.false;
-      expect(menu.activator.$node.hasClass("active")).to.be.false;
-
+      expect(menu.state.open).to.be.false;
       menu.open();
       expect(menu.activator.$node.hasClass("active")).to.be.true;
     });
@@ -166,10 +179,10 @@ describe("QuestionMenu", function() {
 
     it("should set the state.open to false when close() is activated", function() {
       menu.open();
-      expect(menu._state.open).to.be.true;
+      expect(menu.state.open).to.be.true;
 
       menu.close();
-      expect(menu._state.open).to.be.false;
+      expect(menu.state.open).to.be.false;
     });
 
     it("should remove the class 'active' from the activator on close()", function() {
@@ -300,9 +313,9 @@ describe("QuestionMenu", function() {
     });
 
     it("should use config.activator_text for any created activator", function() {
-      expect(menu._config).to.exist;
-      expect(menu._config.activator_text).to.exist;
-      expect(menu._config.activator_text).to.equal(ACTIVATOR_TEXT);
+      expect(menu.config).to.exist;
+      expect(menu.config.activator_text).to.exist;
+      expect(menu.config.activator_text).to.equal(ACTIVATOR_TEXT);
       expect(menu.activator.$node.text()).to.equal(ACTIVATOR_TEXT);
     });
 

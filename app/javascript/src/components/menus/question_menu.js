@@ -31,7 +31,7 @@ class QuestionMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
-    let $target = this._config.$target;
+    let $target = this.config.$target;
     if($target.length) {
       $target.before(this.activator.$node);
       $target.on("focus.questionmenu", () => this.activator.$node.addClass("active"));

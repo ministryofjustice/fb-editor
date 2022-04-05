@@ -1,32 +1,68 @@
-const {
-  createElement,
-} = require('../../utilities');
+/**
+ * Activated Menu Container
+ * ----------------------------------------------------
+ * Description
+ * Wraps an Activated Menu in a contiainer <div> used for positioning the menu.
+ *
+ * Configuration:
+ * The constructor object accept the same configuration object as an Activated
+ * Menu.  The relevant keys are:
+ *  - container_id (string) an HTML id attribute to be applied to the generated
+ *                          ActivatedMenuContainer element.  If none is provided 
+ *                          a unique id will be generated.
+ *  - container_classname (string) class(es) to be applied to the generated menu
+ *                                 container element
+ * 
+ **/
+
+const { createElement } = require('../../utilities');
 
 class ActivatedMenuContainer {
+  #config
+  #className
+
+  /**
+   * @param {ActivatedMenu} the menu instance to be activated
+   * @param {object} ActivatedMenu configuration object 
+   */
   constructor(menu, config) {
-    var $node = $(createElement("div", "", "ActivatedMenu_Container"));
+    this.#config = config;
+    this.#className = "ActivatedMenuContainer";
+    this.menu = menu;
+    this.$node = $(createElement("div"));
+    this.$node.data("instance", this);
+    
+    this.#addAttributes();
+    this.#insertNode(); 
+    this.#bindEventHandlers();
+    
+  }
 
-    $node.attr("id", config.container_id);
-    if(config.container_classname) {
-      $node.addClass(config.container_classname);
+  #addAttributes() {
+    this.$node.attr("id", this.#config.container_id);
+    this.$node.addClass(this.#className); 
+    if(this.#config.container_classname) {
+      this.$node.addClass(this.#config.container_classname);
     }
+    this.$node.css("width", this.menu.$node.width() + "px"); // Required for alternative positioning.
+  }
 
+  // Add Container to DOM then put the menu inside it.
+  // Lastly, move to just inside body for z-index reasons.
+  #insertNode() {
+    this.menu.$node.before(this.$node);
+    this.$node.append(this.menu.$node);
+    $(document.body).append(this.$node);
+  }
+
+  #bindEventHandlers() {
     // Allow component public functions to be triggered from the jQuery object without
     // jumping through all the hoops of creating/using a jQuery widget.
     // e.g. use $("#myMenuContainerNode").trigger("component.open")
-    // TODO: Are these still needed? CP 29/03/2022
-    $node.on("component.open", (event, position) => menu.open(position) );
-    $node.on("component.close", () => menu.close() );
-
-    // Add Container to DOM then put the menu inside it.
-    // Lastly, move to just inside body for z-index reasons.
-    menu.$node.before($node);
-    $node.append(menu.$node);
-    $(document.body).append($node);
-
-    this.$node = $node;
-    this.$node.data("instance", this);
-    this.menu = menu;
+    this.$node.on("component.open", (event, position) => this.menu.open(position) );
+    this.$node.on("component.close", () => this.menu.close() );
   }
+
+
 }
 module.exports = ActivatedMenuContainer;

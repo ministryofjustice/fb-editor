@@ -76,7 +76,7 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//*[@role='menuitem' and contains(.,'Content area')]"
 
-  element :question_three_dots_button, '.ActivatedMenu_Activator', visible: true
+  element :question_three_dots_button, '.ActivatedMenuActivator', visible: true
   element :required_question,
           :xpath,
           "//*[@role='menuitem' and contains(.,'Required...')]"
@@ -175,7 +175,7 @@ class EditorApp < SitePrism::Page
   element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
   element :add_another_branch, :link, I18n.t('branches.branch_add')
-  element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
+  element :conditional_three_dot, :button, '.ActivatedMenuActivator'
   element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
 
   element :destination_options, '#branch_conditionals_attributes_0_next'

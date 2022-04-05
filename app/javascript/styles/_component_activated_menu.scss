@@ -14,11 +14,11 @@
  *
  **/
 
-.ActivatedMenu_Container {
+.ActivatedMenuContainer {
   position: absolute;
 }
 
-.ActivatedMenu_Activator {
+.ActivatedMenuActivator {
   @include icon_button;
 
   &:after {
@@ -33,7 +33,7 @@
   }
 }
 
-.ActivatedMenu_Menu {
+.ActivatedMenu {
 
 
   a, span {

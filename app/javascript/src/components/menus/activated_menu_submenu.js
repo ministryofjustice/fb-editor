@@ -1,13 +1,27 @@
+/**
+ * Activated Menu Submenu
+ * -----------------------------------------------------------------------------
+ * Description:
+ * Enhances submenus within an ActivatedMenu and handles keyboard events
+ *
+ **/
+
 const { uniqueString } = require('../../utilities');
 
 const ITEMS_SELECTOR = '> li';
 
 class ActivatedMenuSubmenu {
+    #state
+
+    /**
+     * @param $node (jQuery) jQuery-wrapped <ul> node for the submenu
+     * @param parent (HTMLElement) the parent <li> element
+     **/
     constructor($node, parent) {
       this.$node = $node;
       this.parent = parent;
 
-      this.state = {
+      this.#state = {
         open: false,
         closing: false,
       }
@@ -16,19 +30,21 @@ class ActivatedMenuSubmenu {
       this.$node.attr("tabindex", -1);
 
       this.$items = this.$node.find(ITEMS_SELECTOR);
-
       this.currentFocusIndex = 0;   
 
-      this.bindEventHandlers();
+      this.#bindEventHandlers();
+    }
+
+    get state() {
+      return this.#state;
     }
   
     isOpen() {
-      return this.state.open;
+      return this.#state.open;
     }
 
-
     open() {
-      this.state.open = true;
+      this.#state.open = true;
       this.$node.show();
       this.parent.$node.find('> :first-child').attr("aria-expanded", "true");
       this.$node.position({
@@ -40,14 +56,14 @@ class ActivatedMenuSubmenu {
     }
 
     close() {
-      this.state.open = false;
+      this.#state.open = false;
       this.$node.hide();
       this.parent.$node.find('> :first-child').attr("aria-expanded", "false");
-      this.parent.menu._state.submenuOpen = false;
+      // this.parent.menu._state.submenuOpen = false;
     }
 
     focus(index = 0) {
-      var $items = this.$items;
+      let $items = this.$items;
 
       if( index > $items.length - 1 ) {
         index = 0;
@@ -69,13 +85,13 @@ class ActivatedMenuSubmenu {
       this.focus( this.currentFocusIndex - 1 ); 
     }
 
-  bindEventHandlers() {
+  #bindEventHandlers() {
     var component = this;
 
     this.$node.on("mouseout", (event) => {
       // event.currentTarget will be the menu (UL) element.
       // check if relatedTarget is not a child element.
-      component.state.closing = true;
+      this.#state.closing = true;
       if(!$.contains(event.currentTarget, event.relatedTarget)) {
         setTimeout(function(e) {
           if(component.state.closing) {
@@ -86,12 +102,14 @@ class ActivatedMenuSubmenu {
     });
 
     this.$node.on("mouseover", (event) => {
-      component.state.closing = false;
+      this.#state.closing = false;
     });
 
+    // we use StopImmediatePropagation in here to prevent the event bubbling up
+    // to parent menus.  So that e.g. <esc> only closes the submenu, and not the
+    // whole menu.
     this.$node.on('keydown', (event) => {
-
-      if(this.state.open) {
+      if(this.#state.open) {
         let key = event.originalEvent.key;
         let shiftKey = event.originalEvent.shiftKey;
 
@@ -121,11 +139,15 @@ class ActivatedMenuSubmenu {
             this.close();
             this.parent.menu.focusItem(this.parent.$node);
             break;
-          case 'Escape': 
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            this.close();
-            this.parent.menu.focusItem(this.parent.$node);
+          case 'Escape':
+            /* Technically <esc> should close only the submenu
+             * we are opting to have it close the whole menu. 
+             * Leaving this here in case user testing shows that just closing 
+             */
+            // event.preventDefault();
+            // event.stopImmediatePropagation();
+            // this.close();
+            // this.parent.menu.focusItem(this.parent.$node);
             break;
         }
       }

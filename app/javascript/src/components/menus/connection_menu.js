@@ -14,8 +14,6 @@ class ConnectionMenu extends ActivatedMenu {
       activator_text: $node.data("activator-text")
     }, config));
 
-    this.container.$node.addClass("ConnectionMenu");
-
     // Register event handler for selection of menu item.
     $node.on("menuselect", (event, ui) => {
       this.selection(event, ui.item);
@@ -53,7 +51,7 @@ class ConnectionMenu extends ActivatedMenu {
     }
 
     addPage(element) { 
-        var dialog = this._config.view.pageAdditionDialog;
+        var dialog = this.config.view.pageAdditionDialog;
         var $form = dialog.$form;
       
         // Set the 'add_page_here' value to mark point of new page inclusion.
@@ -68,7 +66,7 @@ class ConnectionMenu extends ActivatedMenu {
         updateHiddenInputOnForm($form, "page[page_type]", element.data("page-type"));
         updateHiddenInputOnForm($form, "page[component_type]", element.data("component-type"));
 
-        this._config.view.pageAdditionDialog.open();
+        this.config.view.pageAdditionDialog.open();
     } 
     
     link(element) {
@@ -78,7 +76,7 @@ class ConnectionMenu extends ActivatedMenu {
 
     // Open an API request dialog to change destination
     changeDestination(element) {
-      var view = this._config.view;
+      var view = this.config.view;
       var $link = element.find("> a");
       new DialogApiRequest($link.attr("href"), {
         activator: $link,
