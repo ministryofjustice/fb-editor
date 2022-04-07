@@ -535,8 +535,6 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       selectorElementHint: config.selectorHint
     }, config));
 
-    var text = config.text || {}; // Make sure it exists to avoid errors later on.
-    
     this.items = [];
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     

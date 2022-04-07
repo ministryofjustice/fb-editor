@@ -43,21 +43,20 @@ feature 'New branch page' do
 
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')
-
     then_I_can_add_conditionals_and_expressions
 
     and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][2][component]',
+      'branch[conditionals_attributes][0][expressions_attributes][1][component]',
       'What is your favourite hobby?'
     )
 
     and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][2][operator]',
+      'branch[conditionals_attributes][0][expressions_attributes][1][operator]',
       'is not'
     )
 
     and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][2][field]',
+      'branch[conditionals_attributes][0][expressions_attributes][1][field]',
       'Sewing'
     )
 

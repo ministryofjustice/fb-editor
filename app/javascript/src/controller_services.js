@@ -618,7 +618,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
 
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
-      var conditionX = $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
+      var conditionX = $condition.outerWidth(true) - 25; // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
       var halfBranchNodeWidth = (branchWidth / 2);
       var conditionColumn = condition.column;

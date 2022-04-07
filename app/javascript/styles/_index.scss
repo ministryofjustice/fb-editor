@@ -191,6 +191,12 @@ html {
       display: none;
     }
   }
+
+  &.singleBranchCondition {
+    .BranchConditionRemover {
+      display: none;
+    }
+  }
 }
 
 .BranchAnswer {
@@ -316,6 +322,12 @@ html {
 
 .BranchDestination {
   padding-left: govuk-spacing(3);
+}
+
+.BranchRemover {
+  &.disabled {
+    display: none;
+  }
 }
 
 .branch-actions {
