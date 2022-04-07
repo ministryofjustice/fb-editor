@@ -13,11 +13,8 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-
-
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
+const { mergeObjects }  = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
 
 
 class QuestionMenu extends ActivatedMenu {
@@ -34,7 +31,7 @@ class QuestionMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
-    let $target = this._config.$target;
+    let $target = this.config.$target;
     if($target.length) {
       $target.before(this.activator.$node);
       $target.on("focus.questionmenu", () => this.activator.$node.addClass("active"));
@@ -58,6 +55,9 @@ class QuestionMenu extends ActivatedMenu {
       case "required":
           this.required();
           break;
+      case "close":
+        this.close();
+        break;
     }
   }
 
@@ -67,6 +67,11 @@ class QuestionMenu extends ActivatedMenu {
 
   required() {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
+  }
+
+  close() {
+    super.close(); 
+    this.activator.$node.removeClass("active");
   }
 
   /* Change required option state for view purpose
@@ -80,5 +85,4 @@ class QuestionMenu extends ActivatedMenu {
     }
   }
 }
-
-module.exports = QuestionMenu;
+module.exports = QuestionMenu; 

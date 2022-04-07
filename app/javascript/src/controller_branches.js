@@ -18,7 +18,7 @@
 
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
-const ActivatedMenu = require('./component_activated_menu');
+const ActivatedMenu = require('./components/menus/activated_menu');
 const Branch = require('./component_branch');
 const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";

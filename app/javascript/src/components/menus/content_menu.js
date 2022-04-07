@@ -13,13 +13,11 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-
-
-const utilities = require('./utilities');
-const safelyActivateFunction = utilities.safelyActivateFunction;
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
-
+const {
+  safelyActivateFunction,
+  mergeObjects
+} = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
 
 class ContentMenu extends ActivatedMenu {
   constructor(component, $node, config) {
@@ -28,7 +26,9 @@ class ContentMenu extends ActivatedMenu {
       activator_text: ""
     }, config));
 
-    $node.on("menuselect", ContentMenu.selection.bind(this) );
+    $node.on("menuselect", (event,ui) => {
+        this.selection(event, ui.item);
+    });
 
     if(component.$node.length) {
       component.$node.prepend(this.activator.$node);
@@ -38,13 +38,30 @@ class ContentMenu extends ActivatedMenu {
 
     this.container.$node.addClass("ContentMenu");
     this.component = component;
+  }  
+
+  selection(event, item) {
+    var action = item.data("action");
+    this.selectedItem = item;
+
+    event.preventDefault();
+    switch(action) {
+      case "open":
+        this.open();
+      case "remove":
+        this.remove();
+        break;
+      case "close":
+        this.close();
+        break;
+    }
   }
 
-  open(position) {
+  open(config) {
     if(this.component) {
       this.component.$node.addClass("active");
     }
-    super.open(position);
+    super.open(config);
   }
 
   close() {
@@ -52,6 +69,7 @@ class ContentMenu extends ActivatedMenu {
       this.component.$node.removeClass("active");
     }
     super.close();
+    this.activator.$node.removeClass("active");
   }
 
   remove() {
@@ -59,14 +77,4 @@ class ContentMenu extends ActivatedMenu {
   }
 }
 
-/* Handles what happens when an item in the menu has been selected
- * @event (jQuery Event Object) See jQuery docs for info.
- * @data  (Object) See ActivatedMenu and search for config.selection_event
- **/
-ContentMenu.selection = function(event, ui) {
-  var action = $(event.originalEvent.currentTarget).data("action");
-  safelyActivateFunction(this[action].bind(this));
-}
-
-
-module.exports = ContentMenu;
+module.exports = ContentMenu; 

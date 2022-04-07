@@ -51,22 +51,22 @@ class EditorApp < SitePrism::Page
   element :new_page_form, '#new_page', visible: false
 
   element :add_page, :button, I18n.t('pages.create')
-  element :add_single_question, 'span.ui-menu-item-wrapper', text: I18n.t('actions.add_single_question'), visible: true
+  element :add_single_question, 'span', text: I18n.t('actions.add_single_question'), visible: true
   element :add_multiple_question,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_multi_question')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_multi_question')}')]"
   element :add_check_answers,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_check_answers')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_check_answers')}')]"
   element :add_confirmation,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_confirmation')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_confirmation')}')]"
   element :add_content_page,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_content')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_content')}')]"
   element :add_exit,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_exit')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_exit')}')]"
 
   element :add_a_component_button, :link, I18n.t('components.actions.add_component')
   element :question_component,
@@ -74,12 +74,12 @@ class EditorApp < SitePrism::Page
           "//*[@role='menuitem' and contains(.,'Question')]"
   element :content_component,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
+          "//*[@role='menuitem' and contains(.,'Content area')]"
 
-  element :question_three_dots_button, '.ActivatedMenu_Activator', visible: true
+  element :question_three_dots_button, '.ActivatedMenuActivator', visible: true
   element :required_question,
           :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"
+          "//*[@role='menuitem' and contains(.,'Required...')]"
 
   elements :add_page_submit_button, :button, I18n.t('pages.create')
   elements :form_pages, '#flow-overview .flow-item'
@@ -120,7 +120,7 @@ class EditorApp < SitePrism::Page
 
   def add_component(type)
     add_single_question.hover
-    find(:link, type, visible: true)
+    find('[role="menuitem"]', exact_text: type, visible: true)
   end
 
   def click_branch(branch_title)
@@ -175,7 +175,7 @@ class EditorApp < SitePrism::Page
   element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
   element :add_another_branch, :link, I18n.t('branches.branch_add')
-  element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
+  element :conditional_three_dot, :button, '.ActivatedMenuActivator'
   element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
 
   element :destination_options, '#branch_conditionals_attributes_0_next'

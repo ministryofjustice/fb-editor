@@ -23,8 +23,8 @@ const DefaultController = require('./controller_default');
 const FlowItem = require('./component_flow_item');
 const FlowConditionItem = require('./component_flow_condition_item');
 const ConnectorPath = require('./component_flow_connector_path');
-const PageMenu = require('./component_page_menu');
-const ConnectionMenu = require('./component_connection_menu');
+const PageMenu = require('./components/menus/page_menu');
+const ConnectionMenu = require('./components/menus/connection_menu');
 
 const COLUMN_SPACING = 100;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
@@ -113,7 +113,10 @@ function createPageMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { 
+          my: "left top",
+          at: "left top",
+        }
       }
     });
 
@@ -130,7 +133,10 @@ function createConnectionMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { 
+          my: "left top",
+          at: "left top",
+        }
       }
     });
 

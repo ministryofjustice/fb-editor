@@ -1,7 +1,10 @@
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
-const DialogApiRequest = require('./component_dialog_api_request');
+const {
+  mergeObjects,
+  post,
+  updateHiddenInputOnForm
+} = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
+const DialogApiRequest = require('../../component_dialog_api_request');
 
 class ConnectionMenu extends ActivatedMenu {
   constructor($node, config) {
@@ -10,8 +13,6 @@ class ConnectionMenu extends ActivatedMenu {
       container_id: $node.data("activated-menu-container-id"),
       activator_text: $node.data("activator-text")
     }, config));
-
-    this.container.$node.addClass("ConnectionMenu");
 
     // Register event handler for selection of menu item.
     $node.on("menuselect", (event, ui) => {
@@ -29,8 +30,6 @@ class ConnectionMenu extends ActivatedMenu {
 
     var action = item.data("action");
     
-    event.preventDefault();
-
     switch(action) {
       case "none":
         // null action e.g. when we show submenu
@@ -52,22 +51,22 @@ class ConnectionMenu extends ActivatedMenu {
     }
 
     addPage(element) { 
-        var dialog = this._config.view.pageAdditionDialog;
+        var dialog = this.config.view.pageAdditionDialog;
         var $form = dialog.$form;
       
         // Set the 'add_page_here' value to mark point of new page inclusion.
         // Should be a uuid of previous page or blank if at end of form.
         // If we are on a branch condition, then also set the condition uuid 
-        utilities.updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
+        updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
         if(this.addPageAfterCondition) {
-          utilities.updateHiddenInputOnForm($form, "page[conditional_uuid]", this.addPageAfterCondition);
+          updateHiddenInputOnForm($form, "page[conditional_uuid]", this.addPageAfterCondition);
         }
 
         // Then add any required values.
-        utilities.updateHiddenInputOnForm($form, "page[page_type]", element.data("page-type"));
-        utilities.updateHiddenInputOnForm($form, "page[component_type]", element.data("component-type"));
+        updateHiddenInputOnForm($form, "page[page_type]", element.data("page-type"));
+        updateHiddenInputOnForm($form, "page[component_type]", element.data("component-type"));
 
-        this._config.view.pageAdditionDialog.open();
+        this.config.view.pageAdditionDialog.open();
     } 
     
     link(element) {
@@ -77,7 +76,7 @@ class ConnectionMenu extends ActivatedMenu {
 
     // Open an API request dialog to change destination
     changeDestination(element) {
-      var view = this._config.view;
+      var view = this.config.view;
       var $link = element.find("> a");
       new DialogApiRequest($link.attr("href"), {
         activator: $link,
@@ -96,9 +95,9 @@ class ConnectionMenu extends ActivatedMenu {
       var url = element.data('url');
       var destinationUuid = element.data('destination-uuid');
 
-      utilities.post(url, {
+      post(url, {
         'destination_uuid': destinationUuid,
       });
     }
   }
-  module.exports = ConnectionMenu;
+module.exports = ConnectionMenu; 

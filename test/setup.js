@@ -9,7 +9,9 @@ const dom = new JSDOM(`<html>
     <body>
       <h1>Testing document</h1>
     </body>
-  </html>`);
+  </html>`, {
+    url: "http://localhost",
+  });
 
   global.expect = expect;
   global.window = dom.window;

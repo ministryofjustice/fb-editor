@@ -14,11 +14,11 @@
  *
  **/
 
-.ActivatedMenu_Container {
+.ActivatedMenuContainer {
   position: absolute;
 }
 
-.ActivatedMenu_Activator {
+.ActivatedMenuActivator {
   @include icon_button;
 
   &:after {
@@ -33,7 +33,9 @@
   }
 }
 
-.ActivatedMenu_Menu {
+.ActivatedMenu {
+
+
   a, span {
     @include button_type_link;
     border: none;
@@ -49,6 +51,8 @@
     }
 
     &:focus {
+      @include focus;
+      outline: none;
       box-shadow: none;
     }
   }
@@ -70,6 +74,7 @@
       }
     }
   }
+
 
   &, li > ul {
     border: govuk-colour("blue") solid 2px;

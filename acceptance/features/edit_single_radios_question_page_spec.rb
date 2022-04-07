@@ -51,7 +51,7 @@ feature 'Edit single radios question page' do
     given_I_have_a_single_question_page_with_radio
     when_I_update_the_question_name
     and_I_update_the_options
-    and_I_want_to_delete_an_option('PDFinn')
+    and_I_want_to_delete_an_option('Adobe-wan Kenobi')
     then_I_should_see_the_modal(
       I18n.t('question_items.delete_modal.can_not_delete_heading'),
       I18n.t('question_items.min_items_modal.can_not_delete_radios_message')

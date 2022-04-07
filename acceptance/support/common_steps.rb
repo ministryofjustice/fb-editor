@@ -336,7 +336,7 @@ module CommonSteps
 
   def when_I_want_to_select_component_properties(attribute, text)
     page.find(attribute, text: text).click
-    page.first('.ActivatedMenu_Activator').click
+    page.first('.ActivatedMenuActivator', visible: true).click
   end
 
   def and_I_click_on_the_three_dots
@@ -355,7 +355,7 @@ module CommonSteps
   end
 
   def then_I_should_only_see_three_options_on_page_menu
-    options = all('.ui-menu-item').map(&:text)
+    options = all('[role="menuitem"]').map(&:text)
     expect(options).to eq([
       I18n.t('actions.edit_page'),
       I18n.t('actions.preview_page'),
@@ -367,12 +367,14 @@ module CommonSteps
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
     expect(editor.text).not_to include(page_link)
+    editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
   def then_I_should_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
     expect(editor.text).to include(page_link)
+    editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
   def then_I_should_see_default_service_pages

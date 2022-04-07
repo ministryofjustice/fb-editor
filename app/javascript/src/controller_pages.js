@@ -16,10 +16,11 @@
  **/
 
 
-const utilities = require('./utilities');
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require('./component_activated_menu');
-
+const  { 
+  updateHiddenInputOnForm,
+  stringInject,
+}  = require('./utilities');
+const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const Content = require('./content');
@@ -180,7 +181,7 @@ class AddComponent {
       preventDefault: true, // Stops the default action of triggering element.
       activator: $button,
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { at: "left top" }
       }
     });
 
@@ -275,7 +276,7 @@ function addEditableComponentItemMenuListeners(view) {
     var questionUuid =  collectionItem.component.data._uuid;
     var optionUuid =  collectionItem.data._uuid; 
 
-    var url = utilities.stringInject(path, { 
+    var url = stringInject(path, { 
       'question_uuid': questionUuid, 
       'option_uuid': optionUuid ?? 'new', 
     });

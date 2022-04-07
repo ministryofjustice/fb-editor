@@ -16,9 +16,8 @@
  **/
 
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-const ActivatedMenu = require('./component_activated_menu');
+const { mergeObjects } = require('../../utilities');
+const ActivatedMenu = require('./activated_menu');
 
 
 class EditableCollectionItemMenu extends ActivatedMenu {
@@ -35,13 +34,14 @@ class EditableCollectionItemMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
-    let $target = this._config.$target;
+    let $target = this.config.$target;
     if($target.length) {
       $target.before(this.activator.$node);
       $target.on("focus.questionmenu", () => this.activator.$node.addClass("active"));
       $target.on("blur.questionmenu", () => this.activator.$node.removeClass("active"));
     }
 
+    this.container.$node.addClass("EditableCollectionItemMenu");
     this.collectionItem = config.collectionItem;
   }
 
@@ -57,8 +57,15 @@ class EditableCollectionItemMenu extends ActivatedMenu {
           collectionItem: this.collectionItem
         });
         break;
+      case "close":
+        this.close();
+        break;
     }
   }
-}
 
-module.exports = EditableCollectionItemMenu;
+  close() {
+    super.close(); 
+    this.activator.$node.removeClass("active");
+  }
+}
+module.exports = EditableCollectionItemMenu; 
