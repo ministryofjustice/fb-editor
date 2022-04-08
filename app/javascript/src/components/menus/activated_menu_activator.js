@@ -77,6 +77,7 @@ class ActivatedMenuActivator {
     this.$node.attr("id", uniqueString("menuActivator"));
     this.$node.attr("aria-haspopup", "menu");
     this.$node.attr("aria-controls", this.#config.container_id);
+    this.menu.$node.attr("aria-labelledby", this.$node.attr("id"));
   }
 
   #bindEventHandlers() {
