@@ -74,6 +74,8 @@ class ActivatedMenu {
     this.$node = $menu;
     this.#config = config;
     this.#className = "ActivatedMenu";
+
+    this.#addAttributes();
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);  
 
@@ -96,7 +98,6 @@ class ActivatedMenu {
       position: null
     }
 
-    this.#addAttributes();
     this.#bindMenuEventHandlers();
     this.#setMenuOpenPosition();
     this.#initializeMenuItems();
@@ -206,7 +207,6 @@ class ActivatedMenu {
   #addAttributes() {
     this.$node.addClass(this.#className);
     this.$node.attr("role", "menu");
-    this.$node.attr("aria-labelledby", this.activator.$node.attr("id"));
   }
 
   #bindMenuEventHandlers() {
