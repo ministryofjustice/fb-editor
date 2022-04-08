@@ -223,11 +223,11 @@ function updateBranches(view) {
   //    altered to suit. For now, to cater for the more radical 'hide the whole menu' approach, this
   //    code is also adding a specific (rubbish jQuery/DOM based) alteration to achieve the design.
   if(view.branchNodes.length > 1) {
-    $first.find(".ActivatedMenu_Activator").show();
+    $first.find(".ActivatedMenuActivator").show();
     $first.data("instance").remover.enable();
   }
   else {
-    $first.find(".ActivatedMenu_Activator").hide();
+    $first.find(".ActivatedMenuActivator").hide();
     $first.data("instance").remover.disable();
   }
 
