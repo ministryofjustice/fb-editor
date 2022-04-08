@@ -656,7 +656,7 @@ html {
   }
   
   &:after {
-    content: '+';
+    content: "\FF0B";
     top: -22px;
   }
 }
