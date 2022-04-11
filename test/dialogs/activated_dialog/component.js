@@ -81,51 +81,82 @@ describe("ActivatedDialog", function() {
   describe("Events", function() {
     var created, check;
 
-    before(function() {
-      helpers.setupView();
-      created = helpers.createDialog(COMPONENT_ID, {
-        onOk: function() {
-          check++;
-        },
-        onCancel: function() {
-          check++;
-        }
-      })
+    describe("Configured", function() {
+      before(function() {
+        helpers.setupView();
+        created = helpers.createDialog(COMPONENT_ID, {
+          onOk: function() {
+            check++;
+          },
+          onCancel: function() {
+            check++;
+          }
+        });
+      });
+
+      after(function() {
+        helpers.teardownView();
+        created.$node.remove();
+        created = {};
+      });
+
+      it("should store an onOk handler when passed in the config", function() {
+        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+        check = 1;
+
+        // First make sure things are in order
+        expect($button).to.exist;
+        expect($button.length).to.equal(1);
+        expect(check).to.equal(1);
+
+        // Next activate the button and see if event triggered
+        $button.click();
+        expect(check).to.equal(2);
+      });
+
+      it("should store an onCancel handler when passed in the config", function() {
+        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+        check = 1;
+
+        // First make sure things are in order
+        expect($button).to.exist;
+        expect($button.length).to.equal(1);
+        expect(check).to.equal(1);
+
+        // Next activate the button and see if event triggered
+        $button.click();
+        expect(check).to.equal(2);
+      });
     });
 
-    after(function() {
-      helpers.teardownView();
-      created.$node.remove();
-      created = {};
+
+    describe("Not Configured", function() {
+      before(function() {
+        helpers.setupView();
+        created = helpers.createDialog(COMPONENT_ID);
+      });
+
+      after(function() {
+        helpers.teardownView();
+        created.$node.remove();
+        created = {};
+      });
+
+      it("It should not cause error when OK button is clicked and no onOk handler is present", function() {
+        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+        check = 1;
+
+        // First make sure things are in order
+        expect($button).to.exist;
+        expect($button.length).to.equal(1);
+        expect(check).to.equal(1);
+
+        // Next activate the button and see if event triggered
+        $button.click();
+        expect(check).to.equal(1);
+      });
     });
 
-    it("should store an onOk handler when passed in the config", function() {
-      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
-      check = 1;
-
-      // First make sure things are in order
-      expect($button).to.exist;
-      expect($button.length).to.equal(1);
-      expect(check).to.equal(1);
-
-      // Next activate the button and see if event triggered
-      $button.click();
-      expect(check).to.equal(2);
-    });
-
-    it("should store an onCancel handler when passed in the config", function() {
-      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
-      check = 1;
-
-      // First make sure things are in order
-      expect($button).to.exist;
-      expect($button.length).to.equal(1);
-      expect(check).to.equal(1);
-
-      // Next activate the button and see if event triggered
-      $button.click();
-      expect(check).to.equal(2);
-    });
   });
 
 });
