@@ -51,7 +51,11 @@ describe("ActivatedDialog", function() {
       expect(helpers.buttonHasText(created.$node, c.TEXT_BUTTON_CANCEL)).to.be.true;
     });
 
-    it("should make the instance available as data on the $node");
+    it("should make the instance available as data on the $node", function() {
+      var $container = created.$node.parent('[role=dialog]');
+      expect(created.$node.data("instance")).to.equal(created.dialog);
+    });
+
     it("should make the $node public");
     it("should make (public but indicated as) private reference to config");
     it("should make the activator public");
