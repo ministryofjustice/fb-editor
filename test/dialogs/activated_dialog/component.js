@@ -113,7 +113,19 @@ describe("ActivatedDialog", function() {
       expect(check).to.equal(2);
     });
 
-    it("should store an onCancel handler when passed in the config");
+    it("should store an onCancel handler when passed in the config", function() {
+      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+      check = 1;
+
+      // First make sure things are in order
+      expect($button).to.exist;
+      expect($button.length).to.equal(1);
+      expect(check).to.equal(1);
+
+      // Next activate the button and see if event triggered
+      $button.click();
+      expect(check).to.equal(2);
+    });
   });
 
 });
