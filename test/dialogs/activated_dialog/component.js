@@ -19,6 +19,8 @@ describe("ActivatedDialog", function() {
 
     after(function() {
       helpers.teardownView();
+      created.$node.remove();
+      created = {};
     });
 
 
@@ -44,11 +46,17 @@ describe("ActivatedDialog", function() {
     });
 
     it("should use config.okText as button text", function() {
-      expect(helpers.buttonHasText(created.$node, c.TEXT_BUTTON_OK)).to.be.true;
+      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+      expect($button).to.exist;
+      expect($button.length).to.equal(1);
+      expect($button.text()).to.equal(c.TEXT_BUTTON_OK);
     });
 
     it("should use config.cancelText as button text", function() {
-      expect(helpers.buttonHasText(created.$node, c.TEXT_BUTTON_CANCEL)).to.be.true;
+      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+      expect($button).to.exist;
+      expect($button.length).to.equal(1);
+      expect($button.text()).to.equal(c.TEXT_BUTTON_CANCEL);
     });
 
     it("should make the instance available as data on the $node", function() {
@@ -71,7 +79,40 @@ describe("ActivatedDialog", function() {
   });
 
   describe("Events", function() {
-    it("should store an onOk handler when passed in the config");
+    var created, check;
+
+    before(function() {
+      helpers.setupView();
+      created = helpers.createDialog(COMPONENT_ID, {
+        onOk: function() {
+          check++;
+        },
+        onCancel: function() {
+          check++;
+        }
+      })
+    });
+
+    after(function() {
+      helpers.teardownView();
+      created.$node.remove();
+      created = {};
+    });
+
+    it("should store an onOk handler when passed in the config", function() {
+      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+      check = 1;
+
+      // First make sure things are in order
+      expect($button).to.exist;
+      expect($button.length).to.equal(1);
+      expect(check).to.equal(1);
+
+      // Next activate the button and see if event triggered
+      $button.click();
+      expect(check).to.equal(2);
+    });
+
     it("should store an onCancel handler when passed in the config");
   });
 

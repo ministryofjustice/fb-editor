@@ -91,17 +91,18 @@ function teardownView() {
  * (they have no class, etc) but we can loop over all buttons
  * to match text we seek to get a 'best guess' type of test.
  **/
-function buttonHasText($dialog, text) {
+function findButtonByText($dialog, text) {
   var $container = $dialog.parent('[role=dialog]');
   var $buttons = $container.find(".ui-button");
-  var passed = false;
+  var $button;
   $buttons.each(function() {
-    if($(this).text() == text) {
-      passed = true;
+    var $this = $(this);
+    if($this.text() == text) {
+      $button = $this;
       return false;
     }
   });
-  return passed;
+  return $button;
 }
 
 
@@ -110,5 +111,5 @@ module.exports = {
   createDialog: createDialog,
   setupView: setupView,
   teardownView: teardownView,
-  buttonHasText: buttonHasText
+  findButtonByText: findButtonByText
 }
