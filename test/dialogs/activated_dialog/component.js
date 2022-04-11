@@ -142,8 +142,22 @@ describe("ActivatedDialog", function() {
         created = {};
       });
 
-      it("It should not cause error when OK button is clicked and no onOk handler is present", function() {
+      it("should not cause error when OK button is clicked and no onOk handler is present", function() {
         var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+        check = 1;
+
+        // First make sure things are in order
+        expect($button).to.exist;
+        expect($button.length).to.equal(1);
+        expect(check).to.equal(1);
+
+        // Next activate the button and see if event triggered
+        $button.click();
+        expect(check).to.equal(1);
+      });
+
+      it("should not cause error when Cancel button is clicked and no onCancel handler is present", function() {
+        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
         check = 1;
 
         // First make sure things are in order
