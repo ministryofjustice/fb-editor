@@ -6,20 +6,21 @@ describe("ActivatedDialog", function() {
   const c = helpers.constants;
   const COMPONENT_ID = "dialog-for-testing";
 
-  var created;
-
-  before(function() {
-    helpers.setupView();
-    created = helpers.createDialog(COMPONENT_ID)
-  });
-
-  after(function() {
-    helpers.teardownView();
-  });
 
   describe("Component", function() {
     // Note: Due to component makeup, the component is actually the
     // parent/container element to original target $node.
+    var created;
+
+    before(function() {
+      helpers.setupView();
+      created = helpers.createDialog(COMPONENT_ID)
+    });
+
+    after(function() {
+      helpers.teardownView();
+    });
+
 
     it("should have the basic HTML in place", function() {
       var $dialog = $("#" + COMPONENT_ID);
@@ -56,13 +57,16 @@ describe("ActivatedDialog", function() {
       expect(passed).to.be.true;
     });
 
-    it("should store an onOk handler when passed in the config");
     it("should use config.cancelText as button text");
-    it("should store an onCancel handler when passed in the config");
     it("should make the instance available as data on the $node");
     it("should make the $node public");
     it("should make (public but indicated as) private reference to config");
     it("should make the activator public");
+  });
+
+  describe("Events", function() {
+    it("should store an onOk handler when passed in the config");
+    it("should store an onCancel handler when passed in the config");
   });
 
 });
