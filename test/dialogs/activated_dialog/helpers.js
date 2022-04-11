@@ -1,6 +1,7 @@
 const ActivatedDialog = require("../../../app/javascript/src/component_activated_dialog.js");
 
 const constants = {
+  CLASSNAME_COMPONENT: "ActivatedDialog",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
   TEXT_HEADING: "General heading text",
@@ -32,17 +33,15 @@ const view = {
  *
  **/
 function createDialog(id, config) {
-  var html = `<div class="component component-dialog">
-                <h3 data-node="heading">General heading here</h3>
-                <p data-node="content">General message here</p>
-              </div>`;
-
-  var $node = $(html).attr("id", id);
+  var $template = $("[data-component-template=ActivatedDialog]");
+  var html = $template.text();
+  var $node = $(html);
   var conf = {
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     onOk: function() {},
     onCancel: function() {},
-    onClose: function() {}
+    onClose: function() {},
+    id: id
   }
 
   // Include any passed config items.
@@ -61,7 +60,32 @@ function createDialog(id, config) {
   }
 }
 
+
+/* Set up the DOM to include template code for dialog
+ * and anything else required.
+ **/
+function setupView() {
+  var template = `<script type="text/html" data-component-template="ActivatedDialog">
+                    <div class="component component-dialog">
+                      <h3 data-node="heading">General heading here</h3>
+                      <p data-node="content">General message here</p>
+                    </div>
+                  </script>`;
+
+  $(document.body).append(template);
+}
+
+
+/* Reset DOM to pre setupView() state
+ **/
+function teardownView() {
+  $("[data-component-template=ActivatedDialog]").remove();
+}
+
+
 module.exports = {
   constants: constants,
-  createDialog: createDialog
+  createDialog: createDialog,
+  setupView: setupView,
+  teardownView: teardownView
 }

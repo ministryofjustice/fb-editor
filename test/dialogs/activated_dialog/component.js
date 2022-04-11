@@ -3,25 +3,32 @@ require('../../setup');
 describe("ActivatedDialog", function() {
 
   const helpers = require("./helpers.js");
-  const c = helpers.contstants;
+  const c = helpers.constants;
   const COMPONENT_ID = "dialog-for-testing";
 
-  var dialog;
+  var created;
 
   before(function() {
-    var created = helpers.createDialog(COMPONENT_ID)
-    $(document.body).append(created.$node);
-    dialog = created.dialog;
+    helpers.setupView();
+    created = helpers.createDialog(COMPONENT_ID)
   });
 
   after(function() {
+    helpers.teardownView();
   });
 
   describe("Component", function() {
+    // Note: Due to component makeup, the component is actually the
+    // parent/container element to original target $node.
+
     it("should have the basic HTML in place", function() {
       var $dialog = $("#" + COMPONENT_ID);
+      var $container = created.$node.parent('[role=dialog]');
+
       expect($dialog.length).to.equal(1);
       expect($dialog.get(0).nodeName.toLowerCase()).to.equal("div");
+      expect($dialog.hasClass("ui-dialog")).to.be.true;
+      expect($container.get(0)).to.equal($dialog.get(0));
     });
 
     it("should have the component class name present");
