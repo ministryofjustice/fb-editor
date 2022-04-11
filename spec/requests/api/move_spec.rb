@@ -96,19 +96,19 @@ RSpec.describe 'Move spec', type: :request do
       end
       let(:expected_branch_and_conditionals) do
         [
-          'data-branch-uuid="f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c" data-conditional-uuid="9149bc4c-9773-454f-b9b6-5524b91102ca"',
-          'data-branch-uuid="f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c" data-conditional-uuid="6c4dd853-671d-4f62-845e-6471bd102e36"',
-          'data-branch-uuid="f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c" data-conditional-uuid=""',
-          'data-branch-uuid="7fe9a893-384c-4e8a-bb94-b1ec4f6a24d1" data-conditional-uuid="db2676e0-3cef-4943-af00-3ddbece930d2"',
-          'data-branch-uuid="7fe9a893-384c-4e8a-bb94-b1ec4f6a24d1" data-conditional-uuid="0b99ff9b-e9db-47ff-acf9-c15b00113a13"',
-          'data-branch-uuid="7fe9a893-384c-4e8a-bb94-b1ec4f6a24d1" data-conditional-uuid="e3f94a86-a371-47fb-b866-1909b055316d"',
-          'data-branch-uuid="7fe9a893-384c-4e8a-bb94-b1ec4f6a24d1" data-conditional-uuid="7c013bb4-abc7-4270-a0c2-fd70715839b6"',
-          'data-branch-uuid="7fe9a893-384c-4e8a-bb94-b1ec4f6a24d1" data-conditional-uuid=""',
-          'data-branch-uuid="a02f7073-ba5a-459d-b6b9-abe548c933a6" data-conditional-uuid="0bdc8fde-be62-4945-8496-854e867a665d"',
-          'data-branch-uuid="a02f7073-ba5a-459d-b6b9-abe548c933a6" data-conditional-uuid="4ad9f7e9-5444-41d8-b7f8-17d2108ed27a"',
-          'data-branch-uuid="a02f7073-ba5a-459d-b6b9-abe548c933a6" data-conditional-uuid=""',
-          'data-branch-uuid="4cad5db1-bf68-4f7f-baf6-b2d48b342705" data-conditional-uuid="7b69e2fb-a18b-405e-b47e-75970e6f5e4b"',
-          'data-branch-uuid="4cad5db1-bf68-4f7f-baf6-b2d48b342705" data-conditional-uuid=""'
+          'data-conditional-uuid="9149bc4c-9773-454f-b9b6-5524b91102ca"',
+          'data-conditional-uuid="6c4dd853-671d-4f62-845e-6471bd102e36"',
+          'data-conditional-uuid=""',
+          'data-conditional-uuid="db2676e0-3cef-4943-af00-3ddbece930d2"',
+          'data-conditional-uuid="0b99ff9b-e9db-47ff-acf9-c15b00113a13"',
+          'data-conditional-uuid="e3f94a86-a371-47fb-b866-1909b055316d"',
+          'data-conditional-uuid="7c013bb4-abc7-4270-a0c2-fd70715839b6"',
+          'data-conditional-uuid=""',
+          'data-conditional-uuid="0bdc8fde-be62-4945-8496-854e867a665d"',
+          'data-conditional-uuid="4ad9f7e9-5444-41d8-b7f8-17d2108ed27a"',
+          'data-conditional-uuid=""',
+          'data-conditional-uuid="7b69e2fb-a18b-405e-b47e-75970e6f5e4b"',
+          'data-conditional-uuid=""'
         ]
       end
 

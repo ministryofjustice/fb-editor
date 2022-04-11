@@ -36,9 +36,8 @@ class Move
   def branch_target(flow_object, index, conditional = nil)
     {
       title: "#{flow_object.title} (Branch #{index})",
-      branch_uuid: flow_object.uuid,
-      conditional_uuid: conditional&.uuid,
-      target_uuid: conditional&.next || flow_object.default_next
+      target_uuid: flow_object.uuid,
+      conditional_uuid: conditional&.uuid
     }.compact
   end
 

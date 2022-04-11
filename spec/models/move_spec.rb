@@ -69,16 +69,14 @@ RSpec.describe Move do
       expect(targets.first[:target_uuid]).to eq(service.start_page.uuid)
     end
 
-    it 'does not include any branch objects' do
-      expect(target_uuids).not_to include(*service.branches.map(&:uuid))
-    end
-
     it 'does not include any unconnected pages' do
       expect(target_uuids).not_to include(*unconnected_uuids)
     end
 
     context 'page targets' do
-      let(:page_targets) { targets.reject { |t| t[:branch_uuid].present? } }
+      let(:page_targets) do
+        targets.reject { |t| service.flow_object(t[:target_uuid]).branch? }
+      end
       let(:target_uuids) { page_targets.map { |t| t[:target_uuid] } }
 
       it 'does not show the checkanswers page' do
@@ -102,36 +100,19 @@ RSpec.describe Move do
     end
 
     context 'branch targets' do
-      let(:branch_targets) { targets.select { |t| t[:branch_uuid].present? } }
+      let(:branch_targets) do
+        targets.select { |t| service.flow_object(t[:target_uuid]).branch? }
+      end
       let(:target_uuids) { branch_targets.map { |t| t[:target_uuid] } }
       let(:branch) { service.flow_object('f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c') } # branching point 1
       let(:conditional) { branch.conditionals[1] }
 
       it 'sets the branch uuid' do
-        expect(branch_targets[1][:branch_uuid]).to eq(branch.uuid)
+        expect(branch_targets[1][:target_uuid]).to eq(branch.uuid)
       end
 
       it 'sets the conditional uuid' do
         expect(branch_targets[1][:conditional_uuid]).to eq(conditional.uuid)
-      end
-
-      it 'allows checkanswers page if they are a branch destination' do
-        expect(target_uuids).to include(service.checkanswers_page.uuid)
-      end
-
-      it 'does not show the confirmation page' do
-        expect(target_uuids).not_to include(service.confirmation_page.uuid)
-      end
-
-      context 'exit page' do
-        let(:latest_metadata) { metadata_fixture(:branching_7) }
-        let(:exit_page_uuid) do
-          service.pages.find { |p| p.type == 'page.exit' }.uuid
-        end
-
-        it 'allows exit pages if they are a branch destination' do
-          expect(target_uuids).to include(exit_page_uuid)
-        end
       end
     end
   end
