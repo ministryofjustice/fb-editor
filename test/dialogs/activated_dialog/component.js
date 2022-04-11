@@ -4,15 +4,26 @@ describe("ActivatedDialog", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.contstants;
+  const COMPONENT_ID = "dialog-for-testing";
+
+  var dialog;
 
   before(function() {
+    var created = helpers.createDialog(COMPONENT_ID)
+    $(document.body).append(created.$node);
+    dialog = created.dialog;
   });
 
   after(function() {
   });
 
   describe("Component", function() {
-    it("should have the basic HTML in place");
+    it("should have the basic HTML in place", function() {
+      var $dialog = $("#" + COMPONENT_ID);
+      expect($dialog.length).to.equal(1);
+      expect($dialog.get(0).nodeName.toLowerCase()).to.equal("div");
+    });
+
     it("should have the component class name present");
     it("should apply CSS classnames passed in config");
     it("should use config.okText as button text");

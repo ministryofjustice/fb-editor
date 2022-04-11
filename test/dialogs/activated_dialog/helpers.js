@@ -32,18 +32,12 @@ const view = {
  *
  **/
 function createDialog(id, config) {
-  var html = ```
-   <div class="component component-dialog" id="activated-dialog">
-    <h3 data-node="heading">
-      General heading here
-    </h3>
-    <p data-node="content">
-      General message here
-    </p>
-  </div>
-  ```;
+  var html = `<div class="component component-dialog">
+                <h3 data-node="heading">General heading here</h3>
+                <p data-node="content">General message here</p>
+              </div>`;
 
-  var $node = $(html);
+  var $node = $(html).attr("id", id);
   var conf = {
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     onOk: function() {},
