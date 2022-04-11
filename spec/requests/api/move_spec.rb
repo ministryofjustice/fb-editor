@@ -1,5 +1,44 @@
+RSpec.describe 'Move GET routes', type: :routing do
+  context 'when previous_flow_uuid is present' do
+    let(:request) do
+      get '/api/services/some-service-id/flow/some-flow-uuid/move/some-previous-flow-uuid'
+    end
+    let(:expected_route) do
+      {
+        controller: 'api/move',
+        action: 'targets',
+        service_id: 'some-service-id',
+        flow_uuid: 'some-flow-uuid',
+        previous_flow_uuid: 'some-previous-flow-uuid'
+      }
+    end
+
+    it 'correctly routes the request' do
+      expect(request).to route_to(expected_route)
+    end
+  end
+
+  context 'when previous_flow_uuid is not present' do
+    let(:request) do
+      get '/api/services/some-service-id/flow/some-flow-uuid/move'
+    end
+    let(:expected_route) do
+      {
+        controller: 'api/move',
+        action: 'targets',
+        service_id: 'some-service-id',
+        flow_uuid: 'some-flow-uuid'
+      }
+    end
+
+    it 'correctly routes the request' do
+      expect(request).to route_to(expected_route)
+    end
+  end
+end
+
 RSpec.describe 'Move spec', type: :request do
-  describe 'GET /api/services/:service_id/flow/:flow_uuid/move' do
+  describe 'GET /api/services/:service_id/flow/:flow_uuid/move/(:previous_flow_uuid)' do
     let(:request) do
       get "/api/services/#{service.service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}"
     end
