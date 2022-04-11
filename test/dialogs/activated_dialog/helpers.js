@@ -87,9 +87,28 @@ function teardownView() {
 }
 
 
+/* Due to jQueryUI Dialog we cannot identify the added buttons
+ * (they have no class, etc) but we can loop over all buttons
+ * to match text we seek to get a 'best guess' type of test.
+ **/
+function buttonHasText($dialog, text) {
+  var $container = $dialog.parent('[role=dialog]');
+  var $buttons = $container.find(".ui-button");
+  var passed = false;
+  $buttons.each(function() {
+    if($(this).text() == text) {
+      passed = true;
+      return false;
+    }
+  });
+  return passed;
+}
+
+
 module.exports = {
   constants: constants,
   createDialog: createDialog,
   setupView: setupView,
-  teardownView: teardownView
+  teardownView: teardownView,
+  buttonHasText: buttonHasText
 }

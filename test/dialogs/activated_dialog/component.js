@@ -44,20 +44,13 @@ describe("ActivatedDialog", function() {
     });
 
     it("should use config.okText as button text", function() {
-      var $container = created.$node.parent('[role=dialog]');
-      var passed = false;
-
-      $container.find(".ui-button").each(function() {
-        if($(this).text() == c.TEXT_BUTTON_OK) {
-          passed = true;
-          return false;
-        }
-      });
-
-      expect(passed).to.be.true;
+      expect(helpers.buttonHasText(created.$node, c.TEXT_BUTTON_OK)).to.be.true;
     });
 
-    it("should use config.cancelText as button text");
+    it("should use config.cancelText as button text", function() {
+      expect(helpers.buttonHasText(created.$node, c.TEXT_BUTTON_CANCEL)).to.be.true;
+    });
+
     it("should make the instance available as data on the $node");
     it("should make the $node public");
     it("should make (public but indicated as) private reference to config");
