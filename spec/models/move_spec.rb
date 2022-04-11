@@ -116,4 +116,114 @@ RSpec.describe Move do
       end
     end
   end
+
+  describe '#metadata' do
+    context 'updating previous object metadata' do
+      before do
+        allow(move).to receive(:update_page).and_return({})
+        allow(move).to receive(:update_branch).and_return({})
+      end
+
+      context 'no previous flow uuid' do
+        let(:to_move_uuid) { service.start_page.uuid }
+
+        it 'does not try to update a previous flow object' do
+          expect(move).not_to receive(:update_previous_flow_object)
+          move.metadata
+        end
+      end
+
+      context 'previous flow uuid present' do
+        let(:metadata_flow) { move.metadata['flow'] }
+
+        context 'previous flow uuid is a page' do
+          let(:to_move_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
+          let(:previous_flow_uuid) { '1d60bef0-100a-4f3b-9e6f-1711e8adda7e' } # Page A
+          let(:expected_default_next) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
+
+          it 'updates the previous default next to the to_move objects original default next' do
+            expect(metadata_flow[previous_flow_uuid]['next']['default']).to eq(expected_default_next)
+          end
+        end
+
+        context 'previous flow uuid id a branch' do
+          context 'when conditional uuid is present' do
+            let(:previous_flow_uuid) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
+            let(:to_move_uuid) { '66c9e581-942e-4a9e-93ec-343208a2f510' } # Page C
+            let(:conditional_uuid) { '9149bc4c-9773-454f-b9b6-5524b91102ca' }
+            let(:expected_default_next) { 'e31718ad-0ba7-4b45-81aa-d3081f423022' } # Page D
+
+            it 'updates the conditional next to the to_move objects original default next' do
+              conditional = metadata_flow[previous_flow_uuid]['next']['conditionals'].find do |c|
+                c['_uuid'] == conditional_uuid
+              end
+              expect(conditional['next']).to eq(expected_default_next)
+            end
+          end
+
+          context 'when conditional uuid is not present' do
+            let(:latest_metadata) { metadata_fixture(:branching_10) }
+            let(:previous_flow_uuid) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
+            let(:to_move_uuid) { 'ad011e6b-5926-42f8-8b7c-668558850c52' } # Page N
+            let(:expected_default_next) { '957f9475-6341-418d-a554-d00c5700e031' } # Page O
+
+            it 'updates the branch default next to the to_move objects original default next' do
+              expect(metadata_flow[previous_flow_uuid]['next']['default']).to eq(expected_default_next)
+            end
+          end
+        end
+      end
+    end
+
+    context 'upating target object metadata' do
+      let(:metadata_flow) { move.metadata['flow'] }
+      let(:to_move_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
+      let(:previous_flow_uuid) { '1d60bef0-100a-4f3b-9e6f-1711e8adda7e' } # Page A
+
+      context 'moving after a page' do
+        let(:target_uuid) { '007f4f35-8236-40cc-866c-cc2c27c33949' } # Page E
+        let(:page_f) { '7742dfcc-db2e-480b-9071-294fbe1769a2' }
+
+        it 'updates to the target_uuid default next to the to_move_uuid' do
+          expect(metadata_flow[target_uuid]['next']['default']).to eq(to_move_uuid)
+        end
+
+        it 'sets the to_move_uuid default next to be the target objects original default next' do
+          expect(metadata_flow[to_move_uuid]['next']['default']).to eq(page_f)
+        end
+      end
+
+      context 'replacing a branch destination' do
+        let(:target_uuid) { 'a02f7073-ba5a-459d-b6b9-abe548c933a6' } # Branching Point 2
+
+        context 'conditional destination' do
+          let(:conditional_uuid) { '4ad9f7e9-5444-41d8-b7f8-17d2108ed27a' }
+          let(:checkanswers) { 'da2576f9-7ddd-4316-b24b-103708139214' }
+
+          it 'updates the branch condtional next to the to_move_uuid' do
+            conditional = metadata_flow[target_uuid]['next']['conditionals'].find do |c|
+              c['_uuid'] == conditional_uuid
+            end
+            expect(conditional['next']).to eq(to_move_uuid)
+          end
+
+          it 'sets the to_move objects default next to the conditional objects original destination' do
+            expect(metadata_flow[to_move_uuid]['next']['default']).to eq(checkanswers)
+          end
+        end
+
+        context 'branch default next destination' do
+          let(:page_f) { '7742dfcc-db2e-480b-9071-294fbe1769a2' }
+
+          it 'sets the branch defult next to the to move objects uuid' do
+            expect(metadata_flow[target_uuid]['next']['default']).to eq(to_move_uuid)
+          end
+
+          it 'sets the to_move objects default next to the conditional objects original destination' do
+            expect(metadata_flow[to_move_uuid]['next']['default']).to eq(page_f)
+          end
+        end
+      end
+    end
+  end
 end

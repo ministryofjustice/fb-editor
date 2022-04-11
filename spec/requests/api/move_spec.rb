@@ -149,4 +149,45 @@ RSpec.describe 'Move spec', type: :request do
       end
     end
   end
+
+  describe 'POST /api/services/:service_id/flow/:flow_uuid/move' do
+    let(:request) do
+      post "/api/services/#{service.service_id}/flow/#{flow_uuid}/move", params: params
+    end
+    let(:service) { MetadataPresenter::Service.new(metadata) }
+    let(:metadata) { metadata_fixture(:branching_11) }
+    let(:version) { double(errors?: false, metadata: metadata) }
+    let(:flow_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
+    let(:params) do
+      {
+        move: {
+          previous_flow_uuid: '1d60bef0-100a-4f3b-9e6f-1711e8adda7e', # Page A
+          target_uuid: '007f4f35-8236-40cc-866c-cc2c27c33949', # Page E
+          conditional_uuid: ''
+        }
+      }
+    end
+
+    before do
+      allow_any_instance_of(
+        Api::MoveController
+      ).to receive(:require_user!).and_return(true)
+
+      allow_any_instance_of(
+        Api::MoveController
+      ).to receive(:service).and_return(service)
+
+      allow(MetadataApiClient::Version).to receive(:create).and_return(version)
+    end
+
+    it 'redirects to the service edit page' do
+      request
+      expect(response).to redirect_to(edit_service_path(service.service_id))
+    end
+
+    it 'changes the metadata' do
+      expect_any_instance_of(Move).to receive(:change)
+      request
+    end
+  end
 end
