@@ -62,7 +62,12 @@ describe("ActivatedDialog", function() {
       expect(created.dialog.$node.get(0)).to.equal(created.$node.get(0));
     });
 
-    it("should make the activator public");
+    it("should make the activator public", function() {
+      expect(created.dialog.activator).to.exist;
+      expect(created.dialog.activator.$node).to.exist;
+      expect(created.dialog.activator.$node.length).to.equal(1);
+      expect(created.dialog.activator.$node.hasClass("DialogActivator")).to.be.true;
+    });
   });
 
   describe("Events", function() {
