@@ -62,7 +62,6 @@ describe("ActivatedDialog", function() {
       expect(created.dialog.$node.get(0)).to.equal(created.$node.get(0));
     });
 
-    it("should make (public but indicated as) private reference to config");
     it("should make the activator public");
   });
 
