@@ -43,6 +43,7 @@ class ActivatedDialog {
     });
 
     var buttons = {};
+    var $container;
 
     // Make sure classes is an object even if nothing passed.
     conf.classes = mergeObjects({}, config.classes);
@@ -68,8 +69,13 @@ class ActivatedDialog {
       close: conf.onClose
     });
 
+    $container = $node.parents(".ui-dialog").addClass(" ActivatedDialog");
+    if(conf.id) {
+      $container.attr("id", conf.id);
+    }
+
     this._config = conf;
-    this.$container = $node.parents(".ui-dialog").addClass(" ActivatedDialog");
+    this.$container = $container;
     this.$node = $node;
     this.activator = activator;
   }
