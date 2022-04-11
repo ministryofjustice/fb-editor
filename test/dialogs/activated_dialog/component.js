@@ -42,7 +42,20 @@ describe("ActivatedDialog", function() {
       expect($container.hasClass(c.CLASSNAME_2));
     });
 
-    it("should use config.okText as button text");
+    it("should use config.okText as button text", function() {
+      var $container = created.$node.parent('[role=dialog]');
+      var passed = false;
+
+      $container.find(".ui-button").each(function() {
+        if($(this).text() == c.TEXT_BUTTON_OK) {
+          passed = true;
+          return false;
+        }
+      });
+
+      expect(passed).to.be.true;
+    });
+
     it("should store an onOk handler when passed in the config");
     it("should use config.cancelText as button text");
     it("should store an onCancel handler when passed in the config");

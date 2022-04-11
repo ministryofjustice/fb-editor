@@ -69,7 +69,7 @@ class ActivatedDialog {
       close: conf.onClose
     });
 
-    $container = $node.parents(".ui-dialog").addClass(" ActivatedDialog");
+    $container = $node.parents(".ui-dialog").addClass("ActivatedDialog");
     if(conf.id) {
       $container.attr("id", conf.id);
     }

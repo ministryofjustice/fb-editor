@@ -4,6 +4,8 @@ const constants = {
   CLASSNAME_COMPONENT: "ActivatedDialog",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
+  TEXT_BUTTON_OK: "This is ok button text",
+  TEXT_BUTTON_CANCEL: "This is cancel button text",
   TEXT_HEADING: "General heading text",
   TEXT_CONTENT: "General content text"
 }
@@ -41,7 +43,9 @@ function createDialog(id, config) {
     onOk: function() {},
     onCancel: function() {},
     onClose: function() {},
-    id: id
+    id: id,
+    okText: constants.TEXT_BUTTON_OK,
+    cancelText: constants.TEXT_BUTTON_CANCEL
   }
 
   // Include any passed config items.
