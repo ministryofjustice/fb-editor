@@ -36,7 +36,12 @@ describe("ActivatedDialog", function() {
       expect($container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    it("should apply CSS classnames passed in config");
+    it("should apply CSS classnames passed in config", function() {
+      var $container = created.$node.parent('[role=dialog]');
+      expect($container.hasClass(c.CLASSNAME_1));
+      expect($container.hasClass(c.CLASSNAME_2));
+    });
+
     it("should use config.okText as button text");
     it("should store an onOk handler when passed in the config");
     it("should use config.cancelText as button text");
