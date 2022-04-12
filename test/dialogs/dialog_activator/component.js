@@ -87,7 +87,12 @@ describe("DialogActivator", function() {
       });
 
 
-      it("should create activator element if $node not found or passed");
+      it("should create activator element if $node not found or passed", function() {
+        expect(created.activator).to.exist;
+        expect(created.activator.$node.attr("id")).to.not.equal("not-an-element-id");
+        expect(created.activator.$node.get(0).nodeName.toLowerCase()).to.equal("button");
+      });
+
       it("should use text passed as param");
       it("should add created node to DOM");
       it("should place created node after/before (??) dialog");
