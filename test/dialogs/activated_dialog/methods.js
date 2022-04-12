@@ -54,7 +54,17 @@ describe("ActivatedDialog", function() {
       teardown(created);
     });
 
-    it("should close the dialog on negative button press");
+    it("should close the dialog on negative button press", function() {
+       var created = setup();
+       var $dialog = $("#" + COMPONENT_ID);
+
+       expect($dialog.css("display")).to.equal("none");
+       created.dialog.open();
+       expect($dialog.css("display")).to.not.equal("none");
+
+       helpers.findButtonByText(created.dialog.$node, c.TEXT_BUTTON_CANCEL).click();
+       expect($dialog.css("display")).to.equal("none");
+    });
   });
 
   function setup(conf) {
