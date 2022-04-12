@@ -62,7 +62,7 @@ describe("ActivatedDialog", function() {
        created.dialog.open();
        expect($dialog.css("display")).to.not.equal("none");
 
-       helpers.findButtonByText(created.dialog.$node, c.TEXT_BUTTON_CANCEL).click();
+       helpers.findButtonByText($dialog, c.TEXT_BUTTON_CANCEL).click();
        expect($dialog.css("display")).to.equal("none");
     });
   });

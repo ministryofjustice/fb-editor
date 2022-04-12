@@ -30,7 +30,8 @@ describe("ActivatedDialog", function() {
       });
 
       it("should store an onOk handler when passed in the config", function() {
-        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+        var $dialog = created.$node.parent('[role=dialog]');
+        var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
         check = 1;
 
         // First make sure things are in order
@@ -44,7 +45,8 @@ describe("ActivatedDialog", function() {
       });
 
       it("should store an onCancel handler when passed in the config", function() {
-        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+        var $dialog = created.$node.parent('[role=dialog]');
+        var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_CANCEL);
         check = 1;
 
         // First make sure things are in order
@@ -72,7 +74,8 @@ describe("ActivatedDialog", function() {
       });
 
       it("should not cause error when OK button is clicked and no onOk handler is present", function() {
-        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+        var $dialog = created.$node.parent('[role=dialog]');
+        var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
         check = 1;
 
         // First make sure things are in order
@@ -86,7 +89,8 @@ describe("ActivatedDialog", function() {
       });
 
       it("should not cause error when Cancel button is clicked and no onCancel handler is present", function() {
-        var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+        var $dialog = created.$node.parent('[role=dialog]');
+        var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_CANCEL);
         check = 1;
 
         // First make sure things are in order

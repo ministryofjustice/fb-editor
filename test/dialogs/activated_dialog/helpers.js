@@ -92,8 +92,7 @@ function teardownView() {
  * to match text we seek to get a 'best guess' type of test.
  **/
 function findButtonByText($dialog, text) {
-  var $container = $dialog.parent('[role=dialog]');
-  var $buttons = $container.find(".ui-button");
+  var $buttons = $dialog.find(".ui-button");
   var $button;
   $buttons.each(function() {
     var $this = $(this);

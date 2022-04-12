@@ -46,14 +46,16 @@ describe("ActivatedDialog", function() {
     });
 
     it("should use config.okText as button text", function() {
-      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_OK);
+      var $dialog = created.$node.parent('[role=dialog]');
+      var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
       expect($button).to.exist;
       expect($button.length).to.equal(1);
       expect($button.text()).to.equal(c.TEXT_BUTTON_OK);
     });
 
     it("should use config.cancelText as button text", function() {
-      var $button = helpers.findButtonByText(created.$node, c.TEXT_BUTTON_CANCEL);
+      var $dialog = created.$node.parent('[role=dialog]');
+      var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_CANCEL);
       expect($button).to.exist;
       expect($button.length).to.equal(1);
       expect($button.text()).to.equal(c.TEXT_BUTTON_CANCEL);
