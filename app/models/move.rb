@@ -1,8 +1,11 @@
 class Move
   include ActiveModel::Model
   include ApplicationHelper
+  include MetadataVersion
   attr_accessor :service, :grid, :previous_flow_uuid, :to_move_uuid, :target_uuid,
                 :conditional_uuid
+
+  alias_method :change, :create_version
 
   def title
     flow_title(service.flow_object(to_move_uuid))
@@ -23,6 +26,13 @@ class Move
     end
   end
 
+  def metadata
+    update_previous_flow_object if previous_flow_uuid.present?
+
+    service.flow_object(target_uuid).branch? ? update_branch : update_page
+    service.metadata.to_h.deep_stringify_keys
+  end
+
   private
 
   def ordered_by_row
@@ -36,9 +46,8 @@ class Move
   def branch_target(flow_object, index, conditional = nil)
     {
       title: "#{flow_object.title} (Branch #{index})",
-      branch_uuid: flow_object.uuid,
-      conditional_uuid: conditional&.uuid,
-      target_uuid: conditional&.next || flow_object.default_next
+      target_uuid: flow_object.uuid,
+      conditional_uuid: conditional&.uuid
     }.compact
   end
 
@@ -78,5 +87,46 @@ class Move
 
   def max_rows
     ordered_by_column.map(&:size).max
+  end
+
+  def update_previous_flow_object
+    to_move_default_next = service.flow[to_move_uuid]['next']['default']
+
+    if service.flow_object(previous_flow_uuid).branch? && conditional_uuid.present?
+      service.flow[previous_flow_uuid]['next']['conditionals'].each do |conditional|
+        if conditional['_uuid'] == conditional_uuid
+          conditional['next'] = to_move_default_next
+        end
+      end
+    else
+      update_default_next(previous_flow_uuid, to_move_default_next)
+    end
+  end
+
+  def update_page
+    set_target_uuid_as_to_move_default_next
+    update_default_next(target_uuid, to_move_uuid)
+  end
+
+  def update_branch
+    if conditional_uuid.present?
+      service.flow[target_uuid]['next']['conditionals'].each do |conditional|
+        if conditional['_uuid'] == conditional_uuid
+          update_default_next(to_move_uuid, conditional['next'])
+          conditional['next'] = to_move_uuid
+        end
+      end
+    else
+      set_target_uuid_as_to_move_default_next
+      update_default_next(target_uuid, to_move_uuid)
+    end
+  end
+
+  def set_target_uuid_as_to_move_default_next
+    update_default_next(to_move_uuid, service.flow[target_uuid]['next']['default'])
+  end
+
+  def update_default_next(to_update_uuid, new_default_next)
+    service.flow[to_update_uuid]['next']['default'] = new_default_next
   end
 end

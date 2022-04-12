@@ -23,12 +23,11 @@ module Api
     end
 
     def change_params
-      {
-        target_uuid: params[:target_uuid] || params[:move][:target_uuid],
-        previous_flow_uuid: params[:move][:previous_flow_uid],
-        branch_uuid: params[:move][:branch_uuid],
-        conditional_uuid: params[:move][:conditional_uuid]
-      }
+      params.require(:move).permit(
+        :previous_flow_uuid,
+        :target_uuid,
+        :conditional_uuid
+      )
     end
   end
 end
