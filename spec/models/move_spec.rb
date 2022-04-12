@@ -17,6 +17,54 @@ RSpec.describe Move do
   let(:target_uuid) { nil }
   let(:conditional_uuid) { nil }
 
+  describe '#to_partial_path' do
+    let(:latest_metadata) { metadata_fixture(:branching_2) }
+
+    context 'when moving the page would cause branches to stack' do
+      let(:to_move_uuid) { 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992' } # Page J
+      let(:previous_flow_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' } # Branching Point 1
+      let(:expected_partial_path) { 'stacked_branches_not_supported' }
+
+      it 'returns the stacked branches not supported partial' do
+        expect(move.to_partial_path).to eq(expected_partial_path)
+      end
+    end
+
+    context 'when moving a page would not cause stocked branches' do
+      let(:to_move_uuid) { 'cf6dc32f-502c-4215-8c27-1151a45735bb' } # Page B
+      let(:previous_flow_uuid) { service.start_page.uuid }
+      let(:expected_partial_path) { 'new' }
+
+      it 'returns the default new partial' do
+        expect(move.to_partial_path).to eq(expected_partial_path)
+      end
+    end
+
+    context 'when there is no previous object uuid' do
+      let(:to_move_uuid) { 'cf6dc32f-502c-4215-8c27-1151a45735bb' } # Page B
+      let(:expected_partial_path) { 'new' }
+
+      it 'returns the default new partial' do
+        expect(move.to_partial_path).to eq(expected_partial_path)
+      end
+    end
+
+    context 'when the object to move default next is empty' do
+      let(:latest_metadata) do
+        meta = metadata_fixture(:branching_2)
+        meta['flow'][to_move_uuid]['next']['default'] = ''
+        meta
+      end
+      let(:to_move_uuid) { 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992' } # Page J
+      let(:previous_flow_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' } # Branching Point 1
+      let(:expected_partial_path) { 'new' }
+
+      it 'returns the default new partial' do
+        expect(move.to_partial_path).to eq(expected_partial_path)
+      end
+    end
+  end
+
   describe '#targets' do
     let(:to_move_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
     let(:targets) { move.targets }

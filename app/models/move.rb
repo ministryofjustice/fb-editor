@@ -7,6 +7,11 @@ class Move
 
   alias_method :change, :create_version
 
+  PARTIALS = {
+    potential_stacked_branches?: 'stacked_branches_not_supported',
+    default?: 'new'
+  }.freeze
+
   def title
     flow_title(service.flow_object(to_move_uuid))
   end
@@ -33,7 +38,35 @@ class Move
     service.metadata.to_h.deep_stringify_keys
   end
 
+  def to_partial_path
+    result = PARTIALS.find do |method_name, _|
+      method(method_name).call.present?
+    end
+    result[1]
+  end
+
   private
+
+  def potential_stacked_branches?
+    previous_flow_is_a_branch? && to_move_default_next_is_branch?
+  end
+
+  def previous_flow_is_a_branch?
+    service.flow_object(previous_flow_uuid)&.branch?
+  end
+
+  def to_move_default_next_is_branch?
+    default_next = service.flow_object(to_move_uuid).default_next
+    return if default_next.blank?
+
+    service.flow_object(default_next).branch?
+  end
+
+  # If the other checks returns false it means the page can be moved so
+  # render 'new'
+  def default?
+    true
+  end
 
   def ordered_by_row
     max_rows.times.each_with_object([]) do |row, ary|
@@ -90,7 +123,7 @@ class Move
   end
 
   def update_previous_flow_object
-    to_move_default_next = service.flow[to_move_uuid]['next']['default']
+    to_move_default_next = service.flow_object(to_move_uuid).default_next
 
     if service.flow_object(previous_flow_uuid).branch? && conditional_uuid.present?
       service.flow[previous_flow_uuid]['next']['conditionals'].each do |conditional|
@@ -123,7 +156,7 @@ class Move
   end
 
   def set_target_uuid_as_to_move_default_next
-    update_default_next(to_move_uuid, service.flow[target_uuid]['next']['default'])
+    update_default_next(to_move_uuid, service.flow_object(target_uuid).default_next)
   end
 
   def update_default_next(to_update_uuid, new_default_next)

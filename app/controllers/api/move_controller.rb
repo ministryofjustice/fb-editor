@@ -2,7 +2,7 @@ module Api
   class MoveController < ApiController
     def targets
       @move = Move.new(base_params)
-      render :new, layout: false
+      render @move, layout: false
     end
 
     def change
