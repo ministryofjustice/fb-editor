@@ -46,13 +46,20 @@ describe("ActivatedDialog", function() {
       teardown(created);
     });
 
-    it("should be open on page load when config.autoOpen is true");
+    it("should be open on page load when config.autoOpen is true", function() {
+      var created = setup({ autoOpen: true });
+      var $dialog = $("#" + COMPONENT_ID);
+
+      expect($dialog.css("display")).to.not.equal("none");
+      teardown(created);
+    });
+
     it("should close the dialog on negative button press");
   });
 
-  function setup() {
+  function setup(conf) {
     helpers.setupView();
-    return helpers.createDialog(COMPONENT_ID);
+    return helpers.createDialog(COMPONENT_ID, conf || {});
   }
 
   function teardown(created) {
