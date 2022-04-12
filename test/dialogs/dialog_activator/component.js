@@ -40,8 +40,13 @@ describe("DialogActivator", function() {
         expect(created.$node.hasClass(c.CLASSNAME_2));
       });
 
+      it("should expose the $node as public", function() {
+        expect(created.activator.$node).to.exist;
+        expect(created.activator.$node.length).to.equal(1);
+        expect(created.activator.$node.get(0)).to.equal(created.$node.get(0));
+      });
+
       it("should expose the dialog as public");
-      it("should expose the $node as public");
       it("should expose instance as data attribute on the $node");
       it("should open the dialog on button click");
     });
