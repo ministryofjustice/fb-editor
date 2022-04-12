@@ -363,6 +363,16 @@ module CommonSteps
     ])
   end
 
+  def then_I_should_only_see_four_options_on_page_menu
+    options = all('[role="menuitem"]').map(&:text)
+    expect(options).to eq([
+      I18n.t('actions.edit_page'),
+      I18n.t('actions.preview_page'),
+      I18n.t('actions.move_page'),
+      I18n.t('actions.delete_page')
+    ])
+  end
+
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click

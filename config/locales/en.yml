@@ -109,6 +109,7 @@ en:
     option_add: 'Add option'
     option_remove: 'Delete...'
     change_destination: 'Change next page...'
+    move_page: 'Move page...'
     add_single_question: 'Add single question page'
     add_multi_question: 'Add multiple question page'
     add_content: 'Add content page'
