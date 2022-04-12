@@ -56,7 +56,16 @@ describe("DialogActivator", function() {
         expect(created.activator.dialog.name).to.equal("fake dialog");
       });
 
-      it("should open the dialog on button click");
+      it("should open the dialog on button click", function() {
+        var open = false;
+        created.activator.dialog.open = function () {
+          open = true;
+        }
+
+        expect(open).to.be.false;
+        created.activator.$node.click();
+        expect(open).to.be.true;
+      });
     });
 
 
