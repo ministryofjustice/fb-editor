@@ -93,7 +93,11 @@ describe("DialogActivator", function() {
         expect(created.activator.$node.get(0).nodeName.toLowerCase()).to.equal("button");
       });
 
-      it("should use text passed as param");
+      it("should use text passed in config for created activator", function() {
+        expect(created.activator).to.exist;
+        expect(created.activator.$node.text()).to.equal(c.TEXT_BUTTON);
+      });
+
       it("should add created node to DOM");
       it("should place created node after/before (??) dialog");
 
