@@ -8,7 +8,11 @@
       <div class="govuk-form-group">
         <select class="govuk-select" name="move[target_uuid]" id="move_target_uuid">
           <% @move.targets.each do |target| %>
-            <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>">
+            <% if target[:selected] %>
+              <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>" selected="selected">
+            <% else %>
+              <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>">
+            <% end %>
               <%= target[:title] %>
             </option>
           <% end %>

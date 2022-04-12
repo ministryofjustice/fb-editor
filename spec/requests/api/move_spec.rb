@@ -111,6 +111,9 @@ RSpec.describe 'Move spec', type: :request do
           'data-conditional-uuid=""'
         ]
       end
+      let(:selected_target) do
+        '<option value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" data-conditional-uuid="" selected="selected">'
+      end
 
       before do
         allow_any_instance_of(
@@ -146,6 +149,10 @@ RSpec.describe 'Move spec', type: :request do
         invalid_targets.each do |title|
           expect(response.body).not_to include(title)
         end
+      end
+
+      it 'sets the selected attribute for the previous target' do
+        expect(response.body).to include(selected_target)
       end
     end
   end

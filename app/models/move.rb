@@ -80,14 +80,26 @@ class Move
     {
       title: "#{flow_object.title} (Branch #{index})",
       target_uuid: flow_object.uuid,
-      conditional_uuid: conditional&.uuid
+      conditional_uuid: conditional&.uuid,
+      selected: conditional_next?(conditional) || branch_default_next?(flow_object)
     }.compact
+  end
+
+  def conditional_next?(conditional)
+    return if conditional.blank?
+
+    conditional.next == to_move_uuid
+  end
+
+  def branch_default_next?(flow_object)
+    flow_object.uuid == previous_flow_uuid && flow_object.default_next == to_move_uuid
   end
 
   def page_target(flow_object)
     {
       title: flow_title(flow_object),
-      target_uuid: flow_object.uuid
+      target_uuid: flow_object.uuid,
+      selected: flow_object.uuid == previous_flow_uuid
     }
   end
 

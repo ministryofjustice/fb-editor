@@ -67,6 +67,7 @@ RSpec.describe Move do
 
   describe '#targets' do
     let(:to_move_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
+    let(:previous_flow_uuid) { '1d60bef0-100a-4f3b-9e6f-1711e8adda7e' } # Page A
     let(:targets) { move.targets }
     let(:target_uuids) { targets.map { |t| t[:target_uuid] } }
     let(:target_titles) { targets.map { |t| t[:title] } }
@@ -119,6 +120,25 @@ RSpec.describe Move do
 
     it 'does not include any unconnected pages' do
       expect(target_uuids).not_to include(*unconnected_uuids)
+    end
+
+    context 'selected property' do
+      let(:previous_flow_target) do
+        targets.find { |t| t[:target_uuid] == previous_flow_uuid }
+      end
+      let(:other_targets) do
+        targets.reject { |t| t[:target_uuid] == previous_flow_uuid }
+      end
+
+      it 'sets the selected property when previous page matches to true' do
+        expect(previous_flow_target[:selected]).to be_truthy
+      end
+
+      it 'sets the selected property to false when ' do
+        other_targets.each do |target|
+          expect(target[:selected]).to be_falsey
+        end
+      end
     end
 
     context 'page targets' do
