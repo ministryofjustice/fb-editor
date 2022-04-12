@@ -98,7 +98,14 @@ describe("DialogActivator", function() {
         expect(created.activator.$node.text()).to.equal(c.TEXT_BUTTON);
       });
 
-      it("should add created node to DOM");
+      it("should add created activator node to DOM", function() {
+        var id = "testing-id";
+        expect(created.activator).to.exist;
+        expect(created.activator.$node.length).to.equal(1);
+        created.activator.$node.attr("id", id);
+        expect($(document.body).find("#" + id).length).to.equal(1);
+      });
+
       it("should place created node after/before (??) dialog");
 
     });
