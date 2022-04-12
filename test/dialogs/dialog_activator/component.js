@@ -29,6 +29,10 @@ describe("DialogActivator", function() {
       expect($activator.get(0)).to.equal(created.$node.get(0));
     });
 
+    it("should have the component class name present", function() {
+      expect(created.$node.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
+    });
+
     it("should apply CSS classnames passed as param");
     it("should use text passed as param");
     it("should expose the dialog as public");
