@@ -6,6 +6,7 @@ const constants = {
   CLASSNAME_2: "classname2",
   ID_LINK: "link-id",
   ID_TARGET: "target-id",
+  TEXT_LINK: "link text",
   TEXT_BUTTON: "activator button text"
 }
 
@@ -28,10 +29,9 @@ function createActivator(id, config) {
   var $node = $("#" + id);
   var html = $node.length ? $node.get(0).outerHTML : "";
   var conf = {
-    dialog: {},
+    dialog: { name: "fake dialog" },
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
-    id: id,
-    text: constants.TEXT_BUTTON
+    id: id
   }
 
   // Include any passed config items.
@@ -55,7 +55,7 @@ function createActivator(id, config) {
  * and anything else required.
  **/
 function setupView() {
-  var html = `<a href="#` + constants.ID_TARGET  + `" id="` + constants.ID_LINK + `">` + constants.TEXT_BUTTON + `</a>
+  var html = `<a href="#` + constants.ID_TARGET  + `" id="` + constants.ID_LINK + `">` + constants.TEXT_LINK + `</a>
               <p id="` + constants.ID_TARGET  + `">Something else on the page</p>`;
   $(document.body).append(html);
 }
