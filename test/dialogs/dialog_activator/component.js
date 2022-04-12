@@ -33,7 +33,11 @@ describe("DialogActivator", function() {
       expect(created.$node.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    it("should apply CSS classnames passed as param");
+    it("should apply CSS classnames passed as param", function() {
+      expect(created.$node.hasClass(c.CLASSNAME_1));
+      expect(created.$node.hasClass(c.CLASSNAME_2));
+    });
+
     it("should use text passed as param");
     it("should expose the dialog as public");
     it("should expose the $node as public");
