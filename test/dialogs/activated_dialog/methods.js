@@ -14,7 +14,8 @@ describe("ActivatedDialog", function() {
 
     before(function() {
       helpers.setupView();
-      created = helpers.createDialog(COMPONENT_ID)
+      created = helpers.createDialog(COMPONENT_ID);
+      $(document.body).append(created.dialog.activator.$node);
     });
 
     after(function() {
@@ -31,7 +32,13 @@ describe("ActivatedDialog", function() {
       expect($dialog.css("display")).to.not.equal("none");
     });
 
-    it("should open the dialog on activator button press");
+    it.only("should open the dialog on activator button press", function() {
+      var $dialog = $("#" + COMPONENT_ID);
+      expect($dialog.css("display")).to.equal("none");
+      $(".DialogActivator").click();
+      expect($dialog.css("display")).to.not.equal("none");
+    });
+
     it("should be open on page load when config.autoOpen is true");
     it("should be closed on page load when config.autoOpen is false");
     it("should close the dialog on negative button press");
