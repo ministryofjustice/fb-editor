@@ -75,7 +75,7 @@ describe("DialogActivator", function() {
       before(function() {
         helpers.setupView();
         created = helpers.createActivator("not-an-element-id", {
-                    $target: $("#" + c.ID_LINK),
+                    $target: $("#" + c.ID_TARGET),
                     text: c.TEXT_BUTTON
                   });
       });
@@ -106,7 +106,11 @@ describe("DialogActivator", function() {
         expect($(document.body).find("#" + id).length).to.equal(1);
       });
 
-      it("should place created node after/before (??) dialog");
+      it("should place created node before $target", function() {
+        var $target = $("#" + c.ID_TARGET);
+        expect($target.length).to.equal(1);
+        expect($target.prev().get(0)).to.equal(created.activator.$node.get(0));
+      });
 
     });
 
