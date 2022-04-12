@@ -49,6 +49,10 @@ class PageMenu extends ActivatedMenu {
            this.deleteItemApi(item);
            break;
 
+      case "move-api":
+           this.moveItemApi(item);
+           break;
+
       default: this.link(item);
     }
   }
@@ -117,5 +121,22 @@ class PageMenu extends ActivatedMenu {
       }
     });
   }
+
+  moveItemApi(element) {
+    var $link = element.find("> a");
+    new DialogApiRequest($link.attr("href"), {
+      activator: $link,
+      closeOnClickSelector: ".govuk-button",
+      build: function(dialog) {
+        dialog.$node.find("#move_target_uuid").on("change", function(e) {
+          // Get the selected option and then update the hidden conditional
+          // uuid field
+          var selectedOption = $(this).find("option").eq(this.selectedIndex)
+          var conditionalUuid = selectedOption.data("conditional-uuid")
+          dialog.$node.find("#move_conditional_uuid").val(conditionalUuid)
+        });
+      }
+    });
+  }
 }
-module.exports = PageMenu; 
+module.exports = PageMenu;

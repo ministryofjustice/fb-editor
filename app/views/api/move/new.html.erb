@@ -6,7 +6,7 @@
       <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
       <p> <%= t('dialogs.move.lede') %></p>
       <div class="govuk-form-group">
-        <select class="govuk-select" name="move[target_uuid]" id="move[target_uuid]">
+        <select class="govuk-select" name="move[target_uuid]" id="move_target_uuid">
           <% @move.targets.each do |target| %>
             <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>">
               <%= target[:title] %>
@@ -15,8 +15,13 @@
         </select>
       </div>
     </div>
+
     <button class="govuk-button fb-govuk-button">
       <%= t('dialogs.move.button') %>
+    </button>
+
+    <button class="govuk-button govuk-button--secondary ui-button" type="button" >
+      <%= t('dialogs.button_cancel') %>
     </button>
   <% end %>
 </div>
