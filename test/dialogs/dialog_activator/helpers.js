@@ -26,7 +26,7 @@ const constants = {
  **/
 function createActivator(id, config) {
   var $node = $("#" + id);
-  var html = $node.get(0).outerHTML;
+  var html = $node.length ? $node.get(0).outerHTML : "";
   var conf = {
     dialog: {},
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
@@ -55,7 +55,8 @@ function createActivator(id, config) {
  * and anything else required.
  **/
 function setupView() {
-  var html = `<a href="#something" id="` + constants.ID_LINK + `">` + constants.TEXT_BUTTON + `</a>`;
+  var html = `<a href="#` + constants.ID_TARGET  + `" id="` + constants.ID_LINK + `">` + constants.TEXT_BUTTON + `</a>
+              <p id="` + constants.ID_TARGET  + `">Something else on the page</p>`;
   $(document.body).append(html);
 }
 
