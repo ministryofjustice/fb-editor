@@ -2,7 +2,7 @@ require("../setup");
 const utilities = require('../../app/javascript/src/utilities.js');
 
 
-describe('utilities.mazWidth', function() {
+describe('utilities.maxWidth', function() {
   it('should return the maxWidth found in a collection', function() {
     var $item1 = $("<p id=\"test-maxwidth-item1\">width item 1");
     var $item2 = $("<p id=\"test-maxwidth-item2\">width item 2");
