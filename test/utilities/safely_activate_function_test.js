@@ -1,7 +1,7 @@
 require("../setup");
 const utilities = require('../../app/javascript/src/utilities.js');
 
-describe.only('utilities.safelyActivateFunction', function() {
+describe('utilities.safelyActivateFunction', function() {
   it('should fail silently when not a function', function() {
     try {
       utilities.safelyActivateFunction('I am a string');
