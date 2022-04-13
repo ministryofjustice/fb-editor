@@ -2,7 +2,7 @@ require("../setup");
 const utilities = require('../../app/javascript/src/utilities.js');
 
 
-describe('uniqueString', function() {
+describe('utilities.uniqueString', function() {
   it('should return a string without passed arguments', function() {
     expect(utilities.uniqueString().constructor).to.equal(String().constructor);
     expect(typeof utilities.uniqueString()).to.equal("string");

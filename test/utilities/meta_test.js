@@ -2,7 +2,7 @@ require("../setup");
 const utilities = require('../../app/javascript/src/utilities.js');
 
 
-describe('meta', function() {
+describe('utilities.meta', function() {
   it('should return the meta tag value', function() {
     var meta = document.createElement('meta');
     meta.setAttribute('name', 'mytestmetatag');
