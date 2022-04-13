@@ -2,7 +2,7 @@ require("../setup");
 const utilities = require('../../app/javascript/src/utilities.js');
 
 
-describe('updateDomByApiRequest', function() {
+describe('utilities.updateDomByApiRequest', function() {
   var targetId = "update-dom-by-api-request-target-element";
   var insertId = "update-dom-by-api-request-insert-element";
   var get;
