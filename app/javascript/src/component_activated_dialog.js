@@ -29,6 +29,8 @@ const safelyActivateFunction = utilities.safelyActivateFunction;
  * config.onClose takes a function to run after dialog is closed.
  **/
 class ActivatedDialog {
+  #config;
+
   constructor($node, config) {
     var conf = mergeObjects({
       $activator: $(),
@@ -43,16 +45,17 @@ class ActivatedDialog {
     });
 
     var buttons = {};
+    var $container;
 
     // Make sure classes is an object even if nothing passed.
     conf.classes = mergeObjects({}, config.classes);
 
     buttons[conf.okText] = () => {
-      safelyActivateFunction(this._config.onOk);
+      safelyActivateFunction(this.#config.onOk);
     }
 
     buttons[conf.cancelText] = () => {
-      safelyActivateFunction(this._config.onCancel);
+      safelyActivateFunction(this.#config.onCancel);
       this.close();
     }
 
@@ -68,8 +71,13 @@ class ActivatedDialog {
       close: conf.onClose
     });
 
-    this._config = conf;
-    this.$container = $node.parents(".ui-dialog").addClass(" ActivatedDialog");
+    $container = $node.parents(".ui-dialog").addClass("ActivatedDialog");
+    if(conf.id) {
+      $container.attr("id", conf.id);
+    }
+
+    this.#config = conf;
+    this.$container = $container;
     this.$node = $node;
     this.activator = activator;
   }
