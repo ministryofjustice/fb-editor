@@ -35,6 +35,7 @@ class DialogActivator {
       $node = createActivator(conf.$target, conf.text);
     }
 
+    $node.data("instance", this);
     $node.addClass("DialogActivator");
     $node.addClass(config.classes);
     $node.on( "click", () => {
