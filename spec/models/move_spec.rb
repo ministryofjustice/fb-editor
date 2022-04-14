@@ -51,14 +51,26 @@ RSpec.describe Move do
       end
     end
 
+    context 'move a branch destination that has no default next' do
+      let(:latest_metadata) { metadata_fixture(:branching_7) }
+      let(:metadata_flow) { move.metadata['flow'] }
+      let(:to_move_uuid) { '3a584d15-6805-4a21-bc05-b61c3be47857' } # Page G
+      let(:previous_flow_uuid) { 'ffadeb22-063b-4e4f-9502-bd753c706b1d' } # Branching Point 2
+      let(:expected_partial_path) { 'branch_destination_no_default_next' }
+
+      it 'returns the branch destination no default next partial' do
+        expect(move.to_partial_path).to eq(expected_partial_path)
+      end
+    end
+
     context 'when the object to move default next is empty' do
       let(:latest_metadata) do
         meta = metadata_fixture(:branching_2)
         meta['flow'][to_move_uuid]['next']['default'] = ''
         meta
       end
-      let(:to_move_uuid) { 'f475d6fd-0ea4-45d5-985e-e1a7c7a5b992' } # Page J
-      let(:previous_flow_uuid) { '09e91fd9-7a46-4840-adbc-244d545cfef7' } # Branching Point 1
+      let(:to_move_uuid) { '65a2e01a-57dc-4702-8e41-ed8f9921ac7d' } # Page D
+      let(:previous_flow_uuid) { 'fda1e5a1-ed5f-49c9-a943-dc930a520984' } # Page C
       let(:expected_partial_path) { 'new' }
 
       it 'returns the default new partial' do
@@ -241,6 +253,18 @@ RSpec.describe Move do
               expect(metadata_flow[previous_flow_uuid]['next']['default']).to eq(expected_default_next)
             end
           end
+        end
+      end
+
+      context 'moving an exit page' do
+        let(:latest_metadata) { metadata_fixture(:branching_7) }
+        let(:metadata_flow) { move.metadata['flow'] }
+        let(:to_move_uuid) { '3a584d15-6805-4a21-bc05-b61c3be47857' } # Page G
+        let(:previous_flow_uuid) { 'ffadeb22-063b-4e4f-9502-bd753c706b1d' } # Branching Point 2
+        let(:target_uuid) { '13ecf9bd-5064-4cad-baf8-3dfa091928cb' } # Page F
+
+        it 'does not update the exit pages default next' do
+          expect(metadata_flow[to_move_uuid]['next']['default']).to be_empty
         end
       end
     end

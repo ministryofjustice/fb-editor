@@ -62,6 +62,7 @@ en:
       button: Move
       you_cannot_move_this_page: 'You cannot move this page yet'
       stacked_branches_not_supported_message: 'Moving this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
+      branch_destination_no_default_next_message: 'You cannot leave a branch without any pages. Either edit the branching point or add another page to the branch first.'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"

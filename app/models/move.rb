@@ -9,6 +9,7 @@ class Move
 
   PARTIALS = {
     potential_stacked_branches?: 'stacked_branches_not_supported',
+    branch_destination_no_default_next?: 'branch_destination_no_default_next',
     default?: 'new'
   }.freeze
 
@@ -56,10 +57,17 @@ class Move
   end
 
   def to_move_default_next_is_branch?
-    default_next = service.flow_object(to_move_uuid).default_next
-    return if default_next.blank?
+    return if to_move_default_next.blank?
 
-    service.flow_object(default_next).branch?
+    service.flow_object(to_move_default_next).branch?
+  end
+
+  def to_move_default_next
+    @to_move_default_next ||= service.flow_object(to_move_uuid).default_next
+  end
+
+  def branch_destination_no_default_next?
+    previous_flow_is_a_branch? && to_move_default_next.blank?
   end
 
   # If the other checks returns false it means the page can be moved so
@@ -135,8 +143,6 @@ class Move
   end
 
   def update_previous_flow_object
-    to_move_default_next = service.flow_object(to_move_uuid).default_next
-
     if branch_conditional?
       service.flow[previous_flow_uuid]['next']['conditionals'].each do |conditional|
         if conditional['_uuid'] == previous_conditional_uuid
@@ -176,6 +182,8 @@ class Move
   end
 
   def update_default_next(to_update_uuid, new_default_next)
+    return if exit_page?(to_update_uuid)
+
     service.flow[to_update_uuid]['next']['default'] = new_default_next
   end
 end
