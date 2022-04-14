@@ -32,7 +32,7 @@ module CommonSteps
         "document.getElementById('btn-login').click()"
       )
     else
-      editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
+      editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
 
