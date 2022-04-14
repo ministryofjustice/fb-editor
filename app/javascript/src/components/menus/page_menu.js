@@ -133,7 +133,7 @@ class PageMenu extends ActivatedMenu {
           // uuid field
           var selectedOption = $(this).find("option").eq(this.selectedIndex)
           var conditionalUuid = selectedOption.data("conditional-uuid")
-          dialog.$node.find("#move_conditional_uuid").val(conditionalUuid)
+          dialog.$node.find("#move_target_conditional_uuid").val(conditionalUuid)
         });
       }
     });

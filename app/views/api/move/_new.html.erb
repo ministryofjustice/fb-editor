@@ -2,7 +2,8 @@
   <%= form_for @move, url: api_service_flow_move_path(service.service_id, @move.to_move_uuid) do |f| %>
     <div class="govuk-form-group ">
       <%= f.hidden_field :previous_flow_uuid, value: @move.previous_flow_uuid %>
-      <%= f.hidden_field :conditional_uuid, value: '' %>
+      <%= f.hidden_field :previous_conditional_uuid, value: @move.previous_conditional_uuid %>
+      <%= f.hidden_field :target_conditional_uuid, value: '' %>
       <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
       <p> <%= t('dialogs.move.lede') %></p>
       <div class="govuk-form-group">

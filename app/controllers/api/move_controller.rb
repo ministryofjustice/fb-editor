@@ -18,6 +18,7 @@ module Api
         service: service,
         grid: grid,
         previous_flow_uuid: params[:previous_flow_uuid],
+        previous_conditional_uuid: params[:previous_conditional_uuid],
         to_move_uuid: params[:flow_uuid]
       }
     end
@@ -25,8 +26,9 @@ module Api
     def change_params
       params.require(:move).permit(
         :previous_flow_uuid,
+        :previous_conditional_uuid,
         :target_uuid,
-        :conditional_uuid
+        :target_conditional_uuid
       )
     end
   end

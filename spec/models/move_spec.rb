@@ -4,18 +4,20 @@ RSpec.describe Move do
       service: service,
       grid: grid,
       previous_flow_uuid: previous_flow_uuid,
+      previous_conditional_uuid: previous_conditional_uuid,
       to_move_uuid: to_move_uuid,
       target_uuid: target_uuid,
-      conditional_uuid: conditional_uuid
+      target_conditional_uuid: target_conditional_uuid
     )
   end
   let(:latest_metadata) { metadata_fixture(:branching_11) }
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:grid) { MetadataPresenter::Grid.new(service) }
   let(:previous_flow_uuid) { nil }
+  let(:previous_conditional_uuid) { nil }
   let(:to_move_uuid) { nil }
   let(:target_uuid) { nil }
-  let(:conditional_uuid) { nil }
+  let(:target_conditional_uuid) { nil }
 
   describe '#to_partial_path' do
     let(:latest_metadata) { metadata_fixture(:branching_2) }
@@ -215,21 +217,21 @@ RSpec.describe Move do
         end
 
         context 'previous flow uuid id a branch' do
-          context 'when conditional uuid is present' do
+          context 'when previous conditional uuid is present' do
             let(:previous_flow_uuid) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
             let(:to_move_uuid) { '66c9e581-942e-4a9e-93ec-343208a2f510' } # Page C
-            let(:conditional_uuid) { '9149bc4c-9773-454f-b9b6-5524b91102ca' }
+            let(:previous_conditional_uuid) { '9149bc4c-9773-454f-b9b6-5524b91102ca' }
             let(:expected_default_next) { 'e31718ad-0ba7-4b45-81aa-d3081f423022' } # Page D
 
             it 'updates the conditional next to the to_move objects original default next' do
               conditional = metadata_flow[previous_flow_uuid]['next']['conditionals'].find do |c|
-                c['_uuid'] == conditional_uuid
+                c['_uuid'] == previous_conditional_uuid
               end
               expect(conditional['next']).to eq(expected_default_next)
             end
           end
 
-          context 'when conditional uuid is not present' do
+          context 'when previous conditional uuid is not present' do
             let(:latest_metadata) { metadata_fixture(:branching_10) }
             let(:previous_flow_uuid) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
             let(:to_move_uuid) { 'ad011e6b-5926-42f8-8b7c-668558850c52' } # Page N
@@ -265,12 +267,12 @@ RSpec.describe Move do
         let(:target_uuid) { 'a02f7073-ba5a-459d-b6b9-abe548c933a6' } # Branching Point 2
 
         context 'conditional destination' do
-          let(:conditional_uuid) { '4ad9f7e9-5444-41d8-b7f8-17d2108ed27a' }
+          let(:target_conditional_uuid) { '4ad9f7e9-5444-41d8-b7f8-17d2108ed27a' }
           let(:checkanswers) { 'da2576f9-7ddd-4316-b24b-103708139214' }
 
           it 'updates the branch condtional next to the to_move_uuid' do
             conditional = metadata_flow[target_uuid]['next']['conditionals'].find do |c|
-              c['_uuid'] == conditional_uuid
+              c['_uuid'] == target_conditional_uuid
             end
             expect(conditional['next']).to eq(to_move_uuid)
           end

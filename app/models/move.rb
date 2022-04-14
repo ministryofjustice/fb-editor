@@ -2,8 +2,8 @@ class Move
   include ActiveModel::Model
   include ApplicationHelper
   include MetadataVersion
-  attr_accessor :service, :grid, :previous_flow_uuid, :to_move_uuid, :target_uuid,
-                :conditional_uuid
+  attr_accessor :service, :grid, :previous_flow_uuid, :previous_conditional_uuid,
+                :to_move_uuid, :target_uuid, :target_conditional_uuid
 
   alias_method :change, :create_version
 
@@ -137,9 +137,9 @@ class Move
   def update_previous_flow_object
     to_move_default_next = service.flow_object(to_move_uuid).default_next
 
-    if service.flow_object(previous_flow_uuid).branch? && conditional_uuid.present?
+    if branch_conditional?
       service.flow[previous_flow_uuid]['next']['conditionals'].each do |conditional|
-        if conditional['_uuid'] == conditional_uuid
+        if conditional['_uuid'] == previous_conditional_uuid
           conditional['next'] = to_move_default_next
         end
       end
@@ -148,15 +148,19 @@ class Move
     end
   end
 
+  def branch_conditional?
+    service.flow_object(previous_flow_uuid).branch? && previous_conditional_uuid.present?
+  end
+
   def update_page
     set_target_uuid_as_to_move_default_next
     update_default_next(target_uuid, to_move_uuid)
   end
 
   def update_branch
-    if conditional_uuid.present?
+    if target_conditional_uuid.present?
       service.flow[target_uuid]['next']['conditionals'].each do |conditional|
-        if conditional['_uuid'] == conditional_uuid
+        if conditional['_uuid'] == target_conditional_uuid
           update_default_next(to_move_uuid, conditional['next'])
           conditional['next'] = to_move_uuid
         end

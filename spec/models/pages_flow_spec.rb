@@ -255,7 +255,7 @@ RSpec.describe PagesFlow do
               uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
               next: '0b297048-aa4d-49b6-ac74-18e069118185',
               previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-              conditional_uuid: 'ecd60ac9-c3ea-47b1-8f79-c4e42df9a9dd',
+              previous_conditional_uuid: 'ecd60ac9-c3ea-47b1-8f79-c4e42df9a9dd',
               thumbnail: 'text',
               url: 'star-wars-knowledge'
             }
@@ -321,7 +321,7 @@ RSpec.describe PagesFlow do
               uuid: 'd4342dfd-0d09-4a91-a0ea-d7fd67e706cc',
               next: '05c3306c-0a39-42d2-9e0f-93fd49248f4e',
               previous_uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-              conditional_uuid: '51b4eda2-a08d-4ab3-a8cb-565091f39424',
+              previous_conditional_uuid: '51b4eda2-a08d-4ab3-a8cb-565091f39424',
               thumbnail: 'radios',
               url: 'apple-juice'
             },
@@ -331,7 +331,7 @@ RSpec.describe PagesFlow do
               uuid: '91e9f7c6-2f75-4b7d-9eb5-0cf352f7be66',
               next: '05c3306c-0a39-42d2-9e0f-93fd49248f4e',
               previous_uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-              conditional_uuid: '0a799cea-f5a4-4b89-9ffe-78515b5cb1d7',
+              previous_conditional_uuid: '0a799cea-f5a4-4b89-9ffe-78515b5cb1d7',
               thumbnail: 'radios',
               url: 'orange-juice'
             }
@@ -386,7 +386,7 @@ RSpec.describe PagesFlow do
               uuid: '8002df6e-29ab-4cdf-b520-1d7bb931a28f',
               next: 'ef2cafe3-37e2-4533-9b0c-09a970cd38d4',
               previous_uuid: '1d02e508-5953-4eca-af2f-9d67511c8648',
-              conditional_uuid: '0d3410db-1d05-4a32-bafb-65b52408b89b',
+              previous_conditional_uuid: '0d3410db-1d05-4a32-bafb-65b52408b89b',
               thumbnail: 'radios',
               url: 'music-app'
             }
@@ -441,7 +441,7 @@ RSpec.describe PagesFlow do
               uuid: 'b5efc09c-ece7-45ae-b0b3-8a7905e25040',
               next: '0c022e95-0748-4dda-8ba5-12fd1d2f596b',
               previous_uuid: 'cf8b3e18-dacf-4e91-92e1-018035961003',
-              conditional_uuid: '88b97d53-1da7-4464-a0a5-633a9ffd3d3d',
+              previous_conditional_uuid: '88b97d53-1da7-4464-a0a5-633a9ffd3d3d',
               thumbnail: 'text',
               url: 'which-formbuilder'
             }
@@ -507,7 +507,7 @@ RSpec.describe PagesFlow do
               uuid: 'bc666714-c0a2-4674-afe5-faff2e20d847',
               next: 'dc7454f9-4186-48d7-b055-684d57bbcdc7',
               previous_uuid: '618b7537-b42b-4551-ae7d-053afa4d9ca9',
-              conditional_uuid: '8a0c225f-b078-4728-a181-c3bdd343801c',
+              previous_conditional_uuid: '8a0c225f-b078-4728-a181-c3bdd343801c',
               thumbnail: 'content',
               url: 'global-warming'
             },
@@ -517,7 +517,7 @@ RSpec.describe PagesFlow do
               uuid: 'e2887f44-5e8d-4dc0-b1de-496ab6039430',
               next: 'dc7454f9-4186-48d7-b055-684d57bbcdc7',
               previous_uuid: '618b7537-b42b-4551-ae7d-053afa4d9ca9',
-              conditional_uuid: '7d1b29ac-f310-4246-bab9-957c9b2a20f2',
+              previous_conditional_uuid: '7d1b29ac-f310-4246-bab9-957c9b2a20f2',
               thumbnail: 'content',
               url: 'we-love-chickens'
             }
@@ -599,7 +599,7 @@ RSpec.describe PagesFlow do
               uuid: '2cc66e51-2c14-4023-86bf-ded49887cdb2',
               next: '48357db5-7c06-4e85-94b1-5e1c9d8f39eb',
               previous_uuid: '84a347fc-8d4b-486a-9996-6a86fa9544c5',
-              conditional_uuid: '15e8076f-75ac-4310-89b3-d2b5962babd4',
+              previous_conditional_uuid: '15e8076f-75ac-4310-89b3-d2b5962babd4',
               thumbnail: 'content',
               url: 'marvel-quotes'
             },
@@ -612,7 +612,7 @@ RSpec.describe PagesFlow do
               uuid: 'f6c51f88-7be8-4cb7-bbfc-6c905727a051',
               next: '48357db5-7c06-4e85-94b1-5e1c9d8f39eb',
               previous_uuid: '84a347fc-8d4b-486a-9996-6a86fa9544c5',
-              conditional_uuid: '0811ac93-a73e-4a2d-a8f1-68cc8a52ca69',
+              previous_conditional_uuid: '0811ac93-a73e-4a2d-a8f1-68cc8a52ca69',
               thumbnail: 'content',
               url: 'other-quotes'
             }
@@ -699,7 +699,7 @@ RSpec.describe PagesFlow do
               uuid: '56e80942-d0a4-405a-85cd-bd1b100013d6',
               next: 'e337070b-f636-49a3-a65c-f506675265f0',
               previous_uuid: '1079b5b8-abd0-4bf6-aaac-1f01e69e3b39',
-              conditional_uuid: '5ce78103-3935-4c57-9278-79bf2b8b93b1',
+              previous_conditional_uuid: '5ce78103-3935-4c57-9278-79bf2b8b93b1',
               thumbnail: 'content',
               url: 'arnold-right-answers'
             },
@@ -709,7 +709,7 @@ RSpec.describe PagesFlow do
               uuid: '6324cca4-7770-4765-89b9-1cdc41f49c8b',
               next: 'e337070b-f636-49a3-a65c-f506675265f0',
               previous_uuid: '1079b5b8-abd0-4bf6-aaac-1f01e69e3b39',
-              conditional_uuid: 'd45c65c7-a9b4-4128-8562-89bd4f0167ec',
+              previous_conditional_uuid: 'd45c65c7-a9b4-4128-8562-89bd4f0167ec',
               thumbnail: 'content',
               url: 'arnold-wrong-answers'
             },
@@ -836,7 +836,7 @@ RSpec.describe PagesFlow do
                 uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
                 next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: 'b753b3f0-188e-4435-a84d-894557ba2007',
+                previous_conditional_uuid: 'b753b3f0-188e-4435-a84d-894557ba2007',
                 thumbnail: 'text',
                 url: 'page-c'
               },
@@ -846,7 +846,7 @@ RSpec.describe PagesFlow do
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '2622668f-7ad2-4130-9d4f-274ff540b7e8',
+                previous_conditional_uuid: '2622668f-7ad2-4130-9d4f-274ff540b7e8',
                 thumbnail: 'text',
                 url: 'page-g'
               },
@@ -935,7 +935,7 @@ RSpec.describe PagesFlow do
                 uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
                 next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
                 previous_uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-                conditional_uuid: 'f51a3793-53dc-4537-b84b-399a59c103f4',
+                previous_conditional_uuid: 'f51a3793-53dc-4537-b84b-399a59c103f4',
                 thumbnail: 'text',
                 url: 'page-k'
               },
@@ -1086,7 +1086,7 @@ RSpec.describe PagesFlow do
                 uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
                 next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '39bab61b-93d5-486c-8e02-cea0aeb48215',
+                previous_conditional_uuid: '39bab61b-93d5-486c-8e02-cea0aeb48215',
                 thumbnail: 'text',
                 url: 'page-c'
               },
@@ -1096,7 +1096,7 @@ RSpec.describe PagesFlow do
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: '7a561e9f-f4f8-4d2e-a01e-4097fc3ccf1c',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '96810acb-b5e6-45c1-bacb-6b7a10c0d3a0',
+                previous_conditional_uuid: '96810acb-b5e6-45c1-bacb-6b7a10c0d3a0',
                 thumbnail: 'text',
                 url: 'page-g'
               },
@@ -1286,7 +1286,7 @@ RSpec.describe PagesFlow do
                 uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
                 next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '457ca1ed-b188-4980-bf9b-01f8dde5ffe9',
+                previous_conditional_uuid: '457ca1ed-b188-4980-bf9b-01f8dde5ffe9',
                 thumbnail: 'text',
                 url: 'page-e'
               },
@@ -1459,7 +1459,7 @@ RSpec.describe PagesFlow do
                 uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
                 next: '65a2e01a-57dc-4702-8e41-ed8f9921ac7d',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '91965137-99bd-4bcf-b9c3-61afaa7fc5c0',
+                previous_conditional_uuid: '91965137-99bd-4bcf-b9c3-61afaa7fc5c0',
                 thumbnail: 'text',
                 url: 'page-c'
               },
@@ -1469,7 +1469,7 @@ RSpec.describe PagesFlow do
                 uuid: '3a584d15-6805-4a21-bc05-b61c3be47857',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '10396fae-c28c-445c-a633-14d6439271a8',
+                previous_conditional_uuid: '10396fae-c28c-445c-a633-14d6439271a8',
                 thumbnail: 'text',
                 url: 'page-g'
               },
@@ -1546,7 +1546,7 @@ RSpec.describe PagesFlow do
                 uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
                 next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
                 previous_uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-                conditional_uuid: 'a2312258-bcbe-48b0-b30c-37d51caaf756',
+                previous_conditional_uuid: 'a2312258-bcbe-48b0-b30c-37d51caaf756',
                 thumbnail: 'text',
                 url: 'page-k'
               },
@@ -1708,7 +1708,7 @@ RSpec.describe PagesFlow do
                 uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
                 next: 'e337070b-f636-49a3-a65c-f506675265f0',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: 'b65ad907-d415-4139-8955-9e9a3d119b50',
+                previous_conditional_uuid: 'b65ad907-d415-4139-8955-9e9a3d119b50',
                 thumbnail: 'text',
                 url: 'page-e'
               },
@@ -1880,7 +1880,7 @@ RSpec.describe PagesFlow do
                 uuid: '37a94466-97fa-427f-88b2-09b369435d0d',
                 next: '13ecf9bd-5064-4cad-baf8-3dfa091928cb',
                 previous_uuid: '09e91fd9-7a46-4840-adbc-244d545cfef7',
-                conditional_uuid: '2d87a4bf-d532-48f5-956c-31ba5d046f63',
+                previous_conditional_uuid: '2d87a4bf-d532-48f5-956c-31ba5d046f63',
                 thumbnail: 'text',
                 url: 'page-e'
               },
@@ -1965,7 +1965,7 @@ RSpec.describe PagesFlow do
                 uuid: 'be130ac1-f33d-4845-807d-89b23b90d205',
                 next: '2c7deb33-19eb-4569-86d6-462e3d828d87',
                 previous_uuid: 'ffadeb22-063b-4e4f-9502-bd753c706b1d',
-                conditional_uuid: 'b4eaf825-a523-4372-a15b-072b016b0ead',
+                previous_conditional_uuid: 'b4eaf825-a523-4372-a15b-072b016b0ead',
                 thumbnail: 'text',
                 url: 'page-k'
               },
