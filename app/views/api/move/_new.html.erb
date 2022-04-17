@@ -1,4 +1,4 @@
-<div class="component-dialog-api-request">
+<div class="component-dialog-api-request" id="move_targets_list">
   <%= form_for @move, url: api_service_flow_move_path(service.service_id, @move.to_move_uuid) do |f| %>
     <div class="govuk-form-group ">
       <%= f.hidden_field :previous_flow_uuid, value: @move.previous_flow_uuid %>

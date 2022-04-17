@@ -32,7 +32,7 @@ RSpec.describe Move do
       end
     end
 
-    context 'when moving a page would not cause stocked branches' do
+    context 'when moving a page would not cause stacked branches' do
       let(:to_move_uuid) { 'cf6dc32f-502c-4215-8c27-1151a45735bb' } # Page B
       let(:previous_flow_uuid) { service.start_page.uuid }
       let(:expected_partial_path) { 'new' }
@@ -148,7 +148,7 @@ RSpec.describe Move do
         expect(previous_flow_target[:selected]).to be_truthy
       end
 
-      it 'sets the selected property to false when ' do
+      it 'sets the selected property to false when previous page has not been matched' do
         other_targets.each do |target|
           expect(target[:selected]).to be_falsey
         end

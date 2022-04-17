@@ -96,20 +96,31 @@ class EditorApp < SitePrism::Page
   element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
+  element :move_page_link, :link, I18n.t('actions.move_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :link, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
 
+  def main_flow_titles
+    flow_titles(main_flow)
+  end
+
   def unconnected_flow
+    flow_titles(detached_flow)
+  end
+
+  def flow_titles(flow_items)
     find('#main-content', visible: true)
-    flow = detached_flow.map { |element| element.text.gsub("Edit:\n", '').split("\n") }
-    flow.flatten.uniq.reject { |f| f == I18n.t('pages.create') }
+    flow = flow_items.map { |element| element.text.gsub("Edit:\n", '').split("\n").uniq }
+    flow.flatten.reject do |title|
+      title == I18n.t('pages.create') || title == I18n.t('pages.actions')
+    end
   end
 
   def flow_thumbnail(title)
     preview_page_images.find { |p| p.text.include?(title) }
   end
-  
+
   def flow_article(title)
     flow_items.find { |p| p.text.include?(title) }
   end
@@ -196,6 +207,7 @@ class EditorApp < SitePrism::Page
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
 
+  elements :main_flow, '#flow-overview .flow-item'
   elements :detached_flow, '.flow-detached-group .flow-item'
 
   def edit_service_link(service_name)

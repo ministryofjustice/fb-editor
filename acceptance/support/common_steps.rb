@@ -348,13 +348,11 @@ module CommonSteps
   end
 
   def and_I_click_on_the_page_menu(flow_title)
-    editor.service_name.click
     editor.flow_thumbnail(flow_title).hover
     and_I_click_on_the_three_dots
   end
 
   def and_I_click_on_the_branching_point_menu(branch_title)
-    editor.service_name.click
     editor.hover_branch(branch_title)
     and_I_click_on_the_three_dots
   end

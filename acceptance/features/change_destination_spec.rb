@@ -84,6 +84,7 @@ feature 'Deleting page' do
         'Page g',
         'Branching point 2',
         'Question 2 contains Thor',
+        'Otherwise',
         'Page h',
         'Page i',
         'Page j'
