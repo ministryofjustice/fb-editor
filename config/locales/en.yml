@@ -67,6 +67,7 @@ en:
 
   partials:
     header:
+      admin: Admin
       forms: Your forms
       sign_out: Sign out %{user_name}
       user_guide: "User guide"
@@ -77,7 +78,6 @@ en:
       lede: Prototype, test and publish online forms quickly and easily
       body: 'To find out more about MoJ Forms, email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or <a href="https://app.slack.com/client/T02DYEB3A/CE26QEL1Z">ask us a question on Slack</a>.'
       callout: You will need a @digital.justice.gov.uk or @justice.gov.uk email address to use MoJ Forms.
-      admin: Admin
       sign_in: Sign in
   auth:
     existing_user:
@@ -88,6 +88,9 @@ en:
     signup_not_allowed:
       heading: 'Unable to sign in'
       body: 'You cannot sign in with that email address'
+    unauthorised:
+      heading: You don't have access to that page
+      body: Contact the form owner or the MoJ Forms team for help.
   actions:
     edit: 'Edit'
     save: 'Save'
