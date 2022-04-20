@@ -26,20 +26,31 @@ const utilities = require('./utilities');
  *
  * {
  *   activator: HTML node that activated the initial request and resulting dialog
+ *
  *   build: A function that will run just before the dialog is created.
  *          This function is passed the API response HTML wrapped in a jQuery object.
+ *
  *   buttons: Two element Array containing objects used for passing to the jQueryUI dialog.
- *            The two elements are of the construction:
+ *
+ *            Do not include config.closeOnClickSelector option when using this one.
+ *            User of closeOnClickSelector will cause constructor to bypass config.buttons.
+ *
+ *            Each array element should be of the construction:
  *            {
  *               text: "This is used for button text",
  *               click: function(dialog) {
  *                 // an action to run on click that receives the DialogApiRequest instance as an argument.
  *               }
  *            }
+ *
  *   closeOnClickSelector: jQuery selector to find elements that will close the dialog on their click event.
+ *                         You need this option if you don't pass in any buttons (see above) through config.
+ *                         This is useful when target elements are in response HTML.
  * }
  **/
 class DialogApiRequest {
+  #config;
+
   constructor(url, config) {
     var dialog = this;
     var conf = utilities.mergeObjects({
@@ -50,7 +61,7 @@ class DialogApiRequest {
       dialog.$node = $(response);
 
       // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction(dialog._config.build, dialog);
+      utilities.safelyActivateFunction(dialog.#config.build, dialog);
 
       dialog.$node.addClass("DialogApiRequest");
       dialog.$node.data("instance", this);
@@ -62,6 +73,9 @@ class DialogApiRequest {
         resizable: false
       });
     });
+
+    this.$node = $(); // Should be overwritten on successful GET
+    this.#config = conf;
 
     jxhr.done(function() {
       if(conf.closeOnClickSelector) {
@@ -75,11 +89,11 @@ class DialogApiRequest {
         dialog.$node.dialog("option", "buttons",
           [
             {
-              text: dialog._config.buttons.length > 0 && dialog._config.buttons[0].text || "ok",
+              text: dialog._config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
               click: () => {
                 // Attempt to run any passed button.click action.
-                if(dialog._config.buttons.length > 0) {
-                  utilities.safelyActivateFunction(dialog._config.buttons[0].click, dialog);
+                if(dialog.#config.buttons.length > 0) {
+                  utilities.safelyActivateFunction(dialog.#config.buttons[0].click, dialog);
                 }
 
                 // Make sure the dialog closes
@@ -87,11 +101,11 @@ class DialogApiRequest {
               }
             },
             {
-              text: dialog._config.buttons.length > 0 && dialog._config.buttons[1].text || "cancel",
+              text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[1].text || "cancel",
               click: () => {
                 // Attempt to run any passed button.click action.
-                if(dialog._config.buttons.length > 1) {
-                  utilities.safelyActivateFunction(dialog._config.buttons[1].click, dialog);
+                if(dialog.#config.buttons.length > 1) {
+                  utilities.safelyActivateFunction(dialog.#config.buttons[1].click, dialog);
                 }
 
                 // Make sure the dialog closes
@@ -102,9 +116,6 @@ class DialogApiRequest {
         );
       }
     });
-
-    this.$node = $(); // Should be overwritten on successful GET
-    this._config = conf;
   }
 
   open() {
