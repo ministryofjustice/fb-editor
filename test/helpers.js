@@ -41,7 +41,26 @@ class jQueryGetOverride {
 }
 
 
+/* Due to jQueryUI Dialog we cannot identify the added buttons
+ * (they have no class, etc) but we can loop over all buttons
+ * to match text we seek to get a 'best guess' type of test.
+ **/
+function findButtonByText($dialog, text) {
+  var $buttons = $dialog.find(".ui-button");
+  var $button = $(); // Reduce errors by returning blank jQuery object when nothing found.
+  $buttons.each(function() {
+    var $this = $(this);
+    if($this.text() == text) {
+      $button = $this;
+      return false;
+    }
+  });
+  return $button;
+}
+
+
 
 module.exports = {
-  jQueryGetOverride: jQueryGetOverride
+  jQueryGetOverride: jQueryGetOverride,
+  findButtonByText: findButtonByText
 }
