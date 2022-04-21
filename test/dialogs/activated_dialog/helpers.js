@@ -1,4 +1,5 @@
 const ActivatedDialog = require("../../../app/javascript/src/component_activated_dialog.js");
+const GlobalHelpers = require("../../helpers.js");
 
 const constants = {
   CLASSNAME_COMPONENT: "ActivatedDialog",
@@ -87,28 +88,11 @@ function teardownView() {
 }
 
 
-/* Due to jQueryUI Dialog we cannot identify the added buttons
- * (they have no class, etc) but we can loop over all buttons
- * to match text we seek to get a 'best guess' type of test.
- **/
-function findButtonByText($dialog, text) {
-  var $buttons = $dialog.find(".ui-button");
-  var $button;
-  $buttons.each(function() {
-    var $this = $(this);
-    if($this.text() == text) {
-      $button = $this;
-      return false;
-    }
-  });
-  return $button;
-}
-
 
 module.exports = {
   constants: constants,
   createDialog: createDialog,
   setupView: setupView,
   teardownView: teardownView,
-  findButtonByText: findButtonByText
+  findButtonByText: GlobalHelpers.findButtonByText
 }
