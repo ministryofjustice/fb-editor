@@ -29,7 +29,7 @@ describe("DialogApiRequest", function() {
       created = {};
     });
 
-    it.only("should have the basic HTML in place", function() {
+    it("should have the basic HTML in place", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       var $container = $dialog.parent('[role=dialog]');
 
@@ -38,8 +38,9 @@ describe("DialogApiRequest", function() {
       expect($dialog.hasClass("component-dialog")).to.be.true;
     });
 
-    it("should have the component class name present", function() {
-      var $container = created.$node.parent('[role=dialog]');
+    it.only("should have the component class name present", function() {
+      var $dialog = $("#" + c.COMPONENT_ID);
+      var $container = $dialog.parent('[role=dialog]');
       expect($container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
