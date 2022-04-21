@@ -52,7 +52,20 @@ describe("DialogApiRequest", function() {
       expect($container.hasClass(c.CLASSNAME_2));
     });
 
-    it.only("should not use config.buttons when using config.closeOnClickSelector", function() {
+    it.only("should make the $node public", function() {
+      var $dialog = $("#" + c.COMPONENT_ID);
+      expect(created.dialog.$node).to.exist;
+      expect(created.dialog.$node.length).to.equal(1);
+      expect(created.dialog.$node.get(0)).to.equal($dialog.get(0));
+    });
+
+    it("should make the instance available as data on the $node", function() {
+      var $dialog = $("#" + c.COMPONENT_ID);
+      var $container = $dialog.parent('[role=dialog]');
+      expect($dialog.$node.data("instance")).to.equal(created.dialog);
+    });
+
+    it("should not use config.buttons when using config.closeOnClickSelector", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       var $buttonInTemplate = $dialog.find("." + CLASSNAME_BUTTON_TEMPLATE);
       var $buttonInConfig = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
@@ -60,25 +73,6 @@ describe("DialogApiRequest", function() {
       expect($buttons.length).to.equal(1);
       expect($buttonInTemplate.length).to.equal(1);
       expect($buttonInConfig.length).to.equal(0);
-    });
-
-    it("should use config.cancelText as button text", function() {
-      var $dialog = created.$node.parent('[role=dialog]');
-      var $button = helpers.findButtonByText($dialog, c.TEXT_BUTTON_CANCEL);
-      expect($button).to.exist;
-      expect($button.length).to.equal(1);
-      expect($button.text()).to.equal(c.TEXT_BUTTON_CANCEL);
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      var $container = created.$node.parent('[role=dialog]');
-      expect(created.$node.data("instance")).to.equal(created.dialog);
-    });
-
-    it("should make the $node public", function() {
-      expect(created.dialog.$node).to.exist;
-      expect(created.dialog.$node.length).to.equal(1);
-      expect(created.dialog.$node.get(0)).to.equal(created.$node.get(0));
     });
 
     it("should make the activator public", function() {
