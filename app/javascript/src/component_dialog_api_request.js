@@ -93,7 +93,7 @@ class DialogApiRequest {
         dialog.$node.dialog("option", "buttons",
           [
             {
-              text: dialog._config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
+              text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
               click: () => {
                 // Attempt to run any passed button.click action.
                 if(dialog.#config.buttons.length > 0) {

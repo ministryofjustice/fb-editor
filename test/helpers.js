@@ -25,7 +25,7 @@ class jQueryGetOverride {
           self.#done();
           ready();
         }
-      }, 100);
+      }, 100); // Don't need much here. Just adding a little to simulate asynchronous delay
       return self;
     }
   }

@@ -4,9 +4,8 @@ describe("DialogApiRequest", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
 
-  describe("Component without buttons", function() {
+  describe("Component", function() {
     // Note: Due to component makeup, the component is actually the
     // parent/container element to original target $node.
     var created;
@@ -15,13 +14,10 @@ describe("DialogApiRequest", function() {
       var response = `<div class="component component-dialog" id="` + c.COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
-                        <button class="` + CLASSNAME_BUTTON_TEMPLATE + `">Text in template button</button>
                       </div>`;
 
       helpers.setupView();
-      created = helpers.createDialog(response, done, {
-        closeOnClickSelector: "." + CLASSNAME_BUTTON_TEMPLATE
-      });
+      created = helpers.createDialog(response, done);
     });
 
     after(function() {
@@ -70,15 +66,40 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    it("should not use config.buttons when using config.closeOnClickSelector", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      var $buttonInTemplate = $dialog.find("." + CLASSNAME_BUTTON_TEMPLATE);
-      var $buttonInConfig = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
-      var $buttons = $dialog.find("button");
-      expect($buttons.length).to.equal(1);
-      expect($buttonInTemplate.length).to.equal(1);
-      expect($buttonInConfig.length).to.equal(0);
-    });
-  });
+    describe("without buttons", function() {
+      const COMPONENT_ID = "dialog-without-buttonss";
+      const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
+      var createdWithoutButtons;
 
+      before(function(done) {
+        var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
+                        <h3>Heading content here</h3>
+                        <p>Message content here</p>
+                        <button class="button-in-template">Text for template button</button>
+                      </div>`;
+
+        helpers.setupView();
+        createdWithoutButtons = helpers.createDialog(response, done, {
+          closeOnClickSelector: ".button-in-template"
+        });
+      });
+
+      after(function() {
+        helpers.teardownView();
+        createdWithoutButtons.$node.remove();
+        createdWithoutButtons = null;
+      });
+
+      it("should not use config.buttons when using config.closeOnClickSelector", function() {
+        var $dialog = $("#" + COMPONENT_ID);
+        var $buttonInTemplate = $dialog.find("." + CLASSNAME_BUTTON_TEMPLATE);
+        var $buttonInConfig = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
+        var $buttons = $dialog.find("button");
+        expect($buttons.length).to.equal(1);
+        expect($buttonInTemplate.length).to.equal(1);
+        expect($buttonInConfig.length).to.equal(0);
+      });
+    });
+
+  });
 });
