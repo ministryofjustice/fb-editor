@@ -25,7 +25,7 @@ feature 'Visiting admin pages' do
     then_I_should_not_see_the_admin_link
     admin_pages.each do |path|
       given_I_visit_an_admin_page(path)
-      then_I_should_be_redirected_to_the_services_page
+      then_I_should_be_redirected_to_the_unauthorised_page
     end
   end
 
@@ -39,8 +39,14 @@ feature 'Visiting admin pages' do
     expect(page.text).to include(I18n.t('home.show.sign_in'))
   end
 
+  def then_I_should_be_redirected_to_the_unauthorised_page
+    expect(page.current_path).to eq('/unauthorised')
+    expect(page.text).to include(I18n.t('auth.unauthorised.heading'))
+    expect(page.text).to include(I18n.t('auth.unauthorised.body'))
+  end
+
   def then_I_should_not_see_the_admin_link
-    expect(page.text).not_to include(I18n.t('home.show.admin'))
+    expect(page.text).not_to include(I18n.t('partials.header.admin'))
   end
 
   def then_I_should_be_redirected_to_the_services_page

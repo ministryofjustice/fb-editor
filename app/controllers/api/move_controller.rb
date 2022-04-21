@@ -1,5 +1,5 @@
 module Api
-  class MoveController < BranchesController
+  class MoveController < ApiController
     def targets
       @move = Move.new(base_params)
       render :new, layout: false

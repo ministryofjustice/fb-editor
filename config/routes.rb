@@ -21,11 +21,12 @@ Rails.application.routes.draw do
   get '/metrics', to: 'metrics#show'
 
   # Auth0 routes
-  get "/auth/auth0/callback" => "auth0#callback", as: 'auth0_callback'
-  get "/auth/failure" => "auth0#failure"
+  get "/auth/auth0/callback", to: "auth0#callback", as: 'auth0_callback'
+  get "/auth/failure", to: "auth0#failure"
 
-  get '/signup_not_allowed' => 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
-  get '/signup_error/:error_type' => 'user_sessions#signup_error', as: 'signup_error'
+  get '/signup_not_allowed', to: 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
+  get '/signup_error/:error_type', to: 'user_sessions#signup_error', as: 'signup_error'
+  get '/unauthorised', to: 'user_sessions#unauthorised'
   resource :user_session, only: [:destroy]
 
   if Rails.env.development?

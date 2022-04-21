@@ -18,7 +18,7 @@ module Admin
     before_action :authenticate_admin
 
     def authenticate_admin
-      redirect_to login_path unless moj_forms_dev? || moj_forms_team?
+      redirect_to unauthorised_path unless moj_forms_dev? || moj_forms_team?
     end
 
     def published(environment)

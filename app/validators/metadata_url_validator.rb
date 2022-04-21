@@ -9,6 +9,7 @@ class MetadataUrlValidator < ActiveModel::EachValidator
     metrics
     ping
     reserved
+    unauthorised
   ].freeze
 
   def validate_each(record, attribute, value)

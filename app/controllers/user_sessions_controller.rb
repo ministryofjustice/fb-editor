@@ -14,4 +14,6 @@ class UserSessionsController < ApplicationController
   def signup_error
     @error_type = params[:error_type]
   end
+
+  def unauthorised; end
 end
