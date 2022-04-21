@@ -316,7 +316,7 @@ describe("QuestionMenu", function() {
       expect(menu.config).to.exist;
       expect(menu.config.activator_text).to.exist;
       expect(menu.config.activator_text).to.equal(ACTIVATOR_TEXT);
-      expect(menu.activator.$node.text()).to.equal(ACTIVATOR_TEXT);
+      expect(menu.activator.$node.children().last().text()).to.equal(ACTIVATOR_TEXT);
     });
 
     it("should apply config.activator_classname to any created activator", function() {

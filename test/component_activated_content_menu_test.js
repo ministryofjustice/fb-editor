@@ -320,7 +320,7 @@ describe("ContentMenu", function() {
       expect(content.menu.config).to.exist;
       expect(content.menu.config.activator_text).to.exist;
       expect(content.menu.config.activator_text).to.equal(ACTIVATOR_TEXT);
-      expect(content.menu.activator.$node.text()).to.equal(ACTIVATOR_TEXT);
+      expect(content.menu.activator.$node.children().last().text()).to.equal(ACTIVATOR_TEXT);
     });
 
     it("should apply config.activator_classname to any created activator", function() {

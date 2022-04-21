@@ -18,7 +18,9 @@
  *                       ActivatedMenuActivator.  If none is provided, an element
  *                       will be created and inserted.
  *  - activator_classname (string) class(es) to be added to the created activator
- *  - activator_text (string) accessible label for the created activator element
+ *  - activator_text (string) accessible (visually-hidden) label for the created activator element
+ *  - activator_icon (string) the icon for the activator button, will be hidden
+ *                            from screen-readers
  *  - container_id (string) an HTML id attribute to be applied to the generated
  *                          ActivatedMenuContainer element.  If none is provided 
  *                          a unique id will be generated.
@@ -341,6 +343,7 @@ class ActivatedMenu {
       this.#setMenuOpenPosition();
     }
   }
+
 
   /*
    * Removes any position values that have occurred as a result of

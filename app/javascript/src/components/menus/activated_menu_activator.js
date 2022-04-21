@@ -35,9 +35,13 @@ class ActivatedMenuActivator {
     this.#config = config;
     this.#className = "ActivatedMenuActivator";
     this.menu = menu;
+    
+    if(!this.#config.hasOwnProperty('activator_icon')) {
+      this.#config['activator_icon'] = '...';//'...';
+    }
+    
     this.$node = this.#insertNode($node);
     this.$node.data("instance", this);
-    
     this.#addAttributes();
     this.#bindEventHandlers();
   }
@@ -64,10 +68,12 @@ class ActivatedMenuActivator {
   #createNode() {
       const $node = $(
         createElement("button", 
-                      this.#config.activator_text, 
+                      undefined, 
                       this.#config.activator_classname
         )
       );
+      $node.append('<span class="ActivatedMenuActivator__icon" aria-hidden="true">'+this.#config.activator_icon+'</span>');
+      $node.append('<span class="govuk-visually-hidden">'+this.#config.activator_text+'</span>');
       return $node;
   }
 

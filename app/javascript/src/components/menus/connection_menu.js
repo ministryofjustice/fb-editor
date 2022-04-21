@@ -11,7 +11,8 @@ class ConnectionMenu extends ActivatedMenu {
     super($node, mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
-      activator_text: $node.data("activator-text")
+      activator_text: $node.data("activator-text"),
+      activator_icon: $node.data("activator-icon")
     }, config));
 
     // Register event handler for selection of menu item.

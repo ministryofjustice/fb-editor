@@ -20,21 +20,21 @@
 
 .ActivatedMenuActivator {
   @include icon_button;
+  text-indent: 0;
 
-  &:after {
-    content: "...";
-    display: block;
+  &__icon {
+    position: relative;
+    display:inline-block;
+    top: -5px;
+    left: 1px;
+    width: 100%;
+    text-align: center;
     font-weight: bold;
     letter-spacing: 2px;
-    left: 1px;
-    position: relative;
-    text-indent: 0;
-    top: -27px;
   }
 }
 
 .ActivatedMenu {
-
 
   a, span {
     @include button_type_link;

@@ -13,12 +13,13 @@ describe("ActivatedMenu", function() {
   const TEST_SELECTION_ELEMENT_ID = "component-activated-menu-test-selection-event-element";
   const TEST_SELECTION_EVENT_NAME = "ActivatedMenuTestSelectionEventName";
   var menu;
+  var $ul;
 
   before(function() {
     // jQuery is present in document because the
     // components use it so we can use it here.
 
-    var $ul = $(`<ul>
+    $ul = $(`<ul>
                    <li>
                      <span>Item 1a</span>
                      <ul>
@@ -274,6 +275,7 @@ describe("ActivatedMenu", function() {
   describe("ActivatedMenuActivator (created)", function() {
     const ACTIVATOR_CLASSNAME = "activated-menu-created-activator-classname";
     const ACTIVATOR_TEXT = "activated menu text here";
+    const ACTIVATOR_ICON = "...";
     var menu_creating_activator;
 
     before(function() {
@@ -314,7 +316,24 @@ describe("ActivatedMenu", function() {
       expect(menu_creating_activator.config.activator_text).to.exist;
       expect(typeof menu_creating_activator.config.activator_text).to.equal("string");
       expect(menu_creating_activator.config.activator_text).to.equal(ACTIVATOR_TEXT);
-      expect(menu_creating_activator.activator.$node.text()).to.equal(ACTIVATOR_TEXT);
+      expect(menu_creating_activator.activator.$node.children().last().text()).to.equal(ACTIVATOR_TEXT);
+    });
+
+    it("should use default icon when none passed in", function() {
+      expect(menu_creating_activator.config.activator_icon).to.exist;
+      expect(menu_creating_activator.config.activator_icon).to.equal(ACTIVATOR_ICON);
+      expect(menu_creating_activator.activator.$node.children().first().text()).to.equal(ACTIVATOR_ICON);
+    });
+    it("should use custom icon when passed in", function() {
+      var menu_creating_activator = new ActivatedMenu ($ul, {
+        activator_classname: ACTIVATOR_CLASSNAME,
+        activator_text: ACTIVATOR_TEXT,
+        activator_icon: "+",
+      });
+      expect(menu_creating_activator.config.activator_icon).to.exist;
+      expect(menu_creating_activator.config.activator_icon).to.equal('+');
+      expect(menu_creating_activator.activator.$node.children().first().text()).to.equal('+');
+
     });
 
     it("should apply config.activator_classname to any created activator", function() {
