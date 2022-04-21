@@ -17,7 +17,7 @@ feature 'Edit exit pages' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
     and_I_add_a_content_page('Content Page')
   end
 

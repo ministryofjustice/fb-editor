@@ -7,12 +7,10 @@ feature 'New branch page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'no_branches_fixture')
   end
 
   scenario 'when editing the branch page' do
-    given_I_add_all_pages_for_a_form_with_branching
-    and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')
@@ -97,10 +95,10 @@ feature 'New branch page' do
     )
 
     then_I_should_see_the_field_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][field]', 
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
       'Hiking'
     )
-    
+
     and_I_choose_an_option(
       'branch[conditionals_attributes][0][expressions_attributes][0][field]',
       'Sewing'
@@ -108,9 +106,9 @@ feature 'New branch page' do
 
     when_I_save_my_changes
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')
-     
+
     then_I_should_see_the_field_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][field]', 
+      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
       'Hiking'
     )
 
@@ -118,9 +116,6 @@ feature 'New branch page' do
   end
 
   scenario 'when editing with unconnected pages' do
-    given_I_add_all_pages_for_a_form_with_branching
-    and_I_return_to_flow_page
-
     and_I_want_to_add_branching(page_url)
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')
