@@ -38,14 +38,15 @@ describe("DialogApiRequest", function() {
       expect($dialog.hasClass("component-dialog")).to.be.true;
     });
 
-    it.only("should have the component class name present", function() {
+    it("should have the component class name present", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       var $container = $dialog.parent('[role=dialog]');
       expect($container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    it("should apply CSS classnames passed in config", function() {
-      var $container = created.$node.parent('[role=dialog]');
+    it.only("should apply CSS classnames passed in config", function() {
+      var $dialog = $("#" + c.COMPONENT_ID);
+      var $container = $dialog.parent('[role=dialog]');
       expect($container.hasClass(c.CLASSNAME_1));
       expect($container.hasClass(c.CLASSNAME_2));
     });
