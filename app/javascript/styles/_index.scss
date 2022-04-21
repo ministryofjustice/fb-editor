@@ -656,8 +656,9 @@ html {
   }
   
   &:after {
-    content: '+';
+    content: "\271A";
     top: -22px;
+    font-weight: normal;
   }
 }
 
