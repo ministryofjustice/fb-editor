@@ -63,7 +63,6 @@ class DialogApiRequest {
       // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
       utilities.safelyActivateFunction(dialog.#config.build, dialog);
 
-      dialog.$node.addClass("DialogApiRequest");
       dialog.$node.data("instance", this);
       dialog.$node.dialog({
         classes: conf.classes,
@@ -72,9 +71,14 @@ class DialogApiRequest {
         modal: true,
         resizable: false
       });
+
+      // Now jQueryUI dialog is in place let's initialise container and put class on it.
+      dialog.$container = dialog.$node.parents(".ui-dialog");
+      dialog.$container.addClass("DialogApiRequest");
     });
 
     this.$node = $(); // Should be overwritten on successful GET
+    this.$container = $(); // Should be overwritten on successful GET
     this.#config = conf;
 
     jxhr.done(function() {
