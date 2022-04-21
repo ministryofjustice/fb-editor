@@ -59,9 +59,15 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.$node.get(0)).to.equal($dialog.get(0));
     });
 
-    it.only("should make the instance available as data on the $node", function() {
+    it("should make the instance available as data on the $node", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       expect($dialog.data("instance")).to.equal(created.dialog);
+    });
+
+    it("should make the $container public", function() {
+      expect(created.dialog.$container).to.exist;
+      expect(created.dialog.$container.length).to.equal(1);
+      expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
     it("should not use config.buttons when using config.closeOnClickSelector", function() {
@@ -72,13 +78,6 @@ describe("DialogApiRequest", function() {
       expect($buttons.length).to.equal(1);
       expect($buttonInTemplate.length).to.equal(1);
       expect($buttonInConfig.length).to.equal(0);
-    });
-
-    it("should make the activator public", function() {
-      expect(created.dialog.activator).to.exist;
-      expect(created.dialog.activator.$node).to.exist;
-      expect(created.dialog.activator.$node.length).to.equal(1);
-      expect(created.dialog.activator.$node.hasClass("DialogActivator")).to.be.true;
     });
   });
 
