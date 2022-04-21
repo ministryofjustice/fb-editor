@@ -52,17 +52,16 @@ describe("DialogApiRequest", function() {
       expect($container.hasClass(c.CLASSNAME_2));
     });
 
-    it.only("should make the $node public", function() {
+    it("should make the $node public", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       expect(created.dialog.$node).to.exist;
       expect(created.dialog.$node.length).to.equal(1);
       expect(created.dialog.$node.get(0)).to.equal($dialog.get(0));
     });
 
-    it("should make the instance available as data on the $node", function() {
+    it.only("should make the instance available as data on the $node", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
-      var $container = $dialog.parent('[role=dialog]');
-      expect($dialog.$node.data("instance")).to.equal(created.dialog);
+      expect($dialog.data("instance")).to.equal(created.dialog);
     });
 
     it("should not use config.buttons when using config.closeOnClickSelector", function() {

@@ -63,7 +63,7 @@ class DialogApiRequest {
       // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
       utilities.safelyActivateFunction(dialog.#config.build, dialog);
 
-      dialog.$node.data("instance", this);
+      dialog.$node.data("instance", dialog);
       dialog.$node.dialog({
         classes: conf.classes,
         closeOnEscape: true,
