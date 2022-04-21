@@ -103,7 +103,7 @@ class EditorApp < SitePrism::Page
   def unconnected_flow
     find('#main-content', visible: true)
     flow = detached_flow.map { |element| element.text.gsub("Edit:\n", '').split("\n") }
-    flow.flatten.uniq.reject { |f| f == I18n.t('pages.create') }
+    flow.flatten.uniq.reject { |f| f == I18n.t('pages.create') || f == '+' }
   end
 
   def flow_thumbnail(title)
