@@ -8,6 +8,11 @@ environment.plugins.prepend('Provide',
   })
 );
 
+// resolve-url-loader must be used before sass-loader
+environment.loaders.get('sass').use.splice(-1, 0, {
+  loader: 'resolve-url-loader'
+});
+
 const aliasConfig = { 'jquery': 'jquery/src/jquery', 'jquery-ui': 'jquery-ui-dist/jquery-ui.js' };
 environment.config.set('resolve.alias', aliasConfig);
 
