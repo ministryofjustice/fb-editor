@@ -138,8 +138,8 @@ class DialogApiRequest {
 
   close() {
     // Attempt to refocus on original activator
-    if(this._config.activator) {
-      this._config.activator.focus();
+    if(this.#config.activator) {
+      this.#config.activator.focus();
     }
 
     this.$node.dialog("close");
