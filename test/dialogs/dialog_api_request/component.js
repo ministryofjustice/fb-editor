@@ -66,6 +66,19 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
+    describe.only("with buttons", function() {
+      it("should use config.buttons when not using config.closeOnClickSelector", function() {
+        var $dialog = $("#" + c.COMPONENT_ID);
+        var $container = $dialog.parent('[role=dialog]');
+        var $buttonOk = helpers.findButtonByText($container, c.TEXT_BUTTON_OK);
+        var $buttonCancel = helpers.findButtonByText($container, c.TEXT_BUTTON_CANCEL);
+        var $buttons = $container.find("button"); // Includes 'Close' button
+        expect($buttons.length).to.equal(3);
+        expect($buttonOk.length).to.equal(1);
+        expect($buttonCancel.length).to.equal(1);
+      });
+    });
+
     describe("without buttons", function() {
       const COMPONENT_ID = "dialog-without-buttonss";
       const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
@@ -92,9 +105,10 @@ describe("DialogApiRequest", function() {
 
       it("should not use config.buttons when using config.closeOnClickSelector", function() {
         var $dialog = $("#" + COMPONENT_ID);
-        var $buttonInTemplate = $dialog.find("." + CLASSNAME_BUTTON_TEMPLATE);
-        var $buttonInConfig = helpers.findButtonByText($dialog, c.TEXT_BUTTON_OK);
-        var $buttons = $dialog.find("button");
+        var $container = $dialog.parent('[role=dialog]');
+        var $buttonInTemplate = $container.find("." + CLASSNAME_BUTTON_TEMPLATE);
+        var $buttonInConfig = helpers.findButtonByText($container, c.TEXT_BUTTON_OK);
+        var $buttons = $container.find("button");
         expect($buttons.length).to.equal(1);
         expect($buttonInTemplate.length).to.equal(1);
         expect($buttonInConfig.length).to.equal(0);
