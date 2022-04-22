@@ -57,8 +57,8 @@ en:
       go_to: 'Go to: '
       text: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
     move:
-      label: 'Moving the page "%{title}"'
-      lede: Moving to the page after
+      label: 'Move the page "%{title}"'
+      lede: 'Move to after:'
       button: Move
       you_cannot_move_this_page: 'You cannot move this page yet'
       stacked_branches_not_supported_message: 'Moving this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
