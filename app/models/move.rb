@@ -182,7 +182,10 @@ class Move
   end
 
   def update_default_next(to_update_uuid, new_default_next)
-    return if exit_page?(to_update_uuid)
+    # Exit pages have no default next.
+    # If the new_default_next is the same as the to_update_uuid then the resulting
+    # move would mean the page would be pointing to itself.
+    return if exit_page?(to_update_uuid) || to_update_uuid == new_default_next
 
     service.flow[to_update_uuid]['next']['default'] = new_default_next
   end

@@ -318,6 +318,19 @@ RSpec.describe Move do
           end
         end
       end
+
+      context 'when moving a page would result in it pointing to itself' do
+        let(:latest_metadata) { metadata_fixture(:branching_11) }
+        let(:metadata_flow) { move.metadata['flow'] }
+        let(:to_move_uuid) { 'e31718ad-0ba7-4b45-81aa-d3081f423022' } # Page D
+        let(:previous_flow_uuid) { '66c9e581-942e-4a9e-93ec-343208a2f510' } # Page C
+        let(:target_uuid) { 'f55d002d-b2c1-4dcc-87b7-0da7cbc5c87c' } # Branching Point 1
+        let(:page_e) { '007f4f35-8236-40cc-866c-cc2c27c33949' }
+
+        it 'does not update the default next of the page being moved' do
+          expect(metadata_flow[to_move_uuid]['next']['default']).to eq(page_e)
+        end
+      end
     end
   end
 end
