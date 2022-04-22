@@ -66,7 +66,7 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    describe.only("with buttons", function() {
+    describe("using template buttons", function() {
       it("should use config.buttons when not using config.closeOnClickSelector", function() {
         var $dialog = $("#" + c.COMPONENT_ID);
         var $container = $dialog.parent('[role=dialog]');
@@ -79,7 +79,7 @@ describe("DialogApiRequest", function() {
       });
     });
 
-    describe("without buttons", function() {
+    describe("using generated buttons", function() {
       const COMPONENT_ID = "dialog-without-buttonss";
       const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
       var createdWithoutButtons;
@@ -108,8 +108,8 @@ describe("DialogApiRequest", function() {
         var $container = $dialog.parent('[role=dialog]');
         var $buttonInTemplate = $container.find("." + CLASSNAME_BUTTON_TEMPLATE);
         var $buttonInConfig = helpers.findButtonByText($container, c.TEXT_BUTTON_OK);
-        var $buttons = $container.find("button");
-        expect($buttons.length).to.equal(1);
+        var $buttons = $container.find("button"); // Will include the Dialog's Close (X) button.
+        expect($buttons.length).to.equal(2);
         expect($buttonInTemplate.length).to.equal(1);
         expect($buttonInConfig.length).to.equal(0);
       });
