@@ -645,7 +645,6 @@ html {
 .ConnectionMenuActivator {
   display: inline-block;
   left: calc(100% + 10px);
-  // opacity: 0;
   overflow: hidden;
   position: absolute;
   top: 46px;
@@ -655,10 +654,15 @@ html {
     top: -17px;
   }
   
-  &:after {
-    content: "\271A";
-    top: -22px;
-    font-weight: normal;
+  &::after {
+    content: url('../images/plus-blue.svg');
+    top: 0;
+  }
+  &:hover::after {
+    content: url('../images/plus-white.svg');
+  }
+  &:focus::after {
+    content:url('../images/plus-black.svg')
   }
 }
 
