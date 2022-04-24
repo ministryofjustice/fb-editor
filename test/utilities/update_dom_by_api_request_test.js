@@ -43,7 +43,7 @@ describe('utilities.updateDomByApiRequest', function() {
     });
   });
 
-  it('should place new element before target node', function() {
+  it('should place new element after target node', function() {
     var $targetNode = $(document.body).find("#" + targetId);
 
     // First check inserted node is not there.
