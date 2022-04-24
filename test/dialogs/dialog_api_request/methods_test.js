@@ -71,7 +71,41 @@ describe("DialogApiRequest", function() {
     });
 
     describe("using template buttons", function() {
-      it("should close dialog using found config.closeOnClickSelector elements");
+      const COMPONENT_ID = "dialog-without-buttonss";
+      const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
+      var createdWithoutButtons;
+
+      before(function(done) {
+        var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
+                        <h3>Heading content here</h3>
+                        <p>Message content here</p>
+                        <button class="button-in-template">Text for template button</button>
+                      </div>`;
+
+        helpers.setupView();
+        createdWithoutButtons = helpers.createDialog(response, done, {
+          closeOnClickSelector: ".button-in-template"
+        });
+      });
+
+      after(function() {
+        helpers.teardownView();
+        createdWithoutButtons.$node.remove();
+        createdWithoutButtons = null;
+      });
+
+      it("should close dialog using found config.closeOnClickSelector elements", function() {
+        var dialog = createdWithoutButtons.dialog;
+        var $button = dialog.$container.find(".button-in-template");
+
+        dialog.open();
+        expect(dialog.$node.dialog("isOpen")).to.be.true;
+        expect(dialog.state).to.equal("open");
+
+        $button.click();
+        expect(dialog.$node.dialog("isOpen")).to.be.false;
+        expect(dialog.state).to.equal("closed");
+      });
     });
 
   });
