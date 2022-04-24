@@ -35,7 +35,15 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.state).to.equal("closed");
     });
 
-    it("should open the dialog");
+    it("should open the dialog", function() {
+      expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+      expect(created.dialog.state).to.equal("closed");
+
+      created.dialog.open();
+      expect(created.dialog.$node.dialog("isOpen")).to.be.true;
+      expect(created.dialog.state).to.equal("open");
+    });
+
     it("should close dialog using standard close button");
 
     describe("using template buttons", function() {
