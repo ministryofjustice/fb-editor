@@ -9,9 +9,11 @@ describe('utilities.uniqueString', function() {
   });
 
   it('should return a string that include the passed string value', function() {
-    var str = 'mystringvalue';
-    expect(utilities.uniqueString(str).constructor).to.equal(String().constructor);
-    expect(typeof utilities.uniqueString(str)).to.equal("string");
+    var value = 'mystringvalue';
+    var str = utilities.uniqueString(value);
+    expect(str.constructor).to.equal(String().constructor);
+    expect(typeof str).to.equal("string");
+    expect(str).to.include(value);
   });
 
   it('should not return the same string value', function() {
