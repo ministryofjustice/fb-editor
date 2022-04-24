@@ -9,7 +9,7 @@ describe('utilities.maxHeight', function() {
     var $item3 = $("<p id=\"test-maxheight-item3\">width item 3");
     var $collection = $(); // empty jQuery collection.
 
-    // Add some widths...
+    // Add some heights...
     $item1.css({ height: "300px" });
     $item2.css({ height: "500px" });
     $item3.css({ height: "400px" });
