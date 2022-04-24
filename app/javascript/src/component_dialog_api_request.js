@@ -50,6 +50,7 @@ const utilities = require('./utilities');
  **/
 class DialogApiRequest {
   #config;
+  #state;
 
   constructor(url, config) {
     var dialog = this;
@@ -69,7 +70,9 @@ class DialogApiRequest {
         closeOnEscape: true,
         height: "auto",
         modal: true,
-        resizable: false
+        resizable: false,
+        open: function() { dialog.#state = "open"; },
+        close: function() { dialog.#state = "closed"; }
       });
 
       // Now jQueryUI dialog is in place let's initialise container and put class on it.
@@ -80,6 +83,7 @@ class DialogApiRequest {
     this.$node = $(); // Should be overwritten on successful GET
     this.$container = $(); // Should be overwritten on successful GET
     this.#config = conf;
+    this.#state = "closed";
 
     jxhr.done(function() {
       if(conf.closeOnClickSelector) {
@@ -122,6 +126,10 @@ class DialogApiRequest {
     });
   }
 
+  get state() {
+    return this.#state;
+  }
+
   open() {
     var $node = this.$node;
     this.$node.dialog("open");
@@ -141,7 +149,6 @@ class DialogApiRequest {
     if(this.#config.activator) {
       this.#config.activator.focus();
     }
-
     this.$node.dialog("close");
   }
 }
