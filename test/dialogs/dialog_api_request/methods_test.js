@@ -57,7 +57,17 @@ describe("DialogApiRequest", function() {
     });
 
     describe("using template buttons", function() {
-      it("should close dialog using found template 'cancel' button");
+      it("should close dialog using found generated 'cancel' button", function() {
+        var $buttons = created.dialog.$container.find("button");
+
+        created.dialog.open();
+        expect(created.dialog.$node.dialog("isOpen")).to.be.true;
+        expect(created.dialog.state).to.equal("open");
+
+        $buttons.last().click();
+        expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+        expect(created.dialog.state).to.equal("closed");
+      });
     });
 
     describe("using generated buttons", function() {
