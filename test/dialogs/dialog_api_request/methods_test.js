@@ -44,7 +44,17 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.state).to.equal("open");
     });
 
-    it("should close dialog using standard close button");
+    it("should close dialog using standard close button", function() {
+      var $close = created.dialog.$container.find(".ui-dialog-titlebar-close");
+
+      created.dialog.open();
+      expect(created.dialog.$node.dialog("isOpen")).to.be.true;
+      expect(created.dialog.state).to.equal("open");
+
+      $close.click();
+      expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+      expect(created.dialog.state).to.equal("closed");
+    });
 
     describe("using template buttons", function() {
       it("should close dialog using found template 'cancel' button");
