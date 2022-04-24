@@ -24,7 +24,7 @@ describe('utilities.updateDomByApiRequest', function() {
     $.get = get;
   });
 
-  it('should place new element after target node', function() {
+  it('should place new element inside (append to) target node', function() {
     var $targetNode = $(document.body).find("#" + targetId);
 
     // First check inserted node is not there.
