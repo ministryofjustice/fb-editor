@@ -66,7 +66,7 @@ describe("DialogApiRequest", function() {
       expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-    describe("using template buttons", function() {
+    describe("using generted buttons", function() {
       it("should use config.buttons when not using config.closeOnClickSelector", function() {
         var $dialog = $("#" + c.COMPONENT_ID);
         var $container = $dialog.parent('[role=dialog]');
@@ -79,7 +79,7 @@ describe("DialogApiRequest", function() {
       });
     });
 
-    describe("using generated buttons", function() {
+    describe("using template buttons", function() {
       const COMPONENT_ID = "dialog-without-buttonss";
       const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
       var createdWithoutButtons;
