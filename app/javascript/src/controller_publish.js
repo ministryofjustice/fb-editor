@@ -69,8 +69,10 @@ class PublishForm {
     var $content = $node.find("fieldset");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
+
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
+      selectorErrors: ".govuk-error-message",
       cancelText: app.text.dialogs.button_cancel,
       activatorText: $submit.val(),
       classes: {
@@ -79,11 +81,7 @@ class PublishForm {
     });
 
     this.$node = $node;
-    this.$errors = $(".govuk-error-message", $node);
-  }
 
-  hasError() {
-    return this.$errors.length > 0;
   }
 
   firstTimePublish() {
