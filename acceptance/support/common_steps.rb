@@ -47,6 +47,10 @@ module CommonSteps
   end
   alias_method :when_I_try_to_create_a_service_with_the_same_name, :given_I_have_a_service
 
+  def given_I_have_a_service_fixture(name: generate_service_name, fixture: nil)
+    visit admin_test_service_path(name, fixture)
+  end
+
   def given_I_have_another_service
     given_I_have_a_service(another_service_name)
   end
@@ -343,6 +347,16 @@ module CommonSteps
     editor.three_dots_button.click
   end
 
+  def and_I_click_on_the_page_menu(flow_title)
+    editor.flow_thumbnail(flow_title).hover
+    and_I_click_on_the_three_dots
+  end
+
+  def and_I_click_on_the_branching_point_menu(branch_title)
+    editor.hover_branch(branch_title)
+    and_I_click_on_the_three_dots
+  end
+
   def and_I_click_on_the_connection_menu
     find('#main-content', visible: true)
     editor.all('.connection-menu-activator').last.click
@@ -352,15 +366,6 @@ module CommonSteps
     within('.ui-dialog') do
       editor.delete_page_modal_button.click
     end
-  end
-
-  def then_I_should_only_see_three_options_on_page_menu
-    options = all('[role="menuitem"]').map(&:text)
-    expect(options).to eq([
-      I18n.t('actions.edit_page'),
-      I18n.t('actions.preview_page'),
-      I18n.t('actions.delete_page')
-    ])
   end
 
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
@@ -386,15 +391,13 @@ module CommonSteps
   end
 
   def and_I_delete_cya_page
-    editor.flow_thumbnail('Check your answers').hover
-    and_I_click_on_the_three_dots
+    and_I_click_on_the_page_menu('Check your answers')
     editor.delete_page_link.click
     and_I_click_delete
   end
 
   def when_I_delete_confirmation_page
-    editor.flow_thumbnail('Application complete').hover
-    and_I_click_on_the_three_dots
+    and_I_click_on_the_page_menu('Application complete')
     editor.delete_page_link.click
     and_I_click_delete
   end

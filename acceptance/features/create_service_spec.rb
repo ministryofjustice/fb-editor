@@ -129,9 +129,4 @@ feature 'Create a service' do
       ]
     )
   end
-
-  def when_I_click_the_three_dots_button_on_the_confirmation_page
-    editor.hover_preview('Application complete')
-    and_I_click_on_the_three_dots
-  end
 end

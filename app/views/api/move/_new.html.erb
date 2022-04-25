@@ -1,0 +1,32 @@
+<div class="component-dialog-api-request" id="move_targets_list">
+  <%= form_for @move, url: api_service_flow_move_path(service.service_id, @move.to_move_uuid) do |f| %>
+    <div class="govuk-form-group ">
+      <%= f.hidden_field :previous_flow_uuid, value: @move.previous_flow_uuid %>
+      <%= f.hidden_field :previous_conditional_uuid, value: @move.previous_conditional_uuid %>
+      <%= f.hidden_field :target_conditional_uuid, value: '' %>
+      <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
+      <p> <%= t('dialogs.move.lede') %></p>
+      <div class="govuk-form-group">
+        <select class="govuk-select" name="move[target_uuid]" id="move_target_uuid">
+          <% @move.targets.each do |target| %>
+            <% if target[:selected] %>
+              <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>" selected="selected">
+            <% else %>
+              <option value="<%= target[:target_uuid] %>" data-conditional-uuid="<%= target[:conditional_uuid] %>">
+            <% end %>
+              <%= target[:title] %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+    </div>
+
+    <button class="govuk-button fb-govuk-button">
+      <%= t('dialogs.move.button') %>
+    </button>
+
+    <button class="govuk-button govuk-button--secondary" type="button" >
+      <%= t('dialogs.button_cancel') %>
+    </button>
+  <% end %>
+</div>

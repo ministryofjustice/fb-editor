@@ -62,7 +62,7 @@ Rails.application.routes.draw do
     resources :services do
       resources :flow, param: :uuid, only: [] do
         resources :destinations, only: [:new, :create]
-        get '/move/(:previous_flow_uuid)', to: 'move#targets', as: :move
+        get '/move/(:previous_flow_uuid)/(:previous_conditional_uuid)', to: 'move#targets', as: :move
         post :move, to: 'move#change'
       end
 

@@ -29,9 +29,6 @@ feature 'Edit exit pages' do
     and_I_change_the_page_lede(exit_lede)
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_click_on_the_exit_page_three_dots
-    then_I_should_only_see_three_options_on_page_menu
-    and_I_return_to_flow_page #reload the page to get rid of the menu blocking link
     and_I_edit_the_page(url: exit_heading)
     then_I_see_the_updated_page_heading(exit_heading)
     then_I_see_the_updated_page_section_heading(exit_section_heading)

@@ -2,10 +2,16 @@ class Move
   include ActiveModel::Model
   include ApplicationHelper
   include MetadataVersion
-  attr_accessor :service, :grid, :previous_flow_uuid, :to_move_uuid, :target_uuid,
-                :conditional_uuid
+  attr_accessor :service, :grid, :previous_flow_uuid, :previous_conditional_uuid,
+                :to_move_uuid, :target_uuid, :target_conditional_uuid
 
   alias_method :change, :create_version
+
+  PARTIALS = {
+    potential_stacked_branches?: 'stacked_branches_not_supported',
+    branch_destination_no_default_next?: 'branch_destination_no_default_next',
+    default?: 'new'
+  }.freeze
 
   def title
     flow_title(service.flow_object(to_move_uuid))
@@ -33,7 +39,42 @@ class Move
     service.metadata.to_h.deep_stringify_keys
   end
 
+  def to_partial_path
+    result = PARTIALS.find do |method_name, _|
+      method(method_name).call.present?
+    end
+    result[1]
+  end
+
   private
+
+  def potential_stacked_branches?
+    previous_flow_is_a_branch? && to_move_default_next_is_branch?
+  end
+
+  def previous_flow_is_a_branch?
+    service.flow_object(previous_flow_uuid)&.branch?
+  end
+
+  def to_move_default_next_is_branch?
+    return if to_move_default_next.blank?
+
+    service.flow_object(to_move_default_next).branch?
+  end
+
+  def to_move_default_next
+    @to_move_default_next ||= service.flow_object(to_move_uuid).default_next
+  end
+
+  def branch_destination_no_default_next?
+    previous_flow_is_a_branch? && to_move_default_next.blank?
+  end
+
+  # If the other checks returns false it means the page can be moved so
+  # render 'new'
+  def default?
+    true
+  end
 
   def ordered_by_row
     max_rows.times.each_with_object([]) do |row, ary|
@@ -47,14 +88,26 @@ class Move
     {
       title: "#{flow_object.title} (Branch #{index})",
       target_uuid: flow_object.uuid,
-      conditional_uuid: conditional&.uuid
+      conditional_uuid: conditional&.uuid,
+      selected: conditional_next?(conditional) || branch_default_next?(flow_object)
     }.compact
+  end
+
+  def conditional_next?(conditional)
+    return if conditional.blank?
+
+    conditional.next == to_move_uuid
+  end
+
+  def branch_default_next?(flow_object)
+    flow_object.uuid == previous_flow_uuid && flow_object.default_next == to_move_uuid
   end
 
   def page_target(flow_object)
     {
       title: flow_title(flow_object),
-      target_uuid: flow_object.uuid
+      target_uuid: flow_object.uuid,
+      selected: flow_object.uuid == previous_flow_uuid
     }
   end
 
@@ -90,11 +143,9 @@ class Move
   end
 
   def update_previous_flow_object
-    to_move_default_next = service.flow[to_move_uuid]['next']['default']
-
-    if service.flow_object(previous_flow_uuid).branch? && conditional_uuid.present?
+    if branch_conditional?
       service.flow[previous_flow_uuid]['next']['conditionals'].each do |conditional|
-        if conditional['_uuid'] == conditional_uuid
+        if conditional['_uuid'] == previous_conditional_uuid
           conditional['next'] = to_move_default_next
         end
       end
@@ -103,15 +154,19 @@ class Move
     end
   end
 
+  def branch_conditional?
+    service.flow_object(previous_flow_uuid).branch? && previous_conditional_uuid.present?
+  end
+
   def update_page
     set_target_uuid_as_to_move_default_next
     update_default_next(target_uuid, to_move_uuid)
   end
 
   def update_branch
-    if conditional_uuid.present?
+    if target_conditional_uuid.present?
       service.flow[target_uuid]['next']['conditionals'].each do |conditional|
-        if conditional['_uuid'] == conditional_uuid
+        if conditional['_uuid'] == target_conditional_uuid
           update_default_next(to_move_uuid, conditional['next'])
           conditional['next'] = to_move_uuid
         end
@@ -123,10 +178,15 @@ class Move
   end
 
   def set_target_uuid_as_to_move_default_next
-    update_default_next(to_move_uuid, service.flow[target_uuid]['next']['default'])
+    update_default_next(to_move_uuid, service.flow_object(target_uuid).default_next)
   end
 
   def update_default_next(to_update_uuid, new_default_next)
+    # Exit pages have no default next.
+    # If the new_default_next is the same as the to_update_uuid then the resulting
+    # move would mean the page would be pointing to itself.
+    return if exit_page?(to_update_uuid) || to_update_uuid == new_default_next
+
     service.flow[to_update_uuid]['next']['default'] = new_default_next
   end
 end

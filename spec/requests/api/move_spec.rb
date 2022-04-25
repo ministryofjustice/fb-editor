@@ -1,20 +1,41 @@
 RSpec.describe 'Move GET routes', type: :routing do
   context 'when previous_flow_uuid is present' do
-    let(:request) do
-      get '/api/services/some-service-id/flow/some-flow-uuid/move/some-previous-flow-uuid'
-    end
-    let(:expected_route) do
+    let(:service_id) { 'some-service-id' }
+    let(:flow_uuid) { 'some-flow-uuid' }
+    let(:previous_flow_uuid) { 'some-previous-flow-uuid' }
+    let(:move_route) do
       {
         controller: 'api/move',
         action: 'targets',
-        service_id: 'some-service-id',
-        flow_uuid: 'some-flow-uuid',
-        previous_flow_uuid: 'some-previous-flow-uuid'
+        service_id: service_id,
+        flow_uuid: flow_uuid,
+        previous_flow_uuid: previous_flow_uuid
       }
     end
 
-    it 'correctly routes the request' do
-      expect(request).to route_to(expected_route)
+    context 'when previous conditional uuid is not present' do
+      let(:request) do
+        get "/api/services/#{service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}"
+      end
+      let(:expected_route) { move_route }
+
+      it 'correctly routes the request' do
+        expect(request).to route_to(expected_route)
+      end
+    end
+
+    context 'when previous conditional uuid is present' do
+      let(:request) do
+        get "/api/services/#{service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}/#{previous_conditional_uuid}"
+      end
+      let(:previous_conditional_uuid) { 'some-previous-conditional-uuid' }
+      let(:expected_route) do
+        move_route.merge(previous_conditional_uuid: previous_conditional_uuid)
+      end
+
+      it 'correctly routes the request' do
+        expect(request).to route_to(expected_route)
+      end
     end
   end
 
@@ -38,16 +59,28 @@ RSpec.describe 'Move GET routes', type: :routing do
 end
 
 RSpec.describe 'Move spec', type: :request do
-  describe 'GET /api/services/:service_id/flow/:flow_uuid/move/(:previous_flow_uuid)' do
-    let(:request) do
-      get "/api/services/#{service.service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}"
-    end
+  describe 'GET /api/services/:service_id/flow/:flow_uuid/move/(:previous_flow_uuid)/(:previous_conditional_uuid' do
     let(:service) { MetadataPresenter::Service.new(metadata) }
     let(:metadata) { metadata_fixture(:branching_11) }
     let(:flow_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
     let(:previous_flow_uuid) { '1d60bef0-100a-4f3b-9e6f-1711e8adda7e' } # Page A
 
-    context 'when moving a page' do
+    before do
+      allow_any_instance_of(
+        Api::MoveController
+      ).to receive(:require_user!).and_return(true)
+
+      allow_any_instance_of(
+        Api::MoveController
+      ).to receive(:service).and_return(service)
+
+      request
+    end
+
+    context 'when previous conditional uuid is not present' do
+      let(:request) do
+        get "/api/services/#{service.service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}"
+      end
       let(:invalid_targets) do
         [
           'Check your answers',
@@ -111,17 +144,11 @@ RSpec.describe 'Move spec', type: :request do
           'data-conditional-uuid=""'
         ]
       end
-
-      before do
-        allow_any_instance_of(
-          Api::MoveController
-        ).to receive(:require_user!).and_return(true)
-
-        allow_any_instance_of(
-          Api::MoveController
-        ).to receive(:service).and_return(service)
-
-        request
+      let(:selected_target) do
+        '<option value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" data-conditional-uuid="" selected="selected">'
+      end
+      let(:previous_uuid_field) do
+        '<input value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" autocomplete="off" type="hidden" name="move[previous_flow_uuid]" id="move_previous_flow_uuid" />'
       end
 
       it 'returns the list of possible targets' do
@@ -147,6 +174,37 @@ RSpec.describe 'Move spec', type: :request do
           expect(response.body).not_to include(title)
         end
       end
+
+      it 'sets the selected attribute for the previous target' do
+        expect(response.body).to include(selected_target)
+      end
+
+      it 'sets the hidden field for the previous uuid' do
+        expect(response.body).to include(previous_uuid_field)
+      end
+    end
+
+    context 'when previous conditional uuid is present' do
+      let(:request) do
+        get "/api/services/#{service.service_id}/flow/#{flow_uuid}/move/#{previous_flow_uuid}/#{previous_conditional_uuid}"
+      end
+      let(:flow_uuid) { '1314e473-9096-4434-8526-03a7b4b7b132' } # Page K
+      let(:previous_flow_uuid) { 'a02f7073-ba5a-459d-b6b9-abe548c933a6' } # Branching Point 2
+      let(:previous_conditional_uuid) { '0bdc8fde-be62-4945-8496-854e867a665d' }
+      let(:selected_target) do
+        '<option value="a02f7073-ba5a-459d-b6b9-abe548c933a6" data-conditional-uuid="0bdc8fde-be62-4945-8496-854e867a665d" selected="selected">'
+      end
+      let(:previous_conditional_uuid_field) do
+        '<input value="0bdc8fde-be62-4945-8496-854e867a665d" autocomplete="off" type="hidden" name="move[previous_conditional_uuid]" id="move_previous_conditional_uuid" />'
+      end
+
+      it 'sets the selected attribute for the previous target' do
+        expect(response.body).to include(selected_target)
+      end
+
+      it 'sets the previous conditional uuid hidden field' do
+        expect(response.body).to include(previous_conditional_uuid_field)
+      end
     end
   end
 
@@ -163,7 +221,7 @@ RSpec.describe 'Move spec', type: :request do
         move: {
           previous_flow_uuid: '1d60bef0-100a-4f3b-9e6f-1711e8adda7e', # Page A
           target_uuid: '007f4f35-8236-40cc-866c-cc2c27c33949', # Page E
-          conditional_uuid: ''
+          target_conditional_uuid: ''
         }
       }
     end
