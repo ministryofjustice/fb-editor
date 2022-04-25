@@ -73,6 +73,7 @@ class PublishForm {
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
       selectorErrors: ".govuk-error-message",
+      removeErrorClasses: "govuk-form-group--error",
       cancelText: app.text.dialogs.button_cancel,
       activatorText: $submit.val(),
       classes: {
