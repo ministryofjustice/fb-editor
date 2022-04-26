@@ -5,6 +5,7 @@ feature 'Edit single radios question page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'star-wars-question' }
+  let(:pre_edit_title) { 'Star Wars Question' }
   let(:question) do
     'Which program do Jedi use to open PDF files?'
   end
@@ -22,59 +23,66 @@ feature 'Edit single radios question page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: fixture)
   end
 
-  scenario 'when editing the checkbox component' do
-    given_I_have_a_single_question_page_with_checkboxes
-    and_I_have_optional_section_heading_text
-    when_I_update_the_question_name
-    and_I_update_the_options
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    preview_form = then_I_should_see_my_changes_on_preview
-    and_I_should_see_the_options_that_I_added(preview_form, initial_options)
+  context 'editing checkbox components' do
+    let(:fixture) { 'checkboxes_page_fixture' }
+
+    scenario 'when editing the checkbox component' do
+      and_I_edit_the_page(url: pre_edit_title)
+      and_I_have_optional_section_heading_text
+      when_I_update_the_question_name
+      and_I_update_the_options
+      when_I_update_the_optional_section_heading
+      when_I_delete_the_optional_section_heading_text
+      and_I_return_to_flow_page
+      preview_form = then_I_should_see_my_changes_on_preview
+      and_I_should_see_the_options_that_I_added(preview_form, initial_options)
+    end
+
+    scenario 'when adding an option to the checkbox component' do
+      and_I_edit_the_page(url: pre_edit_title)
+      when_I_update_the_question_name
+      and_I_update_the_options
+      and_I_add_an_option('Jar Jar Binks')
+      then_I_should_see_the_options(initial_options.push('Jar Jar Binks'))
+      and_I_return_to_flow_page
+      preview_form = then_I_should_see_my_changes_on_preview
+      and_I_should_see_the_options_that_I_added(preview_form, options_after_addition)
+    end
+
+    scenario 'when deleting an option from the checkbox component' do
+      and_I_edit_the_page(url: pre_edit_title)
+      when_I_update_the_question_name
+      and_I_update_the_options
+      and_I_delete_an_option('PDFinn')
+      and_I_want_to_delete_an_option('Adobe-wan Kenobi')
+      then_I_should_see_the_modal(
+        I18n.t('question_items.delete_modal.can_not_delete_heading'),
+        I18n.t('question_items.min_items_modal.can_not_delete_checkboxes_message')
+      )
+      and_I_close_the_modal(I18n.t('dialogs.button_understood'))
+      and_I_add_an_option('Jar Jar Binks')
+      then_I_should_see_the_options(options_after_addition)
+      and_I_delete_an_option('Jar Jar Binks')
+      then_I_should_see_the_options(options_after_deletion)
+      and_I_return_to_flow_page
+      preview_form = then_I_should_see_my_changes_on_preview
+      and_I_should_see_the_options_that_I_added(preview_form, options_after_deletion)
+    end
   end
 
-  scenario 'when adding an option to the checkbox component' do
-    given_I_have_a_single_question_page_with_checkboxes
-    when_I_update_the_question_name
-    and_I_update_the_options
-    and_I_add_an_option('Jar Jar Binks')
-    then_I_should_see_the_options(initial_options.push('Jar Jar Binks'))
-    and_I_return_to_flow_page
-    preview_form = then_I_should_see_my_changes_on_preview
-    and_I_should_see_the_options_that_I_added(preview_form, options_after_addition)
-  end
+  context 'editing options with branching form' do
+    let(:fixture) { 'two_branching_points_fixture' }
 
-  scenario 'when deleting an option from the checkbox component' do
-    given_I_have_a_single_question_page_with_checkboxes
-    when_I_update_the_question_name
-    and_I_update_the_options
-    and_I_delete_an_option('PDFinn')
-    and_I_want_to_delete_an_option('Adobe-wan Kenobi')
-    then_I_should_see_the_modal(
-      I18n.t('question_items.delete_modal.can_not_delete_heading'),
-      I18n.t('question_items.min_items_modal.can_not_delete_checkboxes_message')
-    )
-    and_I_close_the_modal(I18n.t('dialogs.button_understood'))
-    and_I_add_an_option('Jar Jar Binks')
-    then_I_should_see_the_options(options_after_addition)
-    and_I_delete_an_option('Jar Jar Binks')
-    then_I_should_see_the_options(options_after_deletion)
-    and_I_return_to_flow_page
-    preview_form = then_I_should_see_my_changes_on_preview
-    and_I_should_see_the_options_that_I_added(preview_form, options_after_deletion)
-  end
-
-  scenario 'when deleting an option used for branching' do
-    given_I_have_a_form_with_pages
-    and_I_edit_the_page(url: 'Page b')
-    when_I_want_to_select_component_properties('label', 'Hulk')
-    page.find('span', text: I18n.t('question.menu.remove')).click
-    expect(page).to have_selector('.ui-dialog')
-    expect(page.text).to include(I18n.t('question_items.delete_modal.can_not_delete_heading')) 
+    scenario 'when deleting an option used for branching' do
+      and_I_edit_the_page(url: 'Page b')
+      when_I_want_to_select_component_properties('label', 'Hulk')
+      page.find('span', text: I18n.t('question.menu.remove')).click
+      expect(page).to have_selector('.ui-dialog')
+      expect(page.text).to include(I18n.t('question_items.delete_modal.can_not_delete_heading'))
+    end
   end
 
   def given_I_have_a_single_question_page_with_checkboxes
@@ -99,7 +107,7 @@ feature 'Edit single radios question page' do
     and_I_edit_the_question
     when_I_save_my_changes
   end
-  
+
   def and_I_edit_the_question
     editor.question_heading.first.set(question)
   end

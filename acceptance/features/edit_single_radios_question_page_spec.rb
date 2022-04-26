@@ -4,6 +4,7 @@ feature 'Edit single radios question page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'star-wars-question' }
+  let(:pre_edit_title) { 'Star Wars Question' }
   let(:question) do
     'Which program do Jedi use to open PDF files?'
   end
@@ -21,11 +22,11 @@ feature 'Edit single radios question page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'radios_page_fixture')
   end
 
   scenario 'when editing the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_update_the_options
@@ -37,7 +38,7 @@ feature 'Edit single radios question page' do
   end
 
   scenario 'when adding an option to the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_add_an_option('Jar Jar Binks')
@@ -48,7 +49,7 @@ feature 'Edit single radios question page' do
   end
 
   scenario 'when deleting an option from the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_want_to_delete_an_option('Adobe-wan Kenobi')
@@ -83,7 +84,7 @@ feature 'Edit single radios question page' do
     and_I_edit_the_question
     when_I_save_my_changes
   end
-  
+
   def and_I_edit_the_question
     editor.question_heading.first.set(question)
   end

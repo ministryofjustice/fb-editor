@@ -208,20 +208,6 @@ module BranchingSteps
     expect(editor).to have_text(page_title)
   end
 
-  def given_I_have_a_form_with_pages
-    given_I_have_a_page('page-b')
-    given_I_have_a_page('page-c')
-    given_I_have_a_page('page-d')
-    given_I_have_a_page('page-e')
-    given_I_have_a_page('page-f')
-    given_I_have_a_multiquestion_page('page-g')
-    given_I_have_a_page('page-h')
-    given_I_have_a_page('page-i')
-    given_I_have_a_page('page-j')
-    given_I_have_a_branching_point_one
-    given_I_have_a_branching_point_two
-  end
-
   def given_I_have_a_page(url)
     given_I_add_a_single_question_page_with_checkboxes
     and_I_add_a_page_url(url)

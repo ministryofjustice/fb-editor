@@ -1,0 +1,148 @@
+{
+  "_id": "service.base",
+  "flow": {
+    "6f442b2c-da71-4731-a569-2178223b17de": {
+      "next": {
+        "default": "e97612ff-d05a-45e0-9860-54bb0db79878"
+      },
+      "_type": "flow.page"
+    },
+    "74ed8ba0-48c4-45bf-9690-0d49a03774a3": {
+      "next": {
+        "default": "6f442b2c-da71-4731-a569-2178223b17de"
+      },
+      "_type": "flow.page"
+    },
+    "e97612ff-d05a-45e0-9860-54bb0db79878": {
+      "next": {
+        "default": "f4545064-4278-4533-a282-e153c25f89f5"
+      },
+      "_type": "flow.page"
+    },
+    "f4545064-4278-4533-a282-e153c25f89f5": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    }
+  },
+  "_type": "service.base",
+  "pages": [
+    {
+      "_id": "page.start",
+      "url": "/",
+      "body": "Use this service to:\r\n\r\n* do something\r\n* update your name, address or other details\r\n* do something else\r\n\r\nRegistering takes around 5 minutes.",
+      "_type": "page.start",
+      "_uuid": "74ed8ba0-48c4-45bf-9690-0d49a03774a3",
+      "heading": "Service name goes here",
+      "before_you_start": "###Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
+    },
+    {
+      "_id": "page.hakuna-matata",
+      "url": "hakuna-matata",
+      "_type": "page.multiplequestions",
+      "_uuid": "6f442b2c-da71-4731-a569-2178223b17de",
+      "heading": "Hakuna Matata",
+      "components": [
+
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.checkanswers",
+      "url": "check-answers",
+      "_type": "page.checkanswers",
+      "_uuid": "e97612ff-d05a-45e0-9860-54bb0db79878",
+      "heading": "Check your answers",
+      "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
+      "components": [
+
+      ],
+      "send_heading": "Now send your application",
+      "extra_components": [
+
+      ]
+    },
+    {
+      "_id": "page.confirmation",
+      "url": "form-sent",
+      "_type": "page.confirmation",
+      "_uuid": "f4545064-4278-4533-a282-e153c25f89f5",
+      "heading": "Application complete",
+      "components": [
+
+      ]
+    }
+  ],
+  "locale": "en",
+  "created_at": "",
+  "created_by": "",
+  "service_id": "",
+  "version_id": "",
+  "service_name": "",
+  "configuration": {
+    "meta": {
+      "_id": "config.meta",
+      "_type": "config.meta",
+      "items": [
+        {
+          "_id": "config.meta--link",
+          "href": "/cookies",
+          "text": "Cookies",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--2",
+          "href": "/privacy",
+          "text": "Privacy",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--3",
+          "href": "/accessibility",
+          "text": "Accessibility",
+          "_type": "link"
+        }
+      ]
+    },
+    "service": {
+      "_id": "config.service",
+      "_type": "config.service"
+    }
+  },
+  "standalone_pages": [
+    {
+      "_id": "page.cookies",
+      "url": "cookies",
+      "body": "Cookies body",
+      "_type": "page.standalone",
+      "_uuid": "a0b4fe7e-2d34-4d31-97ee-2faf753309df",
+      "heading": "Cookies",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.privacy",
+      "url": "privacy",
+      "body": "Privacy body",
+      "_type": "page.standalone",
+      "_uuid": "0ed96d27-6cd5-4181-98b6-1cdf5fc60236",
+      "heading": "Privacy notice",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.accessibility",
+      "url": "accessibility",
+      "body": "Accessibility body",
+      "_type": "page.standalone",
+      "_uuid": "d568386d-4842-4497-85e4-560b378e2fb2",
+      "heading": "Accessibility statement",
+      "components": [
+
+      ]
+    }
+  ]
+}

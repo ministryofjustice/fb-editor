@@ -6,8 +6,7 @@ feature 'Deleting page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
-    given_I_have_a_form_with_pages
+    given_I_have_a_service_fixture(fixture: 'two_branching_points_fixture')
   end
 
   scenario 'change destination to another page' do

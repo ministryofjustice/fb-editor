@@ -6,7 +6,7 @@ feature 'Mark question as optional' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'change required fields to optional' do
