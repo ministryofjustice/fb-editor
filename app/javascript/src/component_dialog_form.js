@@ -24,7 +24,11 @@ const mergeObjects = utilities.mergeObjects;
  * @config (Object) Configurable key/value pairs.
  **/
 class FormDialog {
+  #state;
+
   constructor($node, config) {
+    var STATE_OPEN = "open";
+    var STATE_CLOSED = "closed"
     var dialog = this;
     var conf = mergeObjects({
       autoOpen: false,
@@ -37,6 +41,14 @@ class FormDialog {
       removeErrorClasses: "error",
       selectorErrors: ".error",
       selectorAffirmativeButton: "[type='submit']:first",
+      open: function( event, ui ) {
+        dialog.$node.attr("data-state", STATE_OPEN);
+        dialog.#state = STATE_OPEN;
+      },
+      close: function( event, ui ) {
+        dialog.$node.attr("data-state", STATE_CLOSED);
+        dialog.#state = STATE_CLOSED;
+      }
     }, config);
 
     var nodeName = $node.get(0).nodeName.toLowerCase();
@@ -63,6 +75,8 @@ class FormDialog {
       }
     ];
 
+    this.#state = STATE_CLOSED;
+    $node.attr("data-state", STATE_CLOSED);
     $node.dialog(conf);
     $container = $node.parents(".ui-dialog");
     $container.addClass("FormDialog");
@@ -76,6 +90,10 @@ class FormDialog {
     this.$node = $node;
     this.$form = $form;
     this.$errors = $errors;
+  }
+
+  get state() {
+    return this.#state;
   }
 
   open() {
