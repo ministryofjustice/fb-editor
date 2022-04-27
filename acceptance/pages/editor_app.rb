@@ -153,7 +153,7 @@ class EditorApp < SitePrism::Page
   end
 
   def unconnected_expand_link
-    page.all('h2.Expander_Activator').find do |element|
+    page.all('Expander_Activator').find do |element|
       element.text == 'Unconnected'
     end
   end
