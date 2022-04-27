@@ -50,7 +50,6 @@ class FormDialog {
     var $form = nodeName != "form" ? $node.find("form") : $node;
     var $button = $(conf.selectorAffirmativeButton, $node);
     var $errors = $node.find(conf.selectorErrors);
-    var $container;
 
     // Some familiar component setup.
     this.#config = conf;
