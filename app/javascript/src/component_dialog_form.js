@@ -24,11 +24,14 @@ const mergeObjects = utilities.mergeObjects;
  * @config (Object) Configurable key/value pairs.
  **/
 class FormDialog {
+  #config;
   #state;
 
   constructor($node, config) {
-    var STATE_OPEN = "open";
-    var STATE_CLOSED = "closed"
+    const STATE_ATTR = "state";
+    const STATE_OPEN = "open";
+    const STATE_CLOSED = "closed";
+
     var dialog = this;
     var conf = mergeObjects({
       autoOpen: false,
@@ -40,15 +43,7 @@ class FormDialog {
       cancelText: "cancel",
       removeErrorClasses: "error",
       selectorErrors: ".error",
-      selectorAffirmativeButton: "[type='submit']:first",
-      open: function( event, ui ) {
-        dialog.$node.attr("data-state", STATE_OPEN);
-        dialog.#state = STATE_OPEN;
-      },
-      close: function( event, ui ) {
-        dialog.$node.attr("data-state", STATE_CLOSED);
-        dialog.#state = STATE_CLOSED;
-      }
+      selectorAffirmativeButton: "[type='submit']:first"
     }, config);
 
     var nodeName = $node.get(0).nodeName.toLowerCase();
@@ -57,9 +52,14 @@ class FormDialog {
     var $errors = $node.find(conf.selectorErrors);
     var $container;
 
+    // Some familiar component setup.
+    this.#config = conf;
+    $node.data("instance", this);
+
+    // Setup buttons.
     $button.hide();
     $button.attr("disabled", true);
-    conf.buttons = [
+    this.#config.buttons = [
       {
         text: $button.text() || $button.val(),
         click: () => {
@@ -75,25 +75,37 @@ class FormDialog {
       }
     ];
 
+    // Sort out easy state reporting.
     this.#state = STATE_CLOSED;
-    $node.attr("data-state", STATE_CLOSED);
-    $node.dialog(conf);
-    $container = $node.parents(".ui-dialog");
-    $container.addClass("FormDialog");
-    $node.data("instance", this);
-    $node.on( "dialogclose", function( event, ui ) {
-      $(document).trigger("FormDialogClose");
+
+    $node.on("dialogclose", function( event, ui ) {
+      dialog.$container.attr(STATE_ATTR, STATE_CLOSED);
     });
 
-    this._config = conf;
-    this.$container = $container;
+    $node.on("dialogopen", function( event, ui ) {
+      dialog.$container.attr(STATE_ATTR, STATE_OPEN);
+    });
+
+    // Some setup to happen when jQueryUI dialog is created.
+    $node.on("dialogcreate", function(event, ui) {
+      var $container = $node.parents(".ui-dialog");
+      $container.addClass("FormDialog");
+      $container.attr(STATE_ATTR, STATE_CLOSED);
+      dialog.$container = $container;
+    });
+
+    // Add the jQueryUI dialog functionality.
+    $node.dialog(this.#config);
+
+    // Public properties.
     this.$node = $node;
     this.$form = $form;
     this.$errors = $errors;
+    // this.$container... see 'dialogcreate' event handler, above.
   }
 
   get state() {
-    return this.#state;
+    return this.$node.attr(STATE_ATTR);;
   }
 
   open() {
@@ -116,7 +128,7 @@ class FormDialog {
   }
 
   clearErrors() {
-    this.$errors.parents().removeClass(this._config.removeErrorClasses);
+    this.$errors.parents().removeClass(this.#config.removeErrorClasses);
     this.$errors.remove(); // Remove from DOM (includes removing all jQuery data)
     this.$errors = $(); // Make sure nothing is left.
   }
