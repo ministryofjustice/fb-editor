@@ -78,12 +78,6 @@ describe("ActivatedFormDialog", function() {
       expect(dialog.$node.get(0)).to.equal(dialog.$form.get(0));
     });
 
-    it("should make (public but indicated as) private reference to config", function() {
-      var $submit = $("#" + SUBMIT_BUTTON_ID);
-      expect(dialog._config).to.exist;
-      expect(dialog._config.okText).to.equal($submit.val());
-    });
-
     it("should make the activator public", function() {
       var $submit = $("#" + SUBMIT_BUTTON_ID);
       expect(dialog.activator).to.exist;

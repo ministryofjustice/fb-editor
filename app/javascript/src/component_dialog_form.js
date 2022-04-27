@@ -24,7 +24,14 @@ const mergeObjects = utilities.mergeObjects;
  * @config (Object) Configurable key/value pairs.
  **/
 class FormDialog {
+  #config;
+  #state;
+
   constructor($node, config) {
+    const STATE_ATTR = "state";
+    const STATE_OPEN = "open";
+    const STATE_CLOSED = "closed";
+
     var dialog = this;
     var conf = mergeObjects({
       autoOpen: false,
@@ -36,18 +43,22 @@ class FormDialog {
       cancelText: "cancel",
       removeErrorClasses: "error",
       selectorErrors: ".error",
-      selectorAffirmativeButton: "[type='submit']:first",
+      selectorAffirmativeButton: "[type='submit']:first"
     }, config);
 
     var nodeName = $node.get(0).nodeName.toLowerCase();
     var $form = nodeName != "form" ? $node.find("form") : $node;
     var $button = $(conf.selectorAffirmativeButton, $node);
     var $errors = $node.find(conf.selectorErrors);
-    var $container;
 
+    // Some familiar component setup.
+    this.#config = conf;
+    $node.data("instance", this);
+
+    // Setup buttons.
     $button.hide();
     $button.attr("disabled", true);
-    conf.buttons = [
+    this.#config.buttons = [
       {
         text: $button.text() || $button.val(),
         click: () => {
@@ -63,19 +74,37 @@ class FormDialog {
       }
     ];
 
-    $node.dialog(conf);
-    $container = $node.parents(".ui-dialog");
-    $container.addClass("FormDialog");
-    $node.data("instance", this);
-    $node.on( "dialogclose", function( event, ui ) {
-      $(document).trigger("FormDialogClose");
+    // Sort out easy state reporting.
+    this.#state = STATE_CLOSED;
+
+    $node.on("dialogclose", function( event, ui ) {
+      dialog.$container.attr(STATE_ATTR, STATE_CLOSED);
     });
 
-    this._config = conf;
-    this.$container = $container;
+    $node.on("dialogopen", function( event, ui ) {
+      dialog.$container.attr(STATE_ATTR, STATE_OPEN);
+    });
+
+    // Some setup to happen when jQueryUI dialog is created.
+    $node.on("dialogcreate", function(event, ui) {
+      var $container = $node.parents(".ui-dialog");
+      $container.addClass("FormDialog");
+      $container.attr(STATE_ATTR, STATE_CLOSED);
+      dialog.$container = $container;
+    });
+
+    // Add the jQueryUI dialog functionality.
+    $node.dialog(this.#config);
+
+    // Public properties.
     this.$node = $node;
     this.$form = $form;
     this.$errors = $errors;
+    // this.$container... see 'dialogcreate' event handler, above.
+  }
+
+  get state() {
+    return this.$node.attr(STATE_ATTR);;
   }
 
   open() {
@@ -98,7 +127,7 @@ class FormDialog {
   }
 
   clearErrors() {
-    this.$errors.parents().removeClass(this._config.removeErrorClasses);
+    this.$errors.parents().removeClass(this.#config.removeErrorClasses);
     this.$errors.remove(); // Remove from DOM (includes removing all jQuery data)
     this.$errors = $(); // Make sure nothing is left.
   }

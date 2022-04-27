@@ -28,7 +28,14 @@ const mergeObjects = utilities.mergeObjects;
  * config.onOk takes a function to run when 'Ok' button is activated.
  *
  * @$node  (jQuery node) Form element found in template that should be enhanced.
- * @config (Object) Configurable key/value pairs.
+ * @config (Object) Configurable key/value pairs
+ *                  - activatorText       (String)   Used for generated activator element text (when no $activator specified).
+ *                  - $activator          (jQuery node) Element to use/enhance as the required DialogActivator.
+ *                  - autoOpen            (Bootlean) Value will immediately open dialog on creation, or not.
+ *                  - cancelText          (String)   Used for cancel button text.
+ *                  - classes             (String)   Added to component for extra CSS hooks.
+ *                  - removeErrorClasses  (String)   Space separated CSS classnames to remove/revert error style.
+ *                  - selectorErrors      (String)   jQuery selector used to find errors within the $node.
  **/
 class ActivatedFormDialog extends FormDialog {
   constructor($node, config) {
@@ -44,7 +51,7 @@ class ActivatedFormDialog extends FormDialog {
     super($node, mergeObjects( config, {
       autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
-      removeErrorsClasses: conf.removeErrorClasses,
+      removeErrorClasses: conf.removeErrorClasses,
       selectorErrors: conf.selectorErrors
     }));
 
