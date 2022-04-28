@@ -10,26 +10,10 @@
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
-
-
-.Expander {
-  &.close {
-    height: auto;
-  }
-
-  &.open .Expander_Activator {
-    &::before {
-      position: relative;
-      top: 0.5ex;
-      transform: rotate(90deg);
-    }
-  }
-}
-
-.Expander_Activator {
-  @include govuk-link-common;
-  @include govuk-link-style-default;
-  color: $govuk-link-colour;
+.Expander__activator {
+  @include button_as_link;
+  background: transparent;
+  font-weight: inherit;
 
   &::before {
     border-color: transparent;
@@ -39,5 +23,19 @@
     content: "";
     display: inline-block;
     margin: 0 0.5ex 0 0;
+  }
+
+  &[aria-expanded="true"]::before {
+    position: relative;
+    top: 0.5ex;
+    transform: rotate(90deg);
+  }
+
+  &:focus {
+    background: govuk-colour('yellow');
+    color: govuk-colour('black');
+    &::before {
+      border-left-color: govuk-colour('black');
+    }
   }
 }

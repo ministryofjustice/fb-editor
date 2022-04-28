@@ -138,9 +138,9 @@ function isolatedMethodDeleteLinks() {
 function addExpanderComponents() {
   $("[data-component=Expander]").each(function() {
     var $node = $(this);
-    var $activator = $node.find("h2");
     new Expander($node, {
-      $activator: $activator
+      title_tag: 'h2',
+      wrap_content: true,
     });
   });
 }

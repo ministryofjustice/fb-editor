@@ -1,111 +1,127 @@
 /**
- * Dialog Component
+ * Expander Component
  * ----------------------------------------------------
  * Description:
- * Creates an area that expands and contracts, activated by a single element.
+ * Creates an area that expands and contracts, activated by a single title element.
  *
- * Documentation:
- *
- *     - jQueryUI
- *       https://api.jqueryui.com/dialog
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
+ * Implements the following behaviour:
+ *  - Takes a provided element, finds the configured title element and enhances
+*  it by wrapping the contents with a <button> activator.
+*   - If config.wrap_content is true, it will wrap all other child elements
+*   within the provided element in a <div>
+*   - By default, it will collapse and hide the content.
+*
+*   Example:
+*   Given the following:
+*   <dl>
+*     <dt>Title</dt>
+*     <dd>Loem ipsum dolor sit amet consecteteur adipiscing elit...</dd>
+*   </dl>
+*   <script>
+*     var $list = $(dl);
+*     new Expander($list, {
+*       title_tag: 'dt',
+*       wrap_content: false,
+*     })
+*   </script>
+*
+*   Would result the following markup:
+*   <dl class="Expander close">
+*     <dt class="Expander__title">
+*       <button aria-expanded="false" aria-controls="Expander_12345678790">Title</button>
+*     </dt>
+*     <dd id="Expander_1234567890" class="Expander__container" style="display: none;">
+*       Lorem ipsum.....
+*     </dd>
+*   </dt>
  **/
 
-const utilities = require('./utilities');
+const { 
+  mergeObjects,
+  uniqueString
+} = require('./utilities');
 
-
-/* Main class
- * Select an element that should show/hide its content based on activator toggle.
- * The component will inject a container that wraps the elements content.
- * An activator will be created, if not specified, and moved to be placed just
- * before the injected container element. Toggle of the activator will show/hide
- * the content, which is now wrapped by the injected container.
- *
- * @$node  (jQuery node) Element found in template that should be enhanced.
- * @config (Object) Configurable key/value pairs.
- **/
+/**
+ * @param $node (jQuery) Html Element to be enhanced.
+ * @param condif (Object) Key/value pairs for config (see above)
+**/
 class Expander {
+  #config;
+
   constructor($node, config) {
-    var conf = utilities.mergeObjects({
-      activator_text: "Toggle", // Text for any self-created activator button.
-      auto_open: false, // Set whether open on creation.
-      duration: 0, // Number determining how long the animation will run
-      $activator: null // Pass in the jQuery element you want to toggle open/close.
+    const conf = mergeObjects({
+      title_tag: 'h2',
+      wrap_content: false,
+      auto_open: false,
+      duration: 0,
     }, config);
 
-    var id = utilities.uniqueString("Expander_");
-    var $children = $node.children();
-    var $container = $("<div></div>");
-
-    $container.attr("id", id);
-    $container.addClass("Expander_container");
     $node.addClass("Expander");
     $node.data("instance", this);
 
-    this._config = conf;
+    this.#config = conf;
     this.$node = $node;
+
+    const id = uniqueString("Expander_");
+
+    const $activator = this.#createActivator(id);
+    const $title = this.$node.find('> ' + conf.title_tag).first();
+    $title.wrapInner($activator);
+    $title.addClass("Expander__title");
+        
+    if(conf.wrap_content) {
+      $title.nextAll().wrapAll('<div></div>');
+    } 
+       
+    const $container = $title.next();
+    $container.attr("id", id);
+    $container.addClass("Expander__container");
+
+    this.$title = $title;
+    this.$activator = $title.find('button').first();
     this.$container = $container;
-    this.$activator = Expander.createActivator.call(this, $container);
-
-    // A little accessibility
-    this.$activator.attr("aria-controls", id);
-
-    // Setup and initial state
-    this.$container.append($children);
-    this.$node.prepend(this.$container);
-    this.$node.prepend(this.$activator);
-
-    if(conf.auto_open) {
-      this.open();
-    }
-    else {
-      this.close();
-    }
+    
+    conf.auto_open ? this.open() : this.close();
   }
 
   open() {
-    this.$node.addClass("open");
-    this.$node.removeClass("close");
-    this.$container.slideDown({ duration: this._config.duration });
-    this.$container.attr("aria-expanded", true);
-    this._config.opened = true;
+    this.$node.removeClass('is-closed').addClass("is-open");
+    this.$container.slideDown( this.#config.duration, () => {
+      this.$activator.attr("aria-expanded", "true");
+      this.#config.opened = true;
+    });
   }
 
   close() {
-    this.$node.addClass("close");
-    this.$node.removeClass("open");
-    this.$container.slideUp({ duration: this._config.duration });
-    this.$container.attr("aria-expanded", false);
-    this._config.opened = false;
+    this.$node.removeClass("is-open").addClass("is-closed");;
+    this.$container.slideUp( this.#config.duration, () => {
+      this.$activator.attr("aria-expanded", "false");
+      this.#config.opened = false;
+    });
+  }
+
+  isOpen() {
+    return this.#config.opened == true;
   }
 
   toggle() {
-    if(this.$container.attr("aria-expanded") == "true") {
-      this.close();
-    }
-    else {
-      this.open();
-    }
+    this.isOpen() ? this.close() : this.open();
   }
+
+  #createActivator(id) {
+    const $activator = $('<button></button>');
+    $activator.attr({
+      'aria-expanded': this.#config.auto_open,
+      'aria-controls': id
+    });
+    $activator.addClass('Expander__activator');
+
+    $activator.on("click", () => {
+      this.toggle();
+    });
+    
+    return $activator;
+  }
+  
 }
-
-Expander.createActivator = function($container) {
-  var conf = this._config;
-  var $activator = conf.$activator || $("<button>" + conf.activator_text + "\</button>");
-  $activator.addClass("Expander_Activator");
-  $activator.css("cursor", "pointer");
-  $activator.on("click", () => {
-    this.toggle();
-  });
-
-  this.$node.prepend($activator);
-  return $activator;
-}
-
-
-
-// Make available for importing.
-module.exports = Expander;
+  module.exports = Expander;
