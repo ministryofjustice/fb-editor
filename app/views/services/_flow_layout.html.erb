@@ -20,10 +20,10 @@
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>
-      <article class="flow-item flow-branch" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>">
-        <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{item[:uuid]}" %>
+      <article class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
+        <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{item[:uuid]}", alt: "", role: "presentation" %>
         <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
-          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>" tabindex="-1">
         </map>
         <%= flow_text_link(item) %>
         <ul class="flow-conditions">
