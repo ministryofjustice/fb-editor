@@ -1,10 +1,11 @@
-const ActivatedDialog = require("../../../app/javascript/src/component_activated_dialog.js");
+const DialogApiRequest = require("../../../app/javascript/src/component_dialog_api_request.js");
 const GlobalHelpers = require("../../helpers.js");
 
 const constants = {
-  CLASSNAME_COMPONENT: "ActivatedDialog",
+  CLASSNAME_COMPONENT: "DialogApiRequest",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
+  COMPONENT_ID: "soemthing-served-in-response",
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
   TEXT_HEADING: "General heading text",
@@ -20,33 +21,42 @@ const view = {
   }
 }
 
+var $_get; // Used in overriding $.get (see below)
+
+
 
 /* Creates a new dialog from only passing in an id and optional config.
  *
- * @id     (String) String used to assign unique ID value.
+ * @response (String) HTML string used to mimic server response.
+ * @done (Function) Mocha function used for triggering asynchronous action ready.
  * @config (Object) Optional config can be passed in to override the defaults.
  *
  * Returns the following object:
  *
  * {
- *   html: <html used to simulate template rendition of pre-created dialog>
- *   $node: <jQuery enhanced node (before dialog instantiation) of the html>
- *   dialog: <ActivatedDialog instance created>
+ *   html: <html used in faked server response>
+ *   $node: <jQuery enhanced node (before dialog instantiation) of the faked html server response>
+ *   dialog: <ActivatedDialog instance created using faked server response>
  *  }
  *
  **/
-function createDialog(id, config) {
-  var $template = $("[data-component-template=ActivatedDialog]");
-  var html = $template.text();
-  var $node = $(html);
+function createDialog(response, ready, config) {
   var conf = {
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
-    onOk: function() {},
-    onCancel: function() {},
-    onClose: function() {},
-    id: id,
-    okText: constants.TEXT_BUTTON_OK,
-    cancelText: constants.TEXT_BUTTON_CANCEL
+    buttons: [
+      {
+        text: constants.TEXT_BUTTON_OK,
+        click: function() {
+          console.log("ok clicked");
+        }
+      }, 
+      {
+        text: constants.TEXT_BUTTON_CANCEL,
+        click: function() {
+          console.log("cancel clicked");
+        }
+      }
+    ]
   }
 
   // Include any passed config items.
@@ -58,10 +68,12 @@ function createDialog(id, config) {
     }
   }
 
+  $_get.html(response, ready); // Hijacks $.get and returns the response passed in.
+
   return {
-    html: html,
-    $node: $node,
-    dialog: new ActivatedDialog($node, conf)
+    html: response,
+    $node: $(response), // WARNING! Will not same as will be same element/node as dialog.$node
+    dialog: new DialogApiRequest("/url/not/used/in/testing", conf)
   }
 }
 
@@ -70,23 +82,15 @@ function createDialog(id, config) {
  * and anything else required.
  **/
 function setupView() {
-  var template = `<script type="text/html" data-component-template="ActivatedDialog">
-                    <div class="component component-dialog">
-                      <h3 data-node="heading">General heading here</h3>
-                      <p data-node="content">General message here</p>
-                    </div>
-                  </script>`;
-
-  $(document.body).append(template);
+  $_get = new GlobalHelpers.jQueryGetOverride();
 }
 
 
 /* Reset DOM to pre setupView() state
  **/
 function teardownView() {
-  $("[data-component-template=ActivatedDialog]").remove();
+  $_get.restore();
 }
-
 
 
 module.exports = {
