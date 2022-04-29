@@ -21,6 +21,10 @@
 .ActivatedMenuActivator {
   @include icon_button;
 
+  &:focus {
+    border-color: govuk-colour('black');
+  }
+
   &::after {
     content: url('../images/three-dots-blue.svg');
     display: block;

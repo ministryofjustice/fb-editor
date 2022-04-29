@@ -25,6 +25,18 @@ module ApplicationHelper
     end
   end
 
+  def flow_branch_link(item)
+    link_to edit_branch_path(service.service_id, item[:uuid]), class: 'govuk-link' do
+      concat(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 125" tabindex="-1" focusable="false">
+          <polygon fill="" points="1,62.5 100,1 199,62.5 100,124" stroke="" stroke-width="2"/>
+          </svg>'.html_safe
+      )
+      concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
+      concat tag.span(item[:title], class: 'text')
+    end
+  end
+
   def strip_url(url)
     url.to_s.chomp('/').reverse.chomp('/').reverse.strip.downcase
   end
