@@ -5,6 +5,8 @@ class BaseComponentValidation
   include ActiveModel::Validations
   validates_with BaseComponentValidationValidator
 
+  ENABLED = 'enabled'.freeze
+
   def to_partial_path
     'new'
   end

@@ -1,0 +1,26 @@
+<div class="component-dialog-api-request" id="component_validations">
+  <%= form_for @component_validation,
+      url: api_service_component_validations_path(service.service_id, @component_validation.component, @component_validation.validator) do |f| %>
+    <div class="govuk-form-group ">
+      <%= f.label :component_validation, @component_validation.label, class: "govuk-label govuk-label--m" %>
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" data-aria-controls="conditional_component_validation">
+          <label class="govuk-label govuk-checkboxes__label" for="component_validation_status">
+            <%= @component_validation.status_label %>
+          </label>
+        </div>
+
+        <%= render @component_validation.component_partial %>
+      </div>
+    </div>
+
+    <button class="govuk-button fb-govuk-button">
+      <%= t('dialogs.component_validations.button') %>
+    </button>
+
+    <button class="govuk-button govuk-button--secondary" type="button" >
+      <%= t('dialogs.button_cancel') %>
+    </button>
+  <% end %>
+</div>

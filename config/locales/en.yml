@@ -63,6 +63,11 @@ en:
       you_cannot_move_this_page: 'You cannot move this page yet'
       stacked_branches_not_supported_message: 'Moving this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
       branch_destination_no_default_next_message: 'You cannot leave a branch without any pages. Either edit the branching point or add another page to the branch first.'
+    component_validations:
+      minimum:
+        label: Minimum answer value
+        status_label: Set the lowest number allowed
+      button: Update
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -312,6 +317,9 @@ en:
         base_component_validation:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
+          format: "%{message}"
+        number_validation:
+          invalid: "%{label} needs to be a number"
           format: "%{message}"
         minimum_validation:
           format: "%{message}"

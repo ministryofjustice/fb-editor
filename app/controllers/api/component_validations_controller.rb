@@ -1,0 +1,39 @@
+module Api
+  class ComponentValidationsController < ApiController
+    before_action :assign_component_validation
+
+    def new
+      render @component_validation, layout: false
+    end
+
+    def create
+      if @component_validation.valid?
+        render json: {}, status: :ok
+      else
+        render @component_validation, layout: false
+      end
+    end
+
+    private
+
+    def assign_component_validation
+      @component_validation = MinimumValidation.new(validation_params)
+    end
+
+    def validation_params
+      return base_params if action_name == 'new'
+
+      component_validation_params
+    end
+
+    def base_params
+      params.permit(:component, :validator)
+    end
+
+    def component_validation_params
+      params.require(:component_validation)
+            .permit(:status, :value)
+            .merge(base_params)
+    end
+  end
+end
