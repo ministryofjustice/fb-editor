@@ -309,6 +309,12 @@ en:
           blank: "Select a destination for Branch "
         expression:
           blank: "Select a question for the condition for Branch "
+        base_component_validation:
+          validator: "%{validator} is not valid for %{component} component"
+          blank: "Enter an answer for %{label}"
+          format: "%{message}"
+        minimum_validation:
+          format: "%{message}"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
