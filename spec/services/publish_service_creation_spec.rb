@@ -240,14 +240,14 @@ RSpec.describe PublishServiceCreation, type: :model do
 
       context 'when existing username and password' do
         let!(:username_config) do
-          create(:service_configuration, :dev, :username, service_id: service_id)
+          create(:service_configuration, :production, :username, service_id: service_id)
         end
         let!(:password_config) do
-          create(:service_configuration, :dev, :password, service_id: service_id)
+          create(:service_configuration, :production, :password, service_id: service_id)
         end
         let(:attributes) do
           {
-            deployment_environment: 'dev',
+            deployment_environment: 'production',
             username: 'something',
             password: 'other-something',
             require_authentication: '0'

@@ -9,11 +9,14 @@ feature 'Publishing' do
   let(:warning_both) { I18n.t('publish.warning.both_pages') }
   let(:warning_cya) { I18n.t('publish.warning.cya') }
   let(:warning_confirmation) { I18n.t('publish.warning.confirmation') }
+  let(:modal_description) { I18n.t('activemodel.attributes.publish_service_creation.description') }
+  let(:allow_anyone_text) { I18n.t('publish.dialog.option_1') }
+  let(:username_and_password_text) { I18n.t('publish.dialog.option_2') }
   let(:username_and_password_errors) do
     # the use of '‘' is correct
     [
-      "Your answer for ‘Set username’ is too short (6 characters at least)",
-      "Your answer for ‘Set password’ is too short (6 characters at least)",
+      "Your answer for ‘Create a username’ is too short (6 characters at least)",
+      "Your answer for ‘Create a password’ is too short (6 characters at least)",
     ]
   end
 
@@ -71,13 +74,15 @@ feature 'Publishing' do
     then_I_should_be_on_the_publishing_page
 
     and_I_want_to_publish('Test')
-    then_username_and_password_should_be_selected('dev')
+    then_I_should_see_publish_to_test_modal
+    then_username_and_password_should_be_the_default('dev')
     when_I_enter_invalid_username_and_password('dev', 'Test')
     then_I_should_see_an_error_message('dev', 'Test')
 
     and_I_cancel
 
     and_I_want_to_publish('Live')
+    then_I_should_not_see_publish_to_test_modal
     then_username_and_password_should_be_selected('production')
     when_I_enter_invalid_username_and_password('live', 'Live')
     then_I_should_see_an_error_message('live', 'Live')
@@ -99,6 +104,15 @@ feature 'Publishing' do
     expect(editor.find("#require_authentication_#{environment}_1", visible: false)).not_to be_checked
     # set username and password
     expect(editor.find("#require_authentication_#{environment}_2", visible: false)).to be_checked
+  end
+
+  def then_username_and_password_should_be_the_default(environment)
+    # defaults to requiring a username and password so the radio is pre selected
+
+    # allow anyone
+    expect(page).to_not have_text(allow_anyone_text)
+    # set username and password text
+    expect(page).to_not have_text(username_and_password_text)
   end
 
   def when_I_enter_invalid_username_and_password(environment, button_environment)
@@ -145,5 +159,13 @@ feature 'Publishing' do
 
   def then_I_should_see_warning_confirmation_text
     expect(editor.text).to include(warning_confirmation)
+  end
+
+  def then_I_should_see_publish_to_test_modal
+    expect(editor.text).to include(modal_description)
+  end
+
+  def then_I_should_not_see_publish_to_test_modal
+    expect(editor.text).to_not include(modal_description)
   end
 end
