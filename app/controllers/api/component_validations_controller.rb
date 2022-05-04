@@ -8,7 +8,7 @@ module Api
 
     def create
       if @component_validation.valid?
-        render json: {}, status: :ok
+        render json: @component_validation.to_metadata, status: :accepted
       else
         render @component_validation, layout: false
       end
@@ -27,7 +27,12 @@ module Api
     end
 
     def base_params
-      params.permit(:component, :validator)
+      {
+        service: service,
+        page_uuid: params[:page_id],
+        component_uuid: params[:component_id],
+        validator: params[:validator]
+      }
     end
 
     def component_validation_params

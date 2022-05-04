@@ -1,5 +1,5 @@
 class BaseComponentValidationValidator < ActiveModel::Validator
-  DEFINITION_BUNDLES = { number: 'number_bundle' }.freeze
+  DEFINITION_BUNDLES = { number: 'validations.number_bundle' }.freeze
 
   def validate(record)
     bundle = definition_bundle(record.component_type)
@@ -31,14 +31,13 @@ class BaseComponentValidationValidator < ActiveModel::Validator
   end
 
   def component_validations(bundle)
-    validations_definitions[bundle]['properties']['validation']['properties'].keys
+    bundle.schema['properties']['validation']['properties'].keys
   end
 
   def definition_bundle(component)
-    DEFINITION_BUNDLES[component.to_sym]
-  end
+    schema_key = DEFINITION_BUNDLES[component.to_sym]
+    return if schema_key.blank?
 
-  def validations_definitions
-    JSON::Validator.schema_for_uri('validations').schema['definitions']
+    JSON::Validator.schema_for_uri(schema_key)
   end
 end

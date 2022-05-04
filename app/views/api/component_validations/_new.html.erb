@@ -1,6 +1,8 @@
 <div class="component-dialog-api-request" id="component_validations">
   <%= form_for @component_validation,
-      url: api_service_component_validations_path(service.service_id, @component_validation.component, @component_validation.validator) do |f| %>
+      url: api_service_page_component_validations_path(
+           service.service_id, @component_validation.page_uuid, @component_validation.component_uuid, @component_validation.validator
+           ) do |f| %>
     <div class="govuk-form-group">
       <%= f.label :component_validation, @component_validation.label, class: "govuk-label govuk-label--m" %>
       <div class="govuk-checkboxes" data-module="govuk-checkboxes">
