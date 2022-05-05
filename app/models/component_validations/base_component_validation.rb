@@ -19,6 +19,10 @@ class BaseComponentValidation
     enabled? && value.present?
   end
 
+  def component
+    @component ||= page.find_component_by_uuid(component_uuid)
+  end
+
   def component_type
     @component_type ||= component.type
   end
@@ -41,10 +45,6 @@ class BaseComponentValidation
 
   def component_validation
     @component_validation ||= component.validation
-  end
-
-  def component
-    @component ||= page.find_component_by_uuid(component_uuid)
   end
 
   def page
