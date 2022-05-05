@@ -75,6 +75,9 @@ Rails.application.routes.draw do
             get '/destroy-message', to: 'question_options#destroy_message', as: :destroy_message
           end
         end
+
+        get '/component-validations/:component_id/:validator', as: :component_validations, to: 'component_validations#new'
+        post '/component-validations/:component_id/:validator', to: 'component_validations#create'
       end
 
       resources :branches, param: :previous_flow_uuid do
