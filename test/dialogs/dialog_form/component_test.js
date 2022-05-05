@@ -59,12 +59,6 @@ describe("FormDialog", function() {
       expect(created.$node.data("instance")).to.equal(created.dialog);
     });
 
-    it("should make the $node public", function() {
-      expect(created.dialog.$node).to.exist;
-      expect(created.dialog.$node.length).to.equal(1);
-      expect(created.dialog.$node.get(0)).to.equal(created.$node.get(0));
-    });
-
 
     describe("With errors", function() {
       const COMPONENT_ID_WITH_ERRORS = "dialog-with-errors-component";
