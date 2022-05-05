@@ -139,11 +139,10 @@ function addExpanderComponents() {
   $("[data-component=Expander]").each(function() {
     var $node = $(this);
     new Expander($node, {
-      title: $node.find('> h2').first(),
+      activator: $node.find('> h2').first(),
       wrap_content: true,
     });
   });
 }
-
 
 module.exports = DefaultController;
