@@ -66,7 +66,7 @@ PublishController.create = function() {
  **/
 class PublishForm {
   constructor($node) {
-    var $content = $node.find("fieldset");
+    var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
 
