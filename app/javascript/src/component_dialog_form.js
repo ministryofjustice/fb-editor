@@ -24,13 +24,7 @@ const mergeObjects = utilities.mergeObjects;
  * @config (Object) Configurable key/value pairs.
  **/
 class FormDialog {
-
-  static STATE_ATTR = "state";
-  static STATE_OPEN = "open";
-  static STATE_CLOSED = "closed";
-
   #config;
-  #state;
 
   constructor($node, config) {
     var dialog = this;
@@ -75,22 +69,10 @@ class FormDialog {
       }
     ];
 
-    // Sort out easy state reporting.
-    this.#state = FormDialog.STATE_CLOSED;
-
-    $node.on("dialogclose", function( event, ui ) {
-      dialog.$container.attr(FormDialog.STATE_ATTR, FormDialog.STATE_CLOSED);
-    });
-
-    $node.on("dialogopen", function( event, ui ) {
-      dialog.$container.attr(FormDialog.STATE_ATTR, FormDialog.STATE_OPEN);
-    });
-
-    // Some setup to happen when jQueryUI dialog is created.
+    // Some setup can only happen when jQueryUI dialog is created.
     $node.on("dialogcreate", function(event, ui) {
       var $container = $node.parents(".ui-dialog");
       $container.addClass("FormDialog");
-      $container.attr(FormDialog.STATE_ATTR, FormDialog.STATE_CLOSED);
       dialog.$container = $container;
     });
 
@@ -104,8 +86,9 @@ class FormDialog {
     // this.$container... see 'dialogcreate' event handler, above.
   }
 
-  get state() {
-    return this.$container.attr(FormDialog.STATE_ATTR);
+  // Shortcut to jQuery method doing same thing.
+  isOpen() {
+    return this.$node.dialog("isOpen");
   }
 
   open() {

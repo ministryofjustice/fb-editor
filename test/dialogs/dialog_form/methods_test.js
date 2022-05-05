@@ -51,43 +51,28 @@ describe("FormDialog", function() {
     });
 
 
-    /* TEST METHOD: get state()
+    /* TEST METHOD: isOpen()
      **/
-    it("should report state as 'closed'", function() {
+    it("should report false when dialog is closed", function() {
       var $container = created.$node.parents("[role=dialog]");
 
-      // check directly for attr existence
-      expect($container.attr("state")).to.not.equal(undefined);
-      expect($container.attr("state")).to.equal("closed");
-
-      // should be closed by default
-      expect($container.css("display")).to.equal("none");
-
-      // check method return value agrees
-      expect(created.dialog.state).to.equal("closed");
-
-      // open and close to make sure it's still reporting 'closed'
-      created.dialog.open();
-      expect($container.css("display")).to.not.equal("none");
-
+      // First try to make sure it's open
       created.dialog.close();
       expect($container.css("display")).to.equal("none");
-      expect(created.dialog.state).to.equal("closed");
+
+      // Then test the method
+      expect(created.dialog.isOpen()).to.be.false;
     });
 
-    it("should report state as 'open'", function() {
+    it("should report true when dialog is open", function() {
       var $container = created.$node.parents("[role=dialog]");
 
       // First try to make sure it's open
       created.dialog.open();
       expect($container.css("display")).to.not.equal("none");
 
-      // check directly for attr existence and value
-      expect($container.attr("state")).to.not.equal(undefined);
-      expect($container.attr("state")).to.equal("open");
-
-      // and see if state method agrees
-      expect(created.dialog.state).to.equal("open");
+      // Then test the method
+      expect(created.dialog.isOpen()).to.be.true;
     });
 
 
