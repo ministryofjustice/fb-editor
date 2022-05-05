@@ -2,11 +2,11 @@
  * Expander Component
  * ----------------------------------------------------
  * Description:
- * Creates an area that expands and contracts, activated by a single title element.
+ * Creates an area that expands and contracts, triggered by an activator element.
  *
  * Implements the following behaviour:
  *  - Takes a provided element, and enhances the content within it to be a
-*  disclosure widget either using a provided element as a toggle, or by
+*  disclosure widget either by enhancing the provided element, or by
 *  creating a button.
 *   - If config.wrap_content is true, it will wrap all other child elements
 *   within the provided element in a <div>
@@ -20,9 +20,8 @@
 *   </dl>
 *   <script>
 *     var $list = $(dl);
-*     var $title = $(dl).find('> dt').first();
 *     new Expander($list, {
-*       title: $title,
+*       activator: $(dl).find('> dt').first(),
 *       wrap_content: false,
 *     })
 *   </script>
@@ -39,17 +38,17 @@
 *
 *   Configuration:
 *   The config object can have the follwoing properties:
-*   - title: (jQuery|string)   If a jQuery object it should be the first child of
-*                              the $node. If the element itself is not a button, 
-*                              the element will be enhanced by wrapping its contents 
-*                              with a <button>.
-*                              If a string is provided, a button will be created and
-*                              prepended to the $node using the title text as the
-*                              button label.
-*   - wrap_content: (boolean)  If true will wrap all content of the
-*                              $node aside from the $title with a wrapper <div>
-*   - auto_open: (boolean)     If true, the comonent will be open on page load. 
-*   - duration: (integer)      The duration in ms of the open/close animation.
+*   - activator: (jQuery|string) If a jQuery object it should be the first child of
+*                                the $node. If the element itself is not a button, 
+*                                the element will be enhanced by wrapping its contents 
+*                                with a <button>.
+*                                If a string is provided, a button will be created and
+*                                prepended to the $node using the title text as the
+*                                button label.
+*   - wrap_content: (boolean)    If true will wrap all content of the
+*                                $node aside from the $title with a wrapper <div>
+*   - auto_open: (boolean)       If true, the comonent will be open on page load. 
+*   - duration: (integer)        The duration in ms of the open/close animation.
 *
  **/
 
@@ -68,14 +67,14 @@ class Expander {
 
   constructor($node, config) {
     const conf = mergeObjects({
-      title: null,
+      activator: null,
       wrap_content: true,
       auto_open: false,
       duration: 0,
     }, config);
 
-    if(!conf.title) {
-      console.warn('Cannot initialise an Expander without a title element.');
+    if(!conf.activator) {
+      console.warn('Cannot initialise an Expander without an activator element.');
       return;
     }
 
@@ -88,24 +87,21 @@ class Expander {
 
     const id = uniqueString("Expander_");
 
-    if(typeof conf.title == 'string') {
+    if(typeof conf.activator == 'string') {
       // We create a button using the title for a label and prepend it to the 
       // container to toggle disclosure
-      let $activator = this.#createActivator(id, conf.title);
-      $node.prepend($activator);
-      this.$activator = $activator;
-    } else if (conf.title.is('button')) {
+      this.$button = this.#createButton(id, conf.activator);
+      $node.prepend(this.$button);
+    } else if (conf.activator.is('button')) {
       // we enhance the button with the required aria attributes and event
-      // listener
-      this.#enhanceActivator(conf.title, id);
-      this.$activator = conf.title;
+      // listener 
+      this.$button = this.#enhanceButton(conf.activator, id);
     } else {
       // We enhance the title element by wrapping its contents with a button
-      let $title = conf.title;
-      let $activator = this.#createActivator(id);
-      $title.wrapInner($activator);
-      $title.addClass("Expander__title");
-      this.$activator = $title.find('button');
+      let $activator = conf.activator;
+      $activator.wrapInner( this.#createButton(id) );
+      $activator.addClass("Expander__title");
+      this.$button = $activator.find('button');
     }
  
     if(conf.wrap_content) {
@@ -121,14 +117,14 @@ class Expander {
 
   open() {
     this.$container.slideDown( this.#config.duration, () => {
-      this.$activator.attr("aria-expanded", "true");
+      this.$button.attr("aria-expanded", "true");
       this.#state = 'open';
     });
   }
 
   close() {
     this.$container.slideUp( this.#config.duration, () => {
-      this.$activator.attr("aria-expanded", "false");
+      this.$button.attr("aria-expanded", "false");
       this.#state = 'closed';
     });
   }
@@ -141,23 +137,23 @@ class Expander {
     this.isOpen() ? this.close() : this.open();
   }
 
-  #createActivator(id, title='') {
-    const $activator = $('<button>'+title+'</button>');
-    this.#enhanceActivator($activator, id);
-
-    return $activator;
+  #createButton(id, title='') {
+    const $button = $('<button>'+title+'</button>');
+    return this.#enhanceButton($button, id);
   }
 
-  #enhanceActivator($activator, id) {
-    $activator.attr({
+  #enhanceButton($button, id) {
+    $button.attr({
       'aria-expanded': this.#config.auto_open,
       'aria-controls': id
     });
-    $activator.addClass('Expander__activator');
+    $button.addClass('Expander__activator');
 
-    $activator.on("click", () => {
+    $button.on("click", () => {
       this.toggle();
     });
+
+    return $button;
   }
   
 }
