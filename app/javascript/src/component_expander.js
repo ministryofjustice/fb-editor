@@ -46,8 +46,8 @@
 *                                prepended to the $node using the title text as the
 *                                button label.
 *   - wrap_content: (boolean)    If true will wrap all content of the
-*                                $node aside from the $title with a wrapper <div>
-*   - auto_open: (boolean)       If true, the comonent will be open on page load. 
+*                                $node aside from the $activator with a wrapper <div>
+*   - auto_open: (boolean)       If true, the component will be open on page load. 
 *   - duration: (integer)        The duration in ms of the open/close animation.
 *
  **/
@@ -86,23 +86,26 @@ class Expander {
     this.$node = $node;
 
     const id = uniqueString("Expander_");
+    var $button;
 
     if(typeof conf.activator == 'string') {
       // We create a button using the title for a label and prepend it to the 
       // container to toggle disclosure
-      this.$button = this.#createButton(id, conf.activator);
-      $node.prepend(this.$button);
+      $button = this.#createButton(id, conf.activator);
+      $node.prepend($button);
     } else if (conf.activator.is('button')) {
       // we enhance the button with the required aria attributes and event
       // listener 
-      this.$button = this.#enhanceButton(conf.activator, id);
+      $button = this.#enhanceButton(conf.activator, id);
     } else {
       // We enhance the title element by wrapping its contents with a button
       let $activator = conf.activator;
       $activator.wrapInner( this.#createButton(id) );
       $activator.addClass("Expander__title");
-      this.$button = $activator.find('button');
+      $button = $activator.find('button');
     }
+
+    this.$activator = $button;
  
     if(conf.wrap_content) {
       this.$node.children().first().nextAll().wrapAll('<div></div>');
@@ -117,14 +120,14 @@ class Expander {
 
   open() {
     this.$container.slideDown( this.#config.duration, () => {
-      this.$button.attr("aria-expanded", "true");
+      this.$activator.attr("aria-expanded", "true");
       this.#state = 'open';
     });
   }
 
   close() {
     this.$container.slideUp( this.#config.duration, () => {
-      this.$button.attr("aria-expanded", "false");
+      this.$activator.attr("aria-expanded", "false");
       this.#state = 'closed';
     });
   }
