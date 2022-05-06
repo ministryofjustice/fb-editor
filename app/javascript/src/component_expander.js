@@ -21,7 +21,7 @@
 *   <script>
 *     var $list = $(dl);
 *     new Expander($list, {
-*       activator: $(dl).find('> dt').first(),
+*       activator_source: $(dl).find('> dt').first(),
 *       wrap_content: false,
 *     })
 *   </script>
@@ -38,7 +38,7 @@
 *
 *   Configuration:
 *   The config object can have the follwoing properties:
-*   - activator: (jQuery|string) If a jQuery object it should be the first child of
+*   - activator_source: (jQuery|string) If a jQuery object it should be the first child of
 *                                the $node. If the element itself is not a button, 
 *                                the element will be enhanced by wrapping its contents 
 *                                with a <button>.
@@ -67,13 +67,13 @@ class Expander {
 
   constructor($node, config) {
     const conf = mergeObjects({
-      activator: null,
+      activator_source: null,
       wrap_content: true,
       auto_open: false,
       duration: 0,
     }, config);
 
-    if(!conf.activator) {
+    if(!conf.activator_source) {
       console.warn('Cannot initialise an Expander without an activator element.');
       return;
     }
@@ -88,18 +88,18 @@ class Expander {
     const id = uniqueString("Expander_");
     var $button;
 
-    if(typeof conf.activator == 'string') {
+    if(typeof conf.activator_source == 'string') {
       // We create a button using the title for a label and prepend it to the 
       // container to toggle disclosure
-      $button = this.#createButton(id, conf.activator);
+      $button = this.#createButton(id, conf.activator_source);
       $node.prepend($button);
-    } else if (conf.activator.is('button')) {
+    } else if (conf.activator_source.is('button')) {
       // we enhance the button with the required aria attributes and event
       // listener 
-      $button = this.#enhanceButton(conf.activator, id);
+      $button = this.#enhanceButton(conf.activator_source, id);
     } else {
       // We enhance the title element by wrapping its contents with a button
-      let $activator = conf.activator;
+      let $activator = conf.activator_source;
       $activator.wrapInner( this.#createButton(id) );
       $activator.addClass("Expander__title");
       $button = $activator.find('button');
