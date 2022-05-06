@@ -67,16 +67,11 @@ class Expander {
 
   constructor($node, config) {
     const conf = mergeObjects({
-      activator_source: null,
+      activator_source: "activate", // Developer mistake occured if see this text.
       wrap_content: true,
       auto_open: false,
       duration: 0,
     }, config);
-
-    if(!conf.activator_source) {
-      console.warn('Cannot initialise an Expander without an activator element.');
-      return;
-    }
 
     $node.addClass("Expander");
     $node.data("instance", this);
