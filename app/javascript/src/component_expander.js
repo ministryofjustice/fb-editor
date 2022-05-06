@@ -81,16 +81,9 @@ class Expander {
     this.#state = 'open';
     this.#id = uniqueString("Expander_");
     this.$node = $node;
-    this.$activator = this.#createActivator(conf.activator_source);
- 
-    if(conf.wrap_content) {
-      this.$node.children().first().nextAll().wrapAll('<div></div>');
-    } 
+    this.$container = this.#createContainer();
+    this.$activator = this.#createActivator();
 
-    this.$container = this.$node.children().first().next();
-    this.$container.attr("id", this.#id);
-    this.$container.addClass("Expander__container");
-    
     conf.auto_open ? this.open() : this.close();
   }
 
@@ -119,7 +112,8 @@ class Expander {
   /* Create/define activator element to use from the source provided
    * in the config.
    *
-   * @source (String|jQuery element) Text or element used to acquire an activator
+   * Note:
+   * var source (String|jQuery element) is text or element used to acquire an activator.
    *
    * If source is:
    *  - String
@@ -137,7 +131,8 @@ class Expander {
    *    method will prevent trying to add elements inside a button.
    *
    **/
-  #createActivator(source) {
+  #createActivator() {
+    var source = this.#config.activator_source;
     var $activator;
 
     if(typeof source == 'string') {
@@ -175,6 +170,55 @@ class Expander {
 
     return $activator;
   }
+
+
+  /* Depending on the markup we're using, and our preferred end result, we either
+   * want to wrap the $node content in a $container or just leave the $node to
+   * become the wrapper of the Expander.
+   *
+   * e.g. You wouldn't need a wrapper if your intention is this...
+   *
+   * <dl>
+   *  <dt class="this-becomes-the-activator">Blah</dt>
+   *  <dd class="this-was-the-node and this-becomes-the-container">Blah Blah</dd>
+   * </dt>
+   *
+   * but you would want it for this outcome...
+   *
+   * <section class="this-was-the-node">
+   *   <h2 class="this-was-activator-source"><button class="inserted-activator">Blah</h2>
+   *   <div class="created-wrapper-becomes-the-container">
+   *     <p>Blah</p>
+   *     <p>Blah</p>
+   *   </div>
+   * </section>
+   *
+   *
+   **/
+  #createContainer() {
+    var $container;
+
+    if(this.#config.wrap_content) {
+      $container = $("<div></div>");
+
+      // In case config.activator_source was an element inside the $node
+      // and is either going to be the $activator or wrapping it, filter it out.
+      $container.append(this.$node.children().not(this.#config.activator_source));
+
+      // Now add the container as last child to $node.
+      this.$node.append($container);
+    }
+    else {
+      $container = $node; // Change nothing
+    }
+
+    $container.attr("id", this.#id);
+    $container.addClass("Expander__container");
+
+    return $container;
+  }
+
 }
+
 
 module.exports = Expander;
