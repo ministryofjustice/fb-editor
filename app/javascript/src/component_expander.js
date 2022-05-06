@@ -64,6 +64,7 @@ const {
 class Expander {
   #config;
   #state;
+  #id;
 
   constructor($node, config) {
     const conf = mergeObjects({
@@ -73,41 +74,21 @@ class Expander {
       duration: 0,
     }, config);
 
-    const id = uniqueString("Expander_");
-    var $button;
-
     $node.addClass("Expander");
     $node.data("instance", this);
 
     this.#config = conf;
     this.#state = 'open';
+    this.#id = uniqueString("Expander_");
     this.$node = $node;
-
-    if(typeof conf.activator_source == 'string') {
-      // We create a button using the title for a label and prepend it to the 
-      // container to toggle disclosure
-      $button = this.#createButton(id, conf.activator_source);
-      $node.prepend($button);
-    } else if (conf.activator_source.is('button')) {
-      // we enhance the button with the required aria attributes and event
-      // listener 
-      $button = this.#enhanceButton(conf.activator_source, id);
-    } else {
-      // We enhance the title element by wrapping its contents with a button
-      let $activator = conf.activator_source;
-      $activator.wrapInner( this.#createButton(id) );
-      $activator.addClass("Expander__title");
-      $button = $activator.find('button');
-    }
-
-    this.$activator = $button;
+    this.$activator = this.#createActivator(conf.activator_source);
  
     if(conf.wrap_content) {
       this.$node.children().first().nextAll().wrapAll('<div></div>');
     } 
 
     this.$container = this.$node.children().first().next();
-    this.$container.attr("id", id);
+    this.$container.attr("id", this.#id);
     this.$container.addClass("Expander__container");
     
     conf.auto_open ? this.open() : this.close();
@@ -135,24 +116,65 @@ class Expander {
     this.isOpen() ? this.close() : this.open();
   }
 
-  #createButton(id, title='') {
-    const $button = $('<button>'+title+'</button>');
-    return this.#enhanceButton($button, id);
-  }
+  /* Create/define activator element to use from the source provided
+   * in the config.
+   *
+   * @source (String|jQuery element) Text or element used to acquire an activator
+   *
+   * If source is:
+   *  - String
+   *    Create a <button> and place before the content.
+   *
+   *  - <button>
+   *    Just use/enhance that.
+   *
+   *  - Empty element
+   *    Treat it like a button (no extra support).
+   *
+   *  - Non-empty element
+   *    Wrap it's text content with a button, and replace the content of source
+   *    element (it is assumed no other elements are inside the source but this
+   *    method will prevent trying to add elements inside a button.
+   *
+   **/
+  #createActivator(source) {
+    var $activator;
 
-  #enhanceButton($button, id) {
-    $button.attr({
+    if(typeof source == 'string') {
+      $activator = $('<button>' + source + '</button>');
+      this.$node.before($activator);
+    }
+    else {
+      // Assume source to be jQuery element from this point.
+      if(source.is('button')) {
+        $activator = source;
+      }
+      else {
+        if(source.children().length < 0) {
+          $activator = source; // No extra support for Empty element, yet.
+        }
+        else {
+          $activator = $('<button>' + source + '</button>');
+          $activator.text(source.text()); // Only want text not child elements.
+          source.empty();
+          source.append($activator);
+        }
+      }
+    }
+
+    // Now we should have a suitable element we can do the rest.
+    $activator.addClass('Expander__activator');
+    $activator.attr({
       'aria-expanded': this.#config.auto_open,
-      'aria-controls': id
+      'aria-controls': this.#id
     });
-    $button.addClass('Expander__activator');
 
-    $button.on("click", () => {
+    $activator.on("click", () => {
       this.toggle();
     });
 
-    return $button;
+    return $activator;
   }
-  
 }
-  module.exports = Expander;
+
+module.exports = Expander;
