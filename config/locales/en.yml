@@ -216,6 +216,7 @@ en:
       activator: 'Properties'
       remove: 'Delete...'
       required: 'Required...'
+      minimum: 'Minimum answer value...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
