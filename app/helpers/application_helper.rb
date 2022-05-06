@@ -1,6 +1,10 @@
 module ApplicationHelper
   include MetadataPresenter::ApplicationHelper
 
+  def enabled_validations(component)
+    Rails.application.config.enabled_validations & component.supported_validations
+  end
+
   # Used on service flow page
   def flow_thumbnail_link(args)
     link_to edit_page_path(
