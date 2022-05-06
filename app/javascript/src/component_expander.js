@@ -73,15 +73,15 @@ class Expander {
       duration: 0,
     }, config);
 
+    const id = uniqueString("Expander_");
+    var $button;
+
     $node.addClass("Expander");
     $node.data("instance", this);
 
     this.#config = conf;
     this.#state = 'open';
     this.$node = $node;
-
-    const id = uniqueString("Expander_");
-    var $button;
 
     if(typeof conf.activator_source == 'string') {
       // We create a button using the title for a label and prepend it to the 
