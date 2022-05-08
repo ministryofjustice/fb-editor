@@ -66,7 +66,7 @@ class Expander {
   #state;
   #id;
 
-  constructor($node, config) {
+  constructor($content, config) {
     const conf = mergeObjects({
       activator_source: "activate", // Developer mistake occured if see this text.
       wrap_content: true,
@@ -74,28 +74,24 @@ class Expander {
       duration: 0,
     }, config);
 
-    $node.addClass("Expander");
-    $node.data("instance", this);
-
     this.#config = conf;
     this.#state = 'open';
     this.#id = uniqueString("Expander_");
-    this.$node = $node;
-    this.$container = this.#createContainer();
+    this.$node = this.#createNode($content);
     this.$activator = this.#createActivator();
 
     conf.auto_open ? this.open() : this.close();
   }
 
   open() {
-    this.$container.slideDown( this.#config.duration, () => {
+    this.$node.slideDown( this.#config.duration, () => {
       this.$activator.attr("aria-expanded", "true");
       this.#state = 'open';
     });
   }
 
   close() {
-    this.$container.slideUp( this.#config.duration, () => {
+    this.$node.slideUp( this.#config.duration, () => {
       this.$activator.attr("aria-expanded", "false");
       this.#state = 'closed';
     });
@@ -173,21 +169,22 @@ class Expander {
 
 
   /* Depending on the markup we're using, and our preferred end result, we either
-   * want to wrap the $node content in a $container or just leave the $node to
-   * become the wrapper of the Expander.
+   * want to wrap the $content in a container DIV or just leave the $content to
+   * become act as the wrapper of the Expander. The wrapper element (or existing
+   * $content element, will be returned as the $node for the component.
    *
    * e.g. You wouldn't need a wrapper if your intention is this...
    *
-   * <dl>
+   * <dl
    *  <dt class="this-becomes-the-activator">Blah</dt>
-   *  <dd class="this-was-the-node and this-becomes-the-container">Blah Blah</dd>
+   *  <dd class="this-is-the-content this-becomes-the-$node">Blah Blah</dd>
    * </dt>
    *
    * but you would want it for this outcome...
    *
-   * <section class="this-was-the-node">
+   * <section class="this-was-the-content">
    *   <h2 class="this-was-activator-source"><button class="inserted-activator">Blah</h2>
-   *   <div class="created-wrapper-becomes-the-container">
+   *   <div class="created-wrapper-becomes-the-$node">
    *     <p>Blah</p>
    *     <p>Blah</p>
    *   </div>
@@ -195,27 +192,27 @@ class Expander {
    *
    *
    **/
-  #createContainer() {
-    var $container;
+  #createNode($content) {
+    var $node;
 
     if(this.#config.wrap_content) {
-      $container = $("<div></div>");
+      $node = $("<div></div>");
+      $content.append($node);
 
       // In case config.activator_source was an element inside the $node
       // and is either going to be the $activator or wrapping it, filter it out.
-      $container.append(this.$node.children().not(this.#config.activator_source));
-
-      // Now add the container as last child to $node.
-      this.$node.append($container);
+      $node.append($content.children().not(this.#config.activator_source));
     }
     else {
-      $container = $node; // Change nothing
+      $node = $content; // Change nothing
     }
 
-    $container.attr("id", this.#id);
-    $container.addClass("Expander__container");
 
-    return $container;
+    $node.addClass("Expander");
+    $node.data("instance", this);
+    $node.attr("id", this.#id);
+
+    return $node;
   }
 
 }
