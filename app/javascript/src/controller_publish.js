@@ -103,11 +103,13 @@ class PublishForm {
 class ContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
-    $radios.eq(0).on("change", this.toggle.bind(this));
-    $radios.eq(1).on("change", this.toggle.bind(this));
-    this.$content = $content;
-    this.$radios = $radios;
-    this.toggle();
+    if($radios.length > 0) {
+      $radios.eq(0).on("change", this.toggle.bind(this));
+      $radios.eq(1).on("change", this.toggle.bind(this));
+      this.$content = $content;
+      this.$radios = $radios;
+      this.toggle();
+    }
   }
 
   toggle() {
