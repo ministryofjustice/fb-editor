@@ -3,6 +3,8 @@ Rails.application.config.enabled_validations = %w(
   date
   email
   max_size
+  minimum
+  maximum
   number
   required
   upload

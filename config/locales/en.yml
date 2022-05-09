@@ -67,6 +67,9 @@ en:
       minimum:
         label: Minimum answer value
         status_label: Set the lowest number allowed
+      maximum:
+        label: Maximum answer value
+        status_label: Set the highest number allowed
       button: Update
   header:
     service_name: "MoJ Forms"
@@ -217,6 +220,7 @@ en:
       remove: 'Delete...'
       required: 'Required...'
       minimum: 'Minimum answer value...'
+      maximum: 'Maximum answer value...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
@@ -333,6 +337,8 @@ en:
           invalid: "%{label} needs to be a number"
           format: "%{message}"
         minimum_validation:
+          format: "%{message}"
+        maximum_validation:
           format: "%{message}"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
