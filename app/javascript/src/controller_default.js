@@ -138,12 +138,11 @@ function isolatedMethodDeleteLinks() {
 function addExpanderComponents() {
   $("[data-component=Expander]").each(function() {
     var $node = $(this);
-    var $activator = $node.find("h2");
     new Expander($node, {
-      $activator: $activator
+      activator_source: $node.find('> h2').first(),
+      wrap_content: true,
     });
   });
 }
-
 
 module.exports = DefaultController;
