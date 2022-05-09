@@ -33,7 +33,7 @@ class EditorApp < SitePrism::Page
   # End Your forms
 
   # Pages flow
-  element :footer_pages_link, 'h2', text: I18n.t('pages.footer')
+  element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'cookies'
 
   element :pages_link, :link, I18n.t('pages.name')
