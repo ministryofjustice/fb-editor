@@ -20,6 +20,28 @@ RSpec.describe 'BaseComponentValidation' do
 
   it_behaves_like 'a base component validation'
 
+  describe '#assign_validation' do
+    context 'when validator exists' do
+      it 'returns the correct validation class' do
+        expect(subject.assign_validation).to be_an_instance_of(MinimumValidation)
+      end
+    end
+
+    context 'when validator does not exist' do
+      let(:validator) { 'non_existent_validator' }
+      let(:expected_error) { 'non_existent_validator is not valid for number component' }
+
+      it 'returns the parent base component validation class' do
+        expect(subject.assign_validation).to be_an_instance_of(BaseComponentValidation)
+      end
+
+      it 'has the correct errors on the base component' do
+        subject.assign_validation
+        expect(subject.errors.full_messages.first).to eq(expected_error)
+      end
+    end
+  end
+
   describe '#enabled?' do
     context 'when status is present' do
       it 'returns truthy' do

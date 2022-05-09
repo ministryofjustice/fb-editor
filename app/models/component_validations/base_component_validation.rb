@@ -26,6 +26,19 @@ class BaseComponentValidation
 
   ENABLED = 'enabled'.freeze
 
+  def assign_validation
+    return self unless valid?
+
+    "#{validator.camelize}Validation".constantize.new(
+      service: service,
+      page_uuid: page_uuid,
+      component_uuid: component_uuid,
+      validator: validator,
+      status: status,
+      value: value
+    )
+  end
+
   def to_partial_path
     'new'
   end
