@@ -198,7 +198,7 @@ function layoutFormFlowOverview(view) {
 **/
 function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
-  var expander = $container.data("instance"); // Element is set as an Expander Component.
+  var expander = $container.find('.Expander').data("instance"); // Element is set as an Expander Component.
 
   // Make sure it's open on page load
   expander.open();
