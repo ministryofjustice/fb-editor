@@ -1,4 +1,4 @@
-class NumberValidator < BaseComponentValidationValidator
+class NumberValidator < ActiveModel::Validator
   def validate(record)
     if Float(record.value, exception: false).blank?
       record.errors.add(

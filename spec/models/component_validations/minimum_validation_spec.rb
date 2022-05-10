@@ -18,6 +18,8 @@ RSpec.describe 'MinimumValidation' do
   let(:status) { 'enabled' }
   let(:value) { '5' }
 
+  it_behaves_like 'a base component validation'
+
   context 'validating a number' do
     context 'when enabled and value is present' do
       it 'validates the number value' do
