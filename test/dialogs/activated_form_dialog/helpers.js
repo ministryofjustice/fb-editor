@@ -56,9 +56,11 @@ function createDialog(id, config) {
     }
   }
 
+  // Add new $node to DOM
+  $(document.body).append($node);
+
   // Apply the ID
   $node.attr("id", id);
-
   return {
     html: html,
     $node: $node,
@@ -72,11 +74,12 @@ function createDialog(id, config) {
  **/
 function setupView() {
   var template = `<script type="text/html" data-component-template="ActivatedFormDialog">
-                    <div class="component component-dialog">
+                    <form class="component component-dialog" action="/" method="post">
                       <h3 data-node="heading">General heading here</h3>
                       <p data-node="content">General message here</p>
+                      <input type="text" value="some value here" name="some_input" />
                       <input type="submit" value="` + constants.TEXT_BUTTON_OK + `" />
-                    </div>
+                    </form>
                   </script>`;
 
   $(document.body).append(template);
@@ -86,7 +89,7 @@ function setupView() {
 /* Reset DOM to pre setupView() state
  **/
 function teardownView() {
-  $("[data-component-template=ActivatedDialog]").remove();
+  $("[data-component-template=ActivatedFormDialog]").remove();
 }
 
 

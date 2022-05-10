@@ -16,7 +16,9 @@ describe("ActivatedFormDialog", function() {
     });
 
     after(function() {
-      helpers.teardownView(FORM_ID);
+      helpers.teardownView();
+      created.dialog.activator.$node.remove();
+      created.dialog.$container.remove();
       created = {};
     });
 
