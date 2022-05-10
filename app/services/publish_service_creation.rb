@@ -12,14 +12,28 @@ class PublishServiceCreation
                 :publish_service_id
 
   validates :service_id, :version_id, :user_id, presence: true
-  validates :username,
-            :password,
-            presence: true,
-            if: :require_authentication?
-  validates :username, :password,
-            length: { minimum: 6, maximum: 50 },
-            if: :require_authentication?,
-            allow_blank: true
+  with_options if: :require_authentication? do |record|
+    record.validates :username, presence: { message: I18n.t(
+      'activemodel.errors.models.publish_service_creation.blank_username'
+    ) }
+    record.validates :username, allow_blank: true, length: {
+      minimum: 6,
+      maximum: 50,
+      message: I18n.t(
+        'activemodel.errors.models.publish_service_creation.username_too_short'
+      )
+    }
+    record.validates :password, presence: { message: I18n.t(
+      'activemodel.errors.models.publish_service_creation.blank_password'
+    ) }
+    record.validates :password, allow_blank: true, length: {
+      minimum: 6,
+      maximum: 50,
+      message: I18n.t(
+        'activemodel.errors.models.publish_service_creation.password_too_short'
+      )
+    }
+  end
 
   def save
     return false if invalid?
