@@ -3,7 +3,26 @@ class BaseComponentValidation
 
   include ActiveModel::Model
   include ActiveModel::Validations
-  validates_with BaseComponentValidationValidator
+
+  validates :validator, inclusion: {
+    in: proc { |obj| obj.component.supported_validations },
+    message: lambda do |object, _|
+      I18n.t(
+        'activemodel.errors.models.base_component_validation.validator',
+        validator: object.validator,
+        component: object.component_type
+      )
+    end
+  }
+  validates :value, presence: {
+    if: proc { |obj| obj.enabled? },
+    message: lambda do |object, _|
+      I18n.t(
+        'activemodel.errors.models.base_component_validation.blank',
+        label: object.label
+      )
+    end
+  }
 
   ENABLED = 'enabled'.freeze
 
