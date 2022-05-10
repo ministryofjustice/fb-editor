@@ -14,12 +14,4 @@ class MinimumValidation < BaseComponentValidation
   def status_label
     I18n.t('dialogs.component_validations.minimum.status_label')
   end
-
-  def to_metadata
-    return { DEFAULT_METADATA_KEY => '' } if status.blank?
-
-    meta = default_metadata(DEFAULT_METADATA_KEY)
-    meta[DEFAULT_METADATA_KEY] = value
-    meta
-  end
 end
