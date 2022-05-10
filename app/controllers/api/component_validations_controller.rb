@@ -38,7 +38,7 @@ module Api
 
     def component_validation_params
       params.require(:component_validation)
-            .permit(:status, :value, :day, :month, :year)
+            .permit(:status, :value, :day, :month, :year, :string_length)
             .merge(base_params)
             .compact
     end

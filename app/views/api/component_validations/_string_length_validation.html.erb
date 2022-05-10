@@ -1,0 +1,32 @@
+<div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+  <div class="govuk-radios__item">
+    <input class="govuk-radios__input" id="component_validation_characters" name="component_validation[string_length]"
+           type="radio" value="<%= @component_validation.characters_radio_value %>"
+           <%= @component_validation.preselect_characters? ? 'checked' : '' %>>
+    <label class="govuk-label govuk-radios__label" for="component_validation_characters">
+      <%= t('activemodel.component_validations.dialogs.string.characters') %>
+    </label>
+  </div>
+  <div class="govuk-radios__item">
+    <input class="govuk-radios__input" id="component_validation_words" name="component_validation[string_length]"
+           type="radio" value="<%= @component_validation.words_radio_value %>"
+           <%= @component_validation.previously_enabled? ? 'checked' : '' %>>
+    <label class="govuk-label govuk-radios__label" for="component_validation_words">
+      <%= t('activemodel.component_validations.dialogs.string.words') %>
+    </label>
+  </div>
+</div>
+
+<label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
+  <%= @component_validation.label %>
+</label>
+<input class="govuk-input govuk-input--width-5 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
+       id="component_validation_value"
+       name="component_validation[value]"
+       pattern="[0-9]*"
+       inputmode="numeric"
+       spellcheck="false"
+       autocomplete=""
+       aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %>"
+       <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
+       value="<%= @component_validation.main_value %>">

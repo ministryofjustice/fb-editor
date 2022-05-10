@@ -60,6 +60,10 @@ class BaseComponentValidation
     previously_enabled? || status.present? && status == ENABLED
   end
 
+  def previously_enabled?
+    component_validation.key?(validator)
+  end
+
   def run_validation?
     enabled? && value.present?
   end
@@ -89,10 +93,6 @@ class BaseComponentValidation
   def status_label; end
 
   private
-
-  def previously_enabled?
-    component_validation.key?(validator)
-  end
 
   def component_validation
     @component_validation ||= component.validation
