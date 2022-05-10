@@ -66,7 +66,7 @@ PublishController.create = function() {
  **/
 class PublishForm {
   constructor($node) {
-    var $content = $node.find("fieldset");
+    var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
 
@@ -103,11 +103,13 @@ class PublishForm {
 class ContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
-    $radios.eq(0).on("change", this.toggle.bind(this));
-    $radios.eq(1).on("change", this.toggle.bind(this));
-    this.$content = $content;
-    this.$radios = $radios;
-    this.toggle();
+    if($radios.length > 0) {
+      $radios.eq(0).on("change", this.toggle.bind(this));
+      $radios.eq(1).on("change", this.toggle.bind(this));
+      this.$content = $content;
+      this.$radios = $radios;
+      this.toggle();
+    }
   }
 
   toggle() {

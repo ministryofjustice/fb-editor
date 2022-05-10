@@ -71,7 +71,7 @@ module Admin
           )
           flash[:success] = "Service queued for unpublishing from #{params[:deployment_environment]}. Refresh in a minute"
         else
-          flash[:error] = 'That was a big fat fail'
+          flash[:error] = @publish_service_creation.errors.full_messages.join("\n")
         end
       end
 

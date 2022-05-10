@@ -117,6 +117,10 @@ class PublishServiceCreation
   end
 
   def require_authentication?
-    require_authentication == REQUIRE_AUTHENTICATION
+    require_authentication == if deployment_environment == 'dev'
+                                '1'
+                              else
+                                REQUIRE_AUTHENTICATION
+                              end
   end
 end
