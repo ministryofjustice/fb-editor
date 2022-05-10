@@ -26,6 +26,8 @@ class DialogActivator {
   #config;
 
   constructor($node, config) {
+    var dialog;
+
     this.#config = utilities.mergeObjects({
       text: "",
       classes: ""
@@ -38,11 +40,14 @@ class DialogActivator {
     $node.data("instance", this);
     $node.addClass("DialogActivator");
     $node.addClass(this.#config.classes);
+
+    // Can't use private config so...
+    dialog = this.#config.dialog;
     $node.on( "click", () => {
-      conf.dialog.open();
+      dialog.open();
     });
 
-    this.dialog = this.#config.dialog;
+    this.dialog = dialog;
     this.$node = $node;
   }
 
