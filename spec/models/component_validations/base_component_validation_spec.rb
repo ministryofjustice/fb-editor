@@ -138,4 +138,17 @@ RSpec.describe 'BaseComponentValidation' do
       end
     end
   end
+
+  describe '#to_metadata' do
+    subject { MinimumValidation.new(validation_params) }
+
+    context 'when status is not present' do
+      let(:status) { nil }
+      let(:expected_metadata) { { 'minimum' => '' } }
+
+      it 'returns metadata with an empty value' do
+        expect(subject.to_metadata).to eq(expected_metadata)
+      end
+    end
+  end
 end
