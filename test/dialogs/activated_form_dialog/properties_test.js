@@ -22,6 +22,12 @@ describe("ActivatedFormDialog", function() {
       created = {};
     });
 
+
+    it("should have the basic HTML in place", function() {
+      expect($("#" + FORM_ID).length).to.equal(1);
+      expect($("#" + FORM_ID).parents(".ui-dialog").length).to.equal(1);
+    });
+
     it("should make the $node public", function() {
       var $form = $("#" + FORM_ID);
       expect(created.dialog.$node).to.exist;
