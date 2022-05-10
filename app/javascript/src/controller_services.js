@@ -667,15 +667,41 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       else {
         // FORWARD
 
-        if(firstConditionItem && sameRow) {
+        if(firstConditionItem) {
+          if(sameRow) {
           // Create straight path to go from right corner of the branch
           // to the x/y coordinates of the related 'next' destination.
-          new ConnectorPath.ForwardPath({
-            from_x: branchX,
-            from_y: branchY - (rowHeight / 4),
-            to_x: destinationX,
-            to_y: destinationY
-          }, config);
+            new ConnectorPath.ForwardPath({
+              from_x: branchX,
+              from_y: branchY - (rowHeight / 4),
+              to_x: destinationX,
+              to_y: destinationY
+            }, config);
+          }
+          else {
+            // NOT SAME ROW
+
+            if(nextColumn) {
+              new ConnectorPath.ForwardUpForwardPath({
+                from_x: branchX,
+                from_y: branchY - (rowHeight / 4),
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX
+              }, config);
+            }
+            else {
+              // NOT NEXT COLUMN
+
+              new ConnectorPath.ForwardUpForwardDownPath({
+                from_x: branchX,
+                from_y: branchY - (rowHeight / 4),
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX
+              }, config);
+            }
+          }
         }
         else {
           // NOT FIRST CONDITION ITEM
