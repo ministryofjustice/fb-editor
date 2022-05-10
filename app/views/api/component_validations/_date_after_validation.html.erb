@@ -1,0 +1,26 @@
+<div class="govuk-date-input" id="date_after">
+  <div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-date-input__label" for="date_after_day">
+        <%= t('dialogs.component_validations.date.day') %>
+      </label>
+      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="date_after_day" name="component_validation[day]" type="text" pattern="[0-9]*" inputmode="numeric" value="<%= @component_validation.answered_day %>">
+    </div>
+  </div>
+  <div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-date-input__label" for="date_after_month">
+        <%= t('dialogs.component_validations.date.month') %>
+      </label>
+      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="date_after_month" name="component_validation[month]" type="text" pattern="[0-9]*" inputmode="numeric" value="<%= @component_validation.answered_month %>">
+    </div>
+  </div>
+  <div class="govuk-date-input__item">
+    <div class="govuk-form-group">
+      <label class="govuk-label govuk-date-input__label" for="date_after_year">
+        <%= t('dialogs.component_validations.date.year') %>
+      </label>
+      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="date_after_year" name="component_validation[year]" type="text" pattern="[0-9]*" inputmode="numeric" value="<%= @component_validation.answered_year %>">
+    </div>
+  </div>
+</div>
