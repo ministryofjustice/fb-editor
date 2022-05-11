@@ -40,7 +40,7 @@ class QuestionMenu extends ActivatedMenu {
 
     this.container.$node.addClass("QuestionMenu");
     this.question = config.question;
-    this.setValidationStates();
+    this.setEnabledValidations();
   }
 
   selection(event, item) {
@@ -82,18 +82,7 @@ class QuestionMenu extends ActivatedMenu {
     this.activator.$node.removeClass("active");
   }
 
-  /* Change required option state for view purpose
-   **/
-  // setRequiredViewState() {
-  //   if(this.question.data.validation.required) {
-  //     this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "true");
-  //   }
-  //   else {
-  //     this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "false");
-  //   }
-  // }
-  
-  setValidationStates() {
+  setEnabledValidations() {
     var validationData = this.question.data.validation;
     this.$node.find("[data-validation]").each(function() {
       var validationType = $(this).data('validation');
