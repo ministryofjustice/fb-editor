@@ -65,7 +65,7 @@ class Question {
       this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
 
-    this.menu.setValidationStates();
+    this.menu.setEnabledValidations();
     this.setRequiredFlag();
   }
 
@@ -81,7 +81,7 @@ class Question {
           this.data.validation[validationType] = data[validationType];
         }
     });
-    this.menu.setValidationStates();
+    this.menu.setEnabledValidations();
     this.editable.emitSaveRequired();
   }
 

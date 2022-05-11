@@ -294,6 +294,7 @@ function addQuestionMenuListeners(view) {
           $valueField.val('');
         }
       },
+
       submit: function(dialog) {
         var $form = dialog.$node.find('form');
           $.ajax({ 
