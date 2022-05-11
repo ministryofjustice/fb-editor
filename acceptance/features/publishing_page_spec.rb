@@ -15,8 +15,8 @@ feature 'Publishing' do
   let(:username_and_password_errors) do
     # the use of '‘' is correct
     [
-      "Your answer for ‘Create a username’ is too short (6 characters at least)",
-      "Your answer for ‘Create a password’ is too short (6 characters at least)",
+      I18n.t('activemodel.errors.models.publish_service_creation.username_too_short'),
+      I18n.t('activemodel.errors.models.publish_service_creation.password_too_short'),
     ]
   end
 

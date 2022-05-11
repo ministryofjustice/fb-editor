@@ -298,8 +298,8 @@ en:
       publish_service_creation:
         allow_anonymous: 'Allow anyone with the link to view'
         require_authentication: 'Set a username and password'
-        test_title: 'Publishing to Test site'
-        live_title: 'Publishing to Live site'
+        test_title: 'Publish to Test site'
+        live_title: 'Publish to Live site'
         description: 'You need to set a username and password for your form, which you can share with trusted contacts'
         username: 'Create a username'
         username_hint: 'Your username must be at least 6 characters long'
@@ -309,6 +309,11 @@ en:
         default_next: Otherwise
     errors:
       models:
+        publish_service_creation:
+          blank_username: 'Enter a username'
+          blank_password: 'Enter a password'
+          username_too_short: 'Username must be at least 6 characters'
+          password_too_short: 'Password must be at least 6 characters'
         page_creation:
           taken: "You already have a page with that name"
           reserved: "That name is used for something else"
