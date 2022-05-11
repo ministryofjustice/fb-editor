@@ -267,44 +267,51 @@ function addQuestionMenuListeners(view) {
     }, (content) => { question.required = content } );
   });
 
-  view.$document.on("QuestionMenuSelectionValidation", function(event, question, validation) {
-    console.log('adding validation'); 
+  view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
+    const {question, validation} = details;
     var questionUuid = question.data._uuid;
     var apiUrl = question.menu.selectedItem.data('apiPath');
     
-    new DialogApiRequest(apiUrl, {
+    new DialogValidation(apiUrl, {
       activator: question.menu.selectedItem,
-      closeOnClickSelector: 'button[type="button"]',
-
+      /* 
+       * Function runs after the modal content has been returned by the api
+       * as it is possible to open and edit the validations multiple times
+       * before saving.  We need to load the current validation state from the
+       * question data and apply it to the form.  As the values from the api
+       * could be out of date
+       */
       done: function(dialog) {
+        var currentValue = question.data.validation[validation];
+        var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
+        var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
+
+        if(currentValue) {
+          $statusField.prop('checked', true);
+          $valueField.val(currentValue);
+        } else {
+          $statusField.prop('checked', false);
+          $valueField.val('');
+        }
+      },
+      submit: function(dialog) {
         var $form = dialog.$node.find('form');
-
-        var $submitButton = dialog.$node.find("button[type=submit]").first();
-
-        // add new click handler
-        $submitButton.on("click", function(e) {
-          e.preventDefault();
-          //console.log('post validation form for validation');
           $.ajax({ 
             type: 'POST',
             url: $form.attr('action'),
             data: $form.serialize(),
             success: function(data) {
-              console.log({data});
-              // do something with the data
               question.validation = data; 
               dialog.close();
             },
             error: function(data) {
-              // console.log(data.responseText);
               var responseHtml = $.parseHTML(data.responseText);
-              console.log(responseHtml);
-              var $newHtml = $(responseHtml[0]).find('.govuk-form-group').html();
-              console.log($newHtml);
-              dialog.$node.find('.govuk-form-group').html($newHtml);
+              var $newHtml = $(responseHtml[0]).html();
+              dialog.$node.html($newHtml);
+              // as we have replaced the html we need to re-enhance it
+              dialog.enhance();
             }
           })
-        }); 
       }
     });
   });

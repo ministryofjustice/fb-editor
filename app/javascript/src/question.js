@@ -65,7 +65,7 @@ class Question {
       this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
 
-    this.menu.setRequiredViewState();
+    this.menu.setValidationStates();
     this.setRequiredFlag();
   }
 
@@ -75,9 +75,13 @@ class Question {
 
   set validation(data) {
     Object.keys(data).forEach( (validationType) => {
-        this.data.validation[validationType] = data[validationType];
+        if(data[validationType] == '') {
+          delete this.data.validation[validationType];
+        } else {
+          this.data.validation[validationType] = data[validationType];
+        }
     });
-    console.log(this.data.validation);
+    this.menu.setValidationStates();
     this.editable.emitSaveRequired();
   }
 

@@ -4,7 +4,7 @@
           data-component-uuid="<%= component.uuid %>"
           data-activator-text="<%= t('question.menu.activator') %>">
     <ul class="govuk-navigation component-activated-menu">
-      <li data-action="required"><span role="menuitemcheckbox" aria-checked="<%= component.validation['required'] -%>"><%= t('question.menu.required')%></span></li>
+      <li data-action="required" data-validation="required"><span role="menuitemcheckbox" aria-checked="<%= component.validation['required'] -%>"><%= t('question.menu.required')%></span></li>
       <li data-action="remove"
           data-api-path="<%= URI.decode_www_form_component(api_service_page_question_destroy_message_path(service.service_id, @page.uuid, component.uuid, method: :delete)) -%>">
         <span class="destructive"><%= t('question.menu.remove')%></span>
