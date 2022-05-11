@@ -19,6 +19,7 @@
 const  { 
   updateHiddenInputOnForm,
   stringInject,
+  post
 }  = require('./utilities');
 const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
@@ -33,6 +34,7 @@ const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
+const DialogValidation = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
@@ -263,6 +265,48 @@ function addQuestionMenuListeners(view) {
     view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
+  });
+
+  view.$document.on("QuestionMenuSelectionValidation", function(event, question, validation) {
+    console.log('adding validation'); 
+    var questionUuid = question.data._uuid;
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    
+    new DialogApiRequest(apiUrl, {
+      activator: question.menu.selectedItem,
+      closeOnClickSelector: 'button[type="button"]',
+
+      done: function(dialog) {
+        var $form = dialog.$node.find('form');
+
+        var $submitButton = dialog.$node.find("button[type=submit]").first();
+
+        // add new click handler
+        $submitButton.on("click", function(e) {
+          e.preventDefault();
+          //console.log('post validation form for validation');
+          $.ajax({ 
+            type: 'POST',
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            success: function(data) {
+              console.log({data});
+              // do something with the data
+              question.validation = data; 
+              dialog.close();
+            },
+            error: function(data) {
+              // console.log(data.responseText);
+              var responseHtml = $.parseHTML(data.responseText);
+              console.log(responseHtml);
+              var $newHtml = $(responseHtml[0]).find('.govuk-form-group').html();
+              console.log($newHtml);
+              dialog.$node.find('.govuk-form-group').html($newHtml);
+            }
+          })
+        }); 
+      }
+    });
   });
 }
 

@@ -17,7 +17,7 @@ class MinimumValidation < BaseComponentValidation
 
   def to_metadata
     meta = default_metadata(DEFAULT_METADATA_KEY)
-    meta[DEFAULT_METADATA_KEY] = value
+    meta[DEFAULT_METADATA_KEY]
     meta
   end
 end

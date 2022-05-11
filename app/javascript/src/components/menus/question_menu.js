@@ -55,6 +55,10 @@ class QuestionMenu extends ActivatedMenu {
       case "required":
           this.required();
           break;
+      case "validation":
+        console.log('selected a validation');
+        this.validation(item);
+        break;
       case "close":
         this.close();
         break;
@@ -67,6 +71,13 @@ class QuestionMenu extends ActivatedMenu {
 
   required() {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
+  }
+
+  validation(menuItem) {
+    console.log(menuItem);
+    var validation = menuItem.data("validation");
+    console.log(validation);
+    $(document).trigger("QuestionMenuSelectionValidation", this.question, validation);
   }
 
   close() {

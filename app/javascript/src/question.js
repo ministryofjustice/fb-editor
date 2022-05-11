@@ -69,6 +69,18 @@ class Question {
     this.setRequiredFlag();
   }
 
+  get validation() {
+    return this.data.validation;
+  }
+
+  set validation(data) {
+    Object.keys(data).forEach( (validationType) => {
+        this.data.validation[validationType] = data[validationType];
+    });
+    console.log(this.data.validation);
+    this.editable.emitSaveRequired();
+  }
+
 
   /* The design calls for a visual indicator that the question is optional.
    * This function is to handle the adding the extra element.
@@ -111,7 +123,7 @@ class Question {
  **/
 function createQuestionMenu() {
   var question = this;
-  var template = $("[data-component-template=QuestionMenu]");
+  var template = $("[data-component-template=QuestionMenu_"+question.data._uuid+"]");
   var $ul = $(template.html());
 
   // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
