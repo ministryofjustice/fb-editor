@@ -38,7 +38,7 @@ class BaseComponentValidation
   def to_json(*_args); end
 
   private
-  
+
   def previously_enabled?
     component_validation.key?(validator)
   end
