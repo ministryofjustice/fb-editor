@@ -19,6 +19,7 @@
 const  { 
   updateHiddenInputOnForm,
   stringInject,
+  post
 }  = require('./utilities');
 const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
@@ -33,6 +34,7 @@ const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
+const DialogValidation = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
@@ -263,6 +265,55 @@ function addQuestionMenuListeners(view) {
     view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
+  });
+
+  view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
+    const {question, validation} = details;
+    var questionUuid = question.data._uuid;
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    
+    new DialogValidation(apiUrl, {
+      activator: question.menu.selectedItem,
+      /* 
+       * Function runs after the modal content has been returned by the api
+       * as it is possible to open and edit the validations multiple times
+       * before saving.  We need to load the current validation state from the
+       * question data and apply it to the form.  As the values from the api
+       * could be out of date
+       */
+      done: function(dialog) {
+        var currentValue = question.data.validation[validation];
+        var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
+        var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
+
+        if(currentValue) {
+          $statusField.prop('checked', true);
+          $valueField.val(currentValue);
+        } else {
+          $statusField.prop('checked', false);
+          $valueField.val('');
+        }
+      },
+      submit: function(dialog) {
+        var $form = dialog.$node.find('form');
+          $.ajax({ 
+            type: 'POST',
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            success: function(data) {
+              question.validation = data; 
+              dialog.close();
+            },
+            error: function(data) {
+              var responseHtml = $.parseHTML(data.responseText);
+              var $newHtml = $(responseHtml[0]).html();
+              dialog.$node.html($newHtml);
+              // as we have replaced the html we need to re-enhance it
+              dialog.enhance();
+            }
+          })
+      }
+    });
   });
 }
 

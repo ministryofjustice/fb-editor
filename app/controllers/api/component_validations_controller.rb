@@ -10,7 +10,7 @@ module Api
       if @component_validation.valid?
         render json: @component_validation.to_metadata, status: :accepted
       else
-        render @component_validation, layout: false
+        render @component_validation, layout: false, status: :unprocessable_entity
       end
     end
 

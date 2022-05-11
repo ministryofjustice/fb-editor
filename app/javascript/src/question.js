@@ -65,8 +65,24 @@ class Question {
       this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
 
-    this.menu.setRequiredViewState();
+    this.menu.setValidationStates();
     this.setRequiredFlag();
+  }
+
+  get validation() {
+    return this.data.validation;
+  }
+
+  set validation(data) {
+    Object.keys(data).forEach( (validationType) => {
+        if(data[validationType] == '') {
+          delete this.data.validation[validationType];
+        } else {
+          this.data.validation[validationType] = data[validationType];
+        }
+    });
+    this.menu.setValidationStates();
+    this.editable.emitSaveRequired();
   }
 
 
@@ -111,7 +127,7 @@ class Question {
  **/
 function createQuestionMenu() {
   var question = this;
-  var template = $("[data-component-template=QuestionMenu]");
+  var template = $("[data-component-template=QuestionMenu_"+question.data._uuid+"]");
   var $ul = $(template.html());
 
   // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.

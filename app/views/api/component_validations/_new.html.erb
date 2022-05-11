@@ -7,7 +7,8 @@
       <%= f.label :component_validation, @component_validation.label, class: "govuk-label govuk-label--m" %>
       <div class="govuk-checkboxes" data-module="govuk-checkboxes">
         <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" data-aria-controls="conditional_component_validation" <%= @component_validation.enabled? ? 'checked' : '' %>>
+          <input type="hidden" name="component_validation[status]" value="" />
+          <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" aria-controls="conditional_component_validation" <%= @component_validation.enabled? ? 'checked' : '' %>>
           <label class="govuk-label govuk-checkboxes__label" for="component_validation_status">
             <%= @component_validation.status_label %>
           </label>
@@ -15,16 +16,17 @@
 
         <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional_component_validation">
           <div class="govuk-form-group <%= @component_validation.errors.present? ? 'govuk-form-group--error' : '' %>">
-          <% @component_validation.errors.each do |error|  %>
-            <span class="govuk-error-message"><%= error.message %></span>
-          <% end %>
+            <% @component_validation.errors.each do |error|  %>
+              <span class="govuk-error-message"><%= error.message %></span>
+            <% end %>
 
-          <%= render @component_validation.component_partial %>
+            <%= render @component_validation.component_partial %>
+          </div>
         </div>
       </div>
     </div>
 
-    <button class="govuk-button fb-govuk-button">
+    <button class="govuk-button fb-govuk-button" type="submit">
       <%= t('dialogs.component_validations.button') %>
     </button>
 
