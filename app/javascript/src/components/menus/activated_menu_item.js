@@ -44,9 +44,9 @@ class ActivatedMenuItem {
 
     if(!role) {
       $(item).attr("role", "menuitem");
-      $(item).attr("tabindex", "-1");
-      $(item).attr("id", uniqueString("menuItem"));
     }
+    $(item).attr("tabindex", "-1");
+    $(item).attr("id", uniqueString("menuItem"));
 
     if(this.hasSubmenu()) {
       $(item).attr("aria-haspopup", "menu");

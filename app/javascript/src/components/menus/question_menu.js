@@ -78,10 +78,10 @@ class QuestionMenu extends ActivatedMenu {
    **/
   setRequiredViewState() {
     if(this.question.data.validation.required) {
-      $("[data-action=required]").addClass("on");
+      this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "true");
     }
     else {
-      $("[data-action=required]").removeClass("on");
+      this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "false");
     }
   }
 }

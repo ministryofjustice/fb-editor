@@ -231,24 +231,24 @@ describe("QuestionMenu", function() {
   });
 
   describe("setRequiredViewState()", function() {
-    it("should add class 'on' to required item when required is true", function() {
+    it("should add aria-checked to required item when required is true", function() {
       var $target = menu.$node.find("li[data-action=required]");
-      expect($target.hasClass("on")).to.be.false;
+      expect($target.children().first().attr("aria-checked")).to.equal("false");
 
       menu.question.data.validation.required = true;
       menu.setRequiredViewState()
-      expect($target.hasClass("on")).to.be.true;
+      expect($target.children().first().attr("aria-checked")).to.equal("true");
     });
 
     it("should remove class 'on' for required item when required is false", function() {
       var $target = menu.$node.find("li[data-action=required]");
 
-      $target.addClass("on");
-      expect($target.hasClass("on")).to.be.true;
+      $target.children().first().attr("aria-checked", "true");
+      expect($target.children().first().attr("aria-checked")).to.equal("true");
 
       menu.question.data.validation.required = false;
       menu.setRequiredViewState()
-      expect($target.hasClass("on")).to.be.false;
+      expect($target.children().first().attr("aria-checked")).to.equal("false");
     });
   });
 

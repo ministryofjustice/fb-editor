@@ -79,7 +79,7 @@ class EditorApp < SitePrism::Page
   element :question_three_dots_button, '.ActivatedMenuActivator', visible: true
   element :required_question,
           :xpath,
-          "//*[@role='menuitem' and contains(.,'Required...')]"
+          "//*[@role='menuitemcheckbox' and contains(.,'Required...')]"
 
   elements :add_page_submit_button, :button, I18n.t('pages.create')
   elements :form_pages, '#flow-overview .flow-item'

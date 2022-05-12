@@ -3,7 +3,7 @@
         data-component-template="QuestionMenu"
         data-activator-text="<%= t('question.menu.activator') %>">
   <ul class="govuk-navigation component-activated-menu">
-    <li data-action="required"><span><%= t('question.menu.required')%></span></li>
+    <li data-action="required"><span role="menuitemcheckbox"><%= t('question.menu.required')%></span></li>
     <li data-action="remove"
         data-api-path="<%= api_service_page_question_destroy_message_path(service.service_id,@page.uuid,'question_uuid', method: :delete) -%>">
       <span class="destructive"><%= t('question.menu.remove')%></span>

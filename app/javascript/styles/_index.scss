@@ -885,37 +885,6 @@ html {
 }
 
 
-/* Question Menu
- * ------------- */
-.QuestionMenu {
-  [data-action="required"].on {
-    position: relative;
-
-    span {
-      &:after {
-        border-color: $govuk-link-colour;
-        border-style: solid;
-        border-width: 0 2px 3px 0;
-        bottom: 13px;
-        content: "";
-        display: block;
-        height: 17px;
-        position: absolute;
-        right: 17px;
-        transform: rotate(45deg);
-        width: 6px;
-      }
-
-      &:hover {
-        &:after {
-          border-color: govuk-colour("white");
-        }
-      }
-    }
-  }
-}
-
-
 /* govuk-navigation does not appear to exist
  * so adding something simple here.
  * ----------------------------------------- */
