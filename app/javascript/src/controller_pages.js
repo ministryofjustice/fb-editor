@@ -616,8 +616,6 @@ function editPageMultipleQuestionsViewCustomisations() {
 
 
 function editPageSingleQuestionViewCustomisations() {
-  // Hide menu options not required for SingleQuestion page
-  $(".QuestionMenu [data-action=remove]").hide();
   accessibilityQuestionViewEnhancements(this);
 }
 

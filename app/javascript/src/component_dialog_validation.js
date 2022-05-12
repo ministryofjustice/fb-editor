@@ -33,7 +33,9 @@ class DialogValidation {
         resizable: false,
         open: function() { dialog.#state = "open"; },
         close: function() { dialog.#state = "closed"; }
-      });
+      })
+
+      
 
       // Now jQueryUI dialog is in place let's initialise container and put class on it.
       dialog.$container = dialog.$node.parents(".ui-dialog");
@@ -42,9 +44,13 @@ class DialogValidation {
 
 
     jxhr.done(() => {
+      console.log('jxhr done start')
       // Allow a function to be specified in dialog config 
       utilities.safelyActivateFunction(dialog.#config.done, dialog);
-      this.enhance(); 
+      this.enhance();
+      dialog.open();
+      console.log('jxhr done end')
+
     });
   }
 
@@ -94,7 +100,8 @@ class DialogValidation {
       // menus) shift focus from the opening dialog. We need this delay to allow those other events
       // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
       // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      $node.parent().find("input, button").not(".ui-dialog-titlebar-close").eq(0).focus();
+      var el = $node.parent().find('input:not([type="hidden"], [type="disabled"]), button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+      el.focus();
     }, 100);
   }
 

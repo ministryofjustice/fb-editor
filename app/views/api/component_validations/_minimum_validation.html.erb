@@ -1,7 +1,8 @@
-<input class="govuk-input govuk-!-width-one-third"
+<input class="govuk-input govuk-input--width-5 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
        id="component_validation_value"
        name="component_validation[value]"
-       type=""
+       pattern="[0-9]*" 
+       inputmode="numeric"
        spellcheck="false"
        autocomplete=""
        value="<%= @component_validation.main_value %>">
