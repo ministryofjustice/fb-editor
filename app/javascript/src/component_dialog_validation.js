@@ -1,6 +1,4 @@
 const utilities = require('./utilities');
-const DialogApiRequest = require('./component_dialog_api_request');
-
 
 class DialogValidation {
   #config;
@@ -11,6 +9,11 @@ class DialogValidation {
     var conf = utilities.mergeObjects({
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
+      onLoad: function(dialog) {},
+      onRefresh: function(dialog) {},
+      beforeSubmit: function(dialog) {},
+      onSuccess: function(data, dialog) {},
+      onError: function(data, dialog) {},
     }, config);
 
     this.$node = $(); // Should be overwritten on successful GET
@@ -33,7 +36,7 @@ class DialogValidation {
         resizable: false,
         open: function() { dialog.#state = "open"; },
         close: function() { dialog.#state = "closed"; }
-      });
+      })
 
       // Now jQueryUI dialog is in place let's initialise container and put class on it.
       dialog.$container = dialog.$node.parents(".ui-dialog");
@@ -42,8 +45,10 @@ class DialogValidation {
 
 
     jxhr.done(() => {
-      utilities.safelyActivateFunction(dialog.#config.done, dialog);
-      this.enhance(); 
+      // Allow a function to be specified in dialog config 
+      utilities.safelyActivateFunction(dialog.#config.onLoad, dialog);
+      dialog.#enhance();
+      dialog.open();
     });
   }
 
@@ -51,49 +56,16 @@ class DialogValidation {
     return this.#state;
   }
 
-  enhance() {
-    var dialog = this;
-    this.#setupCloseButtons();
-    this.#setupSubmitButton();
-    
-    let $revealingCheckboxes = $('input[type="checkbox"][aria-controls]');
-    $revealingCheckboxes.each(function() {
-      var id = $(this).attr('aria-controls');
-      var checked = $(this).prop('checked');
-      var $content = dialog.$node.find('#'+id);
-
-      if(checked) {
-        $content.removeClass('govuk-checkboxes__conditional--hidden');
-        $(this).attr('aria-expanded', true);
-      } else {
-        $content.addClass('govuk-checkboxes__conditional--hidden');
-        $(this).attr('aria-expanded', false);
-      }
-
-      $(this).on('change', function() {
-        var checked = $(this).prop('checked');
-        if(checked) {
-          $content.removeClass('govuk-checkboxes__conditional--hidden');
-          $(this).attr('aria-expanded', true);
-        } else {
-          $content.addClass('govuk-checkboxes__conditional--hidden');
-          $(this).attr('aria-expanded', false);
-        }
-      })
-    })
-  }
-
   open() {
-    var $node = this.$node;
     this.$node.dialog("open");
-    window.setTimeout(function() {
+    window.setTimeout(() => {
       // Not great but works.
       // We want the focus put inside dialog as all functionality to trap tabbing is there already.
       // Because we sometimes open dialogs from other components, those other components may (like
       // menus) shift focus from the opening dialog. We need this delay to allow those other events
       // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
       // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      $node.parent().find("input, button").not(".ui-dialog-titlebar-close").eq(0).focus();
+      this.focus(); 
     }, 100);
   }
 
@@ -105,24 +77,66 @@ class DialogValidation {
     this.$node.dialog("close");
   }
 
+  submit() {
+    var dialog = this;
+    var $form = dialog.$node.find('form');
+    $.ajax({ 
+      type: 'POST',
+      url: $form.attr('action'),
+      data: $form.serialize(),
+      success: function(data) {
+        utilities.safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
+        dialog.close();
+      },
+      error: function(data) {
+        utilities.safelyActivateFunction(dialog.#config.onError, data, dialog);
+        dialog.focus();
+      }
+    });
+  }
+
+  focus() {
+    var el = this.$node.parent().find('input[aria-invalid]').get(0);
+    if(!el) {
+      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+    }
+    if(el){
+      el.focus();
+    }
+  }
+
+  refresh() {
+    var dialog = this;
+    this.#setupCloseButtons();
+    this.#setupSubmitButton();
+    utilities.safelyActivateFunction(dialog.#config.onRefresh, dialog);
+  }
+
+  /* simply a function alias for better readability on first load */
+  #enhance() {
+    this.refresh();
+  }
+
+  /* add event listeners to configured close buttons */
   #setupCloseButtons() {
     var dialog = this;
     if(this.#config.closeOnClickSelector) {
       let $buttons = $(this.#config.closeOnClickSelector, this.$node);
-      $buttons.eq(0).focus();
       $buttons.on("click", function() {
         dialog.close();
       });
     } 
   }
 
+  /* add event listeners to configured submit button */
   #setupSubmitButton() {
     var dialog = this;
     if(this.#config.submitOnClickSelector) {
       let $buttons = $(this.#config.submitOnClickSelector, this.$node);
       $buttons.on("click", function(e) {
         e.preventDefault();
-        utilities.safelyActivateFunction(dialog.#config.submit, dialog );
+        utilities.safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
+        dialog.submit();
       });
     }
   }

@@ -173,10 +173,19 @@ class ActivatedMenu {
     if( index < 0 ) {
       index = $items.length - 1;
     }
-    this.currentFocusIndex = index;
     var $item = $($items[index]).find('> :first-child');
-    $item.focus();
-    this.$node.attr('aria-activedescendant', $item.attr('id'));
+    if($item.parent().is('[aria-disabled]')) {
+      // if item is disabled, skip it
+      if( index > this.currentFocusIndex) {
+        this.focus(index+1);  
+      } else {
+        this.focus(index-1);  
+      }
+    } else {
+      this.currentFocusIndex = index;
+      $item.focus();
+      this.$node.attr('aria-activedescendant', $item.attr('id'));
+    }
   }
 
   focusNext(){

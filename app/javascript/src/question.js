@@ -69,10 +69,6 @@ class Question {
     this.setRequiredFlag();
   }
 
-  get validation() {
-    return this.data.validation;
-  }
-
   set validation(data) {
     Object.keys(data).forEach( (validationType) => {
         if(data[validationType] == '') {

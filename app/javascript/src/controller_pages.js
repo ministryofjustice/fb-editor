@@ -281,7 +281,7 @@ function addQuestionMenuListeners(view) {
        * question data and apply it to the form.  As the values from the api
        * could be out of date
        */
-      done: function(dialog) {
+      onLoad: function(dialog) {
         var currentValue = question.data.validation[validation];
         var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
         var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
@@ -292,28 +292,47 @@ function addQuestionMenuListeners(view) {
         } else {
           $statusField.prop('checked', false);
           $valueField.val('');
-        }
+        } 
       },
 
-      submit: function(dialog) {
-        var $form = dialog.$node.find('form');
-          $.ajax({ 
-            type: 'POST',
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            success: function(data) {
-              question.validation = data; 
-              dialog.close();
-            },
-            error: function(data) {
-              var responseHtml = $.parseHTML(data.responseText);
-              var $newHtml = $(responseHtml[0]).html();
-              dialog.$node.html($newHtml);
-              // as we have replaced the html we need to re-enhance it
-              dialog.enhance();
+      onRefresh: function(dialog) {
+        var $revealingCheckboxes = dialog.$node.find('input[type="checkbox"][aria-controls]');
+        $revealingCheckboxes.each(function() {
+          var id = $(this).attr('aria-controls');
+          var checked = $(this).prop('checked');
+          var $content = dialog.$node.find('#'+id);
+
+          if(checked) {
+            $content.removeClass('govuk-checkboxes__conditional--hidden');
+            $(this).attr('aria-expanded', true);
+          } else {
+            $content.addClass('govuk-checkboxes__conditional--hidden');
+            $(this).attr('aria-expanded', false);
+          }
+
+          $(this).on('change', function() {
+            var checked = $(this).prop('checked');
+            if(checked) {
+              $content.removeClass('govuk-checkboxes__conditional--hidden');
+              $(this).attr('aria-expanded', true);
+            } else {
+              $content.addClass('govuk-checkboxes__conditional--hidden');
+              $(this).attr('aria-expanded', false);
             }
-          })
-      }
+          });
+        }); 
+      },
+
+      onSuccess: function(data) {
+        question.validation = data;
+      },
+
+      onError: function(data, dialog) {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      },
     });
   });
 }
@@ -616,8 +635,6 @@ function editPageMultipleQuestionsViewCustomisations() {
 
 
 function editPageSingleQuestionViewCustomisations() {
-  // Hide menu options not required for SingleQuestion page
-  $(".QuestionMenu [data-action=remove]").hide();
   accessibilityQuestionViewEnhancements(this);
 }
 
