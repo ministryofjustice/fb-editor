@@ -42,6 +42,7 @@ class DialogValidation {
 
 
     jxhr.done(() => {
+      // Allow a function to be specified in dialog config 
       utilities.safelyActivateFunction(dialog.#config.done, dialog);
       this.enhance(); 
     });

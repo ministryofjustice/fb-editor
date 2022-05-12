@@ -4,10 +4,9 @@
            service.service_id, @component_validation.page_uuid, @component_validation.component_uuid, @component_validation.validator
            ) do |f| %>
     <div class="govuk-form-group">
-      <%= f.label :component_validation, @component_validation.label, class: "govuk-label govuk-label--m" %>
+      <%= f.label :component_validation, @component_validation.label, class: "govuk-label govuk-label--m", for: "component_validation_value" %>
       <div class="govuk-checkboxes" data-module="govuk-checkboxes">
         <div class="govuk-checkboxes__item">
-          <input type="hidden" name="component_validation[status]" value="" />
           <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" aria-controls="conditional_component_validation" <%= @component_validation.enabled? ? 'checked' : '' %>>
           <label class="govuk-label govuk-checkboxes__label" for="component_validation_status">
             <%= @component_validation.status_label %>
