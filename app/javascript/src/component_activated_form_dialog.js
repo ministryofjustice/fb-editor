@@ -44,7 +44,6 @@ class ActivatedFormDialog extends FormDialog {
       selectorErrors: ".error"
     }, config);
 
-    var $marker = $("<span></span>");
     var $errors = $node.find(conf.selectorErrors);
     var activator;
 
