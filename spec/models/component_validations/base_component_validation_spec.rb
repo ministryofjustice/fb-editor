@@ -18,6 +18,8 @@ RSpec.describe 'BaseComponentValidation' do
   let(:status) { 'enabled' }
   let(:value) { '5' }
 
+  it_behaves_like 'a base component validation'
+
   describe '#enabled?' do
     context 'when status is present' do
       it 'returns truthy' do
