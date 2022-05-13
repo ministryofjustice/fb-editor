@@ -40,7 +40,7 @@ class DialogValidation {
 
       // Now jQueryUI dialog is in place let's initialise container and put class on it.
       dialog.$container = dialog.$node.parents(".ui-dialog");
-      dialog.$container.addClass("DialogApiRequest");
+      dialog.$container.addClass("DialogValidation");
     });
 
 
@@ -105,16 +105,20 @@ class DialogValidation {
     }
   }
 
+  /* 
+  * simply a function alias for better readability / nicer api 
+  * expected to eb called if the dialog html is changed dynamically\
+  * will re-enhance the html to add the required functionality 
+  * */
   refresh() {
+    this.#enhance();
+  }
+
+  #enhance() {
     var dialog = this;
     this.#setupCloseButtons();
     this.#setupSubmitButton();
     utilities.safelyActivateFunction(dialog.#config.onRefresh, dialog);
-  }
-
-  /* simply a function alias for better readability on first load */
-  #enhance() {
-    this.refresh();
   }
 
   /* add event listeners to configured close buttons */

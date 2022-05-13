@@ -19,7 +19,6 @@
 const  { 
   updateHiddenInputOnForm,
   stringInject,
-  post
 }  = require('./utilities');
 const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
@@ -269,7 +268,6 @@ function addQuestionMenuListeners(view) {
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
     const {question, validation} = details;
-    var questionUuid = question.data._uuid;
     var apiUrl = question.menu.selectedItem.data('apiPath');
     
     new DialogValidation(apiUrl, {
@@ -298,26 +296,27 @@ function addQuestionMenuListeners(view) {
       onRefresh: function(dialog) {
         var $revealingCheckboxes = dialog.$node.find('input[type="checkbox"][aria-controls]');
         $revealingCheckboxes.each(function() {
-          var id = $(this).attr('aria-controls');
-          var checked = $(this).prop('checked');
+          var checkbox = $(this);
+          var id = checkbox.attr('aria-controls');
+          var checked = checkbox.prop('checked');
           var $content = dialog.$node.find('#'+id);
 
           if(checked) {
             $content.removeClass('govuk-checkboxes__conditional--hidden');
-            $(this).attr('aria-expanded', true);
+            checkbox.attr('aria-expanded', true);
           } else {
             $content.addClass('govuk-checkboxes__conditional--hidden');
-            $(this).attr('aria-expanded', false);
+            checkbox.attr('aria-expanded', false);
           }
 
-          $(this).on('change', function() {
-            var checked = $(this).prop('checked');
+          checkbox.on('change', function() {
+            var checked = checkbox.prop('checked');
             if(checked) {
               $content.removeClass('govuk-checkboxes__conditional--hidden');
-              $(this).attr('aria-expanded', true);
+              checkbox.attr('aria-expanded', true);
             } else {
               $content.addClass('govuk-checkboxes__conditional--hidden');
-              $(this).attr('aria-expanded', false);
+              checkbox.attr('aria-expanded', false);
             }
           });
         }); 
