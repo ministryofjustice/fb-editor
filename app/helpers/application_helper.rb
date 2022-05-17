@@ -2,7 +2,7 @@ module ApplicationHelper
   include MetadataPresenter::ApplicationHelper
 
   def enabled_validations(component)
-    Rails.application.config.enabled_validations & component.supported_validations
+    EnabledValidationsPresenter.new(component).enabled_list
   end
 
   # Used on service flow page
