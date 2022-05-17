@@ -5,7 +5,7 @@ class BaseComponentValidation
   include ActiveModel::Validations
 
   validates :validator, inclusion: {
-    in: proc { |obj| obj.component.supported_validations },
+    in: proc { |obj| obj.supported_validations },
     message: lambda do |object, _|
       I18n.t(
         'activemodel.errors.models.base_component_validation.validator',
@@ -26,7 +26,20 @@ class BaseComponentValidation
     validates :value, unless: proc { |obj| obj.component_type == 'date' }
   end
 
+  STRING_LENGTH_VALIDATIONS = %w[max_string_length min_string_length].freeze
   ENABLED = 'enabled'.freeze
+
+  # Text and textarea components use a modal that shared configuration for character
+  # length and word count. the actual validations are max_length, min_length,
+  # max_word and min_word.
+  # However the editor needs to map these to max_string_length and min_string_length
+  # therefore we can allow requests with those validator types.
+  def supported_validations
+    validations = component.supported_validations
+    return validations + STRING_LENGTH_VALIDATIONS if component.type.in?(%w(text textarea))
+
+    validations
+  end
 
   def assign_validation(validation_params)
     "#{validator.camelize}Validation".constantize.new(validation_params)
