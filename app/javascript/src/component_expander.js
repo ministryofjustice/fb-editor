@@ -130,6 +130,7 @@ class Expander {
   #createActivator() {
     var source = this.#config.activator_source;
     var $activator;
+    var activatorEventType;
 
     if(typeof source == 'string') {
       $activator = $('<button>' + source + '</button>');
@@ -137,7 +138,7 @@ class Expander {
     }
     else {
       // Assume source to be jQuery element from this point.
-      if(source.is('button')) {
+      if(this.#isValidActivatorElement(source)) {
         $activator = source;
       }
       else {
@@ -160,7 +161,9 @@ class Expander {
       'aria-controls': this.#id
     });
 
-    $activator.on("click", () => {
+    activatorEventType = this.#isInput($activator) ? 'change' : 'click';
+
+    $activator.on(activatorEventType, () => {
       this.toggle();
     });
 
@@ -215,7 +218,14 @@ class Expander {
     return $node;
   }
 
-}
+  #isValidActivatorElement(source) {
+    return source.is('button') || source.is('input[type="checkbox"]') || source.is('input[type="radio"]')
+  }
 
+  #isInput($activator) {
+     return $activator.is('input[type="checkbox"]') || $activator.is('input[type="radio"]')
+  }
+
+}
 
 module.exports = Expander;

@@ -25,6 +25,7 @@ const FlowConditionItem = require('./component_flow_condition_item');
 const ConnectorPath = require('./component_flow_connector_path');
 const PageMenu = require('./components/menus/page_menu');
 const ConnectionMenu = require('./components/menus/connection_menu');
+const Expander = require('./component_expander');
 
 const COLUMN_SPACING = 100;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
@@ -62,6 +63,7 @@ ServicesController.edit = function() {
   createPageAdditionDialog(view);
   createPageMenus(view);
   createConnectionMenus(view);
+  createExpanderComponents();
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -909,6 +911,21 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
     }
   }
 }
+
+/* Standard search and convert for any elements that have an expander
+ * data-component attribute to make it easier to apply the effect
+ * using only the template and avoid having to interact with JavaScript.
+ */
+function createExpanderComponents() {
+  $("[data-component=Expander]").each(function() {
+    var $node = $(this);
+    new Expander($node, {
+      activator_source: $node.find('> h2').first(),
+      wrap_content: true,
+    });
+  });
+}
+
 
 
 module.exports = ServicesController;

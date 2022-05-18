@@ -36,6 +36,7 @@ const DialogApiRequest = require('./component_dialog_api_request');
 const DialogValidation = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
+const Expander = require('./component_expander');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
@@ -294,32 +295,15 @@ function addQuestionMenuListeners(view) {
       },
 
       onRefresh: function(dialog) {
-        var $revealingCheckboxes = dialog.$node.find('input[type="checkbox"][aria-controls]');
-        $revealingCheckboxes.each(function() {
-          var checkbox = $(this);
-          var id = checkbox.attr('aria-controls');
-          var checked = checkbox.prop('checked');
-          var $content = dialog.$node.find('#'+id);
-
-          if(checked) {
-            $content.removeClass('govuk-checkboxes__conditional--hidden');
-            checkbox.attr('aria-expanded', true);
-          } else {
-            $content.addClass('govuk-checkboxes__conditional--hidden');
-            checkbox.attr('aria-expanded', false);
-          }
-
-          checkbox.on('change', function() {
-            var checked = checkbox.prop('checked');
-            if(checked) {
-              $content.removeClass('govuk-checkboxes__conditional--hidden');
-              checkbox.attr('aria-expanded', true);
-            } else {
-              $content.addClass('govuk-checkboxes__conditional--hidden');
-              checkbox.attr('aria-expanded', false);
-            }
+        var $revealedInputs = dialog.$node.find('[data-component="Expander"]');
+        $revealedInputs.each(function() {
+          var $activator = $(this).parent().find('input[type="checkbox"]');
+          new Expander($(this), {
+            activator_source: $activator,
+            auto_open: $activator.prop('checked'),
+            wrap_content: false,
           });
-        }); 
+        });
       },
 
       onSuccess: function(data) {
