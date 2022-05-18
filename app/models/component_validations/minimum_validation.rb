@@ -16,6 +16,8 @@ class MinimumValidation < BaseComponentValidation
   end
 
   def to_metadata
+    return { DEFAULT_METADATA_KEY => '' } if status.blank?
+
     meta = default_metadata(DEFAULT_METADATA_KEY)
     meta[DEFAULT_METADATA_KEY] = value
     meta

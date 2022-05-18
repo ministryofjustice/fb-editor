@@ -59,7 +59,7 @@ class BaseComponentValidation
   private
 
   def previously_enabled?
-    component_validation.key(validator)
+    component_validation.key?(validator)
   end
 
   def component_validation

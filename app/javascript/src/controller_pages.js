@@ -33,6 +33,7 @@ const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
+const DialogValidation = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 
@@ -263,6 +264,75 @@ function addQuestionMenuListeners(view) {
     view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
+  });
+
+  view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
+    const {question, validation} = details;
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    
+    new DialogValidation(apiUrl, {
+      activator: question.menu.selectedItem,
+      /* 
+       * Function runs after the modal content has been returned by the api
+       * as it is possible to open and edit the validations multiple times
+       * before saving.  We need to load the current validation state from the
+       * question data and apply it to the form.  As the values from the api
+       * could be out of date
+       */
+      onLoad: function(dialog) {
+        var currentValue = question.data.validation[validation];
+        var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
+        var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
+
+        if(currentValue) {
+          $statusField.prop('checked', true);
+          $valueField.val(currentValue);
+        } else {
+          $statusField.prop('checked', false);
+          $valueField.val('');
+        } 
+      },
+
+      onRefresh: function(dialog) {
+        var $revealingCheckboxes = dialog.$node.find('input[type="checkbox"][aria-controls]');
+        $revealingCheckboxes.each(function() {
+          var checkbox = $(this);
+          var id = checkbox.attr('aria-controls');
+          var checked = checkbox.prop('checked');
+          var $content = dialog.$node.find('#'+id);
+
+          if(checked) {
+            $content.removeClass('govuk-checkboxes__conditional--hidden');
+            checkbox.attr('aria-expanded', true);
+          } else {
+            $content.addClass('govuk-checkboxes__conditional--hidden');
+            checkbox.attr('aria-expanded', false);
+          }
+
+          checkbox.on('change', function() {
+            var checked = checkbox.prop('checked');
+            if(checked) {
+              $content.removeClass('govuk-checkboxes__conditional--hidden');
+              checkbox.attr('aria-expanded', true);
+            } else {
+              $content.addClass('govuk-checkboxes__conditional--hidden');
+              checkbox.attr('aria-expanded', false);
+            }
+          });
+        }); 
+      },
+
+      onSuccess: function(data) {
+        question.validation = data;
+      },
+
+      onError: function(data, dialog) {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      },
+    });
   });
 }
 
@@ -564,8 +634,6 @@ function editPageMultipleQuestionsViewCustomisations() {
 
 
 function editPageSingleQuestionViewCustomisations() {
-  // Hide menu options not required for SingleQuestion page
-  $(".QuestionMenu [data-action=remove]").hide();
   accessibilityQuestionViewEnhancements(this);
 }
 

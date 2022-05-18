@@ -36,7 +36,7 @@ describe("QuestionMenu", function() {
     // components use it so we can use it here.
 
     var $ul = $(`<ul>
-                   <li data-action="required"><span>Required</span></li>
+                   <li data-action="required" data-validation="required"><span>Required</span></li>
                    <li data-action="remove"><span>Remove</span></li>
                    <li data-action="detonate"><span>Detonate</span></li>
                  </ul>`);
@@ -230,26 +230,16 @@ describe("QuestionMenu", function() {
     });
   });
 
-  describe("setRequiredViewState()", function() {
+  describe("setEnabledValidations", function() {
     it("should add aria-checked to required item when required is true", function() {
-      var $target = menu.$node.find("li[data-action=required]");
+      var $target = menu.$node.find("li[data-validation=required]");
       expect($target.children().first().attr("aria-checked")).to.equal("false");
 
       menu.question.data.validation.required = true;
-      menu.setRequiredViewState()
+      menu.setEnabledValidations()
       expect($target.children().first().attr("aria-checked")).to.equal("true");
     });
 
-    it("should remove class 'on' for required item when required is false", function() {
-      var $target = menu.$node.find("li[data-action=required]");
-
-      $target.children().first().attr("aria-checked", "true");
-      expect($target.children().first().attr("aria-checked")).to.equal("true");
-
-      menu.question.data.validation.required = false;
-      menu.setRequiredViewState()
-      expect($target.children().first().attr("aria-checked")).to.equal("false");
-    });
   });
 
   describe("ActivatedMenuContainer", function() {

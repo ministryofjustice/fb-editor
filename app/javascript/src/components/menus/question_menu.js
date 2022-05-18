@@ -40,7 +40,7 @@ class QuestionMenu extends ActivatedMenu {
 
     this.container.$node.addClass("QuestionMenu");
     this.question = config.question;
-    this.setRequiredViewState();
+    this.setEnabledValidations();
   }
 
   selection(event, item) {
@@ -55,6 +55,9 @@ class QuestionMenu extends ActivatedMenu {
       case "required":
           this.required();
           break;
+      case "validation":
+        this.validation(item);
+        break;
       case "close":
         this.close();
         break;
@@ -69,20 +72,27 @@ class QuestionMenu extends ActivatedMenu {
     $(document).trigger("QuestionMenuSelectionRequired", this.question);
   }
 
+  validation(menuItem) {
+    var validation = menuItem.data("validation");
+    $(document).trigger("QuestionMenuSelectionValidation", { question: this.question, validation: validation });
+  }
+
   close() {
     super.close(); 
     this.activator.$node.removeClass("active");
   }
 
-  /* Change required option state for view purpose
-   **/
-  setRequiredViewState() {
-    if(this.question.data.validation.required) {
-      this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "true");
-    }
-    else {
-      this.$node.find("[data-action=required] > :first-child").attr("aria-checked", "false");
-    }
+  setEnabledValidations() {
+    var validationData = this.question.data.validation;
+    this.$node.find("[data-validation]").each(function() {
+      var validationType = $(this).data('validation');
+      if( validationData[validationType] ) {
+        $(this).find('> :first-child').attr('aria-checked', 'true');
+      } else {
+        $(this).find('> :first-child').attr('aria-checked', 'false');
+      }
+    });
   }
+
 }
 module.exports = QuestionMenu; 

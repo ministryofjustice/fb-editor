@@ -86,6 +86,7 @@ class DialogApiRequest {
     this.#state = "closed";
 
     jxhr.done(function() {
+      console.log('jxhr.done');
       if(conf.closeOnClickSelector) {
         let $buttons = $(conf.closeOnClickSelector, dialog.$node);
         $buttons.eq(0).focus();
@@ -123,6 +124,7 @@ class DialogApiRequest {
           ]
         );
       }
+      utilities.safelyActivateFunction(dialog.#config.done, dialog);
     });
   }
 
