@@ -154,20 +154,20 @@ describe("Dialog", function() {
 
   describe("Close", function() {
     it("should close dialog on click of 'X' (close) button", function() {
-      var $dialog = $(".Dialog");
+      var $container = $("#" + DIALOG_ID + "-container");
       var $button = $(".ui-dialog-titlebar-close");
 
-      expect($dialog).to.exist;
-      expect($dialog.length).to.equal(1);
+      expect($container).to.exist;
+      expect($container.length).to.equal(1);
 
       expect($button).to.exist;
       expect($button.length).to.equal(1);
 
       dialog.open();
-      expect($dialog.get(0).style.display).to.equal("");
+      expect($container.get(0).style.display).to.equal("");
 
       $button.click();
-      expect($dialog.get(0).style.display).to.equal("none");
+      expect($container.get(0).style.display).to.equal("none");
     });
   });
 
