@@ -80,20 +80,20 @@ describe("DialogApiRequest", function() {
     });
 
     describe("using template buttons", function() {
-      const COMPONENT_ID = "dialog-without-buttonss";
-      const CLASSNAME_BUTTON_TEMPLATE = "button-in-template";
+      const COMPONENT_ID = "dialog-api-request-component-test-without-buttons";
+      const CLASSNAME_BUTTON_TEMPLATE = "dialog-api-request-component-test-without-buttons-button-template";
       var createdWithoutButtons;
 
       before(function(done) {
         var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
-                        <button class="button-in-template">Text for template button</button>
+                        <button class="` + CLASSNAME_BUTTON_TEMPLATE + `">Text for template button</button>
                       </div>`;
 
         helpers.setupView();
         createdWithoutButtons = helpers.createDialog(response, done, {
-          closeOnClickSelector: ".button-in-template"
+          closeOnClickSelector: "." + CLASSNAME_BUTTON_TEMPLATE
         });
       });
 
