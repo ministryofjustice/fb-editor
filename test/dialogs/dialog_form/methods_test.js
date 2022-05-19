@@ -4,7 +4,7 @@ describe("FormDialog", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const COMPONENT_ID = "dialog-for-testing-methods";
+  const COMPONENT_ID = "dialog-form-methods-test";
 
   describe("Methods", function() {
     var created;

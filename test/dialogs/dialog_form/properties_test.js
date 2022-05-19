@@ -4,7 +4,7 @@ describe("FormDialog", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const COMPONENT_ID = "dialog-for-testing-properties";
+  const COMPONENT_ID = "dialog-form-properties-test";
 
   describe("Properties", function() {
     var created;
@@ -49,7 +49,7 @@ describe("FormDialog", function() {
 
 
     describe("With errors", function() {
-      const COMPONENT_ID_WITH_ERRORS = "dialog-with-errors-properties";
+      const COMPONENT_ID_WITH_ERRORS = "dialog-form-properties-test-with-errors";
       var createdWithErrors;
 
       before(function() {
