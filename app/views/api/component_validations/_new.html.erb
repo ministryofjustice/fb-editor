@@ -20,7 +20,9 @@
             <div class="govuk-checkboxes__conditional" data-component="Expander" >
               <div class="govuk-form-group <%= @component_validation.errors.present? ? 'govuk-form-group--error' : '' %>">
                 <% @component_validation.errors.each do |error|  %>
-                  <span class="govuk-error-message" id="component_validation_value_error"><%= error.message %></span>
+                  <span class="govuk-error-message" id="component_validation_<%=error.attribute%>_error">
+                    <span class="govuk-visually-hidden">Error:</span><%= error.message %>
+                  </span>
                 <% end %>
 
                 <% if @component_validation.respond_to?(:component_partial) %>

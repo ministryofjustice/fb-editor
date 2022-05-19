@@ -2,7 +2,7 @@ class DateAfterValidation < DateValidation
   DEFAULT_METADATA_KEY = 'date_after'.freeze
 
   def component_partial
-    'date_before_validation'
+    'date_after_validation'
   end
 
   def label
