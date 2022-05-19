@@ -46,6 +46,16 @@ feature 'Move a page' do
     when_I_want_to_select_question_properties
     and_I_select_a_validation(I18n.t('question.menu.minimum'))
     then_I_should_see_the_previously_set_configuration('3')
+    click_button(I18n.t('dialogs.button_cancel'))
+
+    and_I_return_to_flow_page
+    preview = when_I_preview_the_page('Number')
+    then_I_should_preview_the_number_page(
+      preview: preview,
+      first_value: '1',
+      second_value: '20',
+      error_message: 'Enter a higher number for Number'
+    )
   end
 
   scenario 'maximum validation' do
@@ -84,6 +94,16 @@ feature 'Move a page' do
     when_I_want_to_select_question_properties
     and_I_select_a_validation(I18n.t('question.menu.maximum'))
     then_I_should_see_the_previously_set_configuration('50')
+    click_button(I18n.t('dialogs.button_cancel'))
+
+    and_I_return_to_flow_page
+    preview = when_I_preview_the_page('Number')
+    then_I_should_preview_the_number_page(
+      preview: preview,
+      first_value: '100',
+      second_value: '5',
+      error_message: 'Enter a lower number for Number'
+    )
   end
 
   def and_I_visit_a_page(flow_title)
@@ -102,6 +122,20 @@ feature 'Move a page' do
     page.find(:css, 'input#component_validation_value').set(value)
   end
 
+  def and_I_set_the_date_input_value(field, value)
+    page.find_field("component_validation[#{field}]").set(value)
+  end
+
+  def when_I_preview_the_page(flow_title)
+    editor.flow_thumbnail(flow_title).hover
+    when_I_click_preview_page
+  end
+
+  def and_I_set_the_date_input_value(field, value)
+    sleep(0.5)
+    page.fill_in("component_validation[#{field}]", with: value)
+  end
+
   def then_I_should_see_the_minimum_and_maximum_validations
     expect(editor.text).to include(I18n.t('question.menu.minimum'))
     expect(editor.text).to include(I18n.t('question.menu.maximum'))
@@ -118,6 +152,11 @@ feature 'Move a page' do
     expect(page.text).to include(error_message)
   end
 
+  def then_I_should_not_see_an_error_message(error_message)
+    sleep(1)
+    expect(page.text).to_not include(error_message)
+  end
+
   def then_I_should_not_see_the_validation_modal(label, status_label)
     sleep(1)
     expect(page.text).to_not include(label)
@@ -126,5 +165,50 @@ feature 'Move a page' do
 
   def then_I_should_see_the_previously_set_configuration(value)
     expect(page.find(:css, 'input#component_validation_value').value).to eq(value)
+  end
+
+  def then_I_should_preview_the_number_page(preview:, first_value:, second_value:, error_message:)
+    within_window(preview) do
+      page.find_field('answers[number_number_1]').set(first_value)
+      click_button(I18n.t('actions.continue'))
+      then_I_should_see_an_error_message(error_message)
+      page.find_field('answers[number_number_1]').set(second_value)
+      click_button(I18n.t('actions.continue'))
+      then_I_should_not_see_an_error_message(error_message)
+    end
+  end
+
+  def then_I_should_see_the_date_before_and_after_validations
+    expect(editor.text).to include(I18n.t('question.menu.date_before'))
+    expect(editor.text).to include(I18n.t('question.menu.date_after'))
+  end
+
+  def then_I_should_see_the_previously_set_date_configuration(field, value)
+    expect(page.find_field("component_validation[#{field}]").value).to eq(value)
+  end
+
+  def then_I_should_see_the_date_before_and_after_validations
+    expect(editor.text).to include(I18n.t('question.menu.date_before'))
+    expect(editor.text).to include(I18n.t('question.menu.date_after'))
+  end
+
+  def then_I_should_see_the_previously_set_date_configuration(field, value)
+    expect(page.find_field("component_validation[#{field}]").value).to eq(value)
+  end
+
+  def then_I_should_preview_the_date_page(preview:, first_date:, second_date:, error_message:)
+    within_window(preview) do
+      page.fill_in('answers[date_date_1(3i)]', with: first_date[:day])
+      page.fill_in('answers[date_date_1(2i)]', with: first_date[:month])
+      page.fill_in('answers[date_date_1(1i)]', with: first_date[:year])
+      click_button(I18n.t('actions.continue'))
+      then_I_should_see_an_error_message(error_message)
+
+      page.fill_in('answers[date_date_1(3i)]', with: second_date[:day])
+      page.fill_in('answers[date_date_1(2i)]', with: second_date[:month])
+      page.fill_in('answers[date_date_1(1i)]', with: second_date[:year])
+      click_button(I18n.t('actions.continue'))
+      then_I_should_not_see_an_error_message(error_message)
+    end
   end
 end
