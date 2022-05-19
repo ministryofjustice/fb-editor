@@ -4,8 +4,8 @@ const constants = {
   CLASSNAME_COMPONENT: "DialogActivator",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
-  ID_LINK: "link-id",
-  ID_TARGET: "target-id",
+  ID_LINK: "dialog-activator-link-id-for-test",
+  ID_TARGET: "dialog-activator-target-id-for-test",
   TEXT_LINK: "link text",
   TEXT_BUTTON: "activator button text"
 }

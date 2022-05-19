@@ -47,7 +47,7 @@ describe("DialogActivator", function() {
       });
 
       it("should expose instance as data attribute on the $node", function() {
-        var $activator = $("." + c.CLASSNAME_COMPONENT);
+        var $activator = $("#" + c.ID_LINK);
         expect($activator.data("instance")).to.equal(created.activator);
       });
 
@@ -99,7 +99,7 @@ describe("DialogActivator", function() {
       });
 
       it("should add created activator node to DOM", function() {
-        var id = "testing-id";
+        var id = "dialog-activator-testing-id-for-without-node-test";
         expect(created.activator).to.exist;
         expect(created.activator.$node.length).to.equal(1);
         created.activator.$node.attr("id", id);
