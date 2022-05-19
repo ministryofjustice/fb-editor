@@ -7,11 +7,11 @@
             <%= t("dialogs.component_validations.date.#{field}") %>
           </label>
           <input class="govuk-input govuk-date-input__input <%= field == 'year' ? 'govuk-input--width-4' : 'govuk-input--width-2' %> <%= has_error ? 'govuk-input--error' : '' %>"
-                 id="component_validation_<%=field%>" 
-                 name="component_validation[<%=field%>]" 
-                 required 
-                 pattern="[0-9]*" 
-                 inputmode="numeric" 
+                 id="component_validation_<%= field %>"
+                 name="component_validation[<%= field %>]"
+                 required
+                 pattern="[0-9]*"
+                 inputmode="numeric"
                  aria-describedby="<%= has_error ? "component_validation_#{field}_error" : ""%>"
                  <%= has_error ? 'aria-invalid=true' : '' %>
                  value="<%= @component_validation.send("answered_#{field}") %>">
