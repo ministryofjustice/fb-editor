@@ -33,7 +33,7 @@ const TextareaQuestion = require('./question_textarea');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
-const DialogValidation = require('./component_dialog_validation');
+const DialogForm = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 const Expander = require('./component_expander');
@@ -290,8 +290,10 @@ function addQuestionMenuListeners(view) {
     const {question, validation} = details;
     var apiUrl = question.menu.selectedItem.data('apiPath');
     
-    new DialogValidation(apiUrl, {
+    new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
+      remote: true,
+      autoOpen: true,
       /* 
        * Function runs after the modal content has been returned by the api
        * as it is possible to open and edit the validations multiple times
@@ -363,7 +365,7 @@ function addQuestionMenuListeners(view) {
         } 
       },
 
-      onRefresh: function(dialog) {
+      onReady: function(dialog) {
         var $revealedInputs = dialog.$node.find('[data-component="Expander"]');
         $revealedInputs.each(function() {
           var $activator = $(this).parent().find('input[type="checkbox"]');

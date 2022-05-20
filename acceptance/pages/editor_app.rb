@@ -216,7 +216,9 @@ class EditorApp < SitePrism::Page
   end
 
   def modal_create_service_button
-    all('.ui-dialog-buttonpane button').first
+    within('[data-component="FormCreateDialog"]') do
+      all('button[type="submit"]').first
+    end
   end
 
   def branch_title(index)

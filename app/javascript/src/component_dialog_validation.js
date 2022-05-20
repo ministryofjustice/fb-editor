@@ -1,63 +1,54 @@
-const utilities = require('./utilities');
+const {
+mergeObjects,
+safelyActivateFunction, 
+} = require('./utilities');
+const DialogActivator = require('./component_dialog_activator');
 
-class DialogValidation {
+class DialogForm {
   #config;
+  #remoteSource;
   #state;
 
-  constructor(url, config) {
-    var dialog = this;
-    var conf = utilities.mergeObjects({
+  constructor(source, config) {
+    this.#config = mergeObjects({
+      activator: false,
+      autoOpen: false,
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
+      remote: false,
       onLoad: function(dialog) {},
-      onRefresh: function(dialog) {},
+      onReady: function(dialog) {},
       beforeSubmit: function(dialog) {},
       onSuccess: function(data, dialog) {},
       onError: function(data, dialog) {},
+      onOpen: function(dialog) {},
+      onClose: function(dialog) {},
     }, config);
-
-    this.$node = $(); // Should be overwritten on successful GET
-    this.$container = $(); // Should be overwritten on successful GET
-    this.#config = conf;
+   
+    this.#remoteSource = false;
     this.#state = "closed";
+    this.$node = $(); // Should be overwritten once intialised
+    this.$container = $(); // Should be overwritten once intialised
+    this.$form = $(); // Should be overwritten on successful GET
 
-    var jxhr = $.get(url, function(response) {
-      dialog.$node = $(response);
-
-      // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction(dialog.#config.build, dialog);
-
-      dialog.$node.data("instance", dialog);
-      dialog.$node.dialog({
-        classes: conf.classes,
-        closeOnEscape: true,
-        height: "auto",
-        modal: true,
-        resizable: false,
-        open: function() { dialog.#state = "open"; },
-        close: function() { dialog.#state = "closed"; }
-      })
-
-      // Now jQueryUI dialog is in place let's initialise container and put class on it.
-      dialog.$container = dialog.$node.parents(".ui-dialog");
-      dialog.$container.addClass("DialogValidation");
-    });
-
-
-    jxhr.done(() => {
-      // Allow a function to be specified in dialog config 
-      utilities.safelyActivateFunction(dialog.#config.onLoad, dialog);
-      dialog.#enhance();
-      dialog.open();
-    });
+    this.#initialize(source); 
   }
 
   get state() {
     return this.#state;
   }
 
+  isOpen() {
+    return this.state == "open";
+  }
+
   open() {
-    this.$node.dialog("open");
+    var dialog = this;
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog("open");
+    }
+    this.#state = "open";
+    safelyActivateFunction(this.#config.onOpen, dialog);
     window.setTimeout(() => {
       // Not great but works.
       // We want the focus put inside dialog as all functionality to trap tabbing is there already.
@@ -65,35 +56,49 @@ class DialogValidation {
       // menus) shift focus from the opening dialog. We need this delay to allow those other events
       // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
       // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      this.focus(); 
+      dialog.focus(); 
     }, 100);
   }
 
   close() {
+    var dialog = this;
     // Attempt to refocus on original activator
-    if(this.#config.activator) {
-      this.#config.activator.focus();
+    if(this.activator) {
+      this.activator.$node.focus();
     }
-    if(this.$node.dialog("instance")) {
+    if(this.$node.dialog('instance')) {
       this.$node.dialog("close");
-      this.$node.dialog('destroy'); 
     }
-    this.$node.remove();
+    safelyActivateFunction(dialog.#config.onClose, dialog);
+    if(this.#remoteSource){
+      if(this.$node.dialog('instance')) {
+        this.$node.dialog('destroy'); 
+      }
+      this.$node.remove();
+    }
+    this.#state = "closed";
   }
 
   submit() {
+    if( this.#config.remote ) {
+      this.#submitRemote();
+    } else {
+      this.$form.submit();
+    }
+  }
+
+  #submitRemote() {
     var dialog = this;
-    var $form = dialog.$node.find('form');
     $.ajax({ 
       type: 'POST',
-      url: $form.attr('action'),
-      data: $form.serialize(),
+      url: dialog.$form.attr('action'),
+      data: dialog.$form.serialize(),
       success: function(data) {
-        utilities.safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
+        safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
         dialog.close();
       },
       error: function(data) {
-        utilities.safelyActivateFunction(dialog.#config.onError, data, dialog);
+        safelyActivateFunction(dialog.#config.onError, data, dialog);
         dialog.focus();
       }
     });
@@ -111,18 +116,70 @@ class DialogValidation {
 
   /* 
   * simply a function alias for better readability / nicer api 
-  * expected to eb called if the dialog html is changed dynamically\
+  * expected to be called if the dialog html is changed dynamically 
   * will re-enhance the html to add the required functionality 
   * */
   refresh() {
     this.#enhance();
   }
 
+  #initialize(source) {
+    var dialog = this;
+
+    if(typeof source == 'string') {
+      this.#remoteSource = true;
+      $.get(source)
+      .done((response) => {
+        this.$node = $(response);
+        this.#build(); 
+        // Allow a function to be specified in dialog config 
+        safelyActivateFunction(dialog.#config.onLoad, dialog);
+        this.#enhance();
+        if(this.#config.autoOpen) {
+          this.open();
+        }
+      })
+    } else { 
+      this.$node = source;
+      this.#build();
+      this.#enhance();
+      if(this.#config.autoOpen) {
+        this.open();
+      }
+    }
+
+  }
+
+  #build() {
+    var dialog = this;
+    
+    if(this.#config.activator) {
+      this.#createActivator();
+    }
+
+    this.$node.on("dialogcreate", (event, ui) => {
+      this.$container = dialog.$node.parents(".ui-dialog");
+      this.$container.addClass("DialogForm");
+    });
+
+    // Add the jQueryUI dialog functionality.
+    this.$node.dialog({
+      autoOpen: false,
+      closeOnEscape: true,
+      height: "auto",
+      modal: true,
+      resizable: false,
+    });
+    
+    this.$node.data("instance", this);
+  }
+
   #enhance() {
     var dialog = this;
+    this.$form = this.$node.is('form') ? this.$node : this.$node.find('form');
     this.#setupCloseButtons();
     this.#setupSubmitButton();
-    utilities.safelyActivateFunction(dialog.#config.onRefresh, dialog);
+    safelyActivateFunction(dialog.#config.onReady, dialog);
   }
 
   /* add event listeners to configured close buttons */
@@ -143,13 +200,27 @@ class DialogValidation {
       let $buttons = $(this.#config.submitOnClickSelector, this.$container);
       $buttons.on("click", function(e) {
         e.preventDefault();
-        utilities.safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
+        safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
         dialog.submit();
       });
     }
   }
 
+  #createActivator() {
+    var $marker = $("<span></span>");
+
+    this.$node.before($marker);
+    this.activator = new DialogActivator(this.#config.activator, {
+      dialog: this,
+      text: this.#config.activatorText,
+      classes: this.#config.classes?.activator || '',
+      $target: $marker
+    });
+
+    $marker.remove();
+  }
+
 }
 
 
-module.exports = DialogValidation;
+module.exports = DialogForm;

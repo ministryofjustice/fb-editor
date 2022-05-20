@@ -42,8 +42,7 @@
 
 <%# Add page component dialog template %>
 <div class="component-dialog-form"
-     data-component="PageAdditionDialog"
-     data-cancel-text="<%= t('pages.cancel') %>">
+     data-component="PageAdditionDialog">
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
     <%= f.hidden_field :add_page_after, value: f.object.add_page_after.nil? ? '' : f.object.add_page_after %>
     <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>

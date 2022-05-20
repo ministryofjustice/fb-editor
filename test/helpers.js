@@ -58,9 +58,26 @@ function findButtonByText($dialog, text) {
   return $button;
 }
 
+function createServer(config) {
+  conf = {
+    respondImmediately: true,
+  }
 
+  if(config) {
+    for(var prop in config) {
+      if(config.hasOwnProperty(prop)) {
+        conf[prop] = config[prop];
+      }
+    }
+  }
+
+  server = sinon.fakeServerWithClock.create(conf);
+  window.XMLHttpRequest = global.XMLHttpRequest;
+  return server;
+}
 
 module.exports = {
   jQueryGetOverride: jQueryGetOverride,
-  findButtonByText: findButtonByText
+  findButtonByText: findButtonByText,
+  createServer: createServer,
 }

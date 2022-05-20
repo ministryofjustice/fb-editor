@@ -16,9 +16,8 @@
  **/
 
 
-const ActivatedFormDialog = require('./component_activated_form_dialog');
 const DefaultController = require('./controller_default');
-
+const DialogForm = require('./component_dialog_validation');
 
 class PublishController extends DefaultController {
   constructor(app) {
@@ -70,18 +69,23 @@ class PublishForm {
   constructor($node) {
     var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
-    var $submit = $node.find("input[type=submit]");
+    var $submit = $node.find("button[type=submit]");
+    var $errors = $node.find(".govuk-error-message");
 
     new ContentVisibilityController($content, $radios);
-    new ActivatedFormDialog($node, {
-      selectorErrors: ".govuk-error-message",
-      removeErrorClasses: "govuk-form-group--error",
-      cancelText: app.text.dialogs.button_cancel,
-      activatorText: $submit.val(),
+    new DialogForm($node, {
+      autoOpen: $errors.length ? true : false,
+      activator: true,
+      activatorText: $submit.text(),
       classes: {
-        "ui-activator": "govuk-button fb-govuk-button"
+        'activator': "govuk-button fb-govuk-button",
+      },
+      onClose: function(dialog) {
+        $errors.parents().removeClass('error');
+        $errors.remove(); // Remove from DOM (includes removing all jQuery data)
+        dialog.$node.find('.govuk-form-group').removeClass('govuk-form-group--error');
       }
-    });
+    })
 
     this.$node = $node;
 
