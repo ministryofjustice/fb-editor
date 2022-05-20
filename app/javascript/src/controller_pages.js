@@ -292,6 +292,8 @@ function addQuestionMenuListeners(view) {
     
     new DialogValidation(apiUrl, {
       activator: question.menu.selectedItem,
+      remote: true,
+      autoOpen: true,
       /* 
        * Function runs after the modal content has been returned by the api
        * as it is possible to open and edit the validations multiple times
