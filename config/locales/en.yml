@@ -260,6 +260,13 @@ en:
       confirmation: 'Your form has no confirmation page - you won’t receive any user data without one'
       cya: 'Your form has no check answers page - you won’t receive any user data without one'
       both_pages: 'Your form has no check answers page or confirmation page - you won’t receive any user data without them'
+    environment:
+      test: Test
+      live: Live
+    service_output:
+      warning: Warning
+      message: "Update your %{environment} site %{href} to receive data from this form"
+      link: submission settings
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view

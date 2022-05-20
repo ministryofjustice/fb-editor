@@ -35,6 +35,10 @@
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
     <% end %>
 
+    <% if @publish_service_creation_dev.no_service_output? %>
+      <%= render 'service_output_warning', environment: t('publish.environment.test') %>
+    <% end %>
+
     <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
     <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
     <%#       be dynamic to control dialog visibility.                                        %>
@@ -59,6 +63,10 @@
 
     <% if @published_production %>
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
+    <% end %>
+
+    <% if @publish_service_creation_production.no_service_output? %>
+      <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
     <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
