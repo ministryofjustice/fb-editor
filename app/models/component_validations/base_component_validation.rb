@@ -39,6 +39,10 @@ class BaseComponentValidation
     'new'
   end
 
+  def default_metadata_key
+    self.class::DEFAULT_METADATA_KEY
+  end
+
   def enabled?
     previously_enabled? || status.present? && status == ENABLED
   end
@@ -83,10 +87,6 @@ class BaseComponentValidation
 
   def page
     @page ||= service.find_page_by_uuid(page_uuid)
-  end
-
-  def default_metadata_key
-    self.class::DEFAULT_METADATA_KEY
   end
 
   def default_metadata(key)

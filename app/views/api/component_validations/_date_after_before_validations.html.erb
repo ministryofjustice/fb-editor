@@ -1,14 +1,14 @@
-<div class="govuk-date-input" id="date_before">
+<div class="govuk-date-input" id="<%= @component_validation.default_metadata_key %>">
   <% %w(day month year).each do |field| %>
-    <% has_error = @component_validation.errors&.map{|error| error.attribute.to_s}.include?(field) %>
+    <% has_error = @component_validation.errors&.map { |error| error.attribute.to_s }.include?(field) %>
       <div class="govuk-date-input__item">
         <div class="govuk-form-group">
           <label class="govuk-label govuk-date-input__label" for="component_validation_<%= field %>">
             <%= t("dialogs.component_validations.date.#{field}") %>
           </label>
           <input class="govuk-input govuk-date-input__input <%= field == 'year' ? 'govuk-input--width-4' : 'govuk-input--width-2' %> <%= has_error ? 'govuk-input--error' : '' %>"
-                 id="component_validation_<%= field %>"
-                 name="component_validation[<%= field %>]"
+                 id="component_validation_<%=field%>"
+                 name="component_validation[<%=field%>]"
                  required
                  pattern="[0-9]*"
                  inputmode="numeric"
