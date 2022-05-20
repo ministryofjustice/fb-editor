@@ -50,10 +50,10 @@
   width: calc(100% - #{ govuk-spacing(7) * 2 }) !important; // Important only to override widgets inline styles
   z-index: 2;
 
-  input[type=submit] {
-    left: -10000px;
-    position: absolute;
-  }
+  // input[type=submit] {
+  //   left: -10000px;
+  //   position: absolute;
+  // }
 
   form {
     @include govuk-responsive-margin(7, "bottom");
@@ -110,6 +110,26 @@
   top: 0;
   width: 100%;
   z-index: 1;
+}
+
+.DialogForm {
+  // Sandboxed changes within here so as to avoid any side effects with dialogs
+  // still using the jQuery UI dialog buttons
+  form {
+    margin-bottom: 0;
+  }
+  
+  .govuk-button {
+    margin-bottom: 0;
+
+    @include govuk-media-query($until: tablet) {
+      margin-bottom: govuk-spacing(5);
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
 }
 
 

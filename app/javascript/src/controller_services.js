@@ -18,7 +18,7 @@
 
 
 const utilities = require('./utilities');
-const FormDialog = require('./component_dialog_form');
+const DialogValidation = require('./component_dialog_validation')
 const DefaultController = require('./controller_default');
 const FlowItem = require('./component_flow_item');
 const FlowConditionItem = require('./component_flow_condition_item');
@@ -88,18 +88,17 @@ function createPageAdditionDialog(view) {
   var $form = $dialog.find("form");
   var $errors = $dialog.find(".govuk-error-message");
 
-  view.pageAdditionDialog = new FormDialog($dialog, {
-    autoOpen: $errors.length ? true: false,
-    view: view,
-    cancelText: $dialog.attr("data-cancel-text"),
-    selectorErrors: ".govuk-error-message",
-    removeErrorClasses: "govuk-form-group--error",
-    close: function() {
-      // Reset to remove any lingering values.
+   view.pageAdditionDialog = new DialogValidation($dialog, {
+    autoOpen: $errors.length ? true : false,
+    onClose: function() {
+      $errors.parents().removeClass('error');
+      $errors.remove(); // Remove from DOM (includes removing all jQuery data)
+      $dialog.find('.govuk-form-group').removeClass('govuk-form-group--error');
       utilities.updateHiddenInputOnForm($form, "page[page_type]", "");
       utilities.updateHiddenInputOnForm($form, "page[component_type]", "");
+      utilities.updateHiddenInputOnForm($form, "page[conditional_uuid]", "");
     }
-  });
+  })
 }
 
 
