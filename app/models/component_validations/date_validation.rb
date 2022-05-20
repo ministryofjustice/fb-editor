@@ -2,23 +2,14 @@ class DateValidation < BaseComponentValidation
   attr_accessor :day, :month, :year
 
   with_options if: proc { |obj| obj.enabled? } do
-    validates :day, presence: {
-      message: I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: I18n.t('dialogs.component_validations.date.day')
-      )
-    }
-    validates :month, presence: {
-      message: I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: I18n.t('dialogs.component_validations.date.month')
-      )
-    }
-    validates :year, presence: {
-      message: I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: I18n.t('dialogs.component_validations.date.year')
-      )
+    validates :day, :month, :year, presence: {
+      message: lambda do |obj, data|
+        I18n.t(
+          'activemodel.errors.models.date_validation.missing_attribute',
+          label: obj.label,
+          attribute: data[:attribute].downcase
+        )
+      end
     }
   end
   validates_with DateValidator, if: :run_validation?

@@ -347,6 +347,7 @@ en:
           format: "%{message}"
         date_validation:
           invalid: "%{label} is not a valid date"
+          missing_attribute: "%{label} should include a %{attribute}" 
           format: "%{message}"
         number_validation:
           invalid: "%{label} needs to be a number"
