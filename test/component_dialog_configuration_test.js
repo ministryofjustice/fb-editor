@@ -7,8 +7,8 @@ describe("DialogConfiguration", function() {
   const TEXT_OK = "Dialog says Ok";
   const COMPONENT_CLASS = "DialogConfiguration";
   const DIALOG_CLASSES = "dialog-classname and-something";
-  const DIALOG_ID = "component-dialog-test-id";
-  const CONTAINER_ID = "component-dialog-test-container";
+  const DIALOG_ID = "component-dialog-configuration-test-id";
+  const CONTAINER_ID = "component-dialog-configuration-test-container";
   var dialog;
 
   before(function() {

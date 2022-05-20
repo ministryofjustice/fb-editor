@@ -4,7 +4,7 @@ describe("ActivatedDialog", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const COMPONENT_ID = "dialog-for-testing";
+  const COMPONENT_ID = "activated-dialog-for-testing";
 
 
   describe("Component", function() {

@@ -15,6 +15,9 @@
  **/
 
 
+const utilities = require('./utilities');
+
+
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
  * Extra config options specific to this enhancement
@@ -35,6 +38,7 @@ class Dialog {
         }
       }];
 
+    var id = $node.attr("id");
     var $container = $(); // Prevent jQuery errors if does not get a value
 
     if($node && $node.length) {
@@ -50,6 +54,11 @@ class Dialog {
 
       $container = $node.parents(".ui-dialog");
       $container.addClass("Dialog");
+
+      if(!$container.attr("id")) {
+        $container.attr("id", (id || utilities.uniqueString()) + "-container");
+      }
+
       $node.data("instance", this);
       $node.on( "dialogclose", function( event, ui ) {
         $(document).trigger("DialogClose");

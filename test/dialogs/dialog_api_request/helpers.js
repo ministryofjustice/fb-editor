@@ -5,7 +5,7 @@ const constants = {
   CLASSNAME_COMPONENT: "DialogApiRequest",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
-  COMPONENT_ID: "soemthing-served-in-response",
+  COMPONENT_ID: "dialog-api-request-thing-served-in-response",
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
   TEXT_HEADING: "General heading text",

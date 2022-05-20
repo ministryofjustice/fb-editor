@@ -6,23 +6,19 @@ describe("Dialog", function() {
   const OK_TEXT = "Dialog says Ok";
   const DIALOG_CLASSES = "dialog-classname and-something";
   const DIALOG_ID = "component-dialog-test-id";
-  const CONTAINER_ID = "component-dialog-test-container";
   var dialog;
 
   before(function() {
     // jQuyery is present in document because the
     // components use it, so we can use it here.
 
-    var $container = $("<div></div>");
     var $dialog = $(`<div class="component component-dialog">
           <h3 data-node="heading" class="heading">General heading here</h3>
           <p data-node="content">General message here</p>
         </div>`);
 
     $dialog.attr("id", DIALOG_ID);
-    $container.attr("id", CONTAINER_ID);
-    $container.append($dialog);
-    $(document.body).append($container);
+    $(document.body).append($dialog);
 
     dialog = new Dialog($dialog, {
       autoOpen: false,
@@ -35,7 +31,6 @@ describe("Dialog", function() {
 
   after(function() {
     $("#" + DIALOG_ID).dialog("destroy");
-    $("#" + CONTAINER_ID).remove();
   });
 
   describe("HTML", function() {
@@ -48,7 +43,8 @@ describe("Dialog", function() {
     });
 
     it("should not have a default jQuery UI cancel button", function() {
-       var $buttons = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       var $dialog = $("#" + DIALOG_ID);
+       var $buttons = $dialog.parents("[role='dialog']").find(".ui-dialog-buttonset button");
        expect($buttons.length).to.equal(1);
        expect($buttons.eq(0).text()).to.not.equal("Cancel");
     });
@@ -61,7 +57,8 @@ describe("Dialog", function() {
     });
 
     it("should use config.okText as button text", function() {
-       var $button = $("[role='dialog']").find(".ui-dialog-buttonset button");
+       var $dialog = $("#" + DIALOG_ID);
+       var $button = $dialog.parents("[role='dialog']").find(".ui-dialog-buttonset button");
        expect($button.text()).to.include(OK_TEXT);
     });
   });
@@ -117,8 +114,9 @@ describe("Dialog", function() {
     });
 
     it("should set element text with content method", function() {
-      var $heading = $("[data-node='heading']");
-      var $content = $("[data-node='content']");
+      var $container = $("#" + DIALOG_ID + "-container");
+      var $heading = $container.find("[data-node='heading']");
+      var $content = $container.find("[data-node='content']");
 
       expect($heading).to.exist;
       expect($heading.length).to.equal(1);
@@ -134,8 +132,9 @@ describe("Dialog", function() {
     });
 
     it("should load passed text into the dialog through the open() method", function() {
-      var $heading = $("[data-node='heading']");
-      var $content = $("[data-node='content']");
+      var $container = $("#" + DIALOG_ID + "-container");
+      var $heading = $container.find("[data-node='heading']");
+      var $content = $container.find("[data-node='content']");
 
       expect($heading).to.exist;
       expect($content).to.exist;
@@ -155,20 +154,20 @@ describe("Dialog", function() {
 
   describe("Close", function() {
     it("should close dialog on click of 'X' (close) button", function() {
-      var $dialog = $(".Dialog");
+      var $container = $("#" + DIALOG_ID + "-container");
       var $button = $(".ui-dialog-titlebar-close");
 
-      expect($dialog).to.exist;
-      expect($dialog.length).to.equal(1);
+      expect($container).to.exist;
+      expect($container.length).to.equal(1);
 
       expect($button).to.exist;
       expect($button.length).to.equal(1);
 
       dialog.open();
-      expect($dialog.get(0).style.display).to.equal("");
+      expect($container.get(0).style.display).to.equal("");
 
       $button.click();
-      expect($dialog.get(0).style.display).to.equal("none");
+      expect($container.get(0).style.display).to.equal("none");
     });
   });
 
