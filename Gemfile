@@ -29,7 +29,7 @@ gem 'rails', '~> 6.1.6'
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.3.0'
 gem 'sentry-rails', '~> 5.3.0'
-gem 'sentry-ruby', '~> 5.3.0'
+gem 'sentry-ruby', '~> 5.3.1'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
 
