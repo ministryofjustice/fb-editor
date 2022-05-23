@@ -1030,11 +1030,19 @@ html {
     font-weight: bold;
   }
 
-  .govuk-input {
+  .govuk-input:not(.govuk-date-input__input) {
     border: $govuk-border-width-form-element-error solid $govuk-error-colour;
 
     &:focus {
       border-color: $govuk-input-border-colour;
+    }
+  }
+
+  .govuk-date-input__input:not(.govuk-input--error) {
+    border: $govuk-border-width-form-element-error solid $govuk-input-border-colour;
+
+    &:focus {
+      border-color: $govuk-focus-colour;
     }
   }
 }

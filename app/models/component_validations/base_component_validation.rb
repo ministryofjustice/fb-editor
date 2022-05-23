@@ -14,27 +14,22 @@ class BaseComponentValidation
       )
     end
   }
-  validates :value, presence: {
+  with_options presence: {
     if: proc { |obj| obj.enabled? },
     message: lambda do |object, _|
-      I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: object.label
-      )
-    end
-  }
+               I18n.t(
+                 'activemodel.errors.models.base_component_validation.blank',
+                 label: object.label
+               )
+             end
+  } do
+    validates :value, unless: proc { |obj| obj.component_type == 'date' }
+  end
 
   ENABLED = 'enabled'.freeze
 
-  def assign_validation
-    "#{validator.camelize}Validation".constantize.new(
-      service: service,
-      page_uuid: page_uuid,
-      component_uuid: component_uuid,
-      validator: validator,
-      status: status,
-      value: value
-    )
+  def assign_validation(validation_params)
+    "#{validator.camelize}Validation".constantize.new(validation_params)
   rescue NameError
     validate
     self
@@ -42,6 +37,10 @@ class BaseComponentValidation
 
   def to_partial_path
     'new'
+  end
+
+  def default_metadata_key
+    self.class::DEFAULT_METADATA_KEY
   end
 
   def enabled?
@@ -68,7 +67,7 @@ class BaseComponentValidation
     return { default_metadata_key => '' } if status.blank?
 
     meta = default_metadata(default_metadata_key)
-    meta[default_metadata_key] = value
+    meta[default_metadata_key] = main_value
     meta
   end
 
@@ -88,10 +87,6 @@ class BaseComponentValidation
 
   def page
     @page ||= service.find_page_by_uuid(page_uuid)
-  end
-
-  def default_metadata_key
-    self.class::DEFAULT_METADATA_KEY
   end
 
   def default_metadata(key)

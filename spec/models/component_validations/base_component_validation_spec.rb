@@ -2,15 +2,16 @@ RSpec.describe 'BaseComponentValidation' do
   subject { BaseComponentValidation.new(validation_params) }
   let(:latest_metadata) { metadata_fixture(:version) }
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
-  let(:validation_params) do
+  let(:base_params) do
     {
       service: service,
       page_uuid: page_uuid,
       component_uuid: component_uuid,
-      validator: validator,
-      status: status,
-      value: value
+      validator: validator
     }
+  end
+  let(:validation_params) do
+    base_params.merge({ status: status, value: value })
   end
   let(:page_uuid) { '54ccc6cd-60c0-4749-947b-a97af1bc0aa2' } # your age
   let(:component_uuid) { 'b3014ef8-546a-4a35-9669-c5c1667e86d7' }
@@ -21,9 +22,11 @@ RSpec.describe 'BaseComponentValidation' do
   it_behaves_like 'a base component validation'
 
   describe '#assign_validation' do
+    subject { BaseComponentValidation.new(base_params) }
+
     context 'when validator exists' do
       it 'returns the correct validation class' do
-        expect(subject.assign_validation).to be_an_instance_of(MinimumValidation)
+        expect(subject.assign_validation(validation_params)).to be_an_instance_of(MinimumValidation)
       end
     end
 
@@ -32,11 +35,11 @@ RSpec.describe 'BaseComponentValidation' do
       let(:expected_error) { 'non_existent_validator is not valid for number component' }
 
       it 'returns the parent base component validation class' do
-        expect(subject.assign_validation).to be_an_instance_of(BaseComponentValidation)
+        expect(subject.assign_validation(validation_params)).to be_an_instance_of(BaseComponentValidation)
       end
 
       it 'has the correct errors on the base component' do
-        subject.assign_validation
+        subject.assign_validation(validation_params)
         expect(subject.errors.full_messages.first).to eq(expected_error)
       end
     end

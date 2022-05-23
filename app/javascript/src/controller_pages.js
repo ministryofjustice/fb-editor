@@ -284,14 +284,34 @@ function addQuestionMenuListeners(view) {
         var currentValue = question.data.validation[validation];
         var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
         var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
+        var $dayField = dialog.$node.find('input[name="component_validation[day]"]');
+        var $monthField = dialog.$node.find('input[name="component_validation[month]"]');
+        var $yearField = dialog.$node.find('input[name="component_validation[year]"]');
 
         if(currentValue) {
           $statusField.prop('checked', true);
-          $valueField.val(currentValue);
         } else {
           $statusField.prop('checked', false);
-          $valueField.val('');
         } 
+
+        switch(validation) {
+          case 'date_before':
+          case 'date_after':
+            if(currentValue) {
+              let [currentYear, currentMonth, currentDay] = currentValue.split('-');
+              $dayField.val(currentDay);
+              $monthField.val(currentMonth);
+              $yearField.val(currentYear);
+            } else {
+              $dayField.val('');
+              $monthField.val('');
+              $yearField.val('');
+            }
+            break;
+          default:
+            $valueField.val( currentValue ?? '');
+            break;
+        }
       },
 
       onRefresh: function(dialog) {

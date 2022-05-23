@@ -64,6 +64,16 @@ en:
       stacked_branches_not_supported_message: 'Moving this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
       branch_destination_no_default_next_message: 'You cannot leave a branch without any pages. Either edit the branching point or add another page to the branch first.'
     component_validations:
+      date:
+        day: Day
+        month: Month
+        year: Year
+      date_after:
+        label: Earliest date
+        status_label: Set the earliest date allowed
+      date_before:
+        label: Latest date
+        status_label: Set the latest date allowed
       minimum:
         label: Minimum answer value
         status_label: Set the lowest number allowed
@@ -219,6 +229,8 @@ en:
       activator: 'Properties'
       remove: 'Delete...'
       required: 'Required...'
+      date_after: 'Earliest date...'
+      date_before: 'Latest date...'
       minimum: 'Minimum answer value...'
       maximum: 'Maximum answer value...'
     dialog:
@@ -332,6 +344,10 @@ en:
         base_component_validation:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
+          format: "%{message}"
+        date_validation:
+          invalid: "%{label} is not a valid date"
+          missing_attribute: "%{label} should include a %{attribute}" 
           format: "%{message}"
         number_validation:
           invalid: "%{label} needs to be a number"

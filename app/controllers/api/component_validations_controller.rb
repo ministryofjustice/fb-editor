@@ -17,7 +17,7 @@ module Api
     private
 
     def assign_component_validation
-      @component_validation = BaseComponentValidation.new(validation_params).assign_validation
+      @component_validation = BaseComponentValidation.new(base_params).assign_validation(validation_params)
     end
 
     def validation_params
@@ -27,18 +27,20 @@ module Api
     end
 
     def base_params
-      {
-        service: service,
-        page_uuid: params[:page_id],
-        component_uuid: params[:component_id],
-        validator: params[:validator]
-      }
+      @base_params ||=
+        {
+          service: service,
+          page_uuid: params[:page_id],
+          component_uuid: params[:component_id],
+          validator: params[:validator]
+        }
     end
 
     def component_validation_params
       params.require(:component_validation)
-            .permit(:status, :value)
+            .permit(:status, :value, :day, :month, :year)
             .merge(base_params)
+            .compact
     end
   end
 end
