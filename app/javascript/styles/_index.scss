@@ -426,7 +426,8 @@ html {
 
 // Not nice but trying to work around some margin annoyance caused by GDS css
 [data-fb-pagetype="page.multiplequestions"] {
-  .EditableCollectionFieldComponent legend {
+  .EditableCollectionFieldComponent legend,
+  .EditableGroupFieldComponent {
 
     legend {
       display: contents;
