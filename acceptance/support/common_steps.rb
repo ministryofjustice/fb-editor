@@ -174,7 +174,10 @@ module CommonSteps
   end
 
   def and_I_return_to_flow_page
-    editor.pages_link.click
+    accept_alert(wait: 1) { editor.pages_link.click }
+    rescue Capybara::ModalNotFound
+      editor.pages_link.click
+    ensure
     sleep 0.5
     page.find('#main-content', visible: true)
   end
