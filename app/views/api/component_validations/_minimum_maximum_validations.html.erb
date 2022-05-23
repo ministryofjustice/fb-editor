@@ -1,9 +1,11 @@
-<label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">Minimum number</label>
+<label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
+  <%= @component_validation.label %>
+</label>
 <input class="govuk-input govuk-input--width-5 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
        id="component_validation_value"
        name="component_validation[value]"
        required
-       pattern="[0-9]*" 
+       pattern="[0-9]*"
        inputmode="numeric"
        spellcheck="false"
        autocomplete=""

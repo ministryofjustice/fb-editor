@@ -26,6 +26,20 @@ class BaseComponentValidation
 
   ENABLED = 'enabled'.freeze
 
+  def assign_validation
+    "#{validator.camelize}Validation".constantize.new(
+      service: service,
+      page_uuid: page_uuid,
+      component_uuid: component_uuid,
+      validator: validator,
+      status: status,
+      value: value
+    )
+  rescue NameError
+    validate
+    self
+  end
+
   def to_partial_path
     'new'
   end
@@ -50,11 +64,17 @@ class BaseComponentValidation
     value || component_validation[validator]
   end
 
+  def to_metadata
+    return { default_metadata_key => '' } if status.blank?
+
+    meta = default_metadata(default_metadata_key)
+    meta[default_metadata_key] = value
+    meta
+  end
+
   def label; end
 
   def status_label; end
-
-  def to_json(*_args); end
 
   private
 
@@ -68,6 +88,10 @@ class BaseComponentValidation
 
   def page
     @page ||= service.find_page_by_uuid(page_uuid)
+  end
+
+  def default_metadata_key
+    self.class::DEFAULT_METADATA_KEY
   end
 
   def default_metadata(key)

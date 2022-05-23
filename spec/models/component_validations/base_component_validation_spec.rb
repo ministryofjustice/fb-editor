@@ -20,6 +20,28 @@ RSpec.describe 'BaseComponentValidation' do
 
   it_behaves_like 'a base component validation'
 
+  describe '#assign_validation' do
+    context 'when validator exists' do
+      it 'returns the correct validation class' do
+        expect(subject.assign_validation).to be_an_instance_of(MinimumValidation)
+      end
+    end
+
+    context 'when validator does not exist' do
+      let(:validator) { 'non_existent_validator' }
+      let(:expected_error) { 'non_existent_validator is not valid for number component' }
+
+      it 'returns the parent base component validation class' do
+        expect(subject.assign_validation).to be_an_instance_of(BaseComponentValidation)
+      end
+
+      it 'has the correct errors on the base component' do
+        subject.assign_validation
+        expect(subject.errors.full_messages.first).to eq(expected_error)
+      end
+    end
+  end
+
   describe '#enabled?' do
     context 'when status is present' do
       it 'returns truthy' do
@@ -113,6 +135,19 @@ RSpec.describe 'BaseComponentValidation' do
 
       it 'returns the previously set value' do
         expect(subject.main_value).to eq('2')
+      end
+    end
+  end
+
+  describe '#to_metadata' do
+    subject { MinimumValidation.new(validation_params) }
+
+    context 'when status is not present' do
+      let(:status) { nil }
+      let(:expected_metadata) { { 'minimum' => '' } }
+
+      it 'returns metadata with an empty value' do
+        expect(subject.to_metadata).to eq(expected_metadata)
       end
     end
   end
