@@ -25,6 +25,31 @@ feature 'Publishing' do
     given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
+  scenario 'service email output warning message' do
+    when_I_visit_the_publishing_page
+    then_I_should_see_the_service_output_warning(I18n.t('publish.environment.test'))
+    then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
+
+    and_I_click_the_submission_settings_link
+    and_I_click_the_send_data_by_email_link
+    and_I_set_sending_email_for_test_checkbox(true)
+    and_I_set_the_email_field
+    and_I_save_my_email_settings
+
+    when_I_visit_the_publishing_page
+    then_I_should_not_see_the_service_output_warning(I18n.t('publish.environment.test'))
+    then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
+
+    and_I_click_the_submission_settings_link
+    and_I_click_the_send_data_by_email_link
+    and_I_set_sending_email_for_test_checkbox(false)
+    and_I_save_my_email_settings
+
+    when_I_visit_the_publishing_page
+    then_I_should_see_the_service_output_warning(I18n.t('publish.environment.test'))
+    then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
+  end
+
   scenario 'when visiting the publishing page with submitting pages present' do
     given_I_have_a_single_question_page_with_upload
     and_I_return_to_flow_page
@@ -97,6 +122,29 @@ feature 'Publishing' do
     editor.find('#publish-environments').find(:button, text: "Publish to #{environment}").click
   end
 
+  def and_I_click_the_submission_settings_link
+    # Test environment submission settings
+    editor.all('a', text: I18n.t('publish.service_output.link')).first.click
+  end
+
+  def and_I_click_the_send_data_by_email_link
+    click_link(I18n.t('settings.submission.email.label'))
+  end
+
+  def and_I_set_sending_email_for_test_checkbox(value)
+    editor.find(:css, '#email_settings_send_by_email_dev', visible: false).set(value)
+  end
+
+  def and_I_set_the_email_field
+    editor.find(:css, '#configure-dev').click
+    editor.find(:css, '#email_settings_service_email_output').set('paul@atreides.com')
+  end
+
+  def and_I_save_my_email_settings
+    # Save button ids and text are the same so pick the first one which is for Test
+    editor.all(:button, I18n.t('actions.save')).first.click
+  end
+
   def then_username_and_password_should_be_selected(environment)
     # defaults to requiring a username and password so the radio is pre selected
 
@@ -167,5 +215,23 @@ feature 'Publishing' do
 
   def then_I_should_not_see_publish_to_test_modal
     expect(editor.text).to_not include(modal_description)
+  end
+
+  def then_I_should_see_the_service_output_warning(deployment_environment)
+    warning_message = I18n.t(
+      'publish.service_output.message',
+      href: I18n.t('publish.service_output.link'),
+      environment: deployment_environment
+    )
+    expect(editor.text).to include(warning_message)
+  end
+
+  def then_I_should_not_see_the_service_output_warning(deployment_environment)
+    warning_message = I18n.t(
+      'publish.service_output.message',
+      href: I18n.t('publish.service_output.link'),
+      environment: deployment_environment
+    )
+    expect(editor.text).to_not include(warning_message)
   end
 end
