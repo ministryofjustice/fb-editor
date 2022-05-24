@@ -48,6 +48,8 @@ feature 'Publishing' do
     when_I_visit_the_publishing_page
     then_I_should_see_the_service_output_warning(I18n.t('publish.environment.test'))
     then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
+
+    cleanup_service_configuration
   end
 
   scenario 'when visiting the publishing page with submitting pages present' do
@@ -233,5 +235,17 @@ feature 'Publishing' do
       environment: deployment_environment
     )
     expect(editor.text).to_not include(warning_message)
+  end
+
+  def cleanup_service_configuration
+    # The service config is saved to the DB only using the service id as an identifier.
+    # This is just to stop the build up of table rows related to services that
+    # will have been deleted by the Metadata API as it cleans up after acceptance
+    # test runs.
+    and_I_click_the_submission_settings_link
+    and_I_click_the_send_data_by_email_link
+    editor.find(:css, '#configure-dev').click
+    editor.find(:css, '#email_settings_service_email_output').set('')
+    and_I_save_my_email_settings
   end
 end
