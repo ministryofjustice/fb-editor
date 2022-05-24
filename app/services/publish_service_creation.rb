@@ -71,6 +71,10 @@ class PublishServiceCreation
     ).present?
   end
 
+  def no_service_output?
+    send_by_email.blank? || (send_by_email.present? && service_email_output.blank?)
+  end
+
   private
 
   def create_publish_service
@@ -136,5 +140,20 @@ class PublishServiceCreation
                               else
                                 REQUIRE_AUTHENTICATION
                               end
+  end
+
+  def send_by_email
+    SubmissionSetting.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment
+    ).try(:send_email?)
+  end
+
+  def service_email_output
+    ServiceConfiguration.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment,
+      name: 'SERVICE_EMAIL_OUTPUT'
+    )
   end
 end

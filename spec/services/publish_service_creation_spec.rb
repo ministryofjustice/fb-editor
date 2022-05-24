@@ -265,4 +265,40 @@ RSpec.describe PublishServiceCreation, type: :model do
       end
     end
   end
+
+  describe '#no_service_output?' do
+    %w[dev production].each do |environment|
+      context "when #{environment} environment" do
+        let(:attributes) { { deployment_environment: environment } }
+
+        context 'when send by email is enabled' do
+          before do
+            create(:submission_setting, environment.to_sym, :send_email, service_id: service_id)
+          end
+
+          context 'when service email output exists' do
+            before do
+              create(:service_configuration, environment.to_sym, :service_email_output, service_id: service_id)
+            end
+
+            it 'should return falsey' do
+              expect(publish_service_creation.no_service_output?).to be_falsey
+            end
+          end
+
+          context 'when there is no service email output' do
+            it 'should return truthy' do
+              expect(publish_service_creation.no_service_output?).to be_truthy
+            end
+          end
+        end
+
+        context 'when send by email is disabled (does not exist)' do
+          it 'should return truthy' do
+            expect(publish_service_creation.no_service_output?).to be_truthy
+          end
+        end
+      end
+    end
+  end
 end

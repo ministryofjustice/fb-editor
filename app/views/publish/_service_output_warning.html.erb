@@ -1,0 +1,9 @@
+<div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive"><%= t('publish.service_output.warning') %></span>
+    <%= t('publish.service_output.message', href: link_to(t('publish.service_output.link'),
+        settings_submission_index_path(service.service_id), class: 'govuk-link'),
+        environment: environment).html_safe %>
+  </strong>
+</div>
