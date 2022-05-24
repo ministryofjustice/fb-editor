@@ -8,7 +8,7 @@
     "jstest": "mocha"
   },
   "dependencies": {
-    "@rails/actioncable": "^7.0.2",
+    "@rails/actioncable": "^7.0.3",
     "@rails/activestorage": "^7.0.3",
     "@rails/ujs": "^7.0.3",
     "@rails/webpacker": "^5.4.3",
