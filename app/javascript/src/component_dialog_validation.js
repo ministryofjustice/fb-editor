@@ -1,12 +1,13 @@
-const utilities = require('./utilities');
+const {
+mergeObjects,
+safelyActivateFunction, 
+} = require('./utilities');
 
 class DialogValidation {
   #config;
 
   constructor(source, config) {
-    var dialog = this;
-
-    this.#config = utilities.mergeObjects({
+    this.#config = mergeObjects({
       autoOpen: false,
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
@@ -24,11 +25,7 @@ class DialogValidation {
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
 
-    if(typeof source == 'string') {
-      this.#initializeRemote(source); 
-    } else {
-      this.#initialize(source);
-    } 
+    this.#initialize(source); 
   }
 
   isOpen() {
@@ -37,8 +34,8 @@ class DialogValidation {
 
   open() {
     var dialog = this;
-    dialog.$node.dialog("open");
-    utilities.safelyActivateFunction(this.#config.onOpen, dialog);
+    this.$node.dialog("open");
+    safelyActivateFunction(this.#config.onOpen, dialog);
     window.setTimeout(() => {
       // Not great but works.
       // We want the focus put inside dialog as all functionality to trap tabbing is there already.
@@ -79,11 +76,11 @@ class DialogValidation {
       url: dialog.$form.attr('action'),
       data: dialog.$form.serialize(),
       success: function(data) {
-        utilities.safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
+        safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
         dialog.close();
       },
       error: function(data) {
-        utilities.safelyActivateFunction(dialog.#config.onError, data, dialog);
+        safelyActivateFunction(dialog.#config.onError, data, dialog);
         dialog.focus();
       }
     });
@@ -110,63 +107,48 @@ class DialogValidation {
 
   #initialize(source) {
     var dialog = this;
-    var $node = source;
-    $node.on("dialogcreate", function(event, ui) {
-      dialog.$container = $node.parents(".ui-dialog");
-      dialog.$container.addClass("DialogForm");
+
+    if(typeof source == 'string') {
+      $.get(source, (response) =>  {
+        this.$node = $(response);
+        this.#build(); 
+      })
+      .done(() => {
+        // Allow a function to be specified in dialog config 
+        safelyActivateFunction(dialog.#config.onLoad, dialog);
+        this.#enhance();
+        if(this.#config.autoOpen) {
+          this.open();
+        }
+      })
+    } else { 
+      this.$node = source;
+      this.#build();
+      this.#enhance();
+      if(this.#config.autoOpen) {
+        this.open();
+      }
+    }
+  }
+
+  #build() {
+    var dialog = this;
+
+    this.$node.on("dialogcreate", (event, ui) => {
+      this.$container = dialog.$node.parents(".ui-dialog");
+      this.$container.addClass("DialogForm");
     });
 
     // Add the jQueryUI dialog functionality.
-    $node.dialog({
+    this.$node.dialog({
       autoOpen: false,
       closeOnEscape: true,
       height: "auto",
       modal: true,
       resizable: false,
     });
-
-    this.$node = $node;
+    
     this.$node.data("instance", this);
-
-    this.#enhance();
-
-    if(this.#config.autoOpen) {
-      this.open();
-    }
-  }
-
-  #initializeRemote(source) {
-    var dialog = this;
-    var jxhr = $.get(source, function(response) {
-      dialog.$node = $(response);
-
-      // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction(dialog.#config.build, dialog);
-
-      dialog.$node.dialog({
-        autoOpen: false,
-        closeOnEscape: true,
-        height: "auto",
-        modal: true,
-        resizable: false,
-      });
-
-      // Now jQueryUI dialog is in place let's initialise container and put class on it.
-      dialog.$container = dialog.$node.parents(".ui-dialog");
-      dialog.$container.addClass("DialogForm");
-      dialog.$node.data("instance", this);
-      dialog.$form = dialog.$node.find('form');
-    });
-
-    jxhr.done(() => {
-      // Allow a function to be specified in dialog config 
-      utilities.safelyActivateFunction(dialog.#config.onLoad, dialog);
-      dialog.#enhance();
-      if(dialog.#config.autoOpen) {
-        dialog.open();
-      }
-    });
-
   }
 
   #enhance() {
@@ -174,7 +156,7 @@ class DialogValidation {
     this.$form = this.$node.find('form');
     this.#setupCloseButtons();
     this.#setupSubmitButton();
-    utilities.safelyActivateFunction(dialog.#config.onRefresh, dialog);
+    safelyActivateFunction(dialog.#config.onRefresh, dialog);
   }
 
   /* add event listeners to configured close buttons */
@@ -195,7 +177,7 @@ class DialogValidation {
       let $buttons = $(this.#config.submitOnClickSelector, this.$container);
       $buttons.on("click", function(e) {
         e.preventDefault();
-        utilities.safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
+        safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
         dialog.submit();
       });
     }
