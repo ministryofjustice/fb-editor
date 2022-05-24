@@ -6,7 +6,7 @@
   </h2>
   <div class="govuk-radios">
     <div class="govuk-radios__item">
-      <%= f.radio_button :require_authentication, 0, class: 'govuk-radios__input', checked: f.object.existing_authentication?(deployment_environment: deployment_environment), id: "require_authentication_#{deployment_environment}_1" %>
+      <%= f.radio_button :require_authentication, 0, class: 'govuk-radios__input', checked: !f.object.existing_authentication?(deployment_environment: deployment_environment), id: "require_authentication_#{deployment_environment}_1" %>
       <%= f.label :allow_anonymous, class: 'govuk-label govuk-radios__label', for: "require_authentication_#{deployment_environment}_1" %>
     </div>
     <div class="govuk-radios__item">
