@@ -88,6 +88,7 @@ class EditorApp < SitePrism::Page
   elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
 
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
+    find('#main-content', visible: true)
     preview_page_images.map do |page_flow|
       page_flow.text.gsub("Edit:\n", '')
     end
