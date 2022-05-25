@@ -55,7 +55,6 @@ RSpec.describe 'MaxStringLengthValidation' do
       end
     end
 
-
     context 'when status is not enabled' do
       let(:status) { nil }
       let(:expected_metadata) do

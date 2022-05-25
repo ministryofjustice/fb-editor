@@ -1,5 +1,5 @@
 class MinStringLengthValidation < StringComponentLengthValidation
-  STRING_LENGTH_KEYS = %w[min_length min_word]
+  STRING_LENGTH_KEYS = %w[min_length min_word].freeze
 
   def label
     I18n.t('dialogs.component_validations.string.min.label')

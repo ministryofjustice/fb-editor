@@ -36,7 +36,7 @@ class BaseComponentValidation
   # therefore we can allow requests with those validator types.
   def supported_validations
     validations = component.supported_validations
-    return validations + STRING_LENGTH_VALIDATIONS if component.type.in?(%w(text textarea))
+    return validations + STRING_LENGTH_VALIDATIONS if component.type.in?(%w[text textarea])
 
     validations
   end
@@ -58,10 +58,6 @@ class BaseComponentValidation
 
   def enabled?
     previously_enabled? || status.present? && status == ENABLED
-  end
-
-  def previously_enabled?
-    component_validation.key?(validator)
   end
 
   def run_validation?
@@ -93,6 +89,10 @@ class BaseComponentValidation
   def status_label; end
 
   private
+
+  def previously_enabled?
+    component_validation.key?(validator)
+  end
 
   def component_validation
     @component_validation ||= component.validation

@@ -1,5 +1,5 @@
 class MaxStringLengthValidation < StringComponentLengthValidation
-  STRING_LENGTH_KEYS = %w[max_length max_word]
+  STRING_LENGTH_KEYS = %w[max_length max_word].freeze
 
   def label
     I18n.t('dialogs.component_validations.string.max.label')
