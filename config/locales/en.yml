@@ -252,6 +252,8 @@ en:
         label: 'Send data by email'
         help: ''
         configure_pdf_label: PDF attachment
+        save_test: Save Test settings
+        save_live: Save Live settings
   publish:
     name: 'Publishing'
     heading: 'Publishing'

@@ -27,7 +27,7 @@
       <%= render 'form', f: f, deployment_environment: 'dev' %>
 
       <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        Save
+        <%= t('settings.submission.email.save_test') %>
       </button>
     <% end %>
 
@@ -55,7 +55,7 @@
       <%= render 'form', f: f, deployment_environment: 'production' %>
 
       <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        Save
+        <%= t('settings.submission.email.save_live') %>
       </button>
     <% end %>
   </div>
