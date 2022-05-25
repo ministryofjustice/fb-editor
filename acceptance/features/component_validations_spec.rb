@@ -262,30 +262,26 @@ feature 'Component validations' do
   end
 
   def then_I_should_see_the_validation_modal(label, status_label)
-    sleep(1)
-    expect(page.text).to include(label)
-    expect(page.text).to include(status_label)
+    expect(page).to have_content(label)
+    expect(page).to have_content(status_label)
   end
 
   def then_I_should_see_an_error_message(error_message)
-    sleep(1)
-    expect(page.text).to include(error_message)
+    expect(page).to have_content(error_message)
   end
 
   def then_I_should_not_see_an_error_message(error_message)
-    sleep(1)
-    expect(page.text).to_not include(error_message)
+    expect(page).to_not have_content(error_message)
   end
 
   def then_I_should_not_see_the_validation_modal(label, status_label)
-    sleep(1)
-    expect(page.text).to_not include(label)
-    expect(page.text).to_not include(status_label)
+    expect(page).to_not have_content(label)
+    expect(page).to_not have_content(status_label)
   end
 
   def then_I_should_see_the_previously_set_configuration(value)
-    sleep(0.5)
-    expect(page.find(:css, 'input#component_validation_value').value).to eq(value)
+    input = page.find(:css, 'input#component_validation_value')
+    expect(input.value).to eq(value)
   end
 
   def then_I_should_preview_the_number_page(preview:, first_value:, second_value:, error_message:)
@@ -305,8 +301,8 @@ feature 'Component validations' do
   end
 
   def then_I_should_see_the_previously_set_date_configuration(field, value)
-    sleep(0.5)
-    expect(page.find_field("component_validation[#{field}]").value).to eq(value)
+    input = page.find_field("component_validation[#{field}]")
+    expect(input.value).to eq(value)
   end
 
   def then_I_should_preview_the_date_page(preview:, first_date:, second_date:, error_message:)
