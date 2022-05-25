@@ -18,26 +18,22 @@ feature 'Deleting page' do
     and_I_return_to_flow_page
     and_I_want_to_delete_the_page_that_I_created
     when_I_delete_the_page
-    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_not_see_the_deleted_page_anymore
   end
 
   scenario 'when try to delete a page which has a branching conditional' do
     when_I_try_to_delete_a_page_which_has_a_branching_conditional
-    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_a_message_that_is_not_possible_to_delete_the_page
   end
 
   scenario 'when try to delete a page which result with a stack branch' do
     when_I_try_to_delete_a_page_which_result_in_a_stack_branch
-    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
   end
 
   scenario 'when deleting a branch destination with a default next' do
     and_I_want_to_delete_a_branch_destination_page
     when_I_delete_the_branch_destination_page
-    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_not_see_the_deleted_page_in_the_flow
     and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
   end
@@ -56,7 +52,6 @@ feature 'Deleting page' do
     and_I_click_to_delete_branching_point_one
     and_I_choose_page_c_to_connect_the_forms
     when_I_delete_the_branching_point
-    sleep 0.5 # Allow time for the page to reload after deleting the page
     then_I_should_see_branch_pointing_one_deleted
   end
 
@@ -80,15 +75,14 @@ feature 'Deleting page' do
 
   def when_I_delete_the_branching_point
     editor.delete_branching_point_button.click
-    sleep 0.5
   end
 
   def then_I_should_see_branch_pointing_one_deleted
-    expect(editor.text).to_not include('Branching point 1')
+    expect(page).to_not have_content('Branching point 1')
   end
 
   def then_I_should_see_a_message_that_is_not_possible_to_delete_the_page
-    expect(editor.text).to include(
+    expect(page).to have_content(
       I18n.t(
         'pages.delete_modal.delete_page_used_for_branching_not_supported_message'
       )
@@ -96,7 +90,7 @@ feature 'Deleting page' do
   end
 
   def then_I_should_see_a_message_that_is_not_possible_to_create_stack_branches
-    expect(editor.text).to include(
+    expect(page).to have_content(
       I18n.t(
         'pages.delete_modal.stack_branches_not_supported_message'
       )
@@ -114,12 +108,13 @@ feature 'Deleting page' do
   end
 
   def then_I_should_not_see_the_deleted_page_in_the_flow
-    expect(editor.text).to_not include('Page c')
+    expect(page).to_not have_content('Page c')
   end
 
   def and_I_should_see_the_new_destination_as_next_page_after_the_deleted_page
     editor.click_branch('Branching point 1')
-    expect(editor.destination_options.find('option[selected]').text).to eq('Page d')
+    element = editor.destination_options.find('option[selected]')
+    expect(element.text).to eq('Page d')
   end
 
   def and_I_want_to_delete_the_page_that_I_created
@@ -139,6 +134,7 @@ feature 'Deleting page' do
   end
 
   def then_I_should_not_see_the_deleted_page_anymore
+    page.find(:css, '#flow-overview')
     expect(editor.form_urls).to_not include(question_title)
   end
 
@@ -154,7 +150,8 @@ feature 'Deleting page' do
   end
 
   def then_I_should_see_the_delete_page_no_default_next_modal
-    expect(page.find('.ui-dialog').text).to include(
+    dialog = page.find('.ui-dialog')
+    expect(dialog.text).to include(
       I18n.t(
         'pages.delete_modal.delete_branch_destination_page_no_default_next_message'
       )

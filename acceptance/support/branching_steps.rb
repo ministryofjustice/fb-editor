@@ -179,9 +179,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_add_condition_link
-    # wait for the api call to get the operators and answers
-    sleep(2)
-    expect(page).to have_text(I18n.t('branches.condition_add'))
+    expect(page).to have_content(I18n.t('branches.condition_add'))
   end
 
   def then_I_should_not_see_the_delete_condition_button
