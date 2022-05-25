@@ -144,7 +144,7 @@ feature 'Publishing' do
 
   def and_I_save_my_email_settings
     # Save button ids and text are the same so pick the first one which is for Test
-    editor.all(:button, I18n.t('actions.save')).first.click
+    editor.all(:button, I18n.t('settings.submission.email.save_test')).first.click
   end
 
   def then_username_and_password_should_be_selected(environment)
