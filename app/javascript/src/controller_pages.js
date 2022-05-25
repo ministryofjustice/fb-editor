@@ -281,22 +281,20 @@ function addQuestionMenuListeners(view) {
        * could be out of date
        */
       onLoad: function(dialog) {
-        var currentValue = question.data.validation[validation];
+        // Find fields that may be in the dialog
         var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
         var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
         var $dayField = dialog.$node.find('input[name="component_validation[day]"]');
         var $monthField = dialog.$node.find('input[name="component_validation[month]"]');
         var $yearField = dialog.$node.find('input[name="component_validation[year]"]');
-
-        if(currentValue) {
-          $statusField.prop('checked', true);
-        } else {
-          $statusField.prop('checked', false);
-        } 
+        var $charsRadio = dialog.$node.find('input[id="component_validation_characters"]');
+        var $wordsRadio = dialog.$node.find('input[id="component_validation_words"]');
 
         switch(validation) {
           case 'date_before':
           case 'date_after':
+            // Destructure date value and use to populate or clear date fields in modal
+            var currentValue = question.data.validation[validation];
             if(currentValue) {
               let [currentYear, currentMonth, currentDay] = currentValue.split('-');
               $dayField.val(currentDay);
@@ -308,10 +306,42 @@ function addQuestionMenuListeners(view) {
               $yearField.val('');
             }
             break;
+          case 'min_string_length':
+            // Check the appropriate radio in the modal based on the validation type
+            var currentValue = question.data.validation['min_length'] || question.data.validation['min_word'];
+            if( question.data.validation.hasOwnProperty('min_length')) {
+              $charsRadio.prop('checked', true); 
+            }
+            if( question.data.validation.hasOwnProperty('min_word')) {
+              $wordsRadio.prop('checked', true); 
+            }
+            break;
+          case 'max_string_length':
+            // Check the appropriate radio in the modal based on the validation type
+            var currentValue = question.data.validation['max_length'] || question.data.validation['max_word'];
+            if( question.data.validation.hasOwnProperty('max_length')) {
+              $charsRadio.prop('checked', true); 
+            }
+            if( question.data.validation.hasOwnProperty('max_word')) {
+              $wordsRadio.prop('checked', true); 
+            }
+            break;
           default:
-            $valueField.val( currentValue ?? '');
+            var currentValue = question.data.validation[validation];
             break;
         }
+        
+        // If its a standard validationl just set the value filed to the current value
+        if($valueField) {
+          $valueField.val( currentValue ?? '');
+        }
+        
+        // Presence of current value indicates whether the validation is enabled/disabled
+        if(currentValue) {
+          $statusField.prop('checked', true);
+        } else {
+          $statusField.prop('checked', false);
+        } 
       },
 
       onRefresh: function(dialog) {

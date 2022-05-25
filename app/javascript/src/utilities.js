@@ -338,6 +338,18 @@ function highestNumber(numbers) {
 
   return result;
 }
+/* Filter an object using a passed callback function
+  * @param {Object} obj - the object to be filtered
+  * @param {callable} predicate - function used for filtering, should return a
+  * boolean 
+  * @return {Object}
+  */
+function filterObject(obj, predicate) {
+  return Object.fromEntries(
+    Object.entries(obj).filter( predicate )
+  );
+}
+
 
 
 
@@ -362,5 +374,6 @@ module.exports  = {
   difference: difference,
   sortNumberArrayValues: sortNumberArrayValues,
   lowestNumber:lowestNumber,
-  highestNumber: highestNumber
+  highestNumber: highestNumber,
+  filterObject: filterObject,
 }

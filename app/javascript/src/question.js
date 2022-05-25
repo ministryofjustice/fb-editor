@@ -16,7 +16,10 @@
  **/
 
 
-const { mergeObjects }  = require('./utilities');
+const { 
+  mergeObjects,
+  filterObject,
+}  = require('./utilities');
 const editableComponent = require('./editable_components').editableComponent;
 const  QuestionMenu = require('./components/menus/question_menu');
 
@@ -68,15 +71,39 @@ class Question {
     this.menu.setEnabledValidations();
     this.setRequiredFlag();
   }
+  
+  /*
+  * Applies the validation settings to the questions data.validations key
+  * @param {Object} config - the settings for the validation to be applied
+  *                          expected format: { validationName: value }
+  *                          
+  */ 
+  set validation(config) {
+    let [validationName, _] = Object.entries(config)[0];
+    let data = this.data.validation;
+    
+    // Merge our new validation data with the current data on the question
+    data =  mergeObjects(data, config);
+    // Remove keys with empty values 
+    data = filterObject(data, ([_, val]) => val != '' ); 
+  
+    // Ensure we don't have conflicting min_length/word and max_length/word keys
+    switch(validationName) {
+      case 'min_length':
+        data = filterObject(data, ([key, _]) => key != 'min_word');         
+        break;
+      case 'min_word':
+        data = filterObject(data, ([key, _]) => key != 'min_length');  
+        break;
+      case 'max_length':
+        data = filterObject(data, ([key, _]) => key != 'max_word');
+      break;
+      case 'max_word':
+        data = filterObject(data, ([key, _]) => key != 'max_length');
+      break;
+    }
 
-  set validation(data) {
-    Object.keys(data).forEach( (validationType) => {
-        if(data[validationType] == '') {
-          delete this.data.validation[validationType];
-        } else {
-          this.data.validation[validationType] = data[validationType];
-        }
-    });
+    this.data.validation = data;
     this.menu.setEnabledValidations();
     this.editable.emitSaveRequired();
   }

@@ -83,7 +83,16 @@ class QuestionMenu extends ActivatedMenu {
   }
 
   setEnabledValidations() {
-    var validationData = this.question.data.validation;
+    var validationData = Object.assign( {}, this.question.data.validation ); // don't mutate the question data
+    
+    if(validationData.hasOwnProperty('min_length') || validationData.hasOwnProperty('min_word') ){
+      validationData.min_string_length = true;
+    }
+
+    if(validationData.hasOwnProperty('max_length') || validationData.hasOwnProperty('max_word') ){
+      validationData.max_string_length = true;
+    }
+
     this.$node.find("[data-validation]").each(function() {
       var validationType = $(this).data('validation');
       if( validationData[validationType] ) {
