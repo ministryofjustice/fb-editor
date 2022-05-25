@@ -42,6 +42,11 @@ class DialogActivator {
       conf.dialog.open();
     });
 
+    // Attempt to add an ID if none exists.
+    if(!$node.attr("id")) {
+      $node.attr("id",  utilities.uniqueString(conf.dialog.$node.attr("id")));
+    }
+
     this.dialog = conf.dialog;
     this.$node = $node;
   }
@@ -54,7 +59,7 @@ class DialogActivator {
  **/
 function createActivator($target, text) {
   var $activator = $("<button>\</button>");
-  $activator.text((text || "open dialog")); 
+  $activator.text((text || "open dialog"));
   $target.before($activator);
   return $activator;
 }
