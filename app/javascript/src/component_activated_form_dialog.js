@@ -44,8 +44,10 @@ class ActivatedFormDialog extends FormDialog {
       selectorErrors: ".error"
     }, config);
 
+    var $marker = $("<span></span>");
     var $errors = $node.find(conf.selectorErrors);
 
+    $node.before($marker);
     super($node, mergeObjects( config, {
       autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
@@ -53,19 +55,21 @@ class ActivatedFormDialog extends FormDialog {
       selectorErrors: conf.selectorErrors
     }));
 
-    var activator = new DialogActivator(conf.$activator, {
-      dialog: this,
-      text: conf.activatorText,
-      classes: conf.classes["ui-activator"],
-      $target: $node.parents(".ui-dialog")
-    });
 
     // Change inherited class name to reflect this Class
     $node.parents(".FormDialog")
       .removeClass("FormDialog")
       .addClass("ActivatedFormDialog");
 
-    this.activator = activator;
+    // Create and/or add an Activator
+    this.activator = new DialogActivator(conf.$activator, {
+      dialog: this,
+      text: conf.activatorText,
+      classes: conf.classes["ui-activator"],
+      $target: $marker
+    });
+
+    $marker.remove();
   }
 }
 
