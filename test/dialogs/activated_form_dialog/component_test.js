@@ -57,7 +57,7 @@ describe("ActivatedFormDialog", function() {
   });
 
 
-  describe.only("Component with created Activator", function() {
+  describe("Component with created Activator", function() {
     const FORM_ID = "activated-form-dialog-for-testing-component-generated-activator";
     var created;
 

@@ -8,8 +8,9 @@ describe("ActivatedFormDialog", function() {
 
   describe("Properties", function() {
     var created;
+
     before(function() {
-      helpers.setupView();
+      helpers.setupView(FORM_ID);
       created = helpers.createDialog(FORM_ID, {
         activatorText: c.TEXT_ACTIVATOR
       });
@@ -17,7 +18,7 @@ describe("ActivatedFormDialog", function() {
 
     after(function() {
       helpers.teardownView(FORM_ID);
-      created = {};
+      helpers.destroyDialog(created);
     });
 
     it("should make the $node public", function() {

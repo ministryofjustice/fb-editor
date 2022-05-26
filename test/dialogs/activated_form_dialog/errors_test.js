@@ -23,7 +23,7 @@ describe("ActivatedFormDialog", function() {
       var createdWithErrors;
 
       beforeEach(function() {
-        helpers.setupView(WITH_ERRORS);
+        helpers.setupView(FORM_ID, WITH_ERRORS);
         createdWithErrors = helpers.createDialog(FORM_ID, {
           activatorText: c.TEXT_ACTIVATOR,
           selectorErrors: ".govuk-error-message",
@@ -33,7 +33,7 @@ describe("ActivatedFormDialog", function() {
 
       afterEach(function() {
         helpers.destroyDialog(createdWithErrors);
-        helpers.teardownView();
+        helpers.teardownView(FORM_ID);
       });
 
       it("should make any found errors available public property", function() {
@@ -93,7 +93,7 @@ describe("ActivatedFormDialog", function() {
       var createdWithoutErrors;
 
       beforeEach(function() {
-        helpers.setupView(WITH_ERRORS);
+        helpers.setupView(FORM_ID, WITH_ERRORS);
         createdWithoutErrors = helpers.createDialog(FORM_ID, {
           activatorText: c.TEXT_ACTIVATOR
         });
@@ -101,7 +101,7 @@ describe("ActivatedFormDialog", function() {
 
       afterEach(function() {
         helpers.destroyDialog(createdWithoutErrors);
-        helpers.teardownView();
+        helpers.teardownView(FORM_ID);
       });
 
       it("should be closed on page load when no errors are present", function() {

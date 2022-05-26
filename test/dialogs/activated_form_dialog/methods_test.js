@@ -8,17 +8,17 @@ describe("ActivatedFormDialog", function() {
 
   describe("Methods", function() {
     var created;
+
     before(function() {
-      helpers.setupView();
+      helpers.setupView(FORM_ID);
       created = helpers.createDialog(FORM_ID, {
         activatorText: c.TEXT_ACTIVATOR
       });
     });
 
     after(function() {
-      created.dialog.activator.$node.remove();
       helpers.teardownView(FORM_ID);
-      created = {};
+      helpers.destroyDialog(created);
     });
 
     describe("Open", function() {
@@ -104,7 +104,6 @@ describe("ActivatedFormDialog", function() {
         expect(created.dialog.$container.get(0).style.display).to.equal("none");
       });
     });
-
 
   });
 });
