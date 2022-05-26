@@ -5,6 +5,7 @@ const constants = {
   CLASSNAME_COMPONENT: "ActivatedFormDialog",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
+  PARENT_ID_ADDITION: "-original-parent",
   TEXT_ACTIVATOR: "This is activator button text",
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
@@ -38,9 +39,7 @@ const view = {
  *
  **/
 function createDialog(id, config) {
-  var $template = $("[data-component-template=ActivatedFormDialog]");
-  var html = $template.text();
-  var $node = $(html);
+  var $node = $("#" + id);
   var conf = {
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     id: id,
@@ -56,12 +55,8 @@ function createDialog(id, config) {
     }
   }
 
-  // Apply the ID and make sure in DOM
-  $node.attr("id", id);
-  $(document.body).append($node);
-
   return {
-    html: html,
+    html: $node.get(0).outerHTML,
     $node: $node,
     dialog: new ActivatedFormDialog($node, conf)
   }
@@ -72,17 +67,22 @@ function createDialog(id, config) {
  * @created (Object) Return value, including Created dialog instance, of createDialog() method.
  **/
 function destroyDialog(created) {
+  var id = created.$node.attr("id");
   created.dialog.activator.$node.remove();
   created.dialog.$node.remove();
+  created.dialog.$container.remove();
   created.dialog = {};
   created = {};
+  $("#" + (id + constants.PARENT_ID_ADDITION)).remove();
 }
 
 
 /* Set up the DOM to include template code for dialog
  * and anything else required.
+ * @id             (String)  String used to assign unique ID value.
+ * @withErrors     (Boolean) Used to inject error HTML.
  **/
-function setupView(withErrors) {
+function setupView(id, withErrors) {
   $(document.body).append(`<script data-component-template="ActivatedFormDialog">
                              <form action="/" method="post">` +
                                (withErrors ? (`<span class="govuk-error-message">` + constants.TEXT_ERROR + `</span>`) : `\n`)
@@ -90,13 +90,27 @@ function setupView(withErrors) {
                                <input type="submit" value="` + constants.TEXT_BUTTON_OK + `" />
                              </form>
                            </script>`);
+
+  var $template = $("[data-component-template=ActivatedFormDialog]");
+  var html = $template.text();
+  var $node = $(html);
+  var $originalParent = $("<div></div>");
+
+  // Apply the ID and make sure in DOM
+  $originalParent.attr("id", id + constants.PARENT_ID_ADDITION);
+  $originalParent.append($node);
+  $node.attr("id", id);
+  $(document.body).append($originalParent);
+
 }
 
 
 /* Reset DOM to pre setupView() state
+ * @id (String) String used to identify unique parent element.
  **/
-function teardownView() {
+function teardownView(id) {
   $("[data-component-template=ActivatedFormDialog]").remove();
+  $("#" + (id + constants.PARENT_ID_ADDITION)).remove();
 }
 
 
