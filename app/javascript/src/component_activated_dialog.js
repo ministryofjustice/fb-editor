@@ -37,13 +37,6 @@ class ActivatedDialog {
       $target: $node
     }, config);
 
-    var activator = new DialogActivator(conf.$activator, {
-      dialog: this,
-      text: conf.activatorText,
-      classes: conf.classes["ui-activator"],
-      $target: $node
-    });
-
     var buttons = {};
     var $container;
 
@@ -79,7 +72,13 @@ class ActivatedDialog {
     this.#config = conf;
     this.$container = $container;
     this.$node = $node;
-    this.activator = activator;
+
+    this.activator = new DialogActivator(conf.$activator, {
+      dialog: this,
+      text: conf.activatorText,
+      classes: conf.classes["ui-activator"],
+      $target: $node
+    });
   }
 
   open() {
