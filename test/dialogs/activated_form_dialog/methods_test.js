@@ -73,7 +73,7 @@ describe("ActivatedFormDialog", function() {
 
     describe("Close", function() {
       it("should close dialog on click of 'X' (close) button", function() {
-        var $button = $(".ui-dialog-titlebar-close");
+        var $button = created.dialog.$container.find(".ui-dialog-titlebar-close");
 
         // Make sure it's open
         created.dialog.$form.dialog("open");
