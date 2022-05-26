@@ -44,7 +44,7 @@ class DialogActivator {
 
     // Attempt to add an ID if none exists.
     if(!$node.attr("id")) {
-      $node.attr("id",  utilities.uniqueString(conf.dialog.$node.attr("id")));
+      $node.attr("id",  utilities.uniqueString(conf.dialog.$node ? conf.dialog.$node.attr("id") : ""));
     }
 
     this.dialog = conf.dialog;
