@@ -350,9 +350,9 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
-    sentry-delayed_job (5.3.0)
+    sentry-delayed_job (5.3.1)
       delayed_job (>= 4.0)
-      sentry-ruby-core (~> 5.3.0)
+      sentry-ruby-core (~> 5.3.1)
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
@@ -440,7 +440,7 @@ DEPENDENCIES
   rubocop-govuk
   sass-rails (>= 6)
   selenium-webdriver (= 4.1.0)
-  sentry-delayed_job (~> 5.3.0)
+  sentry-delayed_job (~> 5.3.1)
   sentry-rails (~> 5.3.1)
   sentry-ruby (~> 5.3.1)
   shoulda-matchers
