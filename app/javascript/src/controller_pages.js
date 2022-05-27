@@ -365,7 +365,7 @@ function addQuestionMenuListeners(view) {
         } 
       },
 
-      onRefresh: function(dialog) {
+      onReady: function(dialog) {
         var $revealedInputs = dialog.$node.find('[data-component="Expander"]');
         $revealedInputs.each(function() {
           var $activator = $(this).parent().find('input[type="checkbox"]');

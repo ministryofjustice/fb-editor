@@ -13,7 +13,7 @@ class DialogValidation {
       submitOnClickSelector: 'button[type="submit"]',
       remote: false,
       onLoad: function(dialog) {},
-      onRefresh: function(dialog) {},
+      onReady: function(dialog) {},
       beforeSubmit: function(dialog) {},
       onSuccess: function(data, dialog) {},
       onError: function(data, dialog) {},
@@ -154,7 +154,7 @@ class DialogValidation {
     this.$form = this.$node.find('form');
     this.#setupCloseButtons();
     this.#setupSubmitButton();
-    safelyActivateFunction(dialog.#config.onRefresh, dialog);
+    safelyActivateFunction(dialog.#config.onReady, dialog);
   }
 
   /* add event listeners to configured close buttons */
