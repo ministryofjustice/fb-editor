@@ -223,7 +223,7 @@ feature 'Component validations' do
     let(:preview_field) { 'answers[number_number_1]' }
     let(:preview_first_value) { '1' }
     let(:preview_second_value) { '20' }
-    let(:preview_error_message) { 'Enter a higher number for Number' }
+    let(:preview_error_message) { 'Your answer for "Number" must be 3 or higher' }
 
     it_behaves_like 'a number component validation'
   end
@@ -238,7 +238,7 @@ feature 'Component validations' do
     let(:preview_field) { 'answers[number_number_1]' }
     let(:preview_first_value) { '100' }
     let(:preview_second_value) { '5' }
-    let(:preview_error_message) { 'Enter a lower number for Number' }
+    let(:preview_error_message) { 'Your answer for "Number" must be 50 or lower' }
 
     it_behaves_like 'a number component validation'
   end
@@ -261,7 +261,7 @@ feature 'Component validations' do
     let(:second_answers) { { 'day' => '28', 'month' => '02', 'year' => '1999' } }
     let(:preview_first_date) { { day: '01', month: '02', year: '1901' } }
     let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
-    let(:preview_error_message) { 'Enter a later date for Date' }
+    let(:preview_error_message) { 'Your answer for "Date" must be 28 02 1999 or later' }
 
     it_behaves_like 'a date component validation'
   end
@@ -284,7 +284,7 @@ feature 'Component validations' do
     let(:second_answers) { { 'day' => '14', 'month' => '08', 'year' => '2045' } }
     let(:preview_first_date) { { day: '01', month: '02', year: '2050' } }
     let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
-    let(:preview_error_message) { 'Enter an earlier date for Date' }
+    let(:preview_error_message) { 'Your answer for "Date" must be 14 08 2045 or earlier' }
 
     it_behaves_like 'a date component validation'
   end
@@ -299,7 +299,7 @@ feature 'Component validations' do
     let(:preview_field) { 'answers[text_text_1]' }
     let(:preview_first_answer) { 'Po' }
     let(:prview_second_answer) { 'Akira' }
-    let(:preview_error_message) { "Your answer for 'Text' is too short (3 characters at least)" }
+    let(:preview_error_message) { 'Your answer for "Text" must be 3 characters or more' }
 
     it_behaves_like 'a string length characters validation'
   end
@@ -314,7 +314,7 @@ feature 'Component validations' do
     let(:preview_field) { 'answers[text_text_1]' }
     let(:preview_first_answer) { 'Wolfeschlegelshteinhausenbergerdorff' }
     let(:prview_second_answer) { 'Bob' }
-    let(:preview_error_message) { "Your answer for 'Text' is too long (10 characters at most)" }
+    let(:preview_error_message) { 'Your answer for "Text" must be 10 characters or fewer' }
 
     it_behaves_like 'a string length characters validation'
   end
@@ -331,7 +331,7 @@ feature 'Component validations' do
     let(:preview_second_answer) do
       'He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish.'
     end
-    let(:preview_error_message) { "Enter a higher number of words for Textarea" }
+    let(:preview_error_message) { 'Your answer for "Textarea" must be 10 words or more' }
 
     it_behaves_like 'a string length words validation'
   end
@@ -348,7 +348,7 @@ feature 'Component validations' do
       'The story so far: in the beginning, the universe was created. This has made a lot of people very angry and been widely regarded as a bad move.'
     end
     let(:preview_second_answer) { 'All this happened, more or less.' }
-    let(:preview_error_message) { "Enter a lower number of words for Textarea" }
+    let(:preview_error_message) { 'Your answer for "Textarea" must be 20 words or fewer' }
 
     it_behaves_like 'a string length words validation'
   end

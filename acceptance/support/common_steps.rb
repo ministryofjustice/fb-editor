@@ -328,7 +328,7 @@ module CommonSteps
     if fields.empty?
       expect(page.text).to include('Enter an answer for')
     else
-      fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
+      fields.each { |field| expect(text).to include("Enter an answer for \"#{field}\"")}
     end
   end
 
