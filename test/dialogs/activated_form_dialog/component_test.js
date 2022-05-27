@@ -4,21 +4,21 @@ describe("ActivatedFormDialog", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const FORM_ID = "activated-form-dialog-for-testing-component";
 
   describe("Component", function() {
+    const FORM_ID = "activated-form-dialog-for-testing-component";
     var created;
+
     before(function() {
-      helpers.setupView();
+      helpers.setupView(FORM_ID);
       created = helpers.createDialog(FORM_ID, {
         activatorText: c.TEXT_ACTIVATOR
       });
     });
 
     after(function() {
-      created.dialog.activator.$node.remove();
-      helpers.teardownView();
-      created = {};
+      helpers.teardownView(FORM_ID);
+      helpers.destroyDialog(created);
     });
 
     it("should have the basic HTML in place", function() {
@@ -49,16 +49,44 @@ describe("ActivatedFormDialog", function() {
       
     });
 
-    it("should use passed activator text", function() {
-      var $activator = $(".DialogActivator[id^=activated-form-dialog-for-testing-component]");
-      expect($activator.length).to.equal(1);
-      expect($activator.text()).to.equal(c.TEXT_ACTIVATOR);
-    });
-
     it("should apply CSS classnames passed in config", function() {
       var $container = created.$node.parent('[role=dialog]');
       expect($container.hasClass(c.CLASSNAME_1));
       expect($container.hasClass(c.CLASSNAME_2));
+    });
+  });
+
+
+  describe("Component with created Activator", function() {
+    const FORM_ID = "activated-form-dialog-for-testing-component-generated-activator";
+    var created;
+
+    before(function() {
+      helpers.setupView(FORM_ID);
+      created = helpers.createDialog(FORM_ID, {
+        activatorText: c.TEXT_ACTIVATOR
+      });
+    });
+
+    after(function() {
+      helpers.teardownView(FORM_ID);
+      helpers.destroyDialog(created);
+    });
+
+    it("should use passed activator text", function() {
+      var $activator = $(".DialogActivator[id^=" + FORM_ID + "]");
+      expect($activator.length).to.equal(1);
+      expect($activator.text()).to.equal(c.TEXT_ACTIVATOR);
+    });
+
+    it("should place any created Activator after the target form ($node)", function() {
+      var $dialog = created.$node.parent(".ActivatedFormDialog");
+      var $activator = $(".DialogActivator[id^=" + FORM_ID + "]");
+      var $originalFormParent = $("#" + (FORM_ID + c.PARENT_ID_ADDITION));
+       expect($activator.length).to.equal(1);
+       expect($originalFormParent.length).to.equal(1);
+       expect($activator.parent().get(0)).to.equal($originalFormParent.get(0));
+       expect($dialog.parent().get(0)).to.not.equal($originalFormParent.get(0));
     });
   });
 });

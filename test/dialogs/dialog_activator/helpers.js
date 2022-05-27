@@ -29,7 +29,7 @@ function createActivator(id, config) {
   var $node = $("#" + id);
   var html = $node.length ? $node.get(0).outerHTML : "";
   var conf = {
-    dialog: { name: "fake dialog" },
+    dialog: { name: "fake dialog", $node: $("<div id=\"fake-dialog\"></div>") },
     classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     id: id
   }
