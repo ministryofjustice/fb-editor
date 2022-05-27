@@ -3,7 +3,7 @@ mergeObjects,
 safelyActivateFunction, 
 } = require('./utilities');
 
-class DialogValidation {
+class DialogForm {
   #config;
 
   constructor(source, config) {
@@ -61,13 +61,13 @@ class DialogValidation {
 
   submit() {
     if( this.#config.remote ) {
-      this.submitRemote();
+      this.#submitRemote();
     } else {
       this.$form.submit();
     }
   }
 
-  submitRemote() {
+  #submitRemote() {
     var dialog = this;
     $.ajax({ 
       type: 'POST',
@@ -184,4 +184,4 @@ class DialogValidation {
 }
 
 
-module.exports = DialogValidation;
+module.exports = DialogForm;
