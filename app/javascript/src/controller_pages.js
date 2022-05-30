@@ -98,7 +98,7 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: dataController.$form });
+    new AddContent($node, { $form: dataController.$form, view: view });
   });
 
   // Enhance any Add Component buttons.
@@ -135,26 +135,45 @@ PagesController.create = function() {
 
 class DataController {
   constructor(view) {
-    var controller = this;
     var $form = $("#editContentForm");
     this.text = view.text;
 
     $form.find(":submit").on("click", (event) => {
+      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
       $(event.target).prop("value", this.text.actions.saving );
     });
 
-    $form.on("submit", controller.update);
+    $form.on("submit", () => { 
+      this.update();
+      this.removeBeforeUnloadListener();
+    });
     this.$form = $form;
+  }
+  
+  beforeUnloadListener(event) {
+      event.preventDefault();
+      return event.returnValue = 'Changes you have made will not be saved';
+  }
+
+  addBeforeUnloadListener() {
+      window.addEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
+  }
+
+  removeBeforeUnloadListener() {  
+      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
   }
 
   saveRequired(required) {
     if(required) { 
       this.$form.find(":submit").prop("value", this.text.actions.save );
       this.$form.find(":submit").prop("disabled", false);
+      this.addBeforeUnloadListener();
     }
+
     else {
       this.$form.find(":submit").prop("value", this.text.actions.saved );
       this.$form.find(":submit").prop("disabled", true);
+      this.removeBeforeUnloadListener();
     }
   }
 
@@ -212,7 +231,7 @@ class AddContent {
     this.$button = $button;
     this.$node = $node;
 
-    $button.on("click.AddContent", function() {
+    $button.on("click.AddContent", () => {
       updateHiddenInputOnForm(config.$form, fieldname, "content");
       config.$form.submit();
     });
