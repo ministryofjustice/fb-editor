@@ -80,6 +80,15 @@ en:
       maximum:
         label: Maximum answer value
         status_label: Set the highest number allowed
+      string:
+        characters: Characters
+        words: Words
+        min:
+          label: Minimum answer length
+          status_label: Set a minimum answer length
+        max:
+          label: Maximum answer length
+          status_label: Set a maximum answer length
       button: Update
   header:
     service_name: "MoJ Forms"
@@ -233,6 +242,8 @@ en:
       date_before: 'Latest date...'
       minimum: 'Minimum answer value...'
       maximum: 'Maximum answer value...'
+      max_string_length: 'Maximum answer length...'
+      min_string_length: 'Minimum answer length...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'

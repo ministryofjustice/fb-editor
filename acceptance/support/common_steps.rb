@@ -15,6 +15,7 @@ module CommonSteps
 
   def given_I_am_logged_in
     editor.load
+    page.find(:css, '#main-content')
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
@@ -41,6 +42,7 @@ module CommonSteps
 
   def given_I_have_a_service(service = service_name)
     editor.load
+    page.find(:css, '#main-content')
     given_I_want_to_create_a_service
     given_I_add_a_service(service)
     when_I_create_the_service
@@ -326,7 +328,7 @@ module CommonSteps
     if fields.empty?
       expect(page.text).to include('Enter an answer for')
     else
-      fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
+      fields.each { |field| expect(text).to include("Enter an answer for \"#{field}\"")}
     end
   end
 
