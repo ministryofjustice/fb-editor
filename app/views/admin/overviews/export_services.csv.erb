@@ -1,0 +1,4 @@
+<%= CSV.generate_line @headers %>
+<%- @services.each do |service| -%>
+  <%= CSV.generate_line([service[:name], service[:user], service[:published_test], service[:published_live]]) -%>
+<%- end -%>
