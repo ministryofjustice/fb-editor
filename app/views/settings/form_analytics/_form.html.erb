@@ -1,0 +1,26 @@
+<%= f.hidden_field :deployment_environment, value: deployment_environment %>
+
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text" id="configure-<%= deployment_environment %>">
+      <%= t('settings.configure') %>
+    </span>
+  </summary>
+  <fieldset class="govuk-fieldset">
+    <div class="govuk-form-group <%= f.object.errors[:form_analytics_settings].present? ? 'govuk-form-group--error' : '' %> ">
+      <% f.object.errors[:form_analytics_settings].each do |message| %>
+        <span class="govuk-error-message"><%= message %></span>
+      <% end %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :ga, class: "govuk-label" %>
+      <%= f.text_field :ga, class: "govuk-input width-responsive-two-thirds" %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :gtm, class: "govuk-label" %>
+      <%= f.text_field :gtm, class: "govuk-input width-responsive-two-thirds" %>
+    </div>
+  </fieldset>
+</details>
