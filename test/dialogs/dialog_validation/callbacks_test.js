@@ -1,23 +1,24 @@
 require('../../setup');
+const GlobalHelpers = require("../../helpers.js");
 
 describe("DialogValidation", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
   const COMPONENT_ID = "dialog-validation-callbacks-test";
-  var onOpenCalled = false;
-  var onCloseCalled = false;
-  var onReadyCalled = false;
+  var onOpenCallback = sinon.spy();
+  var onCloseCallback = sinon.spy();
+  var onReadyCallback = sinon.spy();
 
-  describe("Methods", function() {
+  describe("Callbacks", function() {
     var created;
 
     beforeEach(function() {
       helpers.setupView(COMPONENT_ID, true);
       created = helpers.createDialog(COMPONENT_ID, {
-        onOpen: () => { onOpenCalled = true },
-        onClose: () => { onCloseCalled = true },
-        onReady: () => { onReadyCalled = true },
+        onOpen: onOpenCallback,
+        onClose: onCloseCallback,
+        onReady: onReadyCallback,
       });
     });
 
@@ -27,14 +28,16 @@ describe("DialogValidation", function() {
     });
 
     it('should call onReady when created', function() {
-      expect(onReadyCalled).to.be.true;
+      expect(onReadyCallback).to.have.been.called;
+      expect(onReadyCallback).to.have.been.calledWith(created.dialog);
     });
 
     /* TEST METHOD: open()
      **/
     it("should open the dialog", function() {
       created.dialog.open();
-      expect(onOpenCalled).to.be.true;
+      expect(onOpenCallback).to.have.been.called;
+      expect(onOpenCallback).to.have.been.calledWith(created.dialog);
     });
 
 
@@ -42,7 +45,66 @@ describe("DialogValidation", function() {
      **/
     it("should close the dialog", function() {
       created.dialog.close();
-      expect(onCloseCalled).to.be.true;
+      expect(onCloseCallback).to.have.been.called;
+      expect(onCloseCallback).to.have.been.calledWith(created.dialog);
     });
+  });
+
+  describe('Async Callbacks', function() {
+    var created;
+    var server;
+
+    beforeEach(function() {
+      helpers.setupView(COMPONENT_ID, true);
+      server = GlobalHelpers.createServer();
+    });
+
+    afterEach(function() {
+      server.restore;
+      helpers.teardownView(COMPONENT_ID);
+      created = {};
+    });
+
+    it('should call onSuccess', function() {
+        var data = {'key': 'value'};
+        var onSuccessCallback = sinon.spy();
+
+        server.respondWith("POST", c.REMOTE_SUBMIT_URL, [
+          200,
+          { "Content-Type": "application/json"},
+          JSON.stringify(data),
+        ]);
+
+        created = helpers.createDialog(COMPONENT_ID, {
+          remote: true,
+          onSuccess: onSuccessCallback,
+        });
+        
+        created.dialog.submit();
+        expect(onSuccessCallback).to.have.been.calledWith(data, created.dialog);
+    });
+
+
+    it('should call onError', function() {
+      var data = '<div>error</div>';
+      var onErrorCallback = sinon.spy();
+
+      server.respondWith("POST", c.REMOTE_SUBMIT_URL, [
+        422,
+        { "Content-Type": "text/html"},
+        `${data}`,
+      ]);
+
+      created = helpers.createDialog(COMPONENT_ID, {
+        remote: true,
+        onError: onErrorCallback,
+      });
+
+      created.dialog.submit();
+
+      expect(onErrorCallback).to.have.been.called;
+      // expect(onErrorCallback).to.have.been.calledWithMatch(data, created.dialog);
+    });
+
   });
 });
