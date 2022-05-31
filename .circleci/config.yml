@@ -450,11 +450,11 @@ workflows:
           requires:
             - build_web_testable_branch
             - build_workers_testable_branch
-      - testable_branch_acceptance_tests:
-          requires:
-            - deploy_testable_branch
-      - slack/approval-notification:
-          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
-          include_job_number_field: false
-          requires:
-            - testable_branch_acceptance_tests
+      # - testable_branch_acceptance_tests:
+      #     requires:
+      #       - deploy_testable_branch
+      # - slack/approval-notification:
+      #     message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+      #     include_job_number_field: false
+      #     requires:
+      #       - testable_branch_acceptance_tests
