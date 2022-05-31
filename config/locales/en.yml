@@ -251,10 +251,17 @@ en:
       negative: 'No'
   settings:
     name: 'Settings'
+    save_test: Save Test settings
+    save_live: Save Live settings
+    configure: Configure
     form_information: 'Form details'
     form_information_hint: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
+    form_analytics:
+      name: Analytics
+      hint: Enable Analytics or Google Tag Manager for your form.
+      help: Some helpful content for this bit.
     submission:
       name: 'Submission settings'
       hint: 'Set what happens when a user submits their data.'
@@ -316,6 +323,11 @@ en:
         service_name: 'Give your form a name'
       settings:
         service_name: 'Form name'
+      form_analytics_settings:
+        enabled_test: Enable analytics in Test
+        enabled_live: Enable analytics in Live
+        ga: Google Analytics ID
+        gtm: Google Tag Manager ID
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
@@ -367,7 +379,7 @@ en:
           format: "%{message}"
         date_validation:
           invalid: "%{label} is not a valid date"
-          missing_attribute: "%{label} should include a %{attribute}" 
+          missing_attribute: "%{label} should include a %{attribute}"
           format: "%{message}"
         number_validation:
           invalid: "%{label} needs to be a number"
