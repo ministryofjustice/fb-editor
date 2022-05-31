@@ -1,4 +1,5 @@
 require('../../setup');
+const GlobalHelpers = require("../../helpers.js");
 
 describe("DialogValidation", function() {
 
@@ -87,8 +88,40 @@ describe("DialogValidation", function() {
       expect(created.dialog.isOpen()).to.be.false;
     });
 
-    it('should submit the form asynchronously', function() {
+    describe('Async Form', function() {
+      var created;
+      var server;
 
+      beforeEach(function() {
+        server = GlobalHelpers.createServer();
+      });
+
+      afterEach(function() {
+        server.restore;
+        helpers.teardownView(COMPONENT_ID);
+        created = {};
+      });
+  
+      it('should submit the form asynchronously', function() {
+        var data = {'key': 'value'};
+        var successCallback = sinon.spy();
+ 
+        server.respondWith("POST", c.REMOTE_SUBMIT_URL, [
+          200,
+          { "Content-Type": "application/json"},
+          JSON.stringify(data),
+        ]);
+
+        created = helpers.createDialog(COMPONENT_ID, {
+          remote: true,
+          onSuccess: successCallback,
+        });
+
+        created.dialog.submit();
+
+        expect(successCallback).to.have.been.calledWith(data);
+   
+      });
     });
 
   });

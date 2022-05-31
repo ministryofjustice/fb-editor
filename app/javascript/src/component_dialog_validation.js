@@ -107,13 +107,11 @@ class DialogForm {
 
   #initialize(source) {
     var dialog = this;
-
     if(typeof source == 'string') {
-      $.get(source, (response) =>  {
+      $.get(source)
+      .done((response) => {
         this.$node = $(response);
         this.#build(); 
-      })
-      .done(() => {
         // Allow a function to be specified in dialog config 
         safelyActivateFunction(dialog.#config.onLoad, dialog);
         this.#enhance();
