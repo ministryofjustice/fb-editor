@@ -44,5 +44,20 @@ FactoryBot.define do
       name { 'SERVICE_EMAIL_PDF_SUBHEADING' }
       value { 'Star killer HR' }
     end
+
+    trait :ua do
+      name { 'UA' }
+      value { 'UA-123456' }
+    end
+
+    trait :gtm do
+      name { 'GTM' }
+      value { 'GTM-123456' }
+    end
+
+    trait :ga4 do
+      name { 'GA4' }
+      value { 'G-123456' }
+    end
   end
 end

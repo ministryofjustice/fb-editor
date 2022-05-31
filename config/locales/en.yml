@@ -326,8 +326,9 @@ en:
       form_analytics_settings:
         enabled_test: Enable analytics in Test
         enabled_live: Enable analytics in Live
-        ga: Google Analytics ID
-        gtm: Google Tag Manager ID
+        ua: Google Universal Analytics ID (Starts with UA)
+        gtm: Google Tag Manager ID (Starts with GTM)
+        ga4: Google Analytics 4 ID (Starts with G)
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
@@ -388,6 +389,11 @@ en:
           format: "%{message}"
         maximum_validation:
           format: "%{message}"
+        form_analytics_settings:
+          blank: Enter at least one analytics tag
+          ua: Universal Analytics tags must start with UA. e.g UA-123456
+          gtm: Google Tag Manager tags must start with GTM. e.g GTM-123456
+          ga4: Google Analytics 4 tags must start with G. e.g G-123456
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

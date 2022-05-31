@@ -2,60 +2,8 @@
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-xl"><%= t('settings.form_analytics.name') %></h1>
     <p><%= t('settings.form_analytics.help') %></p>
+    <%= render 'form', form_analytics: @form_analytics_dev, platform_environment: 'test', deployment_environment: 'dev' %>
 
-    <%= form_for @form_analytics_dev,
-      url: settings_form_analytics_path(service.service_id),
-      html: { id: 'form-analytics-dev' } do |f| %>
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h2 class="govuk-fieldset__heading"><%= t('publish.test.heading') %></h2>
-          </legend>
-          <div class="govuk-hint"><%= t('publish.test.hint') %></div>
-          <div class="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <%= f.check_box :enabled_test, class: 'govuk-checkboxes__input',
-                checked: f.object.enabled? %>
-              <%= f.label :enabled_test,
-                class: 'govuk-label govuk-checkboxes__label' %>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-
-      <%= render 'form', f: f, deployment_environment: 'dev' %>
-
-      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        <%= t('settings.save_test') %>
-      </button>
-    <% end %>
-
-    <%= form_for @form_analytics_production,
-      url: settings_form_analytics_path(service.service_id),
-      html: { id: 'form-analytics-production' } do |f| %>
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h2 class="govuk-fieldset__heading"><%= t('publish.live.heading') %></h2>
-          </legend>
-          <div class="govuk-hint"><%= t('publish.live.hint') %></div>
-          <div class="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <%= f.check_box :enabled_live, class: 'govuk-checkboxes__input',
-                checked: f.object.enabled? %>
-              <%= f.label :enabled_live,
-                f.object.class.human_attribute_name(:enabled_live),
-                class: 'govuk-label govuk-checkboxes__label' %>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-
-      <%= render 'form', f: f, deployment_environment: 'production' %>
-
-      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        <%= t('settings.save_live') %>
-      </button>
-    <% end %>
+    <%= render 'form', form_analytics: @form_analytics_production, platform_environment: 'live', deployment_environment: 'production' %>
   </div>
 </div>
