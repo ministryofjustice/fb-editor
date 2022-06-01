@@ -9,7 +9,7 @@ class Settings::EmailController < FormController
     if @email_settings.valid?
       EmailSettingsUpdater.new(
         email_settings: @email_settings,
-        service: service
+        service_id: service.service_id
       ).create_or_update!
 
       redirect_to settings_email_index_path(service_id: service.service_id)
