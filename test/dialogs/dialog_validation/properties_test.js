@@ -1,7 +1,7 @@
 require('../../setup');
 const GlobalHelpers = require('../../helpers');
 
-describe("DialogValidation", function() {
+describe("DialogForm", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
@@ -44,6 +44,16 @@ describe("DialogValidation", function() {
         expect(created.dialog.$form.get(0).tagName.toLowerCase()).to.equal("form");
         expect(created.dialog.$form.get(0)).to.equal(created.$node.find("form").get(0));
       });
+
+      it("should make the activator public", function() {
+        created = helpers.createDialog(COMPONENT_ID, { activator: true,});
+        
+        var $activator = $(".DialogActivator");
+        expect(created.dialog.activator).to.exist;
+        expect(created.dialog.activator.$node).to.exist;
+        expect(created.dialog.activator.$node.get(0)).to.equal($activator.get(0));
+      })
+
     });
 
     describe('initialized with url', function() {

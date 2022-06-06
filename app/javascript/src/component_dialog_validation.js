@@ -2,12 +2,14 @@ const {
 mergeObjects,
 safelyActivateFunction, 
 } = require('./utilities');
+const DialogActivator = require('./component_dialog_activator');
 
 class DialogForm {
   #config;
 
   constructor(source, config) {
     this.#config = mergeObjects({
+      activator: false,
       autoOpen: false,
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
@@ -50,8 +52,8 @@ class DialogForm {
   close() {
     var dialog = this;
     // Attempt to refocus on original activator
-    if(this.#config.activator) {
-      this.#config.activator.focus();
+    if(this.activator) {
+      this.activator.$node.focus();
     }
     this.$node.dialog("close");
     this.$node.dialog('destroy'); 
@@ -105,6 +107,7 @@ class DialogForm {
 
   #initialize(source) {
     var dialog = this;
+
     if(typeof source == 'string') {
       $.get(source)
       .done((response) => {
@@ -125,10 +128,15 @@ class DialogForm {
         this.open();
       }
     }
+
   }
 
   #build() {
     var dialog = this;
+    
+    if(this.#config.activator) {
+      this.#createActivator();
+    }
 
     this.$node.on("dialogcreate", (event, ui) => {
       this.$container = dialog.$node.parents(".ui-dialog");
@@ -177,6 +185,20 @@ class DialogForm {
         dialog.submit();
       });
     }
+  }
+
+  #createActivator() {
+    var $marker = $("<span></span>");
+
+    this.$node.before($marker);
+    this.activator = new DialogActivator(this.#config.activator, {
+      dialog: this,
+      text: this.#config.activatorText,
+      classes: this.#config.classes?.activator || '',
+      $target: $marker
+    });
+
+    $marker.remove();
   }
 
 }

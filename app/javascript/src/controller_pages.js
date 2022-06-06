@@ -33,7 +33,7 @@ const TextareaQuestion = require('./question_text');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
-const DialogValidation = require('./component_dialog_validation');
+const DialogForm = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 const Expander = require('./component_expander');
@@ -290,7 +290,7 @@ function addQuestionMenuListeners(view) {
     const {question, validation} = details;
     var apiUrl = question.menu.selectedItem.data('apiPath');
     
-    new DialogValidation(apiUrl, {
+    new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
       remote: true,
       autoOpen: true,

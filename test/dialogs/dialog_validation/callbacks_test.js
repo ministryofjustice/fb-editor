@@ -1,7 +1,7 @@
 require('../../setup');
 const GlobalHelpers = require("../../helpers.js");
 
-describe("DialogValidation", function() {
+describe("DialogForm", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;

@@ -1,7 +1,7 @@
 require('../../setup');
 const GlobalHelpers = require("../../helpers.js");
 
-describe("DialogValidation", function() {
+describe("DialogForm", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
@@ -9,7 +9,7 @@ describe("DialogValidation", function() {
 
 
   describe("Methods", function() {
-    describe("Synchronous form", function() {
+    describe("Synchronous Form", function() {
       var created;
 
       beforeEach(function() {
@@ -87,7 +87,30 @@ describe("DialogValidation", function() {
         created.dialog.submit();
         expect(submitted).to.be.true;
         expect(created.dialog.isOpen()).to.be.false;
+      });
+
+      describe('with activator', function() {
+
+        var created;
+
+        beforeEach(function() {
+          helpers.setupView(COMPONENT_ID, true);
+          created = helpers.createDialog(COMPONENT_ID, {});
         });
+
+        afterEach(function() {
+          helpers.teardownView(COMPONENT_ID);
+          created = {};
+        });
+
+        it('should open the dialog on activator button press', function() {
+          created.dialog.close();
+          expect(created.dialog.$container.get(0).style.display).to.equal("none");
+
+          created.dialog.activator.$node.click();
+          expect(created.dialog.$container.get(0).style.display).to.equal("");
+        });
+      });
     });
 
     describe('Async Form', function() {

@@ -18,7 +18,7 @@
 
 
 const utilities = require('./utilities');
-const DialogValidation = require('./component_dialog_validation')
+const DialogForm = require('./component_dialog_validation')
 const DefaultController = require('./controller_default');
 const FlowItem = require('./component_flow_item');
 const FlowConditionItem = require('./component_flow_condition_item');
@@ -90,7 +90,7 @@ function createPageAdditionDialog(view) {
   var $form = $dialog.find("form");
   var $errors = $dialog.find(".govuk-error-message");
 
-   view.pageAdditionDialog = new DialogValidation($dialog, {
+   view.pageAdditionDialog = new DialogForm($dialog, {
     autoOpen: $errors.length ? true : false,
     onClose: function() {
       $errors.parents().removeClass('error');

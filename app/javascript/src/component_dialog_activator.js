@@ -30,9 +30,9 @@ class DialogActivator {
       text: "",
       classes: ""
     }, config);
-
-    if(!$node || $node.length < 1) {
-      $node = createActivator(conf.$target, conf.text);
+    
+    if(!$node || !($node instanceof jQuery)) {
+      $node = this.#createActivator(conf.$target, conf.text);
     }
 
     $node.data("instance", this);
@@ -50,19 +50,21 @@ class DialogActivator {
     this.dialog = conf.dialog;
     this.$node = $node;
   }
+
+    /* Creates a button and links with the passed dialog element.
+   * @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
+   * @text    (String) Text that will show on the button.
+   * @classes (String) Classes added to button.
+   **/
+  #createActivator($target, text) {
+    var $activator = $("<button>\</button>");
+    $activator.text((text || "open dialog"));
+    $target.before($activator);
+    return $activator;
+  }
 }
 
-/* Creates a button and links with the passed dialog element.
- * @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
- * @text    (String) Text that will show on the button.
- * @classes (String) Classes added to button.
- **/
-function createActivator($target, text) {
-  var $activator = $("<button>\</button>");
-  $activator.text((text || "open dialog"));
-  $target.before($activator);
-  return $activator;
-}
+
 
 
 // Make available for importing.
