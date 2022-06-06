@@ -1,4 +1,4 @@
-const DialogValidation = require("../../../app/javascript/src/component_dialog_validation.js");
+const DialogForm = require("../../../app/javascript/src/component_dialog_validation.js");
 const GlobalHelpers = require("../../helpers.js");
 
 
@@ -57,7 +57,7 @@ function createDialog(id, config) {
   return {
     html: $node.get(0).outerHTML,
     $node: $node,
-    dialog: new DialogValidation($node, conf)
+    dialog: new DialogForm($node, conf)
   }
 }
 
@@ -93,7 +93,7 @@ function createRemoteDialog(id, server, config) {
           </div>`,
         ]);
 
-  var dialog = new DialogValidation(constants.REMOTE_TEMPLATE_URL, config);
+  var dialog = new DialogForm(constants.REMOTE_TEMPLATE_URL, config);
 
   return {
     $node: dialog.$node,
