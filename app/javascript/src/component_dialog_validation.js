@@ -22,7 +22,8 @@ class DialogForm {
       onOpen: function(dialog) {},
       onClose: function(dialog) {},
     }, config);
-    
+   
+    this.remoteSource = false;
     this.$node = $(); // Should be overwritten once intialised
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
@@ -55,12 +56,12 @@ class DialogForm {
     if(this.activator) {
       this.activator.$node.focus();
     }
-    if(this.$node.dialog("instance")) {
-      this.$node.dialog("close");
-      this.$node.dialog('destroy'); 
+    this.$node.dialog("close");
+    safelyActivateFunction(dialog.#config.onClose, dialog);
+    this.$node.dialog('destroy'); 
+    if(this.remotesource){
+      this.$node.remove();
     }
-    this.$node.remove();
-    utilities.safelyActivateFunction(dialog.#config.onClose, dialog);
   }
 
   submit() {
@@ -111,6 +112,7 @@ class DialogForm {
     var dialog = this;
 
     if(typeof source == 'string') {
+      this.remoteSource = true;
       $.get(source)
       .done((response) => {
         this.$node = $(response);
