@@ -47,7 +47,7 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
  **/
 class FlowConnectorPath {
   constructor(points, config) {
-    var id = utilities.uniqueString("flowconnectorpath-");
+    var id = config.id || utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
                  container: $(),
                  top: 0,
