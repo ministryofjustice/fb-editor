@@ -13,7 +13,7 @@ describe("DialogForm", function() {
       var created;
 
       beforeEach(function() {
-        helpers.setupView(COMPONENT_ID, true);
+        helpers.setupView(COMPONENT_ID);
         created = helpers.createDialog(COMPONENT_ID, {});
       });
 
@@ -88,29 +88,6 @@ describe("DialogForm", function() {
         expect(submitted).to.be.true;
         expect(created.dialog.isOpen()).to.be.false;
       });
-
-      describe('with activator', function() {
-
-        var created;
-
-        beforeEach(function() {
-          helpers.setupView(COMPONENT_ID, true);
-          created = helpers.createDialog(COMPONENT_ID, {});
-        });
-
-        afterEach(function() {
-          helpers.teardownView(COMPONENT_ID);
-          created = {};
-        });
-
-        it('should open the dialog on activator button press', function() {
-          created.dialog.close();
-          expect(created.dialog.$container.get(0).style.display).to.equal("none");
-
-          created.dialog.activator.$node.click();
-          expect(created.dialog.$container.get(0).style.display).to.equal("");
-        });
-      });
     });
 
     describe('Async Form', function() {
@@ -118,6 +95,7 @@ describe("DialogForm", function() {
       var server;
 
       beforeEach(function() {
+        helpers.setupView(COMPONENT_ID);
         server = GlobalHelpers.createServer();
       });
 

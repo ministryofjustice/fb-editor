@@ -9,6 +9,7 @@ describe("DialogForm", function() {
 
   describe("Component", function() {
     var created;
+
     before(function() {
       helpers.setupView(COMPONENT_ID);
       created = helpers.createDialog(COMPONENT_ID);

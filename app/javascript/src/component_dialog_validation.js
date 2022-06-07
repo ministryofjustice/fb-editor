@@ -6,6 +6,8 @@ const DialogActivator = require('./component_dialog_activator');
 
 class DialogForm {
   #config;
+  #remoteSource;
+  #state;
 
   constructor(source, config) {
     this.#config = mergeObjects({
@@ -23,7 +25,8 @@ class DialogForm {
       onClose: function(dialog) {},
     }, config);
    
-    this.remoteSource = false;
+    this.#remoteSource = false;
+    this.#state = "closed";
     this.$node = $(); // Should be overwritten once intialised
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
@@ -31,13 +34,18 @@ class DialogForm {
     this.#initialize(source); 
   }
 
+  get state() {
+    return this.#state;
+  }
+
   isOpen() {
-    return this.$node.dialog("isOpen");
+    return this.state == "open";
   }
 
   open() {
     var dialog = this;
     this.$node.dialog("open");
+    this.#state = "open";
     safelyActivateFunction(this.#config.onOpen, dialog);
     window.setTimeout(() => {
       // Not great but works.
@@ -57,9 +65,10 @@ class DialogForm {
       this.activator.$node.focus();
     }
     this.$node.dialog("close");
+    this.#state = "closed";
     safelyActivateFunction(dialog.#config.onClose, dialog);
-    this.$node.dialog('destroy'); 
-    if(this.remotesource){
+    if(this.#remoteSource){
+      this.$node.dialog('destroy'); 
       this.$node.remove();
     }
   }
