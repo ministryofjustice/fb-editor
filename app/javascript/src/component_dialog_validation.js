@@ -127,7 +127,7 @@ class DialogValidation {
   #setupCloseButtons() {
     var dialog = this;
     if(this.#config.closeOnClickSelector) {
-      let $buttons = $(this.#config.closeOnClickSelector, this.$node);
+      let $buttons = $(this.#config.closeOnClickSelector, this.$container);
       $buttons.on("click", function() {
         dialog.close();
       });
@@ -138,7 +138,7 @@ class DialogValidation {
   #setupSubmitButton() {
     var dialog = this;
     if(this.#config.submitOnClickSelector) {
-      let $buttons = $(this.#config.submitOnClickSelector, this.$node);
+      let $buttons = $(this.#config.submitOnClickSelector, this.$container);
       $buttons.on("click", function(e) {
         e.preventDefault();
         utilities.safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
