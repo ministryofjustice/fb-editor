@@ -34,7 +34,7 @@ describe("DialogForm", function() {
 
     /* TEST METHOD: open()
 **/
-    it("should open the dialog", function() {
+    it("should call onOpen when opened", function() {
       created.dialog.open();
       expect(onOpenCallback).to.have.been.called;
       expect(onOpenCallback).to.have.been.calledWith(created.dialog);
@@ -43,7 +43,7 @@ describe("DialogForm", function() {
 
     /* TEST METHOD: close()
 **/
-    it("should close the dialog", function() {
+    it("should call onClose when closed", function() {
       created.dialog.close();
       expect(onCloseCallback).to.have.been.called;
       expect(onCloseCallback).to.have.been.calledWith(created.dialog);
@@ -114,16 +114,8 @@ describe("DialogForm", function() {
     var onLoadCallback;
     var onReadyCallback;
 
-    before(function() {
-      server = GlobalHelpers.createServer(); 
-    });
-
-    after(function() {
-      server.restore();
-      helpers.teardownView(COMPONENT_ID);
-    });
-
     beforeEach(function(){
+      server = GlobalHelpers.createServer(); 
       onLoadCallback = sinon.spy();
       onReadyCallback = sinon.spy();
 
@@ -134,6 +126,8 @@ describe("DialogForm", function() {
     });
 
     afterEach(function(){
+      server.restore();
+      helpers.teardownView(COMPONENT_ID);
       onLoadCallback = null;
       onReadyCallback = null;
       created = {};
