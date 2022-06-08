@@ -16,9 +16,8 @@
  **/
 
 
-const ActivatedFormDialog = require('./component_activated_form_dialog');
 const DefaultController = require('./controller_default');
-
+const DialogForm = require('./component_dialog_validation');
 
 class PublishController extends DefaultController {
   constructor(app) {
@@ -71,17 +70,17 @@ class PublishForm {
     var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
+    var $errors = $node.find(".govuk-error-message");
 
     new ContentVisibilityController($content, $radios);
-    new ActivatedFormDialog($node, {
-      selectorErrors: ".govuk-error-message",
-      removeErrorClasses: "govuk-form-group--error",
-      cancelText: app.text.dialogs.button_cancel,
+    new DialogForm($node, {
+      autoOpen: $errors.length ? true : false,
+      activator: true,
       activatorText: $submit.val(),
       classes: {
-        "ui-activator": "govuk-button fb-govuk-button"
+        'activator': "govuk-button fb-govuk-button",
       }
-    });
+    })
 
     this.$node = $node;
 
