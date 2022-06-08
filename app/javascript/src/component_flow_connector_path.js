@@ -73,7 +73,7 @@ class FlowConnectorPath {
     return this._path;
   }
 
-  build(path) {
+  build() {
     var flowConnectorPath = this;
 
     this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
