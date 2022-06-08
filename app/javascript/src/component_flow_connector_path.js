@@ -64,6 +64,12 @@ class FlowConnectorPath {
     this.from = conf.from;
     this.to = conf.to;
 
+    // Base class does not expect to set any values for these.
+    this._dimensions = {
+                         original: {},
+                         lines: []
+                       }
+
     // Private
     this._config = conf;
     this._path = "";
