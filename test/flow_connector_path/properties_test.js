@@ -27,7 +27,7 @@ describe("FlowConnectorPath", function() {
       });
 
       // Base class FlowConnectorPath does not call build() function from constructor.
-      created.path.build();
+      created.connector.build();
     });
 
     after(function() {
@@ -36,26 +36,26 @@ describe("FlowConnectorPath", function() {
     });
 
     it("should make FlowConnectorPath.id public", function() {
-      expect(created.path.id).to.exist;
-      expect(created.path.id).to.equal(COMPONENT_ID);
+      expect(created.connector.id).to.exist;
+      expect(created.connector.id).to.equal(COMPONENT_ID);
     });
 
     it("should make FlowConnectorPath.points public", function() {
-      expect(created.path.points).to.exist;
-      expect(created.path.points.from_x).to.equal(POINTS.from_x);
-      expect(created.path.points.from_y).to.equal(POINTS.from_y);
+      expect(created.connector.points).to.exist;
+      expect(created.connector.points.from_x).to.equal(POINTS.from_x);
+      expect(created.connector.points.from_y).to.equal(POINTS.from_y);
     });
 
     it("should make FlowConnectorPath.from public", function() {
-      expect(created.path.from).to.exist;
-      expect(created.path.from.id).to.exist;
-      expect(created.path.from.id).to.equal(c.FAKE_FLOW_ITEM_1.id);
+      expect(created.connector.from).to.exist;
+      expect(created.connector.from.id).to.exist;
+      expect(created.connector.from.id).to.equal(c.FAKE_FLOW_ITEM_1.id);
     });
 
     it("should make FlowConnectorPath.to public", function() {
-      expect(created.path.to).to.exist;
-      expect(created.path.to.id).to.exist;
-      expect(created.path.to.id).to.equal(c.FAKE_FLOW_ITEM_2.id);
+      expect(created.connector.to).to.exist;
+      expect(created.connector.to.id).to.exist;
+      expect(created.connector.to.id).to.equal(c.FAKE_FLOW_ITEM_2.id);
     });
 
   });

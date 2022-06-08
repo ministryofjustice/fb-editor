@@ -61,7 +61,7 @@ function createFlowConnectorPath(id, points, config) {
   return {
     points: points,
     config: conf,
-    path: new ConnectorPaths.FlowConnectorPath(points, conf)
+    connector: new ConnectorPaths.FlowConnectorPath(points, conf)
   }
 }
 
