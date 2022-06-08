@@ -31,7 +31,7 @@ class DialogActivator {
       classes: ""
     }, config);
     
-    if(!$node || !($node instanceof jQuery)) {
+    if(!$node || $node.length < 1) {
       $node = this.#createActivator(conf.$target, conf.text);
     }
 
