@@ -20,7 +20,7 @@ const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const Question = require('./question');
 
-const SELECTOR_HINT = ".govuk-hint";
+const SELECTOR_HINT = "[data-fb-node=hint]";
 const SELECTOR_LABEL = "label h1, label h2, legend h1, legend h2";
 
 class TextareaQuestion extends Question {
