@@ -6,7 +6,7 @@ module CommonSteps
     I18n.t('default_text.content'),
     I18n.t('default_text.option_hint')
   ].freeze
-  ERROR_MESSAGE = 'There is a problem'.freeze
+  ERROR_MESSAGE = I18n.t('activemodel.errors.summary_title').freeze
   DELETE_WARNING = [
     I18n.t('pages.flow.delete_warning_cya_page'),
     I18n.t('pages.flow.delete_warning_confirmation_page'),

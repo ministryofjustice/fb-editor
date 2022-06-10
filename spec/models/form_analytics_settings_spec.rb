@@ -3,18 +3,17 @@ RSpec.describe FormAnalyticsSettings do
     described_class.new(base_params.merge(analytics_params))
   end
   let(:deployment_environment) { 'dev' }
-  let(:enabled) { nil }
+  let(:enabled_test) { nil }
   let(:base_params) do
     {
       service_id: service.service_id,
-      deployment_environment: deployment_environment,
-      enabled: enabled
+      enabled_test: enabled_test
     }
   end
   let(:analytics_params) { {} }
 
   context 'when enabled' do
-    let(:enabled) { '1' }
+    let(:enabled_test) { '1' }
 
     before do
       subject.validate
@@ -27,7 +26,7 @@ RSpec.describe FormAnalyticsSettings do
     end
 
     context 'when at least one analytics is present' do
-      let(:analytics_params) { { ga4: 'G-123456' } }
+      let(:analytics_params) { { ga4_test: 'G-123456' } }
 
       it 'returns valid' do
         expect(subject).to be_valid
@@ -36,14 +35,8 @@ RSpec.describe FormAnalyticsSettings do
   end
 
   context 'when not enabled' do
-    it 'does not call any validators' do
-      expect_any_instance_of(FormAnalyticsValidator).to_not receive(:validate)
-      subject.validate
-    end
-
-    it 'does not add any errors' do
-      subject.validate
-      expect(subject.errors).to be_empty
+    it 'is valid' do
+      expect(subject.valid?).to be_truthy
     end
   end
 
@@ -65,31 +58,31 @@ RSpec.describe FormAnalyticsSettings do
 
   describe '#enabled?' do
     context 'when enabled is present' do
-      let(:enabled) { '1' }
+      let(:enabled_test) { '1' }
 
       it 'returns truthy' do
-        expect(subject.enabled?).to be_truthy
+        expect(subject.enabled?('test')).to be_truthy
       end
     end
 
     context 'when enabled is not present' do
       it 'returns falsey' do
-        expect(subject.enabled?).to be_falsey
+        expect(subject.enabled?('test')).to be_falsey
       end
     end
   end
 
   describe '#check_enabled?' do
     context 'when enabled' do
-      let(:enabled) { '1' }
+      let(:enabled_test) { '1' }
 
       it 'returns truthy' do
-        expect(subject.check_enabled?).to be_truthy
+        expect(subject.check_enabled?('test')).to be_truthy
       end
     end
 
     context 'when not enabled' do
-      let(:enabled) { nil }
+      let(:enabled_test) { nil }
 
       context 'attribute has been previously configured' do
         before do
@@ -97,68 +90,30 @@ RSpec.describe FormAnalyticsSettings do
         end
 
         it 'returns truthy' do
-          expect(subject.check_enabled?).to be_truthy
+          expect(subject.check_enabled?('test')).to be_truthy
         end
       end
 
       context 'attribute has not been previously configured' do
         it 'returns falsey' do
-          expect(subject.check_enabled?).to be_falsey
+          expect(subject.check_enabled?('test')).to be_falsey
         end
       end
     end
   end
 
-  describe '#params' do
+  describe '#param' do
     context 'when attribute is present' do
-      let(:analytics_params) { { ga4: 'G-123456' } }
+      let(:analytics_params) { { ga4_test: 'G-123456' } }
 
       it 'returns the attribute value' do
-        expect(subject.params(:ga4)).to eq('G-123456')
+        expect(subject.param(:ga4, 'test')).to eq('G-123456')
       end
     end
 
     context 'when attribute is not present' do
       it 'returns nil' do
-        expect(subject.params(:ua)).to be_nil
-      end
-    end
-
-    context 'when attribute value is lower case' do
-      let(:analytics_params) { { ua: 'ua-123456' } }
-
-      it 'returns the uppercase value' do
-        expect(subject.ua).to eq('UA-123456')
-      end
-    end
-  end
-
-  describe '#ua' do
-    context 'when attribute is present' do
-      let(:analytics_params) { { ua: 'UA-123456' } }
-
-      it 'returns the attribute value' do
-        expect(subject.ua).to eq('UA-123456')
-      end
-    end
-
-    context 'when value has been saved to the db' do
-      let!(:service_config) do
-        create(:service_configuration, :dev, :ua, service_id: service.service_id)
-      end
-
-      it 'returns the value in the db' do
-        expect(subject.ua).to eq(service_config.decrypt_value)
-      end
-    end
-  end
-
-  describe '#gtm' do
-    context 'when attribute is present' do
-      let(:analytics_params) { { gtm: 'GTM-123456' } }
-
-      it 'returns the attribute value' do
-        expect(subject.gtm).to eq('GTM-123456')
+        expect(subject.param(:ua, 'test')).to be_nil
       end
     end
 
@@ -168,27 +123,57 @@ RSpec.describe FormAnalyticsSettings do
       end
 
       it 'returns the value in the db' do
-        expect(subject.gtm).to eq(service_config.decrypt_value)
+        expect(subject.param(:gtm, 'test')).to eq(service_config.decrypt_value)
       end
     end
   end
 
-  describe '#ga4' do
-    context 'when attribute is present' do
-      let(:analytics_params) { { ga4: 'G-123456' } }
+  %w[test live].each do |environment|
+    describe "#ua_#{environment}" do
+      context 'when attribute is present' do
+        let(:analytics_params) { { "ua_#{environment}": 'UA-123456' } }
 
-      it 'returns the attribute value' do
-        expect(subject.ga4).to eq('G-123456')
+        it 'returns the attribute value' do
+          expect(subject.public_send("ua_#{environment}")).to eq('UA-123456')
+        end
+      end
+
+      context 'when attribute is not present' do
+        it 'returns nil' do
+          expect(subject.public_send("ua_#{environment}")).to be_nil
+        end
       end
     end
 
-    context 'when value has been saved to the db' do
-      let!(:service_config) do
-        create(:service_configuration, :dev, :ga4, service_id: service.service_id)
+    describe "#gtm_#{environment}" do
+      context 'when attribute is present' do
+        let(:analytics_params) { { "gtm_#{environment}": 'GTM-123456' } }
+
+        it 'returns the attribute value' do
+          expect(subject.public_send("gtm_#{environment}")).to eq('GTM-123456')
+        end
       end
 
-      it 'returns the value in the db' do
-        expect(subject.ga4).to eq(service_config.decrypt_value)
+      context 'when attribute is not present' do
+        it 'returns nil' do
+          expect(subject.public_send("gtm_#{environment}")).to be_nil
+        end
+      end
+    end
+
+    describe "#ga4_#{environment}" do
+      context 'when attribute is present' do
+        let(:analytics_params) { { "ga4_#{environment}": 'G-123456' } }
+
+        it 'returns the attribute value' do
+          expect(subject.public_send("ga4_#{environment}")).to eq('G-123456')
+        end
+      end
+
+      context 'when attribute is not present' do
+        it 'returns nil' do
+          expect(subject.public_send("ga4_#{environment}")).to be_nil
+        end
       end
     end
   end

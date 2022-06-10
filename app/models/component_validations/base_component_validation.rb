@@ -2,7 +2,6 @@ class BaseComponentValidation
   attr_accessor :service, :page_uuid, :component_uuid, :validator, :status, :value
 
   include ActiveModel::Model
-  include ActiveModel::Validations
 
   validates :validator, inclusion: {
     in: proc { |obj| obj.supported_validations },

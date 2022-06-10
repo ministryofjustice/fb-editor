@@ -1,60 +1,53 @@
-<%= form_for form_analytics,
-  url: settings_form_analytics_path(service.service_id),
-  html: { id: "form-analytics-#{deployment_environment}" } do |f| %>
-  <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h2 class="govuk-fieldset__heading"><%= t("publish.#{platform_environment}.heading") %></h2>
-      </legend>
-      <div class="govuk-hint"><%= t("publish.#{platform_environment}.hint") %></div>
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading"><%= t("publish.#{environment}.heading") %></h2>
+    </legend>
+    <div class="govuk-hint"><%= t("publish.#{environment}.hint") %></div>
 
-      <% if f.object.errors.present? %>
-        <div class="govuk-grid-column-two-thirds govuk-error-summary">
-          <% f.object.errors.each do |error|  %>
-            <% if error.attribute == :form_analytics_settings %>
-              <span class="govuk-error-message">
-            <% else %>
-              <span class="govuk-error-message" id="component_validation_<%=error.attribute%>_error">
-            <% end %>
-
-              <span class="govuk-visually-hidden">Error:</span><%= error.message %>
-            </span>
-          <% end %>
-        </div>
-      <% end %>
-
-      <div class="govuk-checkboxes">
-        <div class="govuk-checkboxes__item">
-          <%= f.check_box :enabled, class: 'govuk-checkboxes__input', checked: f.object.check_enabled? %>
-          <%= f.label :"enabled_#{platform_environment}", class: 'govuk-label govuk-checkboxes__label' %>
-        </div>
+    <div class="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <%= f.check_box :"enabled_#{environment}", class: 'govuk-checkboxes__input', checked: f.object.check_enabled?(environment) %>
+        <%= f.label :"enabled_#{environment}", class: 'govuk-label govuk-checkboxes__label' %>
       </div>
-    </fieldset>
-  </div>
+    </div>
+  </fieldset>
+</div>
 
-  <%= f.hidden_field :deployment_environment, value: deployment_environment %>
+<details class="govuk-details" id="form_analytics_settings_<%= environment %>" data-module="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">
+      <%= t('settings.form_analytics.details') %>
+    </span>
+  </summary>
 
-  <details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-      <span class="govuk-details__summary-text" id="configure-<%= deployment_environment %>">
-        <%= t('settings.configure') %>
-      </span>
-    </summary>
-    <fieldset class="govuk-fieldset">
-      <% f.object.config_params.each do |config| %>
-        <div class="govuk-form-group">
-          <%= f.label config, class: "govuk-label" %>
-          <% if f.object.errors.any? { |error| error.attribute == config } %>
-            <%= f.text_field config, class: "govuk-input width-responsive-two-thirds govuk-input--error" %>
-          <% else %>
-            <%= f.text_field config, class: "govuk-input width-responsive-two-thirds" %>
-          <% end %>
-        </div>
+  <div class="govuk-form-group <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+    <% if f.object.errors[:"form_analytics_settings_#{environment}"].present? %>
+      <% f.object.errors.full_messages_for(:"form_analytics_settings_#{environment}").each do |error_message| %>
+        <p id="<%= "form_analytics_settings_#{environment}_error" %>" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+        </p>
       <% end %>
-    </fieldset>
-  </details>
+    <% end %>
 
-  <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-    <%= t("settings.save_#{platform_environment}") %>
-  </button>
-<% end %>
+
+    <% f.object.config_params.each do |config| %>
+      <div class="govuk-form-group">
+        <%= f.label :"#{config}_#{environment}", class: "govuk-label", for: "#{config}_#{environment}" %>
+        <div class="govuk-hint"><%= t("activemodel.attributes.form_analytics_settings.#{config}_hint") %></div>
+        <% if f.object.errors[:"#{config}_#{environment}"].present? %>
+          <p id="<%= "#{config}_#{environment}_error" %>" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> <%= f.object.errors.full_messages_for("#{config}_#{environment}").first %>
+          </p>
+          <%= f.text_field :"#{config}_#{environment}",
+              class: "govuk-input width-responsive-two-thirds govuk-input--error",
+              value: f.object.param(config, environment) %>
+        <% else %>
+          <%= f.text_field :"#{config}_#{environment}",
+              class: "govuk-input width-responsive-two-thirds",
+              value: f.object.param(config, environment) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</details>

@@ -1,9 +1,31 @@
 <div class="govuk-grid-row">
+  <% if @form_analytics.errors.present? %>
+    <div class="govuk-grid-column-two-thirds  govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+      <h2 class="govuk-error-summary__title" id="error-summary-title">
+        <%= t('activemodel.errors.summary_title') %>
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <% @form_analytics.errors.each do |error|  %>
+            <li><a href="#<%= error.attribute %>"><%= error.message %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-xl"><%= t('settings.form_analytics.name') %></h1>
-    <p><%= t('settings.form_analytics.help') %></p>
-    <%= render 'form', form_analytics: @form_analytics_dev, platform_environment: 'test', deployment_environment: 'dev' %>
 
-    <%= render 'form', form_analytics: @form_analytics_production, platform_environment: 'live', deployment_environment: 'production' %>
+    <%= form_for @form_analytics, url: settings_form_analytics_path(service.service_id),
+        html: { id: 'form-analytics-settings' } do |f| %>
+
+      <%= render partial: 'form', locals: { f: f, environment: 'test' } %>
+      <%= render partial: 'form', locals: { f: f, environment: 'live' } %>
+
+      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+        <%= t('actions.save') %>
+      </button>
+    <% end %>
   </div>
 </div>
