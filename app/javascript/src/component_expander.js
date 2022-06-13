@@ -62,6 +62,7 @@ const {
  * @param condif (Object) Key/value pairs for config (see above)
 **/
 class Expander {
+  #browser_controlled;
   #config;
   #state;
   #id;
@@ -75,26 +76,48 @@ class Expander {
     }, config);
 
     this.#config = conf;
-    this.#state = 'open';
+    this.#state = 'open'; // This value always get overwritten by openState
     this.#id = uniqueString("Expander_");
+    this.#browser_controlled = false; // Will be changed in createNode if $content is <details> element
     this.$node = this.#createNode($content);
     this.$activator = this.#createActivator();
 
     conf.auto_open ? this.open() : this.close();
   }
 
-  open() {
-    this.$node.slideDown( this.#config.duration, () => {
+  set openState(open) {
+    if(open) {
       this.$activator.attr("aria-expanded", "true");
       this.#state = 'open';
-    });
+    }
+    else {
+      this.$activator.attr("aria-expanded", "false");
+      this.#state = 'closed';
+    }
+  }
+
+  open() {
+    if(this.#browser_controlled) {
+      this.$node.attr("open", true); // <details> native control for open
+      this.openState = true;
+    }
+    else {
+      this.$node.slideDown( this.#config.duration, () => {
+        this.openState = true;
+      });
+    }
   }
 
   close() {
-    this.$node.slideUp( this.#config.duration, () => {
-      this.$activator.attr("aria-expanded", "false");
-      this.#state = 'closed';
-    });
+    if(this.#browser_controlled) {
+      this.$node.attr("open", false); // <details> native control for close
+      this.openState = false;
+    }
+    else {
+      this.$node.slideUp( this.#config.duration, () => {
+        this.openState = false;
+      });
+    }
   }
 
   isOpen() {
@@ -134,6 +157,7 @@ class Expander {
 
     if(typeof source == 'string') {
       $activator = $('<button>' + source + '</button>');
+      $activator.attr("type", "button");
       this.$node.before($activator);
     }
     else {
@@ -142,11 +166,12 @@ class Expander {
         $activator = source;
       }
       else {
-        if(source.children().length < 0) {
+        if(source.children().length < 0 || this.#browser_controlled) {
           $activator = source; // No extra support for Empty element, yet.
         }
         else {
           $activator = $('<button>' + source + '</button>');
+          $activator.attr("type", "button");
           $activator.text(source.text()); // Only want text not child elements.
           source.empty();
           source.append($activator);
@@ -161,11 +186,13 @@ class Expander {
       'aria-controls': this.#id
     });
 
-    activatorEventType = this.#isInput($activator) ? 'change' : 'click';
-
-    $activator.on(activatorEventType, () => {
-      this.toggle();
-    });
+    // If required, add the Expander.toggle() for open/close control.
+    if(!this.#browser_controlled) {
+      activatorEventType = this.#isInput($activator) ? 'change' : 'click';
+      $activator.on(activatorEventType, () => {
+        this.toggle();
+      });
+    }
 
     return $activator;
   }
@@ -207,9 +234,15 @@ class Expander {
       $node.append($content.children().not(this.#config.activator_source));
     }
     else {
-      $node = $content; // Change nothing
-    }
+      if($content.get(0).tagName.toLowerCase() == "details") {
+        // Allow browser to control open/close without using Expander effect.
+        this.#browser_controlled = true;
+        this.#config.activator_source = $content.find("summary");
+      }
 
+      // Change nothing as node is either <details> or another desired container.
+      $node = $content;
+    }
 
     $node.addClass("Expander");
     $node.data("instance", this);
@@ -219,7 +252,7 @@ class Expander {
   }
 
   #isValidActivatorElement(source) {
-    return source.is('button') || source.is('input[type="checkbox"]') || source.is('input[type="radio"]')
+    return source.is('button') || source.is('summary') || this.#isInput(source);
   }
 
   #isInput($activator) {
