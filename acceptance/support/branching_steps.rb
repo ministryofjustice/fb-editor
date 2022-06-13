@@ -263,7 +263,7 @@ module BranchingSteps
 
     editor.save_button.click
     and_I_return_to_flow_page
-    expect(editor.text).to include('Branching point 1')
+    expect(editor).to have_content('Branching point 1')
   end
 
   def given_I_have_a_branching_point_two

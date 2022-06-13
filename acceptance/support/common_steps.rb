@@ -15,7 +15,7 @@ module CommonSteps
 
   def given_I_am_logged_in
     editor.load
-    page.find(:css, '#main-content')
+    page.find(:css, '#main-content', visible: true)
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
@@ -42,7 +42,7 @@ module CommonSteps
 
   def given_I_have_a_service(service = service_name)
     editor.load
-    page.find(:css, '#main-content')
+    page.find(:css, '#main-content', visible: true)
     given_I_want_to_create_a_service
     given_I_add_a_service(service)
     when_I_create_the_service
@@ -234,7 +234,7 @@ module CommonSteps
       expect(
         page.find('button', text: 'Continue')
       ).to_not be_disabled
-      expect(page.text).to include('Question')
+      expect(page).to have_content('Question')
       then_I_should_not_see_optional_text
       yield if block_given?
     end
@@ -323,24 +323,24 @@ module CommonSteps
   end
 
   def then_I_should_not_see_optional_text
-    OPTIONAL_TEXT.each { |optional| expect(page.text).not_to include(optional) }
+    OPTIONAL_TEXT.each { |optional| expect(page).not_to have_content(optional) }
   end
 
   def then_I_should_see_an_error_message(*fields)
-    expect(page.text).to include(ERROR_MESSAGE)
+    expect(page).to have_content(ERROR_MESSAGE)
     if fields.empty?
-      expect(page.text).to include('Enter an answer for')
+      expect(page).to have_content('Enter an answer for')
     else
       fields.each { |field| expect(text).to include("Enter an answer for \"#{field}\"")}
     end
   end
 
   def then_I_should_see_my_content(*expected_text)
-    expected_text.each { |text| expect(page.text).to include(text)}
+    expected_text.each { |text| expect(page).to have_content(text)}
   end
 
   def then_I_should_not_see_my_content(*expected_text)
-    expected_text.each { |text| expect(page.text).to_not include(text)}
+    expected_text.each { |text| expect(page).to_not have_content(text)}
   end
 
   def when_I_want_to_select_component_properties(attribute, text)
@@ -376,14 +376,14 @@ module CommonSteps
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
-    expect(editor.text).not_to include(page_link)
+    expect(editor).not_to have_content(page_link)
     editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
   def then_I_should_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
-    expect(editor.text).to include(page_link)
+    expect(editor).to have_content(page_link)
     editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
@@ -409,24 +409,24 @@ module CommonSteps
 
   def then_I_should_not_see_delete_warnings
     find('#main-content', visible: true)
-    expect(editor.text).not_to include(DELETE_WARNING[0])
-    expect(editor.text).not_to include(DELETE_WARNING[1])
-    expect(editor.text).not_to include(DELETE_WARNING[2])
+    expect(editor).not_to have_content(DELETE_WARNING[0])
+    expect(editor).not_to have_content(DELETE_WARNING[1])
+    expect(editor).not_to have_content(DELETE_WARNING[2])
   end
 
   def then_I_should_see_delete_warning_cya
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[0])
+    expect(editor).to have_content(DELETE_WARNING[0])
   end
 
   def then_I_should_see_delete_warning_confirmation
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[1])
+    expect(editor).to have_content(DELETE_WARNING[1])
   end
 
   def then_I_should_see_delete_warning_both
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[2])
+    expect(editor).to have_content(DELETE_WARNING[2])
   end
 
   def then_I_should_see_the_modal(modal_title, modal_text)

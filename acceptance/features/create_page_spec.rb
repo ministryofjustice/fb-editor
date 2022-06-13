@@ -121,7 +121,7 @@ feature 'Create page' do
   end
 
   def then_I_should_see_a_validation_error_message_that_page_url_exists
-    expect(editor.text).to include(error_message)
+    expect(editor).to have_content(error_message)
   end
 
   def then_I_should_see_the_edit_single_question_text_page
@@ -171,13 +171,13 @@ feature 'Create page' do
   end
 
   def and_I_should_see_default_values_created
-    expect(editor.text).to include('Question')
-    expect(editor.text).to include('[Optional hint text]')
+    expect(editor).to have_content('Question')
+    expect(editor).to have_content('[Optional hint text]')
   end
 
   def and_I_should_see_default_values_for_email_created
-    expect(editor.text).to include('Email address question')
-    expect(editor.text).to include('[Optional hint text]')
+    expect(editor).to have_content('Email address question')
+    expect(editor).to have_content('[Optional hint text]')
   end
   def and_I_should_see_default_radio_options_created
     expect(
@@ -192,14 +192,14 @@ feature 'Create page' do
   end
 
   def then_I_should_see_the_edit_multiple_question_page
-    expect(editor.text).to include('Title')
+    expect(editor).to have_content('Title')
     and_I_should_see_the_save_button_visible
     and_I_should_see_the_save_button_disabled
   end
 
   def then_I_should_see_the_edit_check_answers_page
-    expect(editor.text).to include('Check your answers')
-    expect(editor.text).to include(
+    expect(editor).to have_content('Check your answers')
+    expect(editor).to have_content(
       'By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct'
     )
     and_I_should_see_the_save_button_visible
@@ -207,7 +207,7 @@ feature 'Create page' do
   end
 
   def then_I_should_see_the_edit_confirmation_page
-    expect(editor.text).to include('Application complete')
+    expect(editor).to have_content('Application complete')
     and_I_should_see_the_save_button_visible
     and_I_should_see_the_save_button_disabled
   end

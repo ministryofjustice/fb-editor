@@ -125,7 +125,7 @@ feature 'Edit single radios question page' do
   end
 
   def and_I_have_optional_section_heading_text
-    expect(page.text).to include(I18n.t('default_text.section_heading'))
+    expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
 
   def and_I_go_to_the_page_that_I_edit(preview_form)
@@ -135,7 +135,7 @@ feature 'Edit single radios question page' do
   end
 
   def then_I_should_see_my_updated_section_heading
-    expect(editor.text).to include(section_heading)
+    expect(editor).to have_content(section_heading)
   end
 
   def then_I_should_see_the_default_section_heading
@@ -145,7 +145,7 @@ feature 'Edit single radios question page' do
   def then_I_should_see_the_options(options)
     expect(editor.radio_options.size).to eql options.size
     options.each do |option|
-      expect(page.text).to include(option)
+      expect(page).to have_content(option)
     end
   end
 
@@ -162,14 +162,14 @@ feature 'Edit single radios question page' do
 
   def then_I_should_see_my_changes_in_the_form(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include(question)
+      expect(page).to have_content(question)
     end
   end
 
   def and_I_should_see_the_options_that_I_added(preview_form, options)
     within_window(preview_form) do
       options.each do |option|
-        expect(page.text).to include(option)
+        expect(page).to have_content(option)
       end
     end
   end

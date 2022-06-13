@@ -164,7 +164,7 @@ feature 'Move a page' do
 
   def then_I_should_see_the_move_target_list(page_title)
     find('div#move_targets_list', visible: true)
-    expect(editor.text).to include(I18n.t('dialogs.move.label', title: page_title))
+    expect(editor).to have_content(I18n.t('dialogs.move.label', title: page_title))
   end
 
   def then_page_H_should_be_after_page_B
@@ -182,12 +182,12 @@ feature 'Move a page' do
 
   def then_I_should_see_the_no_default_next_warning
     find('div#branch_destination_no_default_next', visible: true)
-    expect(editor.text).to include(I18n.t('dialogs.move.branch_destination_no_default_next_message'))
+    expect(editor).to have_content(I18n.t('dialogs.move.branch_destination_no_default_next_message'))
   end
 
   def then_I_should_see_the_stacked_branches_not_supported_warning
     find('div#stacked_branches_not_supported', visible: true)
-    expect(editor.text).to include(I18n.t('dialogs.move.stacked_branches_not_supported_message'))
+    expect(editor).to have_content(I18n.t('dialogs.move.stacked_branches_not_supported_message'))
   end
 
   def then_no_pages_should_have_moved
