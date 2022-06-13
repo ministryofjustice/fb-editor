@@ -367,7 +367,6 @@ feature 'Component validations' do
 
   def and_I_set_the_input_value(value)
     input_element = page.find(:css, 'input#component_validation_value')
-    input_element.set('')
     input_element.set(value)
   end
 

@@ -1,4 +1,4 @@
-<fieldset class="analytics-environment-configuration govuk-fieldset">
+<fieldset class="analytics-environment-configuration govuk-fieldset" id="analytics-environment-configuration-<%= environment %>">
   <div class="govuk-form-group">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading"><%= t("settings.form_analytics.#{environment}.heading") %></h2>
@@ -29,7 +29,7 @@
         <% end %>
       <% end %>
 
-    <p><%= t('settings.form_analytics.details_hint') %></p>
+      <p><%= t('settings.form_analytics.details_hint') %></p>
 
       <% f.object.config_params.each do |config| %>
         <div class="govuk-form-group">

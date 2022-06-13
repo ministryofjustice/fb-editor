@@ -349,6 +349,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
+    sleep(1)
     editor.three_dots_button.click
   end
 
@@ -376,6 +377,7 @@ module CommonSteps
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
+    sleep(1)
     expect(editor).not_to have_content(page_link)
     editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
