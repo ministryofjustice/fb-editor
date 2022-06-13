@@ -1,5 +1,5 @@
-<div class="govuk-form-group">
-  <fieldset class="govuk-fieldset">
+<fieldset class="analytics-environment-configuration govuk-fieldset">
+  <div class="govuk-form-group">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading"><%= t("settings.form_analytics.#{environment}.heading") %></h2>
     </legend>
@@ -11,44 +11,44 @@
         <%= f.label :"enabled_#{environment}", class: 'govuk-label govuk-checkboxes__label' %>
       </div>
     </div>
-  </fieldset>
-</div>
+  </div>
 
-<details class="govuk-details" id="form_analytics_settings_<%= environment %>" data-module="govuk-details">
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">
-      <%= t('settings.form_analytics.details') %>
-    </span>
-  </summary>
+  <details class="govuk-details" id="form_analytics_settings_<%= environment %>" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text">
+        <%= t('settings.form_analytics.details') %>
+      </span>
+    </summary>
 
-  <div class="govuk-form-group <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
-    <% if f.object.errors[:"form_analytics_settings_#{environment}"].present? %>
-      <% f.object.errors.full_messages_for(:"form_analytics_settings_#{environment}").each do |error_message| %>
-        <p id="<%= "form_analytics_settings_#{environment}_error" %>" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
-        </p>
+    <div class="govuk-form-group <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+      <% if f.object.errors[:"form_analytics_settings_#{environment}"].present? %>
+        <% f.object.errors.full_messages_for(:"form_analytics_settings_#{environment}").each do |error_message| %>
+          <p id="<%= "form_analytics_settings_#{environment}_error" %>" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+          </p>
+        <% end %>
       <% end %>
-    <% end %>
 
     <p><%= t('settings.form_analytics.details_hint') %></p>
 
-    <% f.object.config_params.each do |config| %>
-      <div class="govuk-form-group">
-        <%= f.label :"#{config}_#{environment}", class: "govuk-label", for: "#{config}_#{environment}" %>
-        <div class="govuk-hint"><%= t("activemodel.attributes.form_analytics_settings.#{config}_hint") %></div>
-        <% if f.object.errors[:"#{config}_#{environment}"].present? %>
-          <p id="<%= "#{config}_#{environment}_error" %>" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> <%= f.object.errors.full_messages_for("#{config}_#{environment}").first %>
-          </p>
-          <%= f.text_field :"#{config}_#{environment}",
-              class: "govuk-input width-responsive-two-thirds govuk-input--error",
-              value: f.object.param(config, environment) %>
-        <% else %>
-          <%= f.text_field :"#{config}_#{environment}",
-              class: "govuk-input width-responsive-two-thirds",
-              value: f.object.param(config, environment) %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</details>
+      <% f.object.config_params.each do |config| %>
+        <div class="govuk-form-group">
+          <%= f.label :"#{config}_#{environment}", class: "govuk-label", for: "#{config}_#{environment}" %>
+          <div class="govuk-hint"><%= t("activemodel.attributes.form_analytics_settings.#{config}_hint") %></div>
+          <% if f.object.errors[:"#{config}_#{environment}"].present? %>
+            <p id="<%= "#{config}_#{environment}_error" %>" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> <%= f.object.errors.full_messages_for("#{config}_#{environment}").first %>
+            </p>
+            <%= f.text_field :"#{config}_#{environment}",
+            class: "govuk-input width-responsive-two-thirds govuk-input--error",
+              value: f.object.saved_param(config, environment) %>
+          <% else %>
+            <%= f.text_field :"#{config}_#{environment}",
+            class: "govuk-input width-responsive-two-thirds",
+              value: f.object.saved_param(config, environment) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </details>
+</fieldset>
