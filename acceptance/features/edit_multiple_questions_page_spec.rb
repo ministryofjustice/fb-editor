@@ -120,7 +120,7 @@ feature 'Edit multiple questions page' do
 
   def then_I_can_answer_the_questions_in_the_page(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include('Service name goes here')
+      expect(page).to have_content('Service name goes here')
       page.click_button 'Start now'
       page.fill_in 'C-3P0 is fluent in how many languages?',
         with: 'Fluent in over six million forms of communication.'
@@ -131,7 +131,7 @@ feature 'Edit multiple questions page' do
       page.choose '900 years old', visible: false
       page.check 'Prequels', visible: false
       page.click_button 'Continue'
-      expect(page.text).to include("Check your answers")
+      expect(page).to have_content("Check your answers")
     end
   end
 

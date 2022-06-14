@@ -89,25 +89,25 @@ feature 'Update settings form information' do
   end
 
   def then_I_should_see_a_validation_message_for_required
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.blank', attribute: 'Form name')
     )
   end
 
   def then_I_should_see_a_validation_message_for_min_length
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.too_short', attribute: 'Form name', count: '3')
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.too_long', attribute: 'Form name', count: '128')
     )
   end
 
   def then_I_should_see_the_unique_validation_message
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.taken', attribute: 'Form name')
     )
   end

@@ -367,6 +367,7 @@ feature 'Component validations' do
 
   def and_I_set_the_input_value(value)
     input_element = page.find(:css, 'input#component_validation_value')
+    input_element.set('')
     input_element.set(value)
   end
 
@@ -414,15 +415,15 @@ feature 'Component validations' do
 
   def then_I_should_preview_the_page(preview:, field:, first_value:, second_value:, error_message:)
     within_window(preview) do
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       page.find_field(field).set(first_value)
       click_button(I18n.t('actions.continue'))
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       then_I_should_see_an_error_message(error_message)
 
       page.find_field(field).set(second_value)
       click_button(I18n.t('actions.continue'))
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       then_I_should_not_see_an_error_message(error_message)
     end
   end
@@ -439,19 +440,19 @@ feature 'Component validations' do
 
   def then_I_should_preview_the_date_page(preview:, first_date:, second_date:, error_message:)
     within_window(preview) do
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       page.fill_in('answers[date_date_1(3i)]', with: first_date[:day])
       page.fill_in('answers[date_date_1(2i)]', with: first_date[:month])
       page.fill_in('answers[date_date_1(1i)]', with: first_date[:year])
       click_button(I18n.t('actions.continue'))
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       then_I_should_see_an_error_message(error_message)
 
       page.fill_in('answers[date_date_1(3i)]', with: second_date[:day])
       page.fill_in('answers[date_date_1(2i)]', with: second_date[:month])
       page.fill_in('answers[date_date_1(1i)]', with: second_date[:year])
       click_button(I18n.t('actions.continue'))
-      page.find(:css, '#main-content')
+      page.find(:css, '#main-content', visible: true)
       then_I_should_not_see_an_error_message(error_message)
     end
   end

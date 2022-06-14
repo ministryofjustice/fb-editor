@@ -121,6 +121,7 @@ feature 'Publishing' do
   end
 
   def and_I_want_to_publish(environment)
+    page.find('#main-content', visible: true)
     editor.find('#publish-environments').find(:button, text: "Publish to #{environment}").click
   end
 
@@ -171,6 +172,7 @@ feature 'Publishing' do
   end
 
   def then_I_should_see_an_error_message(environment, button_environment)
+    page.find(:css, '#main-content', visible: true)
     errors = editor.all("#publish-form-#{environment} .govuk-error-message").map(&:text)
     expect(errors).to match_array(username_and_password_errors)
   end
@@ -191,7 +193,7 @@ feature 'Publishing' do
   end
 
   def then_I_should_not_see_warning_cya_text
-    expect(editor.text).to_not include(warning_cya)
+    expect(editor).to_not have_content(warning_cya)
   end
 
   def then_I_should_not_see_warning_confirmation_text
@@ -199,23 +201,23 @@ feature 'Publishing' do
   end
 
   def then_I_should_see_warning_both_text
-    expect(editor.text).to include(warning_both)
+    expect(editor).to have_content(warning_both)
   end
 
   def then_I_should_see_warning_cya_text
-    expect(editor.text).to include(warning_cya)
+    expect(editor).to have_content(warning_cya)
   end
 
   def then_I_should_see_warning_confirmation_text
-    expect(editor.text).to include(warning_confirmation)
+    expect(editor).to have_content(warning_confirmation)
   end
 
   def then_I_should_see_publish_to_test_modal
-    expect(editor.text).to include(modal_description)
+    expect(editor).to have_content(modal_description)
   end
 
   def then_I_should_not_see_publish_to_test_modal
-    expect(editor.text).to_not include(modal_description)
+    expect(editor).to_not have_content(modal_description)
   end
 
   def then_I_should_see_the_service_output_warning(deployment_environment)
@@ -224,7 +226,7 @@ feature 'Publishing' do
       href: I18n.t('publish.service_output.link'),
       environment: deployment_environment
     )
-    expect(editor.text).to include(warning_message)
+    expect(editor).to have_content(warning_message)
   end
 
   def then_I_should_not_see_the_service_output_warning(deployment_environment)

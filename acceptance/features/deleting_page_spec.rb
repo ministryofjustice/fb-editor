@@ -151,7 +151,7 @@ feature 'Deleting page' do
 
   def then_I_should_see_the_delete_page_no_default_next_modal
     dialog = page.find('.ui-dialog')
-    expect(dialog.text).to include(
+    expect(dialog).to have_content(
       I18n.t(
         'pages.delete_modal.delete_branch_destination_page_no_default_next_message'
       )
