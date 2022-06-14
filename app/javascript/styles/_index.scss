@@ -424,6 +424,13 @@ html {
 }
 
 
+.EditableTextareaFieldComponent {
+  .govuk-character-count__message {
+    display: none; // We only want message shown in Runner
+  }
+}
+
+
 // Not nice but trying to work around some margin annoyance caused by GDS css
 [data-fb-pagetype="page.multiplequestions"] {
   .EditableCollectionFieldComponent legend,

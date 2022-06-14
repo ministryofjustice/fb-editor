@@ -29,7 +29,7 @@ const CheckboxesQuestion = require('./question_checkboxes');
 const RadiosQuestion = require('./question_radios');
 const DateQuestion = require('./question_date');
 const TextQuestion = require('./question_text');
-const TextareaQuestion = require('./question_text');
+const TextareaQuestion = require('./question_textarea');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
