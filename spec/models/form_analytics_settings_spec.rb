@@ -186,10 +186,20 @@ RSpec.describe FormAnalyticsSettings do
     end
 
     context 'when errors are present' do
-      let(:analytics_params) { { "ga4_#{environment}": 'not-allowed' } }
+      let(:enabled_test) { '1' }
 
-      it 'returns truthy' do
-        expect(subject.errors_present?(environment)).to be_truthy
+      context 'enabled no params present' do
+        it 'returns truthy' do
+          expect(subject.errors_present?(environment)).to be_truthy
+        end
+      end
+
+      context 'params present' do
+        let(:analytics_params) { { "ga4_#{environment}": 'not-allowed' } }
+
+        it 'returns truthy' do
+          expect(subject.errors_present?(environment, "ga4_#{environment}")).to be_truthy
+        end
       end
     end
 
@@ -198,6 +208,14 @@ RSpec.describe FormAnalyticsSettings do
 
       it 'returns falsey' do
         expect(subject.errors_present?(environment)).to be_falsey
+      end
+
+      context 'when error is present for a different param' do
+        let(:analytics_params) { { "gtm_#{environment}": 'not-allowed' } }
+
+        it 'returns falsey' do
+          expect(subject.errors_present?(environment, 'ua_test')).to be_falsey
+        end
       end
     end
   end

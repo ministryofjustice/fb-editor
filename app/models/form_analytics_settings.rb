@@ -40,8 +40,9 @@ class FormAnalyticsSettings
     PLATFORM_DEPLOYMENTS.keys
   end
 
-  def errors_present?(environment)
-    errors.any? { |error| error.attribute.to_s.include?(environment) }
+  def errors_present?(environment, attribute = nil)
+    errors[:"form_analytics_settings_#{environment}"].present? ||
+      (attribute.present? && errors[attribute].present?)
   end
 
   private
