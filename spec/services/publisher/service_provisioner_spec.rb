@@ -61,6 +61,18 @@ RSpec.describe Publisher::ServiceProvisioner do
   end
 
   describe '#replicas' do
+    let(:services_hpa) do
+      {
+        test_production: { min_replicas: 1 },
+        live_dev: { min_replicas: 1 },
+        live_production: { min_replicas: 2 }
+      }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:services_hpa).and_return(services_hpa)
+    end
+
     context 'when live production environment' do
       let(:attributes) do
         { platform_environment: 'live', deployment_environment: 'production' }
@@ -89,6 +101,56 @@ RSpec.describe Publisher::ServiceProvisioner do
       it 'returns 1 replica' do
         expect(service_provisioner.replicas).to be(1)
       end
+    end
+  end
+
+  describe '#max_replicas' do
+    let(:services_hpa) do
+      {
+        test_dev: { max_replicas: 7 },
+        live_production: { max_replicas: 20 }
+      }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:services_hpa).and_return(services_hpa)
+    end
+
+    context 'when live production environment' do
+      let(:attributes) do
+        { platform_environment: 'live', deployment_environment: 'production' }
+      end
+
+      it 'returns the correct number of replicas' do
+        expect(service_provisioner.max_replicas).to be(20)
+      end
+    end
+
+    context 'when other environments' do
+      let(:attributes) do
+        { platform_environment: 'test', deployment_environment: 'dev' }
+      end
+
+      it 'returns the correct number of replicas' do
+        expect(service_provisioner.max_replicas).to be(7)
+      end
+    end
+  end
+
+  describe '#target_cpu_utilisation' do
+    let(:services_hpa) do
+      { live_production: { target_cpu_utilisation: 50 } }
+    end
+    let(:attributes) do
+      { platform_environment: 'live', deployment_environment: 'production' }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:services_hpa).and_return(services_hpa)
+    end
+
+    it 'returns the correct value for target cpu utilisation' do
+      expect(service_provisioner.target_cpu_utilisation).to be(50)
     end
   end
 

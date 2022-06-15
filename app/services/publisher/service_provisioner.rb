@@ -44,11 +44,15 @@ class Publisher
     end
 
     def replicas
-      if platform_environment == 'live' && deployment_environment == 'production'
-        2
-      else
-        1
-      end
+      service_hpa[:min_replicas]
+    end
+
+    def max_replicas
+      service_hpa[:max_replicas]
+    end
+
+    def target_cpu_utilisation
+      service_hpa[:target_cpu_utilisation]
     end
 
     def user_datastore_url
@@ -117,12 +121,15 @@ class Publisher
 
     def platform_app_url(app_name)
       sprintf(
-        Rails.application
-          .config
-          .platform_environments[:common][app_name],
+        Rails.application.config.platform_environments[:common][app_name],
         platform_environment: platform_environment,
         deployment_environment: deployment_environment
       )
+    end
+
+    def service_hpa
+      @service_hpa ||=
+        Rails.application.config.services_hpa[:"#{platform_environment}_#{deployment_environment}"]
     end
   end
 end

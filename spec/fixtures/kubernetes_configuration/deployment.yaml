@@ -6,7 +6,7 @@ metadata:
   labels:
     run: acceptance-tests-date
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       run: acceptance-tests-date

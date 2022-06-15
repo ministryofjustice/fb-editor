@@ -183,5 +183,24 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         ).with_content(secrets_yaml)
       end
     end
+
+    context 'hpa.yaml' do
+      let(:hpa_yaml) do
+        YAML.load_file(
+          Rails.root.join(
+            'spec',
+            'fixtures',
+            'kubernetes_configuration',
+            'hpa.yaml'
+          )
+        )
+      end
+
+      it 'generates the hpa.yaml' do
+        expect('hpa.yaml').to be_generated_in(
+          tmp_dir
+        ).with_content(hpa_yaml)
+      end
+    end
   end
 end
