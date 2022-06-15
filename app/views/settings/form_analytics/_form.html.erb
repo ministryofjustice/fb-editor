@@ -20,7 +20,7 @@
       </span>
     </summary>
 
-    <div class="govuk-form-group <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
       <% if f.object.errors_present?(environment) %>
         <% f.object.errors.full_messages_for(:"form_analytics_settings_#{environment}").each do |error_message| %>
           <p id="<%= "form_analytics_settings_#{environment}_error" %>" class="govuk-error-message">
