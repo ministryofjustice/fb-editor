@@ -257,7 +257,7 @@ en:
     form_information_help: 'The visible name of your form'
     form_analytics:
       name: Google Analytics
-      hint:  Monitor your form's performance in Google Analytics (requires a separate Google Analytics account).
+      hint:  Monitor your form's performance (requires a Google Analytics account).
       intro: This inserts tracking code in your form, allowing you to view performance metrics in Google Analytics. It requires your own Google Analytics account and at least one tracking ID.
       test:
         heading: Test site
@@ -265,8 +265,8 @@ en:
       live:
         heading: Live site
         description: Where the public can access and use your form.
-      details: Add account IDs
-      details_hint: 'You can add tracking IDs for any of the following Google products:'
+      details: Configure
+      details_hint: 'You can use tracking IDs for any of the following Google products:'
     submission:
       name: 'Submission settings'
       hint: 'Set what happens when a user submits their data.'
@@ -329,6 +329,8 @@ en:
       settings:
         service_name: 'Form name'
       form_analytics_settings:
+        enabled_test: Enable analytics on Test
+        enabled_live: Enable analytics on Live
         ua: &ua Universal Analytics Tracking ID
         ua_hint: For example, UA-000000-2
         ua_test: *ua
