@@ -34,7 +34,7 @@ class StringComponentLengthValidation < BaseComponentValidation
     end
   end
 
-  private
+  # private
 
   # Need to override the base component version of this to make use of string_length
   # attribute as that is the actual validator name
@@ -60,7 +60,7 @@ class StringComponentLengthValidation < BaseComponentValidation
 
   def no_string_length_validations_configured?
     @no_string_length_validations_configured ||=
-      string_length.blank? && (component.supported_validations & component_validation.keys).blank?
+      string_length.blank? && (self.class::STRING_LENGTH_KEYS & component_validation.keys).blank?
   end
 
   def unused_validation
