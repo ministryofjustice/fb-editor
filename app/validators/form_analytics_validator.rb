@@ -7,7 +7,7 @@ class FormAnalyticsValidator < ActiveModel::Validator
 
       record.config_params.each do |name|
         attribute_name = :"#{name}_#{environment}"
-        value = record.public_send(attribute_name)
+        value = record.instance_param(attribute_name)
         next if value.blank? || value.upcase.starts_with?(PREFIXES[name])
 
         record.errors.add(

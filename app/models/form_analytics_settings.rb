@@ -33,7 +33,7 @@ class FormAnalyticsSettings
   end
 
   def instance_param(setting_name)
-    instance_variable_get(:"@#{setting_name}")&.upcase
+    instance_variable_get(:"@#{setting_name}")&.upcase&.strip
   end
 
   def environments

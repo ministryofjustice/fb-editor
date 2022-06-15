@@ -128,6 +128,14 @@ RSpec.describe FormAnalyticsSettings do
     end
   end
 
+  describe '#instance_param' do
+    let(:analytics_params) { { ua_test: '      ua-123456 ' } }
+
+    it 'removes whitespace and uppercases the value' do
+      expect(subject.instance_param(:ua_test)).to eq('UA-123456')
+    end
+  end
+
   %w[test live].each do |environment|
     describe "#ua_#{environment}" do
       context 'when attribute is present' do
