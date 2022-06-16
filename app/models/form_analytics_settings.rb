@@ -8,7 +8,7 @@ class FormAnalyticsSettings
   validates_with FormAnalyticsValidator
 
   PLATFORM_DEPLOYMENTS = { 'test' => 'dev', 'live' => 'production' }.freeze
-  CONFIGS = { ua: 'UA', gtm: 'GTM', ga4: 'GA4' }.freeze
+  CONFIGS = { ua: 'UA', ga4: 'GA4', gtm: 'GTM' }.freeze
   PERMITTED_PARAMS = (CONFIGS.keys + [:enabled]).map { |param| [:"#{param}_test", :"#{param}_live"] }.flatten.freeze
 
   def config_params
