@@ -50,7 +50,7 @@ class FormAnalyticsController extends DefaultController {
       var $this = $(this);
       var $checkbox = $("input[type=checkbox]", $this);
       var expander = new Expander($("details", $this), {
-        auto_open: $checkbox.prop('checked') || $(".govuk-form-group--error", $this).length,
+        auto_open: $(".govuk-form-group--error", $this).length,
         wrap_content: false, 
       });
 
