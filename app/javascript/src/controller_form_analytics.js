@@ -36,20 +36,21 @@ class FormAnalyticsController extends DefaultController {
   /* VIEW ACTION
    **/
   index() {
-    this.#enhanceFormSections();
+    this.#addExpanderEnhancement();
   }
 
 
   /* VIEW SETUP
-   * 1. Apply expand/collapse functionality.
-   * 2. Allow Checkboxes to also control the Expander components.
+   * 1. Enhance native browser (<details>) functioality with Expander.
+   * 2. Make sure the Expanders will be open if Checkbox ticked or an error shows.
+   * 3. Allow Checkboxes to also control the Expander components.
    **/
-  #enhanceFormSections() {
+  #addExpanderEnhancement() {
     $(".analytics-environment-configuration").each(function(index) {
       var $this = $(this);
       var $checkbox = $("input[type=checkbox]", $this);
       var expander = new Expander($("details", $this), {
-        auto_open: $checkbox.prop('checked'),
+        auto_open: $checkbox.prop('checked') || $(".govuk-form-group--error", $this).length,
         wrap_content: false, 
       });
 
