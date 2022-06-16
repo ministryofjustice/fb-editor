@@ -42,16 +42,18 @@ class FormAnalyticsController extends DefaultController {
 
   /* VIEW SETUP
    * 1. Apply expand/collapse functionality.
-   * 2. ...
+   * 2. Allow Checkboxes to also control the Expander components.
    **/
   #enhanceFormSections() {
     $(".analytics-environment-configuration").each(function(index) {
       var $this = $(this);
       var $checkbox = $("input[type=checkbox]", $this);
-      new Expander($("details", $this), {
+      var expander = new Expander($("details", $this), {
         auto_open: $checkbox.prop('checked'),
         wrap_content: false, 
       });
+
+      $checkbox.on("click", () => expander.toggle() );
     });
   }
 
