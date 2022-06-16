@@ -21,6 +21,8 @@ feature 'Form analytics configuration' do
   shared_examples 'a form analytics settings' do
     scenario 'configuring form analytics settings' do
       when_I_enable_the_analytics(environment)
+      then_I_should_see_the_account_ids_fields(environment)
+
       click_button(I18n.t('actions.save'))
       then_I_should_see_error_messages([I18n.t('activemodel.errors.models.form_analytics_settings.blank')])
 
@@ -40,6 +42,10 @@ feature 'Form analytics configuration' do
 
       when_I_disable_the_analytics(environment)
       click_button(I18n.t('actions.save'))
+
+      when_I_enable_the_analytics(environment)
+      then_I_should_see_the_account_ids_fields(environment)
+      then_I_should_not_see_my_saved_ids
     end
   end
 
@@ -138,6 +144,14 @@ feature 'Form analytics configuration' do
     valid_ids.each do |id, value|
       input_element = page.find(:css, "input#form_analytics_settings_#{id}")
       expect(input_element.value).to eq(value)
+    end
+  end
+
+  def then_I_should_not_see_my_saved_ids
+    page.find(:css, '#main-content', visible: true)
+    valid_ids.each do |id, value|
+      input_element = page.find(:css, "input#form_analytics_settings_#{id}")
+      expect(input_element.value).to_not eq(value)
     end
   end
 end
