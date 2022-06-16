@@ -61,24 +61,28 @@ const {
  * @param $node (jQuery) Html Element to be enhanced.
  * @param condif (Object) Key/value pairs for config (see above)
 **/
+
 class Expander {
-  #browser_controlled;
+  #browserControlled;
   #config;
   #state;
   #id;
 
+  static STATE_OPEN = "open";
+  static NATIVE_CONTROL_ATTRIBUTE = "open";
+
   constructor($content, config) {
     const conf = mergeObjects({
       activator_source: "activate", // Developer mistake occured if see this text.
-      wrap_content: true,
+      wrap_content: true && !$content.is("details"), // Default is true unless detect <details> in use.
       auto_open: false,
       duration: 0,
     }, config);
 
     this.#config = conf;
-    this.#state = 'open'; // This value always get overwritten by openState
+    this.#state = ""; // This value always get overwritten by openState
     this.#id = uniqueString("Expander_");
-    this.#browser_controlled = false; // Will be changed in createNode if $content is <details> element
+    this.#browserControlled = false; // Will be changed in createNode if $content is <details> element
     this.$node = this.#createNode($content);
     this.$activator = this.#createActivator();
 
@@ -88,7 +92,7 @@ class Expander {
   set openState(open) {
     if(open) {
       this.$activator.attr("aria-expanded", "true");
-      this.#state = 'open';
+      this.#state = Expander.STATE_OPEN;
     }
     else {
       this.$activator.attr("aria-expanded", "false");
@@ -97,8 +101,8 @@ class Expander {
   }
 
   open() {
-    if(this.#browser_controlled) {
-      this.$node.attr("open", true); // <details> native control for open
+    if(this.#browserControlled) {
+      this.$node.attr(Expander.NATIVE_CONTROL_ATTRIBUTE, true);
       this.openState = true;
     }
     else {
@@ -109,8 +113,8 @@ class Expander {
   }
 
   close() {
-    if(this.#browser_controlled) {
-      this.$node.attr("open", false); // <details> native control for close
+    if(this.#browserControlled) {
+      this.$node.attr(Expander.NATIVE_CONTROL_ATTRIBUTE, false);
       this.openState = false;
     }
     else {
@@ -121,7 +125,7 @@ class Expander {
   }
 
   isOpen() {
-    return this.#state == 'open';
+    return this.#state == Expander.STATE_OPEN;
   }
 
   toggle() {
@@ -166,8 +170,11 @@ class Expander {
         $activator = source;
       }
       else {
-        if(source.children().length < 0 || this.#browser_controlled) {
-          $activator = source; // No extra support for Empty element, yet.
+        if(source.children().length < 0 || this.#browserControlled) {
+          // No extra support for Empty element, yet.
+          // Note that we set browser_controlled in createNode so, if it
+          // has a value of true, then we also added <summary> as source.
+          $activator = source;
         }
         else {
           $activator = $('<button>' + source + '</button>');
@@ -187,9 +194,9 @@ class Expander {
     });
 
     // If required, add the Expander.toggle() for open/close control.
-    if(!this.#browser_controlled) {
+    if(!this.#browserControlled) {
       activatorEventType = this.#isInput($activator) ? 'change' : 'click';
-      $activator.on(activatorEventType, () => {
+      $activator.on(activatorEventType, (e) => {
         this.toggle();
       });
     }
@@ -234,10 +241,16 @@ class Expander {
       $node.append($content.children().not(this.#config.activator_source));
     }
     else {
-      if($content.get(0).tagName.toLowerCase() == "details") {
-        // Allow browser to control open/close without using Expander effect.
-        this.#browser_controlled = true;
+
+      if($content.is("details")) {
+        // We're going to hand over to native browser functionality
+        // but supporting Expander needs to allow for some extras.
+        this.#browserControlled = true;
         this.#config.activator_source = $content.find("summary");
+
+        $content.on("toggle", (e) => {
+          this.openState = e.currentTarget.open;
+        });
       }
 
       // Change nothing as node is either <details> or another desired container.
@@ -256,7 +269,7 @@ class Expander {
   }
 
   #isInput($activator) {
-     return $activator.is('input[type="checkbox"]') || $activator.is('input[type="radio"]')
+   return $activator.is('input[type="checkbox"]') || $activator.is('input[type="radio"]')
   }
 
 }
