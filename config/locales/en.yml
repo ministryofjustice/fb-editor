@@ -255,6 +255,18 @@ en:
     form_information_hint: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
+    form_analytics:
+      name: Google Analytics
+      hint:  Monitor your form's performance (requires a Google Analytics account).
+      intro: This inserts tracking code in your form, allowing you to view performance metrics in Google Analytics. It requires your own Google Analytics account and at least one tracking ID.
+      test:
+        heading: Test site
+        description: Where you can check your form works and get feedback.
+      live:
+        heading: Live site
+        description: Where the public can access and use your form.
+      details: Configure
+      details_hint: 'You can use tracking IDs for any of the following Google products:'
     submission:
       name: 'Submission settings'
       hint: 'Set what happens when a user submits their data.'
@@ -316,6 +328,21 @@ en:
         service_name: 'Give your form a name'
       settings:
         service_name: 'Form name'
+      form_analytics_settings:
+        enabled_test: Enable analytics on Test
+        enabled_live: Enable analytics on Live
+        ua: &ua Universal Analytics Tracking ID
+        ua_hint: For example, UA-000000-2
+        ua_test: *ua
+        ua_live: *ua
+        gtm: &gtm Google Tag Manager Container ID
+        gtm_hint: For example, GTM-000003
+        gtm_test: *gtm
+        gtm_live: *gtm
+        ga4: &ga4 Google Analytics 4 Measurement ID
+        ga4_hint: For example, G-0000004
+        ga4_test: *ga4
+        ga4_live: *ga4
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
@@ -344,6 +371,7 @@ en:
       branch:
         default_next: Otherwise
     errors:
+      summary_title: There is a problem
       models:
         publish_service_creation:
           blank_username: 'Enter a username'
@@ -367,7 +395,7 @@ en:
           format: "%{message}"
         date_validation:
           invalid: "%{label} is not a valid date"
-          missing_attribute: "%{label} should include a %{attribute}" 
+          missing_attribute: "%{label} should include a %{attribute}"
           format: "%{message}"
         number_validation:
           invalid: "%{label} needs to be a number"
@@ -375,6 +403,12 @@ en:
         minimum_validation:
           format: "%{message}"
         maximum_validation:
+          format: "%{message}"
+        form_analytics_settings:
+          blank: Enter at least one tracking ID
+          ua: A Universal Analytics ID must start with UA
+          gtm: A Google Tag Manager Container ID must start with GTM
+          ga4: A Google Analytics 4 Measurement ID must start with G
           format: "%{message}"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."

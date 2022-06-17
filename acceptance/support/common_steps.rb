@@ -6,7 +6,7 @@ module CommonSteps
     I18n.t('default_text.content'),
     I18n.t('default_text.option_hint')
   ].freeze
-  ERROR_MESSAGE = 'There is a problem'.freeze
+  ERROR_MESSAGE = I18n.t('activemodel.errors.summary_title').freeze
   DELETE_WARNING = [
     I18n.t('pages.flow.delete_warning_cya_page'),
     I18n.t('pages.flow.delete_warning_confirmation_page'),
@@ -349,6 +349,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
+    sleep(1)
     editor.three_dots_button.click
   end
 
@@ -376,6 +377,7 @@ module CommonSteps
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
+    sleep(1)
     expect(editor).not_to have_content(page_link)
     editor.flow_thumbnail(page_title).hover #hides the connection menu
   end

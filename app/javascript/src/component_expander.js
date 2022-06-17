@@ -61,44 +61,71 @@ const {
  * @param $node (jQuery) Html Element to be enhanced.
  * @param condif (Object) Key/value pairs for config (see above)
 **/
+
 class Expander {
+  #browserControlled;
   #config;
   #state;
   #id;
 
+  static STATE_OPEN = "open";
+  static NATIVE_CONTROL_ATTRIBUTE = "open";
+
   constructor($content, config) {
     const conf = mergeObjects({
       activator_source: "activate", // Developer mistake occured if see this text.
-      wrap_content: true,
+      wrap_content: true && !$content.is("details"), // Default is true unless detect <details> in use.
       auto_open: false,
       duration: 0,
     }, config);
 
     this.#config = conf;
-    this.#state = 'open';
+    this.#state = ""; // This value always get overwritten by openState
     this.#id = uniqueString("Expander_");
+    this.#browserControlled = false; // Will be changed in createNode if $content is <details> element
     this.$node = this.#createNode($content);
     this.$activator = this.#createActivator();
 
     conf.auto_open ? this.open() : this.close();
   }
 
-  open() {
-    this.$node.slideDown( this.#config.duration, () => {
+  set openState(open) {
+    if(open) {
       this.$activator.attr("aria-expanded", "true");
-      this.#state = 'open';
-    });
+      this.#state = Expander.STATE_OPEN;
+    }
+    else {
+      this.$activator.attr("aria-expanded", "false");
+      this.#state = 'closed';
+    }
+  }
+
+  open() {
+    if(this.#browserControlled) {
+      this.$node.attr(Expander.NATIVE_CONTROL_ATTRIBUTE, true);
+      this.openState = true;
+    }
+    else {
+      this.$node.slideDown( this.#config.duration, () => {
+        this.openState = true;
+      });
+    }
   }
 
   close() {
-    this.$node.slideUp( this.#config.duration, () => {
-      this.$activator.attr("aria-expanded", "false");
-      this.#state = 'closed';
-    });
+    if(this.#browserControlled) {
+      this.$node.attr(Expander.NATIVE_CONTROL_ATTRIBUTE, false);
+      this.openState = false;
+    }
+    else {
+      this.$node.slideUp( this.#config.duration, () => {
+        this.openState = false;
+      });
+    }
   }
 
   isOpen() {
-    return this.#state == 'open';
+    return this.#state == Expander.STATE_OPEN;
   }
 
   toggle() {
@@ -134,6 +161,7 @@ class Expander {
 
     if(typeof source == 'string') {
       $activator = $('<button>' + source + '</button>');
+      $activator.attr("type", "button");
       this.$node.before($activator);
     }
     else {
@@ -142,11 +170,15 @@ class Expander {
         $activator = source;
       }
       else {
-        if(source.children().length < 0) {
-          $activator = source; // No extra support for Empty element, yet.
+        if(source.children().length < 0 || this.#browserControlled) {
+          // No extra support for Empty element, yet.
+          // Note that we set browser_controlled in createNode so, if it
+          // has a value of true, then we also added <summary> as source.
+          $activator = source;
         }
         else {
           $activator = $('<button>' + source + '</button>');
+          $activator.attr("type", "button");
           $activator.text(source.text()); // Only want text not child elements.
           source.empty();
           source.append($activator);
@@ -161,11 +193,13 @@ class Expander {
       'aria-controls': this.#id
     });
 
-    activatorEventType = this.#isInput($activator) ? 'change' : 'click';
-
-    $activator.on(activatorEventType, () => {
-      this.toggle();
-    });
+    // If required, add the Expander.toggle() for open/close control.
+    if(!this.#browserControlled) {
+      activatorEventType = this.#isInput($activator) ? 'change' : 'click';
+      $activator.on(activatorEventType, (e) => {
+        this.toggle();
+      });
+    }
 
     return $activator;
   }
@@ -207,9 +241,21 @@ class Expander {
       $node.append($content.children().not(this.#config.activator_source));
     }
     else {
-      $node = $content; // Change nothing
-    }
 
+      if($content.is("details")) {
+        // We're going to hand over to native browser functionality
+        // but supporting Expander needs to allow for some extras.
+        this.#browserControlled = true;
+        this.#config.activator_source = $content.find("summary");
+
+        $content.on("toggle", (e) => {
+          this.openState = e.currentTarget.open;
+        });
+      }
+
+      // Change nothing as node is either <details> or another desired container.
+      $node = $content;
+    }
 
     $node.addClass("Expander");
     $node.data("instance", this);
@@ -219,11 +265,11 @@ class Expander {
   }
 
   #isValidActivatorElement(source) {
-    return source.is('button') || source.is('input[type="checkbox"]') || source.is('input[type="radio"]')
+    return source.is('button') || source.is('summary') || this.#isInput(source);
   }
 
   #isInput($activator) {
-     return $activator.is('input[type="checkbox"]') || $activator.is('input[type="radio"]')
+   return $activator.is('input[type="checkbox"]') || $activator.is('input[type="radio"]')
   }
 
 }
