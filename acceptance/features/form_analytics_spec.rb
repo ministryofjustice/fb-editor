@@ -38,7 +38,7 @@ feature 'Form analytics configuration' do
       and_I_set_the_analytics_tracking_id("ga4_#{environment}", valid_ids["ga4_#{environment}"])
       click_button(I18n.t('actions.save'))
       then_I_should_see_no_error_message
-      then_I_should_see_my_saved_ids
+      then_I_should_see_my_saved_ids(environment)
 
       when_I_disable_the_analytics(environment)
       click_button(I18n.t('actions.save'))
@@ -139,8 +139,11 @@ feature 'Form analytics configuration' do
     expect(page).to_not have_content(I18n.t('activemodel.errors.summary_title'))
   end
 
-  def then_I_should_see_my_saved_ids
+  def then_I_should_see_my_saved_ids(environment)
     page.find(:css, '#main-content', visible: true)
+    page.find(:css, "#form_analytics_settings_#{environment}")
+        .find(:css, 'span', text: I18n.t('settings.form_analytics.details')).click
+
     valid_ids.each do |id, value|
       input_element = page.find(:css, "input#form_analytics_settings_#{id}")
       expect(input_element.value).to eq(value)
