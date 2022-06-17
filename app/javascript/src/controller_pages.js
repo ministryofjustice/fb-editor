@@ -376,7 +376,6 @@ function addQuestionMenuListeners(view) {
 
         var $statusInput = dialog.$node.find('input[name="component_validation[status]"]');
         var $resettableInputs = dialog.$node.find('.Expander input').not('input[name*="string_length"]');
-        console.log($resettableInputs);
         $statusInput.on('change', () => {
           if(!$statusInput.prop('checked')) {
             $resettableInputs.each( function() {

@@ -36,7 +36,7 @@ class StringComponentLengthValidation < BaseComponentValidation
     end
   end
 
-  # private
+  private
 
   # Need to override the base component version of this to make use of string_length
   # attribute as that is the actual validator name

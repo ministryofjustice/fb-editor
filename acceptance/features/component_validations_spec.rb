@@ -364,8 +364,6 @@ feature 'Component validations' do
     it_behaves_like 'a string length characters validation'
   end
 
-
-
   context 'min word' do
     let(:page_url) { 'Textarea' }
     let(:menu_text) { I18n.t('question.menu.min_string_length') }
