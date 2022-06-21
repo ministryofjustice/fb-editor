@@ -43,16 +43,24 @@ class Publisher
       SecureRandom.hex(64)
     end
 
+    def strategy_max_surge
+      global_service_configuration[:strategy][:max_surge]
+    end
+
+    def strategy_max_unavailable
+      global_service_configuration[:strategy][:max_unavailable]
+    end
+
     def replicas
-      service_hpa[:min_replicas]
+      service_namespace_configuration[:hpa][:min_replicas]
     end
 
     def max_replicas
-      service_hpa[:max_replicas]
+      service_namespace_configuration[:hpa][:max_replicas]
     end
 
     def target_cpu_utilisation
-      service_hpa[:target_cpu_utilisation]
+      service_namespace_configuration[:hpa][:target_cpu_utilisation]
     end
 
     def user_datastore_url
@@ -85,6 +93,18 @@ class Publisher
 
     def resource_requests_memory
       '128Mi'
+    end
+
+    def readiness_initial_delay
+      global_service_configuration[:readiness][:initial_delay_seconds]
+    end
+
+    def readiness_period
+      global_service_configuration[:readiness][:period_seconds]
+    end
+
+    def readiness_success_threshold
+      global_service_configuration[:readiness][:success_threshold]
     end
 
     def service_sentry_dsn
@@ -127,9 +147,13 @@ class Publisher
       )
     end
 
-    def service_hpa
-      @service_hpa ||=
-        Rails.application.config.services_hpa[:"#{platform_environment}_#{deployment_environment}"]
+    def global_service_configuration
+      @global_service_configuration ||= Rails.application.config.global_service_configuration
+    end
+
+    def service_namespace_configuration
+      @service_namespace_configuration ||=
+        Rails.application.config.service_namespace_configuration[:"#{platform_environment}_#{deployment_environment}"]
     end
   end
 end

@@ -7,6 +7,11 @@ metadata:
     run: acceptance-tests-date
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
   selector:
     matchLabels:
       run: acceptance-tests-date

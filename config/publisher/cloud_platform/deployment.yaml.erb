@@ -7,6 +7,11 @@ metadata:
     run: <%= service_slug %>
 spec:
   replicas: <%= replicas %>
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: <%= strategy_max_surge %>
+      maxUnavailable: <%= strategy_max_unavailable %>
   selector:
     matchLabels:
       run: <%= service_slug %>
@@ -71,6 +76,6 @@ spec:
           httpGet:
             path: /health
             port: <%= container_port %>
-          initialDelaySeconds: 15
-          periodSeconds: 5
-          successThreshold: 1
+          initialDelaySeconds: <%= readiness_initial_delay %>
+          periodSeconds: <%= readiness_period %>
+          successThreshold: <%= readiness_success_threshold %>
