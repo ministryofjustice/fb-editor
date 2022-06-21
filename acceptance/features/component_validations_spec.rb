@@ -130,7 +130,7 @@ feature 'Component validations' do
       then_I_should_see_the_validation_modal(label, status_label)
 
       and_I_enable_the_validation
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
@@ -145,7 +145,7 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(first_answer)
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       and_I_set_the_input_value(second_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
 
@@ -158,21 +158,21 @@ feature 'Component validations' do
       sleep(0.5)
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       and_I_set_the_input_value('')
-      and_I_select_the_radio('Words')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
         'activemodel.errors.models.base_component_validation.blank',
         label: label
       ))
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       when_I_want_to_select_question_properties
       and_I_select_a_validation(alt_menu_text)
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       and_I_return_to_flow_page
@@ -197,14 +197,14 @@ feature 'Component validations' do
       then_I_should_see_the_validation_modal(label, status_label)
 
       and_I_enable_the_validation
-      and_I_select_the_radio('Words')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
         'activemodel.errors.models.base_component_validation.blank',
         label: label
       ))
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
 
       and_I_set_the_input_value(first_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
@@ -213,7 +213,7 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(first_answer)
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       and_I_set_the_input_value(second_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
 
@@ -221,27 +221,27 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(second_answer)
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.button_cancel'))
       
       sleep(0.5)
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       and_I_set_the_input_value('')
-      and_I_select_the_radio('Characters')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
         'activemodel.errors.models.base_component_validation.blank',
         label: label
       ))
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       when_I_want_to_select_question_properties
       and_I_select_a_validation(alt_menu_text)
-      then_the_radio_is_selected('Characters')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       and_I_return_to_flow_page

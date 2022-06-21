@@ -74,8 +74,10 @@ class DialogValidation {
     if(this.#config.activator) {
       this.#config.activator.focus();
     }
-    this.$node.dialog("close");
-    this.$node.dialog('destroy'); 
+    if(this.$node.dialog("instance")) {
+      this.$node.dialog("close");
+      this.$node.dialog('destroy'); 
+    }
     this.$node.remove();
   }
 
