@@ -11,13 +11,15 @@ class StringComponentLengthValidation < BaseComponentValidation
   end
 
   def select_characters?
-    characters_validation_and_no_words_validation_previously_configured? ||
+    blank_characters_validation_and_words_validation_previously_configured? ||
+      characters_validation_and_no_words_validation_previously_configured? ||
       characters_validation_previously_enabled? ||
       no_string_length_validations_configured?
   end
 
   def select_words?
-    words_validation_and_no_characters_validation_previously_configured? ||
+    blank_words_validation_and_characters_validation_previously_configured? ||
+      words_validation_and_no_characters_validation_previously_configured? ||
       words_validation_previously_enabled?
   end
 
@@ -42,12 +44,20 @@ class StringComponentLengthValidation < BaseComponentValidation
     component_validation.key?(string_length)
   end
 
+  def blank_characters_validation_and_words_validation_previously_configured?
+    string_length.in?(CHARACTERS_VALIDATIONS) && main_value.blank? && (component_validation.keys & WORDS_VALIDATIONS).any?
+  end
+
   def characters_validation_and_no_words_validation_previously_configured?
     string_length.in?(CHARACTERS_VALIDATIONS) && (component_validation.keys & WORDS_VALIDATIONS).blank?
   end
 
   def characters_validation_previously_enabled?
     WORDS_VALIDATIONS.exclude?(string_length) && previously_enabled?
+  end
+
+  def blank_words_validation_and_characters_validation_previously_configured?
+    string_length.in?(WORDS_VALIDATIONS) && main_value.blank? && (component_validation.keys & CHARACTERS_VALIDATIONS).any?
   end
 
   def words_validation_and_no_characters_validation_previously_configured?
@@ -60,7 +70,7 @@ class StringComponentLengthValidation < BaseComponentValidation
 
   def no_string_length_validations_configured?
     @no_string_length_validations_configured ||=
-      string_length.blank? && (component.supported_validations & component_validation.keys).blank?
+      string_length.blank? && (self.class::STRING_LENGTH_KEYS & component_validation.keys).blank?
   end
 
   def unused_validation

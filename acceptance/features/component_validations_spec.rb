@@ -130,6 +130,7 @@ feature 'Component validations' do
       then_I_should_see_the_validation_modal(label, status_label)
 
       and_I_enable_the_validation
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
@@ -144,6 +145,7 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(first_answer)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       and_I_set_the_input_value(second_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
 
@@ -151,6 +153,26 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(second_answer)
+      click_button(I18n.t('dialogs.button_cancel'))
+      
+      sleep(0.5)
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+      and_I_set_the_input_value('')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
+      click_button(I18n.t('dialogs.component_validations.button'))
+      then_I_should_see_an_error_message(
+        I18n.t(
+        'activemodel.errors.models.base_component_validation.blank',
+        label: label
+      ))
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+      click_button(I18n.t('dialogs.button_cancel'))
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(alt_menu_text)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       and_I_return_to_flow_page
@@ -175,14 +197,14 @@ feature 'Component validations' do
       then_I_should_see_the_validation_modal(label, status_label)
 
       and_I_enable_the_validation
-      and_I_select_the_radio('Words')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_see_an_error_message(
         I18n.t(
         'activemodel.errors.models.base_component_validation.blank',
         label: label
       ))
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
 
       and_I_set_the_input_value(first_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
@@ -191,6 +213,7 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(first_answer)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       and_I_set_the_input_value(second_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
 
@@ -198,7 +221,27 @@ feature 'Component validations' do
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(second_answer)
-      then_the_radio_is_selected('Words')
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+      click_button(I18n.t('dialogs.button_cancel'))
+      
+      sleep(0.5)
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+      and_I_set_the_input_value('')
+      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.characters'))
+      click_button(I18n.t('dialogs.component_validations.button'))
+      then_I_should_see_an_error_message(
+        I18n.t(
+        'activemodel.errors.models.base_component_validation.blank',
+        label: label
+      ))
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+      click_button(I18n.t('dialogs.button_cancel'))
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(alt_menu_text)
+      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
       click_button(I18n.t('dialogs.button_cancel'))
 
       and_I_return_to_flow_page
@@ -292,6 +335,7 @@ feature 'Component validations' do
   context 'min length (characters)' do
     let(:page_url) { 'Text' }
     let(:menu_text) { I18n.t('question.menu.min_string_length') }
+    let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
     let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
     let(:first_answer) { '5' }
@@ -307,6 +351,7 @@ feature 'Component validations' do
   context 'max length (characters)' do
     let(:page_url) { 'Text' }
     let(:menu_text) { I18n.t('question.menu.max_string_length') }
+    let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
     let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
     let(:first_answer) { '20' }
@@ -322,6 +367,7 @@ feature 'Component validations' do
   context 'min word' do
     let(:page_url) { 'Textarea' }
     let(:menu_text) { I18n.t('question.menu.min_string_length') }
+    let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
     let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
     let(:first_answer) { '20' }
@@ -339,6 +385,7 @@ feature 'Component validations' do
   context 'max word' do
     let(:page_url) { 'Textarea' }
     let(:menu_text) { I18n.t('question.menu.max_string_length') }
+    let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
     let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
     let(:first_answer) { '50' }
@@ -366,6 +413,7 @@ feature 'Component validations' do
   end
 
   def and_I_set_the_input_value(value)
+    sleep(0.5)
     input_element = page.find(:css, 'input#component_validation_value')
     input_element.set(value)
   end

@@ -19,9 +19,9 @@
         <div class="govuk-radios__item govuk-!-margin-bottom-0">
           <input class="govuk-radios__input" id="component_validation_characters" name="component_validation[string_length]"
                  type="radio" value="<%= @component_validation.characters_radio_value %>"
-                 <%= @component_validation.select_characters? ? 'checked' : '' %>>
+                 <%= ((!@component_validation.select_characters? && !@component_validation.select_words?) || @component_validation.select_characters?) ? 'checked' : '' %>>
           <label class="govuk-label govuk-radios__label" for="component_validation_characters">
-            <%= t('activemodel.component_validations.dialogs.string.characters') %>
+            <%= t('activemodel.component_validations.string.characters') %>
           </label>
         </div>
         <div class="govuk-radios__item govuk-!-margin-bottom-0">
@@ -29,7 +29,7 @@
                  type="radio" value="<%= @component_validation.words_radio_value %>"
                  <%= @component_validation.select_words? ? 'checked' : '' %>>
           <label class="govuk-label govuk-radios__label" for="component_validation_words">
-            <%= t('activemodel.component_validations.dialogs.string.words') %>
+            <%= t('activemodel.component_validations.string.words') %>
           </label>
         </div>
       </div>
