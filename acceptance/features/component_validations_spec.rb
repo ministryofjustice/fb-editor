@@ -28,20 +28,20 @@ feature 'Component validations' do
         label: label
       ))
 
-      and_I_set_the_input_value(first_value)
+      and_I_set_the_input_value(first_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
       then_I_should_not_see_the_validation_modal(label, status_label)
 
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_value)
-      and_I_set_the_input_value(second_value)
+      then_I_should_see_the_previously_set_configuration(first_answer)
+      and_I_set_the_input_value(second_answer)
       click_button(I18n.t('dialogs.component_validations.button'))
 
       and_I_click_save
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(second_value)
+      then_I_should_see_the_previously_set_configuration(second_answer)
       click_button(I18n.t('dialogs.button_cancel'))
 
       and_I_return_to_flow_page
@@ -49,8 +49,8 @@ feature 'Component validations' do
       then_I_should_preview_the_page(
         preview: preview,
         field: preview_field,
-        first_value: preview_first_value,
-        second_value: preview_second_value,
+        first_answer: preview_first_answer,
+        second_answer: preview_second_answer,
         error_message: preview_error_message
       )
     end
@@ -154,7 +154,7 @@ feature 'Component validations' do
       and_I_select_a_validation(menu_text)
       then_I_should_see_the_previously_set_configuration(second_answer)
       click_button(I18n.t('dialogs.button_cancel'))
-      
+
       sleep(0.5)
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
@@ -180,8 +180,8 @@ feature 'Component validations' do
       then_I_should_preview_the_page(
         preview: preview,
         field: preview_field,
-        first_value: preview_first_answer,
-        second_value: prview_second_answer,
+        first_answer: preview_first_answer,
+        second_answer: prview_second_answer,
         error_message: preview_error_message
       )
     end
@@ -223,7 +223,7 @@ feature 'Component validations' do
       then_I_should_see_the_previously_set_configuration(second_answer)
       then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
       click_button(I18n.t('dialogs.button_cancel'))
-      
+
       sleep(0.5)
       when_I_want_to_select_question_properties
       and_I_select_a_validation(menu_text)
@@ -249,10 +249,64 @@ feature 'Component validations' do
       then_I_should_preview_the_page(
         preview: preview,
         field: preview_field,
-        first_value: preview_first_answer,
-        second_value: preview_second_answer,
+        first_answer: preview_first_answer,
+        second_answer: preview_second_answer,
         error_message: preview_error_message
       )
+    end
+  end
+
+  shared_examples 'a disabled component validation' do
+    scenario 'disabling a previously enabled validation' do
+      and_I_visit_a_page(page_url)
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      and_I_enable_the_validation
+      and_I_set_the_input_value(first_answer)
+      click_button(I18n.t('dialogs.component_validations.button'))
+      and_I_click_save
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      and_I_set_the_input_value('')
+      and_I_disable_the_validation
+      click_button(I18n.t('dialogs.component_validations.button'))
+      and_I_click_save
+
+      then_I_should_not_see_an_error_message(
+        I18n.t(
+        'activemodel.errors.models.base_component_validation.blank',
+        label: label
+      ))
+    end
+  end
+
+  shared_examples 'a disabled date component validation' do
+    scenario 'disabling a previously enabled validation' do
+      and_I_visit_a_page(page_url)
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      and_I_enable_the_validation
+      second_answers.each do |field, value|
+        and_I_set_the_date_input_value(field, value)
+      end
+      click_button(I18n.t('dialogs.component_validations.button'))
+      and_I_click_save
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      second_answers.each do |field, _|
+        and_I_set_the_date_input_value(field, '')
+      end
+      and_I_disable_the_validation
+      click_button(I18n.t('dialogs.component_validations.button'))
+      and_I_click_save
+
+      then_I_should_not_see_an_error_message(
+        I18n.t(
+        'activemodel.errors.models.base_component_validation.blank',
+        label: label
+      ))
     end
   end
 
@@ -261,14 +315,15 @@ feature 'Component validations' do
     let(:menu_text) { I18n.t('question.menu.minimum') }
     let(:label) { I18n.t('dialogs.component_validations.minimum.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.minimum.status_label') }
-    let(:first_value) { '5' }
-    let(:second_value) { '3' }
+    let(:first_answer) { '5' }
+    let(:second_answer) { '3' }
     let(:preview_field) { 'answers[number_number_1]' }
-    let(:preview_first_value) { '1' }
-    let(:preview_second_value) { '20' }
+    let(:preview_first_answer) { '1' }
+    let(:preview_second_answer) { '20' }
     let(:preview_error_message) { 'Your answer for "Number" must be 3 or higher' }
 
     it_behaves_like 'a number component validation'
+    it_behaves_like 'a disabled component validation'
   end
 
   context 'maximum validation' do
@@ -276,14 +331,15 @@ feature 'Component validations' do
     let(:menu_text) { I18n.t('question.menu.maximum') }
     let(:label) { I18n.t('dialogs.component_validations.maximum.label') }
     let(:status_label) { I18n.t('dialogs.component_validations.maximum.status_label') }
-    let(:first_value) { '100' }
-    let(:second_value) { '50' }
+    let(:first_answer) { '100' }
+    let(:second_answer) { '50' }
     let(:preview_field) { 'answers[number_number_1]' }
-    let(:preview_first_value) { '100' }
-    let(:preview_second_value) { '5' }
+    let(:preview_first_answer) { '100' }
+    let(:preview_second_answer) { '5' }
     let(:preview_error_message) { 'Your answer for "Number" must be 50 or lower' }
 
     it_behaves_like 'a number component validation'
+    it_behaves_like 'a disabled component validation'
   end
 
   context 'date after validation' do
@@ -307,6 +363,7 @@ feature 'Component validations' do
     let(:preview_error_message) { 'Your answer for "Date" must be 28 02 1999 or later' }
 
     it_behaves_like 'a date component validation'
+    it_behaves_like 'a disabled date component validation'
   end
 
   context 'date before validation' do
@@ -330,6 +387,7 @@ feature 'Component validations' do
     let(:preview_error_message) { 'Your answer for "Date" must be 14 08 2045 or earlier' }
 
     it_behaves_like 'a date component validation'
+    it_behaves_like 'a disabled date component validation'
   end
 
   context 'min length (characters)' do
@@ -346,6 +404,7 @@ feature 'Component validations' do
     let(:preview_error_message) { 'Your answer for "Text" must be 3 characters or more' }
 
     it_behaves_like 'a string length characters validation'
+    it_behaves_like 'a disabled component validation'
   end
 
   context 'max length (characters)' do
@@ -362,6 +421,7 @@ feature 'Component validations' do
     let(:preview_error_message) { 'Your answer for "Text" must be 10 characters or fewer' }
 
     it_behaves_like 'a string length characters validation'
+    it_behaves_like 'a disabled component validation'
   end
 
   context 'min word' do
@@ -412,6 +472,10 @@ feature 'Component validations' do
     page.find(:css, 'input#component_validation_status', visible: false).set(true)
   end
 
+  def and_I_disable_the_validation
+    page.find(:css, 'input#component_validation_status', visible: false).set(false)
+  end
+
   def and_I_set_the_input_value(value)
     sleep(0.5)
     input_element = page.find(:css, 'input#component_validation_value')
@@ -460,15 +524,15 @@ feature 'Component validations' do
     expect(input.value).to eq(value)
   end
 
-  def then_I_should_preview_the_page(preview:, field:, first_value:, second_value:, error_message:)
+  def then_I_should_preview_the_page(preview:, field:, first_answer:, second_answer:, error_message:)
     within_window(preview) do
       page.find(:css, '#main-content', visible: true)
-      page.find_field(field).set(first_value)
+      page.find_field(field).set(first_answer)
       click_button(I18n.t('actions.continue'))
       page.find(:css, '#main-content', visible: true)
       then_I_should_see_an_error_message(error_message)
 
-      page.find_field(field).set(second_value)
+      page.find_field(field).set(second_answer)
       click_button(I18n.t('actions.continue'))
       page.find(:css, '#main-content', visible: true)
       then_I_should_not_see_an_error_message(error_message)
