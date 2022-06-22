@@ -54,6 +54,7 @@ class ServicesController extends DefaultController {
  * Setup for the Edit action
  **/
 ServicesController.edit = function() {
+
   var view = this; // Just making it easlier to understand the context.
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
@@ -670,9 +671,11 @@ function applyBranchFlowConnectorPaths(view, $overview) {
         // FORWARD
 
         if(firstConditionItem) {
+          // FIRST CONDITION ITEM
+
           if(sameRow) {
-          // Create straight path to go from right corner of the branch
-          // to the x/y coordinates of the related 'next' destination.
+            // Create straight path to go from right corner of the branch
+            // to the x/y coordinates of the related 'next' destination.
             new ConnectorPath.ForwardPath({
               from_x: branchX,
               from_y: branchY - (rowHeight / 4),
@@ -681,26 +684,16 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             }, config);
           }
           else {
-            // NOT SAME ROW
+            // FORWARD (SO WE ALWAYS GO UP??)
 
-            if(nextColumn) {
-              new ConnectorPath.ForwardUpForwardPath({
-                from_x: branchX,
-                from_y: branchY - (rowHeight / 4),
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX
-              }, config);
-            }
-            else {
-              // NOT NEXT COLUMN
-
+            if(up) {
               new ConnectorPath.ForwardUpForwardDownPath({
                 from_x: branchX,
                 from_y: branchY - (rowHeight / 4),
                 to_x: destinationX,
                 to_y: destinationY,
-                via_x: conditionX
+                via_x: conditionX,
+                via_y: conditionY
               }, config);
             }
           }
