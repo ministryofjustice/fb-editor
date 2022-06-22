@@ -19,7 +19,6 @@
 
 const Dialog = require('./component_dialog');
 const DialogConfirmation = require('./component_dialog_confirmation');
-const Expander = require('./component_expander');
 const post = require('./utilities').post;
 
 
@@ -39,7 +38,6 @@ class DefaultController {
     this.$lastPoint = $(); // Use it to set a focal point in switching between components.
 
     isolatedMethodDeleteLinks();
-    addExpanderComponents();
 
     // To support keyboard navigation, try to set focus
     // for tabbing back to last important point.
@@ -129,21 +127,5 @@ function isolatedMethodDeleteLinks() {
     post(this.href, { _method: "delete" });
   });
 }
-
-
-/* Standard search and convert for any elements that have an expander
- * data-component attribute to make it easier to apply the effect
- * using only the template and avoid having to interact with JavaScript.
- */
-function addExpanderComponents() {
-  $("[data-component=Expander]").each(function() {
-    var $node = $(this);
-    var $activator = $node.find("h2");
-    new Expander($node, {
-      $activator: $activator
-    });
-  });
-}
-
 
 module.exports = DefaultController;

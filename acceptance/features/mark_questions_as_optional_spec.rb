@@ -6,7 +6,7 @@ feature 'Mark question as optional' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'change required fields to optional' do
@@ -33,12 +33,12 @@ feature 'Mark question as optional' do
 
   def then_I_should_pass_the_question_without_answering(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include('Service name goes here')
+      expect(page).to have_content('Service name goes here')
       page.click_button 'Start now'
-      expect(page.text).to include('Full name (Optional)')
+      expect(page).to have_content('Full name (Optional)')
       page.click_button 'Continue'
       expect(page.text).to_not include('Full name')
-      expect(page.text).to include('Option')
+      expect(page).to have_content('Option')
     end
   end
 end

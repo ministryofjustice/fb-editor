@@ -20,9 +20,12 @@
 const utilities = require('./utilities');
 const FormDialog = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
+const FlowItem = require('./component_flow_item');
+const FlowConditionItem = require('./component_flow_condition_item');
 const ConnectorPath = require('./component_flow_connector_path');
-const PageMenu = require('./component_page_menu');
-const ConnectionMenu = require('./component_connection_menu');
+const PageMenu = require('./components/menus/page_menu');
+const ConnectionMenu = require('./components/menus/connection_menu');
+const Expander = require('./component_expander');
 
 const COLUMN_SPACING = 100;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
@@ -56,10 +59,13 @@ ServicesController.edit = function() {
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
   view.$flowStandalone = $("#flow-standalone-pages");
+  view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
 
   createPageAdditionDialog(view);
   createPageMenus(view);
   createConnectionMenus(view);
+  createExpanderComponents();
+
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
   }
@@ -74,50 +80,6 @@ ServicesController.edit = function() {
   $("#main-content").addClass(JS_ENHANCEMENT_DONE);
 }
 
-
-/* VIEW SPECIFIC COMPONENT:
- * ------------------------
- * Positionable item in the flow
- **/
-class FlowItem {
-  constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowItem");
-
-    this.$node = $node;
-    this.id = $node.attr("data-fb-id");
-    this.next = $node.attr("data-next");
-    this.row = config.row;
-    this.column = config.column;
-    this.coords = {
-      x_in: config.x_in,
-      x_out: config.x_out,
-      y: config.y,
-    };
-
-  }
-}
-
-
-/* VIEW SPECIFIC COMPONENT:
- * ------------------------
- * Simple item to mimic FlowItem-like object but for the branch conditions.
- * Could also be renamed FlowBranchCondition class but we're trying to
- * highlight the similarities to a FlowItem (which could also be split into
- * two separate classes of FlowPage and FlowBranch but keeping things simple).
- **/
-class FlowConditionItem {
-  constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowConditionItem");
-
-    this.$node = $node;
-    this.from = $node.attr("data-from");
-    this.next = $node.attr("data-next");
-    this.row = config.row;
-    this.column = config.column;
-  }
-}
 
 /* VIEW SETUP FUNCTION:
  * --------------------
@@ -154,7 +116,10 @@ function createPageMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { 
+          my: "left top",
+          at: "left top",
+        }
       }
     });
 
@@ -171,7 +136,10 @@ function createConnectionMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { 
+          my: "left top",
+          at: "left top",
+        }
       }
     });
 
@@ -198,16 +166,11 @@ function createConnectionMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
-  createAndPositionFlowItems($container);
-
-  // TEMPORARY: BRANCHING FEATURE FLAG
-  if(!view.features.branching) {
-    positionAddPageButton();
-  }
+  createAndPositionFlowItems(view, $container);
   adjustOverviewHeight($container);
-  applyPageFlowConnectorPaths($container);
-  applyBranchFlowConnectorPaths($container);
-  applyRouteEndFlowConnectorPaths($container);
+  applyPageFlowConnectorPaths(view, $container);
+  applyBranchFlowConnectorPaths(view, $container);
+  applyRouteEndFlowConnectorPaths(view, $container);
   adjustOverlappingFlowConnectorPaths($container);
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
@@ -238,7 +201,7 @@ function layoutFormFlowOverview(view) {
 **/
 function layoutDetachedItemsOveriew(view) {
   var $container = view.$flowDetached;
-  var expander = $container.data("instance"); // Element is set as an Expander Component.
+  var expander = $container.find('.Expander').data("instance"); // Element is set as an Expander Component.
 
   // Make sure it's open on page load
   expander.open();
@@ -246,10 +209,10 @@ function layoutDetachedItemsOveriew(view) {
   // Add required scrolling to layout groups.
   $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
-    createAndPositionFlowItems($group);
+    createAndPositionFlowItems(view, $group);
     adjustOverviewHeight($group);
-    applyPageFlowConnectorPaths($group);
-    applyBranchFlowConnectorPaths($group);
+    applyPageFlowConnectorPaths(view, $group);
+    applyBranchFlowConnectorPaths(view, $group);
     adjustOverlappingFlowConnectorPaths($group);
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
@@ -263,9 +226,9 @@ function layoutDetachedItemsOveriew(view) {
  * Main function to find and position flow items (pages/branches/spacers)
  * within an overview layout.
 **/
-function createAndPositionFlowItems($overview) {
+function createAndPositionFlowItems(view, $overview) {
   var $columns = $(".column", $overview);
-  var rowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM, $overview)); // Design is thumbnail + same for spacing.
+  var rowHeight = view.page.flowItemsRowHeight;
   var left = 0;
 
   // Loop over found columns created from the flow
@@ -287,6 +250,8 @@ function createAndPositionFlowItems($overview) {
 
       // Creates FlowItem instances (boxes and diamonds) with positions data.
       new FlowItem($item, {
+        id: $item.attr("data-fb-id"),
+        next: $item.attr("data-next"),
         x_in: left,
         x_out: left + $item.outerWidth(),
         y: top + (rowHeight / 4),
@@ -316,6 +281,8 @@ function createAndPositionFlowItems($overview) {
 
         // Creates FlowConditionItem instances (speach bubbles) with simple data.
         new FlowConditionItem($condition, {
+          $form: $condition.attr("data-from"),
+          next: $condition.attr("data-next"),
           column: column,
           row: row + index
         });
@@ -394,7 +361,7 @@ function adjustOverviewHeight($overview) {
   // then the topOverlap will have capture the measurement of by how much.
   // Move the overview area down to avoid paths overlapping content above.
   if(topOverlap > 0) {
-    $overview.css("top", topOverlap + "px");
+    $overview.css("margin-top", topOverlap + "px");
   }
 
   // Adjustment to make the height over overview area contain the height
@@ -591,9 +558,9 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
  * Note: Due to Branches working a little differently in terms of arrow
  * design, they are excluded from this function and put in one of their own.
  **/
-function applyPageFlowConnectorPaths($overview) {
+function applyPageFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next]:not([data-next="trailing-route"])');
-  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
+  var rowHeight = view.page.flowItemsRowHeight;
 
   $items.each(function() {
     var $item = $(this);
@@ -629,9 +596,9 @@ function applyPageFlowConnectorPaths($overview) {
  * Note: Branches arrows are a bit different from those between pages, so
  * dealing with them separately from other page arrows.
  **/
-function applyBranchFlowConnectorPaths($overview) {
+function applyBranchFlowConnectorPaths(view, $overview) {
+  var rowHeight = view.page.flowItemsRowHeight;
   var $flowItemElements = $overview.find(SELECTOR_FLOW_ITEM);
-  var rowHeight = utilities.maxHeight($flowItemElements);
 
   $flowItemElements.filter(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
@@ -654,7 +621,7 @@ function applyBranchFlowConnectorPaths($overview) {
 
       var destinationX = $destination.position().left;
       var destinationY = $destination.position().top + (rowHeight / 4);
-      var conditionX = $condition.outerWidth(true) - 25 // 25 because we don't want lines to start at edge of column space
+      var conditionX = $condition.outerWidth(true) - 25; // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
       var halfBranchNodeWidth = (branchWidth / 2);
       var conditionColumn = condition.column;
@@ -792,9 +759,9 @@ function applyBranchFlowConnectorPaths($overview) {
     });
   });
 }
-function applyRouteEndFlowConnectorPaths($overview) {
+function applyRouteEndFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next="trailing-route"]');
-  var rowHeight = utilities.maxHeight($items); // There's always a starting page.
+  var rowHeight = view.page.flowItemsRowHeight;
 
   $items.each(function() {
     var $item = $(this);
@@ -937,6 +904,21 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
     }
   }
 }
+
+/* Standard search and convert for any elements that have an expander
+ * data-component attribute to make it easier to apply the effect
+ * using only the template and avoid having to interact with JavaScript.
+ */
+function createExpanderComponents() {
+  $("[data-component=Expander]").each(function() {
+    var $node = $(this);
+    new Expander($node, {
+      activator_source: $node.find('> h2').first(),
+      wrap_content: true,
+    });
+  });
+}
+
 
 
 module.exports = ServicesController;

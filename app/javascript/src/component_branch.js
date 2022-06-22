@@ -6,25 +6,32 @@
  * Creates a branch object from HTML in source
  *
  * Documentation:
+ *   [SOURCE] https://github.com/ministryofjustice/moj-forms-tech-docs/ ...
+ *   [VIEW  ] https://ministryofjustice.github.io/moj-forms-tech-docs/ ...
  *
- *     - jQueryUI
- *       https://api.jqueryui.com/dialog
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
+ *        ... documentation/services/editor/javascript/component-branch.html
  *
  **/
 
+
 const utilities = require('./utilities');
 const BranchDestination = require('./component_branch_destination');
-const EVENT_QUESTION_CHANGE = "BranchQuestionChange";
+const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
 
 
 /* Branch component
  * @$node  (jQuery node) Element found in DOM that should be enhanced.
  * @config (Object) Configurable key/value pairs.
+ *                  {
+ *                    css_classes_error: <Removes error classes on component and removes injected error elements by class match>
+ *                  }
  **/
 class Branch {
+  #config;
+  #conditions; // Stores created BranchConditions
+  #conditionCount; // TODO: Maybe remove if we can find way to use the #conditions.length
+  #index; // Index number of the Branch
+
   constructor($node, config) {
     var branch = this;
     var conf = utilities.mergeObjects({ branch: this }, config);
@@ -38,56 +45,85 @@ class Branch {
     $node.addClass("Branch");
     $node.data("instance", this);
 
-    this._config = conf;
-    this._conditionCount = 0;
-    this._conditions = {}; // Add only conditions that you want deletable to this.
+    this.#config = conf;
+    this.#conditions = [];
+    this.#conditionCount = 0;
+    this.#index = Number(conf.index);
     this.$node = $node;
     this.view = conf.view;
-    this._index = Number(conf.branch_index);
     this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new BranchConditionInjector($injector, conf);
     this.remover = new BranchRemover($remover, conf);
 
     // Create BranchCondition instance found in Branch.
-    this.$node.find(this._config.selector_condition).each(function(index) {
-      var condition = new BranchCondition($(this), conf);
-      if(index == 0) {
-        condition.$node.find(".BranchConditionRemover").hide(); // So we always have one condition.
-      }
-      branch._conditions[condition.$node.attr("id")] = condition; // Might only have id AFTER creation of BranchCondition.
-      branch._conditionCount++;
+    this.$node.find(this.#config.selector_condition).each(function(index) {
+      var $node = $(this);
+      branch.#conditionCount = index;
+      branch.#createCondition($node);
     });
 
     $(document).trigger('BranchCreate', this);
   }
 
   get index() {
-    return this._index;
+    return this.#index;
+  }
+
+  get conditions() {
+    return this.#conditions;
   }
 
   addCondition() {
-    var template = utilities.stringInject(this._config.template_condition, {
-      branch_index: this._index,
-      condition_index: ++this._conditionCount
-    });
+    var index = this.#conditionCount + 1;
+    var $node = $(utilities.stringInject(this.#config.template_condition, {
+      branch_index: this.#index,
+      condition_index: index // Need unique value only but would be nice to use BranchCondition.index instead.
+    }));
 
-    var $condition = $(template);
-    var condition = new BranchCondition($condition, this._config);
-    this._conditions[$condition.attr("id")] = condition;
-    this.conditionInjector.$node.before($condition);
+    this.#conditionCount = index;
+    this.#createCondition($node);
+    this.conditionInjector.$node.before($node);
   }
 
-  removeCondition(id) {
-    var $condition = this.$node.find("#" + id);
-    delete this._conditions[id];
-    $condition.remove();
+  removeCondition(condition) {
+    // Find and remove from conditions array
+    for(var i=0; i<this.#conditions.length; ++i) {
+      if(this.#conditions[i] == condition) {
+        this.#conditions.splice(i, 1);
+      }
+    }
+
+    this.#updateConditions();
   }
 
   destroy() {
-    $(document).trigger('BranchRemove', this.$node );
+    // 1. Anything specifig to this function here.
     this.$node.remove();
+
+    // 2. Then trigger the related event for listeners.
+    $(document).trigger('Branch_Destroy', this);
   }
-  
+
+  #createCondition($node) {
+    var condition = new BranchCondition($node, utilities.mergeObjects(this.#config, {
+      index: this.#conditionCount
+    }));
+
+    this.#conditions.push(condition);
+    this.#updateConditions();
+  }
+
+  #updateConditions() {
+    // Set whether it is the only one, or not.
+    if(this.#conditions.length < 2) {
+      this.$node.addClass("singleBranchCondition");
+    }
+    else {
+      this.$node.removeClass("singleBranchCondition");
+    }
+
+    this.$node.trigger("Branch_UpdateConditions");
+  }
 }
 
 
@@ -96,6 +132,9 @@ class Branch {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchCondition {
+  #config;
+  #index;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
     var $remover = $(conf.selector_condition_remove, $node);
@@ -108,8 +147,8 @@ class BranchCondition {
     $node.data("instance", this);
     $node.append($remover);
 
-    this._config = conf;
-    this._index = conf.branch._conditionCount;
+    this.#config = conf;
+    this.#index = conf.index;
     this.$node = $node;
     this.branch = conf.branch;
     this.question = new BranchQuestion($node.find(conf.selector_question), conf);
@@ -120,16 +159,16 @@ class BranchCondition {
   update(component, callback) {
     var url;
     if(component) {
-      url = utilities.stringInject(this._config.expression_url, {
+      url = utilities.stringInject(this.#config.answer_url, {
         component_id: component,
-        conditionals_index: this._config.branch._index,
-        expressions_index: this._index
+        branch_index: this.branch.index,
+        condition_index: this.#index
       });
 
       utilities.updateDomByApiRequest(url, {
         target: this.$node,
         done: ($node) => {
-          this.answer = new BranchAnswer($node, this._config);
+          this.answer = new BranchAnswer($node, this.#config);
           utilities.safelyActivateFunction(callback);
         }
       });
@@ -143,6 +182,11 @@ class BranchCondition {
       this.answer = null;
     }
   }
+
+  destroy() {
+    this.branch.removeCondition(this);
+    this.$node.remove();
+  }
 }
 
 
@@ -151,6 +195,8 @@ class BranchCondition {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchConditionInjector {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({ condition: this }, config);
 
@@ -161,7 +207,7 @@ class BranchConditionInjector {
       conf.branch.addCondition();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.branch = conf.branch;
     this.$node = $node;
   }
@@ -176,6 +222,8 @@ class BranchConditionInjector {
  *                       }
  **/
 class BranchConditionRemover {
+  #config;
+
   constructor($node, config) {
     var remover = this;
     var conf = utilities.mergeObjects({ condition: this }, config);
@@ -188,17 +236,17 @@ class BranchConditionRemover {
       remover.confirm();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.condition = conf.condition;
     this.$node = $node;
   }
 
   confirm() {
-    var dialog = this._config.dialog_delete;
-    var text = this._config.view.text;
+    var dialog = this.#config.dialog_delete;
+    var text = this.#config.view.text;
     if(dialog) {
       // If we have set a confirmation dialog, use it...
-      this._config.dialog_delete.open({
+      this.#config.dialog_delete.open({
         heading: text.dialogs.heading_delete_condition,
         content: text.dialogs.message_delete_condition,
         ok: text.dialogs.button_delete_condition
@@ -211,7 +259,7 @@ class BranchConditionRemover {
   }
 
   activate() {
-    this._config.branch.removeCondition(this._config.condition.$node.attr("id"));
+    this.condition.destroy();
   }
 }
 
@@ -221,6 +269,9 @@ class BranchConditionRemover {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchQuestion {
+  #config;
+  #index;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({
       css_classes_error: ""
@@ -235,13 +286,13 @@ class BranchQuestion {
       this.change(supported, select.value);
     });
 
-    if(conf.condition._index > 0) {
-      $node.find("label").text(config.question_label);
-    }
-
-    this._config = conf;
+    this.#config = conf;
     this.condition = conf.condition;
     this.$node = $node;
+  }
+
+  set label(label) {
+    this.$node.find("label").text(label);
   }
 
   disable() {
@@ -268,18 +319,18 @@ class BranchQuestion {
            this.enable();
            break;
       default:
-           this.enable();
            // Just trigger an event
-           $(document).trigger(EVENT_QUESTION_CHANGE, this.condition.branch);
+           $(document).trigger(EVENT_QUESTION_CHANGE, branch);
+           this.enable();
     }
   }
 
   clearErrorState() {
-    var classes = this._config.css_classes_error.split(" ");
+    var classes = this.#config.css_classes_error.split(" ");
 
     // First clear anything added by error() method.
     this.condition.$node.removeClass("error");
-    this.condition.$node.removeClass(this._config.css_classes_error);
+    this.condition.$node.removeClass(this.#config.css_classes_error);
 
     if(this._$error && this._$error.length > 0) {
       this._$error.remove();
@@ -287,9 +338,9 @@ class BranchQuestion {
     }
 
     // Second remove any template injected error messages identified by config.
-    this.condition.$node.find(this._config.selector_error_messsage).remove();
+    this.condition.$node.find(this.#config.selector_error_messsage).remove();
 
-    // Lastley remove any template injected error message classes identified by config.
+    // Lastly remove any template injected error message classes identified by config.
     for(var i=0; i < classes.length; ++i) {
       if(classes[i].length > 0) {
         this.$node.removeClass(classes[i]);
@@ -300,7 +351,7 @@ class BranchQuestion {
 
   error(type) {
     var $error = $("<p class=\"error-message\"></p>");
-    var errors = this._config.view.text.errors.branches;
+    var errors = this.#config.view.text.errors.branches;
     switch(type) {
       case "unsupported": $error.text(errors.unsupported_question);
         break;
@@ -319,12 +370,14 @@ class BranchQuestion {
  * @config (Object) Configurable key/value pairs.
  **/
 class BranchAnswer {
+  #config;
+
   constructor($node, config) {
     var conf = utilities.mergeObjects({}, config);
 
     $node.addClass("BranchAnswer");
     $node.data("instance", this);
-    this._config = conf;
+    this.#config = conf;
     this.$node = $node;
     
     this.showHideAnswers();
@@ -357,6 +410,9 @@ class BranchAnswer {
  * a specified branch node from the DOM.
  **/
 class BranchRemover {
+  #config;
+  #disabled = false;
+
   constructor($node, config) {
     var remover = this;
     var conf = utilities.mergeObjects({}, config);
@@ -366,35 +422,58 @@ class BranchRemover {
     $node.attr("aria-controls", conf.branch.$node.attr("id"));
     $node.on("click", (e) => {
       e.preventDefault();
-      remover.confirm();
+      remover.activate();
     });
 
-    this._config = conf;
+    this.#config = conf;
     this.branch = conf.branch;
     this.$node = $node;
   }
 
-  confirm() {
-    var dialog = this._config.dialog_delete;
-    var text = this._config.view.text;
-    if(dialog) {
-      // If we have set a confirmation dialog, use it...
-      this._config.dialog_delete.open({
-        heading: text.dialogs.heading_delete_branch,
-        content: text.dialogs.message_delete_branch,
-        ok: text.dialogs.button_delete_branch
-      }, this.activate.bind(this));
-    }
-    else {
-      // ... otherwise just activate the functionality.
-      this.activate();
-    }
+  disable() {
+    this.$node.addClass("disabled");
+    this.#disabled = true;
   }
 
+  enable() {
+    this.$node.removeClass("disabled");
+    this.#disabled = false;
+  }
+
+  isDisabled() {
+    return this.#disabled;
+  }
+
+  #action() {
+    // 1. Trigger the related event for listeners.
+    $(document).trigger("BranchRemover_Action", this);
+
+    // 2. Finally pass off to the branch.
+    this.branch.destroy();
+  }
+
+  // If a dialog confirmation action is required then we then trigger an event
+  // to be picked up by the view. We pass the BranchRemover instance and the
+  // required remover action to be handled by the view controller code.
+  #confirm() {
+    var remover = this;
+    $(document).trigger("BranchRemover_Confirm", {
+      instance: remover,
+      action: remover.#action.bind(remover)
+    });
+  }
+
+  // Check if confirmation is required or just run the action
   activate() {
-    this._config.branch.destroy();
+    if(this.#config.confirmation_remove) {
+      this.#confirm();
+    }
+    else {
+      this.#action();
+    }
   }
 }
+
 
 // Make available for importing.
 module.exports = Branch;

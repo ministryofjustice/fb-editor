@@ -9,6 +9,7 @@ feature 'Create a service' do
   let(:checkanswers_title) { 'Check your answers' }
   let(:confirmation_link_text) { I18n.t('actions.add_confirmation')  }
   let(:confirmation_title) { 'Application complete' }
+  let(:exit_link_text) { I18n.t('actions.add_exit')  }
   let(:exit_url) { 'exit' }
   let(:form_urls) do
     # page url links have the word "Edit" as a visually hidden span element
@@ -51,6 +52,7 @@ feature 'Create a service' do
     then_I_should_see_the_page_flow_in_order(order: form_urls)
     then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
     then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
+    then_I_should_not_be_able_to_add_page(start_page_title, exit_link_text)
   end
 
   scenario 'validates uniqueness of the service name' do
@@ -65,6 +67,7 @@ feature 'Create a service' do
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
     then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
+    and_I_add_a_content_page('Content Page')
     given_I_add_an_exit_page
     and_I_return_to_flow_page
     then_some_pages_should_be_unconnected
@@ -89,25 +92,25 @@ feature 'Create a service' do
   end
 
   def then_I_should_see_a_validation_message_for_required
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.blank', attribute: 'Give your form a name')
     )
   end
 
   def then_I_should_see_a_validation_message_for_min_length
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.too_short', attribute: 'Give your form a name', count: '3')
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.too_long', attribute: 'Give your form a name', count: '128')
     )
   end
 
   def then_I_should_see_the_unique_validation_message
-    expect(editor.text).to include(
+    expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.taken', attribute: 'Give your form a name')
     )
   end
@@ -125,10 +128,5 @@ feature 'Create a service' do
         'Application complete'
       ]
     )
-  end
-
-  def when_I_click_the_three_dots_button_on_the_confirmation_page
-    editor.hover_preview('Application complete')
-    and_I_click_on_the_three_dots
   end
 end

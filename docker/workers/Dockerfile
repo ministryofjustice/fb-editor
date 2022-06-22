@@ -6,7 +6,7 @@ RUN apk add git yarn build-base postgresql-contrib postgresql-dev bash libcurl c
 
 RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs npm
 
-ARG KUBE_VERSION="1.18.2"
+ARG KUBE_VERSION="1.21.0"
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v$KUBE_VERSION/bin/linux/amd64/kubectl
 RUN chmod u+x kubectl && mv kubectl /bin/kubectl
 

@@ -11,6 +11,7 @@
  *       https://api.jqueryui.com/
  *
  *     - TODO:
+ *       /documentation/services/editor/javascript/controller-branches.html
  *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
@@ -18,8 +19,9 @@
 
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
-const ActivatedMenu = require('./component_activated_menu');
+const ActivatedMenu = require('./components/menus/activated_menu');
 const Branch = require('./component_branch');
+const BranchInjector = require('./component_branch_injector');
 const BranchDestination = require('./component_branch_destination');
 const BRANCH_SELECTOR = ".branch";
 const BRANCH_ANSWER_SELECTOR = ".answer";
@@ -33,9 +35,15 @@ const BRANCH_QUESTION_SELECTOR = ".question";
 const BRANCH_INJECTOR_SELECTOR = "#add-another-branch";
 const BRANCH_ERROR_MESSAGE_SELECTOR = ".govuk-error-message" // Injected messages
 const CSS_CLASS_ERRORS = "error govuk-form-group--error" // Not a selector. Space separated list of classes.
+const EVENT_BRANCH_UPDATE_CONDITIONS = "Branch_UpdateConditions";
+const EVENT_QUESTION_CHANGE = "BranchQuestion_Change";
+const EVENT_BRANCH_REMOVER_ACTION = "BranchRemover_Action"
+const EVENT_BRANCH_REMOVER_CONFIRM = "BranchRemover_Confirm";
 
 
 class BranchesController extends DefaultController {
+  #branchIndex = 0;
+
   constructor(app) {
     super(app);
     this.api = app.api;
@@ -49,15 +57,27 @@ class BranchesController extends DefaultController {
     }
   }
 
-   /* Setup view for the create (new) action
+  get branchIndex() {
+    return this.#branchIndex;
+  }
+
+  set branchIndex(index) {
+    this.#branchIndex = index;
+  }
+
+  get branchNodes() {
+    return $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+  }
+
+  /* ACTION SETUP:
+   * Setup view for the create (new) action
    **/
   create() {
-    var $branches = $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR);
+    var $branches = this.branchNodes;
     var $injectors = $(BRANCH_INJECTOR_SELECTOR);
     var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
-    this._branchCount = 0;
-    this._branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
+    this.branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
 
     BranchesController.addBranchEventListeners(this)
     BranchesController.enhanceCurrentBranches.call(this, $branches);
@@ -67,36 +87,35 @@ class BranchesController extends DefaultController {
 }
 
 
-/* Find and enhance all current branches.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance all current branches.
  **/
 BranchesController.enhanceCurrentBranches = function($branches) {
   var view = this;
   $branches.each(function(index) {
-    var branch = BranchesController.createBranch.call(view, $(this));
-
-    // Remove the delete button to ensure we always have a default
-    // branch with one condition.
-    if(index == 0) {
-      branch.$node.find(".BranchRemover").eq(0).hide();
-    }
-
+    var branch = createBranch(view, $(this));
+    branch.$node.trigger(EVENT_BRANCH_UPDATE_CONDITIONS);
   });
+
+  updateBranches(view);
 }
 
 
-/* Find and enhance all elements that can add a new branch.
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance all elements that can add a new branch.
  **/
 BranchesController.enhanceBranchInjectors = function($injectors) {
-  var view = this;
   $injectors.each(function() {
-    new BranchInjector($(this), {
-      view: view
-    });
+    new BranchInjector($(this));
   });
 }
 
 
-/* Find and enhance 'otherwise' destination with same/similar functionality
+/* VIEW SETUP FUNCTION:
+ * --------------------
+ * Find and enhance 'otherwise' destination with same/similar functionality
  * to destination elmements found within Branch elements.
  **/
 BranchesController.enhanceBranchOtherwise = function($otherwise) {
@@ -111,34 +130,14 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
 }
 
 
-/* Find branch menu element and wrap with ActivatedMenu
- * functionality.
- **/
-BranchesController.addBranchMenu = function(branch) {
-  //var branch = args[0];
-  var $form = branch.$node.parent("form");
-  var $ul = branch.$node.find(".component-activated-menu");
-  var first = $(".Branch", $form).get(0) == branch.$node.get(0);
-  if(!first) {
-    new ActivatedMenu($ul, {
-      activator_text: app.text.branches.branch_edit,
-      container_classname: "SomeClassName",
-      container_id: utilities.uniqueString("activated-menu-"),
-      menu: {
-        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
-      }
-    });
-  }
-}
-
-
-/* Creates a new branch from a passed element and keeps
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Creates a new branch from a passed element and keeps
  * track of number of branches
  **/
-BranchesController.createBranch = function($node) {
-  var view = this;
+ function createBranch(view, $node) {
   var branch = new Branch($node, {
-    branch_index: this._branchCount,
+    index: view.branchIndex,
     css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: BRANCH_ANSWER_SELECTOR,
     selector_branch_remove: BRANCH_REMOVE_SELECTOR,
@@ -148,41 +147,150 @@ BranchesController.createBranch = function($node) {
     selector_destination: BRANCH_DESTINATION_SELECTOR,
     selector_error_messsage: BRANCH_ERROR_MESSAGE_SELECTOR,
     selector_question: BRANCH_QUESTION_SELECTOR,
-    expression_url: this.api.get_expression,
-    question_label: this.text.branches.label_question_and,
-    template_condition: this._branchConditionTemplate,
+    answer_url: view.api.get_expression,
     dialog_delete: view.dialogConfirmationDelete,
-    view: view
+    template_condition: view.branchConditionTemplate,
+    confirmation_remove: true,
+    view: view,
   });
 
-  if(branch.$node.find(".BranchAnswer").length < 1) {
-    branch.$node.find(".BranchConditionInjector").hide();
-  }
-  this._branchCount++;
+  // Add new branch view changes.
+  addBranchMenu(branch);
+  addBranchCombinator(branch)
+  $(document).trigger(EVENT_QUESTION_CHANGE, branch); // Need to set initial state of 'BranchConditionInjector'
+
+  // Register/update the index tracker.
+  view.branchIndex = view.branchIndex + 1;
+
+  // Since the first Question label should be IF with the
+  // following ones AND, we have a visual update issue when
+  // we delete the first one. This leaves us with AND, AND...
+  // instead of IF, AND. This listener will correct found
+  // incorrect labelling situations.
+  branch.$node.on(EVENT_BRANCH_UPDATE_CONDITIONS, function() {
+    for(var i=0; i<branch.conditions.length; ++i) {
+      if(i == 0) {
+        branch.conditions[i].question.label = view.text.branches.label_question_if;
+      }
+      else {
+        branch.conditions[i].question.label = view.text.branches.label_question_and;
+      }
+    }
+  });
+
   return branch;
 }
 
-BranchesController.addBranchCombinator = function(branch) {
-  if( branch.index != 0 ) {
-    branch.$node.before("<p class=\"branch-or\">or</p>");
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Find branch menu element and wrap with ActivatedMenu
+ * functionality.
+ **/
+function addBranchMenu(branch) {
+  var $form = branch.$node.parent("form");
+  var $ul = branch.$node.find(".component-activated-menu");
+  new ActivatedMenu($ul, {
+    activator_text: app.text.branches.branch_edit,
+    container_classname: "SomeClassName",
+    container_id: utilities.uniqueString("activated-menu-"),
+    menu: {
+      position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
+    }
+  });
+}
+
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Any actions that need to happen across all branches can be put here.
+ * Called after both branch create and destroy actions.
+ *
+ * 1. Design calls for the first item to hide it's delete button,
+ *    unless there is more than one Branch visible on screen.
+ *
+ * 2. Remove any inserted 'or' text that lingers in the wrong place
+ *    after a Branch removal action.
+ **/
+function updateBranches(view) {
+  var $first = view.branchNodes.eq(0);
+
+  // 1. (see above) Quite horrible but there are currently issues being overlooked with the design.
+  //    The desire is to hide the whole Branch menu activator when we do not want to delete the branch
+  //    but that doesn't take into account future situations where more than a delete item could be
+  //    part of the menu. For that reason, the BranchRemover has been updated with enable/disable
+  //    functionality that currently just adds a relevant class name so it's appearance can be
+  //    altered to suit. For now, to cater for the more radical 'hide the whole menu' approach, this
+  //    code is also adding a specific (rubbish jQuery/DOM based) alteration to achieve the design.
+  if(view.branchNodes.length > 1) {
+    $first.find(".ActivatedMenuActivator").show();
+    $first.data("instance").remover.enable();
   }
+  else {
+    $first.find(".ActivatedMenuActivator").hide();
+    $first.data("instance").remover.disable();
+  }
+
+  // 2. Remove first 'or'.
+  removeBranchCombinator(view.branchNodes.eq(0));
 }
 
-BranchesController.removeBranchCombinator = function(node) {
-    $(node).prev('.branch-or').first().remove();
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Design calls for the text 'or' between each branch component.
+ **/
+function addBranchCombinator(branch) {
+  branch.$node.before("<p class=\"branch-or\">or</p>");
 }
 
+
+/* VIEW HELPER FUNCTION:
+ * ---------------------
+ * Help to manage design requirement for 'or' text between branches.
+ **/
+function removeBranchCombinator($node) {
+  $node.prev('.branch-or').first().remove();
+}
+
+
+/* Add document level listeners for adjusting the view based on Branch events.
+ **/
 BranchesController.addBranchEventListeners = function(view) {
-  view.$document.on('BranchRemove', function(event, node){
-    BranchesController.removeBranchCombinator.call(view, node);
+  view.$document.on("Branch_Destroy", function(event, branch){
+    updateBranches(view);
   });
 
-  view.$document.on('BranchCreate', function(event, branch) {
-    BranchesController.addBranchMenu(branch);
-    BranchesController.addBranchCombinator(branch);
+  view.$document.on(EVENT_BRANCH_REMOVER_ACTION, function(event, remover) {
+    removeBranchCombinator(remover.branch.$node);
   });
 
-  view.$document.on('BranchQuestionChange', function(event, branch) {
+  view.$document.on("BranchInjector_Add", function() {
+    var url = utilities.stringInject(view.api.new_conditional, {
+      branch_index: String(view.branchIndex - 1) // Because BE adds +1 (also BE calls Branches Conditionals - yes, confusing!)
+    });
+
+    utilities.updateDomByApiRequest(url, {
+      target: view.branchNodes.last(),
+      type: "after",
+      done: function ($node) {
+        createBranch(view, $node);
+        updateBranches(view);
+      }
+    });
+  });
+
+  // We want to present a Confirmation Dialog before removing the Branch.
+  view.$document.on(EVENT_BRANCH_REMOVER_CONFIRM, function(event, data) {
+    console.log(data);
+      view.dialogConfirmationDelete.open({
+        heading: view.text.dialogs.heading_delete_branch,
+        content: view.text.dialogs.message_delete_branch,
+        ok: view.text.dialogs.button_delete_branch
+      }, data.action);
+  });
+
+  view.$document.on(EVENT_QUESTION_CHANGE, function(event, branch) {
     if(branch.$node.find(".BranchAnswer").length > 0) {
       branch.$node.find(".BranchConditionInjector").show();
     }
@@ -192,43 +300,6 @@ BranchesController.addBranchEventListeners = function(view) {
   });
 }
 
-/* Creates a BranchInjector object from passed $node.
- * BranchInjectors fetch new HTML for a branch that will
- * be added to the DOM and turned into a Branch object.
- **/
-class BranchInjector {
-  constructor($node, config) {
-    var injector = this;
-    var conf = utilities.mergeObjects({}, config);
-    this.view = conf.view;
-    this._config = conf;
-    $node.on("click", function(e) {
-      e.preventDefault();
-      injector.add();
-    });
-  }
-
-  /* Gets HTML for a new branch from api request
-   **/
-  add() {
-    var view = this.view;
-    var url = utilities.stringInject(this.view.api.new_conditional, {
-      conditional_index: String(this.view._branchCount - 1) // Because BE adds +1
-    });
-
-    utilities.updateDomByApiRequest(url, {
-      target: $(BRANCH_SELECTOR).not(BRANCH_OTHERWISE_SELECTOR).last(),
-      type: "after",
-      done: function ($node) {
-        BranchesController.createBranch.call(view, $node);
-      }
-    });
-  }
-}
-
-
-/* Creates a menu to control options for branches in the view
- **/
 
 /* We are creating new BranchCondition instances based on the original
  * HTML found. So that we can make each inserted component unique, we
@@ -251,7 +322,7 @@ class BranchInjector {
  * @$node (jQuery Node) HTML that will form the Branch
  **/
 function createBranchConditionTemplate($node) {
-  var $condition = $node.find(".condition").clone();
+  var $condition = $node.find(".condition").eq(0).clone();
   var html = "";
 
   // See IMPORTANT, above.
@@ -266,10 +337,18 @@ function createBranchConditionTemplate($node) {
     $condition.find(".govuk-error-message").remove();
     $condition.removeClass("govuk-form-group--error");
 
+    // Should not have a question selected so also get rid of answers from cloning.
+    $condition.find(".answer").remove();
+    $condition.find("option").attr("selected", false).eq(0).attr("selected", true);
+
     // Now take a copy of the HTML.
     html = $condition.get(0).outerHTML;
   }
+
   // html is a string, either empty or populated, so we should be safe from here.
+  // We are going to find the important data values from the cloned element and replace
+  // the number (index) parts with a finder label the FE code can search and replace on
+  // when we build new BranchConditions from this template html.
   html = html.replace(
           /branch_conditionals_attributes_0_expressions_attributes_0_(component|operator|field)/mig,
           "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_$1");
@@ -278,5 +357,6 @@ function createBranchConditionTemplate($node) {
           "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][$1]");
   return html;
 }
+
 
 module.exports = BranchesController;

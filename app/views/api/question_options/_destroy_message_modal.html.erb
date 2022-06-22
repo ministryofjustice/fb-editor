@@ -1,0 +1,15 @@
+<div class="component component-dialog component-dialog-api-request dialog-delete"
+     data-component="DialogApiRequest">
+
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('dialogs.heading_delete_option', label: @label) %>
+  </h3>
+  <p data-node="content">
+    <%= t('dialogs.message_delete') %>
+  </p>
+
+  <div class="ui-dialog-buttonset">
+    <button class="govuk-button govuk-button--warning ui-button" data-method="delete"><%= t('dialogs.button_delete_option') -%></button>
+    <button class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.button_cancel') %></button>
+  </div>
+</div>

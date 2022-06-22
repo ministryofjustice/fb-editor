@@ -39,6 +39,7 @@ function mergeObjects(a, b, ignore) {
   return a;
 }
 
+
 /* Nicety helper only, for those that prefer
  * to keep HTML strings out of code, where
  * possible.
@@ -61,6 +62,7 @@ function createElement(tag, text, classes) {
   }
   return document.body.appendChild(node);
 }
+
 
 /* Safe way to call a function that might not exist.
  * Example:
@@ -97,6 +99,7 @@ function safelyActivateFunction(func) {
 function isFunction(func) {
   return typeof(func) === 'function' || func instanceof Function;
 }
+
 
 /* Generates randomised number to add onto a passed string.
  * Useful when requiring unique ID values for dynamic elements.
@@ -292,7 +295,7 @@ function difference(a, b) {
 
 
 /* Returns a sorted copy of the passed array starting from low to high.
- * If input was detected to be not worthy, you'll get an empty in response.
+ * If input was detected to be not worthy, you'll get an empty Array in response.
  * @numbers (Array) Array of numbers
  **/
 function sortNumberArrayValues(numbers) {
@@ -335,6 +338,18 @@ function highestNumber(numbers) {
 
   return result;
 }
+/* Filter an object using a passed callback function
+  * @param {Object} obj - the object to be filtered
+  * @param {callable} predicate - function used for filtering, should return a
+  * boolean 
+  * @return {Object}
+  */
+function filterObject(obj, predicate) {
+  return Object.fromEntries(
+    Object.entries(obj).filter( predicate )
+  );
+}
+
 
 
 
@@ -359,5 +374,6 @@ module.exports  = {
   difference: difference,
   sortNumberArrayValues: sortNumberArrayValues,
   lowestNumber:lowestNumber,
-  highestNumber: highestNumber
+  highestNumber: highestNumber,
+  filterObject: filterObject,
 }

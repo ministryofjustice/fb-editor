@@ -19,7 +19,7 @@ class NewServiceGenerator
     end
 
     metadata['flow'] = start_page_flow_object(metadata)
-    metadata = add_cya_and_confirmation(metadata) if ENV['BRANCHING'] == 'enabled'
+    metadata = add_cya_and_confirmation(metadata)
     metadata['standalone_pages'] = footer_pages
     metadata
   end

@@ -23,9 +23,6 @@ RSpec.describe 'Expressions spec', type: :request do
           '<option value="67160ff1-6f7c-43a8-8bf6-49b3d5f450f6">Hell no!</option></select>'
         ]
       end
-      let(:expected_expression_index) do
-        'data-expression-index="1"'
-      end
       let(:expected_conditional_index) do
         'branch[conditionals_attributes][0]'
       end
@@ -52,10 +49,6 @@ RSpec.describe 'Expressions spec', type: :request do
         expected_answers.each do |answer|
           expect(response.body).to include(answer)
         end
-      end
-
-      it 'returns the correct expressions index' do
-        expect(response.body).to include(expected_expression_index)
       end
 
       it 'returns the correct conditional index' do

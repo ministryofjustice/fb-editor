@@ -161,7 +161,7 @@ html {
   padding-right: 100px;
   position: relative;
 
-  .ActivatedMenu_Activator {
+  .ActivatedMenuActivator {
     position: absolute;
     right: govuk-spacing(4);
     top: govuk-spacing(5);
@@ -188,6 +188,12 @@ html {
     border-left-color: $govuk-error-colour;
 
     &:after {
+      display: none;
+    }
+  }
+
+  &.singleBranchCondition {
+    .BranchConditionRemover {
       display: none;
     }
   }
@@ -318,6 +324,12 @@ html {
   padding-left: govuk-spacing(3);
 }
 
+.BranchRemover {
+  &.disabled {
+    display: none;
+  }
+}
+
 .branch-actions {
   @include container_panel;
   padding-bottom: govuk-spacing(4);
@@ -397,7 +409,7 @@ html {
 .EditableComponentCollectionItem {
   position: relative;
 
-  .ActivatedMenu_Activator {
+  .ActivatedMenuActivator {
     left: -40px;
     opacity: 0;
     position: absolute;
@@ -405,22 +417,30 @@ html {
   }
 
   &.active {
-    .ActivatedMenu_Activator {
+    .ActivatedMenuActivator {
       opacity: 1;
     }
   }
 }
 
 
+.EditableTextareaFieldComponent {
+  .govuk-character-count__message {
+    display: none; // We only want message shown in Runner
+  }
+}
+
+
 // Not nice but trying to work around some margin annoyance caused by GDS css
 [data-fb-pagetype="page.multiplequestions"] {
-  .EditableCollectionFieldComponent legend {
+  .EditableCollectionFieldComponent legend,
+  .EditableGroupFieldComponent {
 
     legend {
       display: contents;
     }
 
-    .ActivatedMenu_Activator {
+    .ActivatedMenuActivator {
       top: 45px;
     }
   }
@@ -433,11 +453,10 @@ html {
   }
 }
 
-.editableCollectionItemControls {
+.EditableCollectionItemMenu {
   z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
 
-  .ActivatedMenu_Menu {
-    border: none;
+  .ActivatedMenu {
     width: auto;
   }
 }
@@ -445,7 +464,7 @@ html {
 
 /* Injected/dynamic components
  * --------------------------- */
-.ActivatedMenu_Activator {
+.ActivatedMenuActivator {
   &.active {
     opacity: 1;
   }
@@ -590,46 +609,11 @@ html {
   top: calc(125px - 43px);
 }
 
-.flow-add-page-button {
-  // TEMPORARY: BRANCHING FEATURE FLAG
-  // This should be display:none only but the other css is required for supporting the
-  // old style view of Add Page button functionality due to shared branching on/off code.
-  border-radius: 0;
-  display: none;
-  height: auto;
-  padding: 5px 10px;
-  text-indent: 0;
-  white-space: nowrap;
-  width: auto;
-
-  &:after {
-    display: none;
-  }
-
-  &:before {
-	  content: "+";
-	  margin-right: 5px;
-  }
-}
-
 .flow-branch {
   height: 125px;
   width: 200px;
 
-  & > a {
-    box-sizing: border-box;
-    color: govuk-colour("black");
-	  display: inline-block;
-    margin-top: 30px;
-    padding: 0 40px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    width: inherit;
-  }
-
   img {
-    background-color: govuk-colour("white");
     height: 125px;
     left: 0;
     position: absolute;
@@ -637,6 +621,69 @@ html {
     width: inherit;
   }
 
+  & > a {
+    box-sizing: border-box;
+    color: govuk-colour("black");
+    display: block;
+    position: absolute;
+    top: 30px;
+    left: 48px;
+    right:48px;
+    bottom: 30px;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  // without clip-path support we use the imagemap, so hide the svg element
+  & svg {
+    display: none;
+  }
+
+  @supports(clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%)) {
+    // if the browser supports clip-path we don't need the imagemap
+    & img,
+    & map {
+      display: none;
+    }
+    
+    // make the link fill the whole area and clip it
+    & > a {
+     clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+     top: 0;
+     left: 0;
+     right:0;
+     bottom: 0;
+     padding: 30px 48px; // keep text area same as without clip-path
+    }
+    
+    // show the svg and make it fill the container
+    & svg {
+      display: block;
+      position: absolute;
+      height: 125px;
+      width: 200px;
+      z-index: -1; // ensure it remains 'under' the link
+      top: 0;
+      left: 0;
+    }
+    
+    svg polygon {
+      fill: #fff;
+      stroke: $govuk-link-colour;
+    }
+
+    & > a:focus {
+      // we're filling the svg on focus, so we don't need the box shadow as it
+      // makes the element break out of the diamond
+      box-shadow: none;
+    }
+
+    & > a:focus svg polygon  {
+      fill: govuk-colour('yellow');
+      stroke: govuk-colour('black');
+    }
+  }
+  
   .FlowItemMenuActivator {
     bottom: 10px;
     left: 82px;
@@ -645,18 +692,17 @@ html {
 }
 
 // Bit complicated but necessary for correct Activator hover (without JS intervention)
-.flow-branch a:hover ~ .ActivatedMenu_Activator,
-.flow-branch map:hover ~ .ActivatedMenu_Activator,
-.flow-branch .ActivatedMenu_Activator:hover,
-.flow-page .ActivatedMenu_Activator:hover,
-.flow-thumbnail:hover ~ .ActivatedMenu_Activator {
+.flow-branch a:hover ~ .ActivatedMenuActivator,
+.flow-branch map:hover ~ .ActivatedMenuActivator,
+.flow-branch .ActivatedMenuActivator:hover,
+.flow-page .ActivatedMenuActivator:hover,
+.flow-thumbnail:hover ~ .ActivatedMenuActivator {
   opacity: 1;
 }
 
 .ConnectionMenuActivator {
   display: inline-block;
   left: calc(100% + 10px);
-  // opacity: 0;
   overflow: hidden;
   position: absolute;
   top: 46px;
@@ -666,9 +712,15 @@ html {
     top: -17px;
   }
   
-  &:after {
-    content: '+';
-    top: -22px;
+  &::after {
+    content: url('../images/plus-blue.svg');
+    top: 0;
+  }
+  &:hover::after {
+    content: url('../images/plus-white.svg');
+  }
+  &:focus::after {
+    content:url('../images/plus-black.svg')
   }
 }
 
@@ -810,10 +862,6 @@ html {
     margin: 0 0 38px 0;
   } 
 
-  .Expander_container {
-    @include govuk-width-container($govuk-page-width);
-  }
-
   .flow-detached-group {
     position: relative;
   }
@@ -842,37 +890,6 @@ html {
   box-sizing: border-box;
   overflow: visible;
   position: relative;
-}
-
-
-/* Question Menu
- * ------------- */
-.QuestionMenu {
-  [data-action="required"].on {
-    position: relative;
-
-    span {
-      &:after {
-        border-color: $govuk-link-colour;
-        border-style: solid;
-        border-width: 0 2px 3px 0;
-        bottom: 13px;
-        content: "";
-        display: block;
-        height: 17px;
-        position: absolute;
-        right: 17px;
-        transform: rotate(45deg);
-        width: 6px;
-      }
-
-      &:hover {
-        &:after {
-          border-color: govuk-colour("white");
-        }
-      }
-    }
-  }
 }
 
 
@@ -1020,11 +1037,19 @@ html {
     font-weight: bold;
   }
 
-  .govuk-input {
+  .govuk-input:not(.govuk-date-input__input) {
     border: $govuk-border-width-form-element-error solid $govuk-error-colour;
 
     &:focus {
       border-color: $govuk-input-border-colour;
+    }
+  }
+
+  .govuk-date-input__input:not(.govuk-input--error) {
+    border: $govuk-border-width-form-element-error solid $govuk-input-border-colour;
+
+    &:focus {
+      border-color: $govuk-focus-colour;
     }
   }
 }

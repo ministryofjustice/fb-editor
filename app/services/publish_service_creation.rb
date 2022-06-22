@@ -12,14 +12,28 @@ class PublishServiceCreation
                 :publish_service_id
 
   validates :service_id, :version_id, :user_id, presence: true
-  validates :username,
-            :password,
-            presence: true,
-            if: :require_authentication?
-  validates :username, :password,
-            length: { minimum: 6, maximum: 50 },
-            if: :require_authentication?,
-            allow_blank: true
+  with_options if: :require_authentication? do |record|
+    record.validates :username, presence: { message: I18n.t(
+      'activemodel.errors.models.publish_service_creation.blank_username'
+    ) }
+    record.validates :username, allow_blank: true, length: {
+      minimum: 6,
+      maximum: 50,
+      message: I18n.t(
+        'activemodel.errors.models.publish_service_creation.username_too_short'
+      )
+    }
+    record.validates :password, presence: { message: I18n.t(
+      'activemodel.errors.models.publish_service_creation.blank_password'
+    ) }
+    record.validates :password, allow_blank: true, length: {
+      minimum: 6,
+      maximum: 50,
+      message: I18n.t(
+        'activemodel.errors.models.publish_service_creation.password_too_short'
+      )
+    }
+  end
 
   def save
     return false if invalid?
@@ -55,6 +69,10 @@ class PublishServiceCreation
       name: ServiceConfiguration::BASIC_AUTH_USER,
       deployment_environment: deployment_environment
     ).present?
+  end
+
+  def no_service_output?
+    send_by_email.blank? || (send_by_email.present? && service_email_output.blank?)
   end
 
   private
@@ -117,6 +135,25 @@ class PublishServiceCreation
   end
 
   def require_authentication?
-    require_authentication == REQUIRE_AUTHENTICATION
+    require_authentication == if deployment_environment == 'dev'
+                                '1'
+                              else
+                                REQUIRE_AUTHENTICATION
+                              end
+  end
+
+  def send_by_email
+    SubmissionSetting.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment
+    ).try(:send_email?)
+  end
+
+  def service_email_output
+    ServiceConfiguration.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment,
+      name: 'SERVICE_EMAIL_OUTPUT'
+    )
   end
 end

@@ -24,11 +24,10 @@ feature 'Preview form' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'preview_form_fixture')
   end
 
   scenario 'preview the whole form' do
-    given_I_add_all_pages_for_a_form
     preview_form = when_I_preview_the_form
     then_I_can_navigate_until_the_end_of_the_form(preview_form)
   end
@@ -46,61 +45,6 @@ feature 'Preview form' do
       page.find_link('Cookies').click
       expect(page.find('h1').text).to eq('Cookies')
     end
-  end
-
-  def given_I_add_all_pages_for_a_form
-    given_I_add_a_single_question_page_with_text
-    and_I_add_a_page_url('name')
-    when_I_add_the_page
-    when_I_update_the_question_name('Full name')
-    and_I_return_to_flow_page
-
-    given_I_add_a_multiple_question_page
-    and_I_add_a_page_url('multi')
-    when_I_add_the_page
-    and_I_change_the_page_heading(multiple_page_heading)
-    and_I_add_the_component(I18n.t('components.list.text'))
-    and_I_change_the_text_component(text_component_question)
-    when_I_update_the_question_name('Multiple Question page')
-    and_I_add_a_multiple_page_content_component(content: content_component)
-    and_I_add_the_component(I18n.t('components.list.textarea'))
-    and_I_change_the_textarea_component(textarea_component_question, component: 2)
-    when_I_save_my_changes
-    and_I_return_to_flow_page
-
-    given_I_add_a_content_page
-    and_I_add_a_page_url('content-page')
-    when_I_add_the_page
-    and_I_change_the_page_heading(content_page_heading)
-    when_I_save_my_changes
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_date
-    and_I_add_a_page_url('date-of-birth')
-    when_I_add_the_page
-    when_I_update_the_question_name('Date of birth')
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_checkboxes
-    and_I_add_a_page_url('favourite-fruit')
-    when_I_add_the_page
-    when_I_update_the_question_name('What is your favourite fruit?')
-    and_I_edit_the_option_items
-    and_I_make_the_question_optional
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_upload
-    and_I_add_a_page_url('file-upload')
-    when_I_add_the_page
-    when_I_update_the_question_name('Upload your file')
-    and_I_make_the_question_optional
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_email
-    and_I_add_a_page_url('email')
-    when_I_add_the_page
-    when_I_update_the_question_name('Email address')
-    and_I_return_to_flow_page
   end
 
   def and_I_add_a_multiple_page_content_component(content:)
@@ -126,11 +70,11 @@ feature 'Preview form' do
 
   def then_I_can_navigate_until_the_end_of_the_form(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include('Service name goes here')
+      expect(page).to have_content('Service name goes here')
       then_I_should_not_see_a_back_link
       page.click_button 'Start now'
 
-      expect(page.text).to include('Full name')
+      expect(page).to have_content('Full name')
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       page.click_button 'Continue'
@@ -138,7 +82,7 @@ feature 'Preview form' do
       page.fill_in 'Full name', with: 'Charmy Pappitson'
       page.click_button 'Continue'
 
-      expect(page.text).to include(content_component)
+      expect(page).to have_content(content_component)
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       page.click_button 'Continue'
@@ -147,12 +91,12 @@ feature 'Preview form' do
       page.fill_in textarea_component_question, with: 'R2-Detour'
       page.click_button 'Continue'
 
-      expect(page.text).to include(content_page_heading)
+      expect(page).to have_content(content_page_heading)
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       page.click_button 'Continue'
 
-      expect(page.text).to include('Date of birth')
+      expect(page).to have_content('Date of birth')
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       page.click_button 'Continue'
@@ -162,16 +106,16 @@ feature 'Preview form' do
       page.fill_in 'Year', with: '2002'
       page.click_button 'Continue'
 
-      expect(page.text).to include('What is your favourite fruit?')
+      expect(page).to have_content('What is your favourite fruit?')
       then_I_should_see_a_back_link
       and_I_select_an_option_item
       page.click_button 'Continue'
 
-      expect(page.text).to include('Upload your file')
+      expect(page).to have_content('Upload your file')
       then_I_should_see_a_back_link
       page.click_button 'Continue'
 
-      expect(page.text).to include('Email address')
+      expect(page).to have_content('Email address')
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       page.click_button 'Continue'
@@ -179,30 +123,30 @@ feature 'Preview form' do
       page.fill_in 'Email address', with: 'nymphadora.tonks@digital.justice.gov.uk'
       page.click_button 'Continue'
 
-      expect(page.text).to include('Check your answers')
-      expect(page.text).to include('Charmy Pappitson')
-      expect(page.text).to include('Car Car Binks')
-      expect(page.text).to include('R2-Detour')
-      expect(page.text).to include('03 June 2002')
-      expect(page.text).to include('Apples')
-      expect(page.text).to include('Upload your file')
-      expect(page.text).to include('nymphadora.tonks@digital.justice.gov.uk')
+      expect(page).to have_content('Check your answers')
+      expect(page).to have_content('Charmy Pappitson')
+      expect(page).to have_content('Car Car Binks')
+      expect(page).to have_content('R2-Detour')
+      expect(page).to have_content('03 June 2002')
+      expect(page).to have_content('Apples')
+      expect(page).to have_content('Upload your file')
+      expect(page).to have_content('nymphadora.tonks@digital.justice.gov.uk')
       then_I_should_not_see_optional_text
       then_I_should_see_a_back_link
       then_I_should_not_see_content_page_in_check_your_answers(page)
       then_I_should_not_see_content_components_in_check_your_answers(page)
 
       and_I_want_to_change_the_checkbox_answer
-      expect(page.text).to include('What is your favourite fruit?')
+      expect(page).to have_content('What is your favourite fruit?')
       and_I_unselect_an_option_item
       page.click_button 'Continue'
 
-      expect(page.text).to include('Check your answers')
-      expect(page.text).not_to include('Apples')
+      expect(page).to have_content('Check your answers')
+      expect(page).not_to have_content('Apples')
 
       page.click_button 'Accept and send application'
       then_I_should_not_see_a_back_link
-      expect(page.text).to include('Application complete')
+      expect(page).to have_content('Application complete')
     end
   end
 

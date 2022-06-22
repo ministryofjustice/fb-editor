@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     end
     resources :users
     resources :publish_services
+    get '/test-service/:test_service_name/(:fixture)', to: 'test_services#create', as: :test_service
+    get '/export-services', to: 'overviews#export_services'
 
     root to: "overviews#index"
   end
@@ -20,11 +22,12 @@ Rails.application.routes.draw do
   get '/metrics', to: 'metrics#show'
 
   # Auth0 routes
-  get "/auth/auth0/callback" => "auth0#callback", as: 'auth0_callback'
-  get "/auth/failure" => "auth0#failure"
+  get "/auth/auth0/callback", to: "auth0#callback", as: 'auth0_callback'
+  get "/auth/failure", to: "auth0#failure"
 
-  get '/signup_not_allowed' => 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
-  get '/signup_error/:error_type' => 'user_sessions#signup_error', as: 'signup_error'
+  get '/signup_not_allowed', to: 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
+  get '/signup_error/:error_type', to: 'user_sessions#signup_error', as: 'signup_error'
+  get '/unauthorised', to: 'user_sessions#unauthorised'
   resource :user_session, only: [:destroy]
 
   if Rails.env.development?
@@ -44,7 +47,7 @@ Rails.application.routes.draw do
       resources :settings, only: [:index]
       namespace :settings do
         resources :form_information, only: [:index, :create]
-
+        resources :form_analytics, only: [:index, :create]
         resources :submission, only: [:index] do
           collection do
             resources :email, only: [:index, :create]
@@ -60,6 +63,8 @@ Rails.application.routes.draw do
     resources :services do
       resources :flow, param: :uuid, only: [] do
         resources :destinations, only: [:new, :create]
+        get '/move/(:previous_flow_uuid)/(:previous_conditional_uuid)', to: 'move#targets', as: :move
+        post :move, to: 'move#change'
       end
 
       resources :pages, only: [:show] do
@@ -67,7 +72,13 @@ Rails.application.routes.draw do
 
         resources :questions, only: [] do
           get '/destroy-message', to: 'questions#destroy_message', as: :destroy_message
+          resources :question_options, only: [] do
+            get '/destroy-message', to: 'question_options#destroy_message', as: :destroy_message
+          end
         end
+
+        get '/component-validations/:component_id/:validator', as: :component_validations, to: 'component_validations#new'
+        post '/component-validations/:component_id/:validator', to: 'component_validations#create'
       end
 
       resources :branches, param: :previous_flow_uuid do

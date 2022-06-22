@@ -16,10 +16,9 @@
  **/
 
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
+const { mergeObjects } = require('./utilities'); 
 const editableComponent = require('./editable_components').editableComponent;
-const ContentMenu = require('./component_activated_content_menu');
+const ContentMenu = require('./components/menus/content_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
@@ -71,7 +70,13 @@ function createContentMenu() {
   $(document.body).append($ul);
 
   return new ContentMenu(component, $ul, {
-    activator_text: template.data("activator-text")
+    activator_text: template.data("activator-text"),
+    menu: {
+      position: {
+        my: "left top",
+        at: "left top",
+      }
+    }
   });
 }
 

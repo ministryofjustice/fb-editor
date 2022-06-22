@@ -4,7 +4,7 @@ feature 'Edit multiple questions page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:url) { 'hakuna-matata' }
-  let(:page_heading) { 'Star wars questions' }
+  let(:page_heading) { 'Hakuna Matata' }
   let(:text_component_question) do
     'C-3P0 is fluent in how many languages?'
   end
@@ -33,76 +33,82 @@ feature 'Edit multiple questions page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: fixture)
   end
 
-  scenario 'adding and updating components' do
-    given_I_have_a_multiple_questions_page
-    and_I_add_the_component(I18n.t('components.list.text'))
-    and_I_add_the_component(I18n.t('components.list.textarea'))
-    and_I_add_the_component(I18n.t('components.list.email'))
-    and_I_add_the_component(I18n.t('components.list.radios'))
-    and_I_add_the_component(I18n.t('components.list.checkboxes'))
-    and_I_update_the_components
-    when_I_save_my_changes
-    and_I_return_to_flow_page
-    preview_form = and_I_preview_the_form
-    then_I_can_answer_the_questions_in_the_page(preview_form)
+  context 'editing multiple questions page' do
+    let(:fixture) { 'multiple_questions_page_fixture' }
+
+    scenario 'adding and updating components' do
+      and_I_edit_the_page(url: page_heading)
+      and_I_add_the_component(I18n.t('components.list.text'))
+      and_I_add_the_component(I18n.t('components.list.textarea'))
+      and_I_add_the_component(I18n.t('components.list.email'))
+      and_I_add_the_component(I18n.t('components.list.radios'))
+      and_I_add_the_component(I18n.t('components.list.checkboxes'))
+      and_I_update_the_components
+      when_I_save_my_changes
+      and_I_return_to_flow_page
+      preview_form = and_I_preview_the_form
+      then_I_can_answer_the_questions_in_the_page(preview_form)
+    end
+
+    scenario 'deleting a text component' do
+      and_I_edit_the_page(url: page_heading)
+      and_I_add_the_component(I18n.t('components.list.text'))
+      and_I_add_the_component(I18n.t('components.list.textarea'))
+      and_I_change_the_text_component(text_component_question)
+      when_I_save_my_changes
+      when_I_want_to_select_component_properties('h2', text_component_question)
+      and_I_want_to_delete_a_component(text_component_question)
+      when_I_save_my_changes
+      and_the_component_is_deleted(text_component_question, remaining: 1)
+    end
+
+    scenario 'deleting an email component' do
+      and_I_edit_the_page(url: page_heading)
+      and_I_add_the_component(I18n.t('components.list.text'))
+      and_I_add_the_component(I18n.t('components.list.textarea'))
+      and_I_add_the_component(I18n.t('components.list.email'))
+      and_I_change_the_email_component(email_component_question)
+      when_I_save_my_changes
+      when_I_want_to_select_component_properties('h2', email_component_question)
+      and_I_want_to_delete_a_component(email_component_question)
+      when_I_save_my_changes
+      and_the_component_is_deleted(email_component_question, remaining: 2)
+    end
+
+    scenario 'deleting content components' do
+      and_I_edit_the_page(url: page_heading)
+      then_I_add_a_content_component(
+        content: content_component
+      )
+      when_I_save_my_changes
+      then_I_should_see_my_content(content_component)
+
+      when_I_want_to_select_component_properties('.output', content_component)
+      and_I_want_to_delete_a_content_component
+      when_I_save_my_changes
+      then_I_should_not_see_my_content(content_component)
+    end
   end
 
-  scenario 'deleting a text component' do
-    given_I_have_a_multiple_questions_page
-    and_I_add_the_component(I18n.t('components.list.text'))
-    and_I_add_the_component(I18n.t('components.list.textarea'))
-    and_I_change_the_text_component(text_component_question)
-    when_I_save_my_changes
-    when_I_want_to_select_component_properties('h2', text_component_question)
-    and_I_want_to_delete_a_component(text_component_question)
-    when_I_save_my_changes
-    and_the_component_is_deleted(text_component_question, remaining: 1)
-  end
+  context 'a form with branches' do
+    let(:fixture) { 'two_branching_points_fixture' }
 
-  scenario 'deleting an email component' do
-    given_I_have_a_multiple_questions_page
-    and_I_add_the_component(I18n.t('components.list.text'))
-    and_I_add_the_component(I18n.t('components.list.textarea'))
-    and_I_add_the_component(I18n.t('components.list.email'))
-    and_I_change_the_email_component(email_component_question)
-    when_I_save_my_changes
-    when_I_want_to_select_component_properties('h2', email_component_question)
-    and_I_want_to_delete_a_component(email_component_question)
-    when_I_save_my_changes
-    and_the_component_is_deleted(email_component_question, remaining: 2)
-  end
+    scenario 'deleting a component not used for branching' do
+      and_I_edit_the_page(url: 'Page g')
+      when_I_want_to_select_component_properties('h2', 'Question 1')
+      and_I_want_to_delete_a_component('Question 1')
+      and_the_component_is_deleted('Question 1', remaining: 1)
+    end
 
-  scenario 'deleting content components' do
-    given_I_have_a_multiple_questions_page
-    then_I_add_a_content_component(
-      content: content_component
-    )
-    when_I_save_my_changes
-    then_I_should_see_my_content(content_component)
-
-    when_I_want_to_select_component_properties('.output', content_component)
-    and_I_want_to_delete_a_content_component
-    when_I_save_my_changes
-    then_I_should_not_see_my_content(content_component)
-  end
-
-  scenario 'deleting a component not used for branching' do
-    given_I_have_a_form_with_pages
-    and_I_edit_the_page(url: 'Page g')
-    when_I_want_to_select_component_properties('h2', 'Question 1')
-   and_I_want_to_delete_a_component('Question 1')
-    and_the_component_is_deleted('Question 1', remaining: 1)
-  end
-
-  scenario 'deleting a component used for branching' do
-    given_I_have_a_form_with_pages
-    and_I_edit_the_page(url: 'Page g')
-    when_I_want_to_select_component_properties('h2', 'Question 2')
-    and_I_want_to_delete_a_branching_component('Question 2')
-    and_the_component_is_not_deleted('Question 2', remaining: 2)
+    scenario 'deleting a component used for branching' do
+      and_I_edit_the_page(url: 'Page g')
+      when_I_want_to_select_component_properties('h2', 'Question 2')
+      and_I_want_to_delete_a_branching_component('Question 2')
+      and_the_component_is_not_deleted('Question 2', remaining: 2)
+    end
   end
 
   def then_I_add_a_content_component(content:)
@@ -114,7 +120,7 @@ feature 'Edit multiple questions page' do
 
   def then_I_can_answer_the_questions_in_the_page(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include('Service name goes here')
+      expect(page).to have_content('Service name goes here')
       page.click_button 'Start now'
       page.fill_in 'C-3P0 is fluent in how many languages?',
         with: 'Fluent in over six million forms of communication.'
@@ -125,7 +131,7 @@ feature 'Edit multiple questions page' do
       page.choose '900 years old', visible: false
       page.check 'Prequels', visible: false
       page.click_button 'Continue'
-      expect(page.text).to include("Check your answers")
+      expect(page).to have_content("Check your answers")
     end
   end
 

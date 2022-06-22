@@ -31,5 +31,8 @@ module FbEditor
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.autoload_paths << "#{root}/app/models/component_validations"
+    config.active_model.i18n_customize_full_message = true
   end
 end

@@ -47,7 +47,7 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
  **/
 class FlowConnectorPath {
   constructor(points, config) {
-    var id = utilities.uniqueString("flowconnectorpath-");
+    var id = config.id || utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
                  container: $(),
                  top: 0,
@@ -64,6 +64,12 @@ class FlowConnectorPath {
     this.from = conf.from;
     this.to = conf.to;
 
+    // Base class does not expect to set any values for these.
+    this._dimensions = {
+                         original: {},
+                         lines: []
+                       }
+
     // Private
     this._config = conf;
     this._path = "";
@@ -73,7 +79,7 @@ class FlowConnectorPath {
     return this._path;
   }
 
-  build(path) {
+  build() {
     var flowConnectorPath = this;
 
     this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));

@@ -16,10 +16,11 @@
  **/
 
 
-const utilities = require('./utilities');
-const updateHiddenInputOnForm = utilities.updateHiddenInputOnForm;
-const ActivatedMenu = require('./component_activated_menu');
-
+const  { 
+  updateHiddenInputOnForm,
+  stringInject,
+}  = require('./utilities');
+const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const Content = require('./content');
@@ -28,12 +29,14 @@ const CheckboxesQuestion = require('./question_checkboxes');
 const RadiosQuestion = require('./question_radios');
 const DateQuestion = require('./question_date');
 const TextQuestion = require('./question_text');
-const TextareaQuestion = require('./question_text');
+const TextareaQuestion = require('./question_textarea');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
+const DialogValidation = require('./component_dialog_validation');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
+const Expander = require('./component_expander');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
@@ -63,6 +66,7 @@ PagesController.edit = function() {
   this.$editable = $(".fb-editable");
   this.dataController = dataController;
   this.dialogConfiguration = createDialogConfiguration.call(this);
+   
 
   workaroundForDefaultText(view);
   enhanceContent(view);
@@ -94,7 +98,7 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: dataController.$form });
+    new AddContent($node, { $form: dataController.$form, view: view });
   });
 
   // Enhance any Add Component buttons.
@@ -113,6 +117,7 @@ PagesController.edit = function() {
 
   addQuestionMenuListeners(view);
   addContentMenuListeners(view);
+  addEditableComponentItemMenuListeners(view);
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
@@ -130,26 +135,45 @@ PagesController.create = function() {
 
 class DataController {
   constructor(view) {
-    var controller = this;
     var $form = $("#editContentForm");
     this.text = view.text;
 
     $form.find(":submit").on("click", (event) => {
+      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
       $(event.target).prop("value", this.text.actions.saving );
     });
 
-    $form.on("submit", controller.update);
+    $form.on("submit", () => { 
+      this.update();
+      this.removeBeforeUnloadListener();
+    });
     this.$form = $form;
+  }
+  
+  beforeUnloadListener(event) {
+      event.preventDefault();
+      return event.returnValue = 'Changes you have made will not be saved';
+  }
+
+  addBeforeUnloadListener() {
+      window.addEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
+  }
+
+  removeBeforeUnloadListener() {  
+      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
   }
 
   saveRequired(required) {
     if(required) { 
       this.$form.find(":submit").prop("value", this.text.actions.save );
       this.$form.find(":submit").prop("disabled", false);
+      this.addBeforeUnloadListener();
     }
+
     else {
       this.$form.find(":submit").prop("value", this.text.actions.saved );
       this.$form.find(":submit").prop("disabled", true);
+      this.removeBeforeUnloadListener();
     }
   }
 
@@ -178,7 +202,7 @@ class AddComponent {
       preventDefault: true, // Stops the default action of triggering element.
       activator: $button,
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { at: "left top" }
       }
     });
 
@@ -207,7 +231,7 @@ class AddContent {
     this.$button = $button;
     this.$node = $node;
 
-    $button.on("click.AddContent", function() {
+    $button.on("click.AddContent", () => {
       updateHiddenInputOnForm(config.$form, fieldname, "content");
       config.$form.submit();
     });
@@ -260,6 +284,154 @@ function addQuestionMenuListeners(view) {
     view.dialogConfiguration.open({
       content: html
     }, (content) => { question.required = content } );
+  });
+
+  view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
+    const {question, validation} = details;
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    
+    new DialogValidation(apiUrl, {
+      activator: question.menu.selectedItem,
+      /* 
+       * Function runs after the modal content has been returned by the api
+       * as it is possible to open and edit the validations multiple times
+       * before saving.  We need to load the current validation state from the
+       * question data and apply it to the form.  As the values from the api
+       * could be out of date
+       */
+      onLoad: function(dialog) {
+        // Find fields that may be in the dialog
+        var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
+        var $valueField = dialog.$node.find('input[name="component_validation[value]"]');
+        var $dayField = dialog.$node.find('input[name="component_validation[day]"]');
+        var $monthField = dialog.$node.find('input[name="component_validation[month]"]');
+        var $yearField = dialog.$node.find('input[name="component_validation[year]"]');
+        var $charsRadio = dialog.$node.find('input[id="component_validation_characters"]');
+        var $wordsRadio = dialog.$node.find('input[id="component_validation_words"]');
+
+        switch(validation) {
+          case 'date_before':
+          case 'date_after':
+            // Destructure date value and use to populate or clear date fields in modal
+            var currentValue = question.data.validation[validation];
+            if(currentValue) {
+              let [currentYear, currentMonth, currentDay] = currentValue.split('-');
+              $dayField.val(currentDay);
+              $monthField.val(currentMonth);
+              $yearField.val(currentYear);
+            } else {
+              $dayField.val('');
+              $monthField.val('');
+              $yearField.val('');
+            }
+            break;
+          case 'min_string_length':
+            // Check the appropriate radio in the modal based on the validation type
+            var currentValue = question.data.validation['min_length'] || question.data.validation['min_word'];
+            if( question.data.validation.hasOwnProperty('min_length')) {
+              $charsRadio.prop('checked', true); 
+            }
+            if( question.data.validation.hasOwnProperty('min_word')) {
+              $wordsRadio.prop('checked', true); 
+            }
+            break;
+          case 'max_string_length':
+            // Check the appropriate radio in the modal based on the validation type
+            var currentValue = question.data.validation['max_length'] || question.data.validation['max_word'];
+            if( question.data.validation.hasOwnProperty('max_length')) {
+              $charsRadio.prop('checked', true); 
+            }
+            if( question.data.validation.hasOwnProperty('max_word')) {
+              $wordsRadio.prop('checked', true); 
+            }
+            break;
+          default:
+            var currentValue = question.data.validation[validation];
+            break;
+        }
+        
+        // If its a standard validationl just set the value filed to the current value
+        if($valueField) {
+          $valueField.val( currentValue ?? '');
+        }
+        
+        // Presence of current value indicates whether the validation is enabled/disabled
+        if(currentValue) {
+          $statusField.prop('checked', true);
+        } else {
+          $statusField.prop('checked', false);
+        } 
+      },
+
+      onRefresh: function(dialog) {
+        var $revealedInputs = dialog.$node.find('[data-component="Expander"]');
+        $revealedInputs.each(function() {
+          var $activator = $(this).parent().find('input[type="checkbox"]');
+          new Expander($(this), {
+            activator_source: $activator,
+            auto_open: $activator.prop('checked'),
+            wrap_content: false,
+          });
+        });
+      },
+
+      onSuccess: function(data) {
+        question.validation = data;
+      },
+
+      onError: function(data, dialog) {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      },
+    });
+  });
+}
+
+function addEditableComponentItemMenuListeners(view) {
+  view.$document.on('EditableCollectionItemMenuSelectionRemove', function(event, details) {
+    var { selectedItem, collectionItem } = details;
+
+    var dialog = view.dialog;
+    var path = selectedItem.data('api-path');
+
+    var questionUuid =  collectionItem.component.data._uuid;
+    var optionUuid =  collectionItem.data._uuid; 
+
+    var url = stringInject(path, { 
+      'question_uuid': questionUuid, 
+      'option_uuid': optionUuid ?? 'new', 
+    });
+
+    if( !optionUuid ) {
+      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
+    }
+
+    if( collectionItem.component.canHaveItemsRemoved() ) {
+      new DialogApiRequest(url, {
+        activator: selectedItem,
+        closeOnClickSelector: ".govuk-button",
+        build: function(dialog) {
+          dialog.$node.find("[data-method=delete]").on("click", function(e) {
+            e.preventDefault();
+            collectionItem.component.removeItem(collectionItem)
+          })
+        }
+      });
+    } else {
+      let dialogContent = '';
+      if (collectionItem.type == 'radios') {
+        dialogContent = view.text.dialogs.message_delete_radio_min;
+      } else if (collectionItem.type == 'checkboxes') {
+        dialogContent = view.text.dialogs.message_delete_checkbox_min;
+      } 
+      dialog.open({
+        heading: view.text.dialogs.heading_can_not_delete_option,
+        content: dialogContent,
+        ok: view.text.dialogs.button_understood,
+      });
+    }
   });
 }
 
@@ -384,6 +556,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     var question = new CheckboxesQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,
@@ -408,8 +581,6 @@ function enhanceQuestions(view) {
           item.component.removeItem(item);
         });
       }
-
-
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
@@ -417,6 +588,7 @@ function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     var question = new RadiosQuestion($(this), {
       form: view.dataController.$form,
+      view: view,
       text: {
         edit: view.text.actions.edit,
         itemAdd: view.text.option_add,
@@ -515,8 +687,6 @@ function editPageMultipleQuestionsViewCustomisations() {
 
 
 function editPageSingleQuestionViewCustomisations() {
-  // Hide menu options not required for SingleQuestion page
-  $(".QuestionMenu [data-action=remove]").hide();
   accessibilityQuestionViewEnhancements(this);
 }
 

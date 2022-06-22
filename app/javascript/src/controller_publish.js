@@ -66,11 +66,14 @@ PublishController.create = function() {
  **/
 class PublishForm {
   constructor($node) {
-    var $content = $node.find("fieldset");
+    var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
     var $submit = $node.find("input[type=submit]");
+
     new ContentVisibilityController($content, $radios);
     new ActivatedFormDialog($node, {
+      selectorErrors: ".govuk-error-message",
+      removeErrorClasses: "govuk-form-group--error",
       cancelText: app.text.dialogs.button_cancel,
       activatorText: $submit.val(),
       classes: {
@@ -79,11 +82,7 @@ class PublishForm {
     });
 
     this.$node = $node;
-    this.$errors = $(".govuk-error-message", $node);
-  }
 
-  hasError() {
-    return this.$errors.length > 0;
   }
 
   firstTimePublish() {
@@ -104,11 +103,13 @@ class PublishForm {
 class ContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
-    $radios.eq(0).on("change", this.toggle.bind(this));
-    $radios.eq(1).on("change", this.toggle.bind(this));
-    this.$content = $content;
-    this.$radios = $radios;
-    this.toggle();
+    if($radios.length > 0) {
+      $radios.eq(0).on("change", this.toggle.bind(this));
+      $radios.eq(1).on("change", this.toggle.bind(this));
+      this.$content = $content;
+      this.$radios = $radios;
+      this.toggle();
+    }
   }
 
   toggle() {

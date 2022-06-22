@@ -85,16 +85,18 @@
   text-indent: -10000px;
   width: 35px;
 
+  &:hover {
+    border-color: $govuk-link-colour;
+    outline: none;
+  }
+
   &:focus {
     @include focus;
     border-color: $govuk-focus-colour;
     outline: none;
   }
 
-  &:hover {
-    border-color: $govuk-link-colour;
-    outline: none;
-  }
+
 
   &.destructive:focus,
   &.destructive:hover {

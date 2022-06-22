@@ -1,11 +1,19 @@
 <script>
   var app = {
     api: {
-      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{conditional_index}",
-      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{conditionals_index}/expressions/#{expressions_index}"
-    },
-    features: {
-      branching: <%= ENV['BRANCHING'] == 'enabled' %>
+      // FE terminology    | BE terminology
+      // --------------------------------------------------------
+      // Branching Node    | Branch
+      // Branch            | Conditional
+      // BranchCondition   | Expression
+      // BranchQuestion    | (Expression Answers) Component
+      // BranchAnswer      | (Expression Answers) Operator+Field
+      new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{branch_index}",
+      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{branch_index}/expressions/#{condition_index}",
+      // Feaures switches here (as per example below).
+      features: {
+        /* example: <%= ENV['EXAMPLE_FEATURE'] == 'enabled' %> */
+      }
     },
     page: {
       id: "<%= params[:page_uuid] %>",
@@ -28,7 +36,8 @@
         branch_add: "<%= t('branches.branch_add') %>",
         condition_add: "<%= t('branches.condition_add') %>",
         condition_remove: "<%= t('branches.condition_remove') %>",
-        label_question_and: "<%= t('branches.expression.and') %>"
+        label_question_and: "<%= t('branches.expression.and') %>",
+        label_question_if: "<%= t('branches.expression.if') %>"
       },
       errors: {
         branches: {
@@ -40,6 +49,7 @@
       question_optional_flag: "<%= t('question.optional_flag') %>",
       dialogs: {
         button_change_destination: "<%= t('dialogs.destination.button_change') %>",
+        button_move: "<%= t('dialogs.move.button') %>",
         button_cancel: "<%= t('dialogs.button_cancel') %>",
         button_delete: "<%= t('dialogs.button_delete') %>",
         button_delete_condition: "<%= t('dialogs.button_delete_condition') %>",
@@ -49,16 +59,20 @@
         button_delete_page: "<%= t('dialogs.button_delete_page') %>",
         button_ok: "<%= t('dialogs.button_ok') %>",
         button_publish: "<%= t('publish.dialog.alert_button') %>",
+        button_understood: "<%= t('dialogs.button_understood') -%>",
         heading: "<%= t('dialogs.heading') %>",
         heading_delete: '<%= t('dialogs.heading_delete').html_safe %>',
         heading_delete_condition: "<%= t('dialogs.heading_delete_condtition').html_safe %>",
         heading_delete_branch: "<%= t('dialogs.heading_delete_branch').html_safe %>",
         heading_delete_option: '<%= t('dialogs.heading_delete_option').html_safe %>',
+        heading_can_not_delete_option: "<%= t('question_items.delete_modal.can_not_delete_heading').html_safe -%>",
         heading_publish: "<%= t('publish.dialog.alert_heading') %>",
         message: "<%= t('dialogs.message') %>",
         message_delete: "<%= t('dialogs.message_delete') %>",
         message_delete_branch: "<%= t('dialogs.message_delete_branch') %>",
-        message_publish: "<%= t('publish.dialog.alert_text').html_safe %>"
+        message_publish: "<%= t('publish.dialog.alert_text').html_safe %>",
+        message_delete_radio_min: "<%= t('question_items.min_items_modal.can_not_delete_radios_message').html_safe -%>",
+        message_delete_checkbox_min: "<%= t('question_items.min_items_modal.can_not_delete_checkboxes_message').html_safe -%>"
       },
       actions: {
         edit: "<%= t('actions.edit') %>",

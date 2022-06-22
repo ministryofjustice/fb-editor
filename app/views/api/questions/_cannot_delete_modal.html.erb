@@ -1,8 +1,12 @@
- <div class="component component-dialog component-dialog-delete" id="dialog-confirmation-delete">
-   <h3 data-node="heading" class="govuk-label govuk-label--m">
-     <%= t('questions.delete_modal.can_not_delete_heading') %>
-   </h3>
-   <p data-node="content">
-     <%= t('questions.delete_modal.can_not_delete_message') %>
-   </p>
+<div class="component component-dialog component-dialog-delete" id="dialog-confirmation-delete">
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('questions.delete_modal.can_not_delete_heading') %>
+  </h3>
+  <p data-node="content">
+    <%= t('questions.delete_modal.can_not_delete_message') %>
+  </p>
+
+  <div class="ui-dialog-buttonset">
+    <button class="govuk-button ui-button"><%= t('dialogs.button_understood') %></button>
+  </div>
 </div>

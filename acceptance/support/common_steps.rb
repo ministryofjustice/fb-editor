@@ -6,7 +6,7 @@ module CommonSteps
     I18n.t('default_text.content'),
     I18n.t('default_text.option_hint')
   ].freeze
-  ERROR_MESSAGE = 'There is a problem'.freeze
+  ERROR_MESSAGE = I18n.t('activemodel.errors.summary_title').freeze
   DELETE_WARNING = [
     I18n.t('pages.flow.delete_warning_cya_page'),
     I18n.t('pages.flow.delete_warning_confirmation_page'),
@@ -15,6 +15,7 @@ module CommonSteps
 
   def given_I_am_logged_in
     editor.load
+    page.find(:css, '#main-content', visible: true)
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
@@ -32,7 +33,7 @@ module CommonSteps
         "document.getElementById('btn-login').click()"
       )
     else
-      editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
+      editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
 
@@ -41,11 +42,16 @@ module CommonSteps
 
   def given_I_have_a_service(service = service_name)
     editor.load
+    page.find(:css, '#main-content', visible: true)
     given_I_want_to_create_a_service
     given_I_add_a_service(service)
     when_I_create_the_service
   end
   alias_method :when_I_try_to_create_a_service_with_the_same_name, :given_I_have_a_service
+
+  def given_I_have_a_service_fixture(name: generate_service_name, fixture: nil)
+    visit admin_test_service_path(name, fixture)
+  end
 
   def given_I_have_another_service
     given_I_have_a_service(another_service_name)
@@ -156,13 +162,25 @@ module CommonSteps
     editor.edit_service_link(service_name).click
   end
 
+  def and_I_add_a_content_page(page_title)
+    given_I_add_a_content_page
+    and_I_add_a_page_url(page_title)
+    when_I_add_the_page
+    and_I_change_the_page_heading(page_title)
+    when_I_save_my_changes
+    and_I_return_to_flow_page
+  end
+
   def and_I_edit_the_page(url:)
     page.find('.govuk-link', text: url).click
   end
 
   def and_I_return_to_flow_page
-    editor.pages_link.click
-    sleep 0.5 
+    accept_alert(wait: 1) { editor.pages_link.click }
+    rescue Capybara::ModalNotFound
+      editor.pages_link.click
+    ensure
+    sleep 0.5
     page.find('#main-content', visible: true)
   end
 
@@ -216,7 +234,7 @@ module CommonSteps
       expect(
         page.find('button', text: 'Continue')
       ).to_not be_disabled
-      expect(page.text).to include('Question')
+      expect(page).to have_content('Question')
       then_I_should_not_see_optional_text
       yield if block_given?
     end
@@ -305,33 +323,44 @@ module CommonSteps
   end
 
   def then_I_should_not_see_optional_text
-    OPTIONAL_TEXT.each { |optional| expect(page.text).not_to include(optional) }
+    OPTIONAL_TEXT.each { |optional| expect(page).not_to have_content(optional) }
   end
 
   def then_I_should_see_an_error_message(*fields)
-    expect(page.text).to include(ERROR_MESSAGE)
+    expect(page).to have_content(ERROR_MESSAGE)
     if fields.empty?
-      expect(page.text).to include('Enter an answer for')
+      expect(page).to have_content('Enter an answer for')
     else
-      fields.each { |field| expect(text).to include("Enter an answer for #{field}")}
+      fields.each { |field| expect(text).to include("Enter an answer for \"#{field}\"")}
     end
   end
 
   def then_I_should_see_my_content(*expected_text)
-    expected_text.each { |text| expect(page.text).to include(text)}
+    expected_text.each { |text| expect(page).to have_content(text)}
   end
 
   def then_I_should_not_see_my_content(*expected_text)
-    expected_text.each { |text| expect(page.text).to_not include(text)}
+    expected_text.each { |text| expect(page).to_not have_content(text)}
   end
 
   def when_I_want_to_select_component_properties(attribute, text)
     page.find(attribute, text: text).click
-    page.first('.ActivatedMenu_Activator').click
+    page.first('.ActivatedMenuActivator', visible: true).click
   end
 
   def and_I_click_on_the_three_dots
+    sleep(1)
     editor.three_dots_button.click
+  end
+
+  def and_I_click_on_the_page_menu(flow_title)
+    editor.flow_thumbnail(flow_title).hover
+    and_I_click_on_the_three_dots
+  end
+
+  def and_I_click_on_the_branching_point_menu(branch_title)
+    editor.hover_branch(branch_title)
+    and_I_click_on_the_three_dots
   end
 
   def and_I_click_on_the_connection_menu
@@ -345,25 +374,19 @@ module CommonSteps
     end
   end
 
-  def then_I_should_only_see_three_options_on_page_menu
-    options = all('.ui-menu-item').map(&:text)
-    expect(options).to eq([
-      I18n.t('actions.edit_page'),
-      I18n.t('actions.preview_page'),
-      I18n.t('actions.delete_page')
-    ])
-  end
-
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
-    expect(editor.text).not_to include(page_link)
+    sleep(1)
+    expect(editor).not_to have_content(page_link)
+    editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
   def then_I_should_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
-    expect(editor.text).to include(page_link)
+    expect(editor).to have_content(page_link)
+    editor.flow_thumbnail(page_title).hover #hides the connection menu
   end
 
   def then_I_should_see_default_service_pages
@@ -375,38 +398,52 @@ module CommonSteps
   end
 
   def and_I_delete_cya_page
-    editor.flow_thumbnail('Check your answers').hover
-    and_I_click_on_the_three_dots
+    and_I_click_on_the_page_menu('Check your answers')
     editor.delete_page_link.click
     and_I_click_delete
   end
 
   def when_I_delete_confirmation_page
-    editor.flow_thumbnail('Application complete').hover
-    and_I_click_on_the_three_dots
+    and_I_click_on_the_page_menu('Application complete')
     editor.delete_page_link.click
     and_I_click_delete
   end
 
   def then_I_should_not_see_delete_warnings
     find('#main-content', visible: true)
-    expect(editor.text).not_to include(DELETE_WARNING[0])
-    expect(editor.text).not_to include(DELETE_WARNING[1])
-    expect(editor.text).not_to include(DELETE_WARNING[2])
+    expect(editor).not_to have_content(DELETE_WARNING[0])
+    expect(editor).not_to have_content(DELETE_WARNING[1])
+    expect(editor).not_to have_content(DELETE_WARNING[2])
   end
 
   def then_I_should_see_delete_warning_cya
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[0])
+    expect(editor).to have_content(DELETE_WARNING[0])
   end
 
   def then_I_should_see_delete_warning_confirmation
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[1])
+    expect(editor).to have_content(DELETE_WARNING[1])
   end
 
   def then_I_should_see_delete_warning_both
     find('#main-content', visible: true)
-    expect(editor.text).to include(DELETE_WARNING[2])
+    expect(editor).to have_content(DELETE_WARNING[2])
+  end
+
+  def then_I_should_see_the_modal(modal_title, modal_text)
+    expect(page).to have_selector('.ui-dialog', visible: true)
+    within('.ui-dialog', visible: true) do
+      expect(page).to have_content modal_title
+      expect(page).to have_content modal_text
+    end
+  end
+
+  def and_I_close_the_modal(button_text=nil)
+    if button_text
+      click_button(button_text);
+    else
+      click_button('.ui-dialog-titlebar-close')
+    end
   end
 end

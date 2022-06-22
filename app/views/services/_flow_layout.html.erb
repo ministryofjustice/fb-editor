@@ -9,25 +9,24 @@
     </article>
 
   <% elsif item[:type] == 'warning' %>
-    <% if ENV['BRANCHING'] == 'enabled' %>
-    <div class="govuk-warning-text">
-        <article class="flow-item flow-warning" aria-hidden="true">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span><%= item[:content] %></span>
-          </strong>
-        </article>
-      </div>
-    <% end %>
+  <div class="govuk-warning-text">
+      <article class="flow-item flow-warning" aria-hidden="true">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+          <span><%= item[:content] %></span>
+        </strong>
+      </article>
+    </div>
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>
-      <article class="flow-item flow-branch" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>">
-        <%= image_pack_tag "diamond.svg",  :usemap => "#thumbnail-#{index}" %>
-        <map name="thumbnail-<%= index %>" aria-hidden="true">
-          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>">
+      <article class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
+        <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{item[:uuid]}", alt: "", role: "presentation" %>
+        <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
+          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>" tabindex="-1">
         </map>
-        <%= flow_text_link(item) %>
+        <%= flow_branch_link(item) %>
+        <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
         <ul class="flow-conditions">
           <% item[:conditionals].each_with_index do |condition, index| %>
             <li class="flow-condition" data-from="<%= "#{item[:uuid]}-#{index}" %>" data-next="<%= condition[:next] %>">
@@ -48,12 +47,11 @@
                     <span class="condition-operator"><%= t("branches.expression.and") -%></span>
                   <% end %>
                 <% end %>
-              </div> 
+              </div>
               <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
             </li>
           <% end %>
         </ul>
-        <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
       </article>
     <% else %>
 

@@ -31,7 +31,7 @@ module.exports = function(api) {
           forceAllTransforms: true,
           useBuiltIns: 'entry',
           corejs: 3,
-          modules: false,
+          modules: 'cjs',
           exclude: ['transform-typeof-symbol']
         }
       ]

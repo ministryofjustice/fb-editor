@@ -16,10 +16,12 @@
  **/
 
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
+const { 
+  mergeObjects,
+  filterObject,
+}  = require('./utilities');
 const editableComponent = require('./editable_components').editableComponent;
-const QuestionMenu = require('./component_activated_question_menu');
+const  QuestionMenu = require('./components/menus/question_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea";
@@ -66,8 +68,44 @@ class Question {
       this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
     }
 
-    this.menu.setRequiredViewState();
+    this.menu.setEnabledValidations();
     this.setRequiredFlag();
+  }
+  
+  /*
+  * Applies the validation settings to the questions data.validations key
+  * @param {Object} config - the settings for the validation to be applied
+  *                          expected format: { validationName: value }
+  *                          
+  */ 
+  set validation(config) {
+    let [validationName, _] = Object.entries(config)[0];
+    let data = this.data.validation;
+    
+    // Merge our new validation data with the current data on the question
+    data =  mergeObjects(data, config);
+    // Remove keys with empty values 
+    data = filterObject(data, ([_, val]) => val != '' ); 
+  
+    // Ensure we don't have conflicting min_length/word and max_length/word keys
+    switch(validationName) {
+      case 'min_length':
+        data = filterObject(data, ([key, _]) => key != 'min_word');         
+        break;
+      case 'min_word':
+        data = filterObject(data, ([key, _]) => key != 'min_length');  
+        break;
+      case 'max_length':
+        data = filterObject(data, ([key, _]) => key != 'max_word');
+      break;
+      case 'max_word':
+        data = filterObject(data, ([key, _]) => key != 'max_length');
+      break;
+    }
+
+    this.data.validation = data;
+    this.menu.setEnabledValidations();
+    this.editable.emitSaveRequired();
   }
 
 
@@ -112,7 +150,7 @@ class Question {
  **/
 function createQuestionMenu() {
   var question = this;
-  var template = $("[data-component-template=QuestionMenu]");
+  var template = $("[data-component-template=QuestionMenu_"+question.data._uuid+"]");
   var $ul = $(template.html());
 
   // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
@@ -121,7 +159,13 @@ function createQuestionMenu() {
   return new QuestionMenu($ul, {
     activator_text: template.data("activator-text"),
     $target: question.$heading,
-    question: question
+    question: question,
+    menu: {
+      position: { 
+        my: "left top",
+        at: "left top",
+      }
+    }
   });
 }
 

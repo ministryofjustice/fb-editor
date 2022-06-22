@@ -1,6 +1,3 @@
-<%# ----------------------------------------------------------------------------------------------------- %>
-<%# TODO: update template when removing BRANCHING flag %>
-
 <%= link_to t('actions.preview_form'),
   preview_service_path(service.service_id),
   class: 'govuk-button fb-govuk-button fb-preview-button',
@@ -8,7 +5,7 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
-<%# Flow overview layout for pages, branchs, and conditions %>
+<%# Flow overview layout for pages, branches, and conditions %>
 <section id="flow-overview">
   <% @pages_flow.each do |collection| %>
     <div class="column">
@@ -19,7 +16,7 @@
   <% end %>
 </section>
 
-<% if ENV['BRANCHING'] == 'enabled' && @detached_flows.present? %>
+<% if @detached_flows.present? %>
   <section id="flow-detached" data-component="Expander">
     <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
     <p class="help">

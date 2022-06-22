@@ -4,6 +4,7 @@ feature 'Edit single radios question page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'star-wars-question' }
+  let(:pre_edit_title) { 'Star Wars Question' }
   let(:question) do
     'Which program do Jedi use to open PDF files?'
   end
@@ -14,18 +15,18 @@ feature 'Edit single radios question page' do
     ['Adobe-wan Kenobi', 'PDFinn', 'Jar Jar Binks']
   end
   let(:options_after_deletion) do
-    ['Adobe-wan Kenobi', 'PDFinn']
+    ['Adobe-wan Kenobi', 'Jar Jar Binks']
   end
   let(:section_heading) { 'I open at the close' }
   let(:default_section_heading) { I18n.t('default_text.section_heading') }
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'radios_page_fixture')
   end
 
   scenario 'when editing the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     and_I_have_optional_section_heading_text
     when_I_update_the_question_name
     and_I_update_the_options
@@ -37,7 +38,7 @@ feature 'Edit single radios question page' do
   end
 
   scenario 'when adding an option to the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options
     and_I_add_an_option('Jar Jar Binks')
@@ -48,12 +49,18 @@ feature 'Edit single radios question page' do
   end
 
   scenario 'when deleting an option from the radio component' do
-    given_I_have_a_single_question_page_with_radio
+    and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options
+    and_I_want_to_delete_an_option('Adobe-wan Kenobi')
+    then_I_should_see_the_modal(
+      I18n.t('question_items.delete_modal.can_not_delete_heading'),
+      I18n.t('question_items.min_items_modal.can_not_delete_radios_message')
+    )
+    and_I_close_the_modal(I18n.t('dialogs.button_understood'))
     and_I_add_an_option('Jar Jar Binks')
     then_I_should_see_the_options(options_after_addition)
-    and_I_delete_an_option('Jar Jar Binks')
+    and_I_delete_an_option('PDFinn')
     then_I_should_see_the_options(options_after_deletion)
     and_I_return_to_flow_page
     preview_form = then_I_should_see_my_changes_on_preview
@@ -77,7 +84,7 @@ feature 'Edit single radios question page' do
     and_I_edit_the_question
     when_I_save_my_changes
   end
-  
+
   def and_I_edit_the_question
     editor.question_heading.first.set(question)
   end
@@ -102,16 +109,23 @@ feature 'Edit single radios question page' do
     when_I_save_my_changes
   end
 
-  def and_I_delete_an_option(option_label)
+  def and_I_want_to_delete_an_option(option_label)
     when_I_want_to_select_component_properties('label', option_label)
-    click_button(I18n.t('question.menu.remove'))
-    expect(page).to have_selector('.DialogConfirmation')
+    page.find('span', text: I18n.t('question.menu.remove')).click
+  end
+
+  def and_I_delete_an_option(option_label)
+    and_I_want_to_delete_an_option(option_label)
+    then_I_should_see_the_modal(
+             I18n.t('dialogs.heading_delete_option', label: option_label),
+             I18n.t('dialogs.message_delete')
+    )
     click_button(I18n.t('dialogs.button_delete_option'))
     expect(page).to_not have_text(option_label)
   end
 
   def and_I_have_optional_section_heading_text
-    expect(page.text).to include(I18n.t('default_text.section_heading'))
+    expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
 
   def and_I_go_to_the_page_that_I_edit(preview_form)
@@ -121,7 +135,7 @@ feature 'Edit single radios question page' do
   end
 
   def then_I_should_see_my_updated_section_heading
-    expect(editor.text).to include(section_heading)
+    expect(editor).to have_content(section_heading)
   end
 
   def then_I_should_see_the_default_section_heading
@@ -131,9 +145,10 @@ feature 'Edit single radios question page' do
   def then_I_should_see_the_options(options)
     expect(editor.radio_options.size).to eql options.size
     options.each do |option|
-      expect(page.text).to include(option)
+      expect(page).to have_content(option)
     end
   end
+
 
   def then_I_should_see_my_changes_on_preview
     preview_form = and_I_preview_the_form
@@ -147,14 +162,14 @@ feature 'Edit single radios question page' do
 
   def then_I_should_see_my_changes_in_the_form(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include(question)
+      expect(page).to have_content(question)
     end
   end
 
   def and_I_should_see_the_options_that_I_added(preview_form, options)
     within_window(preview_form) do
       options.each do |option|
-        expect(page.text).to include(option)
+        expect(page).to have_content(option)
       end
     end
   end

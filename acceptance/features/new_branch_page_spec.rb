@@ -7,12 +7,10 @@ feature 'New branch page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'no_branches_fixture')
   end
 
   scenario 'when all required fields are filled in' do
-    given_I_add_all_pages_for_a_form_with_branching
-    and_I_return_to_flow_page
     and_I_want_to_add_branching(page_url)
 
     then_I_should_be_on_the_correct_branch_page('new')

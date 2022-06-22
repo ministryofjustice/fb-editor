@@ -16,6 +16,18 @@
     </li>
   <% end %>
 
+  <% unless (item[:type] =~ /page.(start|checkanswers|confirmation)/) %>
+    <li data-action="move-api">
+      <%= link_to t('actions.move_page'),
+        api_service_flow_move_path(
+          service.service_id,
+          item[:uuid],
+          item[:previous_uuid].to_s,
+          item[:previous_conditional_uuid].to_s
+        ) %>
+    </li>
+  <% end %>
+
   <% unless item[:type] == 'page.start' %>
     <li data-action="delete-api">
       <%= link_to t('actions.delete_page'),

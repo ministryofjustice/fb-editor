@@ -6,39 +6,40 @@
     data-uuid="<%= item[:uuid] %>"
     data-condition-uuid="<%= item[:type] == 'flow.branch' ? condition[:uuid] : '' -%>">
 
-    <% if ENV['BRANCHING'] == 'enabled' %>
-      <% unless item[:type] == 'page.checkanswers' %>
-        <li data-action="none">
-          <span><%= t('actions.add_single_question') -%></span>
-          <ul class="govuk-navigation">
-            <li data-page-type="singlequestion"
-                data-component-type="text"><a href="#add-page"><%= t('components.list.text') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="textarea"><a href="#add-page"><%= t('components.list.textarea') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="email"><a href="#add-page"><%= t('components.list.email') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="number"><a href="#add-page"><%= t('components.list.number') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="date"><a href="#add-page"><%= t('components.list.date') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="radios"><a href="#add-page"><%= t('components.list.radios') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="checkboxes"><a href="#add-page"><%= t('components.list.checkboxes') -%></a></li>
-            <li data-page-type="singlequestion"
-                data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
-          </ul>
-        </li>
+    <% unless item[:type] == 'page.checkanswers' %>
+      <li data-action="none">
+        <span><%= t('actions.add_single_question') -%></span>
+        <ul class="govuk-navigation" role="menu">
+          <li data-page-type="singlequestion"
+              data-component-type="text"><span><%= t('components.list.text') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="textarea"><span><%= t('components.list.textarea') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="email"><span><%= t('components.list.email') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="number"><span><%= t('components.list.number') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="date"><span><%= t('components.list.date') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="radios"><span><%= t('components.list.radios') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="checkboxes"><span><%= t('components.list.checkboxes') -%></span></li>
+          <li data-page-type="singlequestion"
+              data-component-type="upload"><span><%= t('components.list.upload') -%></span></li>
+        </ul>
+      </li>
 
-        <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
+      <li data-page-type="multiplequestions"><span><%= t('actions.add_multi_question') -%></span></li>
 
-        <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
+      <li data-page-type="content"><span><%= t('actions.add_content') -%></span></li>
 
-        <li data-page-type="exit"><a href="#add-page"><%= t('actions.add_exit') -%></a></li>
+      <% unless item[:type] == 'page.start' %>
+        <li data-page-type="exit"><span><%= t('actions.add_exit') -%></span></li>
+      <% end %>
     <% end %>
 
-   <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page&.uuid) %>
-      <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
+    <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page&.uuid) %>
+      <li data-page-type="checkanswers"><span><%= t('actions.add_check_answers') -%></span></li>
     <% end %>
 
     <% if item[:type] == 'page.checkanswers' %>
@@ -47,11 +48,11 @@
           <li data-action="reconnect-confirmation"
               data-url="<%= api_service_flow_destinations_path(service.service_id, item[:uuid]) -%>"
               data-destination-uuid="<%= service.confirmation_page.uuid -%>">
-              <a href="#reconnect-confirmation"><%= t('actions.reconnect_confirmation') -%></a>
+              <a href="#reconnect-confirmation"><%= t('actions.reconnect_confirmation') -%></span>
           </li>
         <% end %>
       <% else %>
-        <li data-page-type="confirmation"><a href="#add-page"><%= t('actions.add_confirmation') -%></a></li>
+        <li data-page-type="confirmation"><span><%= t('actions.add_confirmation') -%></span></li>
       <% end %>
     <% end %>
 
@@ -59,53 +60,13 @@
       <% unless item[:type] == 'page.start' %>
         <li data-action="link">
           <%= link_to t('services.branch'),
-          new_branches_path(service.service_id, item[:uuid]) %>
+            new_branches_path(service.service_id, item[:uuid]) %>
         </li>
       <% end %>
 
       <li data-action="destination">
         <%= link_to t('actions.change_destination'),
-        new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
+          new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
       </li>
     <% end %>
-
-  <% else %>
-
-    <% unless item[:type] == 'page.checkanswers' %>
-
-      <li data-action="none">
-        <span><%= t('actions.add_single_question') -%></span>
-        <ul class="govuk-navigation">
-          <li data-page-type="singlequestion"
-              data-component-type="text"><a href="#add-page"><%= t('components.list.text') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="textarea"><a href="#add-page"><%= t('components.list.textarea') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="email"><a href="#add-page"><%= t('components.list.email') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="number"><a href="#add-page"><%= t('components.list.number') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="date"><a href="#add-page"><%= t('components.list.date') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="radios"><a href="#add-page"><%= t('components.list.radios') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="checkboxes"><a href="#add-page"><%= t('components.list.checkboxes') -%></a></li>
-          <li data-page-type="singlequestion"
-              data-component-type="upload"><a href="#add-page"><%= t('components.list.upload') -%></a></li>
-        </ul>
-      </li>
-
-      <li data-page-type="multiplequestions"><a href="#add-page"><%= t('actions.add_multi_question') -%></a></li>
-
-      <li data-page-type="content"><a href="#add-page"><%= t('actions.add_content') -%></a></li>
-    <% end %>
-
-    <% unless service.checkanswers_page.present? %>
-      <li data-page-type="checkanswers"><a href="#add-page"><%= t('actions.add_check_answers') -%></a></li>
-    <% end %>
-
-    <% unless service.confirmation_page.present? %>
-      <li data-page-type="confirmation"><a href="#add-page"><%= t('actions.add_confirmation') -%></a></li>
-    <% end %>
-  <% end %>
 </ul>

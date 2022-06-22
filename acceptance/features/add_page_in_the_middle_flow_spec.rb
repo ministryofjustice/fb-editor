@@ -20,7 +20,7 @@ feature 'Add page in the middle flow' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'adding page after first page and before last page' do

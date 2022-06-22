@@ -81,6 +81,30 @@ RSpec.describe PageDestroyer do
           expect(page.destroy).to eq(updated_metadata)
         end
       end
+
+      context 'page is pointing to itself' do
+        let(:uuid) { '2ef7d11e-0307-49e9-9fe2-345dc528dd66' }
+        let(:last_page_uuid) { '80420693-d6f2-4fce-a860-777ca774a6f5' }
+        let(:fixture) do
+          meta = metadata_fixture(:version)
+          meta['flow'][uuid]['next']['default'] = uuid
+          meta
+        end
+        let(:updated_metadata) do
+          metadata = fixture.deep_dup
+          page_index = metadata['pages'].find_index do |page|
+            page['_uuid'] == uuid
+          end
+          metadata['pages'].delete_at(page_index)
+          metadata['flow'].delete(uuid)
+          metadata['flow'][last_page_uuid]['next']['default'] = ''
+          metadata
+        end
+
+        it 'updates the next page to empty string' do
+          expect(page.destroy).to eq(updated_metadata)
+        end
+      end
     end
 
     context 'when deleting a page after a branch condition' do

@@ -5,6 +5,11 @@ RSpec.describe 'Settings' do
   let(:current_user) do
     double(id: SecureRandom.uuid)
   end
+  let(:current_user) { double(id: service.created_by, email: 'bishop@sulaco.com') }
+
+  before do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+  end
 
   describe 'POST /services/:id/settings/form_information' do
     before do

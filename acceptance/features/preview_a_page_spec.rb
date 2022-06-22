@@ -8,7 +8,7 @@ feature 'Preview page' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'preview start page' do
@@ -38,7 +38,7 @@ feature 'Preview page' do
   def then_I_should_preview_the_start_page(preview_page)
     within_window(preview_page) do
       expect(page.find('button')).to_not be_disabled
-      expect(page.text).to include('Before you start')
+      expect(page).to have_content('Before you start')
       then_I_should_not_see_optional_text
     end
   end
@@ -78,8 +78,8 @@ feature 'Preview page' do
   end
 
   def then_I_should_see_that_I_should_add_a_file
-    expect(page.text).to include('There is a problem')
-    expect(page.text).to include('Enter an answer for')
+    expect(page).to have_content('There is a problem')
+    expect(page).to have_content('Enter an answer for')
   end
 
   def and_I_remove_the_file

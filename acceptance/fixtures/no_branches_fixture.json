@@ -1,0 +1,327 @@
+{
+  "_id": "service.base",
+  "flow": {
+    "2786aa9d-c171-487e-9a73-b3a1b4850bbf": {
+      "next": {
+        "default": "d1670c23-f84c-4cbd-b5fb-a3a9bbbae89f"
+      },
+      "_type": "flow.page"
+    },
+    "295b5b20-3cd2-431f-9d59-bedf4a1f9a03": {
+      "next": {
+        "default": "ad3e07f7-98d1-46e7-8286-d4f33bf43f33"
+      },
+      "_type": "flow.page"
+    },
+    "4964090f-1c1f-43e5-8cc8-e40eef2a6c56": {
+      "next": {
+        "default": "295b5b20-3cd2-431f-9d59-bedf4a1f9a03"
+      },
+      "_type": "flow.page"
+    },
+    "9b0f43c5-3fc2-446d-99e1-83a51f942a77": {
+      "next": {
+        "default": "f8477c4c-2163-4cec-804c-96410ca8847d"
+      },
+      "_type": "flow.page"
+    },
+    "ad3e07f7-98d1-46e7-8286-d4f33bf43f33": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    },
+    "d1670c23-f84c-4cbd-b5fb-a3a9bbbae89f": {
+      "next": {
+        "default": "4964090f-1c1f-43e5-8cc8-e40eef2a6c56"
+      },
+      "_type": "flow.page"
+    },
+    "f8477c4c-2163-4cec-804c-96410ca8847d": {
+      "next": {
+        "default": "2786aa9d-c171-487e-9a73-b3a1b4850bbf"
+      },
+      "_type": "flow.page"
+    }
+  },
+  "_type": "service.base",
+  "pages": [
+    {
+      "_id": "page.start",
+      "url": "/",
+      "body": "Use this service to:\r\n\r\n* do something\r\n* update your name, address or other details\r\n* do something else\r\n\r\nRegistering takes around 5 minutes.",
+      "_type": "page.start",
+      "_uuid": "9b0f43c5-3fc2-446d-99e1-83a51f942a77",
+      "heading": "Service name goes here",
+      "before_you_start": "###Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
+    },
+    {
+      "_id": "page.favourite-hobby",
+      "url": "favourite-hobby",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "f8477c4c-2163-4cec-804c-96410ca8847d",
+      "heading": "",
+      "components": [
+        {
+          "_id": "favourite-hobby_radios_1",
+          "hint": "",
+          "name": "favourite-hobby_radios_1",
+          "_type": "radios",
+          "_uuid": "ccc99e9c-ad9f-4727-a1aa-cf774b71ad1c",
+          "items": [
+            {
+              "_id": "favourite-hobby_radios_1_item_1",
+              "hint": "",
+              "name": "favourite-hobby_radios_1",
+              "_type": "radio",
+              "_uuid": "69f6fd64-608f-4502-8b7e-879afeda762c",
+              "label": "Hiking",
+              "value": "value-1",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            },
+            {
+              "_id": "favourite-hobby_radios_1_item_2",
+              "hint": "",
+              "name": "favourite-hobby_radios_1",
+              "_type": "radio",
+              "_uuid": "3c72168e-6e61-41f1-9c63-c15e22a15a08",
+              "label": "Sewing",
+              "value": "value-2",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            }
+          ],
+          "errors": {
+          },
+          "legend": "What is your favourite hobby?",
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.ice-cream",
+      "url": "ice-cream",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "2786aa9d-c171-487e-9a73-b3a1b4850bbf",
+      "heading": "",
+      "components": [
+        {
+          "_id": "ice-cream_checkboxes_1",
+          "hint": "",
+          "name": "ice-cream_checkboxes_1",
+          "_type": "checkboxes",
+          "_uuid": "e587d254-c787-4550-8a11-2a74a7f8a258",
+          "items": [
+            {
+              "_id": "ice-cream_checkboxes_1_item_1",
+              "hint": "",
+              "name": "ice-cream_checkboxes_1",
+              "_type": "checkbox",
+              "_uuid": "7bbe7e60-49ff-4329-bbf6-e5a8793a9621",
+              "label": "Hokey Pokey",
+              "value": "value-1",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            },
+            {
+              "_id": "ice-cream_checkboxes_1_item_2",
+              "hint": "",
+              "name": "ice-cream_checkboxes_1",
+              "_type": "checkbox",
+              "_uuid": "1d64c6a4-3cd9-419c-b4d2-01c41f6ba4b8",
+              "label": "Chocolate",
+              "value": "value-2",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            }
+          ],
+          "errors": {
+          },
+          "legend": "Which flavours of ice cream have you eaten?",
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.hiking",
+      "url": "hiking",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "d1670c23-f84c-4cbd-b5fb-a3a9bbbae89f",
+      "heading": "",
+      "components": [
+        {
+          "_id": "hiking_text_1",
+          "hint": "",
+          "name": "hiking_text_1",
+          "_type": "text",
+          "_uuid": "f79b477d-377e-4759-acd0-34c0197a0320",
+          "label": "Favourite hiking destination",
+          "errors": {
+          },
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.sewing",
+      "url": "sewing",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "4964090f-1c1f-43e5-8cc8-e40eef2a6c56",
+      "heading": "",
+      "components": [
+        {
+          "_id": "sewing_text_1",
+          "hint": "",
+          "name": "sewing_text_1",
+          "_type": "text",
+          "_uuid": "c4856d81-f229-4d78-884a-70f440992c9a",
+          "label": "Favourite sewing project",
+          "errors": {
+          },
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.checkanswers",
+      "url": "check-answers",
+      "_type": "page.checkanswers",
+      "_uuid": "295b5b20-3cd2-431f-9d59-bedf4a1f9a03",
+      "heading": "Check your answers",
+      "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
+      "components": [
+
+      ],
+      "send_heading": "Now send your application",
+      "extra_components": [
+
+      ]
+    },
+    {
+      "_id": "page.confirmation",
+      "url": "form-sent",
+      "_type": "page.confirmation",
+      "_uuid": "ad3e07f7-98d1-46e7-8286-d4f33bf43f33",
+      "heading": "Application complete",
+      "components": [
+
+      ]
+    }
+  ],
+  "locale": "en",
+  "created_at": "",
+  "created_by": "",
+  "service_id": "",
+  "version_id": "",
+  "service_name": "",
+  "configuration": {
+    "meta": {
+      "_id": "config.meta",
+      "_type": "config.meta",
+      "items": [
+        {
+          "_id": "config.meta--link",
+          "href": "/cookies",
+          "text": "Cookies",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--2",
+          "href": "/privacy",
+          "text": "Privacy",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--3",
+          "href": "/accessibility",
+          "text": "Accessibility",
+          "_type": "link"
+        }
+      ]
+    },
+    "service": {
+      "_id": "config.service",
+      "_type": "config.service"
+    }
+  },
+  "standalone_pages": [
+    {
+      "_id": "page.cookies",
+      "url": "cookies",
+      "body": "Cookies body",
+      "_type": "page.standalone",
+      "_uuid": "64914834-9898-458b-ad60-49b36cbc02dc",
+      "heading": "Cookies",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.privacy",
+      "url": "privacy",
+      "body": "Privacy body",
+      "_type": "page.standalone",
+      "_uuid": "af6c8197-b1b4-4b19-89a9-5934dc75cbbe",
+      "heading": "Privacy notice",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.accessibility",
+      "url": "accessibility",
+      "body": "Accessibility body",
+      "_type": "page.standalone",
+      "_uuid": "c1a0f3ac-0041-4617-aa88-a3411907752c",
+      "heading": "Accessibility statement",
+      "components": [
+
+      ]
+    }
+  ]
+}

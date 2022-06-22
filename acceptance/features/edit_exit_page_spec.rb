@@ -17,7 +17,8 @@ feature 'Edit exit pages' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
+    and_I_add_a_content_page('Content Page')
   end
 
   scenario 'updates all fields' do
@@ -28,8 +29,6 @@ feature 'Edit exit pages' do
     and_I_change_the_page_lede(exit_lede)
     when_I_save_my_changes
     and_I_return_to_flow_page
-    and_I_click_on_the_exit_page_three_dots
-    then_I_should_only_see_three_options_on_page_menu
     and_I_edit_the_page(url: exit_heading)
     then_I_see_the_updated_page_heading(exit_heading)
     then_I_see_the_updated_page_section_heading(exit_section_heading)
@@ -102,7 +101,8 @@ feature 'Edit exit pages' do
   def then_I_should_stop_until_the_exit_page(preview_form)
     within_window(preview_form) do
       page.click_button 'Start now'
-
+      expect(page).to have_content(I18n.t('actions.continue'))
+      page.click_button I18n.t('actions.continue')
       expect(page.current_path).to include('/preview/exit')
       expect(page.all('button').to_a).to eq([])
     end

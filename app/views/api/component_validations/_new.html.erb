@@ -1,0 +1,45 @@
+<div class="component-dialog-api-request" id="component_validations">
+  <%= form_for @component_validation,
+      url: api_service_page_component_validations_path(
+           service.service_id, @component_validation.page_uuid, @component_validation.component_uuid, @component_validation.validator
+      ),
+      html: { novalidate: true } do |f| %>
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <%= @component_validation.label -%>
+          </legend>
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" <%= @component_validation.enabled? ? 'checked' : '' %>>
+              <label class="govuk-label govuk-checkboxes__label" for="component_validation_status">
+                <%= @component_validation.status_label %>
+              </label>
+            </div>
+
+            <div class="govuk-checkboxes__conditional" data-component="Expander" >
+              <div class="govuk-form-group <%= @component_validation.errors.present? ? 'govuk-form-group--error' : '' %>">
+                <% @component_validation.errors.each do |error|  %>
+                  <span class="govuk-error-message" id="component_validation_<%=error.attribute%>_error">
+                    <span class="govuk-visually-hidden">Error:</span><%= error.message %>
+                  </span>
+                <% end %>
+
+                <% if @component_validation.respond_to?(:component_partial) %>
+                  <%= render @component_validation.component_partial %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+    </div>
+
+    <button class="govuk-button fb-govuk-button" type="submit">
+      <%= t('dialogs.component_validations.button') %>
+    </button>
+
+    <button class="govuk-button govuk-button--secondary" type="button" >
+      <%= t('dialogs.button_cancel') %>
+    </button>
+  <% end %>
+</div>

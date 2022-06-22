@@ -14,7 +14,7 @@ feature 'Default text' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'Text component with default text' do
@@ -77,7 +77,7 @@ feature 'Default text' do
   end
 
   def and_I_see_the_custom_hint
-    expect(page.text).to include('This is where you add your name')
+    expect(page).to have_content('This is where you add your name')
   end
 
   def then_I_should_see_default_text_in_label_and_options
@@ -97,6 +97,6 @@ feature 'Default text' do
   end
 
   def and_I_see_all_custom_hints
-    expect(page.text).to include('This is a radio button')
+    expect(page).to have_content('This is a radio button')
   end
 end

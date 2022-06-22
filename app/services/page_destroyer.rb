@@ -37,7 +37,7 @@ class PageDestroyer
 
     @latest_metadata['flow'].each do |_flow_uuid, properties|
       if properties['next']['default'] == uuid
-        properties['next']['default'] = linked_to_uuid
+        properties['next']['default'] = uuid == linked_to_uuid ? '' : linked_to_uuid
       end
 
       next if properties['next']['conditionals'].blank?

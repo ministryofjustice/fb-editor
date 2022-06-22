@@ -4,6 +4,7 @@ const ServicesController = require('./controller_services');
 const FormListPage = require('./page_form_list');
 const PublishController = require('./controller_publish');
 const BranchesController = require('./controller_branches');
+const FormAnalyticsController = require('./controller_form_analytics');
 
 
 // Determine the controller we need to use
@@ -57,6 +58,11 @@ switch(controllerAndAction()) {
   case "PublishController#index":
   case "PublishController#create":
        Controller = PublishController;
+  break;
+
+  case "Form_analyticsController#create":
+  case "Form_analyticsController#index":
+       Controller = FormAnalyticsController;
   break;
 
   default:

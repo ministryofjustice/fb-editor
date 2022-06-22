@@ -66,8 +66,10 @@ class PagesFlow
       type: obj.type,
       title: obj.title,
       uuid: obj.uuid,
+      previous_uuid: grid.previous_uuid_for_object(obj.uuid),
+      previous_conditional_uuid: grid.conditional_uuid_for_object(obj.uuid),
       thumbnail: thumbnail_type(obj)
-    }
+    }.compact
   end
 
   def thumbnail_type(obj)

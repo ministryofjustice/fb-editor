@@ -1,0 +1,11 @@
+<script type="text/html"
+        data-component-template="EditableCollectionItemMenu"
+        data-activator-text="<%= t('question.menu.activator') %>">
+  <ul class="govuk-navigation component-activated-menu">
+    <%#= we unescape the route helper in order to keep the url placeholders intact for JS to replace them -%>
+    <li data-action="remove"
+        data-api-path="<%= URI.decode_www_form_component(api_service_page_question_question_option_destroy_message_path(service.service_id,@page.uuid,'#{question_uuid}', '#{option_uuid}', method: :delete) ) -%>">
+      <span class="destructive"><%= t('question.menu.remove')%></span>
+    </li>
+  </ul>
+</script>

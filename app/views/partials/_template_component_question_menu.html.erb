@@ -1,0 +1,26 @@
+<% @page.components&.each do |component| %>
+  <script type="text/html"
+          data-component-template="QuestionMenu_<%= component.uuid %>"
+          data-component-uuid="<%= component.uuid %>"
+          data-activator-text="<%= t('question.menu.activator') %>">
+    <ul class="govuk-navigation component-activated-menu">
+      <li data-action="required" data-validation="required"><span role="menuitemcheckbox" aria-checked="<%= component.validation ? component.validation['required'] : 'false' -%>"><%= t('question.menu.required')%></span></li>
+
+
+      <% enabled_validations(component).each do |validation| %>
+        <li data-action="validation"
+            data-validation="<%= validation %>"
+            data-api-path="<%= URI.decode_www_form_component(api_service_page_component_validations_path(service.service_id, @page.uuid, component.uuid, validation)) -%>">
+          <span role="menuitemcheckbox" aria-checked="<%= component.validation[validation] ? 'true' : 'false' -%>"><%= t("question.menu.#{validation}") %></span>
+        </li>
+      <% end %>
+
+      <% unless @page.type == 'page.singlequestion' %>
+         <li data-action="remove"
+            data-api-path="<%= URI.decode_www_form_component(api_service_page_question_destroy_message_path(service.service_id, @page.uuid, component.uuid, method: :delete)) -%>">
+          <span class="destructive"><%= t('question.menu.remove')%></span>
+        </li>
+      <% end %>
+    </ul>
+  </script> 
+<% end %>

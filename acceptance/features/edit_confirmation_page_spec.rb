@@ -9,7 +9,7 @@ feature 'Edit confirmation pages' do
 
   background do
     given_I_am_logged_in
-    given_I_have_a_service
+    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
   scenario 'updates all fields' do
@@ -20,7 +20,6 @@ feature 'Edit confirmation pages' do
     when_I_save_my_changes
     and_I_return_to_flow_page
     and_I_click_on_the_confirmation_page_three_dots
-    then_I_should_only_see_three_options_on_page_menu
     and_I_click_edit_page
     then_I_should_see_the_confirmation_heading(confirmation_heading)
     then_I_should_see_the_confirmation_lede(confirmation_lede)

@@ -1,5 +1,6 @@
 class ServicesController < PermissionsController
   layout 'form', only: :edit
+  skip_before_action :authorised_access, only: %i[index create]
 
   def index
     @service_creation = ServiceCreation.new

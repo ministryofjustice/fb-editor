@@ -32,11 +32,11 @@ module BranchingSteps
     and_I_add_another_condition
     then_I_should_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_see_another_question_list
-    then_I_should_see_the_delete_condition_button
+    then_I_should_see_multiple_delete_condition_buttons
   end
 
   def then_I_can_delete_conditionals_and_expressions
-    and_I_delete_the_condition
+    and_I_delete_the_last_condition
     then_I_should_not_see_the_operator(I18n.t('branches.expression.and'))
     then_I_should_not_see_text(I18n.t('branches.condition_remove'))
 
@@ -138,8 +138,8 @@ module BranchingSteps
     editor.add_condition.click
   end
 
-  def and_I_delete_the_condition
-    editor.remove_condition.click
+  def and_I_delete_the_last_condition
+    editor.last_condition_remover.click
     editor.remove_condition_button.click
   end
 
@@ -179,9 +179,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_add_condition_link
-    # wait for the api call to get the operators and answers
-    sleep(2)
-    expect(page).to have_text(I18n.t('branches.condition_add'))
+    expect(page).to have_content(I18n.t('branches.condition_add'))
   end
 
   def then_I_should_not_see_the_delete_condition_button
@@ -190,6 +188,10 @@ module BranchingSteps
 
   def then_I_should_see_the_delete_condition_button
     page_with_css('button.condition-remover', I18n.t('branches.condition_remove'))
+  end
+
+  def then_I_should_see_multiple_delete_condition_buttons
+    expect(page).to have_css("button.condition-remover", :minimum => 2)
   end
 
   def then_I_should_not_see_the_operator(text)
@@ -202,20 +204,6 @@ module BranchingSteps
 
   def then_I_should_see_the_previous_page_title(page_title)
     expect(editor).to have_text(page_title)
-  end
-
-  def given_I_have_a_form_with_pages
-    given_I_have_a_page('page-b')
-    given_I_have_a_page('page-c')
-    given_I_have_a_page('page-d')
-    given_I_have_a_page('page-e')
-    given_I_have_a_page('page-f')
-    given_I_have_a_multiquestion_page('page-g')
-    given_I_have_a_page('page-h')
-    given_I_have_a_page('page-i')
-    given_I_have_a_page('page-j')
-    given_I_have_a_branching_point_one
-    given_I_have_a_branching_point_two
   end
 
   def given_I_have_a_page(url)
@@ -275,7 +263,7 @@ module BranchingSteps
 
     editor.save_button.click
     and_I_return_to_flow_page
-    expect(editor.text).to include('Branching point 1')
+    expect(editor).to have_content('Branching point 1')
   end
 
   def given_I_have_a_branching_point_two

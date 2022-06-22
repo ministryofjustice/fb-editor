@@ -33,7 +33,7 @@ class EditorApp < SitePrism::Page
   # End Your forms
 
   # Pages flow
-  element :footer_pages_link, 'h2', text: I18n.t('pages.footer')
+  element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'cookies'
 
   element :pages_link, :link, I18n.t('pages.name')
@@ -51,22 +51,22 @@ class EditorApp < SitePrism::Page
   element :new_page_form, '#new_page', visible: false
 
   element :add_page, :button, I18n.t('pages.create')
-  element :add_single_question, 'span.ui-menu-item-wrapper', text: I18n.t('actions.add_single_question'), visible: true
+  element :add_single_question, 'span', text: I18n.t('actions.add_single_question'), visible: true
   element :add_multiple_question,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_multi_question')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_multi_question')}')]"
   element :add_check_answers,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_check_answers')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_check_answers')}')]"
   element :add_confirmation,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_confirmation')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_confirmation')}')]"
   element :add_content_page,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_content')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_content')}')]"
   element :add_exit,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'#{I18n.t('actions.add_exit')}')]"
+          "//*[@role='menuitem' and contains(.,'#{I18n.t('actions.add_exit')}')]"
 
   element :add_a_component_button, :link, I18n.t('components.actions.add_component')
   element :question_component,
@@ -74,12 +74,12 @@ class EditorApp < SitePrism::Page
           "//*[@role='menuitem' and contains(.,'Question')]"
   element :content_component,
           :xpath,
-          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
+          "//*[@role='menuitem' and contains(.,'Content area')]"
 
-  element :question_three_dots_button, '.ActivatedMenu_Activator'
+  element :question_three_dots_button, '.ActivatedMenuActivator', visible: true
   element :required_question,
           :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Required...')]"
+          "//*[@role='menuitemcheckbox' and contains(.,'Required...')]"
 
   elements :add_page_submit_button, :button, I18n.t('pages.create')
   elements :form_pages, '#flow-overview .flow-item'
@@ -88,6 +88,7 @@ class EditorApp < SitePrism::Page
   elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
 
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
+    find('#main-content', visible: true)
     preview_page_images.map do |page_flow|
       page_flow.text.gsub("Edit:\n", '')
     end
@@ -96,20 +97,31 @@ class EditorApp < SitePrism::Page
   element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
+  element :move_page_link, :link, I18n.t('actions.move_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :link, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
 
+  def main_flow_titles
+    flow_titles(main_flow)
+  end
+
   def unconnected_flow
+    flow_titles(detached_flow)
+  end
+
+  def flow_titles(flow_items)
     find('#main-content', visible: true)
-    flow = detached_flow.map { |element| element.text.gsub("Edit:\n", '').split("\n") }
-    flow.flatten.uniq.reject { |f| f == I18n.t('pages.create') }
+    flow = flow_items.map { |element| element.text.gsub("Edit:\n", '').split("\n").uniq }
+    flow.flatten.reject do |title|
+      title == I18n.t('pages.create') || title == I18n.t('pages.actions')
+    end
   end
 
   def flow_thumbnail(title)
     preview_page_images.find { |p| p.text.include?(title) }
   end
-  
+
   def flow_article(title)
     flow_items.find { |p| p.text.include?(title) }
   end
@@ -120,7 +132,7 @@ class EditorApp < SitePrism::Page
 
   def add_component(type)
     add_single_question.hover
-    find(:link, type, visible: true)
+    find('[role="menuitem"]', exact_text: type, visible: true)
   end
 
   def click_branch(branch_title)
@@ -142,7 +154,7 @@ class EditorApp < SitePrism::Page
   end
 
   def unconnected_expand_link
-    page.all('h2.Expander_Activator').find do |element|
+    page.all('Expander_Activator').find do |element|
       element.text == 'Unconnected'
     end
   end
@@ -172,10 +184,9 @@ class EditorApp < SitePrism::Page
   data_content_id :first_extra_component, 'page[extra_components[0]]'
 
   element :add_condition, :button, I18n.t('branches.condition_add')
-  element :remove_condition, :button, I18n.t('branches.condition_remove') # bin icon
-  element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation
+  element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
   element :add_another_branch, :link, I18n.t('branches.branch_add')
-  element :conditional_three_dot, :button, '.ActivatedMenu_Activator'
+  element :conditional_three_dot, :button, '.ActivatedMenuActivator'
   element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
 
   element :destination_options, '#branch_conditionals_attributes_0_next'
@@ -197,6 +208,7 @@ class EditorApp < SitePrism::Page
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
 
+  elements :main_flow, '#flow-overview .flow-item'
   elements :detached_flow, '.flow-detached-group .flow-item'
 
   def edit_service_link(service_name)
@@ -209,5 +221,10 @@ class EditorApp < SitePrism::Page
 
   def branch_title(index)
     find("div[data-conditional-index='#{index}'] p")
+  end
+
+  # When two BranchConditions visible we have two BranchRemover (bin icons) available
+  def last_condition_remover
+    all('.condition-remover').last
   end
 end
