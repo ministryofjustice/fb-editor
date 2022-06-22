@@ -20,6 +20,7 @@
 const Dialog = require('./component_dialog');
 const DialogConfirmation = require('./component_dialog_confirmation');
 const post = require('./utilities').post;
+const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class DefaultController {
@@ -62,6 +63,19 @@ class DefaultController {
     $node.on("keydown", function() {
       view.$lastPoint = $node;
     });
+  }
+
+  /* General actions to happen when called by a view that is ready.
+   * e.g. Implemented initially for the brief flash of content fix
+   *      first required on ServicesController and then shared with
+   *      the PublishController.
+   *
+   * Using this shares code and gives a place for other such actions
+   * to happen, if/when they may be discovered.
+   **/
+  ready() {
+    // Reverse the Brief flash of content white screen blocker (see CSS).
+    $("#main-content").addClass(JS_ENHANCEMENT_DONE);
   }
 }
 

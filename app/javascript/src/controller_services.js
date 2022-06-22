@@ -33,7 +33,6 @@ const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
 const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
 const SELECTOR_FLOW_DETACHED_GROUP = ".flow-detached-group";
-const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class ServicesController extends DefaultController {
@@ -75,9 +74,7 @@ ServicesController.edit = function() {
   }
 
   addServicesContentScrollContainer(view);
-
-  // Reverse the Brief flash of content quickfix.
-  $("#main-content").addClass(JS_ENHANCEMENT_DONE);
+  view.ready();
 }
 
 

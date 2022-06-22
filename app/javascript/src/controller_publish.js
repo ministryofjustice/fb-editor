@@ -40,17 +40,17 @@ class PublishController extends DefaultController {
  **/
 PublishController.index = function() {
   var view = this;
-  setupPublishForms.call(this);
+  setupPublishForms.call(view);
 
   // When to show 15 minute message.
-  if(this.publishFormTest.firstTimePublish() || this.publishFormProd.firstTimePublish()) {
-    this.dialog.content = {
+  if(view.publishFormTest.firstTimePublish() || view.publishFormProd.firstTimePublish()) {
+    view.dialog.content = {
       ok: view.text.dialogs.button_publish,
       heading: view.text.dialogs.heading_publish,
       content: view.text.dialogs.message_publish
     };
 
-    this.dialog.open();
+    view.dialog.open();
   }
 }
 
@@ -58,7 +58,9 @@ PublishController.index = function() {
 /* Set up for the Create action
  **/
 PublishController.create = function() {
-  setupPublishForms.call(this);
+  var view = this;
+  setupPublishForms.call(view);
+  view.ready();
 }
 
 

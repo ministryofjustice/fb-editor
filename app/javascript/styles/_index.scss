@@ -17,6 +17,24 @@ html {
   position: relative;
 }
 
+.publish-create,
+.services-edit {
+  main {
+    // Brief flash of content not ready for display.
+    // This can be reversed when slow or view reliant JS has
+    // finished running. We're using the controller name + action
+    // so we can use it only where actually needed. Find the
+    // corresponding JS to turn it off in DefaultController.ready()
+    // method, that is called in related controller+action code, at
+    // the appropriate point to turn off/reverse the white screen.
+    visibility: hidden;
+
+    &.jsdone {
+      visibility: visible;
+    }
+  }
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;
@@ -494,7 +512,6 @@ html {
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
-
 .services-edit {
   h1 {
     clear: both;
@@ -502,20 +519,6 @@ html {
 
     @include govuk-media-query($from: tablet) {
       clear: none;
-    }
-  }
-
-  main {
-    // Quickfix for Brief flash of content not ready for display.
-    // This can be reversed when slow or view reliant JS has
-    // finished running. We're using the controller name + action
-    // so we can use it only where actually needed. Find the
-    // corresponding JS controller+action function to see where it
-    // is turned off/reversed.
-    visibility: hidden;
-
-    &.jsdone {
-      visibility: visible;
     }
   }
 
