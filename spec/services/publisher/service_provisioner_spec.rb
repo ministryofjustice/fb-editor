@@ -2,7 +2,24 @@ RSpec.describe Publisher::ServiceProvisioner do
   subject(:service_provisioner) { described_class.new(attributes) }
   let(:attributes) { {} }
   let(:service_metadata) { metadata_fixture(:version) }
+  let(:global_service_configuration) do
+    {
+      strategy: {
+        max_surge: '200%',
+        max_unavailable: '25%'
+      },
+      readiness: {
+        initial_delay_seconds: 50,
+        period_seconds: 10,
+        success_threshold: 5
+      }
+    }
+  end
   include Shoulda::Matchers::ActiveModel
+
+  before do
+    allow(Rails.application.config).to receive(:global_service_configuration).and_return(global_service_configuration)
+  end
 
   describe '#service_metadata' do
     let(:attributes) do
@@ -60,7 +77,49 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
   end
 
+  describe '#strategy_max_surge' do
+    it 'returns the max surge configuration' do
+      expect(service_provisioner.strategy_max_surge).to eq('200%')
+    end
+  end
+
+  describe '#strategy_max_unavailable' do
+    it 'returns the max unavailable configuration' do
+      expect(service_provisioner.strategy_max_unavailable).to eq('25%')
+    end
+  end
+
+  describe '#readiness_initial_delay' do
+    it 'returns the initial delay configuration' do
+      expect(service_provisioner.readiness_initial_delay).to eq(50)
+    end
+  end
+
+  describe '#readiness_period' do
+    it 'returns the readiness period configuration' do
+      expect(service_provisioner.readiness_period).to eq(10)
+    end
+  end
+
+  describe '#readiness_success_threshold' do
+    it 'returns the success threshold configuration' do
+      expect(service_provisioner.readiness_success_threshold).to eq(5)
+    end
+  end
+
   describe '#replicas' do
+    let(:service_namespace_configuration) do
+      {
+        test_production: { hpa: { min_replicas: 1 } },
+        live_dev: { hpa: { min_replicas: 1 } },
+        live_production: { hpa: { min_replicas: 2 } }
+      }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:service_namespace_configuration).and_return(service_namespace_configuration)
+    end
+
     context 'when live production environment' do
       let(:attributes) do
         { platform_environment: 'live', deployment_environment: 'production' }
@@ -89,6 +148,56 @@ RSpec.describe Publisher::ServiceProvisioner do
       it 'returns 1 replica' do
         expect(service_provisioner.replicas).to be(1)
       end
+    end
+  end
+
+  describe '#max_replicas' do
+    let(:service_namespace_configuration) do
+      {
+        test_dev: { hpa: { max_replicas: 7 } },
+        live_production: { hpa: { max_replicas: 20 } }
+      }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:service_namespace_configuration).and_return(service_namespace_configuration)
+    end
+
+    context 'when live production environment' do
+      let(:attributes) do
+        { platform_environment: 'live', deployment_environment: 'production' }
+      end
+
+      it 'returns the correct number of replicas' do
+        expect(service_provisioner.max_replicas).to be(20)
+      end
+    end
+
+    context 'when other environments' do
+      let(:attributes) do
+        { platform_environment: 'test', deployment_environment: 'dev' }
+      end
+
+      it 'returns the correct number of replicas' do
+        expect(service_provisioner.max_replicas).to be(7)
+      end
+    end
+  end
+
+  describe '#target_cpu_utilisation' do
+    let(:service_namespace_configuration) do
+      { live_production: { hpa: { target_cpu_utilisation: 50 } } }
+    end
+    let(:attributes) do
+      { platform_environment: 'live', deployment_environment: 'production' }
+    end
+
+    before do
+      allow(Rails.application.config).to receive(:service_namespace_configuration).and_return(service_namespace_configuration)
+    end
+
+    it 'returns the correct value for target cpu utilisation' do
+      expect(service_provisioner.target_cpu_utilisation).to be(50)
     end
   end
 

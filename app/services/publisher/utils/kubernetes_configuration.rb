@@ -10,6 +10,7 @@ class Publisher
         deployment
         config_map
         secrets
+        hpa
       ]
 
       def initialize(service_provisioner)

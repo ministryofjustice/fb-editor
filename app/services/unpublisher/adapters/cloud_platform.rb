@@ -8,6 +8,7 @@ class Unpublisher
       CONFIGURATIONS = %w[
         configmap
         deployment
+        hpa
         ingress
         networkpolicy
         secret
@@ -36,6 +37,7 @@ class Unpublisher
       private
 
       alias_method :deployment, :service_slug
+      alias_method :hpa, :service_slug
       alias_method :service, :service_slug
       alias_method :configmap, :config_map_name
       alias_method :networkpolicy, :service_monitor_network_policy_name
