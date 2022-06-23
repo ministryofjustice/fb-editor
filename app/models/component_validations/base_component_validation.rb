@@ -56,7 +56,9 @@ class BaseComponentValidation
   end
 
   def enabled?
-    previously_enabled? || status.present? && status == ENABLED
+    return if status.blank?
+
+    status == ENABLED || previously_enabled?
   end
 
   def run_validation?

@@ -53,6 +53,8 @@ RSpec.describe 'BaseComponentValidation' do
     end
 
     context 'when status not present' do
+      let(:status) { nil }
+
       context 'when validation has been previously enabled' do
         let(:latest_metadata) do
           meta = metadata_fixture(:version)
@@ -67,14 +69,12 @@ RSpec.describe 'BaseComponentValidation' do
           }
         end
 
-        it 'returns truthy' do
-          expect(subject.enabled?).to be_truthy
+        it 'returns falsey' do
+          expect(subject.enabled?).to be_falsey
         end
       end
 
       context 'when validation has not been previously enabled' do
-        let(:status) { nil }
-
         it 'returns falsey' do
           expect(subject.enabled?).to be_falsey
         end
