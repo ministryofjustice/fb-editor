@@ -31,6 +31,7 @@ const converter = new showdown.Converter({
                     tables: true,
                     disableForced4SpacesIndentedSublists: true
                   });
+const sanitizeHtml = require('sanitize-html');
 const EditableCollectionItemMenu = require('./components/menus/editable_collection_item_menu');
 
 showdown.setFlavor('github');
@@ -801,8 +802,7 @@ function convertToMarkdown(html) {
  * For that reason, we are trying to be minimalistic in approach.
  **/
 function sanitiseHtml(html) {
-  html = html.replace(/<([\/\s])?script[^\<\>]*?>/mig, "&lt;$1script&gt;");
-  return html;
+  return sanitizeHtml(html);
 }
 
 /* Opportunity safely strip out anything that we don't want here.
