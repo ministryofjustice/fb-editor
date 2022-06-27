@@ -6,7 +6,7 @@ RSpec.describe NewComponentGenerator do
       components: components
     )
   end
-  input_components = %w[text textarea email number radios checkboxes upload]
+  input_components = %w[text textarea email number radios checkboxes upload autocomplete]
   non_input_components = %w[content]
 
   before do
@@ -72,7 +72,7 @@ RSpec.describe NewComponentGenerator do
       let(:page_url) { 'another-page' }
 
       context 'non collection input components' do
-        %w[text textarea email date number upload].each do |component|
+        %w[text textarea email date number upload autocomplete].each do |component|
           context "when #{component} component" do
             let(:component_type) { component }
             let(:components) do

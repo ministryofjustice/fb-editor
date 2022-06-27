@@ -26,6 +26,10 @@
               data-component-type="checkboxes"><span><%= t('components.list.checkboxes') -%></span></li>
           <li data-page-type="singlequestion"
               data-component-type="upload"><span><%= t('components.list.upload') -%></span></li>
+          <% if moj_forms_dev? %>
+            <li data-page-type="singlequestion"
+            data-component-type="autocomplete"><span><%= t('components.list.autocomplete') -%></span></li>
+          <% end %>
         </ul>
       </li>
 

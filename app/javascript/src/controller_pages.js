@@ -532,7 +532,7 @@ function enhanceContent(view) {
 /* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
-  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=autocomplete]").each(function(i, node) {
     var question = new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
