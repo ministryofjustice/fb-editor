@@ -14,14 +14,14 @@
  **/
 
 
-const { 
-  mergeObjects, 
-  createElement, 
-  uniqueString, 
+const {
+  mergeObjects,
+  createElement,
+  uniqueString,
   safelyActivateFunction,
   addHiddenInpuElementToForm,
   updateHiddenInputOnForm
-} = require('./utilities'); 
+} = require('./utilities');
 const showdown  = require('showdown');
 const converter = new showdown.Converter({
                     noHeaderId: true,
@@ -537,7 +537,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
 
     this.items = [];
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
-    
+
     this.#createCollectionItemTemplate(config);
     this.#createEditableCollectionItems(config);
 
@@ -765,22 +765,22 @@ class EditableCollectionItemInjector {
   }
 }
 
-function createEditableCollectionItemMenu(item, config) { 
+function createEditableCollectionItemMenu(item, config) {
   var template = $("[data-component-template=EditableCollectionItemMenu]");
   var $ul = $(template.html());
 
   item.$node.append($ul);
 
-  
+
   return new EditableCollectionItemMenu($ul, {
       activator_text: config.text.edit,
       container_id: uniqueString("activatedMenu-"),
       collectionItem: item,
       view: config.view,
       menu: {
-        position: { 
-          my: "left top", 
-          at: "left top" } 
+        position: {
+          my: "left top",
+          at: "left top" }
       }
     });
 }
@@ -794,12 +794,12 @@ function convertToMarkdown(html) {
   return sanitiseMarkdown(markdown);
 }
 
-/* Extremely simple function to safely convert target elements, 
+/* Extremely simple function to safely convert target elements,
  * such as <script>, so JS doesn't run in editor.
  * Note: Because we're converting from Markup, we need to be
  * careful about what is converted into entity or escaped form.
  * For that reason, we are trying to be minimalistic in approach.
- **/ 
+ **/
 function sanitiseHtml(html) {
   html = html.replace(/<([\/\s])?script[^\<\>]*?>/mig, "&lt;$1script&gt;");
   return html;
@@ -883,6 +883,7 @@ function editableComponent($node, config) {
     case "email":
     case "number":
     case "upload":
+    case "autocomplete":
       klass = EditableTextFieldComponent;
       break;
     case "textarea":

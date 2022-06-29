@@ -319,7 +319,7 @@ RSpec.describe NewPageGenerator do
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do
-          %w[checkboxes date number radios text textarea upload email].each do |type|
+          %w[checkboxes date number radios text textarea upload email autocomplete].each do |type|
             context "when #{type} component" do
               let(:page_type) { 'singlequestion' }
               let(:component_type) { type }

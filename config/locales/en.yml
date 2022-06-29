@@ -218,6 +218,7 @@ en:
       radios: 'Radio buttons'
       checkboxes: 'Checkboxes'
       upload: 'File upload'
+      autocomplete: 'Autocomplete'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
