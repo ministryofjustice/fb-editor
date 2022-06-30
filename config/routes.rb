@@ -87,6 +87,9 @@ Rails.application.routes.draw do
       end
 
       get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
+
+      get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
+      post '/components/:component_id/autocomplete', to: 'autocomplete#create'
     end
   end
 
