@@ -144,7 +144,7 @@ feature 'Preview form' do
       expect(page).to have_content('Check your answers')
       expect(page).not_to have_content('Apples')
 
-      page.click_button 'Accept and send application'
+      page.click_button I18n.t('actions.submit')
       then_I_should_not_see_a_back_link
       expect(page).to have_content('Application complete')
     end

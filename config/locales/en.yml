@@ -148,6 +148,7 @@ en:
     add_confirmation: 'Add confirmation page'
     reconnect_confirmation: 'Reconnect confirmation page'
     ok: 'Ok'
+    submit: 'Submit'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
