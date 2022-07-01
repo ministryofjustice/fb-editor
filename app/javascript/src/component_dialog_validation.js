@@ -64,13 +64,17 @@ class DialogForm {
     if(this.activator) {
       this.activator.$node.focus();
     }
-    this.$node.dialog("close");
-    this.#state = "closed";
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog("close");
+    }
     safelyActivateFunction(dialog.#config.onClose, dialog);
     if(this.#remoteSource){
-      this.$node.dialog('destroy'); 
+      if(this.$node.dialog('instance')) {
+        this.$node.dialog('destroy'); 
+      }
       this.$node.remove();
     }
+    this.#state = "closed";
   }
 
   submit() {
@@ -121,7 +125,7 @@ class DialogForm {
     var dialog = this;
 
     if(typeof source == 'string') {
-      this.remoteSource = true;
+      this.#remoteSource = true;
       $.get(source)
       .done((response) => {
         this.$node = $(response);
