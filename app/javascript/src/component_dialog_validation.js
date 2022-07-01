@@ -44,7 +44,9 @@ class DialogForm {
 
   open() {
     var dialog = this;
-    this.$node.dialog("open");
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog("open");
+    }
     this.#state = "open";
     safelyActivateFunction(this.#config.onOpen, dialog);
     window.setTimeout(() => {

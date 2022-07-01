@@ -131,8 +131,6 @@ describe("DialogForm", function() {
       });
 
       it('should open the dialog on activator button press', function() {
-        created.dialog.close();
-
         created.dialog.activator.$node.click();
         expect(created.dialog.isOpen()).to.be.true;
       });
