@@ -176,7 +176,7 @@ class DialogForm {
 
   #enhance() {
     var dialog = this;
-    this.$form = this.$node.find('form');
+    this.$form = this.$node.is('form') ? this.$node : this.$node.find('form');
     this.#setupCloseButtons();
     this.#setupSubmitButton();
     safelyActivateFunction(dialog.#config.onReady, dialog);

@@ -69,16 +69,21 @@ class PublishForm {
   constructor($node) {
     var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
-    var $submit = $node.find("input[type=submit]");
+    var $submit = $node.find("button[type=submit]");
     var $errors = $node.find(".govuk-error-message");
 
     new ContentVisibilityController($content, $radios);
     new DialogForm($node, {
       autoOpen: $errors.length ? true : false,
       activator: true,
-      activatorText: $submit.val(),
+      activatorText: $submit.text(),
       classes: {
         'activator': "govuk-button fb-govuk-button",
+      },
+      onClose: function(dialog) {
+        $errors.parents().removeClass('error');
+        $errors.remove(); // Remove from DOM (includes removing all jQuery data)
+        dialog.$node.find('.govuk-form-group').removeClass('govuk-form-group--error');
       }
     })
 

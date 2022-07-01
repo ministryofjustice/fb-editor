@@ -47,8 +47,11 @@
         html: { id: 'publish-form-dev', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
       <div class="govuk-button-group govuk-!-margin-bottom-0">
-        <%= f.submit t('actions.publish_to_test'), class: 'govuk-button fb-govuk-button' %>
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+        <button class="govuk-button fb-govuk-button" type="submit">
+          <%= t('actions.publish_to_test') %> 
+        </button>
+
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
           <%= t('actions.cancel') %>
         </button>
       </div>
@@ -80,8 +83,10 @@
         html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>
       <div class="govuk-button-group govuk-!-margin-bottom-0">
-        <%= f.submit t('actions.publish_to_live'), class: 'govuk-button fb-govuk-button' %>
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+        <button class="govuk-button fb-govuk-button" type="submit">
+          <%= t('actions.publish_to_live') %> 
+        </button>
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
           <%= t('actions.cancel') %>
         </button>
       </div>
