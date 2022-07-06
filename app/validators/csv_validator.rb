@@ -1,12 +1,24 @@
 class CsvValidator < ActiveModel::Validator
   def validate(record)
-    return if record.file.blank?
-
-    unless csv?(record) && valid_headings?(record)
+    if not_csv?(record)
       record.errors.add(
         :file,
         I18n.t(
-          'activemodel.errors.models.csv_validation.invalid'
+          'activemodel.errors.models.autocomplete_items.invalid_type'
+        )
+      )
+    elsif record.file_values.empty?
+      record.errors.add(
+        :file,
+        I18n.t(
+          'activemodel.errors.models.autocomplete_items.empty'
+        )
+      )
+    elsif invalid_headings?(record) || record.file_values.map(&:size).max > 2
+      record.errors.add(
+        :file,
+        I18n.t(
+          'activemodel.errors.models.autocomplete_items.incorrect_format'
         )
       )
     end
@@ -14,12 +26,12 @@ class CsvValidator < ActiveModel::Validator
 
   private
 
-  def csv?(record)
-    record.file.content_type == 'text/csv' || record.file.content_type == 'application/csv'
+  def not_csv?(record)
+    ['text/csv', 'application/csv'].exclude?(record.file.content_type)
   end
 
-  def valid_headings?(record)
-    headings = CSV.read(record.file)[0]
-    headings.include?('Text')
+  def invalid_headings?(record)
+    (record.file_headings.count == 1 && record.file_headings != %w[text]) ||
+      (record.file_headings.count == 2 && record.file_headings != %w[text value])
   end
 end
