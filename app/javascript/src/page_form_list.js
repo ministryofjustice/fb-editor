@@ -16,7 +16,7 @@
  **/
 
 
-const DialogForm = require('./component_dialog_validation');
+const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
 
 

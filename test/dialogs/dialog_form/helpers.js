@@ -1,4 +1,4 @@
-const DialogForm = require("../../../app/javascript/src/component_dialog_validation.js");
+const DialogForm = require("../../../app/javascript/src/component_dialog_form.js");
 const GlobalHelpers = require("../../helpers.js");
 
 

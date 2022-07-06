@@ -33,7 +33,7 @@ const TextareaQuestion = require('./question_textarea');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
-const DialogForm = require('./component_dialog_validation');
+const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
 const ServicesController = require('./controller_services');
 const Expander = require('./component_expander');

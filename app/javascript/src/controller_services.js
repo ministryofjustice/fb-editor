@@ -18,7 +18,7 @@
 
 
 const utilities = require('./utilities');
-const DialogForm = require('./component_dialog_validation')
+const DialogForm = require('./component_dialog_form')
 const DefaultController = require('./controller_default');
 const FlowItem = require('./component_flow_item');
 const FlowConditionItem = require('./component_flow_condition_item');

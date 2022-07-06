@@ -17,7 +17,7 @@
 
 
 const DefaultController = require('./controller_default');
-const DialogForm = require('./component_dialog_validation');
+const DialogForm = require('./component_dialog_form');
 
 class PublishController extends DefaultController {
   constructor(app) {
