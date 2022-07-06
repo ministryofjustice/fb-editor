@@ -418,7 +418,7 @@ en:
           format: "%{message}"
         autocomplete_items:
           invalid_type: This file cannot be processed, please upload CSV file
-          invalid_headings: The contents of this file cannot be processed
+          incorrect_format: The contents of this file cannot be processed
           empty: The file cannot be empty
           format: "%{message}"
 
