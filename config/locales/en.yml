@@ -90,6 +90,10 @@ en:
           label: Maximum answer length
           status_label: Set a maximum answer length
       button: Update
+    autocomplete:
+      legend: Upload autocomplete options
+      requirement_link: Read our file structure requirements
+      upload: Upload options
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -412,6 +416,12 @@ en:
           gtm: A Google Tag Manager Container ID must start with GTM
           ga4: A Google Analytics 4 Measurement ID must start with G
           format: "%{message}"
+        autocomplete_items:
+          invalid_type: This file cannot be processed, please upload CSV file
+          incorrect_format: The contents of this file cannot be processed
+          empty: The file cannot be empty
+          format: "%{message}"
+
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

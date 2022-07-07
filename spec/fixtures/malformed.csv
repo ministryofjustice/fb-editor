@@ -1,0 +1,4 @@
+text,value,
+Foo,\xAB,bar
+b,2,5
+c,3,6
