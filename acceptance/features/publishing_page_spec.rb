@@ -183,7 +183,7 @@ feature 'Publishing' do
 
   def then_I_should_be_on_the_publishing_page
     expect(editor.question_heading.first.text).to eq(I18n.t('publish.heading'))
-    buttons_text = page.all(:css, 'input.fb-govuk-button', visible: false).map(&:value)
+    buttons_text = page.all(:css, 'button.fb-govuk-button', visible: false).map(&:text)
     expect(buttons_text).to include(I18n.t('publish.test.button'))
     expect(buttons_text).to include(I18n.t('publish.live.button'))
   end

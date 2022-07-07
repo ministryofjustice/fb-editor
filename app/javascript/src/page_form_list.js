@@ -16,7 +16,7 @@
  **/
 
 
-const ActivatedFormDialog = require('./component_activated_form_dialog');
+const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
 
 
@@ -32,17 +32,20 @@ class FormListPage extends DefaultController {
 
 class CreateFormDialog {
   constructor($node) {
-    var errorMessageSelector = ".govuk-error-message";
-    var $errors = $node.find(errorMessageSelector);
-    new ActivatedFormDialog($("[data-component='FormCreateDialog']"), {
-      autoOpen: $errors.length ? true: false,
-      cancelText: $node.data("cancel-text"),
+    var $dialog = $("[data-component='FormCreateDialog']");
+    var $errors = $node.find( ".govuk-error-message");
+
+    new DialogForm($dialog, {
+      autoOpen: $errors.length ? true : false,
+      activator: true,
       activatorText: $node.data("activator-text"),
-      selectorErrors: errorMessageSelector,
-      removeErrorClasses: ".govuk-form-group--error",
       classes: {
-        "ui-button": "govuk-button",
-        "ui-activator": "govuk-button fb-govuk-button"
+        "activator": "govuk-button fb-govuk-button"
+      },
+      onClose: function() {
+        $errors.parents().removeClass('error');
+        $errors.remove(); // Remove from DOM (includes removing all jQuery data)
+        $dialog.find('.govuk-form-group').removeClass('govuk-form-group--error');
       }
     });
   }

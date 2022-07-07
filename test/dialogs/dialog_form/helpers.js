@@ -1,16 +1,18 @@
-const FormDialog = require("../../../app/javascript/src/component_dialog_form.js");
+const DialogForm = require("../../../app/javascript/src/component_dialog_form.js");
 const GlobalHelpers = require("../../helpers.js");
 
 
 const constants = {
-  CLASSNAME_COMPONENT: "FormDialog",
+  CLASSNAME_COMPONENT: "DialogForm",
   CLASSNAME_1: "classname1",
   CLASSNAME_2: "classname2",
   CLASSNAME_ERROR_DIALOG: "dialog-with-errors",
   CLASSNAME_ERROR_MESSAGE: "error",
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
-  TEXT_ERROR_MESSAGE: "This is an error message"
+  TEXT_ERROR_MESSAGE: "This is an error message",
+  REMOTE_TEMPLATE_URL: '/dialog-test.html',
+  REMOTE_SUBMIT_URL: '/dialog-submit',
 }
 
 const view = {
@@ -40,10 +42,7 @@ const view = {
 function createDialog(id, config) {
   var $node = $("#" + id);
   var conf = {
-    classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     id: id,
-    okText: constants.TEXT_BUTTON_OK,
-    cancelText: constants.TEXT_BUTTON_CANCEL
   }
 
   // Include any passed config items.
@@ -58,7 +57,87 @@ function createDialog(id, config) {
   return {
     html: $node.get(0).outerHTML,
     $node: $node,
-    dialog: new FormDialog($node, conf)
+    dialog: new DialogForm($node, conf)
+  }
+}
+
+
+
+function createRemoteDialog(id, server, config) {
+  var conf = {
+    id: id,
+  }
+
+  // Include any passed config items.
+  if(config) {
+    for(var prop in config) {
+      if(config.hasOwnProperty(prop)) {
+        conf[prop] = config[prop];
+      }
+    }
+  }
+
+  server.respondWith(constants.REMOTE_TEMPLATE_URL, [
+          200,
+          { "Content-Type": "text/html" },
+          `<div class="component-dialog-form"
+               id="${id}"
+               data-component="FormDialog">
+            <form method="get" action="${constants.REMOTE_SUBMIT_URL}">
+              <div class="field">
+                <label>label text</label>
+                <input type="text" value="" />
+              </div>
+              <button type="submit">OK</button>
+            </form>
+          </div>`,
+        ]);
+
+  var dialog = new DialogForm(constants.REMOTE_TEMPLATE_URL, config);
+
+  return {
+    $node: dialog.$node,
+    dialog: dialog,
+  }
+}
+
+
+
+function createRemoteDialog(id, server, config) {
+  var conf = {
+    id: id,
+  }
+
+  // Include any passed config items.
+  if(config) {
+    for(var prop in config) {
+      if(config.hasOwnProperty(prop)) {
+        conf[prop] = config[prop];
+      }
+    }
+  }
+
+  server.respondWith(constants.REMOTE_TEMPLATE_URL, [
+          200,
+          { "Content-Type": "text/html" },
+          `<div class="component-dialog-form"
+               id="${id}"
+               data-component="FormDialog">
+            <form method="get" action="${constants.REMOTE_SUBMIT_URL}">
+              <div class="field">
+                <label>label text</label>
+                <input type="text" value="" />
+              </div>
+              <button type="submit">OK</button>
+            </form>
+          </div>`,
+        ]);
+
+  var dialog = new DialogForm(constants.REMOTE_TEMPLATE_URL, config);
+
+  return {
+    $node: dialog.$node,
+    dialog: dialog,
   }
 }
 
@@ -74,9 +153,8 @@ function setupView(id, withErrors) {
   var error = '<span class="' + constants.CLASSNAME_ERROR_MESSAGE  + '">' + constants.TEXT_ERROR_MESSAGE  + '</span>';
   var html = `<div class="component-dialog-form"
                    id="` + id + `"
-                   data-component="FormDialog"
-                   data-cancel-text="` + constants.TEXT_BUTTON_CANCEL + `">
-                <form method="get" action="/blah">
+                   data-component="FormDialog">
+                <form method="get" action="${constants.REMOTE_SUBMIT_URL}">
                   <div class="field ` + (withErrors ? constants.CLASSNAME_ERROR_DIALOG : '') + `">
                     <label>label text</label>
                     <span class="hint">` + constants.TEXT_HINT + `</span>
@@ -102,6 +180,7 @@ function teardownView(id) {
 module.exports = {
   constants: constants,
   createDialog: createDialog,
+  createRemoteDialog: createRemoteDialog,
   setupView: setupView,
   teardownView: teardownView,
   findButtonByText: GlobalHelpers.findButtonByText

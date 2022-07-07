@@ -112,4 +112,31 @@
   z-index: 1;
 }
 
+.DialogForm {
+  // Sandboxed changes within here so as to avoid any side effects with dialogs
+  // still using the jQuery UI dialog buttons
+  //
+
+  input[type=submit] {
+    left: 0px;
+    position: static;
+  }
+
+  form {
+    margin-bottom: 0;
+  }
+  
+  .govuk-button {
+    margin-bottom: 0;
+
+    @include govuk-media-query($until: tablet) {
+      margin-bottom: govuk-spacing(5);
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+}
+
 

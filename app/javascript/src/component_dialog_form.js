@@ -1,123 +1,226 @@
-/**
- * Dialog Form Component
- * ----------------------------------------------------
- * Description:
- * Enhances jQueryUI Dialog component to make a simple message dialog.
- *
- * Documentation:
- *
- *     - jQueryUI
- *       https://api.jqueryui.com/dialog
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
- **/
+const {
+mergeObjects,
+safelyActivateFunction, 
+} = require('./utilities');
+const DialogActivator = require('./component_dialog_activator');
 
-const utilities = require('./utilities');
-const mergeObjects = utilities.mergeObjects;
-
-
-/* See jQueryUI Dialog for config options (all are passed straight in).
- *
- * @$node  (jQuery node) Form element found in template that should be enhanced.
- * @config (Object) Configurable key/value pairs.
- **/
-class FormDialog {
+class DialogForm {
   #config;
+  #remoteSource;
+  #state;
 
-  constructor($node, config) {
-    var dialog = this;
-    var conf = mergeObjects({
+  constructor(source, config) {
+    this.#config = mergeObjects({
+      activator: false,
       autoOpen: false,
-      classes: "",
-      closeOnEscape: true,
-      height: "auto",
-      modal: true,
-      resizable: false,
-      cancelText: "cancel",
-      removeErrorClasses: "error",
-      selectorErrors: ".error",
-      selectorAffirmativeButton: "[type='submit']:first"
+      closeOnClickSelector: 'button[type="button"]',
+      submitOnClickSelector: 'button[type="submit"]',
+      remote: false,
+      onLoad: function(dialog) {},
+      onReady: function(dialog) {},
+      beforeSubmit: function(dialog) {},
+      onSuccess: function(data, dialog) {},
+      onError: function(data, dialog) {},
+      onOpen: function(dialog) {},
+      onClose: function(dialog) {},
     }, config);
+   
+    this.#remoteSource = false;
+    this.#state = "closed";
+    this.$node = $(); // Should be overwritten once intialised
+    this.$container = $(); // Should be overwritten once intialised
+    this.$form = $(); // Should be overwritten on successful GET
 
-    var nodeName = $node.get(0).nodeName.toLowerCase();
-    var $form = nodeName != "form" ? $node.find("form") : $node;
-    var $button = $(conf.selectorAffirmativeButton, $node);
-    var $errors = $node.find(conf.selectorErrors);
-
-    // Some familiar component setup.
-    this.#config = conf;
-    $node.data("instance", this);
-
-    // Setup buttons.
-    $button.hide();
-    $button.attr("disabled", true);
-    this.#config.buttons = [
-      {
-        text: $button.text() || $button.val(),
-        click: () => {
-          $form.submit();
-          dialog.close();
-        }
-      },
-      {
-        text: conf.cancelText,
-        click: () => {
-          dialog.close();
-        }
-      }
-    ];
-
-    // Some setup can only happen when jQueryUI dialog is created.
-    $node.on("dialogcreate", function(event, ui) {
-      var $container = $node.parents(".ui-dialog");
-      $container.addClass("FormDialog");
-      dialog.$container = $container;
-    });
-
-    // Add the jQueryUI dialog functionality.
-    $node.dialog(this.#config);
-
-    // Public properties.
-    this.$node = $node;
-    this.$form = $form;
-    this.$errors = $errors;
-    // this.$container... see 'dialogcreate' event handler, above.
+    this.#initialize(source); 
   }
 
-  // Shortcut to jQuery method doing same thing.
+  get state() {
+    return this.#state;
+  }
+
   isOpen() {
-    return this.$node.dialog("isOpen");
+    return this.state == "open";
   }
 
   open() {
-    var $node = this.$node;
-    this.$node.dialog("open");
-    window.setTimeout(function() {
+    var dialog = this;
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog("open");
+    }
+    this.#state = "open";
+    safelyActivateFunction(this.#config.onOpen, dialog);
+    window.setTimeout(() => {
       // Not great but works.
       // We want the focus put inside dialog as all functionality to trap tabbing is there already.
       // Because we sometimes open dialogs from other components, those other components may (like
       // menus) shift focus from the opening dialog. We need this delay to allow those other events
       // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
       // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      $node.parent().find("input:not([type='hidden']), button").not(".ui-dialog-titlebar-close").eq(0).focus();
+      dialog.focus(); 
     }, 100);
   }
 
   close() {
-    this.$node.dialog("close");
-    this.clearErrors();
+    var dialog = this;
+    // Attempt to refocus on original activator
+    if(this.activator) {
+      this.activator.$node.focus();
+    }
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog("close");
+    }
+    safelyActivateFunction(dialog.#config.onClose, dialog);
+    if(this.#remoteSource){
+      if(this.$node.dialog('instance')) {
+        this.$node.dialog('destroy'); 
+      }
+      this.$node.remove();
+    }
+    this.#state = "closed";
   }
 
-  clearErrors() {
-    this.$errors.parents().removeClass(this.#config.removeErrorClasses);
-    this.$errors.remove(); // Remove from DOM (includes removing all jQuery data)
-    this.$errors = $(); // Make sure nothing is left.
+  submit() {
+    if( this.#config.remote ) {
+      this.#submitRemote();
+    } else {
+      this.$form.submit();
+    }
   }
+
+  #submitRemote() {
+    var dialog = this;
+    $.ajax({ 
+      type: 'POST',
+      url: dialog.$form.attr('action'),
+      data: dialog.$form.serialize(),
+      success: function(data) {
+        safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
+        dialog.close();
+      },
+      error: function(data) {
+        safelyActivateFunction(dialog.#config.onError, data, dialog);
+        dialog.focus();
+      }
+    });
+  }
+
+  focus() {
+    var el = this.$node.parent().find('input[aria-invalid]').get(0);
+    if(!el) {
+      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+    }
+    if(el){
+      el.focus();
+    }
+  }
+
+  /* 
+  * simply a function alias for better readability / nicer api 
+  * expected to be called if the dialog html is changed dynamically 
+  * will re-enhance the html to add the required functionality 
+  * */
+  refresh() {
+    this.#enhance();
+  }
+
+  #initialize(source) {
+    var dialog = this;
+
+    if(typeof source == 'string') {
+      this.#remoteSource = true;
+      $.get(source)
+      .done((response) => {
+        this.$node = $(response);
+        this.#build(); 
+        // Allow a function to be specified in dialog config 
+        safelyActivateFunction(dialog.#config.onLoad, dialog);
+        this.#enhance();
+        if(this.#config.autoOpen) {
+          this.open();
+        }
+      })
+    } else { 
+      this.$node = source;
+      this.#build();
+      this.#enhance();
+      if(this.#config.autoOpen) {
+        this.open();
+      }
+    }
+
+  }
+
+  #build() {
+    var dialog = this;
+    
+    if(this.#config.activator) {
+      this.#createActivator();
+    }
+
+    this.$node.on("dialogcreate", (event, ui) => {
+      this.$container = dialog.$node.parents(".ui-dialog");
+      this.$container.addClass("DialogForm");
+    });
+
+    // Add the jQueryUI dialog functionality.
+    this.$node.dialog({
+      autoOpen: false,
+      closeOnEscape: true,
+      height: "auto",
+      modal: true,
+      resizable: false,
+    });
+    
+    this.$node.data("instance", this);
+  }
+
+  #enhance() {
+    var dialog = this;
+    this.$form = this.$node.is('form') ? this.$node : this.$node.find('form');
+    this.#setupCloseButtons();
+    this.#setupSubmitButton();
+    safelyActivateFunction(dialog.#config.onReady, dialog);
+  }
+
+  /* add event listeners to configured close buttons */
+  #setupCloseButtons() {
+    var dialog = this;
+    if(this.#config.closeOnClickSelector) {
+      let $buttons = $(this.#config.closeOnClickSelector, this.$container);
+      $buttons.on("click", function() {
+        dialog.close();
+      });
+    } 
+  }
+
+  /* add event listeners to configured submit button */
+  #setupSubmitButton() {
+    var dialog = this;
+    if(this.#config.submitOnClickSelector) {
+      let $buttons = $(this.#config.submitOnClickSelector, this.$container);
+      $buttons.on("click", function(e) {
+        e.preventDefault();
+        safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
+        dialog.submit();
+      });
+    }
+  }
+
+  #createActivator() {
+    var $marker = $("<span></span>");
+
+    this.$node.before($marker);
+    this.activator = new DialogActivator(this.#config.activator, {
+      dialog: this,
+      text: this.#config.activatorText,
+      classes: this.#config.classes?.activator || '',
+      $target: $marker
+    });
+
+    $marker.remove();
+  }
+
 }
 
 
-// Make available for importing.
-module.exports = FormDialog;
-
+module.exports = DialogForm;
