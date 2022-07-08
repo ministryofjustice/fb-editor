@@ -41,8 +41,8 @@ describe("FlowConnectorPath", function() {
     /* TEST METHOD:  get path()
      **/
     it("should return the path", function() {
-      expect(created.connector.path).to.exist;
-      expect(created.connector.path).to.equal(""); // Base class does not set anything.
+      expect(created.connector.path()).to.exist;
+      expect(created.connector.path()).to.equal(""); // Base class does not set anything.
     });
 
 

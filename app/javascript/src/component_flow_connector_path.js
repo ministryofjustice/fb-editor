@@ -75,7 +75,7 @@ class FlowConnectorPath {
     this._path = "";
   }
 
-  get path() {
+  path() {
     return this._path;
   }
 
@@ -256,28 +256,33 @@ class ForwardPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions  } // Not expected to change.
     this.type = "ForwardPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
-    var forward = new FlowConnectorLine("forward", {
-                    x: x,
-                    y: y,
-                    length: dimensions.forward,
-                    prefix: "h",
-                    overlapAllowed: true
-                  });
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
+      let forward = new FlowConnectorLine("forward", {
+                      x: x,
+                      y: y,
+                      length: dimensions.forward,
+                      prefix: "h",
+                      overlapAllowed: true
+                    });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   forward.path
-                 );
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     forward.path
+                   );
+    }
+
+    return this._path;
   }
 
   // Since this arrow simply goes from point A to B, which is expected to
@@ -297,52 +302,57 @@ class ForwardUpForwardPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
     this.type = "ForwardUpForwardPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-               x: x,
-               y: y,
-               length: dimensions.up,
-               prefix: "v-"
-             });
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
+                 x: x,
+                 y: y,
+                 length: dimensions.up,
+                 prefix: "v-"
+               });
 
-   x += CURVE_SPACING;
-   y -= (up.prop("length") + CURVE_SPACING);
-   var forward2 = new FlowConnectorLine("forward2", {
-                    x: x,
-                    y: y,
-                    length: dimensions.forward2,
-                    prefix: "h",
-                    overlapAllowed: true
-                  });
+     x += CURVE_SPACING;
+     y -= (up.prop("length") + CURVE_SPACING);
+     let forward2 = new FlowConnectorLine("forward2", {
+                      x: x,
+                      y: y,
+                      length: dimensions.forward2,
+                      prefix: "h",
+                      overlapAllowed: true
+                    });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward1, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, up, forward2 ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   forward1.path,
-                   CURVE_RIGHT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path
-                 );
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     forward1.path,
+                     CURVE_RIGHT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path
+                   );
+    }
+
+    return this._path;
   }
 
   nudge(linename) {
@@ -360,7 +370,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
            // no overlap prevention should be required for these.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -380,73 +390,77 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
-    var forward1 = new FlowConnectorLine("forward1", {
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
+
+      x += forward1.prop("length") + CURVE_SPACING;
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
                  x: x,
                  y: y,
-                 length: dimensions.forward1,
-                 prefix: "h",
-                 overlapAllowed: true
+                 length: dimensions.up,
+                 prefix: "v-"
                });
 
-    x += forward1.prop("length") + CURVE_SPACING;
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-           x: x,
-           y: y,
-           length: dimensions.up,
-           prefix: "v-"
-         });
+      x += CURVE_SPACING;
+      y -= (up.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    x += CURVE_SPACING;
-    y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                 x: x,
-                 y: y,
-                 length: dimensions.forward2,
-                 prefix: "h"
-               });
+      x += (forward2.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down = new FlowConnectorLine("down", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down,
+                   prefix: "v"
+                 });
 
-    x += (forward2.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down = new FlowConnectorLine("down", {
-             x: x,
-             y: y,
-             length: dimensions.down,
-             prefix: "v"
-           });
+      x += CURVE_SPACING;
+      y += (down.prop("length") + CURVE_SPACING);
+      let forward3 = new FlowConnectorLine("forward3", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward3,
+                       prefix: "h"
+                     });
 
-    x += CURVE_SPACING;
-    y += (down.prop("length") + CURVE_SPACING);
-    var forward3 = new FlowConnectorLine("forward3", {
-             x: x,
-             y: y,
-             length: dimensions.forward3,
-             prefix: "h"
-           });
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, up, forward2, down, forward3 ];
 
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     forward1.path,
+                     CURVE_RIGHT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path,
+                     CURVE_RIGHT_DOWN,
+                     down.path,
+                     CURVE_DOWN_RIGHT,
+                     forward3.path,
+                   );
+    }
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward1, up, forward2, down, forward3 ];
-
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   forward1.path,
-                   CURVE_RIGHT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path,
-                   CURVE_RIGHT_DOWN,
-                   down.path,
-                   CURVE_DOWN_RIGHT,
-                   forward3.path,
-                 );
+    return this._path;
   }
 
   nudge(linename) {
@@ -476,7 +490,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
            // no overlap prevention should be required for these.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -496,72 +510,77 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down = new FlowConnectorLine("down", {
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down = new FlowConnectorLine("down", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down,
+                   prefix: "v"
+                 });
+
+      x -= CURVE_SPACING;
+      y += (down.prop("length") + CURVE_SPACING);
+      let backward = new FlowConnectorLine("backward", {
+                       x: x,
+                       y: y,
+                       length: dimensions.backward,
+                       prefix: "h-"
+                     });
+
+      x -= (backward.prop("length") + CURVE_SPACING);
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
                  x: x,
                  y: y,
-                 length: dimensions.down,
-                 prefix: "v"
+                 length: dimensions.up,
+                 prefix: "v-"
                });
 
-    x -= CURVE_SPACING;
-    y += (down.prop("length") + CURVE_SPACING);
-    var backward = new FlowConnectorLine("backward", {
-                     x: x,
-                     y: y,
-                     length: dimensions.backward,
-                     prefix: "h-"
-                   });
+      x += CURVE_SPACING;
+      y -= (up.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    x -= (backward.prop("length") + CURVE_SPACING);
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-               x: x,
-               y: y,
-               length: dimensions.up,
-               prefix: "v-"
-             });
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, down, backward, up, forward2 ];
 
-    x += CURVE_SPACING;
-    y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h"
-                   });
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     forward1.path,
+                     CURVE_RIGHT_DOWN,
+                     down.path,
+                     CURVE_DOWN_LEFT,
+                     backward.path,
+                     CURVE_LEFT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path);
+    }
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward1, down, backward, up, forward2 ];
-
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   forward1.path,
-                   CURVE_RIGHT_DOWN,
-                   down.path,
-                   CURVE_DOWN_LEFT,
-                   backward.path,
-                   CURVE_LEFT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path);
+    return this._path;
   }
 
   nudge(linename) {
@@ -589,7 +608,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
            // no overlap prevention should be required for this.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -606,50 +625,55 @@ class ForwardDownForwardPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down = new FlowConnectorLine("down", {
-                 x: x,
-                 y: y,
-                 length: dimensions.down,
-                 prefix: "v"
-               });
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down = new FlowConnectorLine("down", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down,
+                   prefix: "v"
+                 });
 
-    x += CURVE_SPACING;
-    y += (down.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h"
-                   });
+      x += CURVE_SPACING;
+      y += (down.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ forward1, down, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, down, forward2 ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   forward1.path,
-                   CURVE_RIGHT_DOWN,
-                   down.path,
-                   CURVE_DOWN_RIGHT,
-                   forward2.path);
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     forward1.path,
+                     CURVE_RIGHT_DOWN,
+                     down.path,
+                     CURVE_DOWN_RIGHT,
+                     forward2.path);
+    }
+
+    return this._path;
   }
 
   nudge(linename) {
@@ -667,7 +691,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
            // no overlap prevention should be required for this.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -687,85 +711,90 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var down1 = new FlowConnectorLine("down1", {
-                  x: x,
-                  y: y,
-                  length: dimensions.down1,
-                  prefix: "v",
-                  overlapAllowed: true
-                });
+      let down1 = new FlowConnectorLine("down1", {
+                    x: x,
+                    y: y,
+                    length: dimensions.down1,
+                    prefix: "v",
+                    overlapAllowed: true
+                  });
 
-    x += CURVE_SPACING;
-    y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      x += CURVE_SPACING;
+      y += (down1.prop("length") + CURVE_SPACING);
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down2 = new FlowConnectorLine("down2", {
-                  x: x,
-                  y: y,
-                  length: dimensions.down2,
-                  prefix: "v"
-                });
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down2 = new FlowConnectorLine("down2", {
+                    x: x,
+                    y: y,
+                    length: dimensions.down2,
+                    prefix: "v"
+                  });
 
-    x -= CURVE_SPACING;
-    y += (down2.prop("length") + CURVE_SPACING);
-    var backward = new FlowConnectorLine("backward", {
-                     x: x,
-                     y: y,
-                     length: dimensions.backward,
-                     prefix: "h-"
-                   });
+      x -= CURVE_SPACING;
+      y += (down2.prop("length") + CURVE_SPACING);
+      let backward = new FlowConnectorLine("backward", {
+                       x: x,
+                       y: y,
+                       length: dimensions.backward,
+                       prefix: "h-"
+                     });
 
-    x -= (CURVE_SPACING + dimensions.backward);
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-               x: x,
-               y: y,
-               length: dimensions.up,
-               prefix: "v-"
-             });
+      x -= (CURVE_SPACING + dimensions.backward);
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
+                 x: x,
+                 y: y,
+                 length: dimensions.up,
+                 prefix: "v-"
+               });
 
-    x += CURVE_SPACING;
-    y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h"
-                   });
+      x += CURVE_SPACING;
+      y -= (up.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   down1.path,
-                   CURVE_DOWN_RIGHT,
-                   forward1.path,
-                   CURVE_RIGHT_DOWN,
-                   down2.path,
-                   CURVE_DOWN_LEFT,
-                   backward.path,
-                   CURVE_LEFT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path
-                 );
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     down1.path,
+                     CURVE_DOWN_RIGHT,
+                     forward1.path,
+                     CURVE_RIGHT_DOWN,
+                     down2.path,
+                     CURVE_DOWN_LEFT,
+                     backward.path,
+                     CURVE_LEFT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path
+                   );
+    }
+
+    return this._path;
   }
 
   nudge(linename) {
@@ -795,7 +824,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -814,63 +843,68 @@ class DownForwardUpPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var down = new FlowConnectorLine("down", {
+      let down = new FlowConnectorLine("down", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down,
+                   prefix: "v",
+                   overlapAllowed: true
+                 });
+
+      x += CURVE_SPACING;
+      y += (down.prop("length") + CURVE_SPACING);
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
+
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
                  x: x,
                  y: y,
-                 length: dimensions.down,
-                 prefix: "v",
-                 overlapAllowed: true
+                 length: dimensions.up,
+                 prefix: "v-"
                });
 
-    x += CURVE_SPACING;
-    y += (down.prop("length") + CURVE_SPACING);
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      x += CURVE_SPACING;
+      y -= (up.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-               x: x,
-               y: y,
-               length: dimensions.up,
-               prefix: "v-"
-             });
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down, forward1, up, forward2 ];
 
-    x += CURVE_SPACING;
-    y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h"
-                   });
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     down.path,
+                     CURVE_DOWN_RIGHT,
+                     forward1.path,
+                     CURVE_RIGHT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path
+                   );
+    }
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down, forward1, up, forward2 ];
-
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   down.path,
-                   CURVE_DOWN_RIGHT,
-                   forward1.path,
-                   CURVE_RIGHT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path
-                 );
+    return this._path;
   }
 
   nudge(linename) {
@@ -889,7 +923,7 @@ class DownForwardUpPath extends FlowConnectorPath {
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -910,86 +944,91 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var down1 = new FlowConnectorLine("down1", {
+      let down1 = new FlowConnectorLine("down1", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down1,
+                   prefix: "v",
+                   overlapAllowed: true
+                 });
+
+      x += CURVE_SPACING;
+      y += (down1.prop("length") + CURVE_SPACING);
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
+
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y -= CURVE_SPACING;
+      let up = new FlowConnectorLine("up", {
                  x: x,
                  y: y,
-                 length: dimensions.down1,
-                 prefix: "v",
-                 overlapAllowed: true
+                 length: dimensions.up,
+                 prefix: "v-"
                });
 
-    x += CURVE_SPACING;
-    y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      x += CURVE_SPACING;
+      y -= (up.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h"
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y -= CURVE_SPACING;
-    var up = new FlowConnectorLine("up", {
-               x: x,
-               y: y,
-               length: dimensions.up,
-               prefix: "v-"
-             });
+      x += (forward2.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down2 = new FlowConnectorLine("down2", {
+                    x: x,
+                    y: y,
+                    length: dimensions.down2,
+                    prefix: "v"
+                  });
 
-    x += CURVE_SPACING;
-    y -= (up.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h"
-                   });
+      x += CURVE_SPACING;
+      y += down2.prop("length") + CURVE_SPACING;
+      let forward3 = new FlowConnectorLine("forward3", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward3,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward2.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down2 = new FlowConnectorLine("down2", {
-                  x: x,
-                  y: y,
-                  length: dimensions.down2,
-                  prefix: "v"
-                });
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
 
-    x += CURVE_SPACING;
-    y += down2.prop("length") + CURVE_SPACING;
-    var forward3 = new FlowConnectorLine("forward3", {
-                  x: x,
-                  y: y,
-                  length: dimensions.forward3,
-                  prefix: "h",
-                  overlapAllowed: true
-                });
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     down1.path,
+                     CURVE_DOWN_RIGHT,
+                     forward1.path,
+                     CURVE_RIGHT_UP,
+                     up.path,
+                     CURVE_UP_RIGHT,
+                     forward2.path,
+                     CURVE_RIGHT_DOWN,
+                     down2.path,
+                     CURVE_DOWN_RIGHT,
+                     forward3.path
+                   );
+    }
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
-
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   down1.path,
-                   CURVE_DOWN_RIGHT,
-                   forward1.path,
-                   CURVE_RIGHT_UP,
-                   up.path,
-                   CURVE_UP_RIGHT,
-                   forward2.path,
-                   CURVE_RIGHT_DOWN,
-                   down2.path,
-                   CURVE_DOWN_RIGHT,
-                   forward3.path
-                 );
+    return this._path;
   }
 
   nudge(linename) {
@@ -1019,7 +1058,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -1038,64 +1077,69 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var down1 = new FlowConnectorLine("down1", {
-                 x: x,
-                 y: y,
-                 length: dimensions.down1,
-                 prefix: "v",
-                 overlapAllowed: true
-               });
+      let down1 = new FlowConnectorLine("down1", {
+                    x: x,
+                    y: y,
+                    length: dimensions.down1,
+                    prefix: "v",
+                    overlapAllowed: true
+                  });
 
-    x += CURVE_SPACING;
-    y += (down1.prop("length") + CURVE_SPACING);
-    var forward1 = new FlowConnectorLine("forward1", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward1,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      x += CURVE_SPACING;
+      y += (down1.prop("length") + CURVE_SPACING);
+      let forward1 = new FlowConnectorLine("forward1", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward1,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    x += (forward1.prop("length") + CURVE_SPACING);
-    y += CURVE_SPACING;
-    var down2 = new FlowConnectorLine("down2", {
-                  x: x,
-                  y: y,
-                  length: dimensions.down2,
-                  prefix: "v"
-                });
+      x += (forward1.prop("length") + CURVE_SPACING);
+      y += CURVE_SPACING;
+      let down2 = new FlowConnectorLine("down2", {
+                    x: x,
+                    y: y,
+                    length: dimensions.down2,
+                    prefix: "v"
+                  });
 
-    x += CURVE_SPACING;
-    y += (down2.prop("length") + CURVE_SPACING);
-    var forward2 = new FlowConnectorLine("forward2", {
-                     x: x,
-                     y: y,
-                     length: dimensions.forward2,
-                     prefix: "h",
-                     overlapAllowed: true
-                   });
+      x += CURVE_SPACING;
+      y += (down2.prop("length") + CURVE_SPACING);
+      let forward2 = new FlowConnectorLine("forward2", {
+                       x: x,
+                       y: y,
+                       length: dimensions.forward2,
+                       prefix: "h",
+                       overlapAllowed: true
+                     });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down1, forward1, down2, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, down2, forward2 ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   down1.path,
-                   CURVE_DOWN_RIGHT,
-                   forward1.path,
-                   CURVE_RIGHT_DOWN,
-                   down2.path,
-                   CURVE_DOWN_RIGHT,
-                   forward2.path
-                 );
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     down1.path,
+                     CURVE_DOWN_RIGHT,
+                     forward1.path,
+                     CURVE_RIGHT_DOWN,
+                     down2.path,
+                     CURVE_DOWN_RIGHT,
+                     forward2.path
+                   );
+    }
+
+    return this._path;
   }
 
   nudge(linename) {
@@ -1114,7 +1158,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
 
-    this.path = d;
+    this.path(d);
     this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
@@ -1131,41 +1175,46 @@ class DownForwardPath extends FlowConnectorPath {
 
     this._dimensions = { original: dimensions };
     this.type = "DownForwardPath";
-    this.path = dimensions;
+    this.path(dimensions);
     this.build();
   }
 
-  set path(dimensions) {
-    var x = this.points.from_x;
-    var y = this.points.from_y;
+  // Get or Set internal _path value
+  path(dimensions) {
+    if(arguments.length) {
+      let x = this.points.from_x;
+      let y = this.points.from_y;
 
-    var down = new FlowConnectorLine("down", {
-                 x: x,
-                 y: y,
-                 length: dimensions.down,
-                 prefix: "v",
-                 overlapAllowed: true
-               });
+      let down = new FlowConnectorLine("down", {
+                   x: x,
+                   y: y,
+                   length: dimensions.down,
+                   prefix: "v",
+                   overlapAllowed: true
+                 });
 
-    x += CURVE_SPACING;
-    y += (down.prop("length") + CURVE_SPACING);
-    var forward = new FlowConnectorLine("forward", {
-           x: x,
-           y: y,
-           length: dimensions.forward,
-           prefix: "h",
-           overlapAllowed: true
-         });
+      x += CURVE_SPACING;
+      y += (down.prop("length") + CURVE_SPACING);
+      let forward = new FlowConnectorLine("forward", {
+                      x: x,
+                      y: y,
+                      length: dimensions.forward,
+                      prefix: "h",
+                      overlapAllowed: true
+                    });
 
-    this._dimensions.current = dimensions;
-    this._dimensions.lines = [ down, forward ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down, forward ];
 
-    this._path = pathD(
-                   xy(this.points.from_x, this.points.from_y),
-                   down.path,
-                   CURVE_DOWN_RIGHT,
-                   forward.path
-                 );
+      this._path = pathD(
+                     xy(this.points.from_x, this.points.from_y),
+                     down.path,
+                     CURVE_DOWN_RIGHT,
+                     forward.path
+                   );
+    }
+
+    return this._path;
   }
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
