@@ -22,7 +22,7 @@ module Api
         end
       end
 
-      render :show, status: :unprocessable_entity
+      render :show, status: :unprocessable_entity, layout: false
     end
 
     private

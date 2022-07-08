@@ -1,10 +1,7 @@
 <div class="component-dialog-api-request" id="autocomplete_items">
-  <%= form_for @items, url: api_service_autocomplete_path(service_id: service.service_id, component_id: @items.component_id), method: :post do |form| %>
+  <%= form_for @items, url: api_service_autocomplete_path(service_id: service.service_id, component_id: @items.component_id), method: :post, multipart: true do |form| %>
   <div class="govuk-form-group">
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <%= t('dialogs.autocomplete.legend')%>
-      </legend>
+      <%= form.label :file, t('dialogs.autocomplete.legend'), class: "govuk-label govuk-label--m" %>
 
       <% if items_present? %>
         <strong class="govuk-warning-text__text govuk-!-margin-bottom-5">
@@ -27,7 +24,6 @@
         <% end %>
       </div>
       <p><%= link_to t('dialogs.autocomplete.requirement_link'), '#', class: 'govuk-link govuk-!-margin-bottom-9' %></p>
-    </fieldset>
   </div>
 
   <%= form.submit t('dialogs.autocomplete.upload'), class: 'govuk-button fb-govuk-button' %>
