@@ -8,5 +8,10 @@ module Api
         render json: { message: 'Unauthorised' }, status: :unauthorized
       end
     end
+
+    def items_present?
+      ActiveModel::Type::Boolean.new.cast(params[:items_present])
+    end
+    helper_method :items_present?
   end
 end

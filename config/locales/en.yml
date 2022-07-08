@@ -153,6 +153,7 @@ en:
     reconnect_confirmation: 'Reconnect confirmation page'
     ok: 'Ok'
     submit: 'Submit'
+    upload_options: Upload options
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'

@@ -57,4 +57,11 @@ class ApplicationController < ActionController::Base
   def service_id_param
     params[:service_id] || params[:id]
   end
+
+  def items_present?(component_id)
+    return if @service_items.blank?
+
+    @service_items.key?(component_id)
+  end
+  helper_method :items_present?
 end

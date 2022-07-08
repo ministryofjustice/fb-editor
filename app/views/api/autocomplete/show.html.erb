@@ -6,6 +6,14 @@
         <%= t('dialogs.autocomplete.legend')%>
       </legend>
 
+      <% if items_present? %>
+        <strong class="govuk-warning-text__text govuk-!-margin-bottom-5">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <span class="govuk-warning-text__assistive">Warning</span>
+          <%= t('autocomplete.warning') %>
+        </strong>
+      <% end %>
+
       <div class="govuk-form-group <%= @items.errors.present? ? 'govuk-form-group--error' : '' %>">
         <% @items.errors.each do |error|  %>
           <span class="govuk-error-message" id="autocomplete_items_<%=error.attribute%>_error">
