@@ -89,10 +89,13 @@ class DialogForm {
 
   #submitRemote() {
     var dialog = this;
+
     $.ajax({ 
       type: 'POST',
       url: dialog.$form.attr('action'),
-      data: dialog.$form.serialize(),
+      data: new FormData(dialog.$form.get(0)),
+      processData: false,
+      contentType: false,
       success: function(data) {
         safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
         dialog.close();

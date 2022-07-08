@@ -399,6 +399,25 @@ function addQuestionMenuListeners(view) {
       },
     });
   });
+
+  view.$document.on("QuestionMenuSelectionUpload", function(event, question) {
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    new DialogForm(apiUrl, {
+      activator: question.menu.selectedItem,
+      remote: true,
+      autoOpen: true,
+      submitOnClickSelector: 'input[type="submit"]',
+      onSuccess: function(data) {
+      },
+
+      onError: function(data, dialog) {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      },
+    });
+  });
 }
 
 function addEditableComponentItemMenuListeners(view) {

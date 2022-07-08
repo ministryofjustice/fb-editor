@@ -58,6 +58,9 @@ class QuestionMenu extends ActivatedMenu {
       case "validation":
         this.validation(item);
         break;
+      case "upload":
+        this.upload();
+        break;
       case "close":
         this.close();
         break;
@@ -75,6 +78,10 @@ class QuestionMenu extends ActivatedMenu {
   validation(menuItem) {
     var validation = menuItem.data("validation");
     $(document).trigger("QuestionMenuSelectionValidation", { question: this.question, validation: validation });
+  }
+
+  upload() {
+    $(document).trigger("QuestionMenuSelectionUpload", this.question);
   }
 
   close() {
