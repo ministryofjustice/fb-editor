@@ -103,7 +103,7 @@ feature 'Publishing' do
     and_I_want_to_publish('Test')
     then_I_should_see_publish_to_test_modal
     then_username_and_password_should_be_the_default('dev')
-    when_I_enter_invalid_username_and_password('dev', 'Test')
+    when_I_enter_invalid_username_and_password('dev', 'Test', 'dev')
     then_I_should_see_an_error_message('dev', 'Test')
 
     and_I_cancel
@@ -111,7 +111,7 @@ feature 'Publishing' do
     and_I_want_to_publish('Live')
     then_I_should_not_see_publish_to_test_modal
     then_username_and_password_should_be_selected('production')
-    when_I_enter_invalid_username_and_password('live', 'Live')
+    when_I_enter_invalid_username_and_password('live', 'Live', 'production')
     then_I_should_see_an_error_message('live', 'Live')
   end
 
@@ -165,9 +165,9 @@ feature 'Publishing' do
     expect(page).to_not have_text(username_and_password_text)
   end
 
-  def when_I_enter_invalid_username_and_password(environment, button_environment)
-    editor.find("#publish-form-#{environment} #publish_service_creation_username").set('foo')
-    editor.find("#publish-form-#{environment} #publish_service_creation_password").set('bar')
+  def when_I_enter_invalid_username_and_password(environment, button_environment, deployment_environment)
+    editor.find("#publish-form-#{environment} #username_#{deployment_environment}").set('foo')
+    editor.find("#publish-form-#{environment} #password_#{deployment_environment}").set('bar')
     editor.find('.ui-dialog').find(:button, text: "Publish to #{button_environment}").click
   end
 
