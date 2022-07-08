@@ -42,7 +42,7 @@ const constants = {
  *  }
  *
  **/
-function createFlowConnectorPath(id, points, config) {
+function createFlowConnectorPath(type, id, points, config) {
   var conf = {
     id: id,
     from: constants.FAKE_FLOW_ITEM_1,
@@ -61,7 +61,7 @@ function createFlowConnectorPath(id, points, config) {
   return {
     points: points,
     config: conf,
-    connector: new ConnectorPaths.FlowConnectorPath(points, conf)
+    connector: new ConnectorPaths[type](points, conf)
   }
 }
 

@@ -18,7 +18,7 @@ describe("FlowConnectorPath", function() {
 
     beforeEach(function() {
       helpers.setupView(CONTAINER_ID);
-      created = helpers.createFlowConnectorPath(COMPONENT_ID, POINTS, {
+      created = helpers.createFlowConnectorPath('FlowConnectorPath', COMPONENT_ID, POINTS, {
         container: $("#" + CONTAINER_ID),
         from: c.FAKE_FLOW_ITEM_1,
         to: c.FAKE_FLOW_ITEM_2,

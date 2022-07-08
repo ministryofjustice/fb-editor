@@ -11,7 +11,7 @@ describe("FlowConnectorPath", function() {
 
     before(function() {
       helpers.setupView(CONTAINER_ID);
-      created = helpers.createFlowConnectorPath(COMPONENT_ID, {
+      created = helpers.createFlowConnectorPath('FlowConnectorPath', COMPONENT_ID, {
           from_x: 10,
           from_y: 12,
           to_x: 25,
