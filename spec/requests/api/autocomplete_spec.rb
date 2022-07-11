@@ -18,10 +18,37 @@ RSpec.describe 'Autocomplete spec', type: :request do
     let(:service_id) { SecureRandom.uuid }
     let(:component_id) { SecureRandom.uuid }
 
-    context 'when authenticated' do
-      it 'returns a 200' do
+    context 'when there are items for a component' do
+      before do
+        allow(MetadataApiClient::Items).to receive(:find).and_return(api_response)
+
         request
+      end
+
+      let(:api_response) do
+        MetadataApiClient::Items.new(
+          { 'items' => { '123456789' => [{ 'text' => 'value' }] } }
+        )
+      end
+
+      it 'returns a 200' do
         expect(response.status).to eq(200)
+      end
+
+      it 'has the warning message for existing items' do
+        expect(response.body).to include(I18n.t('dialogs.autocomplete.modal_warning'))
+      end
+    end
+
+    context 'when the component does not have existing items' do
+      before do
+        allow(MetadataApiClient::Items).to receive(:find).and_return(double(errors?: true))
+
+        request
+      end
+
+      it 'should not show the warning message' do
+        expect(response.body).to_not include(I18n.t('dialogs.autocomplete.modal_warning'))
       end
     end
   end
@@ -37,6 +64,12 @@ RSpec.describe 'Autocomplete spec', type: :request do
     let(:params) { { autocomplete_items: { file: file } } }
 
     context 'when there is a file uploaded' do
+      before do
+        allow_any_instance_of(ApplicationHelper).to receive(:items_present?)
+        .with(component_id)
+        .and_return(true)
+      end
+
       context 'and the file is a valid csv' do
         context 'the metadata api accepts the request' do
           let(:api_response) { double(errors?: false) }
@@ -87,6 +120,12 @@ RSpec.describe 'Autocomplete spec', type: :request do
 
     context 'when there is no file uploaded' do
       let(:params) { { autocomplete_items: nil } }
+
+      before do
+        allow_any_instance_of(ApplicationHelper).to receive(:items_present?)
+        .with(component_id)
+        .and_return(true)
+      end
 
       it 'returns a 422' do
         request

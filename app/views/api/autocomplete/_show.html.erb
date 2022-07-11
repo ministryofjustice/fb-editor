@@ -3,11 +3,11 @@
   <div class="govuk-form-group">
       <%= form.label :file, t('dialogs.autocomplete.legend'), class: "govuk-label govuk-label--m" %>
 
-      <% if items_present? %>
+      <% if items_present?(@items.component_id) %>
         <strong class="govuk-warning-text__text govuk-!-margin-bottom-5">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <span class="govuk-warning-text__icon govuk-!-margin-left-7" aria-hidden="true">!</span>
           <span class="govuk-warning-text__assistive">Warning</span>
-          <%= t('autocomplete.warning') %>
+          <%= t('dialogs.autocomplete.modal_warning') %>
         </strong>
       <% end %>
 
@@ -19,9 +19,7 @@
         <% end %>
 
         <%= form.file_field :file %>
-        <% if @items.file.present? %>
-          <p><%= @items.file.original_filename %></p>
-        <% end %>
+
       </div>
       <p><%= link_to t('dialogs.autocomplete.requirement_link'), '#', class: 'govuk-link govuk-!-margin-bottom-9' %></p>
   </div>

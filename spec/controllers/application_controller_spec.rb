@@ -124,38 +124,4 @@ RSpec.describe ApplicationController do
       end
     end
   end
-
-  describe '#items_present?' do
-    let(:component_id) { SecureRandom.uuid }
-
-    context 'when items are present' do
-      before do
-        allow(controller).to receive(:items_present?).and_return(true)
-      end
-
-      it 'returns true' do
-        expect(controller.items_present?(component_id)).to be_truthy
-      end
-    end
-
-    context 'when items are not present' do
-      before do
-        allow(controller).to receive(:items_present?).and_return(false)
-      end
-
-      it 'returns false' do
-        expect(controller.items_present?(component_id)).to be_falsey
-      end
-    end
-
-    context 'when items_present is not present' do
-      before do
-        allow(controller).to receive(:items_present?).and_return(false)
-      end
-
-      it 'returns true' do
-        expect(controller.items_present?(component_id)).to be_falsey
-      end
-    end
-  end
 end

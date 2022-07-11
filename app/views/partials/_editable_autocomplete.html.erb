@@ -1,0 +1,11 @@
+<% unless items_present?(component.uuid) %>
+  <strong class="govuk-warning-text__text govuk-!-margin-bottom-5">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <span class="govuk-warning-text__assistive">Warning</span>
+    <%= t('dialogs.autocomplete.component_warning') %>
+  </strong>
+<% end %>
+
+<button type="button" class="fb-govuk-button fb-govuk-button-inverted" data-action="upload" hidden>
+  <%=t('actions.upload_options')%>
+</button>

@@ -6,10 +6,10 @@ class PagesController < FormController
   EXTRA_COMPONENTS = 'extra_components'.freeze
 
   def edit
-    return if @page.component.nil?
+    return if @page.components.nil?
 
-    if @page.components.any? { |component| component.type == 'autocomplete' }
-      @service_items = MetadataApiClient::Items.show(service_id: service_id).metadata['items'] || {}
+    if autocomplete_component_present?
+      @service_items = MetadataApiClient::Items.all(service_id: service_id).metadata['items'] || {}
     end
   end
 
@@ -150,5 +150,9 @@ class PagesController < FormController
 
   def parameterize_url
     { page_url: params[:page][:page_url].parameterize }
+  end
+
+  def autocomplete_component_present?
+    @page.components.any? { |component| component.type == 'autocomplete' }
   end
 end

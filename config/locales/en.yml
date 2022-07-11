@@ -94,6 +94,9 @@ en:
       legend: Upload autocomplete options
       requirement_link: Read our file structure requirements
       upload: Upload options
+      upload_link: Upload options...
+      modal_warning: Uploading another file will replace your existing options.
+      component_warning: Users will not be able to answer this question and progress further in your form until you upload options.
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
