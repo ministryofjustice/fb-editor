@@ -78,6 +78,14 @@ module ApplicationHelper
     Rails.application.config.moj_forms_devs.include?(current_user.email)
   end
 
+  def items_present?(component_id)
+    response = MetadataApiClient::Items.find(service_id: service.service_id, component_id: component_id)
+
+    return if response.errors?
+
+    response.metadata['items'].present?
+  end
+
   # Remove once hotjar testing is complete
   def live_platform?
     ENV['PLATFORM_ENV'] == 'live'

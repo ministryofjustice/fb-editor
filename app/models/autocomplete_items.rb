@@ -15,6 +15,10 @@ class AutocompleteItems
     file_contents.drop(1)
   end
 
+  def to_partial_path
+    'show'
+  end
+
   private
 
   def file_contents

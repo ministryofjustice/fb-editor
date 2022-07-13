@@ -3,7 +3,7 @@ module Api
     before_action :assign_items
 
     def show
-      render @item, layout: false
+      render @items, layout: false
     end
 
     def create
@@ -22,7 +22,7 @@ module Api
         end
       end
 
-      render :show, status: :unprocessable_entity
+      render partial: 'show', status: :unprocessable_entity, layout: false
     end
 
     private

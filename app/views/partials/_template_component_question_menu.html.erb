@@ -6,6 +6,12 @@
     <ul class="govuk-navigation component-activated-menu">
       <li data-action="required" data-validation="required"><span role="menuitemcheckbox" aria-checked="<%= component.validation ? component.validation['required'] : 'false' -%>"><%= t('question.menu.required')%></span></li>
 
+      <% if component.type  == 'autocomplete' %>
+        <li data-action="upload"
+            data-api-path="<%= URI.decode_www_form_component(api_service_autocomplete_path(service.service_id, component.uuid))%>">
+            <span><%= t('dialogs.autocomplete.upload_link') %></span>
+        </li>
+      <% end %>
 
       <% enabled_validations(component).each do |validation| %>
         <li data-action="validation"
@@ -22,5 +28,5 @@
         </li>
       <% end %>
     </ul>
-  </script> 
+  </script>
 <% end %>

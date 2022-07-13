@@ -30,6 +30,7 @@ const RadiosQuestion = require('./question_radios');
 const DateQuestion = require('./question_date');
 const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_textarea');
+const AutocompleteQuestion = require('./question_autocomplete');
 
 const DialogConfiguration = require('./component_dialog_configuration');
 const DialogApiRequest = require('./component_dialog_api_request');
@@ -399,6 +400,25 @@ function addQuestionMenuListeners(view) {
       },
     });
   });
+
+  view.$document.on("QuestionMenuSelectionUpload", function(event, question) {
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    new DialogForm(apiUrl, {
+      activator: question.menu.selectedItem,
+      remote: true,
+      autoOpen: true,
+      submitOnClickSelector: 'input[type="submit"]',
+      onSuccess: function(data) {
+      },
+
+      onError: function(data, dialog) {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      },
+    });
+  });
 }
 
 function addEditableComponentItemMenuListeners(view) {
@@ -534,7 +554,7 @@ function enhanceContent(view) {
 /* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
-  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=autocomplete]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
     var question = new TextQuestion($(this), {
       form: view.dataController.$form,
       text: {
@@ -544,6 +564,18 @@ function enhanceQuestions(view) {
     });
     view.addLastPointHandler(question.menu.activator.$node);
   });
+
+  view.$editable.filter("[data-fb-content-type=autocomplete]").each(function(i, node) {
+    var question = new AutocompleteQuestion($(this), {
+      form: view.dataController.$form,
+      text: {
+        default_content: view.text.defaults.content,
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+    view.addLastPointHandler(question.menu.activator.$node);
+  });
+
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     var question = new DateQuestion($(this), {
