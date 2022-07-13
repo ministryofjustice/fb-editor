@@ -94,21 +94,14 @@ jobs:
   js_test:
     docker:
       - image: 'cimg/ruby:2.7.5-node'
-    parallelism: 3
     steps:
       - checkout
       - run: *node_version
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: Running the tests
-          command: |
-            TESTFILES=$(circleci tests glob "test/**/*_test.js" | circleci tests split --split-by=name)
-            echo '***********'
-            echo $TESTFILES
-            echo '***********'
-
-            yarn run jstest $TESTFILES --profile 10
+          name: Running the JS tests
+          command: yarn run jstest
       - slack/status: *slack_status
   build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
