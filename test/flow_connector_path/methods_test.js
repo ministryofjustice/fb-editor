@@ -18,7 +18,7 @@ describe("FlowConnectorPath", function() {
 
     beforeEach(function() {
       helpers.setupView(CONTAINER_ID);
-      created = helpers.createFlowConnectorPath(COMPONENT_ID, POINTS, {
+      created = helpers.createFlowConnectorPath('FlowConnectorPath', COMPONENT_ID, POINTS, {
         container: $("#" + CONTAINER_ID),
         from: c.FAKE_FLOW_ITEM_1,
         to: c.FAKE_FLOW_ITEM_2,
@@ -41,8 +41,8 @@ describe("FlowConnectorPath", function() {
     /* TEST METHOD:  get path()
      **/
     it("should return the path", function() {
-      expect(created.connector.path).to.exist;
-      expect(created.connector.path).to.equal(""); // Base class does not set anything.
+      expect(created.connector.path()).to.exist;
+      expect(created.connector.path()).to.equal(""); // Base class does not set anything.
     });
 
 
