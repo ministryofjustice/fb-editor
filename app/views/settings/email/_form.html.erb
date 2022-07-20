@@ -28,7 +28,7 @@
       <%= f.label :service_email_body, class: "govuk-label" do %>
         <%= f.object.class.human_attribute_name :service_email_body %>
         <span class="govuk-hint"><%= f.object.class.human_attribute_name :service_email_body_hint %></span>
-    <% end %>
+      <% end %>
       <%= f.text_area :service_email_body, class: "govuk-textarea width-responsive-two-thirds", rows: '5' %>
     </div>
   </fieldset>
@@ -40,10 +40,9 @@
       </h3>
     </legend>
 
-    <%= link_to 'See sample PDF',asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank' %>
-
     <div class="govuk-hint">
-      <%= f.object.class.human_attribute_name :pdf_hint %>
+      <p><%= f.object.class.human_attribute_name :pdf_hint %></p>
+      <p><%= link_to f.object.class.human_attribute_name(:pdf_sample), asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank' %></p>
     </div>
 
     <div class="govuk-form-group">
@@ -56,4 +55,29 @@
       <%= f.text_field :service_email_pdf_subheading, class: "govuk-input width-responsive-two-thirds" %>
     </div>
   </fieldset>
+
+  <% if ENV['CSV_ATTACHMENTS'] == 'enabled' %>
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h3 class="govuk-fieldset__heading">
+        <%= f.object.class.human_attribute_name :csv_attachment %>
+      </h3>
+    </legend>
+
+    <div class="govuk-hint">
+      <p><%= f.object.class.human_attribute_name :csv_hint %></p>
+      <p><%= link_to f.object.class.human_attribute_name(:csv_sample), asset_url('/sample.csv'), class: 'govuk-link', target: '_blank' %></p>
+    </div>
+
+    <div class="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <%= f.check_box :service_csv_output, class: 'govuk-checkboxes__input',
+          checked: f.object.service_csv_output_checked? %>
+        <%= f.label :service_csv_output,
+          f.object.class.human_attribute_name(:csv_checkbox),
+          class: 'govuk-label govuk-checkboxes__label' %>
+      </div>
+    </div>
+  </fieldset>
+  <% end %>
 </details>

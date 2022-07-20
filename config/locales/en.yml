@@ -364,7 +364,12 @@ en:
         email_fieldset: Email
         pdf_fieldset: PDF attachment
         service_email_body_hint: The email text that will be sent
+        pdf_sample: See sample PDF
         pdf_hint: All answers will be written in a pdf attached to the email
+        csv_attachment: CSV attachment
+        csv_hint: A comma-separated values (CSV) lists all the answers in plain text, separated by commas. It can be imported into spreadsheets and other applications.
+        csv_sample: See sample CSV
+        csv_checkbox: Send a separate email with answers in a CSV
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"

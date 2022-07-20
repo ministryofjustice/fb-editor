@@ -735,5 +735,57 @@ RSpec.describe EmailSettingsUpdater do
         end
       end
     end
+
+    context 'when service csv output' do
+      context 'when user enables the config' do
+        let(:service_configuration) do
+          ServiceConfiguration.find_by(
+            service_id: email_settings_updater.service.service_id,
+            deployment_environment: 'dev',
+            name: 'SERVICE_CSV_OUTPUT'
+          )
+        end
+        let(:params) do
+          {
+            deployment_environment: 'dev',
+            service_csv_output: '1'
+          }
+        end
+
+        before do
+          email_settings_updater.create_or_update!
+        end
+
+        it 'saves the config to the db' do
+          expect(service_configuration).to be_persisted
+          expect(service_configuration.decrypt_value).to eq('1')
+        end
+      end
+
+      context 'when service_email_output is in db and user disalbes it' do
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :dev,
+            :service_csv_output,
+            service_id: service.service_id
+          )
+        end
+        let(:params) do
+          {
+            deployment_environment: 'dev',
+            service_csv_output: '0'
+          }
+        end
+
+        it 'removes the config from the db' do
+          email_settings_updater.create_or_update!
+
+          expect {
+            service_configuration.reload
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
   end
 end

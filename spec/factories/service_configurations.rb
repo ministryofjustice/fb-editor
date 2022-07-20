@@ -59,5 +59,10 @@ FactoryBot.define do
       name { 'GA4' }
       value { 'G-123456' }
     end
+
+    trait :service_csv_output do
+      name { 'SERVICE_CSV_OUTPUT' }
+      value { 'true' }
+    end
   end
 end

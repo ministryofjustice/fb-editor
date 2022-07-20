@@ -17,5 +17,9 @@ FactoryBot.define do
     trait :do_not_send_email do
       send_email { false }
     end
+
+    trait :service_csv_output do
+      service_csv_output { true }
+    end
   end
 end

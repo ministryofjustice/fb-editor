@@ -1,6 +1,8 @@
 class EmailSettingsUpdater
   attr_reader :email_settings, :service
 
+  BINARY_CONFIGS = %w[SERVICE_CSV_OUTPUT].freeze
+
   CONFIG_WITHOUT_DEFAULTS = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_PDF_SUBHEADING
@@ -23,6 +25,7 @@ class EmailSettingsUpdater
       save_submission_setting
       save_config_without_defaults
       save_config_with_defaults
+      save_binary_configs
     end
   end
 
@@ -32,6 +35,7 @@ class EmailSettingsUpdater
       deployment_environment: email_settings.deployment_environment
     )
     submission_setting.send_email = email_settings.send_by_email?
+    submission_setting.service_csv_output = email_settings.service_csv_output?
     submission_setting.save!
   end
 
@@ -51,6 +55,17 @@ class EmailSettingsUpdater
         create_or_update_the_service_configuration(config)
       else
         create_or_update_the_service_configuration_adding_default_value(config)
+      end
+    end
+  end
+
+  def save_binary_configs
+    BINARY_CONFIGS.each do |config|
+      config_value = params(config)
+      if config_value.present? && config_value == '1'
+        create_or_update_the_service_configuration(config)
+      else
+        remove_the_service_configuration(config)
       end
     end
   end

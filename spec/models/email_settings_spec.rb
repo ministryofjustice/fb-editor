@@ -479,4 +479,55 @@ RSpec.describe EmailSettings do
       end
     end
   end
+
+  describe '#service_csv_output?' do
+    context 'when csv is not checked' do
+      let(:params) { { service_csv_output: '0' } }
+
+      it 'returns false' do
+        expect(email_settings.service_csv_output?).to be_falsey
+      end
+    end
+
+    context 'when csv is checked' do
+      let(:params) { { service_csv_output: '1' } }
+
+      it 'returns true' do
+        expect(email_settings.service_csv_output?).to be_truthy
+      end
+    end
+  end
+
+  describe '#service_csv_output_checked?' do
+    context 'when service_csv_output is saved in the db' do
+      let(:params) do
+        {
+          deployment_environment: 'dev',
+          service_csv_output: '0'
+        }
+      end
+
+      before do
+        create(:submission_setting, :dev, :service_csv_output, service_id: service.service_id)
+      end
+
+      it 'returns true' do
+        expect(email_settings.service_csv_output_checked?).to be_truthy
+      end
+    end
+
+    context 'when service_csv_output is checked' do
+      let(:params) { { service_csv_output: '1' } }
+
+      it 'returns true' do
+        expect(email_settings.service_csv_output_checked?).to be_truthy
+      end
+    end
+
+    context 'when service_csv_output is not checked nor in the db' do
+      it 'returns false' do
+        expect(email_settings.service_csv_output_checked?).to be_falsey
+      end
+    end
+  end
 end
