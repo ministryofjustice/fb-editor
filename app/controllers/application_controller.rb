@@ -57,4 +57,18 @@ class ApplicationController < ActionController::Base
   def service_id_param
     params[:service_id] || params[:id]
   end
+
+  def autocomplete_items(components)
+    components.each_with_object({}) do |component, hash|
+      next unless component.type == 'autocomplete'
+
+      response = MetadataApiClient::Items.find(service_id: service.service_id, component_id: component.uuid)
+
+      if response.errors?
+        Rails.logger.warn(response.errors)
+      else
+        hash[component.uuid] = response.metadata['items'][component.uuid]
+      end
+    end
+  end
 end

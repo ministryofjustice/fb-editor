@@ -8,8 +8,9 @@ class PagesController < FormController
   def edit
     return if @page.components.nil?
 
-    if autocomplete_component_present?
-      @service_items = MetadataApiClient::Items.all(service_id: service_id).metadata['items'] || {}
+    if @page.autocomplete_component_present?
+      items = autocomplete_items(@page.components)
+      @page.assign_autocomplete_items(items)
     end
   end
 
@@ -150,9 +151,5 @@ class PagesController < FormController
 
   def parameterize_url
     { page_url: params[:page][:page_url].parameterize }
-  end
-
-  def autocomplete_component_present?
-    @page.components.any? { |component| component.type == 'autocomplete' }
   end
 end
