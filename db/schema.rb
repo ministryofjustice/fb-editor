@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_03_152636) do
+ActiveRecord::Schema.define(version: 2022_07_20_205146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,6 +29,15 @@ ActiveRecord::Schema.define(version: 2021_12_03_152636) do
     t.datetime "created_at", precision: 6
     t.datetime "updated_at", precision: 6
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "global_service_configurations", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "value", null: false
+    t.string "deployment_environment", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["deployment_environment"], name: "index_global_service_configurations_on_deployment_environment"
   end
 
   create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -89,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_152636) do
     t.uuid "service_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "service_csv_output", default: false
     t.index ["service_id", "deployment_environment"], name: "submission_settings_id_and_environment"
     t.index ["service_id"], name: "index_submission_settings_on_service_id"
   end
