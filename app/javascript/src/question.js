@@ -24,7 +24,7 @@ const editableComponent = require('./editable_components').editableComponent;
 const  QuestionMenu = require('./components/menus/question_menu');
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
-const SELECTOR_DISABLED = "input:not(:hidden), textarea";
+const SELECTOR_DISABLED = "input:not(:hidden), textarea, select";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
 

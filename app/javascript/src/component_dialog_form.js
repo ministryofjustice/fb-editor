@@ -30,6 +30,7 @@ class DialogForm {
     this.$node = $(); // Should be overwritten once intialised
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
+    this.$submitButton  = $(); 
 
     this.#initialize(source); 
   }
@@ -200,8 +201,9 @@ class DialogForm {
   #setupSubmitButton() {
     var dialog = this;
     if(this.#config.submitOnClickSelector) {
-      let $buttons = $(this.#config.submitOnClickSelector, this.$container);
-      $buttons.on("click", function(e) {
+      let $button = $(this.#config.submitOnClickSelector, this.$container).first();
+      this.$submitButton = $button;
+      $button.on("click", function(e) {
         e.preventDefault();
         safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
         dialog.submit();
