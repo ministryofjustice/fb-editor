@@ -12,3 +12,13 @@ require("@rails/ujs").start()
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+
+
+/*********************************************
+ * EDITOR ONLY ADDITIONS BELOW.
+ *********************************************/
+
+// Little bit hacky but we want to prevent the
+// Cookie banner from showing in preview mode.
+document.getElementById("govuk-cookie-banner").style.display = "none";
