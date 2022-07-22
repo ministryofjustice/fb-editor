@@ -124,4 +124,41 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#autocomplete_items' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(MetadataApiClient::Items).to receive(:find).and_return(api_response)
+    end
+
+    context 'when there are items on an autocomplete component' do
+      let(:page_with_items) { service.find_page_by_url('/countries') }
+      let(:component_id) { page_with_items['components'].first['_uuid'] }
+      let(:component_items) { { component_id => [{ 'text': 'abc', 'value': '123' }] } }
+      let(:api_response) do
+        MetadataApiClient::Items.new(
+          { 'items' => component_items }
+        )
+      end
+
+      it 'returns the autocomplete items on the page' do
+        expect(controller.autocomplete_items(page_with_items.components)).to eq(component_items)
+      end
+    end
+
+    context 'when there are no items on an autocomplete component' do
+      let(:component_id) { '123456' }
+      let(:page_without_items) do
+        page = service.find_page_by_url('/countries')
+        page.components.first.uuid.replace(component_id)
+        page
+      end
+      let(:api_response) { MetadataApiClient::ErrorMessages.new(['the component has no autocomplete items']) }
+
+      it 'logs the error message' do
+        expect(Rails.logger).to receive(:warn).with(['the component has no autocomplete items'])
+        expect(controller.autocomplete_items(page_without_items.components)).to eq({})
+      end
+    end
+  end
 end

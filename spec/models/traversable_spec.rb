@@ -26,6 +26,7 @@ RSpec.describe Traversable do
             burgers
             star-wars-knowledge
             dog-picture
+            countries
           ]
         end
 
