@@ -9,7 +9,7 @@
     <% f.object.errors.each do |error|  %>
       <span class="govuk-error-message"><%= error.message %></span>
     <% end %>
-    <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", disabled: true %>
+    <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", readonly: true %>
   </div>
   <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
 <% end %>
