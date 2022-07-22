@@ -101,7 +101,7 @@ describe("ForwardPath", function() {
       expect(created.connector.lines().length).to.equal(1);
     });
 
-    it("CANNOT TEST: should return the FlowConnectorLines only of matching type", function() {
+    it("should return the FlowConnectorLines only of matching type", function() {
       expect(created.connector.lines("foo").length).to.equal(0);
       expect(created.connector.lines("vertical").length).to.equal(0);
       expect(created.connector.lines("horizontal").length).to.equal(1);
@@ -114,13 +114,13 @@ describe("ForwardPath", function() {
      * the ForwardPath lines as point 'a' to 'b' only, with no movement allowed and,
      * therefore, with anything else being considered potential overlapping lines.
      **/
-    it("CANNOT TEST: should return the FlowConnectorLines if they overlap", function() {
+    it("should return the FlowConnectorLines if they overlap", function() {
       expect(created.connector.linesForOverlapComparison).to.exist;
       expect(created.connector.linesForOverlapComparison().constructor).to.equal(Array);
       expect(created.connector.linesForOverlapComparison().length).to.equal(0);
     });
 
-    it("CANNOT TEST: should return the FlowConnectorLines of a matching type if they overlap", function() {
+    it("should return the FlowConnectorLines of a matching type if they overlap", function() {
       // should get same result as without supplying a type.
       expect(created.connector.linesForOverlapComparison).to.exist;
       expect(created.connector.linesForOverlapComparison().constructor).to.equal(Array);
@@ -140,7 +140,7 @@ describe("ForwardPath", function() {
     /* TEST METHOD: makeLinesVisibleForTesting()
      * Because the base class does not have any lines we cannot test this function.
      **/
-    it("CANNOT TEST: should make lines visible for testing purpose", function() {
+    it("should make lines visible for testing purpose", function() {
       // First check things are as expected
       expect(created.connector.lines().length).to.equal(1);
       expect(created.connector.$node.siblings("svg").length).to.equal(0);
