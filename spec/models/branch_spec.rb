@@ -198,7 +198,8 @@ RSpec.describe Branch do
           'What would you like on your burger?',
           "What was the name of the band playing in Jabba's palace?",
           "What is The Mandalorian's real name?",
-          'Upload your best dog photo'
+          'Upload your best dog photo',
+          'Countries'
         ]
       )
     end
@@ -216,6 +217,7 @@ RSpec.describe Branch do
           { 'data-supports-branching': true },
           { 'data-supports-branching': false },
           { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
           { 'data-supports-branching': false }
         ]
       )
