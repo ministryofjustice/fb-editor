@@ -17,7 +17,6 @@
 const utilities = require('./utilities');
 const mergeObjects = utilities.mergeObjects;
 const Question = require('./question');
-const DialogForm = require('./component_dialog_form');
 
 const SELECTOR_HINT = ".govuk-hint";
 const SELECTOR_LABEL = "label h1, label h2, legend h1, legend h2";

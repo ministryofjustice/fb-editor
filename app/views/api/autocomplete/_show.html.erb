@@ -24,7 +24,7 @@
           </span>
         <% end %>
 
-        <%= form.file_field :file, 'aria-describedby': 'file_hint autocomplete_items_file_error' %>
+        <%= form.file_field :file, class: "govuk-file-upload", 'aria-describedby': 'file_hint autocomplete_items_file_error', accept: ".csv" %>
 
       </div>
       <p class="govuk-!-margin-top-7 govuk-!-margin-bottom-8"><%= link_to t('dialogs.autocomplete.requirement_link'), '#', class: 'govuk-link' %></p>
