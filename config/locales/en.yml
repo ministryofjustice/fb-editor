@@ -13,6 +13,8 @@ en:
       confirmation: Confirmation page
       content: Content page
       exit: Exit page
+  assistive_text:
+    warning: Warning
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
@@ -21,7 +23,6 @@ en:
     hint: '[Optional hint text]'
     option: 'Option'
     option_hint: '[Optional hint text]'
-    warning: Warning
   default_values:
     service_email_output: ''
     service_email_from: 'moj-forms@digital.justice.gov.uk'
