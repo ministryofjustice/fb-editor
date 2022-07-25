@@ -32,7 +32,8 @@ class Settings::EmailController < FormController
       :service_email_subject,
       :service_email_body,
       :service_email_pdf_heading,
-      :service_email_pdf_subheading
+      :service_email_pdf_subheading,
+      :service_csv_output
     )
   end
 

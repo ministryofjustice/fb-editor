@@ -156,4 +156,11 @@ class PublishServiceCreation
       name: 'SERVICE_EMAIL_OUTPUT'
     )
   end
+
+  def service_csv_output
+    SubmissionSetting.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment
+    ).try(:service_csv_output?)
+  end
 end

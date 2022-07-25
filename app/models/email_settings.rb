@@ -8,7 +8,8 @@ class EmailSettings
                 :service_email_subject,
                 :service_email_body,
                 :service_email_pdf_heading,
-                :service_email_pdf_subheading
+                :service_email_pdf_subheading,
+                :service_csv_output
 
   validates :deployment_environment, inclusion: {
     in: Rails.application.config.deployment_environments
@@ -52,6 +53,17 @@ class EmailSettings
 
   def service_email_pdf_subheading
     settings_for(:service_email_pdf_subheading)
+  end
+
+  def service_csv_output?
+    service_csv_output == '1'
+  end
+
+  def service_csv_output_checked?
+    service_csv_output? || SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment
+    ).try(:service_csv_output?)
   end
 
   def settings_for(setting_name)
