@@ -27,6 +27,13 @@ class Publisher
       service.to_json.inspect
     end
 
+    def autocomplete_items
+      response = MetadataApiClient::Items.all(service_id: service_id)
+      Rails.logger.info(response.errors) if response.errors?
+
+      convert_autocomplete_response(response)
+    end
+
     def get_binding
       binding
     end
@@ -154,6 +161,11 @@ class Publisher
     def service_namespace_configuration
       @service_namespace_configuration ||=
         Rails.application.config.service_namespace_configuration[:"#{platform_environment}_#{deployment_environment}"]
+    end
+
+    def convert_autocomplete_response(response)
+      items = response.respond_to?(:metadata) ? response.metadata['items'] : {}
+      items.to_json.inspect
     end
   end
 end

@@ -39,6 +39,62 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
   end
 
+  describe '#autocomplete_items' do
+    let(:attributes) do
+      { service_id: SecureRandom.uuid }
+    end
+
+    context 'when there are autocomplete items for a service' do
+      let(:autocomplete_items) do
+        {
+          'items' => {
+            SecureRandom.uuid => [
+              { 'text' => 'some text', 'value' => 'some value' }
+            ]
+          }
+        }
+      end
+
+      before do
+        expect(MetadataApiClient::Items).to receive(:all)
+          .with(service_id: attributes[:service_id])
+          .and_return(MetadataApiClient::Items.new(autocomplete_items))
+      end
+
+      it 'generates the correct autocomplete items data structure' do
+        expect(service_provisioner.autocomplete_items).to eq(
+          autocomplete_items['items'].to_json.inspect
+        )
+      end
+    end
+
+    context 'when there are no autocomplete items for a service' do
+      let(:autocomplete_items) { { 'items' => {} } }
+
+      before do
+        expect(MetadataApiClient::Items).to receive(:all)
+          .with(service_id: attributes[:service_id])
+          .and_return(MetadataApiClient::Items.new(autocomplete_items))
+      end
+
+      it 'generates the correct empty json string' do
+        expect(service_provisioner.autocomplete_items).to eq('"{}"')
+      end
+    end
+
+    context 'when the metadata api returns and error' do
+      before do
+        expect(MetadataApiClient::Items).to receive(:all)
+          .with(service_id: attributes[:service_id])
+          .and_return(MetadataApiClient::ErrorMessages.new('some error'))
+      end
+
+      it 'generates the correct empty json string' do
+        expect(service_provisioner.autocomplete_items).to eq('"{}"')
+      end
+    end
+  end
+
   describe '#service_slug' do
     let(:attributes) { { service_id: SecureRandom.uuid } }
 

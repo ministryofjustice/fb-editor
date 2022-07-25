@@ -35,6 +35,16 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   let(:service_secret) do
     EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')
   end
+  let(:autocomplete_items) do
+    {
+      'items' => {
+        'some-component-uuid' => [
+          { 'text' => 'some text', 'value' => 'some value' }
+        ]
+      }
+    }
+  end
+
   before do
     allow(service_provisioner).to receive(:service).and_return(
       MetadataPresenter::Service.new(
@@ -52,6 +62,9 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(ENV).to receive(:[])
       .with('SERVICE_SENTRY_DSN_TEST')
       .and_return('sentry-dsn-test')
+    allow(MetadataApiClient::Items).to receive(:all)
+      .with(service_id: '0da69306-cafd-4d32-bbee-fff98cac74ce')
+      .and_return(MetadataApiClient::Items.new(autocomplete_items))
   end
 
   describe '#generate' do
