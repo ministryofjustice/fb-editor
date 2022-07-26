@@ -29,8 +29,10 @@ module MetadataApiClient
         "/services/#{service_id}/components/#{component_id}/items"
       )
       new(response.body)
-    rescue Faraday::UnprocessableEntityError, Faraday::ResourceNotFound => e
+    rescue Faraday::UnprocessableEntityError => e
       error_messages(e)
+    rescue Faraday::ResourceNotFound => e
+      error_messages(e, send_sentry: false)
     end
   end
 end

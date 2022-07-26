@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
       response = MetadataApiClient::Items.find(service_id: service.service_id, component_id: component.uuid)
 
       if response.errors?
-        Rails.logger.warn(response.errors)
+        Rails.logger.info(response.errors)
       else
         hash[component.uuid] = response.metadata['items'][component.uuid]
       end
