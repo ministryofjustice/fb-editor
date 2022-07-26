@@ -1,14 +1,14 @@
-<div class="fb-status-message fb-status-message--success" role="<%= items_present?(component.uuid) ? '' : 'status' %>" data-fb-status="autocomplete-success">
+<p class="fb-status-message fb-status-message--success" role="<%= items_present?(component.uuid) ? '' : 'status' %>" data-fb-status="autocomplete-success">
   <% if items_present?(component.uuid) %>
     <span class="fb-status-message__icon" aria-hidden="true"></span>
     <span class="fb-status-message__text"><%= t('dialogs.autocomplete.success') %></span>
   <% end %>
-</div>
+</p>
 
-  <script type="text/html" data-fb-template="autocomplete-success-message">
-    <span class="fb-status-message__icon" aria-hidden="true"></span>
-    <span class="fb-status-message__text"><%= t('dialogs.autocomplete.success') %></span>
-  </script>
+<script type="text/html" data-fb-template="autocomplete-success-message">
+  <span class="fb-status-message__icon" aria-hidden="true"></span>
+  <span class="fb-status-message__text"><%= t('dialogs.autocomplete.success') %></span>
+</script>
 
 <% unless items_present?(component.uuid) %>
   <div class="govuk-warning-text  govuk-warning-text--highlighted govuk-!-margin-bottom-5" data-fb-status="autocomplete-warning">

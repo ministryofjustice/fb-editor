@@ -9,7 +9,6 @@
     </article>
 
   <% elsif item[:type] == 'warning' %>
-    <div>
       <article class="flow-item flow-warning" aria-hidden="true">
         <div class="govuk-warning-text">
           <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
@@ -19,7 +18,6 @@
           </strong>
         </div>
       </article>
-    </div>
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>

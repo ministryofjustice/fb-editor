@@ -18,15 +18,15 @@
     padding-left: 0;
     margin-left: 10px;
   }
-}
 
-.govuk-warning-text--highlighted {
-  .govuk-warning-text__icon {
-    border-color:  $govuk-brand-colour;
-    background-color:  $govuk-brand-colour;
-  }
+  &--highlighted {
+    .govuk-warning-text__icon {
+      border-color:  $govuk-brand-colour;
+      background-color:  $govuk-brand-colour;
+    }
 
-  .govuk-warning-text__text {
-    color:  $govuk-brand-colour;
+    .govuk-warning-text__text {
+      color:  $govuk-brand-colour;
+    }
   }
 }

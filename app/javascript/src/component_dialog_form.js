@@ -16,6 +16,7 @@ class DialogForm {
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
       remote: false,
+      disableOnSubmit: '',
       onLoad: function(dialog) {},
       onReady: function(dialog) {},
       beforeSubmit: function(dialog) {},
@@ -30,7 +31,6 @@ class DialogForm {
     this.$node = $(); // Should be overwritten once intialised
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
-    this.$submitButton  = $(); 
 
     this.#initialize(source); 
   }
@@ -181,8 +181,12 @@ class DialogForm {
   #enhance() {
     var dialog = this;
     this.$form = this.$node.is('form') ? this.$node : this.$node.find('form');
-    this.#setupCloseButtons();
-    this.#setupSubmitButton();
+    if(this.#config.closeOnClickSelector) {
+      this.#setupCloseButtons();
+    }
+    if(this.#config.submitOnClickSelector) {
+      this.#setupSubmitButton();
+    }
     safelyActivateFunction(dialog.#config.onReady, dialog);
   }
 
@@ -200,15 +204,16 @@ class DialogForm {
   /* add event listeners to configured submit button */
   #setupSubmitButton() {
     var dialog = this;
-    if(this.#config.submitOnClickSelector) {
-      let $button = $(this.#config.submitOnClickSelector, this.$container).first();
-      this.$submitButton = $button;
-      $button.on("click", function(e) {
-        e.preventDefault();
-        safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
-        dialog.submit();
-      });
-    }
+    let $button = $(this.#config.submitOnClickSelector, this.$container).first();
+    $button.on("click", function(e) {
+      e.preventDefault(); 
+      if(dialog.#config.remote && dialog.#config.disableOnSubmit) {
+        $button.text(dialog.#config.disableOnSubmit);
+        $button.attr('disabled', 'disabled');
+      }
+      safelyActivateFunction(dialog.#config.beforeSubmit, dialog );
+      dialog.submit();
+    });
   }
 
   #createActivator() {
