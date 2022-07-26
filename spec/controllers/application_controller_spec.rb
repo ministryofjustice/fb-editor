@@ -156,7 +156,7 @@ RSpec.describe ApplicationController do
       let(:api_response) { MetadataApiClient::ErrorMessages.new(['the component has no autocomplete items']) }
 
       it 'logs the error message' do
-        expect(Rails.logger).to receive(:warn).with(['the component has no autocomplete items'])
+        expect(Rails.logger).to receive(:info).with(['the component has no autocomplete items'])
         expect(controller.autocomplete_items(page_without_items.components)).to eq({})
       end
     end
