@@ -76,8 +76,19 @@ function createServer(config) {
   return server;
 }
 
+function mergeConfig(defaultConfig, extraConfig) {
+  for(var prop in extraConfig || {}) {
+    if(extraConfig.hasOwnProperty(prop)) {
+      defaultConfig[prop] = extraConfig[prop];
+    }
+  }
+
+  return defaultConfig;
+}
+
 module.exports = {
   jQueryGetOverride: jQueryGetOverride,
   findButtonByText: findButtonByText,
   createServer: createServer,
+  mergeConfig: mergeConfig
 }
