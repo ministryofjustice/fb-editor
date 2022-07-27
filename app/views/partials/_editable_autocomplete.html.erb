@@ -1,11 +1,21 @@
-<% unless items_present?(component.uuid) %>
-  <strong class="govuk-warning-text__text govuk-!-margin-bottom-5">
-    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-    <span class="govuk-warning-text__assistive">Warning</span>
-    <%= t('dialogs.autocomplete.component_warning') %>
-  </strong>
-<% end %>
+<p class="fb-status-message fb-status-message--success" role="<%= items_present?(component.uuid) ? '' : 'status' %>" data-fb-status="autocomplete-success">
+  <% if items_present?(component.uuid) %>
+    <span class="fb-status-message__icon" aria-hidden="true"></span>
+    <span class="fb-status-message__text"><%= t('dialogs.autocomplete.success') %></span>
+  <% end %>
+</p>
 
-<button type="button" class="fb-govuk-button fb-govuk-button-inverted" data-action="upload" hidden>
-  <%=t('actions.upload_options')%>
-</button>
+<script type="text/html" data-fb-template="autocomplete-success-message">
+  <span class="fb-status-message__icon" aria-hidden="true"></span>
+  <span class="fb-status-message__text"><%= t('dialogs.autocomplete.success') %></span>
+</script>
+
+<% unless items_present?(component.uuid) %>
+  <div class="govuk-warning-text  govuk-warning-text--highlighted govuk-!-margin-bottom-5" data-fb-status="autocomplete-warning">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      <%= t('dialogs.autocomplete.component_warning') %>
+    </strong>
+  </div>
+<% end %>

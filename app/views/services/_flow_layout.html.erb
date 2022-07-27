@@ -9,14 +9,15 @@
     </article>
 
   <% elsif item[:type] == 'warning' %>
-  <div class="govuk-warning-text">
       <article class="flow-item flow-warning" aria-hidden="true">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-          <span><%= item[:content] %></span>
-        </strong>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            <%= item[:content] %>
+          </strong>
+        </div>
       </article>
-    </div>
   <% else %>
 
     <% if item[:type] == 'flow.branch' %>

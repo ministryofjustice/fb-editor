@@ -1,0 +1,32 @@
+/*
+* Some simple tweaks to the default warning text to improve the alignment of 
+* icon and warning text using display: flex.  The simple usage of flex here is
+* supported from IE10 so should be no browser support issues.
+*
+*/
+.govuk-warning-text {
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+  &__text {
+    padding-left: 0;
+    margin-left: 10px;
+  }
+
+  &--highlighted {
+    .govuk-warning-text__icon {
+      border-color:  $govuk-brand-colour;
+      background-color:  $govuk-brand-colour;
+    }
+
+    .govuk-warning-text__text {
+      color:  $govuk-brand-colour;
+    }
+  }
+}

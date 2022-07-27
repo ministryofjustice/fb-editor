@@ -9,7 +9,7 @@
       <% if component.type  == 'autocomplete' %>
         <li data-action="upload"
             data-api-path="<%= URI.decode_www_form_component(api_service_autocomplete_path(service.service_id, component.uuid))%>">
-            <span><%= t('dialogs.autocomplete.upload_link') %></span>
+            <span><%= t('question.menu.upload_options') %></span>
         </li>
       <% end %>
 

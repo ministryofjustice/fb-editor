@@ -407,10 +407,15 @@ function addQuestionMenuListeners(view) {
       activator: question.menu.selectedItem,
       remote: true,
       autoOpen: true,
-      submitOnClickSelector: 'input[type="submit"]',
-      onSuccess: function(data) {
+      submitOnClickSelector: 'button[type="submit"]',
+      disableOnSubmit: view.text.dialogs.autocomplete.button_disabled,
+      onSuccess: function() {
+        var $success = question.$node.find('[data-fb-status="autocomplete-success"]');
+        var $warning =  question.$node.find('[data-fb-status="autocomplete-warning"]');
+        var $successMessage = question.$node.find('[data-fb-template="autocomplete-success-message"]').first().html();
+        $success.html($successMessage);
+        $warning.remove();
       },
-
       onError: function(data, dialog) {
         var responseHtml = $.parseHTML(data.responseText);
         var $newHtml = $(responseHtml[0]).html();

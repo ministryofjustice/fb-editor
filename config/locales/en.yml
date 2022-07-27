@@ -92,11 +92,14 @@ en:
       button: Update
     autocomplete:
       legend: Upload autocomplete options
-      requirement_link: Read our file structure requirements
-      upload: Upload options
+      hint: Options must be in a CSV file and formatted correctly
+      requirement_link: How to format your autocomplete options
+      button: Upload options
+      button_disabled: Uploading...
       upload_link: Upload options...
-      modal_warning: Uploading another file will replace your existing options.
-      component_warning: Users will not be able to answer this question and progress further in your form until you upload options.
+      modal_warning: This will replace your existing options.
+      component_warning: Upload your options for this question via the component menu - click the question title to show the menu button (...).
+      success: Options uploaded. Use preview or publish to view them.
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -254,6 +257,7 @@ en:
       maximum: 'Maximum answer value...'
       max_string_length: 'Maximum answer length...'
       min_string_length: 'Minimum answer length...'
+      upload_options: 'Autocomplete options...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
@@ -426,9 +430,9 @@ en:
           ga4: A Google Analytics 4 Measurement ID must start with G
           format: "%{message}"
         autocomplete_items:
-          invalid_type: This file cannot be processed, please upload CSV file
-          incorrect_format: The contents of this file cannot be processed
-          empty: The file cannot be empty
+          invalid_type: The selected file must be a CSV
+          incorrect_format: The selected file must be formatted correctly
+          empty: The selected file must contain some data
           format: "%{message}"
 
       messages:

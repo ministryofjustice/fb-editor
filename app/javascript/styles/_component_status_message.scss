@@ -1,0 +1,20 @@
+.fb-status-message {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+
+    > :first-child::before {
+        content: "\2713";
+        color: $govuk-text-colour;
+        font-size: 16px;
+        margin-right: 6px;
+    }
+
+    &--success {
+      color: $govuk-brand-colour;
+      
+      > :first-child::before {
+        content: "\2713";
+      }
+    }
+}
