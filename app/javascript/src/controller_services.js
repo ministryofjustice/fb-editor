@@ -440,7 +440,7 @@ function addServicesContentScrollContainer(view) {
   $(window).on("resize", function() {
 
     // Hide the content before recalculation
-    $main.removeClass(JS_ENHANCEMENT_DONE);
+    $main.removeClass(view.constants.JS_ENHANCEMENT_DONE);
 
     // Delay and timeout is to wait for user to stop moving things (reduces attempts to update view).
     clearTimeout(timeout);
@@ -458,7 +458,7 @@ function addServicesContentScrollContainer(view) {
       adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
 
       // Finished so reveal updated content
-      $main.addClass(JS_ENHANCEMENT_DONE);
+      $main.addClass(view.constants.JS_ENHANCEMENT_DONE);
     }, 750);
   });
 }

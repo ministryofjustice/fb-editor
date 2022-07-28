@@ -20,7 +20,6 @@
 const Dialog = require('./component_dialog');
 const DialogConfirmation = require('./component_dialog_confirmation');
 const post = require('./utilities').post;
-const JS_ENHANCEMENT_DONE = "jsdone";
 
 
 class DefaultController {
@@ -37,6 +36,9 @@ class DefaultController {
     this.$document = $document;
     this.$body = $(document.body);
     this.$lastPoint = $(); // Use it to set a focal point in switching between components.
+    this.constants = {
+      JS_ENHANCEMENT_DONE: "jsdone"
+    }
 
     isolatedMethodDeleteLinks();
 
@@ -75,7 +77,7 @@ class DefaultController {
    **/
   ready() {
     // Reverse the Brief flash of content white screen blocker (see CSS).
-    $("#main-content").addClass(JS_ENHANCEMENT_DONE);
+    $("#main-content").addClass(this.constants.JS_ENHANCEMENT_DONE);
   }
 }
 
