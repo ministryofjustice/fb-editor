@@ -5,11 +5,11 @@
     <%= f.label :service_name, class: "govuk-label" do %>
       <%= f.object.class.human_attribute_name :service_name %>
     <% end %>
-    <span class="govuk-hint"><%= t('settings.form_information.form_name.hint') %></span>
+    <span class="govuk-hint" id="<%= "#{:service_name}-hint" %>"><%= t('settings.form_information.form_name.hint') %></span>
     <% f.object.errors.each do |error|  %>
       <span class="govuk-error-message"><%= error.message %></span>
     <% end %>
-    <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", readonly: true, tabindex: -1 %>
+    <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", readonly: true, tabindex: -1, aria: { describedby: "#{:service_name}-hint" } %>
     <%= render partial: 'partials/template_warning', locals: { message: t('settings.form_information.form_name.warning_message').html_safe } %>
   </div>
   <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
