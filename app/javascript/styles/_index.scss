@@ -1074,6 +1074,20 @@ html {
   word-break: break-word;
 }
 
+.govuk-input{
+  &[readonly] {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+
+    &:focus {
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+}
+
 .govuk-panel--confirmation {
   // Design has informed should not be full width
   width: govuk-grid-width("two-thirds");

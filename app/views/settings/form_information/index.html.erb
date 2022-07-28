@@ -9,8 +9,7 @@
     <% f.object.errors.each do |error|  %>
       <span class="govuk-error-message"><%= error.message %></span>
     <% end %>
-    <%# f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", readonly: true %>
-    <p><%= service.service_name %></p>
+    <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", readonly: true, tabindex: -1 %>
     <%= render partial: 'partials/template_warning', locals: { message: t('settings.form_information.form_name.warning_message').html_safe } %>
   </div>
   <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
