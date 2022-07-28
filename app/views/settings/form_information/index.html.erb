@@ -4,8 +4,8 @@
   <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
     <%= f.label :service_name, class: "govuk-label" do %>
       <%= f.object.class.human_attribute_name :service_name %>
-      <span class="govuk-hint"><%= t('settings.form_information.form_name.hint') %></span>
     <% end %>
+    <span class="govuk-hint"><%= t('settings.form_information.form_name.hint') %></span>
     <% f.object.errors.each do |error|  %>
       <span class="govuk-error-message"><%= error.message %></span>
     <% end %>
@@ -15,4 +15,3 @@
   </div>
   <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
 <% end %>
-
