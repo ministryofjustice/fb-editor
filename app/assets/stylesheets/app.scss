@@ -14,7 +14,7 @@
  *= require_self
  */
 
-@import "../packs/stylesheets/govuk";
+@import "./govuk";
 @import "./mixins";
 @import "./component_dialog";
 @import "./component_dialog_api_request";

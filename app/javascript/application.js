@@ -8,15 +8,15 @@
 require("jquery")
 require("jquery-ui")
 require("showdown")
-require("../src/index")
+require("./src/index")
 
 // Entry point for fb-editor stylesheets
-import "../styles/application.scss"
+// import "../styles/application.scss"
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference
 // them with the image_pack_tag helper in views (e.g <%= image_pack_tag 'rails.png' %>)
 // or the `imagePath` JavaScript helper below.
 //
-global.images = require.context('../images', true)
-global.imagePath = (name) => images(name, true)
+//global.images = require.context('../images', true)
+//global.imagePath = (name) => images(name, true)
