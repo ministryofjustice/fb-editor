@@ -46,7 +46,7 @@ function createExpander(id, config) {
   return {
     html: $node.get(0).outerHTML,
     $node: $node,
-    dialog: new Expander($node, conf)
+    expander: new Expander($node, conf)
   }
 }
 
