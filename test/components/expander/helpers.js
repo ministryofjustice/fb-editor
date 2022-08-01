@@ -4,7 +4,9 @@ const GlobalHelpers = require("../../helpers.js");
 
 const constants = {
   CLASSNAME_ACTIVATOR: "Expander__activator",
-  CLASSNAME_COMPONENT: "Expander"
+  CLASSNAME_COMPONENT: "Expander",
+  CLASSNAME_CONTENT: "content",
+  CLASSNAME_CONTENT_CONTAINER: "content-container"
 }
 
 
@@ -23,25 +25,16 @@ const constants = {
  *
  **/
 function createExpander(id, config) {
-  var $node = $(`<div>
-      <h2>Title</h2>
-      <p>Lorem ipsum dolor sit amet</p>
-      <p>Lorem ipsum dolor sit amet consecteteur adipiscing elit</p>
-      <p>Lorem ipsum dolor sit amet consecteteur</p>
-    </div>`);
+  var $node = $("#" + id + " ." + constants.CLASSNAME_CONTENT);
 
   // configurable component config
   //   - activator_source
   //   - wrap_content
   //   - auto_open
   //   - duration
-
   var conf = GlobalHelpers.mergeConfig({
-               activator_source: $node.find('> h2').first()
+               activator_source: $node.find('h2').first()
              }, config);
-
-  $node.attr('id', id);
-  $(document.body).append($node);
 
   return {
     html: $node.get(0).outerHTML,
@@ -51,20 +44,20 @@ function createExpander(id, config) {
 }
 
 
-/* Set up the DOM to include template code for dialog
- * and anything else required.
+/* Set up the DOM to include code for Expander content and anything else required.
  *
  * @id (String) Add an identifier to the container DIV to allow more than one at once.
  *
  **/
-function setupView() {
-  var html = `<script type="text/html"
-                      data-component-template="Dialog">
-                <div class="component component-dialog">
-                  <h3 data-node="heading">` + constants.TEXT_HEADING + `</h3>
-                  <p data-node="content">` + constants.TEXT_CONTENT+ `</p>
+function setupView(id) {
+  var html = `<div id="` + id + `">
+                <div class="` + constants.CLASSNAME_CONTENT + `">
+                  <h2>Title</h2>
+                  <p>Lorem ipsum dolor sit amet</p>
+                  <p>Lorem ipsum dolor sit amet consecteteur adipiscing elit</p>
+                  <p>Lorem ipsum dolor sit amet consecteteur</p>
                 </div>
-              </script>`;
+              </div>\n\n`;
 
   $(document.body).append(html);
 }
@@ -73,7 +66,7 @@ function setupView() {
 /* Reset DOM to pre setupView() state
  **/
 function teardownView(id) {
-  $("[data-component-template=Dialog]").remove();
+  $("#", id).remove();
 }
 
 
