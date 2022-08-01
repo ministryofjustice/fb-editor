@@ -52,6 +52,8 @@ spec:
             value: <%= secret_key_base %>
           - name: SERVICE_METADATA
             value: <%= ERB::Util.json_escape(service_metadata) %>
+          - name: AUTOCOMPLETE_ITEMS
+            value: <%= autocomplete_items %>
           - name: SENTRY_DSN
             value: '<%= service_sentry_dsn %>'
         <% secrets.each do |secret|  %>
