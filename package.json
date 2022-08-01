@@ -7,7 +7,7 @@
   "scripts": {
     "jstest": "mocha",
     "build": "node esbuild.config.js",
-    "build:css": "sass ./app/assets/stylesheets/govuk.scss:./app/assets/builds/govuk.css ./app/assets/stylesheets/app.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+    "build:css": "sass ./app/assets/stylesheets/govuk.scss:./app/assets/builds/govuk.css ./app/assets/stylesheets/app.scss:./app/assets/builds/application.css --embed-source-map --load-path=node_modules"
   },
   "dependencies": {
     "@rails/actioncable": "^7.0.3",
