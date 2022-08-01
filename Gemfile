@@ -32,6 +32,7 @@ gem 'sentry-delayed_job', '~> 5.3.1'
 gem 'sentry-rails', '~> 5.3.1'
 gem 'sentry-ruby', '~> 5.4.1'
 gem 'tzinfo-data'
+gem 'yui-compressor'
 
 group :development, :test do
   gem 'brakeman'

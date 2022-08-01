@@ -1,4 +1,4 @@
 class PreviewController < PermissionsController
-  layout 'metadata_presenter/application'
+  layout 'presenter'
   self.per_form_csrf_tokens = false
 end

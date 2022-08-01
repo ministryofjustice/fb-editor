@@ -89,7 +89,7 @@ jobs:
             echo $TESTFILES
             echo '***********'
 
-            bundle exec rspec $TESTFILES --profile 10
+            yarn build && yarn build:css && bundle exec rspec $TESTFILES --profile 10
       - slack/status: *slack_status
   js_test:
     docker:

@@ -7,7 +7,7 @@
   "scripts": {
     "jstest": "mocha",
     "build": "node esbuild.config.js",
-    "build:css": "sass ./app/assets/stylesheets/govuk.scss:./app/assets/builds/govuk.css ./app/assets/stylesheets/app.scss:./app/assets/builds/application.css --embed-source-map --load-path=node_modules"
+    "build:css": "sass ./app/assets/stylesheets/govuk.scss:./app/assets/builds/govuk.css ./app/assets/stylesheets/app.scss:./app/assets/builds/application.css --style=compressed --embed-source-map --load-path=node_modules"
   },
   "dependencies": {
     "@rails/actioncable": "^7.0.3",
@@ -19,6 +19,7 @@
     "jquery-ui-dist": "^1.13.1",
     "resolve-url-loader": "^5.0.0",
     "sanitize-html": "^2.7.1",
+    "sass": "^1.54.0",
     "showdown": "^2.1.0",
     "sinon": "^14.0.0",
     "tabbable": "^5.3.3"
@@ -30,7 +31,6 @@
     "jquery-ui": "^1.13.2",
     "jsdom": "^20.0.0",
     "mocha": "^9.2.2",
-    "sass": "^1.54.0",
     "sinon-chai": "^3.7.0"
   }
 }
