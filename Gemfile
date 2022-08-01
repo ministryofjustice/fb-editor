@@ -32,6 +32,7 @@ gem 'sentry-ruby', '~> 5.4.1'
 gem 'tzinfo-data'
 gem 'jsbundling-rails'
 gem 'cssbundling-rails'
+gem 'sass-rails'
 
 group :development, :test do
   gem 'brakeman'

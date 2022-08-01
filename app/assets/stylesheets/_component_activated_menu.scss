@@ -26,7 +26,7 @@
   }
 
   &::after {
-    content: url('../images/three-dots-blue.svg');
+    content: url('three-dots-blue.svg');
     display: block;
     position: absolute;
     font-weight: bold;
@@ -38,11 +38,11 @@
   }
 
   &:hover::after {
-    content: url('../images/three-dots-white.svg');
+    content: url('three-dots-white.svg');
   }
 
   &:focus::after {
-    content: url('../images/three-dots-black.svg');
+    content: url('three-dots-black.svg');
   }
 }
 

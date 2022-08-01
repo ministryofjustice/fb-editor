@@ -301,7 +301,7 @@ html {
 
 .BranchConditionRemover {
   @include icon_button;
-  background-image: url("../images/trash_can_icon_blue.svg");
+  background-image: url("trash_can_icon_blue.svg");
   background-position: center;
   background-repeat: no-repeat;
   position: absolute;
@@ -310,7 +310,7 @@ html {
 
   &:focus,
   &:hover {
-    background-image: url("../images/trash_can_icon_white.svg");
+    background-image: url("trash_can_icon_white.svg");
   }
 }
 
@@ -716,14 +716,14 @@ html {
   }
   
   &::after {
-    content: url('../images/plus-blue.svg');
+    content: url('plus-blue.svg');
     top: 0;
   }
   &:hover::after {
-    content: url('../images/plus-white.svg');
+    content: url('plus-white.svg');
   }
   &:focus::after {
-    content:url('../images/plus-black.svg')
+    content:url('plus-black.svg')
   }
 }
 
