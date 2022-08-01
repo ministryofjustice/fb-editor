@@ -9,12 +9,12 @@ describe("Expander", function() {
   describe("Properties", function() {
     var created;
     before(function() {
-      helpers.setupView();
+      helpers.setupView(COMPONENT_ID);
       created = helpers.createExpander(COMPONENT_ID);
     });
 
     after(function() {
-      $("#" + COMPONENT_ID).remove();
+      helpers.teardownView(COMPONENT_ID);
       created = {};
     });
 
