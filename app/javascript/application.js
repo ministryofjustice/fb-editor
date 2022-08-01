@@ -5,8 +5,8 @@
 
 
 // Scripts called by javascript_pack_tag
-require("jquery")
-require("jquery-ui")
+import './src/jquery'
+import './src/jquery-ui'
 require("showdown")
 require("./src/index")
 
