@@ -358,9 +358,8 @@ GEM
     sentry-rails (5.3.1)
       railties (>= 5.0)
       sentry-ruby-core (~> 5.3.1)
-    sentry-ruby (5.3.1)
+    sentry-ruby (5.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      sentry-ruby-core (= 5.3.1)
     sentry-ruby-core (5.3.1)
       concurrent-ruby
     shoulda-matchers (5.1.0)
@@ -445,7 +444,7 @@ DEPENDENCIES
   selenium-webdriver (= 4.3.0)
   sentry-delayed_job (~> 5.3.1)
   sentry-rails (~> 5.3.1)
-  sentry-ruby (~> 5.3.1)
+  sentry-ruby (~> 5.4.1)
   shoulda-matchers
   site_prism
   spring
