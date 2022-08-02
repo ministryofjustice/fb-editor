@@ -1,2 +1,2 @@
 submission_id,submission_at,text_field,textarea_field,date_field,number_field,postcode_field,email_field,radio_field,checkboxes_field
-c426240d-16fe-48cd-94b1-eb6a2f8dd69e,2022-07-21T12:16:03.000Z,john,lorem ipsom dolor,01/01/2001,100,SW1H 9AJ,john@example.com,Data not available in CSV format,Data not available in CSV format
+c426240d-16fe-48cd-94b1-eb6a2f8dd69e,2022-07-21T12:16:03.000Z,john,"lorem ipsom dolor",01/01/2001,100,SW1H 9AJ,john@example.com,Ripley,"Chips, Cheese and Gravy; Macaroni and Cheese"
