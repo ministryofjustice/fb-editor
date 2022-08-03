@@ -19,6 +19,7 @@ describe("ActivatedDialog", function() {
 
     after(function() {
       helpers.teardownView();
+      created.dialog.activator.$node.remove();
       created.$node.remove();
       created = {};
     });
@@ -41,8 +42,8 @@ describe("ActivatedDialog", function() {
 
     it("should apply CSS classnames passed in config", function() {
       var $container = created.$node.parent('[role=dialog]');
-      expect($container.hasClass(c.CLASSNAME_1));
-      expect($container.hasClass(c.CLASSNAME_2));
+      expect($container.hasClass(c.CLASSNAME_1)).to.be.true;
+      expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
     });
 
     it("should use config.okText as button text", function() {

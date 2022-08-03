@@ -13,6 +13,7 @@ class DialogForm {
     this.#config = mergeObjects({
       activator: false,
       autoOpen: false,
+      classes: {},
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
       remote: false,
@@ -169,6 +170,7 @@ class DialogForm {
     // Add the jQueryUI dialog functionality.
     this.$node.dialog({
       autoOpen: false,
+      classes: this.#config.classes,
       closeOnEscape: true,
       height: "auto",
       modal: true,
