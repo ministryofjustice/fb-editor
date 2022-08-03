@@ -5,7 +5,7 @@
     "node": ">=14.19.0"
   },
   "scripts": {
-    "jstest": "mocha"
+    "jstest": "mocha --recursive"
   },
   "dependencies": {
     "@rails/actioncable": "^7.0.3",
