@@ -5,8 +5,7 @@
 
 require("@rails/ujs").start()
 
-const accessibleAutocomplete = require("accessible-autocomplete")
-import 'accessible-autocomplete/dist/accessible-autocomplete.min.css' 
+import accessibleAutocomplete from "accessible-autocomplete";
 
 const elements = document.querySelectorAll('.fb-autocomplete');
 
@@ -36,4 +35,7 @@ Array.prototype.forEach.call(elements, function(element) {
 
 // Little bit hacky but we want to prevent the
 // Cookie banner from showing in preview mode.
-document.getElementById("govuk-cookie-banner").style.display = "none";
+const cookieBanner = document.getElementById("govuk-cookie-banner");
+if(cookieBanner) {
+  cookieBanner.style.display = "none";
+}
