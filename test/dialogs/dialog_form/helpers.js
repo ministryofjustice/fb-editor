@@ -11,8 +11,8 @@ const constants = {
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
   TEXT_ERROR_MESSAGE: "This is an error message",
-  REMOTE_TEMPLATE_URL: '/dialog-test.html',
-  REMOTE_SUBMIT_URL: '/dialog-submit',
+  REMOTE_TEMPLATE_URL: 'dialog-test.html',
+  REMOTE_SUBMIT_URL: 'dialog-submit',
 }
 
 const view = {
@@ -43,6 +43,9 @@ function createDialog(id, config) {
   var $node = $("#" + id);
   var conf = {
     id: id,
+    classes: {
+      "ui-dialog": constants.CLASSNAME_1 + " " + constants.CLASSNAME_2, 
+    }
   }
 
   // Include any passed config items.
@@ -66,6 +69,9 @@ function createDialog(id, config) {
 function createRemoteDialog(id, server, config) {
   var conf = {
     id: id,
+    classes: {
+      "ui-dialog": constants.CLASSNAME_1 + " " + constants.CLASSNAME_2, 
+    }
   }
 
   // Include any passed config items.

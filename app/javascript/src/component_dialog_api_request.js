@@ -58,14 +58,20 @@ class DialogApiRequest {
       buttons: []
     }, config);
 
-    var jxhr = $.get(url, function(response) {
-      dialog.$node = $(response);
+    this.$node = $(); // Should be overwritten on successful GET
+    this.$container = $(); // Should be overwritten on successful GET
+    this.#config = conf;
+    this.#state = "closed";
+
+    $.get(url)
+    .done( (response) => {
+        this.$node = $(response);
 
       // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction(dialog.#config.build, dialog);
+      utilities.safelyActivateFunction( dialog.#config.build, dialog);
 
-      dialog.$node.data("instance", dialog);
-      dialog.$node.dialog({
+      this.$node.data("instance", dialog);
+      this.$node.dialog({
         classes: conf.classes,
         closeOnEscape: true,
         height: "auto",
@@ -76,16 +82,9 @@ class DialogApiRequest {
       });
 
       // Now jQueryUI dialog is in place let's initialise container and put class on it.
-      dialog.$container = dialog.$node.parents(".ui-dialog");
-      dialog.$container.addClass("DialogApiRequest");
-    });
-
-    this.$node = $(); // Should be overwritten on successful GET
-    this.$container = $(); // Should be overwritten on successful GET
-    this.#config = conf;
-    this.#state = "closed";
-
-    jxhr.done(function() {
+      this.$container = this.$node.parents(".ui-dialog");
+      this.$container.addClass("DialogApiRequest");
+      
       if(conf.closeOnClickSelector) {
         let $buttons = $(conf.closeOnClickSelector, dialog.$node);
         $buttons.eq(0).focus();
@@ -94,7 +93,7 @@ class DialogApiRequest {
         });
       }
       else {
-        dialog.$node.dialog("option", "buttons",
+        this.$node.dialog("option", "buttons",
           [
             {
               text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",

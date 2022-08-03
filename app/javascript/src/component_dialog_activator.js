@@ -57,7 +57,7 @@ class DialogActivator {
    * @classes (String) Classes added to button.
    **/
   #createActivator($target, text) {
-    var $activator = $("<button>\</button>");
+    var $activator = $("<button></button>");
     $activator.text((text || "open dialog"));
     $target.before($activator);
     return $activator;

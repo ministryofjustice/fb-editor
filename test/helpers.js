@@ -6,41 +6,6 @@
  *
  **/
 
-
-// Hijack $.get to fake a server response
-class jQueryGetOverride {
-  #original;
-  #done;
-
-  constructor() {
-    this.#original = $.get;
-  }
-
-  html(response, ready) {
-    var self = this;
-    $.get = function(urlNotNeeded, callback) {
-      setTimeout(function() {
-        callback(response);
-        if(self.#done && typeof self.#done == "function") {
-          self.#done();
-          ready();
-        }
-      }, 100); // Don't need much here. Just adding a little to simulate asynchronous delay
-      return self;
-    }
-  }
-
-  // Mimic (basic) done functionality.
-  done(func) {
-    this.#done = func || function() {};
-  }
-
-  restore() {
-    $.get = this.#original;
-  }
-}
-
-
 /* Due to jQueryUI Dialog we cannot identify the added buttons
  * (they have no class, etc) but we can loop over all buttons
  * to match text we seek to get a 'best guess' type of test.
@@ -87,7 +52,6 @@ function mergeConfig(defaultConfig, extraConfig) {
 }
 
 module.exports = {
-  jQueryGetOverride: jQueryGetOverride,
   findButtonByText: findButtonByText,
   createServer: createServer,
   mergeConfig: mergeConfig

@@ -40,7 +40,9 @@ function createDialog(id, config) {
   var html = $template.text();
   var $node = $(html);
   var conf = {
-    classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
+    classes: {
+      "ui-dialog": constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
+    },
     onOk: function() {},
     onCancel: function() {},
     onClose: function() {},
@@ -85,6 +87,7 @@ function setupView() {
  **/
 function teardownView() {
   $("[data-component-template=ActivatedDialog]").remove();
+  $(".DialogActivator").remove();
 }
 
 
