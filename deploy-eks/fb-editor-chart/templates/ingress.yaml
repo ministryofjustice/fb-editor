@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}"
+  name: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}-new"
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       server_tokens off;
       location /metrics {
         deny all;
         return 401;
       }
-    external-dns.alpha.kubernetes.io/set-identifier: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}-formbuilder-saas-{{ .Values.environmentName }}-green"
+    external-dns.alpha.kubernetes.io/set-identifier: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}-new-formbuilder-saas-{{ .Values.environmentName }}-green"
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
+  ingressClassName: default
   tls:
   - hosts:
     - {{ .Values.editor_host }}
