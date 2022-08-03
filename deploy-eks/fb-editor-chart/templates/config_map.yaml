@@ -14,4 +14,3 @@ data:
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}
   FORM_ANALYTICS: {{ .Values.form_analytics }}
   AUTOCOMPLETE: {{ .Values.autocomplete }}
-  CSV_ATTACHMENTS: {{ .Values.csv_attachments }}
