@@ -87,7 +87,6 @@ function createDialog(response, server, config) {
  * and anything else required.
  **/
 function setupView() {
-  //$_get = new GlobalHelpers.jQueryGetOverride();
 }
 
 
