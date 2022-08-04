@@ -1099,3 +1099,9 @@ html {
 .govuk-select {
   background-color: govuk-colour("white");
 }
+
+.govuk-navigation .govuk-list {
+  li {
+    margin-bottom: govuk-spacing(5);
+  }
+}
