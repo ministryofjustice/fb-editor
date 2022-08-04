@@ -3,8 +3,8 @@ require("../../setup");
 describe("ForwardUpForwardPath", function() {
   const helpers = require("../helpers.js");
   const c = helpers.constants;
-  const CONTAINER_ID = "forwardpath-for-testing-properties-container";
-  const COMPONENT_ID = "forwardpath-for-testing-properties-connector";
+  const CONTAINER_ID = "forwardupforwardpath-for-testing-properties-container";
+  const COMPONENT_ID = "forwardupforwardpath-for-testing-properties-connector";
 
   describe("Properties", function() {
     var created;
