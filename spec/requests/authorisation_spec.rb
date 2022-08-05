@@ -7,6 +7,7 @@ RSpec.describe 'Authorisation spec', type: :request do
     allow_any_instance_of(ApplicationController).to receive(:require_user!).and_return(true)
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
     allow_any_instance_of(ApplicationController).to receive(:service).and_return(service)
+    allow(MetadataApiClient::Items).to receive(:all).and_return({})
   end
 
   context 'all services page' do

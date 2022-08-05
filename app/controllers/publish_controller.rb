@@ -5,6 +5,7 @@ class PublishController < FormController
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
     @publish_warning = PublishPresenter.new(service)
+    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
 
   def create
@@ -22,6 +23,10 @@ class PublishController < FormController
   end
 
   private
+
+  def service_autocomplete_items
+    MetadataApiClient::Items.all(service_id: service.service_id)
+  end
 
   def publish_service_params
     params.require(:publish_service_creation).permit(
