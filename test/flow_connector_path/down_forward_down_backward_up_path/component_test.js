@@ -1,27 +1,25 @@
 require("../../setup");
 
-describe("ForwardUpForwardPath", function() {
+describe("DownForwardDownBackwardUpPath", function() {
   const helpers = require("../helpers.js");
   const c = helpers.constants;
-  const CONTAINER_ID = "forwardupforwardpath-for-testing-component-container";
-  const COMPONENT_ID = "forwardupforwardpath-for-testing-component-connector";
+  const CONTAINER_ID = "downforwarddownbackwarduppath-for-testing-component-container";
+  const COMPONENT_ID = "downforwarddownbackwarduppath-for-testing-component-connector";
 
   describe("Component", function() {
     var created;
     const POINTS = {
-          from_x: 1451,
-          from_y: 313,
-          to_x: 1549,
-          to_y: 63,
-          via_x: 80,
-          via_y: 0,
-          xDifference: 98,
-          yDifference: 250
-        }
+                     from_x: 1951,
+                     from_y: 125,
+                     to_x: 1850,
+                     to_y: 562.5,
+                     via_x: 525,
+                     via_y: 312.5
+                   }
 
     before(function() {
       helpers.setupView(CONTAINER_ID);
-      created = helpers.createFlowConnectorPath('ForwardUpForwardPath', COMPONENT_ID,  POINTS, {
+      created = helpers.createFlowConnectorPath('DownForwardDownBackwardUpPath', COMPONENT_ID,  POINTS, {
         container: $("#" + CONTAINER_ID),
         from: c.FAKE_FLOW_ITEM_1,
         to: c.FAKE_FLOW_ITEM_2,
@@ -64,7 +62,7 @@ describe("ForwardUpForwardPath", function() {
       var $svg = $("#" + COMPONENT_ID);
       expect($svg.length).to.equal(1);
       expect($svg.hasClass(c.CLASSNAME_COMPONENT)).to.be.true; // Base class
-      expect($svg.hasClass("ForwardUpForwardPath")).to.be.true; // Sub class
+      expect($svg.hasClass("DownForwardDownBackwardUpPath")).to.be.true; // Sub class
     });
 
     it("should output two path elements in the svg", function() {
@@ -85,7 +83,7 @@ describe("ForwardUpForwardPath", function() {
       var $path = $svg.find(".arrowPath");
       expect($svg.length).to.equal(1);
       expect($path.length).to.equal(1);
-      expect($path.attr("d")).to.equal("M 1538,58 v10 l 10,-5 z");
+      expect($path.attr("d")).to.equal("M 1839,558 v10 l 10,-5 z");
     });
 
     it("should make the instance available as data on the $node", function() {

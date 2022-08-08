@@ -1,28 +1,26 @@
 require("../../setup");
 
-describe("ForwardUpForwardPath", function() {
+describe("DownForwardDownBackwardUpPath", function() {
   const helpers = require("../helpers.js");
   const c = helpers.constants;
-  const CONTAINER_ID = "forwardupforwardpath-for-testing-methods-container";
-  const COMPONENT_ID = "forwardupforwardpath-for-testing-methods-connector";
+  const CONTAINER_ID = "downforwarddownbackwarduppath-for-testing-methods-container";
+  const COMPONENT_ID = "downforwarddownbackwarduppath-for-testing-methods-connector";
 
   describe("Methods", function() {
     var created;
-    var expectedPathValue = "M 1451,313 h70 a10,10 0 0 0 10,-10 v-230 a10,10 0 0 1 10,-10 h-2";
+    var expectedPathValue = "M 1951,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 1 10,10 v283 a10,10 0 0 1 -10,10 h-626 a10,10 0 0 1 -10,-10 v--578 a10,10 0 0 1 10,-10 h0";
     const POINTS = {
-          from_x: 1451,
-          from_y: 313,
-          to_x: 1549,
-          to_y: 63,
-          via_x: 80,
-          via_y: 0,
-          xDifference: 98,
-          yDifference: 250
-        }
+                     from_x: 1951,
+                     from_y: 125,
+                     to_x: 1850,
+                     to_y: 562.5,
+                     via_x: 525,
+                     via_y: 312.5
+                   }
 
     beforeEach(function() {
       helpers.setupView(CONTAINER_ID);
-      created = helpers.createFlowConnectorPath('ForwardUpForwardPath', COMPONENT_ID, POINTS, {
+      created = helpers.createFlowConnectorPath('DownForwardDownBackwardUpPath', COMPONENT_ID, POINTS, {
         container: $("#" + CONTAINER_ID),
         from: c.FAKE_FLOW_ITEM_1,
         to: c.FAKE_FLOW_ITEM_2,
@@ -46,15 +44,28 @@ describe("ForwardUpForwardPath", function() {
     });
 
     it("should update (set) the path value when receiving new dimensions", function() {
+      var original = created.connector._dimensions.original;
+      var updated = {
+                      down1: 188,
+                      forward1: 515,
+                      down2: 293,
+                      backward: 616,
+                      up: -588,
+                      forward2: 0
+                    }
+
       // Original value created by constructor.
       expect(created.connector.path()).to.equal(expectedPathValue);
+      expect(created.connector._dimensions.current).to.eql(original);
 
       // Update with some new dimensions.
-      created.connector.path({ forward1: 30, up: 250, forward2: 20 });
-      expect(created.connector.path()).to.equal("M 1451,313 h30 a10,10 0 0 0 10,-10 v-250 a10,10 0 0 1 10,-10 h20");
+      created.connector.path(updated);
+      expect(created.connector._dimensions.current).to.eql(updated);
+      expect(created.connector.path()).to.equal(String("M 1951,125 v188 a10,10 0 0 0 10,10 h515 a10,10 0 0 1 10,10 v293 a10,10 0 0 1 -10,10 h-616 a10,10 0 0 1 -10,-10 v--588 a10,10 0 0 1 10,-10 h0"));
 
       // Reset to avoid breaking any other tests.
-      created.connector.path({ forward1: 70, up: 230, forward2: -2 });
+      created.connector.path(original);
+      expect(created.connector._dimensions.current).to.eql(original);
       expect(created.connector.path()).to.equal(expectedPathValue);
     });
 
@@ -73,7 +84,7 @@ describe("ForwardUpForwardPath", function() {
       expect(created.connector.$node).to.exist;
       expect(created.connector.$node.length).to.equal(1);
 
-      expect(created.connector.$node.hasClass("ForwardUpForwardPath")).to.be.true;
+      expect(created.connector.$node.hasClass("DownForwardDownBackwardUpPath")).to.be.true;
     });
 
     it("should add the id to $node", function() {
@@ -97,30 +108,30 @@ describe("ForwardUpForwardPath", function() {
     });
 
     /* TEST METHOD: lines()
-     * The ForwardUpForwardPath class produces three lines;
+     * The DownForwardDownBackwardUpPath class produces three lines;
      * two horizontal and one vertical.
      **/
     it("should return the FlowConnectorLines", function() {
       expect(created.connector.lines).to.exist;
       expect(created.connector.lines().constructor).to.equal(Array);
-      expect(created.connector.lines().length).to.equal(3);
+      expect(created.connector.lines().length).to.equal(6);
     });
 
     it("should return the FlowConnectorLines only of matching type", function() {
       expect(created.connector.lines("foo").length).to.equal(0);
-      expect(created.connector.lines("vertical").length).to.equal(1);
-      expect(created.connector.lines("horizontal").length).to.equal(2);
+      expect(created.connector.lines("vertical").length).to.equal(3);
+      expect(created.connector.lines("horizontal").length).to.equal(3);
     });
 
 
     /* TEST METHOD: linesForOverlapComparison()
-     * ForwardUpForwardPath shoule be able to move the vertical line for overlap
+     * DownForwardDownBackwardUpPath shoule be able to move the vertical line for overlap
      * protection, but the horizontal lines would not be expected to move.
      **/
     it("should only return the FlowConnectorLines if they can overlap", function() {
       expect(created.connector.linesForOverlapComparison).to.exist;
       expect(created.connector.linesForOverlapComparison().constructor).to.equal(Array);
-      expect(created.connector.linesForOverlapComparison().length).to.equal(1);
+      expect(created.connector.linesForOverlapComparison().length).to.equal(4);
     });
 
     it("should return the FlowConnectorLines of a matching type if they can overlap", function() {
@@ -128,26 +139,27 @@ describe("ForwardUpForwardPath", function() {
       expect(created.connector.linesForOverlapComparison).to.exist;
       expect(created.connector.linesForOverlapComparison().constructor).to.equal(Array);
       expect(created.connector.linesForOverlapComparison("foo").length).to.equal(0);
-      expect(created.connector.linesForOverlapComparison("vertical").length).to.equal(1);
-      expect(created.connector.linesForOverlapComparison("horizontal").length).to.equal(0);
+      expect(created.connector.linesForOverlapComparison("vertical").length).to.equal(2);
+      expect(created.connector.linesForOverlapComparison("horizontal").length).to.equal(2);
     });
 
 
     /* TEST METHOD: nudge()
-     * Because the ForwardUpForwardPath class only has one line it does not override the base
-     * class nudge() function, so we cannot/do not need to test this function.
      **/
-    it("should return false when horizontal line specified", function() {
-      expect(created.connector.nudge("forward1")).to.be.false;
-      expect(created.connector.nudge("forward2")).to.be.false;
+    it("should return true when horizontal line specified", function() {
+      expect(created.connector.nudge("backward")).to.be.true;
     });
 
     it("should return true when vertical line specified", function() {
+      expect(created.connector.nudge("down2")).to.be.true;
       expect(created.connector.nudge("up")).to.be.true;
     });
 
     it("should return false when unmatched line specified", function() {
       expect(created.connector.nudge("foo")).to.be.false;
+      expect(created.connector.nudge("forward1")).to.be.false;
+      expect(created.connector.nudge("forward2")).to.be.false;
+      expect(created.connector.nudge("down1")).to.be.false;
     });
 
     /* TEST METHOD: makeLinesVisibleForTesting()
@@ -155,27 +167,30 @@ describe("ForwardUpForwardPath", function() {
      **/
     it("should make lines visible for testing purpose", function() {
       // First check things are as expected
-      expect(created.connector.lines().length).to.equal(3);
+      expect(created.connector.lines().length).to.equal(6);
       expect(created.connector.$node.siblings("svg").length).to.equal(0);
 
       // Now call the function
       created.connector.makeLinesVisibleForTesting();
 
       // Now check things have changed as expected
-      expect(created.connector.lines().length).to.equal(3);
-      expect(created.connector.$node.siblings("svg").length).to.equal(3);
+      expect(created.connector.lines().length).to.equal(6);
+      expect(created.connector.$node.siblings("svg").length).to.equal(6);
 
       expect(created.connector.$node.siblings("svg").eq(0).find("[style='stroke:red;']").length).to.equal(1);
       expect(created.connector.$node.siblings("svg").eq(1).find("[style='stroke:red;']").length).to.equal(1);
       expect(created.connector.$node.siblings("svg").eq(2).find("[style='stroke:red;']").length).to.equal(1);
+      expect(created.connector.$node.siblings("svg").eq(3).find("[style='stroke:red;']").length).to.equal(1);
+      expect(created.connector.$node.siblings("svg").eq(4).find("[style='stroke:red;']").length).to.equal(1);
+      expect(created.connector.$node.siblings("svg").eq(5).find("[style='stroke:red;']").length).to.equal(1);
     });
 
 
     /* TEST METHOD: avoidOverlap()
-     * ForwardUpForwardPath only has one vertical line that can move.
+     * DownForwardDownBackwardUpPath only has one vertical line that can move.
      **/
     it("should return true if overlap was fixed (found)", function() {
-      var clashingPath = helpers.createFlowConnectorPath('ForwardUpForwardPath', COMPONENT_ID + "-overlap", POINTS, {
+      var clashingPath = helpers.createFlowConnectorPath('DownForwardDownBackwardUpPath', COMPONENT_ID + "-overlap", POINTS, {
         container: $("#" + CONTAINER_ID),
         from: c.FAKE_FLOW_ITEM_1,
         to: c.FAKE_FLOW_ITEM_2,
@@ -184,8 +199,9 @@ describe("ForwardUpForwardPath", function() {
       });
 
       var originalPath = clashingPath.connector.path();
+      expect(clashingPath.connector._dimensions).to.eql(created.connector._dimensions);
       expect(created.connector.avoidOverlap(clashingPath.connector)).to.be.true;
-      expect(clashingPath.connector.path()).to.not.equal(originalPath);
+      expect(clashingPath.connector.path()).to.not.eql(originalPath);
 
       // clean up what we created on the fly.
       clashingPath.connector.$node.remove();
