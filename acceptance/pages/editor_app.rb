@@ -185,7 +185,7 @@ class EditorApp < SitePrism::Page
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
-  element :add_another_branch, :link, I18n.t('branches.branch_add')
+  element :add_another_branch, :button, I18n.t('branches.branch_add')
   element :conditional_three_dot, :button, '.ActivatedMenuActivator'
   element :remove_branch_button, :button, I18n.t('dialogs.button_delete_branch')
 
@@ -222,7 +222,7 @@ class EditorApp < SitePrism::Page
   end
 
   def branch_title(index)
-    find("div[data-conditional-index='#{index}'] p")
+    find("div[data-conditional-index='#{index}'] h3")
   end
 
   # When two BranchConditions visible we have two BranchRemover (bin icons) available
