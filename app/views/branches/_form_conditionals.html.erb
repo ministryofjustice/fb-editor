@@ -1,6 +1,6 @@
 <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
   <div class="branch" data-conditional-index="<%= conditional.index %>">
-    <p class="govuk-heading-l"><%= t('branches.conditional_title') + (conditional.index + 1).to_s %></p>
+    <h3 class="govuk-heading-l"><%= t('branches.conditional_title') + (conditional.index + 1).to_s %></h3>
     <ul class="govuk-navigation component-activated-menu">
       <li>
         <a class="govuk-link destructive branch-remover"><%= t('branches.branch_remove') %></a>

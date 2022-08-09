@@ -133,6 +133,10 @@ html {
   float: right;
 }
 
+.fb-link-button {
+  @include button_as_link;
+}
+
 
 /* Publishing
  * ------------------- */
