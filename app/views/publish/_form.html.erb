@@ -1,9 +1,12 @@
 <%= f.hidden_field :deployment_environment, value: deployment_environment %>
 
+<fieldset class="govuk-fieldset">
 <% if deployment_environment == 'production' %>
-  <h2 data-node="heading" class="govuk-label govuk-label--m" style="margin-top:0;">
-    <%= t('activemodel.attributes.publish_service_creation.live_title') %>
-  </h2>
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+    <h2 data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
+      <%= t('activemodel.attributes.publish_service_creation.live_title') %>
+    </h2>
+  </legend>
   <div class="govuk-radios">
     <div class="govuk-radios__item">
       <%= f.radio_button :require_authentication, 0, class: 'govuk-radios__input', checked: !f.object.existing_authentication?(deployment_environment: deployment_environment), id: "require_authentication_#{deployment_environment}_1" %>
@@ -17,11 +20,12 @@
 <% end %>
 
 <% if deployment_environment == 'dev' %>
-<%= f.hidden_field :require_authentication, value: 1 %>
-
-  <h2 data-node="heading" class="govuk-label govuk-label--m" style="margin-top:0;">
-    <%= t('activemodel.attributes.publish_service_creation.test_title') %>
-  </h2>
+  <%= f.hidden_field :require_authentication, value: 1 %>
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-0">
+    <h2 data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
+      <%= t('activemodel.attributes.publish_service_creation.test_title') %>
+    </h2>
+  </legend>
   <p><%= t('activemodel.attributes.publish_service_creation.description') %></p>
 <% end %>
 
@@ -57,3 +61,4 @@
       'aria-describedby': "password_#{deployment_environment}_hint" %>
   </div>
 </div>
+</fieldset>
