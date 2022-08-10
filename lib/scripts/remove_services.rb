@@ -13,7 +13,7 @@ def delete_deployment(target:, namespace:)
 end
 
 def delete_ingress(target:, namespace:)
-  kubectl(namespace: namespace, config: 'ingress', target: "#{target}-ingress")
+  kubectl(namespace: namespace, config: 'ingress', target: "#{target}-ingress-new")
 end
 
 def delete_service(target:, namespace:)

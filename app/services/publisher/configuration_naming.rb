@@ -5,7 +5,7 @@ class Publisher
     end
 
     def ingress
-      "#{service_slug}-ingress"
+      "#{service_slug}-ingress-new"
     end
 
     def service_monitor_network_policy_name
