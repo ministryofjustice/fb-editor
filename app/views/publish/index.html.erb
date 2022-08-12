@@ -8,7 +8,7 @@
   <%# TODO: Require BE to expose this data before we can see it %>
   <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
-<%= render partial: 'publish_warning', locals: { warning: @publish_warning } %>
+<%= render 'publish_warning', warning: @publish_warning %>
 
 <dl id="publish-environments">
   <dt class="environment govuk-heading-l"><%= t('publish.test.heading') %></dt>
@@ -30,7 +30,7 @@
       <%= render 'service_output_warning', environment: t('publish.environment.test') %>
     <% end %>
 
-    <%= render partial: 'autocomplete_warning' %>
+    <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
 
     <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
     <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
@@ -70,7 +70,7 @@
       <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
-    <%= render partial: 'autocomplete_warning' %>
+    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
 
     <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
     <%= form_for(@publish_service_creation_production,
