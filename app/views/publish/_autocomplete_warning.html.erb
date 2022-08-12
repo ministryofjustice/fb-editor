@@ -1,0 +1,11 @@
+<% @autocomplete_warning.messages.each do |message| %>
+  <div class="govuk-warning-text">
+  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+  <strong class="govuk-warning-text__text">
+    <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
+        <%= t('publish.warning.autocomplete_items',
+          title: link_to(message[:component_title],
+          edit_page_path(service.service_id, message[:page_uuid]))).html_safe %>
+  </strong>
+</div>
+<% end %>
