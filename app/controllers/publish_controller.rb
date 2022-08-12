@@ -1,11 +1,10 @@
 class PublishController < FormController
-  before_action :assign_form_objects
+  before_action :assign_form_objects, :assign_autocomplete_warning
 
   def index
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
     @publish_warning = PublishPresenter.new(service)
-    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
 
   def create
@@ -50,6 +49,10 @@ class PublishController < FormController
       service_id: service.service_id,
       deployment_environment: 'production'
     )
+  end
+
+  def assign_autocomplete_warning
+    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
 
   def published?(service_id, environment)
