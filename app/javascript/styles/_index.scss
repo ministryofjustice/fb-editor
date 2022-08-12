@@ -35,6 +35,11 @@ html {
   }
 }
 
+[hidden],
+[hidden="hidden"] {
+  display: none;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;
