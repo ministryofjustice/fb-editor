@@ -29,4 +29,26 @@
       color:  $govuk-brand-colour;
     }
   }
+
+  &--error {
+    .govuk-warning-text__icon {
+      border: none;
+      background-color: $govuk-error-colour;
+      border-radius: unset;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      min-width: 40px;
+      padding-top: 5px;
+
+    }
+
+    .govuk-warning-text__text {
+      color:  $govuk-error-colour;
+
+      a,
+      a:visited {
+        @include govuk-link-style-error;
+      }
+    }
+
+  }
 }
