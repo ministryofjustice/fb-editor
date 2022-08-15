@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: acceptance-tests-date-ingress-new
+  name: acceptance-tests-date-ingress
   namespace: formbuilder-services-test-dev
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -12,7 +12,7 @@ metadata:
         deny all;
         return 401;
       }
-    external-dns.alpha.kubernetes.io/set-identifier: acceptance-tests-date-ingress-new-formbuilder-services-test-dev-green
+    external-dns.alpha.kubernetes.io/set-identifier: acceptance-tests-date-ingress-formbuilder-services-test-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   ingressClassName: default
