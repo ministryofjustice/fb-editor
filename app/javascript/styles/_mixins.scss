@@ -58,9 +58,16 @@
   background-color: govuk-colour("blue");
 
   &:hover,
+  &[disabled],
   &[disabled='disabled'],
-  &[disabled='disabled']:hover {
+  &[disabled='disabled']:hover,
+  &[aria-disabled="true"]:hover {
     background-color: govuk-colour("dark-blue");
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 

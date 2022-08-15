@@ -38,7 +38,12 @@ class DialogActivator {
     $node.data("instance", this);
     $node.addClass("DialogActivator");
     $node.addClass(config.classes);
-    $node.on( "click", () => {
+    $node.removeAttr('hidden');
+
+    $node.on( "click", (e) => {
+      if(e.target.getAttribute("aria-disabled") === "true") {
+        return;
+      }
       conf.dialog.open();
     });
 
