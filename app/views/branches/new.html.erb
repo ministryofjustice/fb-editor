@@ -7,7 +7,7 @@
     <%= @branch.title %>
   </h1>
 
-  <p class="govuk-heading-m"><%= t('branches.after', page_title: @branch.previous_flow_title) %></p>
+  <h2 class="govuk-heading-m"><%= t('branches.after', page_title: @branch.previous_flow_title) %></h2>
 
   <%= form_for @branch, url: branches_path(service.service_id), method: :post do |f| %>
     <%= render 'form', f: f %>

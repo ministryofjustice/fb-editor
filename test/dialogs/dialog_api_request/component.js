@@ -1,4 +1,5 @@
 require('../../setup');
+const GlobalHelpers = require("../../helpers.js");
 
 describe("DialogApiRequest", function() {
 
@@ -9,19 +10,20 @@ describe("DialogApiRequest", function() {
     // Note: Due to component makeup, the component is actually the
     // parent/container element to original target $node.
     var created;
+    var server;
 
-    before(function(done) {
+    before(function() {
       var response = `<div class="component component-dialog" id="` + c.COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
                       </div>`;
 
-      helpers.setupView();
-      created = helpers.createDialog(response, done);
+      server = GlobalHelpers.createServer();
+      created = helpers.createDialog(response, server);
     });
 
     after(function() {
-      helpers.teardownView();
+      server.restore();
       created.$node.remove();
       created = {};
     });
@@ -29,7 +31,6 @@ describe("DialogApiRequest", function() {
     it("should have the basic HTML in place", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       var $container = $dialog.parent('[role=dialog]');
-
       expect($dialog.length).to.equal(1);
       expect($dialog.get(0).nodeName.toLowerCase()).to.equal("div");
       expect($dialog.hasClass("component-dialog")).to.be.true;
@@ -44,8 +45,8 @@ describe("DialogApiRequest", function() {
     it("should apply CSS classnames passed in config", function() {
       var $dialog = $("#" + c.COMPONENT_ID);
       var $container = $dialog.parent('[role=dialog]');
-      expect($container.hasClass(c.CLASSNAME_1));
-      expect($container.hasClass(c.CLASSNAME_2));
+      expect($container.hasClass(c.CLASSNAME_1)).to.be.true;
+      expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
     });
 
     it("should make the $node public", function() {
@@ -83,22 +84,23 @@ describe("DialogApiRequest", function() {
       const COMPONENT_ID = "dialog-api-request-component-test-without-buttons";
       const CLASSNAME_BUTTON_TEMPLATE = "dialog-api-request-component-test-without-buttons-button-template";
       var createdWithoutButtons;
+      var server;
 
-      before(function(done) {
+      before(function() {
         var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
                         <button class="` + CLASSNAME_BUTTON_TEMPLATE + `">Text for template button</button>
                       </div>`;
 
-        helpers.setupView();
-        createdWithoutButtons = helpers.createDialog(response, done, {
+        server = GlobalHelpers.createServer();
+        createdWithoutButtons = helpers.createDialog(response, server, {
           closeOnClickSelector: "." + CLASSNAME_BUTTON_TEMPLATE
         });
       });
 
       after(function() {
-        helpers.teardownView();
+        server.restore();
         createdWithoutButtons.$node.remove();
         createdWithoutButtons = null;
       });

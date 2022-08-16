@@ -25,6 +25,7 @@ describe("ActivatedDialog", function() {
 
       after(function() {
         helpers.teardownView();
+        created.dialog.activator.$node.remove();
         created.$node.remove();
         created = {};
       });

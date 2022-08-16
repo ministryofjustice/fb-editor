@@ -8,7 +8,7 @@
   </h1>
 
   <% if @branch.previous_page_title.present? %>
-    <p class="govuk-heading-m"><%= t('branches.after', page_title: @branch.previous_page_title) %></p>
+    <h2 class="govuk-heading-m"><%= t('branches.after', page_title: @branch.previous_page_title) %></h2>
   <% end %>
 
   <%= form_for @branch,

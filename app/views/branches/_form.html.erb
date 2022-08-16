@@ -4,15 +4,15 @@
 <p class="branch-or">or</p>
 
 <div class="branch-actions">
-  <a class="govuk-link" href="#" id="add-another-branch"><%= t('branches.branch_add') %></a>
+  <button class="govuk-link fb-link-button" id="add-another-branch"><%= t('branches.branch_add') %></button>
 </div>
 <p class="branch-or">or</p>
 
 <div class="branch" id="branch-otherwise">
-  <p class="name govuk-heading-l">
+  <h3 class="name govuk-heading-l">
     <%= t('branches.title_otherwise') %>
     <span class="name govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
-  </p>
+  </h3>
   <div class="destination govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
     <% @branch.errors[:default_next].each do |message| %>
       <p class="govuk-error-message"><%= message %></p>

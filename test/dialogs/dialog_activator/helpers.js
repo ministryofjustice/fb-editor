@@ -65,6 +65,7 @@ function setupView() {
  **/
 function teardownView() {
   $("#" + constants.ID_LINK).remove();
+  $(".DialogActivator").remove();
 }
 
 

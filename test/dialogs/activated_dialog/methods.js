@@ -74,6 +74,7 @@ describe("ActivatedDialog", function() {
 
   function teardown(created) {
     helpers.teardownView();
+    created.dialog.activator.$node.remove();
     created.$node.remove();
     created = {};
   }

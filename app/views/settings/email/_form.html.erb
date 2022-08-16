@@ -1,4 +1,4 @@
-<%= f.hidden_field :deployment_environment, value: deployment_environment %>
+<%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">
@@ -15,21 +15,26 @@
       <% f.object.errors[:service_email_output].each do |message| %>
         <span class="govuk-error-message"><%= message %></span>
       <% end %>
-      <%= f.label :service_email_output, class: "govuk-label" %>
-      <%= f.text_field :service_email_output, class: "govuk-input width-responsive-two-thirds" %>
+      <%= f.label :service_email_output, class: "govuk-label", for: "service_email_output_#{deployment_environment}" %>
+      <%= f.text_field :service_email_output, class: "govuk-input width-responsive-two-thirds", id: "service_email_output_#{deployment_environment}" %>
     </div>
 
     <div class="govuk-form-group">
-      <%= f.label :service_email_subject, class: "govuk-label" %>
-      <%= f.text_field :service_email_subject, class: "govuk-input width-responsive-two-thirds" %>
+      <%= f.label :service_email_subject, class: "govuk-label", for: "service_email_subject_#{deployment_environment}"  %>
+      <%= f.text_field :service_email_subject, class: "govuk-input width-responsive-two-thirds", id: "service_email_subject_#{deployment_environment}"  %>
     </div>
 
     <div class="govuk-form-group">
-      <%= f.label :service_email_body, class: "govuk-label" do %>
+      <%= f.label :service_email_body, class: "govuk-label", for: "service_email_body_#{deployment_environment}" do %>
         <%= f.object.class.human_attribute_name :service_email_body %>
-        <span class="govuk-hint"><%= f.object.class.human_attribute_name :service_email_body_hint %></span>
       <% end %>
-      <%= f.text_area :service_email_body, class: "govuk-textarea width-responsive-two-thirds", rows: '5' %>
+      <span class="govuk-hint" id="service_email_body_hint_<%= deployment_environment%>"><%= f.object.class.human_attribute_name :service_email_body_hint %></span>
+      <%= f.text_area :service_email_body,
+        class: "govuk-textarea width-responsive-two-thirds", 
+        rows: '5',
+        id: "service_email_body_#{deployment_environment}",
+        'aria-describedby': "service_email_body_hint_#{deployment_environment}"
+      %>
     </div>
   </fieldset>
 
@@ -46,17 +51,16 @@
     </div>
 
     <div class="govuk-form-group">
-      <%= f.label :service_email_pdf_heading, class: "govuk-label" %>
-      <%= f.text_field :service_email_pdf_heading, class: "govuk-input width-responsive-two-thirds", rows: '5' %>
+      <%= f.label :service_email_pdf_heading, class: "govuk-label", for: "service_email_pdf_heading_#{deployment_environment}" %>
+      <%= f.text_field :service_email_pdf_heading, class: "govuk-input width-responsive-two-thirds", rows: '5', id: "service_email_pdf_heading_#{deployment_environment}"  %>
     </div>
 
     <div class="govuk-form-group">
-      <%= f.label :service_email_pdf_subheading, class: "govuk-label" %>
-      <%= f.text_field :service_email_pdf_subheading, class: "govuk-input width-responsive-two-thirds" %>
+      <%= f.label :service_email_pdf_subheading, class: "govuk-label", for: "service_email_pdf_subheading_#{deployment_environment}"  %>
+      <%= f.text_field :service_email_pdf_subheading, class: "govuk-input width-responsive-two-thirds", id: "service_email_pdf_subheading_#{deployment_environment}"  %>
     </div>
   </fieldset>
 
-  <% if ENV['CSV_ATTACHMENTS'] == 'enabled' %>
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
       <h3 class="govuk-fieldset__heading">
@@ -72,12 +76,11 @@
     <div class="govuk-checkboxes">
       <div class="govuk-checkboxes__item">
         <%= f.check_box :service_csv_output, class: 'govuk-checkboxes__input',
-          checked: f.object.service_csv_output_checked? %>
+          checked: f.object.service_csv_output_checked?, id: "service_csv_output_#{deployment_environment}" %>
         <%= f.label :service_csv_output,
           f.object.class.human_attribute_name(:csv_checkbox),
-          class: 'govuk-label govuk-checkboxes__label' %>
+          class: 'govuk-label govuk-checkboxes__label', for: "service_csv_output_#{deployment_environment}" %>
       </div>
     </div>
   </fieldset>
-  <% end %>
 </details>

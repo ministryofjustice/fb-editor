@@ -111,38 +111,45 @@ describe("DialogForm", function() {
   describe('Remote Template Callbacks', function() {
     var created = {};
     var server;
-    var onLoadCallback;
-    var onReadyCallback;
 
     beforeEach(function(){
       server = GlobalHelpers.createServer(); 
-      onLoadCallback = sinon.spy();
-      onReadyCallback = sinon.spy();
-
-      created = helpers.createRemoteDialog(COMPONENT_ID, server, {
-        onLoad: onLoadCallback,
-        onReady: onReadyCallback,
-      });
     });
 
     afterEach(function(){
       server.restore();
       helpers.teardownView(COMPONENT_ID);
-      onLoadCallback = null;
-      onReadyCallback = null;
       created = {};
     });
 
     it('should call onLoad', function() {
+      var onLoadCallback = sinon.spy();
+      
+      console.log(server)
+
+      created = helpers.createRemoteDialog(COMPONENT_ID, server, {
+        onLoad: onLoadCallback,
+      });
+
+
+      console.log(server)
+
       expect(onLoadCallback).to.have.been.called
       expect(onLoadCallback).to.have.been.calledWith(created.dialog);
     });
 
     it('should call onReady when created', function() {
+      var onLoadCallback = sinon.spy();
+      var onReadyCallback = sinon.spy();
+
+      created = helpers.createRemoteDialog(COMPONENT_ID, server, {
+        onLoad: onLoadCallback,
+        onReady: onReadyCallback,
+      });
+
       expect(onReadyCallback).to.have.been.called;
       expect(onReadyCallback).to.have.been.calledAfter(onLoadCallback);
       expect(onReadyCallback).to.have.been.calledWith(created.dialog);
-
     });
   });
 

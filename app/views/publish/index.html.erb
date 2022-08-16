@@ -8,16 +8,7 @@
   <%# TODO: Require BE to expose this data before we can see it %>
   <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
-
-<% if @publish_warning.message.present? %>
-  <div class="govuk-warning-text">
-  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-  <strong class="govuk-warning-text__text">
-    <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
-    <%= @publish_warning.message %>
-  </strong>
-</div>
-<% end %>
+<%= render 'publish_warning', warning: @publish_warning %>
 
 <dl id="publish-environments">
   <dt class="environment govuk-heading-l"><%= t('publish.test.heading') %></dt>
@@ -39,6 +30,16 @@
       <%= render 'service_output_warning', environment: t('publish.environment.test') %>
     <% end %>
 
+    <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
+
+    <button class="govuk-button fb-govuk-button"
+        data-module="govuk-button"
+        type="button" 
+        data-fb-action="publish"
+        hidden >
+        <%= t('actions.publish_to_test') %>
+    </button>
+
     <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
     <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
     <%#       be dynamic to control dialog visibility.                                        %>
@@ -48,7 +49,7 @@
       <%= render 'form', f: f, deployment_environment: 'dev' %>
       <div class="govuk-button-group govuk-!-margin-bottom-0">
         <button class="govuk-button fb-govuk-button" type="submit">
-          <%= t('actions.publish_to_test') %> 
+          <%= t('actions.publish_to_test') %>
         </button>
 
         <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
@@ -77,14 +78,25 @@
       <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
+    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
+
+    <button class="govuk-button fb-govuk-button"
+            data-module="govuk-button"
+            type="button" 
+            aria-disabled="<%= @autocomplete_warning.messages.blank? ? 'false' : 'true' %>"
+            data-fb-action="publish"
+            hidden >
+            <%= t('actions.publish_to_live') %>
+    </button>
+
     <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
     <%= form_for(@publish_service_creation_production,
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>
-      <div class="govuk-button-group govuk-!-margin-bottom-0">
+      <div class="govuk-button-group govuk-!-margin-bottom-0" <%= @autocomplete_warning.messages.blank? ? '' : 'disabled="disabled"' %>>
         <button class="govuk-button fb-govuk-button" type="submit">
-          <%= t('actions.publish_to_live') %> 
+          <%= t('actions.publish_to_live') %>
         </button>
         <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
           <%= t('actions.cancel') %>

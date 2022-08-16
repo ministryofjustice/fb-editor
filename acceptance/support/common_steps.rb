@@ -37,7 +37,7 @@ module CommonSteps
       editor.sign_in_submit.click
     end
 
-    page.find('button.DialogActivator.govuk-button.fb-govuk-button', minimum: 1, visible: true)
+    page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
     expect(page).to have_content(I18n.t('services.create'))
   end
 

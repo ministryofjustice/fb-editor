@@ -9,7 +9,8 @@ const constants = {
   TEXT_BUTTON_OK: "This is ok button text",
   TEXT_BUTTON_CANCEL: "This is cancel button text",
   TEXT_HEADING: "General heading text",
-  TEXT_CONTENT: "General content text"
+  TEXT_CONTENT: "General content text",
+  REMOTE_URL: "/dialog-api-request.html"
 }
 
 const view = {
@@ -20,10 +21,6 @@ const view = {
     }
   }
 }
-
-var $_get; // Used in overriding $.get (see below)
-
-
 
 /* Creates a new dialog from only passing in an id and optional config.
  *
@@ -40,20 +37,22 @@ var $_get; // Used in overriding $.get (see below)
  *  }
  *
  **/
-function createDialog(response, ready, config) {
+function createDialog(response, server, config) {
   var conf = {
-    classes: constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
+    classes: {
+      "ui-dialog": constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
+    },
     buttons: [
       {
         text: constants.TEXT_BUTTON_OK,
         click: function() {
-          console.log("ok clicked");
+          //console.log("ok clicked");
         }
       }, 
       {
         text: constants.TEXT_BUTTON_CANCEL,
         click: function() {
-          console.log("cancel clicked");
+          //console.log("cancel clicked");
         }
       }
     ]
@@ -68,12 +67,18 @@ function createDialog(response, ready, config) {
     }
   }
 
-  $_get.html(response, ready); // Hijacks $.get and returns the response passed in.
+  server.respondWith(constants.REMOTE_URL, [
+    200,
+    { "Content-Type": "text/html" },
+    response,
+  ])
+
+  var dialog = new DialogApiRequest(constants.REMOTE_URL, conf)
 
   return {
     html: response,
     $node: $(response), // WARNING! Will not same as will be same element/node as dialog.$node
-    dialog: new DialogApiRequest("/url/not/used/in/testing", conf)
+    dialog: dialog,
   }
 }
 
@@ -82,14 +87,14 @@ function createDialog(response, ready, config) {
  * and anything else required.
  **/
 function setupView() {
-  $_get = new GlobalHelpers.jQueryGetOverride();
 }
 
 
 /* Reset DOM to pre setupView() state
  **/
-function teardownView() {
-  $_get.restore();
+function teardownView(id) {
+  $('#'+id).remove();
+  $(".DialogActivator").remove();
 }
 
 

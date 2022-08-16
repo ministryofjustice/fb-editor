@@ -140,7 +140,7 @@ feature 'Publishing' do
 
   def and_I_set_the_email_field
     editor.find(:css, '#configure-dev').click
-    editor.find(:css, '#email_settings_service_email_output').set('paul@atreides.com')
+    editor.find(:css, '#service_email_output_dev').set('paul@atreides.com')
   end
 
   def and_I_save_my_email_settings
@@ -246,7 +246,7 @@ feature 'Publishing' do
     and_I_click_the_submission_settings_link
     and_I_click_the_send_data_by_email_link
     editor.find(:css, '#configure-dev').click
-    editor.find(:css, '#email_settings_service_email_output').set('')
+    editor.find(:css, '#service_email_output_dev').set('')
     and_I_save_my_email_settings
   end
 end

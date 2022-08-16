@@ -19,15 +19,7 @@ class AutocompleteItems
     'show'
   end
 
-  private
-
   def file_contents
     @file_contents ||= CSV.read(file.path)
-  rescue CSV::MalformedCSVError
-    errors.add(
-      I18n.t(
-        'activemodel.errors.models.autocomplete_items.incorrect_format'
-      )
-    )
   end
 end

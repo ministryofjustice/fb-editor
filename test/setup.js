@@ -4,6 +4,7 @@ const sinonChai = require("sinon-chai");
 const jsdom = require("jsdom");
 const jquery = require('jquery');
 const { JSDOM } = jsdom;
+const FormData = require('form-data');
 
 var dom = new JSDOM(`<html>
     <head>
@@ -22,6 +23,7 @@ chai.use(sinonChai);
 global.expect = expect;
 global.window = dom.window;
 global.document = window.document;
+global.FormData = FormData;
 global.jQuery = require( 'jquery' )( window );
 global.$ = jQuery;
 global.XMLHttpRequest = global.window.XMLHttpRequest; // needs to exist for sinon

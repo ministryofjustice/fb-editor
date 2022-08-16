@@ -35,6 +35,11 @@ html {
   }
 }
 
+[hidden],
+[hidden="hidden"] {
+  display: none;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;
@@ -131,6 +136,10 @@ html {
 
 .fb-preview-button {
   float: right;
+}
+
+.fb-link-button {
+  @include button_as_link;
 }
 
 
@@ -1098,4 +1107,10 @@ html {
 
 .govuk-select {
   background-color: govuk-colour("white");
+}
+
+.govuk-navigation .govuk-list {
+  li {
+    margin-bottom: govuk-spacing(5);
+  }
 }

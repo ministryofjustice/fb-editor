@@ -67,5 +67,15 @@ RSpec.describe CsvValidator do
         expect(subject).to_not be_valid
       end
     end
+
+    context 'when a file is malformed' do
+      let(:path_to_file) {  Rails.root.join('spec', 'fixtures', 'malformed.csv') }
+
+      it 'throws a malformed csv error' do
+        expect(subject.errors.full_messages).to eq([I18n.t(
+          'activemodel.errors.models.autocomplete_items.incorrect_format'
+        )])
+      end
+    end
   end
 end

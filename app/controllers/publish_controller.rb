@@ -1,5 +1,5 @@
 class PublishController < FormController
-  before_action :assign_form_objects
+  before_action :assign_form_objects, :assign_autocomplete_warning
 
   def index
     @published_dev = published?(service.service_id, 'dev')
@@ -23,6 +23,10 @@ class PublishController < FormController
 
   private
 
+  def service_autocomplete_items
+    MetadataApiClient::Items.all(service_id: service.service_id)
+  end
+
   def publish_service_params
     params.require(:publish_service_creation).permit(
       :require_authentication,
@@ -45,6 +49,10 @@ class PublishController < FormController
       service_id: service.service_id,
       deployment_environment: 'production'
     )
+  end
+
+  def assign_autocomplete_warning
+    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
 
   def published?(service_id, environment)
