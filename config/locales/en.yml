@@ -162,6 +162,7 @@ en:
     ok: 'Ok'
     submit: 'Submit'
     upload_options: Upload options
+    open_in_new_window: '(opens in a new window)'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
