@@ -27,7 +27,9 @@
         <%= form.file_field :file, class: "govuk-file-upload", 'aria-describedby': 'file_hint autocomplete_items_file_error', accept: ".csv" %>
 
       </div>
-      <p class="govuk-!-margin-top-7 govuk-!-margin-bottom-8"><%= link_to t('dialogs.autocomplete.requirement_link'), '#', class: 'govuk-link' %></p>
+      <p class="govuk-!-margin-top-7 govuk-!-margin-bottom-8">
+        <%= link_to "#{t('dialogs.autocomplete.requirement_link')} #{t('actions.open_in_new_window')}", 'https://moj-forms.service.justice.gov.uk/building-and-editing/#autocomplete', target: "_blank", rel: "noreferrer noopener", class: 'govuk-link' %>
+      </p>
   </div>
 
   <%= form.button t('dialogs.autocomplete.button'), type: "submit", class: 'govuk-button fb-govuk-button' %>
