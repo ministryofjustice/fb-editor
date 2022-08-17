@@ -43,3 +43,6 @@ yarn-debug.log*
 
 # macOS finder #
 .DS_Store
+
+# Clamd config
+/config/clamd/*.conf
