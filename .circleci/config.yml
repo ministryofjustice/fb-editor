@@ -388,18 +388,9 @@ workflows:
       - acceptance_tests_eks:
           requires:
             - deploy_to_test_eks
-      - slack/approval-notification:
-          message: ":portalorangeparrot:  Deployment to Live pending approval  :portalblueparrot:"
-          include_job_number_field: false
-          requires:
-            - acceptance_tests_eks
-      - confirm_live_deploy:
-          type: approval
-          requires:
-            - acceptance_tests_eks
       - deploy_to_live_eks:
           requires:
-            - confirm_live_deploy
+            - acceptance_tests_eks
   deploy_testable_branch:
     jobs:
       - build:
