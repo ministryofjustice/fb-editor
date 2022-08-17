@@ -20,6 +20,6 @@ class AutocompleteItems
   end
 
   def file_contents
-    @file_contents ||= CSV.read(file.path)
+    @file_contents ||= CSV.read(file.path, encoding: 'utf-8')
   end
 end
