@@ -5,7 +5,8 @@ class AutocompleteItems
   attr_accessor :service_id, :component_id, :file
 
   validates :file, presence: true
-  validates_with CsvValidator, unless: proc { |obj| obj.file.blank? }
+  validate :scan_file
+  validates_with CsvValidator, unless: proc { |obj| obj.file.blank? || obj.has_virus? }
 
   def file_headings
     file_contents.first.compact.map(&:downcase)
@@ -21,5 +22,17 @@ class AutocompleteItems
 
   def file_contents
     @file_contents ||= CSV.read(file.path)
+  end
+
+  def has_virus?
+    return if file.blank?
+
+    @has_virus ||= MalwareScanner.call(file.path)
+  end
+
+  def scan_file
+    if has_virus?
+      errors.add(:message, I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename))
+    end
   end
 end

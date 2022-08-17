@@ -9,6 +9,8 @@ RSpec.describe 'Autocomplete spec', type: :request do
     allow_any_instance_of(
       Api::AutocompleteController
     ).to receive(:service).and_return(service)
+
+    allow(MalwareScanner).to receive(:call).and_return(false)
   end
 
   describe 'GET /api/services/:service_id/components/:component_id/autocomplete' do

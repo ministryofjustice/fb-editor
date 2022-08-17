@@ -13,7 +13,10 @@ RSpec.describe CsvValidator do
   let(:file) { Rack::Test::UploadedFile.new(path_to_file, 'text/csv') }
 
   describe '#validate' do
-    before { subject.validate }
+    before do
+      allow(MalwareScanner).to receive(:call).and_return(false)
+      subject.validate
+    end
 
     context 'when not a csv file' do
       let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'computer_says_no.gif') }
