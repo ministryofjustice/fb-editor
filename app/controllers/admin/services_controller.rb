@@ -3,7 +3,8 @@ module Admin
     def index
       response = MetadataApiClient::Service.all_services(
         page: page,
-        per_page: per_page
+        per_page: per_page,
+        name_query: params[:search] || ''
       )
 
       @services = Kaminari.paginate_array(
