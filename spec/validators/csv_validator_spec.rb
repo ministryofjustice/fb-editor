@@ -77,5 +77,13 @@ RSpec.describe CsvValidator do
         )])
       end
     end
+
+    context 'when file has bom prefix' do
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'bom.csv') }
+
+      it 'should be valid' do
+        expect(subject).to be_valid
+      end
+    end
   end
 end
