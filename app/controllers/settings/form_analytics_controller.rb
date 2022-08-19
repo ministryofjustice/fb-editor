@@ -1,5 +1,4 @@
 class Settings::FormAnalyticsController < FormController
-  before_action :form_analytics_enabled
   before_action :assign_form_object, only: :index
 
   def index; end
@@ -30,9 +29,5 @@ class Settings::FormAnalyticsController < FormController
   def form_analytics_params
     params.require(:form_analytics_settings)
           .permit(*FormAnalyticsSettings::PERMITTED_PARAMS)
-  end
-
-  def form_analytics_enabled
-    redirect_to unauthorised_path unless ENV['FORM_ANALYTICS'] == 'enabled'
   end
 end
