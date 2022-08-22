@@ -52,6 +52,6 @@ class CsvValidator < ActiveModel::Validator
   end
 
   def empty_value_cell?(record)
-    record.file_contents.any? { |cell| cell[1].blank? }
+    record.file_contents.any? { |cell| cell[1].blank? } if record.file_headings.count == 2
   end
 end

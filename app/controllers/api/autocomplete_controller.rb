@@ -33,6 +33,10 @@ module Api
 
     private
 
+    def has_headers?
+      @items.file_headings == %w[text value]
+    end
+
     def autocomplete_items_file
       @autocomplete_items_file ||= params.dig(:autocomplete_items, :file)
     end
@@ -50,7 +54,7 @@ module Api
       csv_items.map do |r|
         {
           text: r[0],
-          value: r[1].nil? ? r[0] : r[1]
+          value: has_headers? ? r[1] : r[0]
         }
       end
     end
