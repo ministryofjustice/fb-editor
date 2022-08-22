@@ -54,7 +54,12 @@ class FlowConnectorPath {
     var conf = utilities.mergeObjects({
                  container: $(),
                  top: 0,
-                 bottom: 0 // Nonsense number as should be set by calculating height of container and passing in.
+                 bottom: 0, // Nonsense number as should be set by calculating height of container and passing in.
+                 dimensions: {
+                    // Base class does not expect to set any values for these.
+                    original: {},
+                    lines: []
+                  }
                }, config);
 
     // Public
@@ -66,12 +71,6 @@ class FlowConnectorPath {
 
     this.from = conf.from;
     this.to = conf.to;
-
-    // Base class does not expect to set any values for these.
-    this._dimensions = {
-                         original: {},
-                         lines: []
-                       }
 
     // Private
     this.#config = conf;
@@ -111,7 +110,7 @@ class FlowConnectorPath {
 
   // Return all FlowConnectorLines or just those matching the passed type.
   lines(type="") {
-    var lineArr = this._dimensions.lines;
+    var lineArr = this.#config.dimensions.lines;
     var filtered = [];
 
     for(var i=0; i<lineArr.length; ++i) {
@@ -171,8 +170,8 @@ class FlowConnectorPath {
     // DEVELOPMENT ONLY FUNCTION
     // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
     // this funciton can be called to make things visible and, therefore, a bit easier. See this.build().
-    for(var i=0; i<this._dimensions.lines.length; ++i) {
-      this.#config.container.append(this._dimensions.lines[i].testOnlySvg());
+    for(var i=0; i<this.#config.dimensions.lines.length; ++i) {
+      this.#config.container.append(this.#config.dimensions.lines[i].testOnlySvg());
     }
   }
 
