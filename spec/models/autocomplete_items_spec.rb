@@ -71,5 +71,13 @@ RSpec.describe AutocompleteItems do
         ])
       end
     end
+
+    context 'file has special characters' do
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'special_characters.csv') }
+
+      it 'is valid' do
+        expect(subject).to be_valid
+      end
+    end
   end
 end
