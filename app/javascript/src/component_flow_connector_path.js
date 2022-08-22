@@ -46,6 +46,9 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
  *                  }
  **/
 class FlowConnectorPath {
+
+  #config;
+
   constructor(points, config) {
     var id = config.id || utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
@@ -71,7 +74,7 @@ class FlowConnectorPath {
                        }
 
     // Private
-    this._config = conf;
+    this.#config = conf;
     this._path = "";
   }
 
@@ -86,11 +89,11 @@ class FlowConnectorPath {
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", this.id)
-              .attr("data-from", this._config.from.id)
-              .attr("data-to", this._config.to.id)
+              .attr("data-from", this.#config.from.id)
+              .attr("data-to", this.#config.to.id)
               .data("instance", this);
 
-    this._config.container.append(this.$node);
+    this.#config.container.append(this.$node);
 
     this.$node.find("path").on("mouseover", function() {
       $(document).trigger("FlowConnectorPathOver", flowConnectorPath);
@@ -169,7 +172,7 @@ class FlowConnectorPath {
     // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
     // this funciton can be called to make things visible and, therefore, a bit easier. See this.build().
     for(var i=0; i<this._dimensions.lines.length; ++i) {
-      this._config.container.append(this._dimensions.lines[i].testOnlySvg());
+      this.#config.container.append(this._dimensions.lines[i].testOnlySvg());
     }
   }
 
@@ -382,9 +385,9 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
-      up: Math.round(utilities.difference(this.points.from_y, this._config.top)),
+      up: Math.round(utilities.difference(this.points.from_y, config.top)),
       forward2: Math.round(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
-      down: Math.round(utilities.difference(this._config.top, this.points.to_y)),
+      down: Math.round(utilities.difference(config.top, this.points.to_y)),
       forward3: 0 // Expected start value
     }
 
@@ -502,9 +505,9 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     super(points, config);
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
-      down: Math.round(utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
+      down: Math.round(utilities.difference(this.points.from_y, config.bottom) - (CURVE_SPACING * 2)),
       backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x)),
-      up: Math.round(utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
+      up: Math.round(utilities.difference(config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
@@ -936,7 +939,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     var dimensions = {
       down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
-      up: Math.round(utilities.difference(this.points.via_y, this._config.top)),
+      up: Math.round(utilities.difference(this.points.via_y, config.top)),
       forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 4)),
       down2: Math.round(points.to_y),
       forward3: 0 // start value
