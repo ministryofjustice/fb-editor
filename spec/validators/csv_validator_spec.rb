@@ -88,5 +88,19 @@ RSpec.describe CsvValidator do
         expect(subject).to be_valid
       end
     end
+
+    context 'when file has an empty value cell' do
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty_value_cell.csv') }
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
+      end
+
+      it 'returns the correct message' do
+        expect(subject.errors.full_messages).to eq([I18n.t(
+          'activemodel.errors.models.autocomplete_items.empty_value_cell'
+        )])
+      end
+    end
   end
 end

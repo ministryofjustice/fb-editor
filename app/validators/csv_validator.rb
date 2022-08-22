@@ -22,6 +22,13 @@ class CsvValidator < ActiveModel::Validator
             'activemodel.errors.models.autocomplete_items.incorrect_format'
           )
         )
+      elsif empty_value_cell?(record)
+        record.errors.add(
+          :file,
+          I18n.t(
+            'activemodel.errors.models.autocomplete_items.empty_value_cell'
+          )
+        )
       end
     end
   rescue CSV::MalformedCSVError
@@ -42,5 +49,9 @@ class CsvValidator < ActiveModel::Validator
   def invalid_headings?(record)
     (record.file_headings.count == 1 && record.file_headings != %w[text]) ||
       (record.file_headings.count == 2 && record.file_headings != %w[text value])
+  end
+
+  def empty_value_cell?(record)
+    record.file_contents.any? { |cell| cell[1].blank? }
   end
 end
