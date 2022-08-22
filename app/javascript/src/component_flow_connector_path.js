@@ -1238,6 +1238,7 @@ class DownForwardPath extends FlowConnectorPath {
 class FlowConnectorLine {
 
   #private;
+  #name;
 
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
   // @config (Object) Should be populated with {
@@ -1246,11 +1247,11 @@ class FlowConnectorLine {
   //                    type: [horizontal|vertical] // String value
   //                  }
   constructor(name, config) {
+    this.#name = name;
     this.#private = {
       x: config.x,
       y: config.y,
       length: config.length,
-      name: name,
       overlapAllowed: (config.overlapAllowed ? config.overlapAllowed : false),
       prefix: config.prefix,
       type: config.type
@@ -1270,7 +1271,7 @@ class FlowConnectorLine {
   }
 
   get name() {
-    return this.#private.name;
+    return this.#name;
   }
 
   set type(t) {
@@ -1338,7 +1339,7 @@ class FlowConnectorLine {
                  xy(this.#private.x, this.#private.y),
                  this.path
                ));
-    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.name + "\""));
+    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.#name + "\""));
     $svg.addClass("FlowConnectorLine");
     return $svg
   }
