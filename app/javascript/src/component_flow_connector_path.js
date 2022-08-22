@@ -1239,6 +1239,7 @@ class FlowConnectorLine {
 
   #private;
   #name;
+  #range;
   #type;
 
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
@@ -1267,7 +1268,7 @@ class FlowConnectorLine {
       default: this.#type = "uknown";
     }
 
-    this.range = [config.x, config.y];
+    this.#range = this.#calculateRange([config.x, config.y]);
   }
 
   get name() {
@@ -1284,27 +1285,7 @@ class FlowConnectorLine {
   }
 
   get range() {
-    return this.#private.range;
-  }
-
-  set range(points /* [x, y] */) {
-    var r = [];
-    var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
-    var length = this.#private.length;
-
-    // Decide if count goes forward or backward based on line prefix containing minus, or not.
-    if(this.#private.prefix.search("-") >= 0) {
-      for(var i=start; i > (start - length); --i) {
-        r.push(i);
-      }
-    }
-    else {
-      for(var i=start; i < (start + length); ++i) {
-        r.push(i);
-      }
-    }
-
-    this.#private.range = r;
+    return this.#range;
   }
 
   prop(p) {
@@ -1339,6 +1320,29 @@ class FlowConnectorLine {
     $svg.addClass("FlowConnectorLine");
     return $svg
   }
+
+  // PRIVATE METHODS
+
+  #calculateRange(points /* [x, y] */) {
+    var r = [];
+    var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
+    var length = this.#private.length;
+
+    // Decide if count goes forward or backward based on line prefix containing minus, or not.
+    if(this.#private.prefix.search("-") >= 0) {
+      for(var i=start; i > (start - length); --i) {
+        r.push(i);
+      }
+    }
+    else {
+      for(var i=start; i < (start + length); ++i) {
+        r.push(i);
+      }
+    }
+
+    return r;
+  }
+
 }
 
 
