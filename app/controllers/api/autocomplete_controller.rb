@@ -13,7 +13,7 @@ module Api
           service_id: params[:service_id],
           component_id: params[:component_id],
           created_by: service.created_by,
-          data: items_hash(@items.file_values)
+          data: items_hash(@items.file_rows)
         )
         return head :created unless response.errors?
 

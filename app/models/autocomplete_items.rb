@@ -12,7 +12,7 @@ class AutocompleteItems
     file_contents.first.compact.map(&:downcase)
   end
 
-  def file_values
+  def file_rows
     file_contents.drop(1)
   end
 

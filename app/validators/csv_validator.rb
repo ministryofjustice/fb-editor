@@ -8,14 +8,14 @@ class CsvValidator < ActiveModel::Validator
             'activemodel.errors.models.autocomplete_items.invalid_type'
           )
         )
-      elsif record.file_values.empty?
+      elsif record.file_rows.empty?
         record.errors.add(
           :file,
           I18n.t(
             'activemodel.errors.models.autocomplete_items.empty'
           )
         )
-      elsif invalid_headings?(record) || record.file_values.map(&:size).max > 2
+      elsif invalid_headings?(record) || record.file_rows.map(&:size).max > 2
         record.errors.add(
           :file,
           I18n.t(

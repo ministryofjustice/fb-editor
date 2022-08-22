@@ -87,12 +87,12 @@ RSpec.describe AutocompleteItems do
     end
   end
 
-  describe '#file_values' do
-    context 'has the correct file values' do
-      let(:expected_values) { [%w[b 1], %w[c 2], %w[d 3]] }
+  describe '#file_rows' do
+    context 'has the correct file rows' do
+      let(:expected_rows) { [%w[b 1], %w[c 2], %w[d 3]] }
 
       it 'returns the contents' do
-        expect(subject.file_values).to eq(expected_values)
+        expect(subject.file_rows).to eq(expected_rows)
       end
     end
   end
