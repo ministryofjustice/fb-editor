@@ -77,6 +77,12 @@ class FlowConnectorPath {
     this._path = "";
   }
 
+  // Because JS doesn't allow inheritance of private variables,
+  // we're providing a Getter and setting privately in subclass.
+  get config() {
+    return this.#config;
+  }
+
   path() {
     return this._path;
   }
@@ -250,13 +256,18 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
 
 
 class ForwardPath extends FlowConnectorPath {
+
+  #config;
+
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       forward: Math.round(this.points.xDifference)
     }
 
-    this._dimensions = { original: dimensions  } // Not expected to change.
+    this.#config = this.config; // Initialise private inheritance.
+
+    this.#config.dimensions = { original: dimensions  } // Not expected to change.
     this.type = "ForwardPath";
     this.path(dimensions);
     this.build();
@@ -275,8 +286,8 @@ class ForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this._dimensions.current = dimensions;
-      this._dimensions.lines = [ forward ];
+      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.lines = [ forward ];
 
       this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
