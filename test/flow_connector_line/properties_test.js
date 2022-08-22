@@ -32,15 +32,6 @@ describe("FlowConnectorLine", function() {
       expect(created.lines[2].type).to.equal("horizontal");
     });
 
-    it("should set the type passed", function() {
-      expect(created.lines[0].type).to.equal("horizontal");
-      created.lines[0].type = "something";
-      expect(created.lines[0].type).to.equal("something");
-
-      // Reset back to avoid issues with other tests
-      created.lines[0].type = "horizontal";
-    });
-
     it("should return the path value", function() {
       expect(created.lines.length).to.equal(3);
       expect(created.lines[0].path).to.equal("h70");

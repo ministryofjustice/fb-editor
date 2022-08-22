@@ -1239,6 +1239,7 @@ class FlowConnectorLine {
 
   #private;
   #name;
+  #type;
 
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
   // @config (Object) Should be populated with {
@@ -1253,18 +1254,17 @@ class FlowConnectorLine {
       y: config.y,
       length: config.length,
       overlapAllowed: (config.overlapAllowed ? config.overlapAllowed : false),
-      prefix: config.prefix,
-      type: config.type
+      prefix: config.prefix
     }
 
     switch(config.prefix.charAt(0)) {
-      case "h": this.type = HORIZONTAL;
+      case "h": this.#type = HORIZONTAL;
          break;
 
-      case "v": this.type = VERTICAL;
+      case "v": this.#type = VERTICAL;
          break;
 
-      default: this.type = "uknown";
+      default: this.#type = "uknown";
     }
 
     this.range = [config.x, config.y];
@@ -1274,12 +1274,8 @@ class FlowConnectorLine {
     return this.#name;
   }
 
-  set type(t) {
-    this.#private.type = t;
-  }
-
   get type() {
-    return this.#private.type;
+    return this.#type;
   }
 
   // Returns a string used for part of an svg <path> d attribute value.
@@ -1293,7 +1289,7 @@ class FlowConnectorLine {
 
   set range(points /* [x, y] */) {
     var r = [];
-    var start = (this.#private.type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
+    var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
     var length = this.#private.length;
 
     // Decide if count goes forward or backward based on line prefix containing minus, or not.
