@@ -32,7 +32,10 @@ class AutocompleteItems
 
   def scan_file
     if has_virus?
-      errors.add(:message, I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename))
+      errors.add(
+        :message,
+        I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename)
+      )
     end
   end
 end

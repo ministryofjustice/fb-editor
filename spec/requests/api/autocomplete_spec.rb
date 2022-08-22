@@ -9,8 +9,6 @@ RSpec.describe 'Autocomplete spec', type: :request do
     allow_any_instance_of(
       Api::AutocompleteController
     ).to receive(:service).and_return(service)
-
-    allow(MalwareScanner).to receive(:call).and_return(false)
   end
 
   describe 'GET /api/services/:service_id/components/:component_id/autocomplete' do
@@ -19,6 +17,10 @@ RSpec.describe 'Autocomplete spec', type: :request do
     end
     let(:service_id) { SecureRandom.uuid }
     let(:component_id) { SecureRandom.uuid }
+
+    before do
+      allow(MalwareScanner).to receive(:call).and_return(false)
+    end
 
     context 'when there are items for a component' do
       before do
@@ -67,6 +69,7 @@ RSpec.describe 'Autocomplete spec', type: :request do
 
     context 'when there is a file uploaded' do
       before do
+        allow(MalwareScanner).to receive(:call).and_return(false)
         allow_any_instance_of(ApplicationHelper).to receive(:items_present?)
         .with(component_id)
         .and_return(true)
@@ -124,6 +127,7 @@ RSpec.describe 'Autocomplete spec', type: :request do
       let(:params) { { autocomplete_items: nil } }
 
       before do
+        allow(MalwareScanner).to receive(:call).and_return(false)
         allow_any_instance_of(ApplicationHelper).to receive(:items_present?)
         .with(component_id)
         .and_return(true)
@@ -131,6 +135,24 @@ RSpec.describe 'Autocomplete spec', type: :request do
 
       it 'returns a 422' do
         request
+        expect(response.status).to eq(422)
+      end
+    end
+
+    context 'when clamdscan error is raised' do
+      let(:pid_status) do
+        double(exitstatus: 2)
+      end
+      before do
+        allow(Open3).to receive(:capture3).and_return(['', '', pid_status])
+        allow_any_instance_of(ApplicationHelper).to receive(:items_present?)
+        .and_return(true)
+      end
+
+      it 'returns a 422' do
+        request
+
+        expect(MetadataApiClient::Items).to_not receive(:create)
         expect(response.status).to eq(422)
       end
     end

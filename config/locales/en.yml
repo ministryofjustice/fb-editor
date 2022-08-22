@@ -444,6 +444,7 @@ en:
           empty: The selected file must contain some data
           format: "%{message}"
           virus_found: "'%{attribute}' contains a virus - choose a different file"
+          scan_error: "An error has occurred, try again in a few minutes"
 
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."

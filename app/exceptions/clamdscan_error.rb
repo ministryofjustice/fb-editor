@@ -1,0 +1,2 @@
+class ClamdscanError < StandardError
+end

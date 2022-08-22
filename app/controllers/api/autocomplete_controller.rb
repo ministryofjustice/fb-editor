@@ -21,8 +21,14 @@ module Api
           @items.errors.add(:message, error)
         end
       end
-
-      render partial: 'show', status: :unprocessable_entity, layout: false
+      render_unprocessable_entity
+    rescue ClamdscanError => e
+      Rails.logger.warn("ClamdscanError message: #{e.message}")
+      @items.errors.add(
+        :message,
+        I18n.t('activemodel.errors.models.autocomplete_items.scan_error')
+      )
+      render_unprocessable_entity
     end
 
     private
@@ -51,6 +57,10 @@ module Api
 
     def assign_items
       @items = AutocompleteItems.new(base_params)
+    end
+
+    def render_unprocessable_entity
+      render partial: 'show', status: :unprocessable_entity, layout: false
     end
   end
 end
