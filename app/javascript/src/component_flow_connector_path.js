@@ -1237,7 +1237,7 @@ class DownForwardPath extends FlowConnectorPath {
  **/
 class FlowConnectorLine {
 
-  #private;
+  #config;
   #name;
   #range;
   #type;
@@ -1250,7 +1250,7 @@ class FlowConnectorLine {
   //                  }
   constructor(name, config) {
     this.#name = name;
-    this.#private = {
+    this.#config = {
       x: config.x,
       y: config.y,
       length: config.length,
@@ -1281,29 +1281,30 @@ class FlowConnectorLine {
 
   // Returns a string used for part of an svg <path> d attribute value.
   get path() {
-    return this.#private.prefix + this.#private.length
+    return this.#config.prefix + this.#config.length
   }
 
   get range() {
     return this.#range;
   }
 
+  // Returns a particular configuration property
   prop(p) {
     var value;
     switch(p) {
       case "overlapAllowed":
-        value = this.#private.overlapAllowed;
+        value = this.#config.overlapAllowed;
         break;
       case "x":
-        value = this.#private.x;
+        value = this.#config.x;
         break;
 
       case "y":
-        value = this.#private.y;
+        value = this.#config.y;
         break;
 
       case "length":
-        value = this.#private.length;
+        value = this.#config.length;
         break;
 
       default: // nothing;
@@ -1313,7 +1314,7 @@ class FlowConnectorLine {
 
   testOnlySvg() {
     var path = createPath(pathD(
-                 xy(this.#private.x, this.#private.y),
+                 xy(this.#config.x, this.#config.y),
                  this.path
                ));
     var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.#name + "\""));
@@ -1326,10 +1327,10 @@ class FlowConnectorLine {
   #calculateRange(points /* [x, y] */) {
     var r = [];
     var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
-    var length = this.#private.length;
+    var length = this.#config.length;
 
     // Decide if count goes forward or backward based on line prefix containing minus, or not.
-    if(this.#private.prefix.search("-") >= 0) {
+    if(this.#config.prefix.search("-") >= 0) {
       for(var i=start; i > (start - length); --i) {
         r.push(i);
       }
