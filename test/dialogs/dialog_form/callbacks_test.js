@@ -125,14 +125,14 @@ describe("DialogForm", function() {
     it('should call onLoad', function() {
       var onLoadCallback = sinon.spy();
       
-      console.log(server)
+      //console.log(server)
 
       created = helpers.createRemoteDialog(COMPONENT_ID, server, {
         onLoad: onLoadCallback,
       });
 
 
-      console.log(server)
+      //console.log(server)
 
       expect(onLoadCallback).to.have.been.called
       expect(onLoadCallback).to.have.been.calledWith(created.dialog);
