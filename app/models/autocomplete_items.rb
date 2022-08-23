@@ -5,7 +5,7 @@ class AutocompleteItems
   attr_accessor :service_id, :component_id, :file
 
   validates :file, presence: true
-  validate :scan_file
+  validate :scan_file, :file_size
   validates_with CsvValidator, unless: proc { |obj| obj.file.blank? || obj.has_virus? }
 
   def file_headings
@@ -30,11 +30,26 @@ class AutocompleteItems
     @has_virus ||= MalwareScanner.call(file.path)
   end
 
+  def file_too_big?
+    return if file.blank?
+
+    file.size > 1.megabytes
+  end
+
   def scan_file
     if has_virus?
       errors.add(
         :message,
         I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename)
+      )
+    end
+  end
+
+  def file_size
+    if file_too_big?
+      errors.add(
+        :message,
+        I18n.t('activemodel.errors.models.autocomplete_items.too_big')
       )
     end
   end
