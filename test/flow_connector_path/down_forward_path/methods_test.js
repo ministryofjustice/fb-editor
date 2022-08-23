@@ -46,7 +46,7 @@ describe("DownForwardPath", function() {
     });
 
     it("should update (set) the path value when receiving new dimensions", function() {
-      var original = created.connector._dimensions.original;
+      var original = created.connector.config.dimensions.original;
       var updated = {
                       down: 278,
                       forward: 639
@@ -54,16 +54,16 @@ describe("DownForwardPath", function() {
 
       // Original value created by constructor.
       expect(created.connector.path()).to.equal(expectedPathValue);
-      expect(created.connector._dimensions.current).to.eql(original);
+      expect(created.connector.config.dimensions.current).to.eql(original);
 
       // Update with some new dimensions.
       created.connector.path(updated);
-      expect(created.connector._dimensions.current).to.eql(updated);
+      expect(created.connector.config.dimensions.current).to.eql(updated);
       expect(created.connector.path()).to.equal(String("M 701,125 v278 a10,10 0 0 0 10,10 h639"));
 
       // Reset to avoid breaking any other tests.
       created.connector.path(original);
-      expect(created.connector._dimensions.current).to.eql(original);
+      expect(created.connector.config.dimensions.current).to.eql(original);
       expect(created.connector.path()).to.equal(expectedPathValue);
     });
 
