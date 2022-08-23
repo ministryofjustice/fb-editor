@@ -1107,6 +1107,7 @@ html {
 
 .govuk-select {
   background-color: govuk-colour("white");
+  min-width: unset;
 }
 
 .govuk-navigation .govuk-list {
