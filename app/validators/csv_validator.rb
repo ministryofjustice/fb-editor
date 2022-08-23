@@ -19,7 +19,7 @@ class CsvValidator < ActiveModel::Validator
         record.errors.add(
           :file,
           I18n.t(
-            'activemodel.errors.models.autocomplete_items.incorrect_format'
+            'activemodel.errors.models.autocomplete_items.invalid_headings'
           )
         )
       elsif empty_value_cell?(record) || empty_text_cell?(record)

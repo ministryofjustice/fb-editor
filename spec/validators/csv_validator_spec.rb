@@ -52,7 +52,7 @@ RSpec.describe CsvValidator do
 
       it 'returns the correct message' do
         expect(subject.errors.full_messages).to eq([I18n.t(
-          'activemodel.errors.models.autocomplete_items.incorrect_format'
+          'activemodel.errors.models.autocomplete_items.invalid_headings'
         )])
       end
     end

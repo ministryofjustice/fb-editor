@@ -447,6 +447,9 @@ en:
           scan_error: "An error has occurred, try again in a few minutes"
           too_big: "The selected file must be smaller than 1MB"
           empty_value_cell: "CSV file has an empty value cell"
+          scan_error:  There was a problem with the file upload - try again later
+          empty_value_cell: "The selected file cannot contain blank fields"
+          invalid_headings: "The selected file's header fields must be labelled correctly"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
