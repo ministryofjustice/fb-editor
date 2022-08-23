@@ -1237,6 +1237,11 @@ class DownForwardPath extends FlowConnectorPath {
  **/
 class FlowConnectorLine {
 
+  #config;
+  #name;
+  #range;
+  #type;
+
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
   // @config (Object) Should be populated with {
   //                    start: 0, // An x or y number depending on type.
@@ -1244,57 +1249,88 @@ class FlowConnectorLine {
   //                    type: [horizontal|vertical] // String value
   //                  }
   constructor(name, config) {
-    this._private = {
+    this.#name = name;
+    this.#config = {
       x: config.x,
       y: config.y,
       length: config.length,
-      name: name,
       overlapAllowed: (config.overlapAllowed ? config.overlapAllowed : false),
-      prefix: config.prefix,
-      type: config.type
+      prefix: config.prefix
     }
 
     switch(config.prefix.charAt(0)) {
-      case "h": this.type = HORIZONTAL;
+      case "h": this.#type = HORIZONTAL;
          break;
 
-      case "v": this.type = VERTICAL;
+      case "v": this.#type = VERTICAL;
          break;
 
-      default: this.type = "uknown";
+      default: this.#type = "uknown";
     }
 
-    this.range = [config.x, config.y];
+    this.#range = this.#calculateRange([config.x, config.y]);
   }
 
   get name() {
-    return this._private.name;
-  }
-
-  set type(t) {
-    this._private.type = t;
+    return this.#name;
   }
 
   get type() {
-    return this._private.type;
+    return this.#type;
   }
 
   // Returns a string used for part of an svg <path> d attribute value.
   get path() {
-    return this._private.prefix + this._private.length
+    return this.#config.prefix + this.#config.length
   }
 
   get range() {
-    return this._private.range;
+    return this.#range;
   }
 
-  set range(points /* [x, y] */) {
+  // Returns a particular configuration property
+  prop(p) {
+    var value;
+    switch(p) {
+      case "overlapAllowed":
+        value = this.#config.overlapAllowed;
+        break;
+      case "x":
+        value = this.#config.x;
+        break;
+
+      case "y":
+        value = this.#config.y;
+        break;
+
+      case "length":
+        value = this.#config.length;
+        break;
+
+      default: // nothing;
+    }
+    return value;
+  }
+
+  testOnlySvg() {
+    var path = createPath(pathD(
+                 xy(this.#config.x, this.#config.y),
+                 this.path
+               ));
+    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.#name + "\""));
+    $svg.addClass("FlowConnectorLine");
+    return $svg
+  }
+
+  // PRIVATE METHODS
+
+  #calculateRange(points /* [x, y] */) {
     var r = [];
-    var start = (this._private.type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
-    var length = this._private.length;
+    var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
+    var length = this.#config.length;
 
     // Decide if count goes forward or backward based on line prefix containing minus, or not.
-    if(this._private.prefix.search("-") >= 0) {
+    if(this.#config.prefix.search("-") >= 0) {
       for(var i=start; i > (start - length); --i) {
         r.push(i);
       }
@@ -1305,41 +1341,9 @@ class FlowConnectorLine {
       }
     }
 
-    this._private.range = r;
+    return r;
   }
 
-  prop(p) {
-    var value;
-    switch(p) {
-      case "overlapAllowed":
-        value = this._private.overlapAllowed;
-        break;
-      case "x":
-        value = this._private.x;
-        break;
-
-      case "y":
-        value = this._private.y;
-        break;
-
-      case "length":
-        value = this._private.length;
-        break;
-
-      default: // nothing;
-    }
-    return value;
-  }
-
-  testOnlySvg() {
-    var path = createPath(pathD(
-                 xy(this._private.x, this._private.y),
-                 this.path
-               ));
-    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.name + "\""));
-    $svg.addClass("FlowConnectorLine");
-    return $svg
-  }
 }
 
 
