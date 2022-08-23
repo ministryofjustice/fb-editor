@@ -447,4 +447,14 @@ module CommonSteps
       click_button('.ui-dialog-titlebar-close')
     end
   end
+
+  # Autocomplete component
+  def given_I_add_a_single_question_page_with_autocomplete
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.autocomplete')).click
+  end
+
+  def and_I_should_see_default_upload_options_warning
+    expect(editor).to have_content(I18n.t('dialogs.autocomplete.component_warning'))
+  end
 end

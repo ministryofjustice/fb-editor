@@ -64,6 +64,13 @@ feature 'Create page' do
     then_I_should_see_the_edit_single_question_email_page
   end
 
+  scenario 'creating a single question page with autocomplete' do
+    given_I_add_a_single_question_page_with_autocomplete
+    and_I_add_a_page_url
+    when_I_add_the_page
+    then_I_should_see_the_edit_single_question_autocomplete_page
+  end
+
   scenario 'creating multiple question page' do
     given_I_add_a_multiple_question_page
     and_I_add_a_page_url
@@ -160,6 +167,14 @@ feature 'Create page' do
     expect(editor.find('input[type="email"]')).to be_visible
   end
 
+  def then_I_should_see_the_edit_single_question_autocomplete_page
+    and_I_should_see_default_values_created
+    and_I_should_see_the_save_button_visible
+    and_I_should_see_default_upload_options_warning
+    and_I_should_see_the_save_button_disabled
+    expect(editor.find('.govuk-select')).to be_visible
+  end
+
   def and_I_should_be_on_the_edit_page
     and_I_should_see_default_values_created
     and_I_should_see_the_save_button_visible
@@ -189,6 +204,10 @@ feature 'Create page' do
     expect(
       editor.checkboxes_options.map { |option| option[:value] }
     ).to match_array(%w[Option Option])
+  end
+
+  def and_I_should_see_upload_options_warning
+    expect(editor).to have_content(I18n.t('dialogs.autocomplete.component_warning'))
   end
 
   def then_I_should_see_the_edit_multiple_question_page

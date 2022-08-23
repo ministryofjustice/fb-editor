@@ -81,6 +81,9 @@ class EditorApp < SitePrism::Page
   element :required_question,
           :xpath,
           "//*[@role='menuitemcheckbox' and contains(.,'Required...')]"
+  element :autocomplete_options,
+          :xpath,
+          "//*[@role='menuitem' and contains(.,'Autocomplete options...')]"
 
   elements :add_page_submit_button, :button, I18n.t('pages.create')
   elements :form_pages, '#flow-overview .flow-item'
