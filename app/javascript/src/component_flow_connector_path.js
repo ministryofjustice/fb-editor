@@ -48,6 +48,7 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
 class FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     var id = config.id || utilities.uniqueString("flowconnectorpath-");
@@ -74,7 +75,7 @@ class FlowConnectorPath {
 
     // Private
     this.#config = conf;
-    this._path = "";
+    this.#path = "";
   }
 
   // Because JS doesn't allow inheritance of private variables,
@@ -84,13 +85,13 @@ class FlowConnectorPath {
   }
 
   path() {
-    return this._path;
+    return this.#path;
   }
 
   build() {
     var flowConnectorPath = this;
 
-    this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
+    this.$node = createSvg(createPath(this.#path) + createArrowPath(this.points));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", this.id)
@@ -258,6 +259,7 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
 class ForwardPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -265,7 +267,9 @@ class ForwardPath extends FlowConnectorPath {
       forward: Math.round(this.points.xDifference)
     }
 
-    this.#config = this.config; // Initialise private inheritance.
+    // Initialise private inheritance.
+    this.#config = this.config;
+    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions  } // Not expected to change.
     this.type = "ForwardPath";
@@ -289,13 +293,13 @@ class ForwardPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward.path
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   // Since this arrow simply goes from point A to B, which is expected to
@@ -307,6 +311,7 @@ class ForwardPath extends FlowConnectorPath {
 class ForwardUpForwardPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -316,7 +321,9 @@ class ForwardUpForwardPath extends FlowConnectorPath {
       forward2: Math.round(utilities.difference((this.points.from_x + this.points.via_x), this.points.to_x) - (CURVE_SPACING * 2))
     }
 
-    this.#config = this.config; // Initialise private inheritance.
+    this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set path()
     this.type = "ForwardUpForwardPath";
     this.path(dimensions);
@@ -359,7 +366,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward1, up, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_UP,
@@ -369,7 +376,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -388,7 +395,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -397,6 +404,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
 class ForwardUpForwardDownPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -409,6 +417,8 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
     this.path(dimensions);
@@ -467,7 +477,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward1, up, forward2, down, forward3 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_UP,
@@ -481,7 +491,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -512,7 +522,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -521,6 +531,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -533,6 +544,8 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
     this.path(dimensions);
@@ -592,7 +605,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward1, down, backward, up, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_DOWN,
@@ -605,7 +618,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                      forward2.path);
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -634,7 +647,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -642,6 +655,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 class ForwardDownForwardPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -652,6 +666,8 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
     this.path(dimensions);
@@ -693,7 +709,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward1, down, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_DOWN,
@@ -702,7 +718,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
                      forward2.path);
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -721,7 +737,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -729,6 +745,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -742,6 +759,8 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
     this.path(dimensions);
@@ -811,7 +830,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -827,7 +846,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -858,7 +877,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -867,6 +886,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 class DownForwardUpPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -878,6 +898,8 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
     this.path(dimensions);
@@ -929,7 +951,7 @@ class DownForwardUpPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ down, forward1, up, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down.path,
                      CURVE_DOWN_RIGHT,
@@ -941,7 +963,7 @@ class DownForwardUpPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -961,7 +983,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -970,6 +992,7 @@ class DownForwardUpPath extends FlowConnectorPath {
 class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -983,6 +1006,8 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
     this.path(dimensions);
@@ -1053,7 +1078,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -1069,7 +1094,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -1100,7 +1125,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -1109,6 +1134,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 class DownForwardDownForwardPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -1120,6 +1146,8 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
     this.path(dimensions);
@@ -1172,7 +1200,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ down1, forward1, down2, forward2 ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -1184,7 +1212,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   nudge(linename) {
@@ -1204,7 +1232,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this._path);
+    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 }
@@ -1213,6 +1241,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 class DownForwardPath extends FlowConnectorPath {
 
   #config;
+  #path;
 
   constructor(points, config) {
     super(points, config);
@@ -1222,6 +1251,8 @@ class DownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
+    this.#path = this.path;
+
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardPath";
     this.path(dimensions);
@@ -1255,7 +1286,7 @@ class DownForwardPath extends FlowConnectorPath {
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ down, forward ];
 
-      this._path = pathD(
+      this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down.path,
                      CURVE_DOWN_RIGHT,
@@ -1263,7 +1294,7 @@ class DownForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this._path;
+    return this.#path;
   }
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
