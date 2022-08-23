@@ -33,7 +33,7 @@
   <div class="govuk-form-group <%= !f.object.errors[:username].empty? ? 'govuk-form-group--error' : '' %>">
 
     <% f.object.errors[:username].each do |message| %>
-      <span class="govuk-error-message"><%= message %></span>
+      <p class="govuk-error-message"><%= message %></p>
     <% end %>
     <%= f.label :username, class: 'govuk-label', for: "username_#{deployment_environment}" %>
     <div class="govuk-hint" id="username_<%= deployment_environment %>_hint"><%= t('activemodel.attributes.publish_service_creation.username_hint') %></div>
@@ -48,7 +48,7 @@
 
   <div class="govuk-form-group <%= !f.object.errors[:password].empty? ? 'govuk-form-group--error' : '' %>">
     <% f.object.errors[:password].each do |message| %>
-      <span class="govuk-error-message"><%= message %></span>
+      <p class="govuk-error-message"><%= message %></p>
     <% end %>
     <%= f.label :password, class: 'govuk-label', for: "password_#{deployment_environment}" %>
     <div class="govuk-hint" id="password_<%= deployment_environment %>_hint"><%= t('activemodel.attributes.publish_service_creation.password_hint') %></div>

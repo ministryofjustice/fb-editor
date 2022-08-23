@@ -64,4 +64,7 @@ if(autocompleteComponent) {
 
 // Little bit hacky but we want to prevent the
 // Cookie banner from showing in preview mode.
-document.getElementById("govuk-cookie-banner").style.display = "none";
+const cookieBanner = document.getElementById("govuk-cookie-banner");
+if(cookieBanner) {
+  cookieBanner.style.display = "none";
+}

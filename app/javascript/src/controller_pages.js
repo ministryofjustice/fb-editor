@@ -698,8 +698,8 @@ function createDialogConfiguration() {
 function workaroundForDefaultText(view) {
   $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
     var $this = $(this);
-    var $span = $this.find(".govuk-hint");
-    $span.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
+    var $hint = $this.find(".govuk-hint");
+    $hint.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
   });
 }
 

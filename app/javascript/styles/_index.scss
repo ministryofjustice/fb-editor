@@ -1002,7 +1002,7 @@ html {
 }
 
 // For when a user is signed in
-.govuk-navigation-header {
+.fb-navigation-header {
   color: govuk-colour("white");
   float: right;
 
@@ -1050,7 +1050,7 @@ html {
   }
 
   .govuk-input:not(.govuk-date-input__input) {
-    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+    border-color: $govuk-error-colour;
 
     &:focus {
       border-color: $govuk-input-border-colour;
@@ -1058,7 +1058,7 @@ html {
   }
 
   .govuk-date-input__input:not(.govuk-input--error) {
-    border: $govuk-border-width-form-element-error solid $govuk-input-border-colour;
+    border-color: $govuk-error-colour;
 
     &:focus {
       border-color: $govuk-focus-colour;
