@@ -9,11 +9,9 @@ const constants = {
     next: "id-xyz",
     row: 2,
     column: 3,
-    coords: {
-      x_in: 100,
-      x_out: 150,
-      y: 20,
-    }
+    x_in: 100,
+    x_out: 150,
+    y: 20
   },
 
   TEXT_HEADING: "This is a heading",
