@@ -22,7 +22,7 @@ class CsvValidator < ActiveModel::Validator
             'activemodel.errors.models.autocomplete_items.incorrect_format'
           )
         )
-      elsif empty_value_cell?(record)
+      elsif empty_value_cell?(record) || empty_text_cell?(record)
         record.errors.add(
           :file,
           I18n.t(
@@ -53,5 +53,9 @@ class CsvValidator < ActiveModel::Validator
 
   def empty_value_cell?(record)
     record.file_contents.any? { |cell| cell[1].blank? } if record.file_headings.count == 2
+  end
+
+  def empty_text_cell?(record)
+    record.file_contents.any? { |cell| cell[0].blank? }
   end
 end

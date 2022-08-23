@@ -1,3 +1,5 @@
+require 'csv'
+
 RSpec.describe CsvValidator do
   let(:subject) { AutocompleteItems.new(params) }
   let(:params) do
@@ -89,17 +91,40 @@ RSpec.describe CsvValidator do
       end
     end
 
-    context 'when file has an empty value cell' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty_value_cell.csv') }
+    context 'when file has an empty cell' do
+      context 'empty value cell' do
+        let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty_value_cell.csv') }
 
-      it 'returns invalid' do
-        expect(subject).to_not be_valid
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns the correct message' do
+          expect(subject.errors.full_messages).to eq([I18n.t(
+            'activemodel.errors.models.autocomplete_items.empty_value_cell'
+          )])
+        end
       end
 
-      it 'returns the correct message' do
-        expect(subject.errors.full_messages).to eq([I18n.t(
-          'activemodel.errors.models.autocomplete_items.empty_value_cell'
-        )])
+      context 'empty text cell' do
+        let(:path_to_file) do
+          CSV.open(Rails.root.join('tmp', 'missing_text.csv'), 'w') do |csv|
+            csv << %w[Text]
+            csv << []
+            csv << %w[a]
+          end
+          'tmp/missing_text.csv'
+        end
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns the correct message' do
+          expect(subject.errors.full_messages).to eq([I18n.t(
+            'activemodel.errors.models.autocomplete_items.empty_value_cell'
+          )])
+        end
       end
     end
   end
