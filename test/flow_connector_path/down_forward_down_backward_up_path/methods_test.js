@@ -44,7 +44,7 @@ describe("DownForwardDownBackwardUpPath", function() {
     });
 
     it("should update (set) the path value when receiving new dimensions", function() {
-      var original = created.connector._dimensions.original;
+      var original = created.connector.config.dimensions.original;
       var updated = {
                       down1: 188,
                       forward1: 515,
@@ -56,16 +56,16 @@ describe("DownForwardDownBackwardUpPath", function() {
 
       // Original value created by constructor.
       expect(created.connector.path()).to.equal(expectedPathValue);
-      expect(created.connector._dimensions.current).to.eql(original);
+      expect(created.connector.config.dimensions.current).to.eql(original);
 
       // Update with some new dimensions.
       created.connector.path(updated);
-      expect(created.connector._dimensions.current).to.eql(updated);
+      expect(created.connector.config.dimensions.current).to.eql(updated);
       expect(created.connector.path()).to.equal(String("M 1951,125 v188 a10,10 0 0 0 10,10 h515 a10,10 0 0 1 10,10 v293 a10,10 0 0 1 -10,10 h-616 a10,10 0 0 1 -10,-10 v--588 a10,10 0 0 1 10,-10 h0"));
 
       // Reset to avoid breaking any other tests.
       created.connector.path(original);
-      expect(created.connector._dimensions.current).to.eql(original);
+      expect(created.connector.config.dimensions.current).to.eql(original);
       expect(created.connector.path()).to.equal(expectedPathValue);
     });
 
@@ -104,7 +104,7 @@ describe("DownForwardDownBackwardUpPath", function() {
     });
 
     it("should add the $node to $container", function() {
-      expect(created.connector.$node.parent().get(0)).to.equal(created.connector._config.container.get(0));
+      expect(created.connector.$node.parent().get(0)).to.equal(created.config.container.get(0));
     });
 
     /* TEST METHOD: lines()
@@ -199,7 +199,7 @@ describe("DownForwardDownBackwardUpPath", function() {
       });
 
       var originalPath = clashingPath.connector.path();
-      expect(clashingPath.connector._dimensions).to.eql(created.connector._dimensions);
+      expect(clashingPath.connector.config.dimensions).to.eql(created.connector.config.dimensions);
       expect(created.connector.avoidOverlap(clashingPath.connector)).to.be.true;
       expect(clashingPath.connector.path()).to.not.eql(originalPath);
 

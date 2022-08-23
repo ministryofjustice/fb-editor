@@ -93,7 +93,7 @@ describe("ForwardUpForwardPath", function() {
     });
 
     it("should add the $node to $container", function() {
-      expect(created.connector.$node.parent().get(0)).to.equal(created.connector._config.container.get(0));
+      expect(created.connector.$node.parent().get(0)).to.equal(created.config.container.get(0));
     });
 
     /* TEST METHOD: lines()
