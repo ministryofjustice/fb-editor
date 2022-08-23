@@ -1,13 +1,33 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "06d6c136d77c612ede6c621952772bad1910e700020da0302d7987b8cdfe2bd2",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/services/malware_scanner.rb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "Open3.capture3(*\"#{COMMAND} #{file_path.to_s}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MalwareScanner",
+        "method": "scan_result"
+      },
+      "user_input": "COMMAND",
+      "confidence": "Medium",
+      "note": "This is required for streaming file virus scanning"
+    },
+    {
       "warning_type": "Mass Assignment",
       "warning_code": 70,
       "fingerprint": "ba68e127b85a916b749bd1f7fec20219b1cb3e27b40904106d2dce53193bb5dd",
       "check_name": "MassAssignment",
       "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
       "file": "app/controllers/pages_controller.rb",
-      "line": 90,
+      "line": 91,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:page).permit!",
       "render_path": null,
@@ -72,6 +92,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-07-13 14:02:38 +0100",
+  "updated": "2022-08-18 11:37:54 +0100",
   "brakeman_version": "5.2.3"
 }

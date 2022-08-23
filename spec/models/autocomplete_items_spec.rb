@@ -11,6 +11,7 @@ RSpec.describe AutocompleteItems do
   let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid.csv') }
   let(:file) { Rack::Test::UploadedFile.new path_to_file, 'text/csv' }
   before do
+    allow(MalwareScanner).to receive(:call).and_return(false)
     subject.validate
   end
 
@@ -18,6 +19,26 @@ RSpec.describe AutocompleteItems do
     context 'when a file is present' do
       it 'returns valid' do
         expect(subject).to be_valid
+      end
+
+      context 'when a file has a virus' do
+        let(:expected_error) { [I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename)] }
+        before do
+          allow(MalwareScanner).to receive(:call).and_return(true)
+        end
+
+        it 'should be invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'should not validate csv file' do
+          expect_any_instance_of(CsvValidator).not_to receive(:validate)
+        end
+
+        it 'should have errors' do
+          subject.valid?
+          expect(subject.errors.full_messages).to eq(expected_error)
+        end
       end
     end
 
