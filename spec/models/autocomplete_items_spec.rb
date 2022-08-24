@@ -40,6 +40,27 @@ RSpec.describe AutocompleteItems do
           expect(subject.errors.full_messages).to eq(expected_error)
         end
       end
+
+      context 'when a file is larger than 1MB' do
+        let(:expected_error) { [I18n.t('activemodel.errors.models.autocomplete_items.too_big')] }
+
+        before do
+          allow(file).to receive(:size).and_return(2.megabytes)
+        end
+
+        it 'should be invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'should not validate csv file' do
+          expect_any_instance_of(CsvValidator).not_to receive(:validate)
+        end
+
+        it 'should have errors' do
+          subject.valid?
+          expect(subject.errors.full_messages).to eq(expected_error)
+        end
+      end
     end
 
     context 'when a file is not present' do
