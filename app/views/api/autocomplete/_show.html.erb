@@ -19,9 +19,9 @@
 
       <div class="govuk-form-group <%= @items.errors.present? ? 'govuk-form-group--error' : '' %>">
         <% @items.errors.each do |error|  %>
-          <span class="govuk-error-message" id="autocomplete_items_<%=error.attribute%>_error">
+          <p class="govuk-error-message" id="autocomplete_items_<%=error.attribute%>_error">
             <span class="govuk-visually-hidden">Error:</span><%= error.message %>
-          </span>
+          </p>
         <% end %>
 
         <%= form.file_field :file, class: "govuk-file-upload", 'aria-describedby': 'file_hint autocomplete_items_file_error', accept: ".csv" %>

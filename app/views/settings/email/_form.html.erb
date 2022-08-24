@@ -13,7 +13,7 @@
 
     <div class="govuk-form-group <%= !f.object.errors[:service_email_output].empty? ? 'govuk-form-group--error' : '' %> ">
       <% f.object.errors[:service_email_output].each do |message| %>
-        <span class="govuk-error-message"><%= message %></span>
+        <p class="govuk-error-message"><%= message %></p>
       <% end %>
       <%= f.label :service_email_output, class: "govuk-label", for: "service_email_output_#{deployment_environment}" %>
       <%= f.text_field :service_email_output, class: "govuk-input width-responsive-two-thirds", id: "service_email_output_#{deployment_environment}" %>
@@ -28,7 +28,7 @@
       <%= f.label :service_email_body, class: "govuk-label", for: "service_email_body_#{deployment_environment}" do %>
         <%= f.object.class.human_attribute_name :service_email_body %>
       <% end %>
-      <span class="govuk-hint" id="service_email_body_hint_<%= deployment_environment%>"><%= f.object.class.human_attribute_name :service_email_body_hint %></span>
+      <div class="govuk-hint" id="service_email_body_hint_<%= deployment_environment%>"><%= f.object.class.human_attribute_name :service_email_body_hint %></div>
       <%= f.text_area :service_email_body,
         class: "govuk-textarea width-responsive-two-thirds", 
         rows: '5',

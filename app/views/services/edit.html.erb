@@ -53,9 +53,9 @@
 
     <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
       <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
-      <span class="govuk-hint" id="add-page-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></span>
+      <div class="govuk-hint" id="add-page-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></div>
       <% f.object.errors.each do |error|  %>
-        <span class="govuk-error-message"><%= error.message %></span>
+        <p class="govuk-error-message"><%= error.message %></p>
       <% end %>
       <%= f.text_field :page_url, class: "govuk-input", 'aria-describedby': "add-page-hint"  %>
     </div>

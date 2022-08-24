@@ -1,7 +1,7 @@
 <% if @page.errors.present? %>
-  <div class="govuk-grid-column-two-thirds govuk-error-summary">
+  <div class="govuk-grid-column-two-thirds govuk-error-summary" data-module="govuk-error-summary">
     <% @page.errors.each do |error|  %>
-      <span class="govuk-error-message"><%= error.message %></span>
+      <p class="govuk-error-message"><%= error.message %></p>
     <% end %>
   </div>
 <% end %>

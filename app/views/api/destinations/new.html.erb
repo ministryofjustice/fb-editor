@@ -2,9 +2,9 @@
   <%= form_for @destination, url: api_service_flow_destinations_path(service.service_id, @destination.flow_uuid) do |f| %>
     <div class="govuk-form-group ">
       <%= f.label :destination_uuid, t('dialogs.destination.label'), class: "govuk-label govuk-label--m"  %>
-      <span class="govuk-hint">
+      <div class="govuk-hint">
         <%= t('dialogs.destination.lede', title: @destination.title) %>
-      </span>
+      </div>
       <span><%= t('dialogs.destination.go_to') %></span>
        <div class="govuk-form-group">
         <select class="govuk-select" name="destination_uuid" id="destination_uuid">

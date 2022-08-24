@@ -4,17 +4,17 @@
     <li>
       <%= link_to t('settings.form_information.name'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %>
       <br />
-      <span class="govuk-hint" style= "display:block"><%= t('settings.form_information.description') %></span>
+      <div class="govuk-hint" style= "display:block"><%= t('settings.form_information.description') %></div>
     </li>
     <li>
       <%= link_to t('settings.form_analytics.name'), settings_form_analytics_path(service.service_id), class: 'govuk-link' %>
       <br />
-      <span class="govuk-hint" style= "display:block"><%= t('settings.form_analytics.hint') %></span>
+      <div class="govuk-hint" style= "display:block"><%= t('settings.form_analytics.hint') %></div>
     </li>
     <li>
       <%= link_to t('settings.submission.name'), settings_submission_index_path(service.service_id), class: 'govuk-link' %>
       <br />
-      <span class="govuk-hint" style= "display:block"><%= t('settings.submission.hint') %></span>
+      <div class="govuk-hint" style= "display:block"><%= t('settings.submission.hint') %></div>
     </li>
   </ul>
 </nav>

@@ -29,7 +29,7 @@
           <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
             <%= f.label :service_name, class: "govuk-label govuk-label--m" %>
             <% f.object.errors.each do |error|  %>
-              <span class="govuk-error-message"><%= error.message %></span>
+              <p class="govuk-error-message"><%= error.message %></p>
             <% end %>
             <%= f.text_field :service_name, class: "govuk-input" %>
           </div>
