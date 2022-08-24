@@ -1058,7 +1058,7 @@ html {
   }
 
   .govuk-date-input__input:not(.govuk-input--error) {
-    border-color: $govuk-error-colour;
+    border-color: $govuk-input-border-colour;
 
     &:focus {
       border-color: $govuk-focus-colour;
