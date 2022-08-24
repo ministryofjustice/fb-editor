@@ -1,6 +1,8 @@
 class CsvValidator < ActiveModel::Validator
   def validate(record)
     if record.file_contents
+      headings = record.file_headings&.compact&.map(&:downcase)
+
       if not_csv?(record)
         record.errors.add(
           :file,
@@ -15,14 +17,14 @@ class CsvValidator < ActiveModel::Validator
             'activemodel.errors.models.autocomplete_items.empty'
           )
         )
-      elsif invalid_headings?(record) || record.file_rows.map(&:size).max > 2
+      elsif invalid_headings?(record, headings) || record.file_contents.first.count > 2
         record.errors.add(
           :file,
           I18n.t(
             'activemodel.errors.models.autocomplete_items.invalid_headings'
           )
         )
-      elsif empty_value_cell?(record) || empty_text_cell?(record)
+      elsif empty_value_cell?(record, headings) || empty_text_cell?(record)
         record.errors.add(
           :file,
           I18n.t(
@@ -46,13 +48,21 @@ class CsvValidator < ActiveModel::Validator
     ['text/csv', 'application/csv'].exclude?(record.file.content_type)
   end
 
-  def invalid_headings?(record)
-    (record.file_headings.count == 1 && record.file_headings != %w[text]) ||
-      (record.file_headings.count == 2 && record.file_headings != %w[text value])
+  def invalid_headings?(record, headings)
+    case number_of_columns(record)
+    when 1
+      headings != %w[text]
+    when 2
+      headings != %w[text value]
+    end
   end
 
-  def empty_value_cell?(record)
-    record.file_contents.any? { |cell| cell[1].blank? } if record.file_headings.count == 2
+  def number_of_columns(record)
+    record.file_rows.map(&:count).max
+  end
+
+  def empty_value_cell?(record, headings)
+    record.file_contents.any? { |cell| cell[1].blank? } if headings.count == 2
   end
 
   def empty_text_cell?(record)

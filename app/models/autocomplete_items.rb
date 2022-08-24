@@ -9,7 +9,7 @@ class AutocompleteItems
   validates_with CsvValidator, unless: proc { |obj| obj.file.blank? || obj.has_virus? }
 
   def file_headings
-    file_contents.first.compact.map(&:downcase)
+    file_contents.first
   end
 
   def file_rows

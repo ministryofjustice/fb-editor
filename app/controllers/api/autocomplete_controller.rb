@@ -34,7 +34,7 @@ module Api
     private
 
     def has_headers?
-      @items.file_headings == %w[text value]
+      @items.file_headings.size == 2
     end
 
     def autocomplete_items_file

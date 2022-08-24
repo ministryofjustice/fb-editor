@@ -79,7 +79,7 @@ RSpec.describe AutocompleteItems do
 
   describe '#file_headings' do
     context 'file has headings' do
-      let(:expected_headings) { %w[text value] }
+      let(:expected_headings) { %w[Text Value] }
 
       it 'returns headings' do
         expect(subject.file_headings).to eq(expected_headings)

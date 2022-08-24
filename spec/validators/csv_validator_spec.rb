@@ -57,6 +57,21 @@ RSpec.describe CsvValidator do
       end
     end
 
+    context 'when the file has one heading but two columns of values' do
+      let(:path_to_file) do
+        CSV.open(Rails.root.join('tmp', 'invalid.csv'), 'w') do |csv|
+          csv << %w[Text]
+          csv << %w[something something]
+          csv << %w[dark side]
+        end
+        'tmp/invalid.csv'
+      end
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
+      end
+    end
+
     context 'when the file has one column' do
       let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid_one_column.csv') }
 
