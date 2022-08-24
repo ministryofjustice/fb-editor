@@ -118,25 +118,8 @@ feature 'Edit single question autocomplete page' do
     page.first('.fb-section_heading').set(section_heading)
   end
 
-  def when_I_click_autocomplete_options_in_three_dots_menu
-    editor.question_heading.first.click
-    editor.question_three_dots_button.click
-    expect(editor).to have_css('span', text: I18n.t('question.menu.upload_options'))
-    editor.autocomplete_options.click
-  end
-
-  def then_I_should_see_upload_options_modal
-    expect(editor.find('.govuk-file-upload')).to be_visible
-  end
-
   def then_I_should_see_overwrite_options_warning
     expect(page).to have_content(upload_modal_warning)
-  end
-
-  def when_I_upload_a_csv_file(csv_file)
-    attach_file 'autocomplete_items_file',
-    csv_file
-    editor.find('.ui-dialog').find(:button, text: upload_button).click
   end
 
   def then_I_should_see_confrmation_message
