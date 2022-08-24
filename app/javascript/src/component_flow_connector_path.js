@@ -46,21 +46,12 @@ const LINE_PIXEL_TOLERANCE = 2; // Arbitrary number just for some pixel toleranc
  *                  }
  **/
 class FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     var id = config.id || utilities.uniqueString("flowconnectorpath-");
     var conf = utilities.mergeObjects({
                  container: $(),
                  top: 0,
-                 bottom: 0, // Nonsense number as should be set by calculating height of container and passing in.
-                 dimensions: {
-                    // Base class does not expect to set any values for these.
-                    original: {},
-                    lines: []
-                  }
+                 bottom: 0 // Nonsense number as should be set by calculating height of container and passing in.
                }, config);
 
     // Public
@@ -73,33 +64,33 @@ class FlowConnectorPath {
     this.from = conf.from;
     this.to = conf.to;
 
-    // Private
-    this.#config = conf;
-    this.#path = "";
-  }
+    // Base class does not expect to set any values for these.
+    this._dimensions = {
+                         original: {},
+                         lines: []
+                       }
 
-  // Because JS doesn't allow inheritance of private variables,
-  // we're providing a Getter and setting privately in subclass.
-  get config() {
-    return this.#config;
+    // Private
+    this._config = conf;
+    this._path = "";
   }
 
   path() {
-    return this.#path;
+    return this._path;
   }
 
   build() {
     var flowConnectorPath = this;
 
-    this.$node = createSvg(createPath(this.#path) + createArrowPath(this.points));
+    this.$node = createSvg(createPath(this._path) + createArrowPath(this.points));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
               .attr("id", this.id)
-              .attr("data-from", this.#config.from.id)
-              .attr("data-to", this.#config.to.id)
+              .attr("data-from", this._config.from.id)
+              .attr("data-to", this._config.to.id)
               .data("instance", this);
 
-    this.#config.container.append(this.$node);
+    this._config.container.append(this.$node);
 
     this.$node.find("path").on("mouseover", function() {
       $(document).trigger("FlowConnectorPathOver", flowConnectorPath);
@@ -117,7 +108,7 @@ class FlowConnectorPath {
 
   // Return all FlowConnectorLines or just those matching the passed type.
   lines(type="") {
-    var lineArr = this.#config.dimensions.lines;
+    var lineArr = this._dimensions.lines;
     var filtered = [];
 
     for(var i=0; i<lineArr.length; ++i) {
@@ -162,8 +153,8 @@ class FlowConnectorPath {
     //
     //   nudge(nH, nV) {
     //     var dimensions = {
-    //       horizontal: this.#config.dimensions.current.horizontal - (nH * NUDGE_SPACING),
-    //       vertical: this.#config.dimensions.current.vertical - (nV * NUDGE_SPACING)
+    //       horizontal: this._dimensions.current.horizontal - (nH * NUDGE_SPACING),
+    //       vertical: this._dimensions.current.vertical - (nV * NUDGE_SPACING)
     //     }
     //
     //     this.path = dimensions;
@@ -177,8 +168,8 @@ class FlowConnectorPath {
     // DEVELOPMENT ONLY FUNCTION
     // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
     // this funciton can be called to make things visible and, therefore, a bit easier. See this.build().
-    for(var i=0; i<this.#config.dimensions.lines.length; ++i) {
-      this.#config.container.append(this.#config.dimensions.lines[i].testOnlySvg());
+    for(var i=0; i<this._dimensions.lines.length; ++i) {
+      this._config.container.append(this._dimensions.lines[i].testOnlySvg());
     }
   }
 
@@ -257,21 +248,13 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
 
 
 class ForwardPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       forward: Math.round(this.points.xDifference)
     }
 
-    // Initialise private inheritance.
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions  } // Not expected to change.
+    this._dimensions = { original: dimensions  } // Not expected to change.
     this.type = "ForwardPath";
     this.path(dimensions);
     this.build();
@@ -290,16 +273,16 @@ class ForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ forward ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward.path
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   // Since this arrow simply goes from point A to B, which is expected to
@@ -309,10 +292,6 @@ class ForwardPath extends FlowConnectorPath {
 
 
 class ForwardUpForwardPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -321,10 +300,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
       forward2: Math.round(utilities.difference((this.points.from_x + this.points.via_x), this.points.to_x) - (CURVE_SPACING * 2))
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set path()
+    this._dimensions = { original: dimensions }; // dimensions.current will be added in set path()
     this.type = "ForwardUpForwardPath";
     this.path(dimensions);
     this.build();
@@ -363,10 +339,10 @@ class ForwardUpForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ forward1, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, up, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_UP,
@@ -376,11 +352,11 @@ class ForwardUpForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "up":
@@ -395,31 +371,24 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class ForwardUpForwardDownPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
-      up: Math.round(utilities.difference(this.points.from_y, config.top)),
+      up: Math.round(utilities.difference(this.points.from_y, this._config.top)),
       forward2: Math.round(this.points.xDifference - (this.points.via_x + (CURVE_SPACING * 4))),
-      down: Math.round(utilities.difference(config.top, this.points.to_y)),
+      down: Math.round(utilities.difference(this._config.top, this.points.to_y)),
       forward3: 0 // Expected start value
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
     this.path(dimensions);
     this.build();
@@ -474,10 +443,10 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ forward1, up, forward2, down, forward3 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, up, forward2, down, forward3 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_UP,
@@ -491,11 +460,11 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "forward2":
@@ -522,31 +491,24 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class ForwardDownBackwardUpPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
-      down: Math.round(utilities.difference(this.points.from_y, config.bottom) - (CURVE_SPACING * 2)),
+      down: Math.round(utilities.difference(this.points.from_y, this._config.bottom) - (CURVE_SPACING * 2)),
       backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x)),
-      up: Math.round(utilities.difference(config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
+      up: Math.round(utilities.difference(this._config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
     this.path(dimensions);
     this.build();
@@ -602,10 +564,10 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ forward1, down, backward, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, down, backward, up, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_DOWN,
@@ -618,11 +580,11 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                      forward2.path);
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "down":
@@ -647,16 +609,12 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 class ForwardDownForwardPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -665,10 +623,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
       forward2: Math.round( utilities.difference( this.points.from_x + this.points.via_x, this.points.to_x ) - (CURVE_SPACING * 2)),
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
     this.path(dimensions);
     this.build();
@@ -706,10 +661,10 @@ class ForwardDownForwardPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ forward1, down, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ forward1, down, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward1.path,
                      CURVE_RIGHT_DOWN,
@@ -718,11 +673,11 @@ class ForwardDownForwardPath extends FlowConnectorPath {
                      forward2.path);
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "down":
@@ -737,16 +692,12 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -758,10 +709,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
       forward2: 0
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
     this.path(dimensions);
     this.build();
@@ -827,10 +775,10 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -846,11 +794,11 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "down2":
@@ -877,17 +825,13 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class DownForwardUpPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -897,10 +841,7 @@ class DownForwardUpPath extends FlowConnectorPath {
       forward2: Math.round(utilities.difference(points.from_x, points.to_x) - (points.via_x + CURVE_SPACING))
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
     this.path(dimensions);
     this.build();
@@ -948,10 +889,10 @@ class DownForwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ down, forward1, up, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down, forward1, up, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down.path,
                      CURVE_DOWN_RIGHT,
@@ -963,11 +904,11 @@ class DownForwardUpPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "up":
@@ -983,32 +924,25 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class DownForwardUpForwardDownPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
       down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
       forward1: Math.round(points.via_x - (CURVE_SPACING * 2)),
-      up: Math.round(utilities.difference(this.points.via_y, config.top)),
+      up: Math.round(utilities.difference(this.points.via_y, this._config.top)),
       forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 4)),
       down2: Math.round(points.to_y),
       forward3: 0 // start value
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
     this.path(dimensions);
     this.build();
@@ -1075,10 +1009,10 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                        overlapAllowed: true
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -1094,11 +1028,11 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "up":
@@ -1125,17 +1059,13 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class DownForwardDownForwardPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -1145,10 +1075,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
       forward2: Math.round(utilities.difference(points.from_x + this.points.via_x, this.points.to_x) - (CURVE_SPACING * 2))
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
     this.path(dimensions);
     this.build();
@@ -1197,10 +1124,10 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                        overlapAllowed: true
                      });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ down1, forward1, down2, forward2 ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down1, forward1, down2, forward2 ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down1.path,
                      CURVE_DOWN_RIGHT,
@@ -1212,11 +1139,11 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = this._dimensions.current;
     var nudged = false;
     switch(linename) {
       case "down2":
@@ -1232,17 +1159,13 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
+    this.$node.find("path:first").attr("d", this._path);
     return nudged;
   }
 }
 
 
 class DownForwardPath extends FlowConnectorPath {
-
-  #config;
-  #path;
-
   constructor(points, config) {
     super(points, config);
     var dimensions = {
@@ -1250,10 +1173,7 @@ class DownForwardPath extends FlowConnectorPath {
       forward: Math.round(this.points.xDifference - CURVE_SPACING)
     }
 
-    this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions };
+    this._dimensions = { original: dimensions };
     this.type = "DownForwardPath";
     this.path(dimensions);
     this.build();
@@ -1283,10 +1203,10 @@ class DownForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
-      this.#config.dimensions.lines = [ down, forward ];
+      this._dimensions.current = dimensions;
+      this._dimensions.lines = [ down, forward ];
 
-      this.#path = pathD(
+      this._path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      down.path,
                      CURVE_DOWN_RIGHT,
@@ -1294,7 +1214,7 @@ class DownForwardPath extends FlowConnectorPath {
                    );
     }
 
-    return this.#path;
+    return this._path;
   }
 
   // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
@@ -1317,11 +1237,6 @@ class DownForwardPath extends FlowConnectorPath {
  **/
 class FlowConnectorLine {
 
-  #config;
-  #name;
-  #range;
-  #type;
-
   // @name   (String) You want this to correspond to the internal dimension name (e.g. 'forward' or 'down')
   // @config (Object) Should be populated with {
   //                    start: 0, // An x or y number depending on type.
@@ -1329,88 +1244,57 @@ class FlowConnectorLine {
   //                    type: [horizontal|vertical] // String value
   //                  }
   constructor(name, config) {
-    this.#name = name;
-    this.#config = {
+    this._private = {
       x: config.x,
       y: config.y,
       length: config.length,
+      name: name,
       overlapAllowed: (config.overlapAllowed ? config.overlapAllowed : false),
-      prefix: config.prefix
+      prefix: config.prefix,
+      type: config.type
     }
 
     switch(config.prefix.charAt(0)) {
-      case "h": this.#type = HORIZONTAL;
+      case "h": this.type = HORIZONTAL;
          break;
 
-      case "v": this.#type = VERTICAL;
+      case "v": this.type = VERTICAL;
          break;
 
-      default: this.#type = "uknown";
+      default: this.type = "uknown";
     }
 
-    this.#range = this.#calculateRange([config.x, config.y]);
+    this.range = [config.x, config.y];
   }
 
   get name() {
-    return this.#name;
+    return this._private.name;
+  }
+
+  set type(t) {
+    this._private.type = t;
   }
 
   get type() {
-    return this.#type;
+    return this._private.type;
   }
 
   // Returns a string used for part of an svg <path> d attribute value.
   get path() {
-    return this.#config.prefix + this.#config.length
+    return this._private.prefix + this._private.length
   }
 
   get range() {
-    return this.#range;
+    return this._private.range;
   }
 
-  // Returns a particular configuration property
-  prop(p) {
-    var value;
-    switch(p) {
-      case "overlapAllowed":
-        value = this.#config.overlapAllowed;
-        break;
-      case "x":
-        value = this.#config.x;
-        break;
-
-      case "y":
-        value = this.#config.y;
-        break;
-
-      case "length":
-        value = this.#config.length;
-        break;
-
-      default: // nothing;
-    }
-    return value;
-  }
-
-  testOnlySvg() {
-    var path = createPath(pathD(
-                 xy(this.#config.x, this.#config.y),
-                 this.path
-               ));
-    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.#name + "\""));
-    $svg.addClass("FlowConnectorLine");
-    return $svg
-  }
-
-  // PRIVATE METHODS
-
-  #calculateRange(points /* [x, y] */) {
+  set range(points /* [x, y] */) {
     var r = [];
-    var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
-    var length = this.#config.length;
+    var start = (this._private.type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
+    var length = this._private.length;
 
     // Decide if count goes forward or backward based on line prefix containing minus, or not.
-    if(this.#config.prefix.search("-") >= 0) {
+    if(this._private.prefix.search("-") >= 0) {
       for(var i=start; i > (start - length); --i) {
         r.push(i);
       }
@@ -1421,9 +1305,41 @@ class FlowConnectorLine {
       }
     }
 
-    return r;
+    this._private.range = r;
   }
 
+  prop(p) {
+    var value;
+    switch(p) {
+      case "overlapAllowed":
+        value = this._private.overlapAllowed;
+        break;
+      case "x":
+        value = this._private.x;
+        break;
+
+      case "y":
+        value = this._private.y;
+        break;
+
+      case "length":
+        value = this._private.length;
+        break;
+
+      default: // nothing;
+    }
+    return value;
+  }
+
+  testOnlySvg() {
+    var path = createPath(pathD(
+                 xy(this._private.x, this._private.y),
+                 this.path
+               ));
+    var $svg = createSvg(path.replace(/(\<path)\s/, "$1 style=\"stroke:red;\" name=\"" + this.name + "\""));
+    $svg.addClass("FlowConnectorLine");
+    return $svg
+  }
 }
 
 
