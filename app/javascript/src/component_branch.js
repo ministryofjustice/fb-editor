@@ -249,7 +249,7 @@ class BranchConditionRemover {
       this.#config.dialog_delete.open({
         heading: text.dialogs.heading_delete_condition,
         content: text.dialogs.message_delete_condition,
-        ok: text.dialogs.button_delete_condition
+        confirm: text.dialogs.button_delete_condition
       }, this.activate.bind(this));
     }
     else {

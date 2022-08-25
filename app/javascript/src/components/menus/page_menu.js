@@ -100,8 +100,8 @@ class PageMenu extends ActivatedMenu {
     var view = this._config.view;
     var $link = element.find("> a");
     view.dialogConfirmationDelete.open({
-      heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
-      ok: view.text.dialogs.button_delete_page
+        heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
+        confirm: view.text.dialogs.button_delete_page
       }, function() {
         post($link.attr("href"), { _method: "delete" });
     });

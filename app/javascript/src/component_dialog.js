@@ -1,135 +1,208 @@
-/**
- * Dialog Component
- * ----------------------------------------------------
- * Description:
- * Enhances jQueryUI Dialog component to make a simple message dialog.
- *
- * Documentation:
- *
- *     - jQueryUI
- *       https://api.jqueryui.com/dialog
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
- **/
+const {
+  mergeObjects,
+  safelyActivateFunction,
+} = require('./utilities');
 
-
-const utilities = require('./utilities');
-
-
-/* See jQueryUI Dialog for config options (all are passed straight in).
- *
- * Extra config options specific to this enhancement
- * config.onOk takes a function to run when 'Ok' button is activated.
- *
- * @$node  (jQuery node) Element found in template that should be enhanced.
- * @config (Object) Configurable key/value pairs.
- **/
 class Dialog {
+  #config;
+  #state;
+  #className = 'Dialog';
+  #elements = {};
+  #defaultText = {};
+  
   constructor($node, config) {
-    var conf = config || {};
-    var classes = conf.classes || {};
-    var buttons = conf.buttons || [
-      {
-        text: conf.okText,
-        click: () => {
-          $node.dialog("close");
-        }
-      }];
+    this.#config = mergeObjects({
+      activator: false,
+      autoOpen: false,
+      classes: {},
+      closeOnClickSelector: 'button:not([data-node="confirm"])',
+      confirmOnClickSelector: 'button[data-node="confirm"]',
+      onOpen: function(dialog) {},
+      onClose: function(dialog) {},
+      onConfirm: function(dialog) {},
+      onReady: function(dialog) {},
+    }, config);
 
-    var id = $node.attr("id");
-    var $container = $(); // Prevent jQuery errors if does not get a value
+    this.#state = 'closed';
+    this.$node = $(); // Should be overwritten once intialised
+    this.$container = $(); // Should be overwritten once intialised
 
-    if($node && $node.length) {
-      $node.dialog({
-        autoOpen: conf.autoOpen || false,
-        buttons: buttons,
-        classes: classes,
-        closeOnEscape: true,
-        height: "auto",
-        modal: true,
-        resizable: false
-      });
+    this.#initialize($node);
+  }
 
-      $container = $node.parents(".ui-dialog");
-      $container.addClass("Dialog");
+  get activator() {
+    return this.#config.activator;
+  }
 
-      if(!$container.attr("id")) {
-        $container.attr("id", (id || utilities.uniqueString()) + "-container");
-      }
+  set activator($node) {
+    this.#config.activator = $node;
+  }
 
-      $node.data("instance", this);
-      $node.on( "dialogclose", function( event, ui ) {
-        $(document).trigger("DialogClose");
-      });
-
-      Dialog.setElements.call(this, $node);
-      Dialog.setDefaultText.call(this, $node);
-    }
-
-    this._config = conf;
-    this.$container = $container;
-    this.$node = $node;
+  get state(){
+    return this.state;
   }
 
   get content() {
-    return this._defaultText;
+    return this.#elements || this.#defaultText;
   }
 
   set content(text) {
-    this._elements.heading.text(text.heading || this._defaultText.heading);
-    this._elements.content.text(text.content || this._defaultText.content);
-    this._elements.ok.text(text.ok || this._defaultText.ok);
+    this.#elements.heading.text( text.heading || this.#defaultText.heading );
+    this.#elements.content.html( text.content || this.#defaultText.content );
+    this.#elements.confirm.text( text.confirm || this.#defaultText.confirm );
+    this.#elements.cancel.text( text.cancel || this.#defaultText.cancel );
   }
 
-  open(text) {
-    var $node = this.$node;
+  isOpen() {
+    return this.#state == 'open';
+  }
+
+  open(text, action) {
+    const dialog = this;
+    console.log(text);
+
     this.content = text || {};
-    this.$node.dialog("open");
-    window.setTimeout(function() {
-      // Not great but works.
-      // We want the focus put inside dialog as all functionality to trap tabbing is there already.
-      // Because we sometimes open dialogs from other components, those other components may (like
-      // menus) shift focus from the opening dialog. We need this delay to allow those other events
-      // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
-      // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      $node.parent().find("input, button").not(".ui-dialog-titlebar-close").eq(0).focus();
-    }, 100);
+    this.$node.dialog('open');
+    this.#state = "open";
+
+    if(action) {
+      this.#config.onConfirm = action;
+    }
+    
+    safelyActivateFunction(this.#config.onOpen, dialog);
+
+    queueMicrotask(() => {
+      dialog.focus();
+    });
   }
-}
 
-/* Private
- * Finds required elements to populate this._elements property.
- **/
-Dialog.setElements = function($node) {
-  var elements = {};
-  var $buttons = $node.parents(".Dialog").find(".ui-dialog-buttonset button");
+  close() {
+    const dialog = this;
 
-  elements.heading = $node.find("[data-node='heading']");
-  elements.content = $node.find("[data-node='content']");
+    if(this.activator) {
+      this.activator.$node.focus();
+    }
 
-  // Added by the jQueryUI widget so harder to get.
-  elements.ok = $buttons.eq(0);
+    this.$node.dialog('close');
+    this.#state = 'closed';
+
+    safelyActivateFunction(this.#config.onclose, dialog);
+  }
+
+  focus() {
+    const el = this.$node.parent().find('button:not([type="disabled"]):not([data-method="delete"])').not(".ui-dialog-titlebar-close").eq(0);
+    if(el){
+      el.focus();
+    }
+  }
+
+  #initialize($node) {
+    this.$node = $node;
+
+    this.#build();
+    this.#enhance();
+
+    if( this.#config.autoOpen ) {
+      this.open();
+    }
+  }
+
+  #build() {
+    var dialog = this;
+
+    if(this.#config.activator) {
+      this.#createActivator();
+    }
+
+    this.$node.on("dialogcreate", (event, ui) => {
+      this.$container = dialog.$node.parents(".ui-dialog");
+      this.$container.addClass(dialog.#className);
+    });
+
+    // Add the jQueryUI dialog functionality.
+    this.$node.dialog({
+      autoOpen: false,
+      classes: this.#config.classes,
+      closeOnEscape: true,
+      height: "auto",
+      modal: true,
+      resizable: false,
+    });
+    
+    this.$node.data("instance", this);
+  }
+
+  #enhance() {
+    const dialog = this;
+
+    this.#setElements();
+    this.#setDefaultText();
+
+    if(this.#config.closeOnClickSelector) {
+      this.#setupCloseButtons();
+    }
+
+    if(this.#config.confirmOnClickSelector) {
+      this.#setupConfirmButton();
+    }
+
+    safelyActivateFunction(dialog.#config.onReady, dialog);
+  }
+
+  #setElements() {
+    this.#elements = {
+      heading: this.$node.find("[data-node='heading']"),
+      content: this.$node.find("[data-node='content']"),
+      confirm: this.$node.find("[data-node='confirm']"),
+      cancel: this.$node.find("[data-node='cancel']"),
+    }
+  }
+
+  #setDefaultText() {
+    this.#defaultText = {
+      heading: this.#elements.heading.text(),
+      content: this.#elements.content.text(),
+      confirm: this.#elements.confirm.text(),
+      cancel: this.#elements.cancel.text(),
+    }
+  }
+
+  /* add event listeners to configured close buttons */
+  #setupCloseButtons() {
+    const dialog = this;
+
+    if(this.#config.closeOnClickSelector) {
+      let $buttons = $(this.#config.closeOnClickSelector, this.$container);
+      $buttons.on("click", function() {
+        dialog.close();
+      });
+    } 
+  }
+
+  #setupConfirmButton() {
+    const dialog = this;
+    const $button = $(this.#config.confirmOnClickSelector, this.$container).first();
+    $button.on("click", function(e) {
+      e.preventDefault(); 
+      safelyActivateFunction(dialog.#config.onConfirm, dialog );
+      dialog.close();
+    });
+  }
   
-  // Don't want this button so hide it.
-  $buttons.eq(1).hide();
+  #createActivator() {
+    var $marker = $("<span></span>");
 
-  this._elements = elements;
+    this.$node.before($marker);
+    this.activator = new DialogActivator(this.#config.activator, {
+      dialog: this,
+      text: this.#config.activatorText,
+      classes: this.#config.classes?.activator || '',
+      $target: $marker
+    });
+
+    $marker.remove();
+  }
+
 }
 
-/* Private
- * Finds on-load text to use as default values.
- **/
-Dialog.setDefaultText = function($node) {
-  this._defaultText = {
-    heading: this._elements.heading.text(),
-    content: this._elements.content.text(),
-    ok: this._elements.ok.text()
-  };
-}
-
-
-// Make available for importing.
 module.exports = Dialog;
-
