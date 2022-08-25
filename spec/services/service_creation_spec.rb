@@ -130,6 +130,27 @@ RSpec.describe ServiceCreation do
       end
     end
 
+    context 'when service name has parenthesis' do
+      let(:attributes) do
+        { service_name: 'Public Trustee (NL1)', current_user: double(id: '1') }
+      end
+      let(:service) do
+        double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
+      end
+
+      before do
+        expect(
+          MetadataApiClient::Service
+        ).to receive(:create).and_return(service)
+
+        expect_any_instance_of(DefaultConfiguration).to receive(:create)
+      end
+
+      it 'returns true' do
+        expect(service_creation.create).to be_truthy
+      end
+    end
+
     context 'when name is invalid format' do
       ['something.invalid', 'with_underscore'].each do |invalid|
         let(:attributes) { { service_name: invalid } }
