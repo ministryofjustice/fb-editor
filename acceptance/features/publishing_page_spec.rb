@@ -19,6 +19,13 @@ feature 'Publishing' do
       I18n.t('activemodel.errors.models.publish_service_creation.password_too_short'),
     ]
   end
+  let(:publish_to_live_button) { I18n.t('publish.live.button') }
+  let(:publish_to_test_button) { I18n.t('publish.test.button') }
+  let(:button_class) { '.govuk-button.fb-govuk-button.DialogActivator' }
+  let(:test_warning_message) {I18n.t('publish.warning.autocomplete_items', title: 'Question') }
+  let(:live_warning_message) { I18n.t('publish.error.autocomplete_items', title: 'Question') }
+  let(:upload_button) { I18n.t('dialogs.autocomplete.button') }
+  let(:valid_csv_one_column) { './spec/fixtures/valid_one_column.csv' }
 
   background do
     given_I_am_logged_in
@@ -94,6 +101,32 @@ feature 'Publishing' do
     then_I_should_not_see_warning_both_text
     then_I_should_not_see_warning_cya_text
     then_I_should_see_warning_confirmation_text
+  end
+
+  scenario 'when there are autocomplete components with no options' do
+    given_I_add_a_single_question_page_with_autocomplete
+    and_I_add_a_page_url
+    when_I_add_the_page
+    and_I_return_to_flow_page
+    when_I_visit_the_publishing_page
+    then_I_should_be_on_the_publishing_page
+    then_I_should_see_autocomplete_warnings
+    then_the_aria_attribute_value_should_be_correct(publish_to_live_button, 'true')
+  end
+
+  scenario 'when all autocomplete components have options' do
+    given_I_add_a_single_question_page_with_autocomplete
+    and_I_add_a_page_url
+    when_I_add_the_page
+    and_I_should_see_default_upload_options_warning
+    when_I_click_autocomplete_options_in_three_dots_menu
+    then_I_should_see_upload_options_modal
+    when_I_upload_a_csv_file(valid_csv_one_column)
+    and_I_return_to_flow_page
+    when_I_visit_the_publishing_page
+    then_I_should_be_on_the_publishing_page
+    then_I_should_not_see_autocomplete_warnings
+    then_the_aria_attribute_value_should_be_correct(publish_to_live_button, 'false')
   end
 
   scenario 'when username and password is too short' do
@@ -248,5 +281,20 @@ feature 'Publishing' do
     editor.find(:css, '#configure-dev').click
     editor.find(:css, '#service_email_output_dev').set('')
     and_I_save_my_email_settings
+  end
+
+  def then_I_should_see_autocomplete_warnings
+    expect(editor.text).to include(test_warning_message)
+    expect(editor.text).to include(live_warning_message)
+  end
+
+  def then_I_should_not_see_autocomplete_warnings
+    expect(editor.text).to_not include(test_warning_message)
+    expect(editor.text).to_not include(live_warning_message)
+  end
+
+  def then_the_aria_attribute_value_should_be_correct(button, value)
+    aria_disabled = page.find(button_class, text: button)['aria-disabled']
+    expect(aria_disabled).to eq(value)
   end
 end
