@@ -39,18 +39,19 @@ class Dialog {
   }
 
   get state(){
-    return this.state;
+    return this.#state;
   }
 
   get content() {
-    return this.#elements || this.#defaultText;
+    return this.#elements;
   }
 
   set content(text) {
-    this.#elements.heading.text( text.heading || this.#defaultText.heading );
-    this.#elements.content.html( text.content || this.#defaultText.content );
-    this.#elements.confirm.text( text.confirm || this.#defaultText.confirm );
-    this.#elements.cancel.text( text.cancel || this.#defaultText.cancel );
+    let content = mergeObjects(this.#defaultText, text)
+    this.#elements.heading.text( content.heading );
+    this.#elements.content.html( content.content );
+    this.#elements.confirm.text( content.confirm );
+    this.#elements.cancel.text( content.cancel );
   }
 
   isOpen() {
@@ -59,7 +60,6 @@ class Dialog {
 
   open(text, action) {
     const dialog = this;
-    console.log(text);
 
     this.content = text || {};
     this.$node.dialog('open');
@@ -68,7 +68,7 @@ class Dialog {
     if(action) {
       this.#config.onConfirm = action;
     }
-    
+
     safelyActivateFunction(this.#config.onOpen, dialog);
 
     queueMicrotask(() => {
@@ -76,7 +76,7 @@ class Dialog {
     });
   }
 
-  close() {
+  close(action) {
     const dialog = this;
 
     if(this.activator) {
@@ -86,7 +86,7 @@ class Dialog {
     this.$node.dialog('close');
     this.#state = 'closed';
 
-    safelyActivateFunction(this.#config.onclose, dialog);
+    safelyActivateFunction(action || this.#config.onClose, dialog);
   }
 
   focus() {
@@ -184,8 +184,7 @@ class Dialog {
     const $button = $(this.#config.confirmOnClickSelector, this.$container).first();
     $button.on("click", function(e) {
       e.preventDefault(); 
-      safelyActivateFunction(dialog.#config.onConfirm, dialog );
-      dialog.close();
+      dialog.close(dialog.#config.onConfirm);
     });
   }
   
