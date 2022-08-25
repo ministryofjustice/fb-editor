@@ -1,4 +1,18 @@
-text,value,
-Foo,\xAB,bar
-b,2,5
-c,3,6
+Text,Value
+Andorra,AD
+United Arab Emirates,AE
+Afghanistan,AF
+Canada,CA
+Cocos (Keeling) Islands,CC
+"Congo, Democratic Republic of",CD
+Central African Republic,CF
+Congo,CG
+Estonia,EE
+Egypt,EG
+Western Sahara,EH
+Yemen,YE
+Mayotte,YT
+South Africa,ZA
+Zambia,ZM
+Zimbabwe,ZW
+Curaçao,CW

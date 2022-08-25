@@ -79,7 +79,7 @@ RSpec.describe AutocompleteItems do
 
   describe '#file_headings' do
     context 'file has headings' do
-      let(:expected_headings) { %w[text value] }
+      let(:expected_headings) { %w[Text Value] }
 
       it 'returns headings' do
         expect(subject.file_headings).to eq(expected_headings)
@@ -87,12 +87,12 @@ RSpec.describe AutocompleteItems do
     end
   end
 
-  describe '#file_values' do
-    context 'has the correct file values' do
-      let(:expected_values) { [%w[b 1], %w[c 2], %w[d 3]] }
+  describe '#file_rows' do
+    context 'has the correct file rows' do
+      let(:expected_rows) { [%w[b 1], %w[c 2], %w[d 3]] }
 
       it 'returns the contents' do
-        expect(subject.file_values).to eq(expected_values)
+        expect(subject.file_rows).to eq(expected_rows)
       end
     end
   end
