@@ -17,7 +17,7 @@ feature 'Edit single question autocomplete page' do
   let(:valid_csv_one_column) { './spec/fixtures/valid_one_column.csv' }
   let(:autocomplete_option) { 'Congo, Democratic Republic of' }
   let(:invalid_csv) { './spec/fixtures/invalid.csv' }
-  let(:incorrect_format) { I18n.t('activemodel.errors.models.autocomplete_items.incorrect_format') }
+  let(:incorrect_format) { I18n.t('activemodel.errors.models.autocomplete_items.invalid_headings') }
 
   background do
     given_I_am_logged_in
