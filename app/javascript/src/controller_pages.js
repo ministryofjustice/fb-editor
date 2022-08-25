@@ -32,7 +32,8 @@ const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_textarea');
 const AutocompleteQuestion = require('./question_autocomplete');
 
-const DialogConfiguration = require('./component_dialog_configuration');
+// const DialogConfiguration = require('./component_dialog_configuration');
+const Dialog = require('./component_dialog');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
@@ -284,7 +285,7 @@ function addQuestionMenuListeners(view) {
     html = html.replace(regex, "$1 checked=\"true\"");
     view.dialogConfiguration.open({
       content: html
-    }, (content) => { question.required = content } );
+    }, (dialog) => { question.required = dialog.content.content } );
   });
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
@@ -466,7 +467,7 @@ function addEditableComponentItemMenuListeners(view) {
       dialog.open({
         heading: view.text.dialogs.heading_can_not_delete_option,
         content: dialogContent,
-        ok: view.text.dialogs.button_understood,
+        confirm: view.text.dialogs.button_understood,
       });
     }
   });
@@ -484,21 +485,21 @@ function addContentMenuListeners(view) {
   view.$document.on("ContentMenuSelectionRemove", function(event, component) {
     var html = $(templateContent).filter("[data-node=remove]").text();
     view.dialogConfirmationDelete.open({
-      heading: html.replace(/#{label}/, ""),
-      ok: view.text.dialogs.button_delete_component
+        heading: html.replace(/#{label}/, ""),
+        confirm: view.text.dialogs.button_delete_component
       }, function() {
-      // Workaround solution that doesn't require extra backend work
-      // 1. First remove component from view
-      component.$node.hide();
+        // Workaround solution that doesn't require extra backend work
+        // 1. First remove component from view
+        component.$node.hide();
 
-      // 2. Update form (in case anything else has changed)
-      view.dataController.update();
+        // 2. Update form (in case anything else has changed)
+        view.dataController.update();
 
-      // 3. Remove corresponding component from form
-      component.remove();
+        // 3. Remove corresponding component from form
+        component.remove();
 
-      // 4. Trigger save required (to enable Save button)
-      view.dataController.saveRequired(true); // 4
+        // 4. Trigger save required (to enable Save button)
+        view.dataController.saveRequired(true);
     });
   });
 }
@@ -624,10 +625,10 @@ function enhanceQuestions(view) {
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
         view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            confirm: view.text.dialogs.button_delete_option
           }, function() {
-          item.component.removeItem(item);
+            item.component.removeItem(item);
         });
       }
     });
@@ -656,10 +657,10 @@ function enhanceQuestions(view) {
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
         view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            confirm: view.text.dialogs.button_delete_option
           }, function() {
-          item.component.removeItem(item);
+            item.component.removeItem(item);
         });
       }
 
@@ -677,7 +678,7 @@ function enhanceQuestions(view) {
 function createDialogConfiguration() {
   var $template = $("[data-component-template=DialogConfiguration]");
   var $node = $($template.text());
-  return new DialogConfiguration($node, {
+  return new Dialog($node, {
     autoOpen: false,
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),
