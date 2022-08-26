@@ -811,6 +811,7 @@ function sanitiseHtml(html) {
  **/
 function sanitiseMarkdown(markdown) {
   markdown = markdown.replace(/\n<!--.*?-->/mig, "");
+  markdown = markdown.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
   return markdown;
 }
 
