@@ -1,6 +1,7 @@
 MOJ_FORMS_TEAM = [
   'claire.bowman@digital.justice.gov.uk',
-  'sijy.mathew@digital.justice.gov.uk'
+  'sijy.mathew@digital.justice.gov.uk',
+  'mark.jefferson@digital.justice.gov.uk'
 ].freeze
 
 MOJ_FORMS_DEVS = [
