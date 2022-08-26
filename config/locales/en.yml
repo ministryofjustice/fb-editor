@@ -304,7 +304,7 @@ en:
       heading: 'Warning'
       confirmation: 'Your form has no confirmation page - you will not receive any responses.'
       cya: 'Your form has no check answers page - you will not receive any responses.'
-      both_pages: 'Your form has no check answers page or confirmation page - you won’t receive any user data without them'
+      both_pages: 'Your form has no check answers page or confirmation page - you will not receive any responses.'
       autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
     error:
       autocomplete_items: 'You need to upload some autocomplete options for "%{title}"'
