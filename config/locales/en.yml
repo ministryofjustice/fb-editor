@@ -303,7 +303,7 @@ en:
     warning:
       heading: 'Warning'
       confirmation: 'Your form has no confirmation page - you won’t receive any user data without one'
-      cya: 'Your form has no check answers page - you won’t receive any user data without one'
+      cya: 'Your form has no check answers page - you will not receive any responses.'
       both_pages: 'Your form has no check answers page or confirmation page - you won’t receive any user data without them'
       autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
     error:
