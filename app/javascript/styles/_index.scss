@@ -575,19 +575,13 @@ html {
   // allow for use of hover over event in making Conneciton menus appear.
   // However, although this setting works fine in Firefox, there seems to
   // be a bug in Chrome that simply hides FlowConnectorPath elements from
-  // being seen. By accidental tinkering, it seems that giving them a
-  // value of 100px works !?!? Not sure why, at time of writing. Also,
-  // after playing with it for a couple minutes, it seems setting to 10px
-  // still does not work and, setting to 50px makes them appear but gives
-  // an incorrectly placed layout. So, 100px is perhaps the magic number
-  // although, that doesn't rule out others having equally magical
-  // properties. For now, will be leaving as 100px with fingers crossed.
+  // being seen. Smallest possible size of 1x1px has been used instead.
   left: 0px;
-  height: 100px;
+  height: 1px;
   overflow: visible;
   position: absolute;
   top: 0px;
-  width: 100px;
+  width: 1px;
 
   path {
     display: block; // So we can capture a jQuery height calculation
