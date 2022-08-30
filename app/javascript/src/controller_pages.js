@@ -535,7 +535,7 @@ function enhanceContent(view) {
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
       form: view.dataController.$form,
       id: $node.data("fb-content-id"),
-
+      htmlAdjustment: supportGovUKTableCSS,
       text: {
         default_content: view.text.defaults.content
       },
@@ -550,7 +550,8 @@ function enhanceContent(view) {
       form: view.dataController.$form,
       text: {
         default_content: view.text.defaults.content
-      }
+      },
+      htmlAdjustment: supportGovUKTableCSS
     });
   });
 }
@@ -751,6 +752,23 @@ function accessibilityQuestionViewEnhancements(view) {
   $(".fb-section_heading").attr("aria-label", view.text.aria.section_header);
   $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
   $(".govuk-hint").attr("aria-label", view.text.aria.hint);
+}
+
+
+/* Since markdown does not support class name application (without third-party
+ * scripts), and GovUK CSS requires a horrendous amount of class names to pull
+ * inbtheir preferred CSS style, we're making JS controlled adjustments to the
+ * converted (markdown to html) markup. The alternative would be to replicate
+ * GovUK CSS to which could be applied to <table> elements withing content.
+ **/
+function supportGovUKTableCSS(html) {
+  html = html.replace(/<table>/mig, "<table class=\"govuk-table\">");
+  html = html.replace(/<thead>/mig, "<thean class=\"govuk-table__head\">");
+  html = html.replace(/<tbody>/mig, "<tbody class=\"govuk-table__body\">");
+  html = html.replace(/<tr>/mig, "<th class=\"govuk-table__row\">");
+  html = html.replace(/<th>/mig, "<th class=\"govuk-table__header\">");
+  html = html.replace(/<td>/mig, "<td class=\"govuk-table__cell\">");
+  return html;
 }
 
 module.exports = PagesController;

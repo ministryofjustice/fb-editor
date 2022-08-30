@@ -267,7 +267,14 @@ class EditableContent extends EditableElement {
     let content = (this._content == "" ? defaultContent : this._content);
 
     // Add latest content to output area
-    this.$output.html(convertToHtml(content));
+    content = convertToHtml(content);
+
+    // Check if configuration requires external adjustment to html
+    if(this._config.htmlAdjustment) {
+      content = safelyActivateFunction(this._config.htmlAdjustment, content);
+    }
+
+    this.$output.html(content);
   }
 }
 
