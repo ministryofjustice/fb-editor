@@ -313,7 +313,7 @@ en:
       live: Live
     service_output:
       warning: Warning
-      message: "Update your %{environment} site %{href} to receive data from this form"
+      message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
       link: submission settings
     dialog:
       heading: Publish to Test?
