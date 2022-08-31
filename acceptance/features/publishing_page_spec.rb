@@ -275,7 +275,6 @@ feature 'Publishing' do
     # will have been deleted by the Metadata API as it cleans up after acceptance
     # test runs.
     and_I_click_the_submission_settings_link
-    and_I_click_the_send_data_by_email_link
     editor.find(:css, '#configure-dev').click
     editor.find(:css, '#service_email_output_dev').set('')
     and_I_save_my_email_settings
