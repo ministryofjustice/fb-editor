@@ -38,7 +38,6 @@ feature 'Publishing' do
     then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
 
     and_I_click_the_submission_settings_link
-    and_I_click_the_send_data_by_email_link
     and_I_set_sending_email_for_test_checkbox(true)
     and_I_set_the_email_field
     and_I_save_my_email_settings
@@ -48,7 +47,6 @@ feature 'Publishing' do
     then_I_should_see_the_service_output_warning(I18n.t('publish.environment.live'))
 
     and_I_click_the_submission_settings_link
-    and_I_click_the_send_data_by_email_link
     and_I_set_sending_email_for_test_checkbox(false)
     and_I_save_my_email_settings
 
