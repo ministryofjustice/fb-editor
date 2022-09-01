@@ -40,7 +40,6 @@ describe("DialogForm", function() {
     });
 
     it("should make the instance available as data on the $node", function() {
-      var $container = created.$node.parent('[role=dialog]');
       expect(created.$node.data("instance")).to.equal(created.dialog);
     });
 
@@ -71,7 +70,7 @@ describe("DialogForm", function() {
       it('should open the dialog on activator button press', function() {
         created.dialog.close();
 
-        created.dialog.activator.$node.click();
+        created.dialog.activator.click();
         expect(created.dialog.isOpen()).to.be.true;
       });
     });
@@ -142,7 +141,7 @@ describe("DialogForm", function() {
       });
 
       it('should open the dialog on activator button press', function() {
-        created.dialog.activator.$node.click();
+        created.dialog.activator.click();
         expect(created.dialog.isOpen()).to.be.true;
       });
     });

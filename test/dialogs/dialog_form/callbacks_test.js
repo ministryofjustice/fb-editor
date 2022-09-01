@@ -27,6 +27,9 @@ describe("DialogForm", function() {
       created = {};
     });
 
+    // For some reason cannot get this test to register the spy as being called
+    it('should call onLoad when respose is recieved');
+
     it('should call onReady when created', function() {
       expect(onReadyCallback).to.have.been.called;
       expect(onReadyCallback).to.have.been.calledWith(created.dialog);

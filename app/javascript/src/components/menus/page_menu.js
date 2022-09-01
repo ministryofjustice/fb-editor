@@ -4,6 +4,7 @@ const {
 } = require('../../utilities');
 const ActivatedMenu =require('./activated_menu');
 const DialogApiRequest = require('../../component_dialog_api_request');
+const DialogForm = require('../../component_dialog_form');
 
 class PageMenu extends ActivatedMenu {
   constructor($node, config) {
@@ -49,6 +50,10 @@ class PageMenu extends ActivatedMenu {
            this.deleteItemApi(item);
            break;
 
+      case "delete-form":
+           this.deleteItemForm(item);
+           break;
+
       case "move-api":
            this.moveItemApi(item);
            break;
@@ -79,23 +84,18 @@ class PageMenu extends ActivatedMenu {
   }
 
   // Open an API request dialog to change destination
+  // TODO - is this used? Change Destination is called from the connection menu
   changeDestination(element) {
-    var view = this._config.view;
     var $link = element.find("> a");
-    new DialogApiRequest($link.attr("href"), {
+    new DialogForm($link.attr("href"), {
       activator: $link,
-      buttons: [{
-        text: view.text.dialogs.button_change_destination,
-        click: function(dialog) {
-          dialog.$node.find("form").submit();
-        }
-      }, {
-        text: view.text.dialogs.button_cancel
-      }]
+      autoOpen: true,
+      remote: false,
     });
   }
 
   // Use standard delete modal to remove
+  // TODO - is this used? I think all deletes are via API request now
   deleteItem(element) {
     var view = this._config.view;
     var $link = element.find("> a");
@@ -111,23 +111,34 @@ class PageMenu extends ActivatedMenu {
     var $link = element.find("> a");
     new DialogApiRequest($link.attr("href"), {
       activator: $link,
-      closeOnClickSelector: ".govuk-button",
-      build: function(dialog) {
+      closeOnClickSelector: "button.govuk-button",
+      onLoad: function(dialog) {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
-          post(this.href, { _method: "delete" });
+          console.log(this.dataset.url);
+          post(this.dataset.url, { _method: "delete" });
         });
       }
     });
   }
 
+  deleteItemForm(element) {
+    var $link = element.find("> a");
+    new DialogForm($link.attr("href"), {
+      activator: $link,
+      autoOpen: true,
+      remote: false,
+    });
+  }
+
   moveItemApi(element) {
     var $link = element.find("> a");
-    new DialogApiRequest($link.attr("href"), {
+    new DialogForm($link.attr("href"), {
       activator: $link,
-      closeOnClickSelector: ".govuk-button",
-      build: function(dialog) {
+      autoOpen: true,
+      remote: false,
+      onLoad: function(dialog) {
         dialog.$node.find("#move_target_uuid").on("change", function(e) {
           // Get the selected option and then update the hidden conditional
           // uuid field

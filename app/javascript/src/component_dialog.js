@@ -4,11 +4,11 @@ const {
 } = require('./utilities');
 
 class Dialog {
-  #config;
-  #state;
   #className = 'Dialog';
-  #elements = {};
+  #config;
   #defaultText = {};
+  #elements = {};
+  #state;
   
   constructor($node, config) {
     this.#config = mergeObjects({
@@ -48,6 +48,7 @@ class Dialog {
 
   set content(text) {
     let content = mergeObjects(this.#defaultText, text)
+
     this.#elements.heading.text( content.heading );
     this.#elements.content.html( content.content );
     this.#elements.confirm.text( content.confirm );
@@ -79,9 +80,7 @@ class Dialog {
   close(action) {
     const dialog = this;
 
-    if(this.activator) {
-      this.activator.$node.focus();
-    }
+    this.focusActivator(); 
 
     this.$node.dialog('close');
     this.#state = 'closed';
@@ -90,9 +89,16 @@ class Dialog {
   }
 
   focus() {
-    const el = this.$node.parent().find('button:not([type="disabled"]):not([data-method="delete"])').not(".ui-dialog-titlebar-close").eq(0);
+    const el = this.$node.find('button:not([type="disabled"]):not([data-method="delete"])').eq(0);
     if(el){
       el.focus();
+    }
+  }
+
+  focusActivator() {
+    // Attempt to refocus on original activator
+    if(this.activator) {
+      this.activator.focus();
     }
   }
 
@@ -110,16 +116,10 @@ class Dialog {
   #build() {
     var dialog = this;
 
-    if(this.#config.activator) {
+    if(this.activator) {
       this.#createActivator();
     }
 
-    this.$node.on("dialogcreate", (event, ui) => {
-      this.$container = dialog.$node.parents(".ui-dialog");
-      this.$container.addClass(dialog.#className);
-    });
-
-    // Add the jQueryUI dialog functionality.
     this.$node.dialog({
       autoOpen: false,
       classes: this.#config.classes,
@@ -129,7 +129,9 @@ class Dialog {
       resizable: false,
     });
     
-    this.$node.data("instance", this);
+    this.$container = dialog.$node.parents(".ui-dialog");
+    this.$container.addClass(dialog.#className);
+    this.$node.data("instance", dialog);
   }
 
   #enhance() {
@@ -192,12 +194,14 @@ class Dialog {
     var $marker = $("<span></span>");
 
     this.$node.before($marker);
-    this.activator = new DialogActivator(this.#config.activator, {
+    var activator = new DialogActivator(this.#config.activator, {
       dialog: this,
       text: this.#config.activatorText,
       classes: this.#config.classes?.activator || '',
       $target: $marker
     });
+
+    this.activator = activator.$node;
 
     $marker.remove();
   }

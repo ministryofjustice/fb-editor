@@ -4,7 +4,7 @@ const {
   updateHiddenInputOnForm
 } = require('../../utilities');
 const ActivatedMenu = require('./activated_menu');
-const DialogApiRequest = require('../../component_dialog_api_request');
+const DialogForm = require('../../component_dialog_form');
 
 class ConnectionMenu extends ActivatedMenu {
   constructor($node, config) {
@@ -76,18 +76,11 @@ class ConnectionMenu extends ActivatedMenu {
 
     // Open an API request dialog to change destination
     changeDestination(element) {
-      var view = this.config.view;
       var $link = element.find("> a");
-      new DialogApiRequest($link.attr("href"), {
+      new DialogForm($link.attr("href"), {
         activator: $link,
-        buttons: [{
-          text: view.text.dialogs.button_change_destination,
-          click: function(dialog) {
-            dialog.$node.find("form").submit();
-          }
-        }, {
-          text: view.text.dialogs.button_cancel
-        }]
+        autoOpen: true,
+        remote: false,
       });
     }
 

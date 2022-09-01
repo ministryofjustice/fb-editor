@@ -8,7 +8,7 @@
     <%= link_to t('actions.edit_branch'),
     edit_branch_path(service.service_id, item[:uuid]) %>
   </li>
-  <li data-action="delete-api">
+  <li data-action="delete-form">
     <%= link_to t('actions.delete_branch'),
         api_service_branch_destroy_message_path(service.service_id, item[:uuid]),
         method: :delete,

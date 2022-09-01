@@ -50,8 +50,7 @@ describe("DialogForm", function() {
         var $activator = $(".DialogActivator");
 
         expect(created.dialog.activator).to.exist;
-        expect(created.dialog.activator.$node).to.exist;
-        expect(created.dialog.activator.$node.get(0)).to.equal($activator.get(0));
+        expect(created.dialog.activator.get(0)).to.equal($activator.get(0));
       })
 
     });
