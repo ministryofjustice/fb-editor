@@ -2,9 +2,11 @@ const {
 mergeObjects,
 safelyActivateFunction, 
 } = require('./utilities');
+
 const DialogActivator = require('./component_dialog_activator');
 
 class DialogForm {
+  #className = 'DialogForm';
   #config;
   #remoteSource;
   #state;
@@ -33,7 +35,15 @@ class DialogForm {
     this.$container = $(); // Should be overwritten once intialised
     this.$form = $(); // Should be overwritten on successful GET
 
-    this.#initialize(source); 
+    this.#initialize(source);
+  }
+
+  get activator() {
+    return this.#config.activator;
+  }
+
+  set activator($node) {
+    this.#config.activator = $node;
   }
 
   get state() {
@@ -46,39 +56,32 @@ class DialogForm {
 
   open() {
     var dialog = this;
+
     if(this.$node.dialog('instance')) {
       this.$node.dialog("open");
+      this.#state = "open";
+      safelyActivateFunction(this.#config.onOpen, dialog);
+
+      queueMicrotask(() => {
+        dialog.focus();
+      });
     }
-    this.#state = "open";
-    safelyActivateFunction(this.#config.onOpen, dialog);
-    window.setTimeout(() => {
-      // Not great but works.
-      // We want the focus put inside dialog as all functionality to trap tabbing is there already.
-      // Because we sometimes open dialogs from other components, those other components may (like
-      // menus) shift focus from the opening dialog. We need this delay to allow those other events
-      // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
-      // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      dialog.focus(); 
-    }, 100);
   }
 
   close() {
     var dialog = this;
     // Attempt to refocus on original activator
-    if(this.activator) {
-      this.activator.$node.focus();
-    }
+    this.focusActivator();
+
     if(this.$node.dialog('instance')) {
       this.$node.dialog("close");
+      safelyActivateFunction(dialog.#config.onClose, dialog);
+      this.#state = "closed";
     }
-    safelyActivateFunction(dialog.#config.onClose, dialog);
+
     if(this.#remoteSource){
-      if(this.$node.dialog('instance')) {
-        this.$node.dialog('destroy'); 
-      }
-      this.$node.remove();
+      this.#destroy();
     }
-    this.#state = "closed";
   }
 
   submit() {
@@ -89,26 +92,6 @@ class DialogForm {
     }
   }
 
-  #submitRemote() {
-    var dialog = this;
-
-    $.ajax({ 
-      type: 'POST',
-      url: dialog.$form.attr('action'),
-      data: new FormData(dialog.$form.get(0)),
-      processData: false,
-      contentType: false,
-      success: function(data) {
-        safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
-        dialog.close();
-      },
-      error: function(data) {
-        safelyActivateFunction(dialog.#config.onError, data, dialog);
-        dialog.focus();
-      }
-    });
-  }
-
   focus() {
     var el = this.$node.parent().find('input[aria-invalid]').get(0);
     if(!el) {
@@ -116,6 +99,13 @@ class DialogForm {
     }
     if(el){
       el.focus();
+    }
+  }
+
+  focusActivator() {
+    // Attempt to refocus on original activator
+    if(this.activator) {
+      this.activator.focus();
     }
   }
 
@@ -146,8 +136,10 @@ class DialogForm {
       })
     } else { 
       this.$node = source;
+
       this.#build();
       this.#enhance();
+
       if(this.#config.autoOpen) {
         this.open();
       }
@@ -158,16 +150,10 @@ class DialogForm {
   #build() {
     var dialog = this;
     
-    if(this.#config.activator) {
+    if(this.activator) {
       this.#createActivator();
     }
 
-    this.$node.on("dialogcreate", (event, ui) => {
-      this.$container = dialog.$node.parents(".ui-dialog");
-      this.$container.addClass("DialogForm");
-    });
-
-    // Add the jQueryUI dialog functionality.
     this.$node.dialog({
       autoOpen: false,
       classes: this.#config.classes,
@@ -177,18 +163,24 @@ class DialogForm {
       resizable: false,
     });
     
-    this.$node.data("instance", this);
+    this.$container = dialog.$node.parents(".ui-dialog");
+    this.$container.addClass(dialog.#className);
+    this.$node.data("instance", dialog);
   }
 
   #enhance() {
     var dialog = this;
+
     this.$form = this.$node.is('form') ? this.$node : this.$node.find('form');
+
     if(this.#config.closeOnClickSelector) {
       this.#setupCloseButtons();
     }
+
     if(this.#config.submitOnClickSelector) {
       this.#setupSubmitButton();
     }
+
     safelyActivateFunction(dialog.#config.onReady, dialog);
   }
 
@@ -218,16 +210,45 @@ class DialogForm {
     });
   }
 
+  #submitRemote() {
+    var dialog = this;
+
+    $.ajax({ 
+      type: 'POST',
+      url: dialog.$form.attr('action'),
+      data: new FormData(dialog.$form.get(0)),
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
+        dialog.close();
+      },
+      error: function(data) {
+        safelyActivateFunction(dialog.#config.onError, data, dialog);
+        dialog.focus();
+      }
+    });
+  }
+
+  #destroy() {
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog('destroy'); 
+    }
+    this.$node.remove();
+  }
+
   #createActivator() {
     var $marker = $("<span></span>");
 
     this.$node.before($marker);
-    this.activator = new DialogActivator(this.#config.activator, {
+    var activator = new DialogActivator(this.#config.activator, {
       dialog: this,
       text: this.#config.activatorText,
       classes: this.#config.classes?.activator || '',
       $target: $marker
     });
+
+    this.activator = activator.$node;
 
     $marker.remove();
   }

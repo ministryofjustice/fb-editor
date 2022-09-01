@@ -8,10 +8,10 @@
     <%= t('pages.delete_modal.delete_branch_destination_page_message') %>
   </p>
 
-  <div class="ui-dialog-buttonset">
-    <%= link_to t('pages.delete_modal.delete_and_update_branching'),
-            page_path(service.service_id, @page.uuid),
-            method: :delete, class: 'govuk-button govuk-button--warning ui-button' %>
+  <div class="govuk-button-group">
+    <button class="govuk-button govuk-button--warning" data-method="delete" data-url="<%= page_path(service.service_id, @page.uuid) %>">
+      <%= t('pages.delete_modal.delete_and_update_branching') %>
+    </button>
     <button class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.button_cancel') %></button>
   </div>
 </div>

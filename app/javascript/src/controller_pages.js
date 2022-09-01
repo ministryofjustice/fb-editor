@@ -259,7 +259,7 @@ function addQuestionMenuListeners(view) {
       activator: question.menu.selectedItem,
       closeOnClickSelector: ".govuk-button",
 
-      build: function(dialog) {
+      onLoad: function(dialog) {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
@@ -450,7 +450,7 @@ function addEditableComponentItemMenuListeners(view) {
       new DialogApiRequest(url, {
         activator: selectedItem,
         closeOnClickSelector: ".govuk-button",
-        build: function(dialog) {
+        onLoad: function(dialog) {
           dialog.$node.find("[data-method=delete]").on("click", function(e) {
             e.preventDefault();
             collectionItem.component.removeItem(collectionItem)
