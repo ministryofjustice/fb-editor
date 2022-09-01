@@ -101,7 +101,7 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
 
     context 'when there are autocomplete item for a service' do
-      let(:expected_ids) { ['foo', 'bar', 'hello'] }
+      let(:expected_ids) { [SecureRandom.uuid, SecureRandom.uuid, SecureRandom.uuid] }
       let(:autocomplete_response) do
         {
           'autocomplete_ids' => expected_ids
