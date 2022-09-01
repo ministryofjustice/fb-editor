@@ -166,8 +166,14 @@ class EditableElement extends EditableBase {
  * back into HTML for non-edit view and to save.
  * (Edit mode controlled by focus and blur events).
  *
+ * Note; Using a textarea for input because it is more predictable than using a div
+ *       with contentEditable attribute.
+ *
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
+ *                  {
+ *                    htmlAdjustment: function(input) // Last minute adjustments before output HTML
+ *                  }
  **/
 class EditableContent extends EditableElement {
   constructor($node, config) {
@@ -175,9 +181,10 @@ class EditableContent extends EditableElement {
     var $input = $("<textarea class=\"input\"></textarea>");
     var $output = $("<div class=\"output\"></div>");
     var $span = $("<span>measure</span>");
+    var html = $node.html().trim(); // Stored Markdown is originally converted at template level
     var lineHeight;
 
-    // ??
+    // Use temporary hidden <span> for obtaining lineHeight measurement
     $span.css({
       font: "inherit",
       visibility: "hidden"
@@ -185,11 +192,8 @@ class EditableContent extends EditableElement {
 
     $node.append($span);
     lineHeight = $span.height();
-    $span.remove();
 
-    // Use a textarea for input because it is more predictable than
-    // using a div with contentEditable attribute.
-    $output.append($node.html());
+    // Empty everything in $node because we're moving things around.
     $node.empty();
     $node.append($input);
     $node.append($output);
@@ -212,15 +216,19 @@ class EditableContent extends EditableElement {
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
 
+
+    this._editing = false;
+    this._content = convertToMarkdown(html); // trim removes whitespace from template.
+    this._lineHeight = lineHeight;
+    this.$input = $input;
+    this.$output = $output;
+
     if(config.text.default_content) {
       this._defaultContent = config.text.default_content;
     }
 
-    this._editing = false;
-    this._content = convertToMarkdown($output.html().trim()); // trim removes whitespace from template.
-    this._lineHeight = lineHeight;
-    this.$input = $input;
-    this.$output = $output;
+    // Set initial html in output area.
+    this.#output(html);
   }
 
   // Get content must always return Markdown because that's what we save.
@@ -266,8 +274,12 @@ class EditableContent extends EditableElement {
     // Figure out what content to show in output area.
     let defaultContent = this._defaultContent || this._originalContent;
     let content = (this._content == "" ? defaultContent : this._content);
-    content = convertToHtml(content);
 
+    this.#output(convertToHtml(content));
+  }
+
+  // Adds the passed content to output area.
+  #output(content) {
     // Check if configuration requires external adjustment to html
     if(this._config.htmlAdjustment) {
       content = safelyActivateFunction(this._config.htmlAdjustment, content);
