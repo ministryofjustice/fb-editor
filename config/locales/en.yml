@@ -302,9 +302,9 @@ en:
     heading: 'Publishing'
     warning:
       heading: 'Warning'
-      confirmation: 'Your form has no confirmation page - you won’t receive any user data without one'
-      cya: 'Your form has no check answers page - you won’t receive any user data without one'
-      both_pages: 'Your form has no check answers page or confirmation page - you won’t receive any user data without them'
+      confirmation: 'Your form has no confirmation page - you will not receive any responses.'
+      cya: 'Your form has no check answers page - you will not receive any responses.'
+      both_pages: 'Your form has no check answers page or confirmation page - you will not receive any responses.'
       autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
     error:
       autocomplete_items: 'You need to upload some autocomplete options for "%{title}"'
@@ -313,7 +313,7 @@ en:
       live: Live
     service_output:
       warning: Warning
-      message: "Update your %{environment} site %{href} to receive data from this form"
+      message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
       link: submission settings
     dialog:
       heading: Publish to Test?
