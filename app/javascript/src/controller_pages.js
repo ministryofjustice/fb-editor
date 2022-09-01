@@ -763,9 +763,9 @@ function accessibilityQuestionViewEnhancements(view) {
  **/
 function supportGovUKTableCSS(html) {
   html = html.replace(/<table>/mig, "<table class=\"govuk-table\">");
-  html = html.replace(/<thead>/mig, "<thean class=\"govuk-table__head\">");
+  html = html.replace(/<thead>/mig, "<thead class=\"govuk-table__head\">");
   html = html.replace(/<tbody>/mig, "<tbody class=\"govuk-table__body\">");
-  html = html.replace(/<tr>/mig, "<th class=\"govuk-table__row\">");
+  html = html.replace(/<tr>/mig, "<tr class=\"govuk-table__row\">");
   html = html.replace(/<th>/mig, "<th class=\"govuk-table__header\">");
   html = html.replace(/<td>/mig, "<td class=\"govuk-table__cell\">");
   return html;
