@@ -833,6 +833,9 @@ function convertToHtml(markdown) {
  *    Note: Because we're converting from Markup, we need to be careful
  *          about what is converted into entity or escaped form for
  *          that reason, we are trying to be minimalistic in approach.
+ *
+ * 4. Fix markdown to blockquote element conversion (broken by the
+ *    sanitizeHTML() function converting bracket > into &gt; entity.
  **/
 function cleanInput(input) {
   // 1.
@@ -841,6 +844,8 @@ function cleanInput(input) {
   input = input.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
   // 3.
   input = sanitizeHtml(input);
+  // 4.
+  input = input.replace(/\n&gt;(\s{1}.*?\n)/, "\n> $1\n");
   return input;
 }
 
