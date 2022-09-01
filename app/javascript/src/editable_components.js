@@ -259,14 +259,13 @@ class EditableContent extends EditableElement {
   }
 
   update() {
-    this.content = sanitiseHtml(this.$input.val().trim()); // Get the latest markdown
+    var markdown = this.$input.val().trim(); // Get the latest markdown.
+    this.content = cleanInput(markdown); // Set what will be saved.
     this.$node.removeClass(this._config.editClassname);
 
-    // Figure out what content to show
+    // Figure out what content to show in output area.
     let defaultContent = this._defaultContent || this._originalContent;
     let content = (this._content == "" ? defaultContent : this._content);
-
-    // Add latest content to output area
     content = convertToHtml(content);
 
     // Check if configuration requires external adjustment to html
@@ -793,31 +792,31 @@ function createEditableCollectionItemMenu(item, config) {
     });
 }
 
+
 /* Convert HTML to Markdown by tapping into third-party code.
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
-  var cleaned = sanitiseHtml(html);
-  var markdown = converter.makeMarkdown(cleaned);
-  return sanitiseMarkdown(markdown);
+  var markdown = converter.makeMarkdown(html);
+  return cleanInput(markdown);
 }
 
-/* Extremely simple function to safely convert target elements,
- * such as <script>, so JS doesn't run in editor.
- * Note: Because we're converting from Markup, we need to be
- * careful about what is converted into entity or escaped form.
- * For that reason, we are trying to be minimalistic in approach.
+
+/* Convert Markdown to HTML by tapping into third-party code.
+ * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
-function sanitiseHtml(html) {
-  return sanitizeHtml(html);
+function convertToHtml(markdown) {
+  var html = converter.makeHtml(markdown);
+  return cleanInput(html);
 }
+
 
 /* Opportunity safely strip out anything that we don't want here.
  *
  * 1. Something in makeMarkdown is adding <!-- --> markup to the result
  *    so we're trying to get rid of it.
  *
- * 2. sanitizeHTML is altering automatic link syntax by removing
+ * 2. sanitizeHTML() is altering automatic link syntax by removing
  *    everything in (including) angle brackets added by showdown.
  *
  *    e.g. [link text](<http://some.url/here>)
@@ -829,26 +828,25 @@ function sanitiseHtml(html) {
  *         [link text](http://some.url/here)
  *
  *         which give us the correct link element (url+text).
+ *
+ * 3. Converts unwanted HTML from input (when passed HTML or Markdown).
+ *    Note: Because we're converting from Markup, we need to be careful
+ *          about what is converted into entity or escaped form for
+ *          that reason, we are trying to be minimalistic in approach.
  **/
-function sanitiseMarkdown(markdown) {
+function cleanInput(input) {
   // 1.
-  markdown = markdown.replace(/\n<!--.*?-->/mig, "");
+  input = input.replace(/\n<!--.*?-->/mig, "");
   // 2.
-  markdown = markdown.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
-  return markdown;
+  input = input.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
+  // 3.
+  input = sanitizeHtml(input);
+  return input;
 }
 
-/* Convert Markdown to HTML by tapping into third-party code.
- * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
- **/
-function convertToHtml(markdown) {
-  var html = converter.makeHtml(markdown);
-  html = sanitiseHtml(html);
-  return html;
-}
 
 /* Single Line Input Restrictions
- *Browser contentEditable mode means some pain in trying to prevent
+ * Browser contentEditable mode means some pain in trying to prevent
  * HTML being inserted (rich text attempts by browser). We're only
  * editing as plain text and markdown for all elements so try to
  * prevent unwanted entry with this function.
