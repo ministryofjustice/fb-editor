@@ -28,10 +28,12 @@ class Publisher
     end
 
     def autocomplete_items
-      response = MetadataApiClient::Items.all(service_id: service_id)
-      Rails.logger.info(response.errors) if response.errors?
+      Hash(autocomplete_response['items']).to_json.inspect
+    end
 
-      convert_autocomplete_response(response)
+    def autocomplete_ids
+      # This refers to the table row IDs in the MetadataAPI
+      autocomplete_response['autocomplete_ids'] || []
     end
 
     def get_binding
@@ -163,9 +165,13 @@ class Publisher
         Rails.application.config.service_namespace_configuration[:"#{platform_environment}_#{deployment_environment}"]
     end
 
-    def convert_autocomplete_response(response)
-      items = response.respond_to?(:metadata) ? response.metadata['items'] : {}
-      items.to_json.inspect
+    def autocomplete_response
+      @autocomplete_response ||= begin
+        response = MetadataApiClient::Items.all(service_id: service_id)
+        Rails.logger.info(response.errors) if response.errors?
+
+        response.respond_to?(:metadata) ? response.metadata : {}
+      end
     end
   end
 end
