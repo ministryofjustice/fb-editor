@@ -576,8 +576,8 @@ html {
   .flow-conditions {
     pointer-events: none;
     
-    // The branch connection menus are within the condirtions container and
-    // still need to receive pointer events, sop we turn them back on.
+    // The branch connection menus are within the conditions container and
+    // still need to receive pointer events, so we turn them back on.
     .branch-connection-menu-activator {
       pointer-events: all;
     }
@@ -925,6 +925,7 @@ html {
   box-sizing: border-box;
   overflow: visible;
   position: relative;
+  z-index: 0; // prevents very tall first flow conditions breaking out and overlapping header/preview button
 }
 
 
