@@ -13,4 +13,3 @@ data:
   ENCODED_PUBLIC_KEY: {{ .Values.encoded_public_key }}
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}
   AV_HOST: fb-av-svc-{{ .Values.environmentName }}
-  AUTOCOMPLETE: {{ .Values.autocomplete }}
