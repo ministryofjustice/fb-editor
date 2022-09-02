@@ -218,10 +218,10 @@ class EditableContent extends EditableElement {
 
 
     this._editing = false;
-    this._content = convertToMarkdown(html); // trim removes whitespace from template.
     this._lineHeight = lineHeight;
     this.$input = $input;
     this.$output = $output;
+    this.content = convertToMarkdown(html);
 
     if(config.text.default_content) {
       this._defaultContent = config.text.default_content;
@@ -251,6 +251,11 @@ class EditableContent extends EditableElement {
   }
 
   set content(markdown) {
+    // Check if configuration requires external adjustment to markdown
+    if(this._config.markdownAdjustment) {
+      markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
+    }
+
     this._content = markdown;
     this.emitSaveRequired();
   }
