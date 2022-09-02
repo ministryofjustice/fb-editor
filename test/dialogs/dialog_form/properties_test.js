@@ -47,10 +47,9 @@ describe("DialogForm", function() {
 
       it("should make the activator public", function() {
         created = helpers.createDialog(COMPONENT_ID, { activator: true,});
-        var $activator = $(".DialogActivator");
 
         expect(created.dialog.activator).to.exist;
-        expect(created.dialog.activator.get(0)).to.equal($activator.get(0));
+        expect(created.dialog.activator instanceof jQuery).to.be.true;
       })
 
     });

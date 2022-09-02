@@ -61,5 +61,12 @@ describe("Dialog", function() {
       expect(created.content.confirm.text()).to.eql('Sure Thing');
       expect(created.content.cancel.text()).to.eql('Nah');
     });
+
+    it("should make the activator public", function() {
+        created = helpers.createDialog(COMPONENT_ID, { activator: true,});
+
+        expect(created.activator).to.exist;
+        expect(created.activator instanceof jQuery).to.be.true;
+      })
   });
 });

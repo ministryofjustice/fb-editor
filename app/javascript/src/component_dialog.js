@@ -3,6 +3,8 @@ const {
   safelyActivateFunction,
 } = require('./utilities');
 
+const DialogActivator = require('./component_dialog_activator');
+
 class Dialog {
   #className = 'Dialog';
   #config;

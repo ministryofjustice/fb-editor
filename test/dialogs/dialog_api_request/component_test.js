@@ -49,21 +49,6 @@ describe("DialogApiRequest", function() {
       expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
     });
 
-    it("should make the $node public", function() {
-      expect(created.dialog.$node).to.exist;
-      expect(created.dialog.$node.length).to.equal(1);
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      expect(created.dialog.$node.data("instance")).to.equal(created.dialog);
-    });
-
-    it("should make the $container public", function() {
-      expect(created.dialog.$container).to.exist;
-      expect(created.dialog.$container.length).to.equal(1);
-      expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
-    });
-
     describe("using generted buttons", function() {
       it("should use config.buttons when not using config.closeOnClickSelector", function() {
         var $dialog = $("#" + c.COMPONENT_ID);
