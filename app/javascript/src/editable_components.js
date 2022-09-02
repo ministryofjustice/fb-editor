@@ -862,7 +862,7 @@ function cleanInput(input) {
   // 3.
   input = sanitizeHtml(input);
   // 4.
-  input = input.replace(/\n&gt;(\s{1}.*?\n)/, "\n> $1\n");
+  input = input.replace(/\n&gt;(\s{1}.*?\n)/mig, "\n>$1");
   return input;
 }
 
