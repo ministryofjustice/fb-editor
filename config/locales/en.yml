@@ -302,9 +302,9 @@ en:
     heading: 'Publishing'
     warning:
       heading: 'Warning'
-      confirmation: 'Your form has no confirmation page - you won’t receive any user data without one'
-      cya: 'Your form has no check answers page - you won’t receive any user data without one'
-      both_pages: 'Your form has no check answers page or confirmation page - you won’t receive any user data without them'
+      confirmation: 'Your form has no confirmation page - you will not receive any responses.'
+      cya: 'Your form has no check answers page - you will not receive any responses.'
+      both_pages: 'Your form has no check answers page or confirmation page - you will not receive any responses.'
       autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
     error:
       autocomplete_items: 'You need to upload some autocomplete options for "%{title}"'
@@ -313,7 +313,7 @@ en:
       live: Live
     service_output:
       warning: Warning
-      message: "Update your %{environment} site %{href} to receive data from this form"
+      message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
       link: submission settings
     dialog:
       heading: Publish to Test?
@@ -445,7 +445,11 @@ en:
           format: "%{message}"
           virus_found: "'%{attribute}' contains a virus - choose a different file"
           scan_error: "An error has occurred, try again in a few minutes"
-
+          too_big: "The selected file must be smaller than 1MB"
+          empty_value_cell: "CSV file has an empty value cell"
+          scan_error:  There was a problem with the file upload - try again later
+          empty_value_cell: "The selected file cannot contain blank fields"
+          invalid_headings: "The selected file's header fields must be labelled correctly"
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

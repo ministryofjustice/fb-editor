@@ -8,7 +8,6 @@ describe("ForwardUpForwardPath", function() {
 
   describe("Methods", function() {
     var created;
-    var expectedPathValue = "M 1451,313 h70 a10,10 0 0 0 10,-10 v-230 a10,10 0 0 1 10,-10 h-2";
     const POINTS = {
           from_x: 1451,
           from_y: 313,
@@ -36,28 +35,25 @@ describe("ForwardUpForwardPath", function() {
       created = {};
     });
 
-    /* TEST METHOD:  path()
-     *
-     * Differs only from FlowConnectorPath tests by using specific dimensions.
+
+    /* TEST METHOD: prop()
      **/
-    it("should return the path value set in constructor", function() {
-      expect(created.connector.path()).to.exist;
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(id) available", function() {
+      expect(created.connector.prop("id")).to.exist;
+      expect(created.connector.prop("id")).to.equal(COMPONENT_ID);
     });
 
-    it("should update (set) the path value when receiving new dimensions", function() {
-      // Original value created by constructor.
-      expect(created.connector.path()).to.equal(expectedPathValue);
-
-      // Update with some new dimensions.
-      created.connector.path({ forward1: 30, up: 250, forward2: 20 });
-      expect(created.connector.path()).to.equal("M 1451,313 h30 a10,10 0 0 0 10,-10 v-250 a10,10 0 0 1 10,-10 h20");
-
-      // Reset to avoid breaking any other tests.
-      created.connector.path({ forward1: 70, up: 230, forward2: -2 });
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(from) available", function() {
+      expect(created.connector.prop("from")).to.exist;
+      expect(created.connector.prop("from").id).to.exist;
+      expect(created.connector.prop("from").id).to.equal(c.FAKE_FLOW_ITEM_1.id);
     });
 
+    it("should make prop(to) available", function() {
+      expect(created.connector.prop("to")).to.exist;
+      expect(created.connector.prop("to").id).to.exist;
+      expect(created.connector.prop("to").id).to.equal(c.FAKE_FLOW_ITEM_2.id);
+    });
 
     /* TEST METHOD: build()
      *
@@ -183,9 +179,9 @@ describe("ForwardUpForwardPath", function() {
         bottom: 10
       });
 
-      var originalPath = clashingPath.connector.path();
+      var originalPath = clashingPath.connector.path;
       expect(created.connector.avoidOverlap(clashingPath.connector)).to.be.true;
-      expect(clashingPath.connector.path()).to.not.equal(originalPath);
+      expect(clashingPath.connector.path).to.not.equal(originalPath);
 
       // clean up what we created on the fly.
       clashingPath.connector.$node.remove();
@@ -209,9 +205,9 @@ describe("ForwardUpForwardPath", function() {
         bottom: 10
       });
 
-      var originalPath = nonClashingPath.connector.path();
+      var originalPath = nonClashingPath.connector.path;
       expect(created.connector.avoidOverlap(nonClashingPath.connector)).to.be.false;
-      expect(nonClashingPath.connector.path()).to.equal(originalPath);
+      expect(nonClashingPath.connector.path).to.equal(originalPath);
 
       // clean up what we created on the fly.
       nonClashingPath.connector.$node.remove();

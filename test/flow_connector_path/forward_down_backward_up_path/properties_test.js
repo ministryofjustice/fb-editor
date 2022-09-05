@@ -35,27 +35,15 @@ describe("ForwardDownBackwardUpPath", function() {
       created = {};
     });
 
-    it("should make ForwardDownBackwardUpPath.id public", function() {
-      expect(created.connector.id).to.exist;
-      expect(created.connector.id).to.equal(COMPONENT_ID);
+    it("should return path set in constructor", function() {
+      expect(created.connector.path).to.exist;
+      expect(created.connector.path).to.equal("M 1451,313 h70 a10,10 0 0 1 10,10 v283 a10,10 0 0 1 -10,10 h-1232 a10,10 0 0 1 -10,-10 v-533 a10,10 0 0 1 10,-10 h0");
     });
 
-    it("should make ForwardDownBackwardUpPath.points public", function() {
+    it("should return points set in constructor", function() {
       expect(created.connector.points).to.exist;
       expect(created.connector.points.from_x).to.equal(POINTS.from_x);
       expect(created.connector.points.from_y).to.equal(POINTS.from_y);
-    });
-
-    it("should make ForwardDownBackwardUpPath.from public", function() {
-      expect(created.connector.from).to.exist;
-      expect(created.connector.from.id).to.exist;
-      expect(created.connector.from.id).to.equal(c.FAKE_FLOW_ITEM_1.id);
-    });
-
-    it("should make ForwardDownBackwardUpPath.to public", function() {
-      expect(created.connector.to).to.exist;
-      expect(created.connector.to.id).to.exist;
-      expect(created.connector.to.id).to.equal(c.FAKE_FLOW_ITEM_2.id);
     });
 
     it("should make ForwardDownBackwardUpPath.type public", function() {

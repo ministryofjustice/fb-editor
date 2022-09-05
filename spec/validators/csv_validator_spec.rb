@@ -1,3 +1,5 @@
+require 'csv'
+
 RSpec.describe CsvValidator do
   let(:subject) { AutocompleteItems.new(params) }
   let(:params) do
@@ -50,8 +52,23 @@ RSpec.describe CsvValidator do
 
       it 'returns the correct message' do
         expect(subject.errors.full_messages).to eq([I18n.t(
-          'activemodel.errors.models.autocomplete_items.incorrect_format'
+          'activemodel.errors.models.autocomplete_items.invalid_headings'
         )])
+      end
+    end
+
+    context 'when the file has one heading but two columns of values' do
+      let(:path_to_file) do
+        CSV.open(Rails.root.join('tmp', 'invalid.csv'), 'w') do |csv|
+          csv << %w[Text]
+          csv << %w[something something]
+          csv << %w[dark side]
+        end
+        'tmp/invalid.csv'
+      end
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
       end
     end
 
@@ -86,6 +103,43 @@ RSpec.describe CsvValidator do
 
       it 'should be valid' do
         expect(subject).to be_valid
+      end
+    end
+
+    context 'when file has an empty cell' do
+      context 'empty value cell' do
+        let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty_value_cell.csv') }
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns the correct message' do
+          expect(subject.errors.full_messages).to eq([I18n.t(
+            'activemodel.errors.models.autocomplete_items.empty_value_cell'
+          )])
+        end
+      end
+
+      context 'empty text cell' do
+        let(:path_to_file) do
+          CSV.open(Rails.root.join('tmp', 'missing_text.csv'), 'w') do |csv|
+            csv << %w[Text]
+            csv << []
+            csv << %w[a]
+          end
+          'tmp/missing_text.csv'
+        end
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns the correct message' do
+          expect(subject.errors.full_messages).to eq([I18n.t(
+            'activemodel.errors.models.autocomplete_items.empty_value_cell'
+          )])
+        end
       end
     end
   end

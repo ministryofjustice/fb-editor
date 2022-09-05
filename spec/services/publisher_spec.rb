@@ -1,6 +1,6 @@
 RSpec.describe Publisher do
   subject(:publisher) { described_class.new(attributes) }
-  let(:service_provisioner) { double }
+  let(:service_provisioner) { double(autocomplete_ids: expected_ids) }
   let(:attributes) do
     {
       publish_service: publish_service,
@@ -18,6 +18,8 @@ RSpec.describe Publisher do
     end
     FakeAdapter
   end
+
+  let(:expected_ids) { [SecureRandom.uuid, SecureRandom.uuid] }
 
   describe '#call' do
     let(:fake_adapter_instance) { double(publishing: true) }
@@ -41,6 +43,21 @@ RSpec.describe Publisher do
       ).and_return(fake_adapter_instance)
       expect(fake_adapter_instance).to receive(:publishing)
       publisher.call(steps: %w[publishing])
+    end
+
+    context 'autocomplete items for publishing step' do
+      it 'saves ids in the publishing steps to the DB' do
+        publisher.call(steps: %w[publishing])
+        expect(publish_service.reload.autocomplete_ids).to eq(expected_ids)
+      end
+    end
+
+    context 'autocomplete items for any steps other than publishing' do
+      it "doesn't save ids to the DB" do
+        publisher.call(steps: %w[pre_publishing])
+        expect(publish_service.reload.autocomplete_ids).to be_empty
+        expect(service_provisioner).to_not receive(:autocomplete_ids)
+      end
     end
   end
 end

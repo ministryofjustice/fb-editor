@@ -38,11 +38,24 @@ describe("FlowConnectorPath", function() {
       created = {};
     });
 
-    /* TEST METHOD:  get path()
+
+    /* TEST METHOD: prop()
      **/
-    it("should return the path", function() {
-      expect(created.connector.path()).to.exist;
-      expect(created.connector.path()).to.equal(""); // Base class does not set anything.
+    it("should make prop(id) available", function() {
+      expect(created.connector.prop("id")).to.exist;
+      expect(created.connector.prop("id")).to.equal(COMPONENT_ID);
+    });
+
+    it("should make prop(from) available", function() {
+      expect(created.connector.prop("from")).to.exist;
+      expect(created.connector.prop("from").id).to.exist;
+      expect(created.connector.prop("from").id).to.equal(c.FAKE_FLOW_ITEM_1.id);
+    });
+
+    it("should make prop(to) available", function() {
+      expect(created.connector.prop("to")).to.exist;
+      expect(created.connector.prop("to").id).to.exist;
+      expect(created.connector.prop("to").id).to.equal(c.FAKE_FLOW_ITEM_2.id);
     });
 
 

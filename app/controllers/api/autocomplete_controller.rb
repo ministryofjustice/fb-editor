@@ -13,7 +13,7 @@ module Api
           service_id: params[:service_id],
           component_id: params[:component_id],
           created_by: service.created_by,
-          data: items_hash(@items.file_values)
+          data: items_hash(@items.file_rows)
         )
         return head :created unless response.errors?
 
@@ -33,6 +33,10 @@ module Api
 
     private
 
+    def has_headers?
+      @items.file_headings.size == 2
+    end
+
     def autocomplete_items_file
       @autocomplete_items_file ||= params.dig(:autocomplete_items, :file)
     end
@@ -50,7 +54,7 @@ module Api
       csv_items.map do |r|
         {
           text: r[0],
-          value: r[1].nil? ? r[0] : r[1]
+          value: has_headers? ? r[1] : r[0]
         }
       end
     end

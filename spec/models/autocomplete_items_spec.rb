@@ -40,6 +40,27 @@ RSpec.describe AutocompleteItems do
           expect(subject.errors.full_messages).to eq(expected_error)
         end
       end
+
+      context 'when a file is larger than 1MB' do
+        let(:expected_error) { [I18n.t('activemodel.errors.models.autocomplete_items.too_big')] }
+
+        before do
+          allow(file).to receive(:size).and_return(2.megabytes)
+        end
+
+        it 'should be invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'should not validate csv file' do
+          expect_any_instance_of(CsvValidator).not_to receive(:validate)
+        end
+
+        it 'should have errors' do
+          subject.valid?
+          expect(subject.errors.full_messages).to eq(expected_error)
+        end
+      end
     end
 
     context 'when a file is not present' do
@@ -58,7 +79,7 @@ RSpec.describe AutocompleteItems do
 
   describe '#file_headings' do
     context 'file has headings' do
-      let(:expected_headings) { %w[text value] }
+      let(:expected_headings) { %w[Text Value] }
 
       it 'returns headings' do
         expect(subject.file_headings).to eq(expected_headings)
@@ -66,12 +87,12 @@ RSpec.describe AutocompleteItems do
     end
   end
 
-  describe '#file_values' do
-    context 'has the correct file values' do
-      let(:expected_values) { [%w[b 1], %w[c 2], %w[d 3]] }
+  describe '#file_rows' do
+    context 'has the correct file rows' do
+      let(:expected_rows) { [%w[b 1], %w[c 2], %w[d 3]] }
 
       it 'returns the contents' do
-        expect(subject.file_values).to eq(expected_values)
+        expect(subject.file_rows).to eq(expected_rows)
       end
     end
   end

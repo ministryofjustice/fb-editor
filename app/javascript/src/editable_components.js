@@ -806,11 +806,28 @@ function sanitiseHtml(html) {
 }
 
 /* Opportunity safely strip out anything that we don't want here.
- * 1. Something in makeMarkdown is adding <!-- --> markup to the result so we're trying to get rid of it.
- * 2. ...
+ *
+ * 1. Something in makeMarkdown is adding <!-- --> markup to the result
+ *    so we're trying to get rid of it.
+ *
+ * 2. sanitizeHTML is altering automatic link syntax by removing
+ *    everything in (including) angle brackets added by showdown.
+ *
+ *    e.g. [link text](<http://some.url/here>)
+ *
+ *         results in this incorrect markdown (and output):
+ *         [link text]()
+ *
+ *         so we're stripping out the angle brackets to leave this:
+ *         [link text](http://some.url/here)
+ *
+ *         which give us the correct link element (url+text).
  **/
 function sanitiseMarkdown(markdown) {
+  // 1.
   markdown = markdown.replace(/\n<!--.*?-->/mig, "");
+  // 2.
+  markdown = markdown.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
   return markdown;
 }
 

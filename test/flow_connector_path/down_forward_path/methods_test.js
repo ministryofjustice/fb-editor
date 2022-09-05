@@ -8,7 +8,6 @@ describe("DownForwardPath", function() {
 
   describe("Methods", function() {
     var created;
-    var expectedPathValue = "M 701,125 v178 a10,10 0 0 0 10,10 h539";
     const POINTS = {
                      via_x: 0,
                      via_y: 0,
@@ -36,37 +35,25 @@ describe("DownForwardPath", function() {
       created = {};
     });
 
-    /* TEST METHOD:  path()
-     *
-     * Differs only from FlowConnectorPath tests by using specific dimensions.
+
+    /* TEST METHOD: prop()
      **/
-    it("should return the path value set in constructor", function() {
-      expect(created.connector.path()).to.exist;
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(id) available", function() {
+      expect(created.connector.prop("id")).to.exist;
+      expect(created.connector.prop("id")).to.equal(COMPONENT_ID);
     });
 
-    it("should update (set) the path value when receiving new dimensions", function() {
-      var original = created.connector.config.dimensions.original;
-      var updated = {
-                      down: 278,
-                      forward: 639
-                    }
-
-      // Original value created by constructor.
-      expect(created.connector.path()).to.equal(expectedPathValue);
-      expect(created.connector.config.dimensions.current).to.eql(original);
-
-      // Update with some new dimensions.
-      created.connector.path(updated);
-      expect(created.connector.config.dimensions.current).to.eql(updated);
-      expect(created.connector.path()).to.equal(String("M 701,125 v278 a10,10 0 0 0 10,10 h639"));
-
-      // Reset to avoid breaking any other tests.
-      created.connector.path(original);
-      expect(created.connector.config.dimensions.current).to.eql(original);
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(from) available", function() {
+      expect(created.connector.prop("from")).to.exist;
+      expect(created.connector.prop("from").id).to.exist;
+      expect(created.connector.prop("from").id).to.equal(c.FAKE_FLOW_ITEM_1.id);
     });
 
+    it("should make prop(to) available", function() {
+      expect(created.connector.prop("to")).to.exist;
+      expect(created.connector.prop("to").id).to.exist;
+      expect(created.connector.prop("to").id).to.equal(c.FAKE_FLOW_ITEM_2.id);
+    });
 
     /* TEST METHOD: build()
      *

@@ -535,8 +535,6 @@ html {
   // their lines from centre of a Branch Node, which places them directly over those
   // elements, without this workaround in place (easier to fix z-index than calculations).
   // Also includes some elements that gained position:fixed because they fell off the view.
-  .FlowConnectorLine,
-  .FlowConnectorPath,
   .govuk-header,
   .govuk-navigation-app,
   .ui-widget-overlay,
@@ -546,12 +544,17 @@ html {
 
   .FlowConnectorLine,
   .FlowConnectorPath {
-    z-index: 2;
+    z-index: 0;
 
     &.active {
-      z-index: 3;
+      z-index: 1;
     }
   }
+
+  .FlowItem {
+    z-index: 2
+  }
+
 
   .ConnectionMenuActivator {
     z-index: 4;
@@ -566,6 +569,21 @@ html {
   .ui-dialog {
     z-index: 6;
   }
+  
+  // The flow conditions list is over the lines meaning that they cannot be
+  // hovered.  Removing pointer-events allows the hover to "pass-through" to the
+  // underlying line.  
+  .flow-conditions {
+    pointer-events: none;
+    
+    // The branch connection menus are within the conditions container and
+    // still need to receive pointer events, so we turn them back on.
+    .branch-connection-menu-activator {
+      pointer-events: all;
+    }
+  }
+
+
 }
 
 .FlowConnectorLine,
@@ -582,6 +600,11 @@ html {
   // an incorrectly placed layout. So, 100px is perhaps the magic number
   // although, that doesn't rule out others having equally magical
   // properties. For now, will be leaving as 100px with fingers crossed.
+  //
+  // Note: We had some success with 1px, but Chrome misaligned the
+  // FlowConnectorLine items when zoomed out. A further test of 5px seemed
+  // to work in Chrome, but Edge browser didn't like. Magic number so far
+  // seems to be sticking with 100px.
   left: 0px;
   height: 100px;
   overflow: visible;
@@ -902,6 +925,7 @@ html {
   box-sizing: border-box;
   overflow: visible;
   position: relative;
+  z-index: 0; // prevents very tall first flow conditions breaking out and overlapping header/preview button
 }
 
 
@@ -1058,7 +1082,7 @@ html {
   }
 
   .govuk-date-input__input:not(.govuk-input--error) {
-    border-color: $govuk-error-colour;
+    border-color: $govuk-input-border-colour;
 
     &:focus {
       border-color: $govuk-focus-colour;

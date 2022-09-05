@@ -49,6 +49,8 @@ class FlowConnectorPath {
 
   #config;
   #path;
+  #points;
+  #prop;
 
   constructor(points, config) {
     var id = config.id || utilities.uniqueString("flowconnectorpath-");
@@ -63,19 +65,19 @@ class FlowConnectorPath {
                   }
                }, config);
 
-    // Public
-    this.id = id;
-    this.points = createConnectorPathPoints(utilities.mergeObjects({
-                      via_x: 0, // If the connector needs to go via an certain route
-                      via_y: 0  // you can add x/y coordinates to help route it.
-                    }, points));
-
-    this.from = conf.from;
-    this.to = conf.to;
-
     // Private
     this.#config = conf;
     this.#path = "";
+    this.#points = createConnectorPathPoints(utilities.mergeObjects({
+                      via_x: 0, // If the connector needs to go via an certain route
+                      via_y: 0  // you can add x/y coordinates to help route it.
+                   }, points));
+
+    this.#prop = {
+      id: id,
+      from: conf.from,
+      to: conf.to
+    }
   }
 
   // Because JS doesn't allow inheritance of private variables,
@@ -84,22 +86,47 @@ class FlowConnectorPath {
     return this.#config;
   }
 
-  path() {
+  get path() {
     return this.#path;
   }
 
+  get points() {
+    return this.#points;
+  }
+
+  // Makeing these readonly access properties because they shouldn't be changed.
+  prop(name) {
+    var p = this.#prop;
+    switch(name) {
+      case "id":
+           p = this.#prop.id;
+           break;
+
+      case "from":
+           p = this.#prop.from;
+           break;
+
+      case "to":
+           p = this.#prop.to;
+           break;
+    }
+    return p;
+  }
+
+  // Main function to created the connector view and add functionality.
+  // Includes commented out, dev only function useful in development.
   build() {
     var flowConnectorPath = this;
 
-    this.$node = createSvg(createPath(this.#path) + createArrowPath(this.points));
+    this.$node = createSvg(createPath(this.path) + createArrowPath(this.points));
     this.$node.addClass("FlowConnectorPath")
               .addClass(this.type)
-              .attr("id", this.id)
-              .attr("data-from", this.#config.from.id)
-              .attr("data-to", this.#config.to.id)
+              .attr("id", this.prop("id"))
+              .attr("data-from", this.config.from.id)
+              .attr("data-to", this.config.to.id)
               .data("instance", this);
 
-    this.#config.container.append(this.$node);
+    this.config.container.append(this.$node);
 
     this.$node.find("path").on("mouseover", function() {
       $(document).trigger("FlowConnectorPathOver", flowConnectorPath);
@@ -117,7 +144,7 @@ class FlowConnectorPath {
 
   // Return all FlowConnectorLines or just those matching the passed type.
   lines(type="") {
-    var lineArr = this.#config.dimensions.lines;
+    var lineArr = this.config.dimensions.lines;
     var filtered = [];
 
     for(var i=0; i<lineArr.length; ++i) {
@@ -177,8 +204,8 @@ class FlowConnectorPath {
     // DEVELOPMENT ONLY FUNCTION
     // When debugging problems with creates Lines (used in comparison for overlapping FlowConnectorPaths),
     // this funciton can be called to make things visible and, therefore, a bit easier. See this.build().
-    for(var i=0; i<this.#config.dimensions.lines.length; ++i) {
-      this.#config.container.append(this.#config.dimensions.lines[i].testOnlySvg());
+    for(var i=0; i<this.config.dimensions.lines.length; ++i) {
+      this.config.container.append(this.config.dimensions.lines[i].testOnlySvg());
     }
   }
 
@@ -205,6 +232,11 @@ class FlowConnectorPath {
 
     return overlapWasFixed;
   }
+
+  #calculatePath() {
+    return this.path;
+  }
+
 }
 
 
@@ -267,18 +299,25 @@ class ForwardPath extends FlowConnectorPath {
       forward: Math.round(this.points.xDifference)
     }
 
-    // Initialise private inheritance.
+    // Initialise private inheritance.);
     this.#config = this.config;
-    this.#path = this.path;
-
     this.#config.dimensions = { original: dimensions  } // Not expected to change.
+    this.#calculatePath(dimensions);
+
     this.type = "ForwardPath";
-    this.path(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  // Since this arrow simply goes from point A to B, which is expected to
+  // be between two adjacent items, it should not have any overlap issues
+  // which would mean nudge() functionality is not a requirement.
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -292,7 +331,6 @@ class ForwardPath extends FlowConnectorPath {
 
       this.#config.dimensions.current = dimensions;
       this.#config.dimensions.lines = [ forward ];
-
       this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
                      forward.path
@@ -301,10 +339,6 @@ class ForwardPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  // Since this arrow simply goes from point A to B, which is expected to
-  // be between two adjacent items, it should not have any overlap issues
-  // which would mean nudge() functionality is not a requirement.
 }
 
 
@@ -322,16 +356,38 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
-
-    this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set path()
+    this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set #calculatePath()
     this.type = "ForwardUpForwardPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "up":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward1":
+      case "forward2":
+           // no overlap prevention should be required for these.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -378,26 +434,6 @@ class ForwardUpForwardPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "up":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "forward1":
-      case "forward2":
-           // no overlap prevention should be required for these.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -417,16 +453,51 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "forward2":
+           d.up += NUDGE_SPACING;
+           d.down += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "up":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down":
+           d.forward2 -= NUDGE_SPACING;
+           d.forward3 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward1":
+      case "forward3":
+           // no overlap prevention should be required for these.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -493,38 +564,6 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "forward2":
-           d.up += NUDGE_SPACING;
-           d.down += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "up":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down":
-           d.forward2 -= NUDGE_SPACING;
-           d.forward3 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "forward1":
-      case "forward3":
-           // no overlap prevention should be required for these.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -544,16 +583,49 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "down":
+           d.forward1 -= NUDGE_SPACING;
+           d.backward -= NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "up":
+           d.backward += NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "backward":
+           d.down += NUDGE_SPACING;
+           d.up += NUDGE_SPACING;
+           nudged = true;
+
+      case "forward1":
+           // no overlap prevention should be required for this.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -620,36 +692,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "down":
-           d.forward1 -= NUDGE_SPACING;
-           d.backward -= NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "up":
-           d.backward += NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "backward":
-           d.down += NUDGE_SPACING;
-           d.up += NUDGE_SPACING;
-           nudged = true;
-
-      case "forward1":
-           // no overlap prevention should be required for this.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 class ForwardDownForwardPath extends FlowConnectorPath {
@@ -666,16 +708,39 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "down":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward1":
+      case "forward2":
+           // no overlap prevention should be required for this.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -720,26 +785,6 @@ class ForwardDownForwardPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "down":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "forward1":
-      case "forward2":
-           // no overlap prevention should be required for this.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 class DownForwardDownBackwardUpPath extends FlowConnectorPath {
@@ -759,16 +804,51 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "down2":
+           d.forward1 -= NUDGE_SPACING;
+           d.backward -= NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "up":
+           d.backward += NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "backward":
+           d.down2 += NUDGE_SPACING;
+           d.up += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down1":
+      case "forward1":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -848,38 +928,6 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "down2":
-           d.forward1 -= NUDGE_SPACING;
-           d.backward -= NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "up":
-           d.backward += NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "backward":
-           d.down2 += NUDGE_SPACING;
-           d.up += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down1":
-      case "forward1":
-           // These lines can be ignored because overlaps are tolerated or not relevant.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -898,16 +946,40 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "up":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down":
+      case "forward1":
+      case "forward2":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -965,27 +1037,6 @@ class DownForwardUpPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "up":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down":
-      case "forward1":
-      case "forward2":
-           // These lines can be ignored because overlaps are tolerated or not relevant.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -1006,16 +1057,51 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "up":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "forward2":
+           d.up += NUDGE_SPACING;
+           d.down2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down2":
+           d.forward2 -= NUDGE_SPACING;
+           d.forward3 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down1":
+      case "forward1":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -1096,38 +1182,6 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "up":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "forward2":
-           d.up += NUDGE_SPACING;
-           d.down2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down2":
-           d.forward2 -= NUDGE_SPACING;
-           d.forward3 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down1":
-      case "forward1":
-           // These lines can be ignored because overlaps are tolerated or not relevant.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -1146,16 +1200,40 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  nudge(linename) {
+    var d = this.#config.dimensions.current;
+    var nudged = false;
+    switch(linename) {
+      case "down2":
+           d.forward1 -= NUDGE_SPACING;
+           d.forward2 += NUDGE_SPACING;
+           nudged = true;
+           break;
+
+      case "down1":
+      case "forward1":
+      case "forward2":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
+    }
+
+    this.#calculatePath(d);
+    this.$node.find("path:first").attr("d", this.#path);
+    return nudged;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -1214,27 +1292,6 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
 
     return this.#path;
   }
-
-  nudge(linename) {
-    var d = this.#config.dimensions.current;
-    var nudged = false;
-    switch(linename) {
-      case "down2":
-           d.forward1 -= NUDGE_SPACING;
-           d.forward2 += NUDGE_SPACING;
-           nudged = true;
-           break;
-
-      case "down1":
-      case "forward1":
-      case "forward2":
-           // These lines can be ignored because overlaps are tolerated or not relevant.
-    }
-
-    this.path(d);
-    this.$node.find("path:first").attr("d", this.#path);
-    return nudged;
-  }
 }
 
 
@@ -1251,16 +1308,33 @@ class DownForwardPath extends FlowConnectorPath {
     }
 
     this.#config = this.config;
-    this.#path = this.path;
 
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardPath";
-    this.path(dimensions);
+    this.#calculatePath(dimensions);
     this.build();
   }
 
+  get path() {
+    return this.#path;
+  }
+
+  // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
+  // to be the next adjacent item, it should not have any overlap issues which would mean
+  // nudge() functionality is also not a requirement. The 'down1' line is likely to clash with
+  // others coming from the same Branch node, but they are ok to overlap as they should all
+  // appear to be a single line.
+  nudge(linename) {
+    switch(linename) {
+      case "down":
+      case "forward":
+           // These lines can be ignored because overlaps are tolerated or not relevant.
+    }
+    return false;
+  }
+
   // Get or Set internal _path value
-  path(dimensions) {
+  #calculatePath(dimensions) {
     if(arguments.length) {
       let x = this.points.from_x;
       let y = this.points.from_y;
@@ -1295,20 +1369,6 @@ class DownForwardPath extends FlowConnectorPath {
     }
 
     return this.#path;
-  }
-
-  // Since this arrow simply goes from Branch, via Condition A to point B, which is expected
-  // to be the next adjacent item, it should not have any overlap issues which would mean
-  // nudge() functionality is also not a requirement. The 'down1' line is likely to clash with
-  // others coming from the same Branch node, but they are ok to overlap as they should all
-  // appear to be a single line.
-  nudge(linename) {
-    switch(linename) {
-      case "down":
-      case "forward":
-           // These lines can be ignored because overlaps are tolerated or not relevant.
-    }
-    return false;
   }
 }
 

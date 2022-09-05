@@ -8,7 +8,6 @@ describe("DownForwardUpForwardDownPath", function() {
 
   describe("Methods", function() {
     var created;
-    var expectedPathValue = "M 701,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 0 10,-10 v-308 a10,10 0 0 1 10,-10 h284 a10,10 0 0 1 10,10 v63 a10,10 0 0 0 10,10 h0";
     const POINTS = {
                      from_x: 701,
                      from_y: 125,
@@ -34,42 +33,25 @@ describe("DownForwardUpForwardDownPath", function() {
       created = {};
     });
 
-    /* TEST METHOD:  path()
-     *
-     * Differs only from FlowConnectorPath tests by using specific dimensions.
+
+    /* TEST METHOD: prop()
      **/
-    it("should return the path value set in constructor", function() {
-      expect(created.connector.path()).to.exist;
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(id) available", function() {
+      expect(created.connector.prop("id")).to.exist;
+      expect(created.connector.prop("id")).to.equal(COMPONENT_ID);
     });
 
-    it("should update (set) the path value when receiving new dimensions", function() {
-      var original = created.connector.config.dimensions.original;
-      var updated = {
-                      down1: 188,
-                      forward1: 515,
-                      up: 318,
-                      forward2: 294,
-                      down2: 73,
-                      forward3: 10
-                    }
-
-      // Original value created by constructor.
-      expect(created.connector.path()).to.equal(expectedPathValue);
-      expect(created.connector.config.dimensions.current).to.eql(original);
-
-      // Update with some new dimensions.
-      created.connector.path(updated);
-      expect(original).to.not.eql(updated);
-      expect(created.connector.config.dimensions.current).to.eql(updated);
-      expect(created.connector.path()).to.equal(String("M 701,125 v188 a10,10 0 0 0 10,10 h515 a10,10 0 0 0 10,-10 v-318 a10,10 0 0 1 10,-10 h294 a10,10 0 0 1 10,10 v73 a10,10 0 0 0 10,10 h10"));
-
-      // Reset to avoid breaking any other tests.
-      created.connector.path(original);
-      expect(created.connector.config.dimensions.current).to.eql(original);
-      expect(created.connector.path()).to.equal(expectedPathValue);
+    it("should make prop(from) available", function() {
+      expect(created.connector.prop("from")).to.exist;
+      expect(created.connector.prop("from").id).to.exist;
+      expect(created.connector.prop("from").id).to.equal(c.FAKE_FLOW_ITEM_1.id);
     });
 
+    it("should make prop(to) available", function() {
+      expect(created.connector.prop("to")).to.exist;
+      expect(created.connector.prop("to").id).to.exist;
+      expect(created.connector.prop("to").id).to.equal(c.FAKE_FLOW_ITEM_2.id);
+    });
 
     /* TEST METHOD: build()
      *
@@ -198,10 +180,10 @@ describe("DownForwardUpForwardDownPath", function() {
         bottom: 10
       });
 
-      var originalPath = clashingPath.connector.path();
+      var originalPath = clashingPath.connector.path;
       expect(clashingPath.connector.config.dimensions).to.eql(created.connector.config.dimensions);
       expect(created.connector.avoidOverlap(clashingPath.connector)).to.be.true;
-      expect(clashingPath.connector.path()).to.not.eql(originalPath);
+      expect(clashingPath.connector.path).to.not.eql(originalPath);
 
       // clean up what we created on the fly.
       clashingPath.connector.$node.remove();
@@ -225,9 +207,9 @@ describe("DownForwardUpForwardDownPath", function() {
         bottom: 10
       });
 
-      var originalPath = nonClashingPath.connector.path();
+      var originalPath = nonClashingPath.connector.path;
       expect(created.connector.avoidOverlap(nonClashingPath.connector)).to.be.false;
-      expect(nonClashingPath.connector.path()).to.equal(originalPath);
+      expect(nonClashingPath.connector.path).to.equal(originalPath);
 
       // clean up what we created on the fly.
       nonClashingPath.connector.$node.remove();

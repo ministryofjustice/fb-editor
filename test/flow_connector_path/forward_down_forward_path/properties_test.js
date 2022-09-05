@@ -3,8 +3,8 @@ require("../../setup");
 describe("ForwardDownForwardPath", function() {
   const helpers = require("../helpers.js");
   const c = helpers.constants;
-  const CONTAINER_ID = "forwarddowndforwardpath-for-testing-properties-container";
-  const COMPONENT_ID = "forwarddowndforwardpath-for-testing-properties-connector";
+  const CONTAINER_ID = "forwarddownforwardpath-for-testing-properties-container";
+  const COMPONENT_ID = "forwarddownforwardpath-for-testing-properties-connector";
 
   describe("Properties", function() {
     var created;
@@ -35,27 +35,15 @@ describe("ForwardDownForwardPath", function() {
       created = {};
     });
 
-    it("should make ForwardDownForwardPath.id public", function() {
-      expect(created.connector.id).to.exist;
-      expect(created.connector.id).to.equal(COMPONENT_ID);
+    it("should return path set in constructor", function() {
+      expect(created.connector.path).to.exist;
+      expect(created.connector.path).to.equal("M 2701,63 h70 a10,10 0 0 1 10,10 v-20 a10,10 0 0 0 10,10 h2462");
     });
 
-    it("should make ForwardDownForwardPath.points public", function() {
+    it("should return points set in constructor", function() {
       expect(created.connector.points).to.exist;
       expect(created.connector.points.from_x).to.equal(POINTS.from_x);
       expect(created.connector.points.from_y).to.equal(POINTS.from_y);
-    });
-
-    it("should make ForwardDownForwardPath.from public", function() {
-      expect(created.connector.from).to.exist;
-      expect(created.connector.from.id).to.exist;
-      expect(created.connector.from.id).to.equal(c.FAKE_FLOW_ITEM_1.id);
-    });
-
-    it("should make ForwardDownForwardPath.to public", function() {
-      expect(created.connector.to).to.exist;
-      expect(created.connector.to.id).to.exist;
-      expect(created.connector.to.id).to.equal(c.FAKE_FLOW_ITEM_2.id);
     });
 
     it("should make ForwardDownForwardPath.type public", function() {
