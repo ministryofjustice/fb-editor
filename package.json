@@ -20,7 +20,7 @@
     "sanitize-html": "^2.7.1",
     "showdown": "^2.1.0",
     "sinon": "^14.0.0",
-    "tabbable": "^5.3.3"
+    "tabbable": "^6.0.0"
   },
   "version": "0.1.0",
   "devDependencies": {

@@ -53,7 +53,7 @@ const {
   uniqueString
 } = require('../../utilities');
 
-const tabbable = require('tabbable');
+const tabbable = require('tabbable').tabbable;
 const ActivatedMenuItem = require('./activated_menu_item');
 const ActivatedMenuActivator = require('./activated_menu_activator');
 const ActivatedMenuContainer = require('./activated_menu_container');
@@ -266,15 +266,17 @@ class ActivatedMenu {
             break;
           case 'Tab':
             event.preventDefault();
+            // close will set focus on the activator by default, so we call first
+            this.close();
+            // now we can set the focus to the correct item
             let tabbableElements = tabbable(document, { displayCheck: 'full' })
             let index = tabbableElements.indexOf(this.activator.$node[0]);
-            //focus on the next item after the actvator node
+            // focus on the next/previous item after the activator node
             if( shiftKey ) {
               tabbableElements[index-1].focus();
             } else {
               tabbableElements[index+1].focus();
             }
-            this.close();
             break; 
         }
       }
