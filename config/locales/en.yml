@@ -275,6 +275,9 @@ en:
         label: 'Form name'
         hint: 'The visible name of your form'
         warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact us</a> to change your form’s name.'
+    from_address:
+      heading: "'From' address"
+      lede: Emails sent by your form, either to you or to people filling it in, will come from this address
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).
@@ -297,6 +300,9 @@ en:
         configure_pdf_label: PDF attachment
         save_test: Save Test settings
         save_live: Save Live settings
+      from_address:
+        label: "'From' address"
+        hint: Emails sent by your form will come from this address
   publish:
     name: 'Publishing'
     heading: 'Publishing'
@@ -366,6 +372,9 @@ en:
         ga4_hint: For example, G-0000004
         ga4_test: *ga4
         ga4_live: *ga4
+      from_address:
+        from_address_email: "From address"
+        from_address_email_hint: This should generally be a shared team account
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
