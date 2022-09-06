@@ -373,8 +373,8 @@ en:
         ga4_test: *ga4
         ga4_live: *ga4
       from_address:
-        from_address_email: "From address"
-        from_address_email_hint: This should generally be a shared team account
+        email: "'From' address"
+        from_address_hint: This should generally be a shared team account
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
@@ -410,6 +410,8 @@ en:
     errors:
       summary_title: There is a problem
       models:
+        from_address:
+          invalid: Enter an email address in the correct format, like name@example.com
         publish_service_creation:
           blank_username: 'Enter a username'
           blank_password: 'Enter a password'

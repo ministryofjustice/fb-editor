@@ -1,0 +1,54 @@
+<div class="govuk-grid-row">
+  <% if @from_address.errors.present? %>
+    <div class="govuk-grid-column-two-thirds govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+      <h2 class="govuk-error-summary__title" id="error-summary-title">
+        <%= t('activemodel.errors.summary_title') %>
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <% @from_address.errors.each do |error|  %>
+            <li><a href="#<%= error.attribute %>"><%= error.message %></a></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl"><%= t('settings.from_address.heading') %></h1>
+
+    <p class="govuk-!-margin-bottom-7"><%= t('settings.from_address.lede') %></p>
+
+    <%= form_for @from_address, method: :post, url: settings_from_address_index_path(service.service_id) do |f| %>
+      <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+        <% f.object.errors[:email].each do |message| %>
+          <p class="govuk-error-message"><%= message %></p>
+        <% end %>
+
+        <%= f.label :email, class: "govuk-label" do %>
+
+          <%= t('activemodel.attributes.from_address.email') %>
+          <div class="govuk-hint">
+            <%= t('activemodel.attributes.from_address.from_address_hint') %>
+          </div>
+        <% end %>
+
+        <%= f.text_field :email, value: f.object.email_address, class: "govuk-input width-responsive-two-thirds", id: "email" %>
+      </div>
+
+      <% if @from_address_warning.present? %>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
+            <%= @from_address_warning.message %>
+          </strong>
+        </div>
+      <% end %>
+
+      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+        <%= t('actions.save') %>
+      </button>
+    <% end %>
+  </div>
+</div>

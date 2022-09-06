@@ -11,6 +11,7 @@ class DefaultConfiguration
   def create
     create_service_secret
     create_private_public_keys
+    create_from_address
   end
 
   private
@@ -49,6 +50,13 @@ class DefaultConfiguration
       name: name,
       value: value,
       service_id: service.service_id
+    )
+  end
+
+  def create_from_address
+    FromAddress.create!(
+      service_id: service.service_id,
+      email: FromAddress::DEFAULT_EMAIL_FROM
     )
   end
 end
