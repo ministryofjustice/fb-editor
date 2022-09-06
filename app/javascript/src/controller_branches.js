@@ -282,7 +282,7 @@ BranchesController.addBranchEventListeners = function(view) {
 
   // We want to present a Confirmation Dialog before removing the Branch.
   view.$document.on(EVENT_BRANCH_REMOVER_CONFIRM, function(event, data) {
-      console.log('branch remover');
+      console.log({data})
       view.dialogConfirmationDelete.open({
         heading: view.text.dialogs.heading_delete_branch,
         content: view.text.dialogs.message_delete_branch,

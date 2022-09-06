@@ -32,7 +32,6 @@ const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_textarea');
 const AutocompleteQuestion = require('./question_autocomplete');
 
-// const DialogConfiguration = require('./component_dialog_configuration');
 const Dialog = require('./component_dialog');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DialogForm = require('./component_dialog_form');
@@ -283,9 +282,11 @@ function addQuestionMenuListeners(view) {
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
-    view.dialogConfiguration.open({
-      content: html
-    }, (dialog) => { question.required = dialog.content.content } );
+    view.dialogConfiguration.open({ 
+        content: html
+      }, (dialog) => { 
+        dialog.confirmAction = (dialog) => { question.required = dialog.content.content };
+    });
   });
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
@@ -487,19 +488,14 @@ function addContentMenuListeners(view) {
     view.dialogConfirmationDelete.open({
         heading: html.replace(/#{label}/, ""),
         confirm: view.text.dialogs.button_delete_component
-      }, function() {
-        // Workaround solution that doesn't require extra backend work
-        // 1. First remove component from view
-        component.$node.hide();
-
-        // 2. Update form (in case anything else has changed)
-        view.dataController.update();
-
-        // 3. Remove corresponding component from form
-        component.remove();
-
-        // 4. Trigger save required (to enable Save button)
-        view.dataController.saveRequired(true);
+      }, (dialog) => {
+        dialog.confirmAction = function() {
+          // Workaround solution that doesn't require extra backend work
+          component.$node.hide(); // 1. First remove component from view
+          view.dataController.update(); // 2. Update form (in case anything else has changed)
+          component.remove(); // 3. Remove corresponding component from form
+          view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
+        }
     });
   });
 }
@@ -627,8 +623,8 @@ function enhanceQuestions(view) {
         view.dialogConfirmationDelete.open({
             heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             confirm: view.text.dialogs.button_delete_option
-          }, function() {
-            item.component.removeItem(item);
+        }, (dialog) => {
+            dialog.confirmAction = () => { item.component.removeItem(item) };
         });
       }
     });
@@ -659,8 +655,8 @@ function enhanceQuestions(view) {
         view.dialogConfirmationDelete.open({
             heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             confirm: view.text.dialogs.button_delete_option
-          }, function() {
-            item.component.removeItem(item);
+        }, (dialog) => {
+            dialog.confirmAction = () => { item.component.removeItem(item) };
         });
       }
 
