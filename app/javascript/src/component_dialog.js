@@ -40,8 +40,19 @@ class Dialog {
     this.#config.activator = $node;
   }
 
+  set onClose(callable) {
+    this.originalOnClose = this.#config.onClose;
+    this.#config.onClose = callable;
+  }
+
   set onConfirm(callable) {
+    this.originalOnConfirm = this.#config.onConfirm;
     this.#config.onConfirm = callable;
+  }
+
+  set onOpen(callable) {
+    this.originalOnOpen = this.#config.onOpen;
+    this.#config.onOpen = callable;
   }
 
   get state(){
@@ -87,8 +98,12 @@ class Dialog {
     this.$node.dialog('close');
     this.#state = 'closed';
 
-    safelyActivateFunction(callback || this.#config.onClose, dialog);
-    this.#config.onConfirm = function() {};
+    safelyActivateFunction(callback || function(){}, dialog);
+    safelyActivateFunction(this.#config.onClose, dialog);
+
+    this.#config.onClose = this.originalOnClose || function() {};
+    this.#config.onConfirm = this.originalOnConfirm || function() {};
+    this.#config.onOpen = this.originalOnOpen || function() {};
   }
 
   focus() {
