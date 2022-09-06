@@ -34,7 +34,7 @@ class NewServiceGenerator
   end
 
   def footer_pages
-    I18n.t('footer').map do |attributes|
+    I18n.t('presenter.footer').map do |_, attributes|
       metadata = NewPageGenerator.new(
         page_type: 'standalone',
         page_url: attributes[:url],
