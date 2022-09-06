@@ -282,11 +282,10 @@ function addQuestionMenuListeners(view) {
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
+    view.dialogConfiguration.onConfirm = (dialog) => { question.required = dialog.content.content };
     view.dialogConfiguration.open({ 
         content: html
-      }, (dialog) => { 
-        dialog.confirmAction = (dialog) => { question.required = dialog.content.content };
-    });
+      });
   });
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
@@ -485,17 +484,16 @@ function addContentMenuListeners(view) {
   // ContentMenuSelectionRemove
   view.$document.on("ContentMenuSelectionRemove", function(event, component) {
     var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.onConfirm = function() {
+      // Workaround solution that doesn't require extra backend work
+      component.$node.hide(); // 1. First remove component from view
+      view.dataController.update(); // 2. Update form (in case anything else has changed)
+      component.remove(); // 3. Remove corresponding component from form
+      view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
+    };
     view.dialogConfirmationDelete.open({
-        heading: html.replace(/#{label}/, ""),
-        confirm: view.text.dialogs.button_delete_component
-      }, (dialog) => {
-        dialog.confirmAction = function() {
-          // Workaround solution that doesn't require extra backend work
-          component.$node.hide(); // 1. First remove component from view
-          view.dataController.update(); // 2. Update form (in case anything else has changed)
-          component.remove(); // 3. Remove corresponding component from form
-          view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
-        }
+      heading: html.replace(/#{label}/, ""),
+      confirm: view.text.dialogs.button_delete_component
     });
   });
 }
@@ -620,11 +618,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
             heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             confirm: view.text.dialogs.button_delete_option
-        }, (dialog) => {
-            dialog.confirmAction = () => { item.component.removeItem(item) };
         });
       }
     });
@@ -652,11 +649,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
+        view.dialogconfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
             heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             confirm: view.text.dialogs.button_delete_option
-        }, (dialog) => {
-            dialog.confirmAction = () => { item.component.removeItem(item) };
         });
       }
 

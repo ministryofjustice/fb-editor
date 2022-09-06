@@ -40,8 +40,8 @@ class Dialog {
     this.#config.activator = $node;
   }
 
-  set confirmAction(action) {
-    this.#config.onConfirm = action;
+  set onConfirm(callable) {
+    this.#config.onConfirm = callable;
   }
 
   get state(){
@@ -65,14 +65,14 @@ class Dialog {
     return this.#state == 'open';
   }
 
-  open(text, callback) {
+  open(text) {
     const dialog = this;
 
     this.content = text || {};
     this.$node.dialog('open');
     this.#state = "open";
 
-    safelyActivateFunction(callback || this.#config.onOpen, dialog);
+    safelyActivateFunction(this.#config.onOpen, dialog);
 
     queueMicrotask(() => {
       dialog.focus();
@@ -88,6 +88,7 @@ class Dialog {
     this.#state = 'closed';
 
     safelyActivateFunction(callback || this.#config.onClose, dialog);
+    this.#config.onConfirm = function() {};
   }
 
   focus() {
@@ -103,6 +104,7 @@ class Dialog {
       this.activator.focus();
     }
   }
+
 
   #initialize($node) {
     this.$node = $node;
@@ -188,7 +190,7 @@ class Dialog {
     const $button = $(this.#config.confirmOnClickSelector, this.$container).first();
     $button.on("click", function(e) {
       e.preventDefault(); 
-      dialog.close(dialog.confirmAction);
+      dialog.close(dialog.#config.onConfirm);
     });
   }
   

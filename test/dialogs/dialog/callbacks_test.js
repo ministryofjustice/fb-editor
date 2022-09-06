@@ -57,7 +57,8 @@ describe("Dialog", function() {
     it("should call custom onConfirm when passed in", function() {
       var customConfirmCallback = sinon.spy();
       var $button = $('button[data-node="confirm"]', created.$node);
-      created.open({}, customConfirmCallback);
+      created.onConfirm = customConfirmCallback;
+      created.open({});
 
       $button.click();
 

@@ -99,11 +99,10 @@ class PageMenu extends ActivatedMenu {
   deleteItem(element) {
     var view = this._config.view;
     var $link = element.find("> a");
+    view.dialogConfirmationDelete.onConfirm = () => { post($link.attr("href"), { _method: "delete" }) };
     view.dialogConfirmationDelete.open({
-        heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
-        confirm: view.text.dialogs.button_delete_page
-      }, function() {
-        post($link.attr("href"), { _method: "delete" });
+      heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
+      confirm: view.text.dialogs.button_delete_page
     });
   }
 
@@ -116,7 +115,6 @@ class PageMenu extends ActivatedMenu {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
-          console.log(this.dataset.url);
           post(this.dataset.url, { _method: "delete" });
         });
       }
