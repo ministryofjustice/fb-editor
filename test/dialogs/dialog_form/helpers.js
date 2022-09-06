@@ -77,7 +77,7 @@ function createRemoteDialog(id, server, config) {
   // Include any passed config items.
   if(config) {
     for(var prop in config) {
-      if(config.hasownproperty(prop)) {
+      if(config.hasOwnProperty(prop)) {
         conf[prop] = config[prop];
       }
     }

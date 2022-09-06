@@ -1,11 +1,10 @@
 require('../../setup');
 const GlobalHelpers = require('../../helpers');
 
-describe("DialogForm", function() {
+describe("DialogApiRequest", function() {
 
   const helpers = require("./helpers.js");
   const c = helpers.constants;
-  const COMPONENT_ID = "form-dialog-properties-test";
 
   describe("Properties", function() {
 
