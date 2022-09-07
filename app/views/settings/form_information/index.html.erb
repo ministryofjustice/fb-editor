@@ -1,7 +1,7 @@
 <h1 class="govuk-heading-xl"><%= t('settings.form_information.name') %></h1>
 
 <%= form_for @settings, as: :service, url: settings_form_information_index_path(service.service_id) do |f| %>
-  <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+  <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
     <%#= f.label :service_name, class: "govuk-label" do %>
       <%#= f.object.class.human_attribute_name :service_name %>
     <%# end %>
