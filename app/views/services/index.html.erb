@@ -26,14 +26,14 @@
            data-cancel-text="<%= t('services.cancel') %>"
            data-component="FormCreateDialog">
         <%= form_for(@service_creation, url: services_path) do |f| %>
-          <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+          <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
             <%= f.label :service_name, class: "govuk-label govuk-label--m" %>
             <% f.object.errors.each do |error|  %>
               <p class="govuk-error-message"><%= error.message %></p>
             <% end %>
             <%= f.text_field :service_name, class: "govuk-input" %>
           </div>
-            
+
           <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>
           <%# f.button t('actions.cancel'), class: "govuk-button govuk-button--secondary", type: 'button' %>
         <% end %>
