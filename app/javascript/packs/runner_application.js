@@ -4,11 +4,15 @@
 // that code so it'll be compiled.
 
 require("@rails/ujs").start()
+require("../src/runner/contentloaded.js")
+require("../src/runner/analytics")
 require("../src/runner/index")
-// window.analytics = require("../src/runner_analytics") Not required for preview in Editor (exists in Runner version)
+
+// Entry point for fb-editor stylesheets
+import "../styles/application.scss"
 
 const accessibleAutocomplete = require("accessible-autocomplete")
-import 'accessible-autocomplete/dist/accessible-autocomplete.min.css' 
+import 'accessible-autocomplete/dist/accessible-autocomplete.min.css'
 
 // Initialise autocomplete components
 const autocompleteElements = document.querySelectorAll('.fb-autocomplete');
@@ -57,15 +61,3 @@ if(autocompleteComponent) {
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
-
-
-/*********************************************
- * EDITOR ONLY ADDITIONS BELOW.
- *********************************************/
-
-// Little bit hacky but we want to prevent the
-// Cookie banner from showing in preview mode.
-const cookieBanner = document.getElementById("govuk-cookie-banner");
-if(cookieBanner) {
-  cookieBanner.style.display = "none";
-}
