@@ -871,11 +871,11 @@ function cleanInput(input) {
   // 2.
   input = input.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
   // 3.
-  input = input.replace(/\<([\w\-]+@{1}[\w\-\.]+)>/mig, "$mailto$1$mailto");
+  input = input.replace(/\<([\w\-\.]+@{1}[\w\-\.]+)>/mig, "$mailto$1$mailto");
   // 4.
   input = sanitizeHtml(input);
   // 5.
-  input = input.replace(/\$mailto([\w\-]+@{1}[\w\-\.]+)\$mailto/mig, "<$1>");
+  input = input.replace(/\$mailto([\w\-\.]+@{1}[\w\-\.]+)\$mailto/mig, "<$1>");
   // 6.
   input = input.replace(/\n&gt;(\s{1}.*?\n)/mig, "\n>$1");
   return input;
