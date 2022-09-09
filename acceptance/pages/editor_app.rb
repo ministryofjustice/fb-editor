@@ -103,7 +103,7 @@ class EditorApp < SitePrism::Page
   element :add_page_here_link, :link, I18n.t('actions.add_page')
   element :move_page_link, :link, I18n.t('actions.move_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
-  element :delete_page_modal_button, :link, I18n.t('dialogs.button_delete'), visible: true
+  element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
 
   def main_flow_titles
@@ -207,7 +207,7 @@ class EditorApp < SitePrism::Page
 
   element :delete_branch_link, :link, I18n.t('actions.delete_branch')
   element :delete_branching_point_button, :button, I18n.t('branches.delete_modal.submit')
-  element :delete_and_update_branching_link, :link, I18n.t('pages.delete_modal.delete_and_update_branching')
+  element :delete_and_update_branching_link, :button, I18n.t('pages.delete_modal.delete_and_update_branching')
 
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')

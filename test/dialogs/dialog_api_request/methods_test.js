@@ -12,7 +12,7 @@ describe("DialogApiRequest", function() {
     var created;
     var server;
 
-    before(function() {
+    beforeEach(function() {
       var response = `<div class="component component-dialog" id="` + c.COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
@@ -22,39 +22,37 @@ describe("DialogApiRequest", function() {
       created = helpers.createDialog(response, server);
     });
 
-    after(function() {
+    afterEach(function() {
       server.restore();
       created.$node.remove();
       created = {};
     });
+    
+    it("should open the dialog", function() {
+      created.dialog.open();
+      expect(created.dialog.isOpen()).to.be.true;
+      expect(created.dialog.state).to.equal("open");
+
+    });
 
     it("should close the dialog", function() {
-      expect(created.dialog.$node.dialog("isOpen")).to.be.true;
-      expect(created.dialog.state).to.equal("open");
+      created.dialog.open();
 
       created.dialog.close();
-      expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+      expect(created.dialog.isOpen()).to.be.false;
       expect(created.dialog.state).to.equal("closed");
     });
 
-    it("should open the dialog", function() {
-      expect(created.dialog.$node.dialog("isOpen")).to.be.false;
-      expect(created.dialog.state).to.equal("closed");
-
-      created.dialog.open();
-      expect(created.dialog.$node.dialog("isOpen")).to.be.true;
-      expect(created.dialog.state).to.equal("open");
-    });
 
     it("should close dialog using standard close button", function() {
       var $close = created.dialog.$container.find(".ui-dialog-titlebar-close");
 
       created.dialog.open();
-      expect(created.dialog.$node.dialog("isOpen")).to.be.true;
+      expect(created.dialog.isOpen()).to.be.true;
       expect(created.dialog.state).to.equal("open");
 
       $close.click();
-      expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+      expect(created.dialog.isOpen()).to.be.false;
       expect(created.dialog.state).to.equal("closed");
     });
 
@@ -63,11 +61,11 @@ describe("DialogApiRequest", function() {
         var $buttons = created.dialog.$container.find("button");
 
         created.dialog.open();
-        expect(created.dialog.$node.dialog("isOpen")).to.be.true;
+        expect(created.dialog.isOpen()).to.be.true;
         expect(created.dialog.state).to.equal("open");
 
         $buttons.last().click();
-        expect(created.dialog.$node.dialog("isOpen")).to.be.false;
+        expect(created.dialog.isOpen()).to.be.false;
         expect(created.dialog.state).to.equal("closed");
       });
     });
@@ -78,7 +76,7 @@ describe("DialogApiRequest", function() {
       var createdWithoutButtons;
       var server;
 
-      before(function() {
+      beforeEach(function() {
         var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
@@ -91,7 +89,7 @@ describe("DialogApiRequest", function() {
         });
       });
 
-      after(function() {
+      afterEach(function() {
         server.restore();
         createdWithoutButtons.$node.remove();
         createdWithoutButtons = null;
@@ -102,11 +100,11 @@ describe("DialogApiRequest", function() {
         var $button = dialog.$container.find("." + CLASSNAME_BUTTON_TEMPLATE);
 
         dialog.open();
-        expect(dialog.$node.dialog("isOpen")).to.be.true;
+        expect(dialog.isOpen()).to.be.true;
         expect(dialog.state).to.equal("open");
 
         $button.click();
-        expect(dialog.$node.dialog("isOpen")).to.be.false;
+        expect(dialog.isOpen()).to.be.false;
         expect(dialog.state).to.equal("closed");
       });
     });

@@ -16,14 +16,11 @@
       legend: { text: t('branches.delete_modal.destinations') })
     %>
 
-  <p data-node="content"><%= t('branches.delete_modal.before_submit') %></p>
+    <p data-node="content"><%= t('branches.delete_modal.before_submit') %></p>
 
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <div class="ui-dialog-buttonset">
-        <%= f.submit t('branches.delete_modal.submit'), class: 'govuk-button fb-govuk-button' %>
-        <button type="button" class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.cancel') %></button>
-
-      </div>
+    <div class="govuk-button-group">
+      <%= f.button t('branches.delete_modal.submit'), class: 'govuk-button govuk-button--warning', data: { method: "delete" } %>
+      <button type="button" class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.cancel') %></button>
     </div>
   <% end %>
 </div>

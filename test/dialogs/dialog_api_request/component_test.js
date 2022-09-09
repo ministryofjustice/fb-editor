@@ -12,7 +12,7 @@ describe("DialogApiRequest", function() {
     var created;
     var server;
 
-    before(function() {
+    beforeEach(function() {
       var response = `<div class="component component-dialog" id="` + c.COMPONENT_ID + `">
                         <h3>Heading content here</h3>
                         <p>Message content here</p>
@@ -22,7 +22,7 @@ describe("DialogApiRequest", function() {
       created = helpers.createDialog(response, server);
     });
 
-    after(function() {
+    afterEach(function() {
       server.restore();
       created.$node.remove();
       created = {};
@@ -47,24 +47,6 @@ describe("DialogApiRequest", function() {
       var $container = $dialog.parent('[role=dialog]');
       expect($container.hasClass(c.CLASSNAME_1)).to.be.true;
       expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
-    });
-
-    it("should make the $node public", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      expect(created.dialog.$node).to.exist;
-      expect(created.dialog.$node.length).to.equal(1);
-      expect(created.dialog.$node.get(0)).to.equal($dialog.get(0));
-    });
-
-    it("should make the instance available as data on the $node", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      expect($dialog.data("instance")).to.equal(created.dialog);
-    });
-
-    it("should make the $container public", function() {
-      expect(created.dialog.$container).to.exist;
-      expect(created.dialog.$container.length).to.equal(1);
-      expect(created.dialog.$container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
     describe("using generted buttons", function() {

@@ -39,6 +39,7 @@ const view = {
  **/
 function createDialog(response, server, config) {
   var conf = {
+    autoOpen: false,
     classes: {
       "ui-dialog": constants.CLASSNAME_1 + " " + constants.CLASSNAME_2,
     },

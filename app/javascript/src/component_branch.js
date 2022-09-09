@@ -242,15 +242,17 @@ class BranchConditionRemover {
   }
 
   confirm() {
+    var remover = this;
     var dialog = this.#config.dialog_delete;
     var text = this.#config.view.text;
     if(dialog) {
       // If we have set a confirmation dialog, use it...
+      this.#config.dialog_delete.onConfirm = function() { remover.activate() };
       this.#config.dialog_delete.open({
         heading: text.dialogs.heading_delete_condition,
         content: text.dialogs.message_delete_condition,
-        ok: text.dialogs.button_delete_condition
-      }, this.activate.bind(this));
+        confirm: text.dialogs.button_delete_condition
+      });
     }
     else {
       // ... otherwise just activate the functionality.
@@ -447,7 +449,6 @@ class BranchRemover {
   #action() {
     // 1. Trigger the related event for listeners.
     $(document).trigger("BranchRemover_Action", this);
-
     // 2. Finally pass off to the branch.
     this.branch.destroy();
   }
@@ -457,9 +458,11 @@ class BranchRemover {
   // required remover action to be handled by the view controller code.
   #confirm() {
     var remover = this;
+    this.#config.confirmation_remove = false;
     $(document).trigger("BranchRemover_Confirm", {
       instance: remover,
-      action: remover.#action.bind(remover)
+      action:  function () { remover.activate(); },
+      
     });
   }
 

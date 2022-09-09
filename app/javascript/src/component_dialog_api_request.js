@@ -14,8 +14,12 @@
  *
  **/
 
-const utilities = require('./utilities');
+const {
+  mergeObjects,
+  safelyActivateFunction,
+} = require('./utilities');
 
+const DialogActivator = require('./component_dialog_activator');
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -49,108 +53,192 @@ const utilities = require('./utilities');
  * }
  **/
 class DialogApiRequest {
+  #className = 'DialogApiRequest';
   #config;
   #state;
 
   constructor(url, config) {
-    var dialog = this;
-    var conf = utilities.mergeObjects({
-      buttons: []
+    this.#config = mergeObjects({
+      activator: false,
+      autoOpen: true,
+      buttons: [],
+      classes: {},
+      closeOnClickSelector: "",
+      onLoad: function(dialog) {},
+      onReady: function(dialog) {},
+      onOpen: function(dialog) {},
+      onClose: function(dialog) {},
     }, config);
 
+    this.#state = "closed";
     this.$node = $(); // Should be overwritten on successful GET
     this.$container = $(); // Should be overwritten on successful GET
-    this.#config = conf;
-    this.#state = "closed";
 
-    $.get(url)
-    .done( (response) => {
-        this.$node = $(response);
+    this.#initialize(url);
+  }
 
-      // Allow a passed function to run against the created $node (response HTML) before creating a dialog effect
-      utilities.safelyActivateFunction( dialog.#config.build, dialog);
+  get activator() {
+    return this.#config.activator;
+  }
 
-      this.$node.data("instance", dialog);
-      this.$node.dialog({
-        classes: conf.classes,
-        closeOnEscape: true,
-        height: "auto",
-        modal: true,
-        resizable: false,
-        open: function() { dialog.#state = "open"; },
-        close: function() { dialog.#state = "closed"; }
-      });
-
-      // Now jQueryUI dialog is in place let's initialise container and put class on it.
-      this.$container = this.$node.parents(".ui-dialog");
-      this.$container.addClass("DialogApiRequest");
-      
-      if(conf.closeOnClickSelector) {
-        let $buttons = $(conf.closeOnClickSelector, dialog.$node);
-        $buttons.eq(0).focus();
-        $buttons.on("click", function() {
-          dialog.close();
-        });
-      }
-      else {
-        this.$node.dialog("option", "buttons",
-          [
-            {
-              text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
-              click: () => {
-                // Attempt to run any passed button.click action.
-                if(dialog.#config.buttons.length > 0) {
-                  utilities.safelyActivateFunction(dialog.#config.buttons[0].click, dialog);
-                }
-
-                // Make sure the dialog closes
-                dialog.close();
-              }
-            },
-            {
-              text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[1].text || "cancel",
-              click: () => {
-                // Attempt to run any passed button.click action.
-                if(dialog.#config.buttons.length > 1) {
-                  utilities.safelyActivateFunction(dialog.#config.buttons[1].click, dialog);
-                }
-
-                // Make sure the dialog closes
-                dialog.close();
-              }
-            }
-          ]
-        );
-      }
-      utilities.safelyActivateFunction(dialog.#config.done, dialog);
-    });
+  set activator($node) {
+    this.#config.activator = $node;
   }
 
   get state() {
     return this.#state;
   }
 
+  isOpen() {
+    return this.#state == "open";
+  }
+
   open() {
-    var $node = this.$node;
+    const dialog = this;
+
     this.$node.dialog("open");
-    window.setTimeout(function() {
-      // Not great but works.
-      // We want the focus put inside dialog as all functionality to trap tabbing is there already.
-      // Because we sometimes open dialogs from other components, those other components may (like
-      // menus) shift focus from the opening dialog. We need this delay to allow those other events
-      // to play out before we try to set focus in the dialog. Delay time is arbitrary but we
-      // obviously want it as low as possible to avoid user annoyance. Increase only if have to.
-      $node.parent().find("input, button").not(".ui-dialog-titlebar-close").eq(0).focus();
-    }, 100);
+    safelyActivateFunction(this.#config.onOpen, dialog);
+    
+    queueMicrotask(() => {
+      dialog.focus();
+    });
   }
 
   close() {
-    // Attempt to refocus on original activator
-    if(this.#config.activator) {
-      this.#config.activator.focus();
-    }
+    const dialog = this;
+
     this.$node.dialog("close");
+    safelyActivateFunction(dialog.#config.onClose, dialog);
   }
+
+  focus() {
+    const el = this.$node.find('button:not([type="disabled"]):not([data-method="delete"])').eq(0);
+    if(el){
+      el.focus();
+    }
+  }
+
+  focusActivator() {
+    // Attempt to refocus on original activator
+    if(this.activator) {
+      this.activator.focus();
+    }
+  }
+
+  #initialize(url) {
+    const dialog = this;
+
+    $.get(url)
+    .done( (response) => {
+      this.$node = $(response);
+      safelyActivateFunction(dialog.#config.onLoad, dialog);
+
+      this.#build();
+      this.#enhance();
+
+      if(this.#config.autoOpen) {
+        this.open();
+      }
+    });
+  }
+
+  #build() {
+    const dialog = this;
+    
+    if(this.activator) {
+      this.#createActivator();
+    }
+
+    this.$node.dialog({
+      autoOpen: false,
+      classes: this.#config.classes,
+      closeOnEscape: true,
+      height: "auto",
+      modal: true,
+      resizable: false,
+      open: function() { dialog.#state = "open" },
+      close: function() { 
+        dialog.#state = "closed"; 
+        dialog.focusActivator(); 
+        dialog.#destroy();
+      }
+    });
+
+    this.$container = dialog.$node.parents(".ui-dialog");
+    this.$container.addClass(dialog.#className);
+    this.$node.data("instance", dialog);
+  }
+
+  #enhance() {
+    const dialog = this;
+
+    this.#setupButtons();
+
+    safelyActivateFunction(dialog.#config.onReady, dialog);
+  }
+
+  #setupButtons() {
+    const dialog = this;
+
+    if(this.#config.closeOnClickSelector) {
+      let $buttons = $(this.#config.closeOnClickSelector, dialog.$node);
+      $buttons.on("click", function() {
+        dialog.close();
+      });
+    }
+    else {
+      this.$node.dialog("option", "buttons",
+        [
+          {
+            text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
+            click: () => {
+              // Attempt to run any passed button.click action.
+              if(dialog.#config.buttons.length > 0) {
+                safelyActivateFunction(dialog.#config.buttons[0].click, dialog);
+              }
+              // Make sure the dialog closes
+              dialog.close();
+            }
+          },
+          {
+            text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[1].text || "cancel",
+            click: () => {
+              // Attempt to run any passed button.click action.
+              if(dialog.#config.buttons.length > 1) {
+                safelyActivateFunction(dialog.#config.buttons[1].click, dialog);
+              }
+              // Make sure the dialog closes
+              dialog.close();
+            }
+          }
+        ]
+      );
+    }
+  }
+
+  #destroy() {
+    if(this.$node.dialog('instance')) {
+      this.$node.dialog('destroy'); 
+    }
+    this.$node.remove();
+  }
+
+  #createActivator() {
+    var $marker = $("<span></span>");
+
+    this.$node.before($marker);
+    var activator = new DialogActivator(this.#config.activator, {
+      dialog: this,
+      text: this.#config.activatorText,
+      classes: this.#config.classes?.activator || '',
+      $target: $marker
+    });
+
+    this.activator = activator.$node;
+
+    $marker.remove();
+  }
+
 }
 
 

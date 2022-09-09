@@ -43,13 +43,11 @@ PublishController.index = function() {
 
   // When to show 15 minute message.
   if(view.publishFormTest.firstTimePublish() || view.publishFormProd.firstTimePublish()) {
-    view.dialog.content = {
+    view.dialog.open({
       ok: view.text.dialogs.button_publish,
       heading: view.text.dialogs.heading_publish,
       content: view.text.dialogs.message_publish
-    };
-
-    view.dialog.open();
+    });
   }
 }
 

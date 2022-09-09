@@ -32,7 +32,7 @@ const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_textarea');
 const AutocompleteQuestion = require('./question_autocomplete');
 
-const DialogConfiguration = require('./component_dialog_configuration');
+const Dialog = require('./component_dialog');
 const DialogApiRequest = require('./component_dialog_api_request');
 const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
@@ -258,7 +258,7 @@ function addQuestionMenuListeners(view) {
       activator: question.menu.selectedItem,
       closeOnClickSelector: ".govuk-button",
 
-      build: function(dialog) {
+      onLoad: function(dialog) {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
@@ -282,9 +282,10 @@ function addQuestionMenuListeners(view) {
     var required = question.data.validation.required;
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
-    view.dialogConfiguration.open({
-      content: html
-    }, (content) => { question.required = content } );
+    view.dialogConfiguration.onConfirm = (dialog) => { question.required = dialog.content.content };
+    view.dialogConfiguration.open({ 
+        content: html
+      });
   });
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
@@ -449,7 +450,7 @@ function addEditableComponentItemMenuListeners(view) {
       new DialogApiRequest(url, {
         activator: selectedItem,
         closeOnClickSelector: ".govuk-button",
-        build: function(dialog) {
+        onLoad: function(dialog) {
           dialog.$node.find("[data-method=delete]").on("click", function(e) {
             e.preventDefault();
             collectionItem.component.removeItem(collectionItem)
@@ -466,7 +467,7 @@ function addEditableComponentItemMenuListeners(view) {
       dialog.open({
         heading: view.text.dialogs.heading_can_not_delete_option,
         content: dialogContent,
-        ok: view.text.dialogs.button_understood,
+        confirm: view.text.dialogs.button_understood,
       });
     }
   });
@@ -483,22 +484,16 @@ function addContentMenuListeners(view) {
   // ContentMenuSelectionRemove
   view.$document.on("ContentMenuSelectionRemove", function(event, component) {
     var html = $(templateContent).filter("[data-node=remove]").text();
+    view.dialogConfirmationDelete.onConfirm = function() {
+      // Workaround solution that doesn't require extra backend work
+      component.$node.hide(); // 1. First remove component from view
+      view.dataController.update(); // 2. Update form (in case anything else has changed)
+      component.remove(); // 3. Remove corresponding component from form
+      view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
+    };
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
-      ok: view.text.dialogs.button_delete_component
-      }, function() {
-      // Workaround solution that doesn't require extra backend work
-      // 1. First remove component from view
-      component.$node.hide();
-
-      // 2. Update form (in case anything else has changed)
-      view.dataController.update();
-
-      // 3. Remove corresponding component from form
-      component.remove();
-
-      // 4. Trigger save required (to enable Save button)
-      view.dataController.saveRequired(true); // 4
+      confirm: view.text.dialogs.button_delete_component
     });
   });
 }
@@ -623,11 +618,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
+        view.dialogConfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
-          }, function() {
-          item.component.removeItem(item);
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            confirm: view.text.dialogs.button_delete_option
         });
       }
     });
@@ -655,11 +649,10 @@ function enhanceQuestions(view) {
         // Runs before onItemRemove when removing an editable Collection item.
         // Currently not used but added for future option and consistency
         // with onItemAdd (provides an opportunity for clean up).
+        view.dialogconfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
-          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-          ok: view.text.dialogs.button_delete_option
-          }, function() {
-          item.component.removeItem(item);
+            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+            confirm: view.text.dialogs.button_delete_option
         });
       }
 
@@ -677,7 +670,7 @@ function enhanceQuestions(view) {
 function createDialogConfiguration() {
   var $template = $("[data-component-template=DialogConfiguration]");
   var $node = $($template.text());
-  return new DialogConfiguration($node, {
+  return new Dialog($node, {
     autoOpen: false,
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),

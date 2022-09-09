@@ -18,7 +18,6 @@
 
 
 const Dialog = require('./component_dialog');
-const DialogConfirmation = require('./component_dialog_confirmation');
 const post = require('./utilities').post;
 
 
@@ -104,10 +103,8 @@ function createDialog() {
 function createDialogConfirmation() {
   var $template = $("[data-component-template=DialogConfirmation]");
   var $node = $($template.text());
-  return new DialogConfirmation($node, {
+  return new Dialog($node, {
     autoOpen: false,
-    cancelText: $template.data("text-cancel"),
-    okText: $template.data("text-ok"),
     classes: {
       "ui-dialog": $template.data("classes")
     }
@@ -122,10 +119,8 @@ function createDialogConfirmation() {
 function createDialogConfirmationDelete() {
   var $template = $("[data-component-template=DialogConfirmationDelete]");
   var $node = $($template.text());
-  return new DialogConfirmation($node, {
+  return new Dialog($node, {
     autoOpen: false,
-    cancelText: $template.data("text-cancel"),
-    okText: $template.data("text-ok"),
     classes: {
       "ui-dialog": $template.data("classes")
     }
