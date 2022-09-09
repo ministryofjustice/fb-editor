@@ -31,15 +31,6 @@ ActiveRecord::Schema.define(version: 2022_09_01_111358) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "global_service_configurations", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "value", null: false
-    t.string "deployment_environment", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["deployment_environment"], name: "index_global_service_configurations_on_deployment_environment"
-  end
-
   create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "provider"
     t.string "uid"
