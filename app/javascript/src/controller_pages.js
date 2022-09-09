@@ -128,6 +128,14 @@ PagesController.edit = function() {
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
+
+
+  // Bit hacky: Cookies page is going through this controller but content is static.
+  // The static content is wrapped in [fb-content-type=static] to help identify it.
+  // We need to identify it to run same HTML adjustments that we do in the Runner
+  // and presenter to support some GovUK styles in content. Doing that here.
+  supportGovUkStaticContent();
+
 }
 
 
@@ -761,6 +769,21 @@ function accessibilityQuestionViewEnhancements(view) {
   $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
   $(".govuk-hint").attr("aria-label", view.text.aria.hint);
 }
+
+
+/* Enhances the static content should it require special formatting
+ * or non-standard elements (same as we do with edited components).
+ * e.g.
+ *  - Adds GovUk classes to any <table> element
+ *  - Changes supported GovSpeak markup to required HTML.
+ **/
+function supportGovUkStaticContent() {
+  var content = document.querySelectorAll("[data-fb-content-type=static]");
+  for( var c=0; c<content.length; ++c) {
+    content[c].innerHTML = htmlAdjustment(content[c].innerHTML);
+  }
+}
+
 
 
 module.exports = PagesController;
