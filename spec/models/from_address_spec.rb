@@ -15,7 +15,6 @@ RSpec.describe FromAddress, type: :model do
       email: email
     }
   end
-  let(:default_email) { 'moj-forms@digital.justice.gov.uk' }
 
   describe '#email_address' do
     context 'when it is a valid email' do
@@ -36,6 +35,10 @@ RSpec.describe FromAddress, type: :model do
       it 'is valid' do
         # when the user submits an empty string, the default email is saved
         expect(from_address).to be_valid
+      end
+
+      it 'returns the default email address' do
+        expect(from_address.email_address).to eq(FromAddress::DEFAULT_EMAIL_FROM)
       end
     end
 
@@ -86,6 +89,14 @@ RSpec.describe FromAddress, type: :model do
       context 'encrypting email' do
         it 'saves an encrypted email' do
           expect(created_from_address.email).not_to eq('hello@gmail.com')
+        end
+      end
+
+      context 'when email is blank' do
+        let(:email) { '' }
+
+        it 'saves the default email from address' do
+          expect(created_from_address.decrypt_email).to eq(FromAddress::DEFAULT_EMAIL_FROM)
         end
       end
     end

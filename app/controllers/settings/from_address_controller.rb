@@ -4,11 +4,7 @@ class Settings::FromAddressController < FormController
   def index; end
 
   def create
-    @from_address.update!(
-      from_address_params.merge(
-        email: from_address_email
-      )
-    )
+    @from_address.update!(from_address_params)
 
     redirect_to settings_from_address_index_path(params[:id])
   rescue ActiveRecord::RecordInvalid
@@ -22,10 +18,7 @@ class Settings::FromAddressController < FormController
   private
 
   def assign_from_address
-    @from_address = FromAddress.find_by(service_id: params[:id])
-  end
-
-  def from_address_email
-    from_address_params[:email].presence || FromAddress::DEFAULT_EMAIL_FROM
+    # initialize for those forms that were created before FromAddress records existed
+    @from_address = FromAddress.find_or_initialize_by(service_id: params[:id])
   end
 end

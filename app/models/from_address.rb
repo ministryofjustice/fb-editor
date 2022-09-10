@@ -20,16 +20,15 @@ class FromAddress < ApplicationRecord
   DEFAULT_EMAIL_FROM = I18n.t('default_values.service_email_from')
 
   def email_address
+    return DEFAULT_EMAIL_FROM if email.blank?
+
     decrypt_email
   rescue ActiveSupport::MessageEncryptor::InvalidMessage
     email
   end
 
   def decrypt_email
-    if email.present?
-      @decrypt_email ||=
-        EncryptionService.new.decrypt(email)
-    end
+    @decrypt_email ||= EncryptionService.new.decrypt(email)
   end
 
   private
@@ -47,6 +46,6 @@ class FromAddress < ApplicationRecord
   end
 
   def encrypt_email
-    self.email = EncryptionService.new.encrypt(email)
+    self.email = EncryptionService.new.encrypt(email.presence || DEFAULT_EMAIL_FROM)
   end
 end
