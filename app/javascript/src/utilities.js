@@ -85,10 +85,10 @@ function safelyActivateFunction(func) {
   var args = Array.from(arguments);
   if(isFunction(func)) {
     if(args.length) {
-      func.apply(this, args.slice(1));
+      return func.apply(this, args.slice(1));
     }
     else {
-      func();
+      return func();
     }
   }
 }

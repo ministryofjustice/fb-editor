@@ -166,8 +166,14 @@ class EditableElement extends EditableBase {
  * back into HTML for non-edit view and to save.
  * (Edit mode controlled by focus and blur events).
  *
+ * Note; Using a textarea for input because it is more predictable than using a div
+ *       with contentEditable attribute.
+ *
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
+ *                  {
+ *                    htmlAdjustment: function(input) // Last minute adjustments before output HTML
+ *                  }
  **/
 class EditableContent extends EditableElement {
   constructor($node, config) {
@@ -175,9 +181,10 @@ class EditableContent extends EditableElement {
     var $input = $("<textarea class=\"input\"></textarea>");
     var $output = $("<div class=\"output\"></div>");
     var $span = $("<span>measure</span>");
+    var html = $node.html().trim(); // Stored Markdown is originally converted at template level
     var lineHeight;
 
-    // ??
+    // Use temporary hidden <span> for obtaining lineHeight measurement
     $span.css({
       font: "inherit",
       visibility: "hidden"
@@ -185,11 +192,8 @@ class EditableContent extends EditableElement {
 
     $node.append($span);
     lineHeight = $span.height();
-    $span.remove();
 
-    // Use a textarea for input because it is more predictable than
-    // using a div with contentEditable attribute.
-    $output.append($node.html());
+    // Empty everything in $node because we're moving things around.
     $node.empty();
     $node.append($input);
     $node.append($output);
@@ -212,15 +216,19 @@ class EditableContent extends EditableElement {
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
 
+
+    this._editing = false;
+    this._lineHeight = lineHeight;
+    this.$input = $input;
+    this.$output = $output;
+    this.content = convertToMarkdown(html);
+
     if(config.text.default_content) {
       this._defaultContent = config.text.default_content;
     }
 
-    this._editing = false;
-    this._content = convertToMarkdown($output.html().trim()); // trim removes whitespace from template.
-    this._lineHeight = lineHeight;
-    this.$input = $input;
-    this.$output = $output;
+    // Set initial html in output area.
+    this.#output(html);
   }
 
   // Get content must always return Markdown because that's what we save.
@@ -243,6 +251,11 @@ class EditableContent extends EditableElement {
   }
 
   set content(markdown) {
+    // Check if configuration requires external adjustment to markdown
+    if(this._config.markdownAdjustment) {
+      markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
+    }
+
     this._content = markdown;
     this.emitSaveRequired();
   }
@@ -259,15 +272,25 @@ class EditableContent extends EditableElement {
   }
 
   update() {
-    this.content = sanitiseHtml(this.$input.val().trim()); // Get the latest markdown
+    var markdown = this.$input.val().trim(); // Get the latest markdown.
+    this.content = cleanInput(markdown); // Set what will be saved.
     this.$node.removeClass(this._config.editClassname);
 
-    // Figure out what content to show
+    // Figure out what content to show in output area.
     let defaultContent = this._defaultContent || this._originalContent;
     let content = (this._content == "" ? defaultContent : this._content);
 
-    // Add latest content to output area
-    this.$output.html(convertToHtml(content));
+    this.#output(convertToHtml(content));
+  }
+
+  // Adds the passed content to output area.
+  #output(content) {
+    // Check if configuration requires external adjustment to html
+    if(this._config.htmlAdjustment) {
+      content = safelyActivateFunction(this._config.htmlAdjustment, content);
+    }
+
+    this.$output.html(content);
   }
 }
 
@@ -786,31 +809,31 @@ function createEditableCollectionItemMenu(item, config) {
     });
 }
 
+
 /* Convert HTML to Markdown by tapping into third-party code.
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
-  var cleaned = sanitiseHtml(html);
-  var markdown = converter.makeMarkdown(cleaned);
-  return sanitiseMarkdown(markdown);
+  var markdown = converter.makeMarkdown(html);
+  return cleanInput(markdown);
 }
 
-/* Extremely simple function to safely convert target elements,
- * such as <script>, so JS doesn't run in editor.
- * Note: Because we're converting from Markup, we need to be
- * careful about what is converted into entity or escaped form.
- * For that reason, we are trying to be minimalistic in approach.
+
+/* Convert Markdown to HTML by tapping into third-party code.
+ * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
-function sanitiseHtml(html) {
-  return sanitizeHtml(html);
+function convertToHtml(markdown) {
+  var html = converter.makeHtml(markdown);
+  return cleanInput(html);
 }
+
 
 /* Opportunity safely strip out anything that we don't want here.
  *
  * 1. Something in makeMarkdown is adding <!-- --> markup to the result
  *    so we're trying to get rid of it.
  *
- * 2. sanitizeHTML is altering automatic link syntax by removing
+ * 2. sanitize-html is altering automatic link syntax by removing
  *    everything in (including) angle brackets added by showdown.
  *
  *    e.g. [link text](<http://some.url/here>)
@@ -822,26 +845,45 @@ function sanitiseHtml(html) {
  *         [link text](http://some.url/here)
  *
  *         which give us the correct link element (url+text).
+ *
+ * 3. sanitize-html is removing <some@email.com> formatted markup that
+ *    is the recommended syntax in some documentation. This bit will
+ *    filter for that syntax and convert to $mailtosome@email.com$mailto
+ *    which will help to bypass sanitize-html (see step 5).
+ *
+ * 4. Converts unwanted HTML from input (when passed HTML or Markdown).
+ *    Note: Because we're converting from Markup, we need to be careful
+ *          about what is converted into entity or escaped form for
+ *          that reason, we are trying to be minimalistic in approach.
+ *
+ * 5. To follow step 3 (and this must happen after step 4), we now filter
+ *    for $mailtosome@email.com$mailto and replace with the original
+ *    angle brackets to reset to <some@email.com> markdown. It's worth
+ *    noting that, after saving, the markdown of <some@email.com> gets
+ *    converted to [some@email.com](mailto:some@email.com) anyway.
+ *
+ * 6. Fix markdown to blockquote element conversion (broken by the
+ *    sanitize-html) script converting bracket > into &gt; entity.
  **/
-function sanitiseMarkdown(markdown) {
+function cleanInput(input) {
   // 1.
-  markdown = markdown.replace(/\n<!--.*?-->/mig, "");
+  input = input.replace(/\n<!--.*?-->/mig, "");
   // 2.
-  markdown = markdown.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
-  return markdown;
+  input = input.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
+  // 3.
+  input = input.replace(/\<([\w\-\.]+@{1}[\w\-\.]+)>/mig, "$mailto$1$mailto");
+  // 4.
+  input = sanitizeHtml(input);
+  // 5.
+  input = input.replace(/\$mailto([\w\-\.]+@{1}[\w\-\.]+)\$mailto/mig, "<$1>");
+  // 6.
+  input = input.replace(/\n&gt;(\s{1}.*?\n)/mig, "\n>$1");
+  return input;
 }
 
-/* Convert Markdown to HTML by tapping into third-party code.
- * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
- **/
-function convertToHtml(markdown) {
-  var html = converter.makeHtml(markdown);
-  html = sanitiseHtml(html);
-  return html;
-}
 
 /* Single Line Input Restrictions
- *Browser contentEditable mode means some pain in trying to prevent
+ * Browser contentEditable mode means some pain in trying to prevent
  * HTML being inserted (rich text attempts by browser). We're only
  * editing as plain text and markdown for all elements so try to
  * prevent unwanted entry with this function.

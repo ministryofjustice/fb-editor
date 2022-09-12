@@ -20,6 +20,12 @@ const  {
   updateHiddenInputOnForm,
   stringInject,
 }  = require('./utilities');
+
+const {
+  htmlAdjustment,
+  markdownAdjustment
+} = require('./shared/content');
+
 const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
@@ -122,6 +128,14 @@ PagesController.edit = function() {
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
+
+
+  // Bit hacky: Cookies page is going through this controller but content is static.
+  // The static content is wrapped in [fb-content-type=static] to help identify it.
+  // We need to identify it to run same HTML adjustments that we do in the Runner
+  // and presenter to support some GovUK styles in content. Doing that here.
+  supportGovUkStaticContent();
+
 }
 
 
@@ -530,7 +544,8 @@ function enhanceContent(view) {
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
       form: view.dataController.$form,
       id: $node.data("fb-content-id"),
-
+      htmlAdjustment: htmlAdjustment,
+      markdownAdjustment: markdownAdjustment,
       text: {
         default_content: view.text.defaults.content
       },
@@ -545,7 +560,9 @@ function enhanceContent(view) {
       form: view.dataController.$form,
       text: {
         default_content: view.text.defaults.content
-      }
+      },
+      htmlAdjustment: htmlAdjustment,
+      markdownAdjustment: markdownAdjustment
     });
   });
 }
@@ -745,5 +762,21 @@ function accessibilityQuestionViewEnhancements(view) {
   $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
   $(".govuk-hint").attr("aria-label", view.text.aria.hint);
 }
+
+
+/* Enhances the static content should it require special formatting
+ * or non-standard elements (same as we do with edited components).
+ * e.g.
+ *  - Adds GovUk classes to any <table> element
+ *  - Changes supported GovSpeak markup to required HTML.
+ **/
+function supportGovUkStaticContent() {
+  var content = document.querySelectorAll("[data-fb-content-type=static]");
+  for( var c=0; c<content.length; ++c) {
+    content[c].innerHTML = htmlAdjustment(content[c].innerHTML);
+  }
+}
+
+
 
 module.exports = PagesController;
