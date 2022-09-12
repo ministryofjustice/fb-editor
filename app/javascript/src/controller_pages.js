@@ -156,7 +156,7 @@ class DataController {
     this.text = view.text;
     this.$form = $form;
     this.$submitButton = this.$form.find(':submit');
-    this.submitEnabled;
+    this.$saveDescription = this.$form.find('#save_description');
 
     this.$form.on('keydown', {controller: controller} , this.onKeyDownListener); 
     this.$form.on('submit', {controller: controller} , this.onSubmitListener);
@@ -219,12 +219,14 @@ class DataController {
     if(required) { 
       this.$submitButton.prop("value", this.text.actions.save );
       this.$submitButton.attr("aria-disabled", false);
+      this.$saveDescription.text("");
       this.submitEnabled = true;
       this.addBeforeUnloadListener();
     } else {
       this.$submitButton.prop("value", this.text.actions.saved );
       // Use aria-disabled so AT users can still discover the button
       this.$submitButton.attr("aria-disabled", true);
+      this.$saveDescription.text(this.text.aria.disabled_save_description);
       this.submitEnabled = false;
       this.removeBeforeUnloadListener();
     }

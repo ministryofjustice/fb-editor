@@ -5,6 +5,7 @@ en:
     question: Question
     section_heading: Section Heading
     flow_thumbnail: 'Form page'
+    disabled_save_description: 'No changes to save'
     page:
       start: Start page
       singlequestion: Single question page

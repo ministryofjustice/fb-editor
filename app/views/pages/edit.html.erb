@@ -27,7 +27,8 @@
     <% end %>
   <% end %>
 
-  <%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>
+  <%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save', 'aria-describedby': "save_description" %>
+  <span class="sr-only" id="save_description"></span>
 <% end %>
 
 <% # app.page is initialised in partials/properties. %>
