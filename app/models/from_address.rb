@@ -4,11 +4,11 @@ class FromAddress < ApplicationRecord
 
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP,
-    message: lambda do |_object, _|
-      I18n.t(
-        'activemodel.errors.models.from_address.invalid'
-      )
-    end
+    message: I18n.t('activemodel.errors.models.from_address.invalid')
+  }, allow_blank: true
+  validates :email, format: {
+    with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice)\.gov\.uk\z/,
+    message: I18n.t('activemodel.errors.models.from_address.invalid_domain')
   }, allow_blank: true
 
   enum status: {

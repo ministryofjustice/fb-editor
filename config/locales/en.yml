@@ -420,6 +420,7 @@ en:
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
+          invalid_domain:  You will need a @digital.justice.gov.uk or @justice.gov.uk email address
         publish_service_creation:
           blank_username: 'Enter a username'
           blank_password: 'Enter a password'
