@@ -30,7 +30,7 @@
       <% end %>
       <div class="govuk-hint" id="service_email_body_hint_<%= deployment_environment%>"><%= f.object.class.human_attribute_name :service_email_body_hint %></div>
       <%= f.text_area :service_email_body,
-        class: "govuk-textarea width-responsive-two-thirds", 
+        class: "govuk-textarea width-responsive-two-thirds",
         rows: '5',
         id: "service_email_body_#{deployment_environment}",
         'aria-describedby': "service_email_body_hint_#{deployment_environment}"

@@ -50,6 +50,7 @@ Rails.application.routes.draw do
         resources :form_analytics, only: [:index, :create]
         resources :submission, only: [:index] do
           collection do
+            resources :from_address, only: [:index, :create]
             resources :email, only: [:index, :create]
           end
         end

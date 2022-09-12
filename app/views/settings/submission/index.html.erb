@@ -2,6 +2,17 @@
   <div class="govuk-grid-column-two-thirds">
     <h1 class="govuk-heading-xl"><%= t('settings.submission.name') %></h1>
       <p class="govuk-body"><%= t('settings.submission.sub_heading') %></p>
-      <%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %>
+      <ul aria-labelledby="submission-settings-navigation-heading" class="govuk-list">
+        <% if ENV['FROM_ADDRESS'] == 'enabled' %>
+        <li>
+          <%= link_to t('settings.submission.from_address.label'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %>
+        </li>
+        <p class="govuk-!-margin-bottom-6"><%= t('settings.submission.from_address.hint') %></p>
+        <% end %>
+
+        <li>
+          <%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %>
+        </li>
+      </ul>
   </div>
 </div>
