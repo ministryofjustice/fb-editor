@@ -45,7 +45,8 @@ class CsvValidator < ActiveModel::Validator
   private
 
   def not_csv?(record)
-    ['text/csv', 'application/csv'].exclude?(record.file.content_type)
+    !record.file.original_filename.end_with?('.csv') &&
+      ['text/csv', 'application/csv', 'application/vnd.ms-excel'].exclude?(record.file.content_type)
   end
 
   def invalid_headings?(record, headings)
