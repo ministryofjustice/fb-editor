@@ -32,8 +32,8 @@ class FlowConditionItem {
     $node.addClass("FlowConditionItem");
 
     this.$node = $node;
-    this.from = config.$form;
-    this.next = config.next;
+    this.$from = config.$from;
+    this.$next = config.$next;
     this.row = config.row;
     this.column = config.column;
   }

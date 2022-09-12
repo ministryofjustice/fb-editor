@@ -277,8 +277,8 @@ function createAndPositionFlowItems(view, $overview) {
 
         // Creates FlowConditionItem instances (speach bubbles) with simple data.
         new FlowConditionItem($condition, {
-          $form: $condition.attr("data-from"),
-          next: $condition.attr("data-next"),
+          $fromm: $condition.attr("data-from"),
+          $next: $condition.attr("data-next"),
           column: column,
           row: row + index
         });
