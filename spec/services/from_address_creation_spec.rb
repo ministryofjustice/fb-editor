@@ -12,7 +12,7 @@ RSpec.describe FromAddressCreation, type: :model do
 
   let(:email) { FromAddress::DEFAULT_EMAIL_FROM }
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.new(service_id: service_id) }
+  let(:from_address) { FromAddress.find_or_initialize_by(service_id: service_id) }
   let(:from_address_params) { { email: email } }
   let(:email_service) { double }
 
@@ -75,7 +75,7 @@ RSpec.describe FromAddressCreation, type: :model do
       let(:email) { 'atreyu@justice.gov.uk' }
 
       before do
-        create(:from_address, service_id: service_id, email: email, status: 1)
+        create(:from_address, :pending, service_id: service_id, email: 'mothertheresa@justice.gov.uk')
         allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
         allow(email_service).to receive(:get_email_identity).and_return(double)
         from_address_creation.save
@@ -84,6 +84,10 @@ RSpec.describe FromAddressCreation, type: :model do
       it 'sets the from address status to verified' do
         expect(from_address.reload.status).to eq('verified')
       end
+
+      it 'sets the correct email address' do
+        expect(from_address.reload.email_address).to eq(email)
+      end
     end
 
     context 'when sending enabled is false but from address record is verified' do
@@ -91,14 +95,36 @@ RSpec.describe FromAddressCreation, type: :model do
       let(:email) { 'artax@justice.gov.uk' }
 
       before do
-        create(:from_address, service_id: service_id, email: email, status: 2)
+        create(:from_address, :verified, service_id: service_id, email: email)
         allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
         allow(email_service).to receive(:get_email_identity).and_return(double)
         from_address_creation.save
       end
 
-      it 'sets the from address status to unverified' do
-        expect(from_address.reload.status).to eq('unverified')
+      it 'sets the from address status to default' do
+        expect(from_address.reload.status).to eq('default')
+      end
+    end
+
+    context 'when the email is blank' do
+      let(:email) { '' }
+      it 'saves the default email address to the DB' do
+        from_address_creation.save
+
+        expect(from_address).to be_persisted
+        expect(from_address.reload.email_address).to eq(FromAddress::DEFAULT_EMAIL_FROM)
+      end
+    end
+
+    context 'when cannot reach AWS SES' do
+      let(:email) { 'marie_curie@justice.gov.uk' }
+      before do
+        allow(email_service).to receive(:get_email_identity).and_raise(EmailServiceError)
+        from_address_creation.save
+      end
+
+      it 'set correct error message' do
+        expect(from_address.errors.full_messages.first).to eq(I18n.t('activemodel.errors.models.from_address.email_service_error'))
       end
     end
   end

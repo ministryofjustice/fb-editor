@@ -283,7 +283,7 @@ en:
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address
       messages:
         default: You need to change the default no-reply-moj-forms address before your form can go live
-        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours. 
+        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
         verified: This email address has been validated.
       resend_link_text: Resend validation link
     form_analytics:
@@ -421,6 +421,8 @@ en:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
           invalid_domain:  You will need a @digital.justice.gov.uk or @justice.gov.uk email address
+          email_service_error: We were unable to save your email address. Please try again.
+          format: "%{message}"
         publish_service_creation:
           blank_username: 'Enter a username'
           blank_password: 'Enter a password'

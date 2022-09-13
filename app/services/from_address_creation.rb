@@ -3,27 +3,36 @@ class FromAddressCreation
   attr_accessor :from_address, :from_address_params, :email_service
 
   def save
-    from_address.update!(from_address_params)
-    verify_email unless from_address.default?
+    unless from_address_params[:email] == FromAddress::DEFAULT_EMAIL_FROM
+      status = verify_email
+    end
+    from_address.update!(from_address_params.merge(status: status))
   rescue ActiveRecord::RecordInvalid
+    false
+  rescue EmailServiceError
+    from_address.errors.add(:base, I18n.t('activemodel.errors.models.from_address.email_service_error'))
     false
   end
 
   def verify_email
-    if email_service.get_email_identity(from_address.email_address).blank?
-      email_service.create_email_identity(from_address.email_address)
-      from_address.update_column(:status, :pending)
+    return if from_address_params[:email].blank?
+
+    if email_service.get_email_identity(from_address_params[:email]).blank?
+      email_service.create_email_identity(from_address_params[:email])
+
       Rails.logger.info("Created email identity for service #{from_address.service_id}")
+      :pending
+
     elsif email_identity.sending_enabled && !from_address.verified?
-      from_address.update_column(:status, :verified)
       Rails.logger.info(
         "Updated from address status for service #{from_address.service_id} to verified"
       )
+      :verified
     elsif !email_identity.sending_enabled && from_address.verified?
-      from_address.update_column(:status, :unverified)
       Rails.logger.info(
-        "Updated from address status for service #{from_address.service_id} to unverified"
+        "Updated from address status for service #{from_address.service_id} to default"
       )
+      :default
     end
   end
 
@@ -32,6 +41,6 @@ class FromAddressCreation
   end
 
   def email_identity
-    all_identities.find { |i| i.identity_name == from_address.email_address }
+    all_identities.find { |i| i.identity_name == from_address_params[:email] }
   end
 end

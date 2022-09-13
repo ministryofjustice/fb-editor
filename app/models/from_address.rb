@@ -12,7 +12,7 @@ class FromAddress < ApplicationRecord
   }, allow_blank: true
 
   enum status: {
-    unverified: 0,
+    default: 0,
     pending: 1,
     verified: 2
   }
@@ -31,18 +31,14 @@ class FromAddress < ApplicationRecord
     @decrypt_email ||= EncryptionService.new.decrypt(email)
   end
 
-  def default?
+  def default_email?
     email_address == DEFAULT_EMAIL_FROM
   end
 
   private
 
   def update_status
-    if email_address == DEFAULT_EMAIL_FROM
-      update_status_column(:verified)
-    else
-      update_status_column(:unverified)
-    end
+    update_status_column(:default) if email_address == DEFAULT_EMAIL_FROM
   end
 
   def update_status_column(status)

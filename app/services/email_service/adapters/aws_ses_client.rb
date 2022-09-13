@@ -11,21 +11,21 @@ module EmailService
       REGION = 'eu-west-1'.freeze
 
       def list_email_identities
-        ses.list_email_identities(page_size: 1000)
+        call(:list_email_identities, { page_size: 1000 })
       end
 
       def get_email_identity(identity)
-        ses.get_email_identity(email_identity: identity)
-      rescue Aws::SESV2::Errors::NotFoundException
+        call(:get_email_identity, { email_identity: identity })
+      rescue EmailServiceNotFoundError
         nil
       end
 
       def create_email_identity(identity)
-        ses.create_email_identity(email_identity: identity)
+        call(:create_email_identity, { email_identity: identity })
       end
 
       def delete_email_identity(identity)
-        ses.delete_email_identity(email_identity: identity)
+        call(:delete_email_identity, { email_identity: identity })
       end
 
       private
@@ -38,6 +38,14 @@ module EmailService
 
       def credentials
         Aws::Credentials.new(access_key, secret_access_key)
+      end
+
+      def call(name, attrs)
+        ses.public_send(name, attrs)
+      rescue Aws::SESV2::Errors::NotFoundException
+        raise EmailServiceNotFoundError
+      rescue Aws::SESV2::Errors::ServiceError
+        raise EmailServiceError
       end
     end
   end

@@ -1,0 +1,2 @@
+class EmailServiceNotFoundError < StandardError
+end
