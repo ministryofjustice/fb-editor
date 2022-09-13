@@ -31,6 +31,10 @@ class FromAddress < ApplicationRecord
     @decrypt_email ||= EncryptionService.new.decrypt(email)
   end
 
+  def default?
+    email_address == DEFAULT_EMAIL_FROM
+  end
+
   private
 
   def update_status

@@ -30,6 +30,6 @@ class Settings::FromAddressController < FormController
   end
 
   def email_service
-    @email_service ||= FromAddress::Adapters::AwsSesClient.new
+    @email_service ||= EmailService::Adapters::AwsSesClient.new
   end
 end

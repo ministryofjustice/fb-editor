@@ -123,4 +123,19 @@ RSpec.describe FromAddress, type: :model do
       end
     end
   end
+
+  describe '#default?' do
+    context 'when it is default address' do
+      let(:email) { FromAddress::DEFAULT_EMAIL_FROM }
+      it 'returns true' do
+        expect(from_address.default?).to be_truthy
+      end
+    end
+
+    context 'when it is not default address' do
+      it 'returns false' do
+        expect(from_address.default?).to be_falsey
+      end
+    end
+  end
 end

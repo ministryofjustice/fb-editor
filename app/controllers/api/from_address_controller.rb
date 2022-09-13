@@ -6,8 +6,6 @@ module Api
         # render 200 with message
       elsif from_address.pending
         # render 200 with message
-      else
-        # unverified
       end
     end
   end

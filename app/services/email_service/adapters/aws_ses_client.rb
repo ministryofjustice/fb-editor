@@ -16,7 +16,7 @@ module EmailService
 
       def get_email_identity(identity)
         ses.get_email_identity(email_identity: identity)
-      rescue  Aws::SESV2::Errors::NotFoundException
+      rescue Aws::SESV2::Errors::NotFoundException
         nil
       end
 
