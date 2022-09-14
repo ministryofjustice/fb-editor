@@ -31,6 +31,9 @@ en:
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
+  notifictaion_banners:
+    important: Important
+    success: Success
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'

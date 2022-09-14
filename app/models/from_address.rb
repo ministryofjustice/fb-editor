@@ -12,7 +12,7 @@ class FromAddress < ApplicationRecord
   }, allow_blank: true
 
   enum status: {
-    unverified: 0,
+    default: 0,
     pending: 1,
     verified: 2
   }
