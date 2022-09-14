@@ -30,6 +30,10 @@ describe("ActivatedMenu", function() {
       expect(created.$node.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
     });
 
-  });
+    it("should make the instance accessible from data attached to the element", function() {
+      expect(created.$node.length).to.equal(1);
+      expect(created.$node.data("instance")).to.equal(created.item);
+    });
 
+  });
 });
