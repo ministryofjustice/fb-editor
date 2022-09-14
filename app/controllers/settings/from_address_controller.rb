@@ -20,5 +20,6 @@ class Settings::FromAddressController < FormController
   def assign_from_address
     # initialize for those forms that were created before FromAddress records existed
     @from_address = FromAddress.find_or_initialize_by(service_id: params[:id])
+    @presenter = FromAddressPresenter.new(@from_address)
   end
 end

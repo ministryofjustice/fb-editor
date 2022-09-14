@@ -278,6 +278,11 @@ en:
     from_address:
       heading: "‘From’ address"
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address
+      messages:
+        default: You need to change the default no-reply-moj-forms address before your form can go live
+        pending_html: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours. 
+        verified: This email address has been validated.
+      resend_link_text: Resend validation link
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).

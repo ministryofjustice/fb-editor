@@ -1,25 +1,35 @@
 <div class="govuk-grid-row">
-  <% if @from_address.errors.present? %>
-    <div class="govuk-grid-column-two-thirds govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-      <h2 class="govuk-error-summary__title" id="error-summary-title">
-        <%= t('activemodel.errors.summary_title') %>
-      </h2>
-      <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list">
-          <% @from_address.errors.each do |error|  %>
-            <li><a href="#<%= error.attribute %>"><%= error.message %></a></li>
-          <% end %>
-        </ul>
+  <div class="govuk-grid-column-three-quarters">
+
+    <% if @from_address.errors.present? %>
+      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+          <%= t('activemodel.errors.summary_title') %>
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <% @from_address.errors.each do |error|  %>
+              <li><a href="#<%= error.attribute %>"><%= error.message %></a></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
 
-  <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-xl"><%= t('settings.from_address.heading') %></h1>
 
-    <p class="govuk-!-margin-bottom-7"><%= t('settings.from_address.lede') %></p>
+    <% if @presenter.message[:status] == 'pending' %>
+      <%= govuk_notification_banner(title_text: 'Important') do %>
+        <%=raw @presenter.message[:text] %>
+        <p><%= govuk_link_to t('settings.from_address.resend_link_text'), "#" %></p>
+      <% end %>
+    <% end %>
 
     <%= form_for @from_address, method: :post, url: settings_from_address_index_path(service.service_id) do |f| %>
+
+      <h1 class="govuk-heading-xl"><%= t('settings.from_address.heading') %></h1>
+
+      <p class="govuk-!-margin-bottom-7"><%= t('settings.from_address.lede') %></p>
+
       <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
         <% f.object.errors[:email].each do |message| %>
           <p class="govuk-error-message"><%= message %></p>
@@ -34,16 +44,18 @@
         <% end %>
 
         <%= f.text_field :email, value: f.object.email_address, class: "govuk-input width-responsive-two-thirds", id: "email" %>
+
       </div>
 
-      <% if @from_address_warning.present? %>
-        <div class="govuk-warning-text">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
-            <%= @from_address_warning.message %>
-          </strong>
-        </div>
+      <% if @presenter.message[:status] == 'default' %>
+        <%= govuk_warning_text(text: @presenter.message[:text]) %>
+      <% end %>
+
+      <% if @presenter.message[:status] == 'verified' %>
+        <p class="fb-status-message govuk-!-margin-bottom-6">
+          <span class="fb-status-message__icon" aria-hidden="true"></span>
+          <span class="fb-status-message__text"><%= @presenter.message[:text] %></span>
+        </p>
       <% end %>
 
       <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">

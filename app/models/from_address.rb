@@ -35,9 +35,9 @@ class FromAddress < ApplicationRecord
 
   def update_status
     if email_address == DEFAULT_EMAIL_FROM
-      update_status_column(:verified)
+      update_status_column(:default)
     else
-      update_status_column(:unverified)
+      update_status_column(:pending)
     end
   end
 
