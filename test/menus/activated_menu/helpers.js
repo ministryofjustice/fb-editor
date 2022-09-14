@@ -4,10 +4,12 @@ const GlobalHelpers = require("../../helpers.js");
 
 const constants = {
   CLASSNAME_COMPONENT: "ActivatedMenu",
+  EVENT_SELECTION_NAME: "ActivatedMenuTestSelectionEventName",
 
   ID_CONTAINER_SUFFIX: "-container",
-  ID_COMPONENT_SUFFIX: "-component"
+  ID_COMPONENT_SUFFIX: "-component",
 
+  TEXT_ACTIVATOR: "activated menu activator"
 }
 
 
@@ -28,7 +30,10 @@ function createActivatedMenu(id, config) {
   var $container = $("#" + id + constants.ID_CONTAINER_SUFFIX);
   var $component = $("#" + id + constants.ID_COMPONENT_SUFFIX, $container);
   var conf = GlobalHelpers.mergeConfig({
-    id: id
+    activator_text: constants.TEXT_ACTIVATOR,
+    id: id,
+    preventDefault: true,
+    selection_event: constants.EVENT_SELECTION_NAME
   }, config);
 
   return {
