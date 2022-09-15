@@ -79,5 +79,13 @@ describe("ActivatedMenu", function() {
       expect(created.item.state.open).to.be.false;
     });
 
+    it("should return currentFocusIndex value of 0 on initial check", function() {
+      expect(created.item.currentFocusIndex).to.equal(0);
+    });
+
+    it("should return currentFocusIndex value of 2 when focus is on third item", function() {
+      created.item.focus(2);
+      expect(created.item.currentFocusIndex).to.equal(2);
+    });
   });
 });
