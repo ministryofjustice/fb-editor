@@ -96,5 +96,21 @@ describe("ActivatedMenu", function() {
       it("should close the menu on mouseout (not sure if can test)");
     });
 
+
+    /* TEST METHOD: closeAllSubmenus()
+     **/
+    describe("closeAllSubmenus()", function() {
+      it("should close (hide) any open submenus", function() {
+        var submenus = created.$node.find("ul[role=\"menu\"]");
+        expect(submenus.eq(0).length).to.equal(1);
+        
+        submenus.eq(0).get(0).style.display = "block";
+        expect(submenus.eq(0).get(0).style.display).to.equal("block");
+
+        created.item.closeAllSubmenus();
+        expect(submenus.eq(0).get(0).style.display).to.equal("none");
+      });
+    });
+
   });
 });
