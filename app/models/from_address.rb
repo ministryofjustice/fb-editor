@@ -12,7 +12,7 @@ class FromAddress < ApplicationRecord
   }, allow_blank: true
 
   enum status: {
-    default: 0,
+    unverified: 0,
     pending: 1,
     verified: 2
   }
@@ -35,9 +35,9 @@ class FromAddress < ApplicationRecord
 
   def update_status
     if email_address == DEFAULT_EMAIL_FROM
-      update_status_column(:default)
+      update_status_column(:verified)
     else
-      update_status_column(:pending)
+      update_status_column(:unverified)
     end
   end
 
