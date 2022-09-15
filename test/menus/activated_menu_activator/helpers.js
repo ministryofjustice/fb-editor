@@ -28,7 +28,21 @@ const constants = {
 function createActivatedMenuActivator(id, config) {
   var $container = $("#" + id + constants.ID_CONTAINER_SUFFIX);
   var fakeMenu = {
-    $node: $("#" + id + constants.ID_MENU_SUFFIX)
+    $node: $("#" + id + constants.ID_MENU_SUFFIX),
+    state: {
+      open: false,
+      focus: false,
+      focusLast: false
+    },
+    open: function() {
+      this.state.open = true;
+    },
+    focus: function() {
+      this.state.focus = true;
+    },
+    focusLast: function() {
+      this.state.focusLast = true;
+    }
   }
 
   // Construct basic config that could be passed to ActivatedMenuActivator creation.
