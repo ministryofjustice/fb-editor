@@ -1,5 +1,5 @@
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-three-quarters">
+  <div class="govuk-grid-column-two-thirds">
 
     <%= form_for @from_address,
       method: :post,
@@ -10,7 +10,7 @@
 
     <% if @presenter.message[:status] == 'pending' %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important')) do %>
-        <%=raw @presenter.message[:text] %>
+        <%= @presenter.message[:text].html_safe %>
         <p><%= govuk_link_to t('settings.from_address.resend_link_text'), "#" %></p>
       <% end %>
     <% end %>

@@ -3,7 +3,7 @@ class FromAddressPresenter
     @from_address = from_address
     @messages = {
       verified: I18n.t('settings.from_address.messages.verified'),
-      pending: I18n.t('settings.from_address.messages.pending_html'),
+      pending: I18n.t('settings.from_address.messages.pending'),
       default: I18n.t('settings.from_address.messages.default')
     }
   end
