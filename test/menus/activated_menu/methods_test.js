@@ -112,5 +112,32 @@ describe("ActivatedMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: focus()
+     **/
+    describe("focus()", function() {
+      it("should set currentFocusIndex to last item number when passed a number below zero", function() {
+        created.item.currentFocusIndex = 2;
+        expect(created.item.currentFocusIndex).to.equal(2);
+
+        created.item.focus(-1);
+        expect(created.item.currentFocusIndex).to.equal(3);
+      });
+
+      it("should set currentFocusIndex to first item number when passed a number higher than possible", function() {
+        created.item.currentFocusIndex = 1;
+        expect(created.item.currentFocusIndex).to.equal(1);
+
+        created.item.focus(5);
+        expect(created.item.currentFocusIndex).to.equal(0);
+      });
+
+      it("should set currentFocusIndex to item number passed when valid", function() {
+        created.item.focus(2);
+        expect(created.item.currentFocusIndex).to.equal(2);
+      });
+    });
+
+
   });
 });
