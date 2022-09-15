@@ -6,7 +6,7 @@
       url: settings_from_address_index_path(service.service_id),
       builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-    <%= f.govuk_error_summary %>
+    <%= f.govuk_error_summary link_base_errors_to: :email %>
 
     <% if @presenter.message[:status] == 'pending' %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important')) do %>
