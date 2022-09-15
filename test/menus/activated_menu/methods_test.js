@@ -177,5 +177,18 @@ describe("ActivatedMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: focusitem()
+     **/
+    describe("focusLast()", function() {
+      it("should should set currentFocusIndex to number of last item", function() {
+        created.item.currentFocusIndex = 1;
+        expect(created.item.currentFocusIndex).to.equal(1);
+
+        created.item.focusLast();
+        expect(created.item.currentFocusIndex).to.equal(3);
+      });
+    });
+
   });
 });
