@@ -152,5 +152,17 @@ describe("ActivatedMenu", function() {
     });
 
 
+    /* TEST METHOD: focusPrev()
+     **/
+    describe("focusPrev()", function() {
+      it("should should decrease currentFocusIndex when there's a previous item", function() {
+        created.item.currentFocusIndex = 2;
+        expect(created.item.currentFocusIndex).to.equal(2);
+
+        created.item.focusPrev();
+        expect(created.item.currentFocusIndex).to.equal(1);
+      });
+    });
+
   });
 });
