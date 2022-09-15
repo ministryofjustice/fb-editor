@@ -164,5 +164,18 @@ describe("ActivatedMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: focusitem()
+     **/
+    describe("focusItem()", function() {
+      it("should should set currentFocusIndex to number of pass item", function() {
+        created.item.currentFocusIndex = 2;
+        expect(created.item.currentFocusIndex).to.equal(2);
+
+        created.item.focusItem(created.item.$items.eq(1));
+        expect(created.item.currentFocusIndex).to.equal(1);
+      });
+    });
+
   });
 });
