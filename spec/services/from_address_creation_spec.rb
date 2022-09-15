@@ -53,7 +53,7 @@ RSpec.describe FromAddressCreation, type: :model do
           allow(email_service).to receive(:get_email_identity).and_return(nil)
         end
 
-        it 'works makes AWS call and creates identity' do
+        it 'makes AWS call and creates identity' do
           expect_any_instance_of(Aws::SESV2::Client).to receive(:create_email_identity).with(email_identity: email)
           from_address_creation.save
         end

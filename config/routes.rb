@@ -91,7 +91,6 @@ Rails.application.routes.draw do
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
-
     end
   end
 
