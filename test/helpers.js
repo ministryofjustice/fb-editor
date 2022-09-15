@@ -51,8 +51,38 @@ function mergeConfig(defaultConfig, extraConfig) {
   return defaultConfig;
 }
 
+/* Allows a keyboard event to be programatically created.
+ * @key  (String) Name of key pressed, e.g. "Enter", or "a"
+ * @code (Integer) Number of character code, e.g. 13, or 65
+ * @opts (Object) Provides ability to manually override any of the default options.
+ *                e.g. { shiftKey: true }
+ *
+ * Example uses:
+ *
+ * var activateButtonWithEnterKey = keyDownEvent("Enter", 13 );
+ * document.getElementById("some-button").dispatchEvent(activateButtonWithEnterKey);
+ *
+ * var keyboardDidSomething = keyDownEvent("a", 65, { shiftKey: true } );
+ * window.dispatchEvent(keyboardDidSomething);
+ *
+ **/
+function keyDownEvent(key, code, opts) {
+  var options = mergeConfig({
+                   key: key,
+                   keyCode: code,
+                   code: key,
+                   which: code,
+                   shiftKey: false,
+                   ctrlKey: false,
+                   metaKey: false
+                 }, opts);
+
+  return new window.KeyboardEvent("keydown", options);
+}
+
 module.exports = {
   findButtonByText: findButtonByText,
   createServer: createServer,
-  mergeConfig: mergeConfig
+  mergeConfig: mergeConfig,
+  keyDownEvent: keyDownEvent
 }
