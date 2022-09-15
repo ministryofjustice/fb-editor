@@ -139,5 +139,18 @@ describe("ActivatedMenu", function() {
     });
 
 
+    /* TEST METHOD: focusNext()
+     **/
+    describe("focusNext()", function() {
+      it("should should increase currentFocusIndex when there's a next item", function() {
+        created.item.currentFocusIndex = 2;
+        expect(created.item.currentFocusIndex).to.equal(2);
+
+        created.item.focusNext();
+        expect(created.item.currentFocusIndex).to.equal(3);
+      });
+    });
+
+
   });
 });
