@@ -286,6 +286,7 @@ en:
         pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours. 
         verified: This email address has been validated.
       resend_link_text: Resend validation link
+      link_resent_success: Link resent - now check your email 
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).
