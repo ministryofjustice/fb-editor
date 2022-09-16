@@ -31,6 +31,9 @@ en:
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
+  notifictaion_banners:
+    important: Important
+    success: Success
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'
@@ -276,8 +279,13 @@ en:
         hint: 'The visible name of your form'
         warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact us</a> to change your form’s name.'
     from_address:
-      heading: "'From' address"
+      heading: "‘From’ address"
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address
+      messages:
+        default: You need to change the default no-reply-moj-forms address before your form can go live
+        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours. 
+        verified: This email address has been validated.
+      resend_link_text: Resend validation link
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).
@@ -301,7 +309,7 @@ en:
         save_test: Save Test settings
         save_live: Save Live settings
       from_address:
-        label: "'From' address"
+        label: "‘From’ address"
         hint: Emails sent by your form will come from this address
   publish:
     name: 'Publishing'
@@ -373,7 +381,7 @@ en:
         ga4_test: *ga4
         ga4_live: *ga4
       from_address:
-        email: "'From' address"
+        email: "‘From’ address"
         from_address_hint: This should generally be a shared team account
       email_settings:
         send_by_email_dev: Send by email on Test

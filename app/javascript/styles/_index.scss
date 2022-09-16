@@ -1140,3 +1140,21 @@ html {
     margin-bottom: govuk-spacing(5);
   }
 }
+
+dl {
+  @extend %govuk-list
+}
+
+dl dt {
+  margin-bottom: govuk-spacing(2);
+}
+
+dl dd {
+  margin: 0;
+}
+
+dl > dt:not(:first-of-type),
+dl > div:not(:first-of-type){
+  margin-top: govuk-spacing(7);
+}
+

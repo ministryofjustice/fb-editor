@@ -7,7 +7,7 @@
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "app/services/malware_scanner.rb",
-      "line": 35,
+      "line": 34,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "Open3.capture3(*\"#{COMMAND} #{file_path.to_s}\")",
       "render_path": null,
@@ -18,7 +18,44 @@
       },
       "user_input": "COMMAND",
       "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
       "note": "This is required for streaming file virus scanning"
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "62b97237b5296e61b21dccc5d3df3549d75931c8cc7a459843d9109432b60a22",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/settings/from_address/index.html.erb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "FromAddressPresenter.new(FromAddress.find_or_initialize_by(:service_id => service.service_id)).message[:text]",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Settings::FromAddressController",
+          "method": "index",
+          "line": 5,
+          "file": "app/controllers/settings/from_address_controller.rb",
+          "rendered": {
+            "name": "settings/from_address/index",
+            "file": "app/views/settings/from_address/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "settings/from_address/index"
+      },
+      "user_input": "FromAddress.find_or_initialize_by(:service_id => service.service_id)",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": "False positive for XSS. No way param input can get to template output."
     },
     {
       "warning_type": "Mass Assignment",
@@ -38,6 +75,9 @@
       },
       "user_input": null,
       "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
       "note": ""
     },
     {
@@ -58,6 +98,9 @@
       },
       "user_input": null,
       "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
       "note": ""
     },
     {
@@ -89,9 +132,12 @@
       },
       "user_input": "params[:page_uuid]",
       "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
       "note": ""
     }
   ],
-  "updated": "2022-08-18 11:37:54 +0100",
-  "brakeman_version": "5.2.3"
+  "updated": "2022-09-16 09:32:34 +0100",
+  "brakeman_version": "5.3.1"
 }
