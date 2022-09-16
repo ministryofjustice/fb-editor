@@ -1,20 +1,22 @@
-<h1 class="govuk-heading-xl"><%= t('settings.form_information.name') %></h1>
+<%= fb_settings_screen(settings_path) do %>
+  <h1 class="govuk-heading-xl"><%= t('settings.form_information.name') %></h1>
 
-<%= form_for @settings, as: :service, url: settings_form_information_index_path(service.service_id) do |f| %>
-  <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
-    <%#= f.label :service_name, class: "govuk-label" do %>
-      <%#= f.object.class.human_attribute_name :service_name %>
-    <%# end %>
-    <p>
-      <%= f.object.class.human_attribute_name :service_name %>
-      <div class="govuk-hint" id="<%= "#{:service_name}-hint" %>"><%= t('settings.form_information.form_name.hint') %></div>
-      <span class="width-responsive-two-thirds"><%= @settings.service_name %></span>
-      </p>
-    <% f.object.errors.each do |error|  %>
-      <p class="govuk-error-message"><%= error.message %></p>
-    <% end %>
-    <%#= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", aria: { describedby: "#{:service_name}-hint #{:service_name}-warning" } %>
-    <%= render partial: 'partials/template_warning', locals: { id: "#{:service_name}-warning", message: t('settings.form_information.form_name.warning_message').html_safe } %>
-  </div>
-  <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
+  <%= form_for @settings, as: :service, url: settings_form_information_index_path(service.service_id) do |f| %>
+    <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
+      <%#= f.label :service_name, class: "govuk-label" do %>
+        <%#= f.object.class.human_attribute_name :service_name %>
+        <%# end %>
+        <p>
+          <%= f.object.class.human_attribute_name :service_name %>
+          <div class="govuk-hint" id="<%= "#{:service_name}-hint" %>"><%= t('settings.form_information.form_name.hint') %></div>
+          <span class="width-responsive-two-thirds"><%= @settings.service_name %></span>
+        </p>
+        <% f.object.errors.each do |error|  %>
+          <p class="govuk-error-message"><%= error.message %></p>
+        <% end %>
+        <%#= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds", aria: { describedby: "#{:service_name}-hint #{:service_name}-warning" } %>
+        <%= render partial: 'partials/template_warning', locals: { id: "#{:service_name}-warning", message: t('settings.form_information.form_name.warning_message').html_safe } %>
+    </div>
+    <%= f.submit t('actions.save'), class: "govuk-button fb-govuk-button", disabled: true %>
+  <% end %>
 <% end %>
