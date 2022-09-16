@@ -121,5 +121,13 @@ RSpec.describe AutocompleteItems do
         expect(subject).to be_valid
       end
     end
+
+    context 'has carriage return at the end of the file' do
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'carriage_return.csv') }
+
+      it 'is valid' do
+        expect(subject).to be_valid
+      end
+    end
   end
 end
