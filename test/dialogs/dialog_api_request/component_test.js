@@ -12,46 +12,70 @@ describe("DialogApiRequest", function() {
     var created;
     var server;
 
-    beforeEach(function() {
-      var response = `<div class="component component-dialog" id="` + c.COMPONENT_ID + `">
-                        <h3>Heading content here</h3>
-                        <p>Message content here</p>
-                      </div>`;
+    describe("basic", function() {
+      const COMPONENT_ID = "dialog-api-request-basic-component-test-served-response";
 
-      server = GlobalHelpers.createServer();
-      created = helpers.createDialog(response, server);
-    });
+      beforeEach(function() {
+        var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
+                          <h3>Heading content here</h3>
+                          <p>Message content here</p>
+                        </div>`;
 
-    afterEach(function() {
-      server.restore();
-      created.$node.remove();
-      created = {};
-    });
+        server = GlobalHelpers.createServer();
+        created = helpers.createDialog(response, server);
+      });
 
-    it("should have the basic HTML in place", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      var $container = $dialog.parent('[role=dialog]');
-      expect($dialog.length).to.equal(1);
-      expect($dialog.get(0).nodeName.toLowerCase()).to.equal("div");
-      expect($dialog.hasClass("component-dialog")).to.be.true;
-    });
+      afterEach(function() {
+        server.restore();
+        created.$node.remove();
+        helpers.teardownView(COMPONENT_ID);
+        created = {};
+      });
 
-    it("should have the component class name present", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      var $container = $dialog.parent('[role=dialog]');
-      expect($container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
-    });
+      it("should have the basic HTML in place", function() {
+        var $dialog = $("#" + COMPONENT_ID);
+        var $container = $dialog.parent('[role=dialog]');
+        expect($dialog.length).to.equal(1);
+        expect($dialog.get(0).nodeName.toLowerCase()).to.equal("div");
+        expect($dialog.hasClass("component-dialog")).to.be.true;
+      });
 
-    it("should apply CSS classnames passed in config", function() {
-      var $dialog = $("#" + c.COMPONENT_ID);
-      var $container = $dialog.parent('[role=dialog]');
-      expect($container.hasClass(c.CLASSNAME_1)).to.be.true;
-      expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
+      it("should have the component class name present", function() {
+        var $dialog = $("#" + COMPONENT_ID);
+        var $container = $dialog.parent('[role=dialog]');
+        expect($container.hasClass(c.CLASSNAME_COMPONENT)).to.be.true;
+      });
+
+      it("should apply CSS classnames passed in config", function() {
+        var $dialog = $("#" + COMPONENT_ID);
+        var $container = $dialog.parent('[role=dialog]');
+        expect($container.hasClass(c.CLASSNAME_1)).to.be.true;
+        expect($container.hasClass(c.CLASSNAME_2)).to.be.true;
+      });
     });
 
     describe("using generted buttons", function() {
+      const COMPONENT_ID = "dialog-api-request-using-generated-buttons-component-test-served-response";
+
+      beforeEach(function() {
+        var response = `<div class="component component-dialog" id="` + COMPONENT_ID + `">
+                          <h3>Heading content here</h3>
+                          <p>Message content here</p>
+                        </div>`;
+
+        server = GlobalHelpers.createServer();
+        created = helpers.createDialog(response, server);
+      });
+
+      afterEach(function() {
+        server.restore();
+        created.$node.remove();
+        helpers.teardownView(COMPONENT_ID);
+        created = {};
+      });
+
       it("should use config.buttons when not using config.closeOnClickSelector", function() {
-        var $dialog = $("#" + c.COMPONENT_ID);
+        var $dialog = $("#" + COMPONENT_ID);
         var $container = $dialog.parent('[role=dialog]');
         var $buttonOk = helpers.findButtonByText($container, c.TEXT_BUTTON_OK);
         var $buttonCancel = helpers.findButtonByText($container, c.TEXT_BUTTON_CANCEL);
@@ -63,7 +87,7 @@ describe("DialogApiRequest", function() {
     });
 
     describe("using template buttons", function() {
-      const COMPONENT_ID = "dialog-api-request-component-test-without-buttons";
+      const COMPONENT_ID = "dialog-api-request-without-buttons-component-test-served-response";
       const CLASSNAME_BUTTON_TEMPLATE = "dialog-api-request-component-test-without-buttons-button-template";
       var createdWithoutButtons;
       var server;
@@ -83,6 +107,7 @@ describe("DialogApiRequest", function() {
 
       after(function() {
         server.restore();
+        helpers.teardownView(COMPONENT_ID);
         createdWithoutButtons.$node.remove();
         createdWithoutButtons = null;
       });
