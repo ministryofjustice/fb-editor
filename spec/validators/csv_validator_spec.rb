@@ -11,7 +11,7 @@ RSpec.describe CsvValidator do
   end
   let(:service_id) { SecureRandom.uuid }
   let(:component_id) { SecureRandom.uuid }
-  let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid.csv') }
+  let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'valid.csv') }
   let(:file) { Rack::Test::UploadedFile.new(path_to_file, 'text/csv') }
 
   describe '#validate' do
@@ -30,7 +30,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when file is blank' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'empty.csv') }
 
       it 'returns invalid' do
         expect(subject).to_not be_valid
@@ -44,7 +44,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when the file has no headings' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'invalid.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'invalid.csv') }
 
       it 'returns invalid' do
         expect(subject).to_not be_valid
@@ -73,7 +73,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when the file has one column' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid_one_column.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'valid_one_column.csv') }
 
       it 'returns valid' do
         expect(subject).to be_valid
@@ -81,7 +81,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when a file has more than two columns' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'three_columns.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'three_columns.csv') }
 
       it 'returns invalid' do
         expect(subject).to_not be_valid
@@ -89,7 +89,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when a file is malformed' do
-      let(:path_to_file) {  Rails.root.join('spec', 'fixtures', 'malformed.csv') }
+      let(:path_to_file) {  Rails.root.join('spec', 'fixtures', 'autocomplete', 'malformed.csv') }
 
       it 'throws a malformed csv error' do
         expect(subject.errors.full_messages).to eq([I18n.t(
@@ -99,7 +99,7 @@ RSpec.describe CsvValidator do
     end
 
     context 'when file has bom prefix' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'bom.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'bom.csv') }
 
       it 'should be valid' do
         expect(subject).to be_valid
@@ -108,7 +108,7 @@ RSpec.describe CsvValidator do
 
     context 'when file has an empty cell' do
       context 'empty value cell' do
-        let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'empty_value_cell.csv') }
+        let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'empty_value_cell.csv') }
 
         it 'returns invalid' do
           expect(subject).to_not be_valid
