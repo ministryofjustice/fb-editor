@@ -7,7 +7,7 @@ class FromAddress < ApplicationRecord
     message: I18n.t('activemodel.errors.models.from_address.invalid')
   }, allow_blank: true
   validates :email, format: {
-    with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice)\.gov\.uk\z/,
+    with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice|justice.gsi)\.gov\.uk\z/,
     message: I18n.t('activemodel.errors.models.from_address.invalid_domain')
   }, allow_blank: true
 

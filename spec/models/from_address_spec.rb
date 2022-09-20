@@ -18,13 +18,22 @@ RSpec.describe FromAddress, type: :model do
   let(:email) { 'buck.rogers@digital.justice.gov.uk' }
 
   describe '#email_address' do
-    context 'when it is a valid email' do
-      it 'is valid' do
-        expect(from_address).to be_valid
-      end
+    valid_emails = [
+      'buck.rogers@digital.justice.gov.uk',
+      'atticus.finch@justice.gov.uk',
+      'jane.eyre@justice.gsi.gov.uk'
+    ]
+    valid_emails.each do |valid_email|
+      context "when it is a valid email: #{valid_email}" do
+        let(:email) { valid_email }
 
-      it 'returns the decrypted email value' do
-        expect(from_address.email_address).to eq(email)
+        it 'is valid' do
+          expect(from_address).to be_valid
+        end
+
+        it 'returns the decrypted email value' do
+          expect(from_address.email_address).to eq(valid_email)
+        end
       end
     end
 
