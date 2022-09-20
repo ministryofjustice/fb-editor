@@ -94,7 +94,7 @@ RSpec.describe FromAddress, type: :model do
 
   context 'encrypting and decrypting emails' do
     before do
-      create(:from_address, service_id: service_id, email: email).save
+      create(:from_address, service_id: service_id, email: email)
     end
     let(:service_id) { SecureRandom.uuid }
     let(:created_from_address) { FromAddress.find_by(service_id: service_id) }

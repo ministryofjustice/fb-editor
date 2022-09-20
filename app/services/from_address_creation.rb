@@ -3,9 +3,7 @@ class FromAddressCreation
   attr_accessor :from_address, :from_address_params, :email_service
 
   def save
-    unless from_address_params[:email] == FromAddress::DEFAULT_EMAIL_FROM
-      status = verify_email
-    end
+    status = verify_email
     from_address.update!(from_address_params.merge(status: status))
   rescue ActiveRecord::RecordInvalid
     false
@@ -15,7 +13,7 @@ class FromAddressCreation
   end
 
   def verify_email
-    return if from_address_params[:email].blank?
+    return :default if use_default_email?
 
     if email_service.get_email_identity(from_address_params[:email]).blank?
       email_service.create_email_identity(from_address_params[:email])
@@ -42,5 +40,12 @@ class FromAddressCreation
 
   def email_identity
     all_identities.find { |i| i.identity_name == from_address_params[:email] }
+  end
+
+  private
+
+  def use_default_email?
+    from_address_params[:email].blank? ||
+      from_address_params[:email] == FromAddress::DEFAULT_EMAIL_FROM
   end
 end

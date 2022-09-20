@@ -5,7 +5,7 @@ class FromAddressSync
       email_id = email_identities.find do |i|
         i.identity_name == decrypted_email
       end
-      record.update_column(:status, :verified) if email_id&.sending_enabled
+      record.verified! if email_id&.sending_enabled
     end
   end
 

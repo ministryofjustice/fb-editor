@@ -1,12 +1,13 @@
 class FromAddress < ApplicationRecord
   before_save :encrypt_email
-  after_save :update_status
 
   validates :email, format: {
+    if: proc { |obj| obj.run_validation? },
     with: URI::MailTo::EMAIL_REGEXP,
     message: I18n.t('activemodel.errors.models.from_address.invalid')
   }, allow_blank: true
   validates :email, format: {
+    if: proc { |obj| obj.run_validation? },
     with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice)\.gov\.uk\z/,
     message: I18n.t('activemodel.errors.models.from_address.invalid_domain')
   }, allow_blank: true
@@ -35,17 +36,19 @@ class FromAddress < ApplicationRecord
     email_address == DEFAULT_EMAIL_FROM
   end
 
+  # If the email is already encrypted then it won't be a
+  # new user inputted value therefore do not run validate.
+  # If it successfully decrypts then it is from the database
+  def run_validation?
+    EncryptionService.new.decrypt(email)
+    false
+  rescue ActiveSupport::MessageEncryptor::InvalidMessage
+    true
+  end
+
   private
 
-  def update_status
-    update_status_column(:default) if email_address == DEFAULT_EMAIL_FROM
-  end
-
-  def update_status_column(status)
-    update_column(:status, status)
-  end
-
   def encrypt_email
-    self.email = EncryptionService.new.encrypt(email.presence || DEFAULT_EMAIL_FROM)
+    self.email = EncryptionService.new.encrypt(email_address.presence || DEFAULT_EMAIL_FROM)
   end
 end
