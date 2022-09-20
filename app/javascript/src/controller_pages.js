@@ -150,7 +150,6 @@ PagesController.create = function() {
 
 class DataController {
   constructor(view) {
-    var controller = this;
     var $form = $("#editContentForm");
 
     this.text = view.text;
@@ -158,48 +157,23 @@ class DataController {
     this.$submitButton = this.$form.find(':submit');
     this.$saveDescription = this.$form.find('#save_description');
 
-    this.$form.on('keydown', {controller: controller} , this.onKeyDownListener); 
-    this.$form.on('submit', {controller: controller} , this.onSubmitListener);
-    this.$form.find(':submit').on('click', {controller: controller} , this.onClickListener);
-  }
-
-  onClickListener(event) {
-    let controller = event.data.controller;
-
-    if(controller.submitEnabled) {
-      window.removeEventListener('beforeunload', event.data.controller.beforeUnloadListener, {capture: true});
-      $(event.target).prop("value", event.data.controller.text.actions.saving );
-    } else {
-      event.preventDefault();
-    }
-  }
-
-  onSubmitListener(event) {
-    let controller = event.data.controller;
-
-    if(controller.submitEnabled) {
-      event.data.controller.update();
-      event.data.controller.removeBeforeUnloadListener();
-    } else {
-      event.preventDefault();
-    }
-  }
-
-  onKeyDownListener(event) {
-    let key = event.key;
-    let controller = event.data.controller;
-
-    if(!controller.submitEnabled) {
-      switch(key) {
-        case('Enter'):
-          event.preventDefault();
-          break;
-        case(' '):
-          event.preventDefault();
-          break;
+    this.$form.on('submit', (event) => {
+      if(this.submitEnabled) {
+        this.update();
+        this.removeBeforeUnloadListener();
+      } else {
+        event.preventDefault();
       }
-      return false;
-    }
+    });
+
+    this.$submitButton.on('click', (event) => {
+      if(this.submitEnabled) {
+        this.removeBeforeUnloadListener();
+        $(event.target).prop("value", this.text.actions.saving );
+      } else {
+        event.preventDefault();
+      }
+    });
   }
   
   beforeUnloadListener(event) {
