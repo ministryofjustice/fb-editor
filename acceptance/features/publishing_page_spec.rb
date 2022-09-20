@@ -25,7 +25,7 @@ feature 'Publishing' do
   let(:test_warning_message) {I18n.t('publish.warning.autocomplete_items', title: 'Question') }
   let(:live_warning_message) { I18n.t('publish.error.autocomplete_items', title: 'Question') }
   let(:upload_button) { I18n.t('dialogs.autocomplete.button') }
-  let(:valid_csv_one_column) { './spec/fixtures/valid_one_column.csv' }
+  let(:valid_csv_one_column) { './spec/fixtures/autocomplete/valid_one_column.csv' }
 
   background do
     given_I_am_logged_in

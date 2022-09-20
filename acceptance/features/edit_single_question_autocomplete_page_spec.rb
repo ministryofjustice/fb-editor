@@ -13,10 +13,10 @@ feature 'Edit single question autocomplete page' do
   let(:upload_success) { I18n.t('dialogs.autocomplete.success') }
   let(:upload_button) { I18n.t('dialogs.autocomplete.button') }
   let(:upload_modal_warning) { I18n.t('dialogs.autocomplete.modal_warning') }
-  let(:valid_csv) { './spec/fixtures/special_characters.csv' }
-  let(:valid_csv_one_column) { './spec/fixtures/valid_one_column.csv' }
+  let(:valid_csv) { './spec/fixtures/autocomplete/special_characters.csv' }
+  let(:valid_csv_one_column) { './spec/fixtures/autocomplete/valid_one_column.csv' }
   let(:autocomplete_option) { 'Congo, Democratic Republic of' }
-  let(:invalid_csv) { './spec/fixtures/invalid.csv' }
+  let(:invalid_csv) { './spec/fixtures/autocomplete/invalid.csv' }
   let(:incorrect_format) { I18n.t('activemodel.errors.models.autocomplete_items.invalid_headings') }
 
   background do
