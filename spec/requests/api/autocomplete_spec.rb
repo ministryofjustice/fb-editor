@@ -63,7 +63,7 @@ RSpec.describe 'Autocomplete spec', type: :request do
     end
     let(:service_id) { SecureRandom.uuid }
     let(:component_id) { SecureRandom.uuid }
-    let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid.csv') }
+    let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'valid.csv') }
     let(:file) { Rack::Test::UploadedFile.new path_to_file, 'text/csv' }
     let(:params) { { autocomplete_items: { file: file } } }
 
@@ -114,7 +114,7 @@ RSpec.describe 'Autocomplete spec', type: :request do
         end
 
         context 'the file does not have headings' do
-          let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'invalid.csv') }
+          let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'invalid.csv') }
           it 'returns a 422' do
             request
             expect(response.status).to eq(422)

@@ -8,7 +8,7 @@ RSpec.describe AutocompleteItems do
   end
   let(:service_id) { SecureRandom.uuid }
   let(:component_id) { SecureRandom.uuid }
-  let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'valid.csv') }
+  let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'valid.csv') }
   let(:file) { Rack::Test::UploadedFile.new path_to_file, 'text/csv' }
   before do
     allow(MalwareScanner).to receive(:call).and_return(false)
@@ -99,7 +99,7 @@ RSpec.describe AutocompleteItems do
 
   describe '#file_contents' do
     context 'file is malformed' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'malformed.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'malformed.csv') }
 
       it 'is invalid' do
         expect(subject).to_not be_valid
@@ -115,7 +115,15 @@ RSpec.describe AutocompleteItems do
     end
 
     context 'file has special characters' do
-      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'special_characters.csv') }
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'special_characters.csv') }
+
+      it 'is valid' do
+        expect(subject).to be_valid
+      end
+    end
+
+    context 'has carriage return at the end of the file' do
+      let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'carriage_return.csv') }
 
       it 'is valid' do
         expect(subject).to be_valid
