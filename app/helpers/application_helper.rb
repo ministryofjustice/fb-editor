@@ -66,7 +66,7 @@ module ApplicationHelper
     flow_object.title || service.find_page_by_uuid(flow_object.uuid).title
   end
 
-  def fb_back_link(path)
+  def editor_back_link(path)
     link_to path, class: 'fb-back-link' do
       concat tag.span '<svg width="7" height="12" viewBox="0 0 7 12" fill="none" role="image" aria-hidden="true">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M5.75345 0L6.46045 0.706L1.41445 5.753L6.46045 10.799L5.75345 11.507L0.000449181 5.753L5.75345 0Z" fill="currentColor"/>
