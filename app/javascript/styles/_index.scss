@@ -561,7 +561,7 @@ html {
   }
 
 
-  .FlowItemMenu,
+  .PageMenu,
   .ConnectionMenu {
     z-index: 5;
   }
@@ -635,7 +635,7 @@ html {
   }
 }
 
-.FlowItemMenuActivator {
+.PageMenuActivator {
   display: inline-block;
   left: 157px;
   opacity: 0;
@@ -719,7 +719,7 @@ html {
     }
   }
   
-  .FlowItemMenuActivator {
+  .PageMenuActivator {
     bottom: 10px;
     left: 82px;
     top: calc(125px - 45px);

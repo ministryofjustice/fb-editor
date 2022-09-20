@@ -18,8 +18,8 @@ class PageMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
-    this.activator.$node.addClass("FlowItemMenuActivator");
-    this.container.$node.addClass("FlowItemMenu");
+    this.activator.$node.addClass("PageMenuActivator");
+    this.container.$node.addClass("PageMenu");
     this.uuid = $node.data("uuid");
     this.title = $node.data("title");
   }
