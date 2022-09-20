@@ -1,10 +1,8 @@
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-
-    <%= form_for @from_address,
-      method: :post,
-      url: settings_from_address_index_path(service.service_id),
-      builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+<%= editor_settings_screen(settings_submission_index_path) do %>
+  <%= form_for @from_address,
+    method: :post,
+    url: settings_from_address_index_path(service.service_id),
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
     <%= f.govuk_error_summary link_base_errors_to: :email %>
 
@@ -50,5 +48,4 @@
       <%= t('actions.save') %>
     </button>
   <% end %>
-  </div>
-</div>
+<% end %>

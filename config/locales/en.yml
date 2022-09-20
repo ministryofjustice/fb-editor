@@ -277,7 +277,7 @@ en:
       form_name:
         label: 'Form name'
         hint: 'The visible name of your form'
-        warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact us</a> to change your form’s name.'
+        warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
     from_address:
       heading: "‘From’ address"
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address

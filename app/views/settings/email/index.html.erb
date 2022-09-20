@@ -1,62 +1,60 @@
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
-    <p><%= t('settings.submission.email.help') %></p>
+<%= editor_settings_screen(settings_submission_index_path) do %>
+  <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
+  <p><%= t('settings.submission.email.help') %></p>
 
-    <%= form_for @email_settings_dev,
-      url: settings_email_index_path(service.service_id),
-      html: { id: 'email-submission-dev' } do |f| %>
-      <div class="govuk-form-group">
-          <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h2 class="govuk-fieldset__heading"><%= t('publish.test.heading') %></h2>
-            </legend>
-            <div class="govuk-hint"><%= t('publish.test.hint') %></div>
-            <div class="govuk-checkboxes">
-              <div class="govuk-checkboxes__item">
-                <%= f.check_box :send_by_email_dev, class: 'govuk-checkboxes__input',
-                  checked: f.object.send_by_email_checked? %>
-                <%= f.label :send_by_email_dev,
-                  f.object.class.human_attribute_name(:send_by_email_dev),
-                  class: 'govuk-label govuk-checkboxes__label' %>
-              </div>
-            </div>
-          </fieldset>
-      </div>
-
-      <%= render 'form', f: f, deployment_environment: 'dev' %>
-
-      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        <%= t('settings.submission.email.save_test') %>
-      </button>
-    <% end %>
-
-    <%= form_for @email_settings_production,
-      url: settings_email_index_path(service.service_id),
-      html: { id: 'email-submission-production' } do |f| %>
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h2 class="govuk-fieldset__heading"><%= t('publish.live.heading') %></h2>
-          </legend>
-          <div class="govuk-hint"><%= t('publish.live.hint') %></div>
-          <div class="govuk-checkboxes">
-            <div class="govuk-checkboxes__item">
-              <%= f.check_box :send_by_email_production, class: 'govuk-checkboxes__input',
-                checked: f.object.send_by_email_checked? %>
-              <%= f.label :send_by_email_production,
-                f.object.class.human_attribute_name(:send_by_email_production),
-                class: 'govuk-label govuk-checkboxes__label' %>
-            </div>
+  <%= form_for @email_settings_dev,
+    url: settings_email_index_path(service.service_id),
+    html: { id: 'email-submission-dev' } do |f| %>
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h2 class="govuk-fieldset__heading"><%= t('publish.test.heading') %></h2>
+        </legend>
+        <div class="govuk-hint"><%= t('publish.test.hint') %></div>
+        <div class="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <%= f.check_box :send_by_email_dev, class: 'govuk-checkboxes__input',
+              checked: f.object.send_by_email_checked? %>
+            <%= f.label :send_by_email_dev,
+              f.object.class.human_attribute_name(:send_by_email_dev),
+              class: 'govuk-label govuk-checkboxes__label' %>
           </div>
-        </fieldset>
-      </div>
+        </div>
+      </fieldset>
+    </div>
 
-      <%= render 'form', f: f, deployment_environment: 'production' %>
+    <%= render 'form', f: f, deployment_environment: 'dev' %>
 
-      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        <%= t('settings.submission.email.save_live') %>
-      </button>
-    <% end %>
-  </div>
-</div>
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('settings.submission.email.save_test') %>
+    </button>
+  <% end %>
+
+  <%= form_for @email_settings_production,
+    url: settings_email_index_path(service.service_id),
+    html: { id: 'email-submission-production' } do |f| %>
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h2 class="govuk-fieldset__heading"><%= t('publish.live.heading') %></h2>
+        </legend>
+        <div class="govuk-hint"><%= t('publish.live.hint') %></div>
+        <div class="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <%= f.check_box :send_by_email_production, class: 'govuk-checkboxes__input',
+              checked: f.object.send_by_email_checked? %>
+            <%= f.label :send_by_email_production,
+              f.object.class.human_attribute_name(:send_by_email_production),
+              class: 'govuk-label govuk-checkboxes__label' %>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <%= render 'form', f: f, deployment_environment: 'production' %>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('settings.submission.email.save_live') %>
+    </button>
+  <% end %>
+<% end %>

@@ -142,6 +142,29 @@ html {
   @include button_as_link;
 }
 
+.fb-back-link {
+  @extend %govuk-link;
+  @extend %govuk-body-s;
+  @include govuk-link-style-text;
+  @include govuk-link-style-no-underline;
+
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  left: 0;
+
+  > span:first-child {
+    margin-right: 4px;
+  }
+}
+
+.fb-settings-screen {
+  h1 {
+    margin-top: govuk-spacing(6);
+  }
+}
+
 
 /* Publishing
  * ------------------- */

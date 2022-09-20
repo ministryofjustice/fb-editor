@@ -1,19 +1,17 @@
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <h1 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.submission.name') %></h1>
-    <p class="govuk-body"><%= t('settings.submission.sub_heading') %></p>
-    <nav class="govuk-navigation" aria-labelledby="settings-navigation-heading">
-      <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
-        <% if ENV['FROM_ADDRESS'] == 'enabled' %>
-          <div>
-            <dt><%= link_to t('settings.submission.from_address.label'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
-            <dd class="govuk-hint"><%= t('settings.form_information.description') %></dd>
-          </div>
-        <% end %>
+<%= editor_settings_screen(settings_path) do %>
+  <h1 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.submission.name') %></h1>
+  <p class="govuk-body"><%= t('settings.submission.sub_heading') %></p>
+  <nav class="govuk-navigation" aria-labelledby="settings-navigation-heading">
+    <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
+      <% if ENV['FROM_ADDRESS'] == 'enabled' %>
         <div>
-          <dt><%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
+          <dt><%= link_to t('settings.submission.from_address.label'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
+          <dd class="govuk-hint"><%= t('settings.form_information.description') %></dd>
         </div>
-      </dl>
-    </nav>
-  </div>
-</div>
+      <% end %>
+      <div>
+        <dt><%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
+      </div>
+    </dl>
+  </nav>
+<% end %>
