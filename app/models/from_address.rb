@@ -4,15 +4,15 @@ class FromAddress < ApplicationRecord
 
   validates :email, format: {
     with: URI::MailTo::EMAIL_REGEXP,
-    message: lambda do |_object, _|
-      I18n.t(
-        'activemodel.errors.models.from_address.invalid'
-      )
-    end
+    message: I18n.t('activemodel.errors.models.from_address.invalid')
+  }, allow_blank: true
+  validates :email, format: {
+    with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice)\.gov\.uk\z/,
+    message: I18n.t('activemodel.errors.models.from_address.invalid_domain')
   }, allow_blank: true
 
   enum status: {
-    unverified: 0,
+    default: 0,
     pending: 1,
     verified: 2
   }
@@ -31,14 +31,14 @@ class FromAddress < ApplicationRecord
     @decrypt_email ||= EncryptionService.new.decrypt(email)
   end
 
+  def default_email?
+    email_address == DEFAULT_EMAIL_FROM
+  end
+
   private
 
   def update_status
-    if email_address == DEFAULT_EMAIL_FROM
-      update_status_column(:verified)
-    else
-      update_status_column(:unverified)
-    end
+    update_status_column(:default) if email_address == DEFAULT_EMAIL_FROM
   end
 
   def update_status_column(status)

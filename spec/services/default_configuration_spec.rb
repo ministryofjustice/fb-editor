@@ -90,8 +90,8 @@ RSpec.describe DefaultConfiguration do
         expect(from_address.decrypt_email).to eq(FromAddress::DEFAULT_EMAIL_FROM)
       end
 
-      it 'has a verified status' do
-        expect(from_address.status).to eq('verified')
+      it 'has a default status' do
+        expect(from_address.status).to eq('default')
       end
     end
   end
