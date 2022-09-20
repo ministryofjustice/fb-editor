@@ -11,7 +11,17 @@
     <% if @presenter.message[:status] == 'pending' %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important')) do %>
         <%= @presenter.message[:text].html_safe %>
-        <p><%= govuk_link_to t('settings.from_address.resend_link_text'), "#" %></p>
+        <p>
+          <span role="alert"></span> 
+          <%= tag.button t('settings.from_address.resend_link_text'),
+            class: 'fb-link-button',
+            data: {
+              remote: true,
+              method: 'post',
+              url: api_service_settings_from_address_resend_path(service.service_id),
+              success: t('settings.from_address.link_resent_success')
+            } %>
+        </p>
       <% end %>
     <% end %>
 
