@@ -21,8 +21,10 @@ class AutocompleteItems
   end
 
   def file_contents
-    contents = File.read(file.path, encoding: 'bom|utf-8').strip
-    @file_contents ||= CSV.parse(contents)
+    @file_contents ||= begin
+      contents = File.read(file.path, encoding: 'bom|utf-8').strip
+      CSV.parse(contents)
+    end
   end
 
   def has_virus?
