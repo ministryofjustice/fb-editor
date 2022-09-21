@@ -125,5 +125,32 @@ describe("PageMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: deleteItemApi()
+     **/
+    describe("deleteItemApi()", function() {
+      it("should trigger deleteItemApi() when passed 'delete' action", function() {
+        var originalDeleteItemApi = c.PageMenuClass.prototype.deleteItemApi;
+        var $item = created.$node.find("li[data-action=delete-api]");
+        var called = false;
+
+        c.PageMenuClass.prototype.deleteItemApi = function(item) {
+              called = true;
+              item.data("tested", true);
+            }
+
+        // Invoke function via event.
+        $item.click();
+
+        // Test
+        expect(created.item.selection).to.exist;
+        expect(called).to.be.true;
+        expect($item.data("tested")).to.be.true;
+
+        // Reset previewPage() back to original.
+        c.PageMenuClass.prototype.deleteItemApi = originalDeleteItemApi;
+      });
+    });
+
   });
 });
