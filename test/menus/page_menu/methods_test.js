@@ -71,45 +71,5 @@ describe("PageMenu", function() {
       });
     });
 
-
-    /* TEST METHOD: link()
-     **/
-    describe("link()");
-
-
-    /* TEST METHOD: previewPage()
-     **/
-    describe("previewPage()");
-
-
-    /* TEST METHOD: addPage()
-     **/
-    describe("addPage()");
-
-
-    /* TEST METHOD: changeDestination()
-     **/
-    describe("changeDestination()");
-
-
-    /* TEST METHOD: deleteItem()
-     **/
-    describe("deleteItem()");
-
-
-    /* TEST METHOD: deleteItemApi()
-     **/
-    describe("deleteItemApi()");
-
-
-    /* TEST METHOD: deleteItemForm()
-     **/
-    describe("deleteItemForm()");
-
-
-    /* TEST METHOD: moveItemApi()
-     **/
-    describe("moveItemApi()");
-
   });
 });
