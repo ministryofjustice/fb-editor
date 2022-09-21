@@ -3,6 +3,8 @@ const GlobalHelpers = require("../../helpers.js");
 
 
 const constants = {
+  PageMenuClass: PageMenu,
+
   CLASSNAME_ACTIVATOR: "page-menu-activator-classname",
   CLASSNAME_COMPONENT: "PageMenu",
   EVENT_SELECTION_NAME: "PageMenuTestSelectionEventName",
@@ -13,10 +15,15 @@ const constants = {
 
   TEXT_ACTIVATOR: "activated menu activator",
   TEXT_TITLE: "component title",
+
+  TEXT_ITEM_PREVIEW: "Preview page",
+  TEXT_ITEM_ADD: "Add page",
+  TEXT_ITEM_DESTINATION: "Change destination",
   TEXT_ITEM_DELETE: "Delete page",
-  TEXT_ITEM_EDIT: "Edit page",
+  TEXT_ITEM_DELETE_API: "Delete page with API check",
+  TEXT_ITEM_DELETE_FORM: "Delete page with form",
   TEXT_ITEM_MOVE: "Move page",
-  TEXT_ITEM_PREVIEW: "Preview page"
+  TEXT_ITEM_DEFAULT: "Default action"
 }
 
 
@@ -64,17 +71,29 @@ function setupView(id) {
                             data-activator-classname="` + constants.CLASSNAME_ACTIVATOR + `"
                             data-title="` + constants.TEXT_TITLE + `"
                             data-uuid="` + id + constants.ID_UUID_SUFFIX + `">
-                          <li data-action="none">
-                            <a href="#action0">` + id + constants.TEXT_ITEM_EDIT + `</a>
-                          </li>
                           <li data-action="preview">
                             <a href="#action1">` + id + constants.TEXT_ITEM_PREVIEW + `</a>
+                          </li>
+                          <li data-action="add">
+                            <a href="#action1">` + id + constants.TEXT_ITEM_ADD + `</a>
+                          </li>
+                          <li data-action="destination">
+                            <a href="#action1">` + id + constants.TEXT_ITEM_DESTINATION + `</a>
+                          </li>
+                          <li data-action="delete">
+                            <a href="#action3">` + id + constants.TEXT_ITEM_DELETE + `</a>
+                          </li>
+                          <li data-action="delete-api">
+                            <a href="#action3">` + id + constants.TEXT_ITEM_DELETE_API + `</a>
+                          </li>
+                          <li data-action="delete-form">
+                            <a href="#action3">` + id + constants.TEXT_ITEM_DELETE_FORM + `</a>
                           </li>
                           <li data-action="move-api">
                             <a href="#action2">` + id + constants.TEXT_ITEM_MOVE + `</a>
                           </li>
-                          <li data-action="delete-api">
-                            <a href="#action3">` + id + constants.TEXT_ITEM_DELETE + `</a>
+                          <li data-action="none">
+                            <a href="#action0">` + id + constants.TEXT_ITEM_DEFAULT + `</a>
                           </li>
                         </ul>
                       </div>`);
