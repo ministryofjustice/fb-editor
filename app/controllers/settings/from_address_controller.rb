@@ -30,10 +30,10 @@ class Settings::FromAddressController < FormController
   end
 
   def email_service
-    @email_service ||= if Rails.env.development?
-                         EmailService::Adapters::Local.new
-                       else
+    @email_service ||= if Rails.env.production?
                          EmailService::Adapters::AwsSesClient.new
+                       else
+                         EmailService::Adapters::Local.new
                        end
   end
 end
