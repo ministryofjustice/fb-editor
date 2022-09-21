@@ -236,7 +236,7 @@ feature 'Create page' do
   end
 
   def and_I_should_see_the_save_button_disabled
-    expect(editor.save_page_button).to be_disabled
+    expect(editor.save_page_button[:'aria-disabled']).to eq("true")
   end
 
   def add_existing_url(url = nil)

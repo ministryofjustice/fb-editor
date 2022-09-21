@@ -151,18 +151,29 @@ PagesController.create = function() {
 class DataController {
   constructor(view) {
     var $form = $("#editContentForm");
+
     this.text = view.text;
-
-    $form.find(":submit").on("click", (event) => {
-      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
-      $(event.target).prop("value", this.text.actions.saving );
-    });
-
-    $form.on("submit", () => { 
-      this.update();
-      this.removeBeforeUnloadListener();
-    });
     this.$form = $form;
+    this.$submitButton = this.$form.find(':submit');
+    this.$saveDescription = this.$form.find('#save_description');
+
+    this.$form.on('submit', (event) => {
+      if(this.submitEnabled) {
+        this.update();
+        this.removeBeforeUnloadListener();
+      } else {
+        event.preventDefault();
+      }
+    });
+
+    this.$submitButton.on('click', (event) => {
+      if(this.submitEnabled) {
+        this.removeBeforeUnloadListener();
+        $(event.target).prop("value", this.text.actions.saving );
+      } else {
+        event.preventDefault();
+      }
+    });
   }
   
   beforeUnloadListener(event) {
@@ -180,14 +191,17 @@ class DataController {
 
   saveRequired(required) {
     if(required) { 
-      this.$form.find(":submit").prop("value", this.text.actions.save );
-      this.$form.find(":submit").prop("disabled", false);
+      this.$submitButton.prop("value", this.text.actions.save );
+      this.$submitButton.attr("aria-disabled", false);
+      this.$saveDescription.text("");
+      this.submitEnabled = true;
       this.addBeforeUnloadListener();
-    }
-
-    else {
-      this.$form.find(":submit").prop("value", this.text.actions.saved );
-      this.$form.find(":submit").prop("disabled", true);
+    } else {
+      this.$submitButton.prop("value", this.text.actions.saved );
+      // Use aria-disabled so AT users can still discover the button
+      this.$submitButton.attr("aria-disabled", true);
+      this.$saveDescription.text(this.text.aria.disabled_save_description);
+      this.submitEnabled = false;
       this.removeBeforeUnloadListener();
     }
   }
@@ -231,8 +245,13 @@ class AddComponent {
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
   if( action != "none" ) {
+    var submitEnabled = this.dataController.submitEnabled;
+
     updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
+    this.dataController.submitEnabled = true;
     this.dataController.$form.submit();
+    this.dataController.suibmitEnabled = submitEnabled;
+
   }
 }
 
@@ -245,10 +264,15 @@ class AddContent {
     var fieldname = $node.data("fb-field-name") || "page[add_component]";
     this.$button = $button;
     this.$node = $node;
+    this.dataController = config.view.dataController;
 
     $button.on("click.AddContent", () => {
+      var submitEnabled = this.dataController.submitEnabled;
+
       updateHiddenInputOnForm(config.$form, fieldname, "content");
-      config.$form.submit();
+      this.dataController.submitEnabled = true;
+      this.dataController.$form.submit();
+      this.dataController.suibmitEnabled = submitEnabled;
     });
 
     $node.addClass("AddContent");
