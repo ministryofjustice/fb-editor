@@ -19,29 +19,11 @@ describe("PageMenu", function() {
     });
 
     /* TEST METHOD: selection()
+     * Note - This function has been tested within the events_test.js file
+     *        so there is little need to replicate the testing here.
      **/
     describe("selection()", function() {
-      it("should trigger previewPage() when passed 'preview' action", function() {
-        var originalPreviewPage = c.PageMenuClass.prototype.previewPage;
-        var $item = created.$node.find("li[data-action=preview]");
-        var called = false;
-
-        c.PageMenuClass.prototype.previewPage = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
-
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.previewPage = originalPreviewPage;
-      });
+      it("should trigger the appropriate function based on passed event+item combination");
     });
 
 
