@@ -152,5 +152,32 @@ describe("PageMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: deleteItemForm()
+     **/
+    describe("deleteItemForm()", function() {
+      it("should trigger deleteItemForm() when passed 'delete' action", function() {
+        var originalDeleteItemForm = c.PageMenuClass.prototype.deleteItemForm;
+        var $item = created.$node.find("li[data-action=delete-form]");
+        var called = false;
+
+        c.PageMenuClass.prototype.deleteItemForm = function(item) {
+              called = true;
+              item.data("tested", true);
+            }
+
+        // Invoke function via event.
+        $item.click();
+
+        // Test
+        expect(created.item.selection).to.exist;
+        expect(called).to.be.true;
+        expect($item.data("tested")).to.be.true;
+
+        // Reset previewPage() back to original.
+        c.PageMenuClass.prototype.deleteItemForm = originalDeleteItemForm;
+      });
+    });
+
   });
 });
