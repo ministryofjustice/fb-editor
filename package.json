@@ -10,7 +10,7 @@
   "dependencies": {
     "@rails/actioncable": "^7.0.3",
     "@rails/activestorage": "^7.0.3",
-    "@rails/ujs": "^7.0.3",
+    "@rails/ujs": "^7.0.4",
     "@rails/webpacker": "^5.4.3",
     "accessible-autocomplete": "^2.0.4",
     "govuk-frontend": "4.3.1",
