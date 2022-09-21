@@ -98,5 +98,32 @@ describe("PageMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: deleteItem()
+     **/
+    describe("deleteItem()", function() {
+      it("should trigger deleteItem() when passed 'delete' action", function() {
+        var originalDeleteItem = c.PageMenuClass.prototype.deleteItem;
+        var $item = created.$node.find("li[data-action=delete]");
+        var called = false;
+
+        c.PageMenuClass.prototype.deleteItem = function(item) {
+              called = true;
+              item.data("tested", true);
+            }
+
+        // Invoke function via event.
+        $item.click();
+
+        // Test
+        expect(created.item.selection).to.exist;
+        expect(called).to.be.true;
+        expect($item.data("tested")).to.be.true;
+
+        // Reset previewPage() back to original.
+        c.PageMenuClass.prototype.deleteItem = originalDeleteItem;
+      });
+    });
+
   });
 });
