@@ -6,11 +6,8 @@ class FromAddress < ApplicationRecord
     with: URI::MailTo::EMAIL_REGEXP,
     message: I18n.t('activemodel.errors.models.from_address.invalid')
   }, allow_blank: true
-  validates :email, format: {
-    if: proc { |obj| obj.run_validation? },
-    with: /\A\b[A-Z0-9._%a-z\-]+@(digital\.justice|justice)\.gov\.uk\z/,
-    message: I18n.t('activemodel.errors.models.from_address.invalid_domain')
-  }, allow_blank: true
+
+  validates_with EmailDomainValidator, if: proc { |obj| obj.run_validation? }, allow_blank: true
 
   enum status: {
     default: 0,
