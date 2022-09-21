@@ -23,9 +23,9 @@ RSpec.describe FromAddressCreation, type: :model do
         expect(from_address).to be_persisted
       end
 
-      it 'doesn\'t call AWS SES' do
-        expect(from_address_creation).not_to receive(:verify_email)
+      it 'saves the default status' do
         from_address_creation.save
+        expect(from_address.reload.status).to eq('default')
       end
     end
 
