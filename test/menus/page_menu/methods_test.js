@@ -206,5 +206,32 @@ describe("PageMenu", function() {
       });
     });
 
+
+    /* TEST METHOD: link()
+     **/
+    describe("link()", function() {
+      it("should trigger link() when passed an unfound action", function() {
+        var originalLink = c.PageMenuClass.prototype.link;
+        var $item = created.$node.find("li[data-action=none]");
+        var called = false;
+
+        c.PageMenuClass.prototype.link = function(item) {
+              called = true;
+              item.data("tested", true);
+            }
+
+        // Invoke function via event.
+        $item.click();
+
+        // Test
+        expect(created.item.selection).to.exist;
+        expect(called).to.be.true;
+        expect($item.data("tested")).to.be.true;
+
+        // Reset previewPage() back to original.
+        c.PageMenuClass.prototype.link = originalLink;
+      });
+    });
+
   });
 });
