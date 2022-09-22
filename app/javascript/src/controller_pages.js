@@ -19,6 +19,7 @@
 const  { 
   updateHiddenInputOnForm,
   stringInject,
+  mergeObjects
 }  = require('./utilities');
 
 const {
@@ -61,6 +62,12 @@ class PagesController extends DefaultController {
         break;
     }
   }
+
+  updateComponents() {
+    $(".fb-editable").each(function() {
+      $(this).data("instance").save();
+    });
+  }
 }
 
 /* ------------------------------
@@ -68,7 +75,16 @@ class PagesController extends DefaultController {
  * ------------------------------ */
 PagesController.edit = function() {
   var view = this;
-  var dataController = new DataController(view);
+  var $form = $("#editContentForm");
+  var dataController = new DataController($form, {
+    text: {
+      clean: view.text.actions.saved,
+      dirty: view.text.actions.save,
+      busy: view.text.actions.saving,
+      description: view.text.aria.disabled_save_description,
+    },
+    preventUnload: true,
+  });
 
   this.$editable = $(".fb-editable");
   this.dataController = dataController;
@@ -128,7 +144,7 @@ PagesController.edit = function() {
 
   dataController.saveRequired(false);
   this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
-
+  this.$document.on("Save", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
   // The static content is wrapped in [fb-content-type=static] to help identify it.
@@ -149,17 +165,24 @@ PagesController.create = function() {
 
 
 class DataController {
-  constructor(view) {
-    var $form = $("#editContentForm");
-
-    this.text = view.text;
+  constructor($form, config) {
+    this.config = mergeObjects({
+      text: {
+        clean: '',
+        dirty: '',
+        busy: '',
+      },
+      preventUnload: false,
+    }, config);
+  
+    this.text = config.text;
     this.$form = $form;
     this.$submitButton = this.$form.find(':submit');
     this.$saveDescription = this.$form.find('#save_description');
 
     this.$form.on('submit', (event) => {
       if(this.submitEnabled) {
-        this.update();
+        $(document).trigger('Save');
         this.removeBeforeUnloadListener();
       } else {
         event.preventDefault();
@@ -169,7 +192,7 @@ class DataController {
     this.$submitButton.on('click', (event) => {
       if(this.submitEnabled) {
         this.removeBeforeUnloadListener();
-        $(event.target).prop("value", this.text.actions.saving );
+        $(event.target).prop("value", this.config.text.busy );
       } else {
         event.preventDefault();
       }
@@ -182,34 +205,32 @@ class DataController {
   }
 
   addBeforeUnloadListener() {
+    if(this.config.preventUnload) {
       window.addEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
+    }
   }
 
   removeBeforeUnloadListener() {  
+    if(this.config.preventUnload) {
       window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
+    }
   }
 
   saveRequired(required) {
     if(required) { 
-      this.$submitButton.prop("value", this.text.actions.save );
+      this.$submitButton.prop("value", this.config.text.dirty );
       this.$submitButton.attr("aria-disabled", false);
       this.$saveDescription.text("");
       this.submitEnabled = true;
       this.addBeforeUnloadListener();
     } else {
-      this.$submitButton.prop("value", this.text.actions.saved );
+      this.$submitButton.prop("value", this.config.text.clean );
       // Use aria-disabled so AT users can still discover the button
       this.$submitButton.attr("aria-disabled", true);
-      this.$saveDescription.text(this.text.aria.disabled_save_description);
+      this.$saveDescription.text(this.config.text.description);
       this.submitEnabled = false;
       this.removeBeforeUnloadListener();
     }
-  }
-
-  update() {
-    $(".fb-editable").each(function() {
-      $(this).data("instance").save();
-    });
   }
 }
 
@@ -304,7 +325,7 @@ function addQuestionMenuListeners(view) {
       // 1. First remove component from view
           question.$node.hide();
       // 2. Update form (in case anything else has changed)
-          view.dataController.update();
+          view.updateComponents();
       // 3. Remove corresponding component from form
           question.remove();
       // 4. Trigger save required (to enable Save button)
@@ -525,7 +546,7 @@ function addContentMenuListeners(view) {
     view.dialogConfirmationDelete.onConfirm = function() {
       // Workaround solution that doesn't require extra backend work
       component.$node.hide(); // 1. First remove component from view
-      view.dataController.update(); // 2. Update form (in case anything else has changed)
+      view.updateComponents(); // 2. Update form (in case anything else has changed)
       component.remove(); // 3. Remove corresponding component from form
       view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
     };
