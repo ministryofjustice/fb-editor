@@ -19,38 +19,11 @@ describe("PageMenu", function() {
     });
 
     /* TEST METHOD: selection()
-     * Note - This function has been tested within the events_test.js file
-     *        so there is little need to replicate the testing here.
      **/
     describe("selection()", function() {
+      // Note - This function has been tested within the events_test.js file
+      //        so there is little need to replicate the testing here.
       it("should trigger the appropriate function based on passed event+item combination");
-    });
-
-
-    /* TEST METHOD: deleteItem()
-     **/
-    describe("deleteItem()", function() {
-      it("should trigger deleteItem() when passed 'delete' action", function() {
-        var originalDeleteItem = c.PageMenuClass.prototype.deleteItem;
-        var $item = created.$node.find("li[data-action=delete]");
-        var called = false;
-
-        c.PageMenuClass.prototype.deleteItem = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
-
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.deleteItem = originalDeleteItem;
-      });
     });
 
 
