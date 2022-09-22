@@ -44,28 +44,6 @@ describe("PageMenu", function() {
         c.PageMenuClass.prototype.previewPage = originalPreviewPage;
       });
 
-      it("should trigger addPage() when passed 'add' action", function() {
-        var originalAddPage = c.PageMenuClass.prototype.addPage;
-        var $item = created.$node.find("li[data-action=add]");
-        var called = false;
-
-        c.PageMenuClass.prototype.addPage = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
-
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.addPage = originalAddPage;
-      });
-
       it("should trigger deleteItem() when passed 'delete' action", function() {
         var originalDeleteItem = c.PageMenuClass.prototype.deleteItem;
         var $item = created.$node.find("li[data-action=delete]");

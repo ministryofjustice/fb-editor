@@ -34,10 +34,6 @@ class PageMenu extends ActivatedMenu {
            this.previewPage(item);
            break;
 
-      case "add":
-           this.addPage(item);
-           break;
-
       case "delete":
            this.deleteItem(item);
            break;
@@ -66,17 +62,6 @@ class PageMenu extends ActivatedMenu {
   previewPage(element) {
     var $link = element.find("> a");
     window.open($link.attr("href"));
-  }
-
-  // Open the views Page Addition Menu
-  addPage(element) {
-    var menu = this._config.view.pageAdditionMenu;
-    menu.addPageAfter = this.uuid;
-    menu.open({
-      my: "left top",
-      at: "right top",
-      of: element
-    });
   }
 
   // Use standard delete modal to remove

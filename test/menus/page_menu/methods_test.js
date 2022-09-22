@@ -27,30 +27,6 @@ describe("PageMenu", function() {
     });
 
 
-    /* TEST METHOD: addPage()
-     **/
-    describe("addPage()", function() {
-      it("should open the PageAdditionMenu when called", function() {
-        var $item = created.$node.find("li[data-action=add]");
-        var open = false;
-        var fakeAdditionMenu = {
-              addPageAfter: '',
-              open: funciton() {
-                open = true;
-              }
-            }
-
-        expect(open).to.be.false;
-        expect(fakeAdditionMenu.addPageAfter).to.equal('');
-
-        created.item.addPage($item);
-        created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-      });
-    });
-
-
     /* TEST METHOD: deleteItem()
      **/
     describe("deleteItem()", function() {
