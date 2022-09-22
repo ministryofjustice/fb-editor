@@ -38,10 +38,6 @@ class PageMenu extends ActivatedMenu {
            this.addPage(item);
            break;
 
-      case "destination":
-           this.changeDestination(item);
-           break;
-
       case "delete":
            this.deleteItem(item);
            break;
@@ -80,17 +76,6 @@ class PageMenu extends ActivatedMenu {
       my: "left top",
       at: "right top",
       of: element
-    });
-  }
-
-  // Open an API request dialog to change destination
-  // TODO - is this used? Change Destination is called from the connection menu
-  changeDestination(element) {
-    var $link = element.find("> a");
-    new DialogForm($link.attr("href"), {
-      activator: $link,
-      autoOpen: true,
-      remote: false,
     });
   }
 
