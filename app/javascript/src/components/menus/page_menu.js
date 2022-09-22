@@ -34,10 +34,6 @@ class PageMenu extends ActivatedMenu {
            this.previewPage(item);
            break;
 
-      case "delete":
-           this.deleteItem(item);
-           break;
-
       case "delete-api":
            this.deleteItemApi(item);
            break;
@@ -62,18 +58,6 @@ class PageMenu extends ActivatedMenu {
   previewPage(element) {
     var $link = element.find("> a");
     window.open($link.attr("href"));
-  }
-
-  // Use standard delete modal to remove
-  // TODO - is this used? I think all deletes are via API request now
-  deleteItem(element) {
-    var view = this._config.view;
-    var $link = element.find("> a");
-    view.dialogConfirmationDelete.onConfirm = () => { post($link.attr("href"), { _method: "delete" }) };
-    view.dialogConfirmationDelete.open({
-      heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
-      confirm: view.text.dialogs.button_delete_page
-    });
   }
 
   deleteItemApi(element) {

@@ -18,7 +18,6 @@ const constants = {
 
   TEXT_ITEM_PREVIEW: "Preview page",
   TEXT_ITEM_ADD: "Add page",
-  TEXT_ITEM_DELETE: "Delete page",
   TEXT_ITEM_DELETE_API: "Delete page with API check",
   TEXT_ITEM_DELETE_FORM: "Delete page with form",
   TEXT_ITEM_MOVE: "Move page",
@@ -75,9 +74,6 @@ function setupView(id) {
                           </li>
                           <li data-action="add">
                             <a href="#action1">` + id + constants.TEXT_ITEM_ADD + `</a>
-                          </li>
-                          <li data-action="delete">
-                            <a href="#action3">` + id + constants.TEXT_ITEM_DELETE + `</a>
                           </li>
                           <li data-action="delete-api">
                             <a href="#action3">` + id + constants.TEXT_ITEM_DELETE_API + `</a>
