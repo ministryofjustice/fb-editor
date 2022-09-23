@@ -144,8 +144,8 @@ PagesController.edit = function() {
   addContentMenuListeners(view);
   addEditableComponentItemMenuListeners(view);
 
-  submitHandler.required = false;
-  this.$document.on("SaveRequired", () => submitHandler.required = true );
+  submitHandler.submittable = false;
+  this.$document.on("SaveRequired", () => submitHandler.submittable = true );
   this.submitHandler.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
@@ -254,7 +254,7 @@ function addQuestionMenuListeners(view) {
       // 3. Remove corresponding component from form
           question.remove();
       // 4. Trigger save required (to enable Save button)
-          view.submitHandler.required = true;
+          view.submitHandler.submittable = true;
         });
       }
     });
@@ -473,7 +473,7 @@ function addContentMenuListeners(view) {
       component.$node.hide(); // 1. First remove component from view
       view.updateComponents(); // 2. Update form (in case anything else has changed)
       component.remove(); // 3. Remove corresponding component from form
-      view.submitHandler.required = true; // 4. Trigger save required (to enable Save button)
+      view.submitHandler.submittable = true; // 4. Trigger save required (to enable Save button)
     };
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),

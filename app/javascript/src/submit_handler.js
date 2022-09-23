@@ -50,16 +50,17 @@ class SubmitHandler {
     this.$button.on('click', (event) => this.#handleClick(event));
   }
 
-  get required() {
+  get submittable() {
     return this.#submitEnabled;
   }
 
   /*
   * Toggle the state.  
-  * Set required = true to enable the submit button and prevent window unloading (if configured) 
+  * Set submittable = true to enable the submit button and prevent window unloading (if configured) 
+  * @param value (boolean)  
  */
-  set required(required) {
-    if(required) { 
+  set submittable(value) {
+    if(value) { 
       this.#enable();
     } else {
       this.#disable();
@@ -76,7 +77,7 @@ class SubmitHandler {
   }
 
   #handleClick(event) {
-    if(this.required) {
+    if(this.submittable) {
       this.#setButtonText(this.#config.text.submitting)
     } else {
       event.preventDefault();
@@ -84,7 +85,7 @@ class SubmitHandler {
   }
 
   #handleSubmit(event) {
-    if(this.required) {
+    if(this.submittable) {
       this.#removeBeforeUnloadListener();
     } else {
       event.preventDefault();
