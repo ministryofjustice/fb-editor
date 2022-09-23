@@ -4,9 +4,9 @@
  * Description:
  * A wrapper for a form that adds enhancements to the submit behaviour:
  *  - Accessibly disables the submit button when there are no changes to save
- *  - Can also update an aria-live button description element to explain the
-*  disabled state of the button to AT users
  *  - Updates the submit button text to match the current state
+ *  - If the button has an aria-describedby attribute it will update this element to explain the
+ *  disabled state of the button to AT users
  *  - Optionally provides window.unload protections to prevent changes being
  *  lost
  *
@@ -15,7 +15,6 @@
 *  - text (object) text strings of the button labels  for the three states of
 *  the button: submitted, unsubmitted and submitting.
 *  - buttonSelector (string) jQuery selector for the forms button
-*  - buttonDescriptionSelector (string) jQuery selector for the buttons
 *  accessible description 
 *  - preventUnload (boolean) whether or not to enable the window unload event
 *  listeners.
@@ -37,14 +36,13 @@ class SubmitHandler {
         description: '',
       },
       buttonSelector: ':submit',
-      buttonDescriptionSelector: '',
       preventUnload: false,
     }, config);
     
     this.$form = $form;
     this.$button = this.$form.find(this.#config.buttonSelector);
     this.text = this.#config.text;
-    this.$buttonDescription = this.$form.find(this.#config.buttonDescriptionSelector);
+    this.$buttonDescription = this.$form.find('#'+this.$button.attr('aria-describedby'));
     
     this.$form.on('submit', (event) => this.#handleSubmit(event));
     this.$button.on('click', (event) => this.#handleClick(event));

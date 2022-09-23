@@ -84,7 +84,6 @@ PagesController.edit = function() {
       submitting: view.text.actions.saving,
       description: view.text.aria.disabled_save_description,
     },
-    buttonDescriptionSelector: '#save_description',
     preventUnload: true,
   });
 
