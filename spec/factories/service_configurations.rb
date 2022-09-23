@@ -64,5 +64,10 @@ FactoryBot.define do
       name { 'SERVICE_CSV_OUTPUT' }
       value { 'true' }
     end
+
+    trait :service_email_from do
+      name { 'SERVICE_EMAIL_FROM' }
+      value { 'luke.piewalker@digital.justice.gov.uk' }
+    end
   end
 end

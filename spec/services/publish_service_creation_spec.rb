@@ -301,4 +301,52 @@ RSpec.describe PublishServiceCreation, type: :model do
       end
     end
   end
+
+  context '#service_email_from' do
+    %w[dev production].each do |environment|
+      context "when #{environment} environment" do
+        let(:attributes) { { deployment_environment: environment } }
+        let(:email) { 'princess.layer-cake@digital.justice.gov.uk' }
+
+        context 'when service configuration email from does not exist' do
+          context 'and the from address email has been changed' do
+            before do
+              create(:from_address, service_id: service_id, email: email)
+              publish_service_creation.save
+            end
+
+            it 'saves the email to the database' do
+              service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+              expect(service_config.decrypt_value).to eq(email)
+            end
+          end
+
+          context 'and the from address has not been changed' do
+            before do
+              publish_service_creation.save
+            end
+
+            it 'saves the email to the database' do
+              service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+              expect(service_config.decrypt_value).to eq(FromAddress::DEFAULT_EMAIL_FROM)
+            end
+          end
+        end
+
+        context 'when service configuration email from exists' do
+          before do
+            create(:from_address, service_id: service_id, email: email)
+            create(:service_configuration, environment.to_sym, :service_email_from, service_id: service_id, value: 'darth.baker@justice.gov.uk')
+
+            publish_service_creation.save
+          end
+
+          it 'overwrites the previous service configuration email' do
+            service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+            expect(service_config.decrypt_value).to eq(email)
+          end
+        end
+      end
+    end
+  end
 end
