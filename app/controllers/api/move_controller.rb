@@ -9,7 +9,8 @@ module Api
       @move = Move.new(base_params.merge(change_params))
       @move.change
 
-      redirect_to edit_service_path(service.service_id,{:move =>'undo'})
+      session[:undo] = 'move' if @move.valid?
+      redirect_to edit_service_path(service.service_id)
     end
 
     private

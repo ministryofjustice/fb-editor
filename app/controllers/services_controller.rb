@@ -17,7 +17,7 @@ class ServicesController < PermissionsController
   end
 
   def edit
-    @showbutton = params[:undo].present?
+    @showbutton = session.delete(:undo)
 
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
