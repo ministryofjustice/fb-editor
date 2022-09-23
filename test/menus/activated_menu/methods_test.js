@@ -116,25 +116,25 @@ describe("ActivatedMenu", function() {
     /* TEST METHOD: focus()
      **/
     describe("focus()", function() {
-      it("should set currentFocusIndex to last item number when passed a number below zero", function() {
-        created.item.currentFocusIndex = 2;
-        expect(created.item.currentFocusIndex).to.equal(2);
+      it("should set (private) currentFocusIndex to last item number when passed a number below zero", function() {
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
 
         created.item.focus(-1);
-        expect(created.item.currentFocusIndex).to.equal(3);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(3));
       });
 
-      it("should set currentFocusIndex to first item number when passed a number higher than possible", function() {
-        created.item.currentFocusIndex = 1;
-        expect(created.item.currentFocusIndex).to.equal(1);
+      it("should set (private) currentFocusIndex to first item number when passed a number higher than possible", function() {
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
 
         created.item.focus(5);
-        expect(created.item.currentFocusIndex).to.equal(0);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
       });
 
-      it("should set currentFocusIndex to item number passed when valid", function() {
-        created.item.focus(2);
-        expect(created.item.currentFocusIndex).to.equal(2);
+      it("should set (private) currentFocusIndex to item number passed when valid", function() {
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
+        created.item.focus(1);
+
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(1));
       });
     });
 
@@ -143,11 +143,10 @@ describe("ActivatedMenu", function() {
      **/
     describe("focusNext()", function() {
       it("should should increase currentFocusIndex when there's a next item", function() {
-        created.item.currentFocusIndex = 2;
-        expect(created.item.currentFocusIndex).to.equal(2);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
 
         created.item.focusNext();
-        expect(created.item.currentFocusIndex).to.equal(3);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(1));
       });
     });
 
@@ -155,38 +154,38 @@ describe("ActivatedMenu", function() {
     /* TEST METHOD: focusPrev()
      **/
     describe("focusPrev()", function() {
-      it("should should decrease currentFocusIndex when there's a previous item", function() {
-        created.item.currentFocusIndex = 2;
-        expect(created.item.currentFocusIndex).to.equal(2);
+      it("should should decrease (private) currentFocusIndex when there's a previous item", function() {
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
+
+        created.item.focus(2);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(2));
 
         created.item.focusPrev();
-        expect(created.item.currentFocusIndex).to.equal(1);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(1));
       });
     });
 
 
-    /* TEST METHOD: focusitem()
+    /* TEST METHOD: focusItem()
      **/
     describe("focusItem()", function() {
-      it("should should set currentFocusIndex to number of pass item", function() {
-        created.item.currentFocusIndex = 2;
-        expect(created.item.currentFocusIndex).to.equal(2);
+      it("should should set (private) currentFocusIndex to number of pass item", function() {
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
 
-        created.item.focusItem(created.item.$items.eq(1));
-        expect(created.item.currentFocusIndex).to.equal(1);
+        created.item.focusItem(created.item.$items.eq(2));
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(2));
       });
     });
 
 
-    /* TEST METHOD: focusitem()
+    /* TEST METHOD: focusLast()
      **/
     describe("focusLast()", function() {
       it("should should set currentFocusIndex to number of last item", function() {
-        created.item.currentFocusIndex = 1;
-        expect(created.item.currentFocusIndex).to.equal(1);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.get(0));
 
         created.item.focusLast();
-        expect(created.item.currentFocusIndex).to.equal(3);
+        expect(created.item.currentFocusItem.get(0)).to.equal(created.item.$items.last().get(0));
       });
     });
 

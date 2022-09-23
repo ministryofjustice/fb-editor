@@ -57,14 +57,14 @@ function setupView(id) {
                             <span>Item 1a</span>
                             <ul>
                               <li><button id="steven" href="#action1">Item 1b</button></li>
-                              <li><a href="#action2">Item 2b</a></li>
-                              <li><a href="#action3">Item 3b</a></li>
-                              <li><a href="#action3">Item 4b</a></li>
+                              <li><a href="#action1b">Item 1b</a></li>
+                              <li><a href="#action2b">Item 2b</a></li>
+                              <li><a href="#action3b">Item 3b</a></li>
                             </ul>
                           </li>
-                          <li><a href="#action4">Item 2a</a></li>
-                          <li><a href="#action5">Item 3a</a></li>
-                          <li><a href="#action5">Item 4a</a></li>
+                          <li><a href="#action2a">Item 2a</a></li>
+                          <li><a href="#action3a">Item 3a</a></li>
+                          <li><a href="#action4a">Item 4a</a></li>
                         </ul>
                       </div>`);
 
