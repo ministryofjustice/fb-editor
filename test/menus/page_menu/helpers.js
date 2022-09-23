@@ -1,7 +1,7 @@
 const PageMenu = require("../../../app/javascript/src/components/menus/page_menu");
 const GlobalHelpers = require("../../helpers.js");
 
-
+  const REMOTE_URL = "/dialog-api-request.html"
 const constants = {
   PageMenuClass: PageMenu,
 
@@ -11,6 +11,7 @@ const constants = {
 
   ID_CONTAINER_SUFFIX: "-container",
   ID_COMPONENT_SUFFIX: "-component",
+  ID_RESPONSE_SUFFIX: "-response",
   ID_UUID_SUFFIX: "-uuid",
 
   TEXT_ACTIVATOR: "activated menu activator",
@@ -41,6 +42,12 @@ const constants = {
 function createPageMenu(id, config) {
   var $container = $("#" + id + constants.ID_CONTAINER_SUFFIX);
   var $component = $("#" + id + constants.ID_COMPONENT_SUFFIX, $container);
+
+  var response = `<div class="component component-dialog" id="` + id + constants.ID_RESPONSE_SUFFIX + `">
+                    <h3>Heading content here</h3>
+                    <p>Message content here</p>
+                  </div>`;
+
   var conf = GlobalHelpers.mergeConfig({
     activator_text: constants.TEXT_ACTIVATOR,
     id: id,
@@ -48,10 +55,18 @@ function createPageMenu(id, config) {
     selection_event: constants.EVENT_SELECTION_NAME
   }, config);
 
+  server = GlobalHelpers.createServer();
+  server.respondWith("", [
+    200,
+    { "Content-Type": "text/html" },
+    response,
+  ]);
+
   return {
     $node: $component,
     config: conf,
-    item: new PageMenu($component, conf)
+    item: new PageMenu($component, conf),
+    response: response
   }
 }
 
@@ -98,6 +113,8 @@ function setupView(id) {
  **/
 function teardownView(id) {
   $("#" + id + constants.ID_CONTAINER_SUFFIX).remove();
+  $("#" + id + constants.ID_COMPONENT_SUFFIX).parent(".PageMenu").remove();
+  $("#" + id + constants.ID_RESPONSE_SUFFIX).parent("[role=dialog]").remove();
 }
 
 
