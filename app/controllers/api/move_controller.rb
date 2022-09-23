@@ -8,7 +8,8 @@ module Api
     def change
       @move = Move.new(base_params.merge(change_params))
       @move.change
-      redirect_to edit_service_path(service.service_id)
+
+      redirect_to edit_service_path(service.service_id,{:move =>'undo'})
     end
 
     private

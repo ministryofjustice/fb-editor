@@ -17,6 +17,8 @@ class ServicesController < PermissionsController
   end
 
   def edit
+    @showbutton = params[:undo].present?
+
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
     @publish_warning = PublishPresenter.new(service)
