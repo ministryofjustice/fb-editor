@@ -350,6 +350,15 @@ function filterObject(obj, predicate) {
   );
 }
 
+function snakeToPascalCase( str ){
+    str+='';
+    str = str.split('_');
+    for(var i=0;i<str.length;i++){ 
+        str[i] = str[i].charAt(0).toUpperCase() + str[i].substring(1);
+    }
+    return str.join('');
+}
+
 
 
 
@@ -376,4 +385,5 @@ module.exports  = {
   lowestNumber:lowestNumber,
   highestNumber: highestNumber,
   filterObject: filterObject,
+  snakeToPascalCase: snakeToPascalCase,
 }

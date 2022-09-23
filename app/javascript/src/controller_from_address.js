@@ -1,18 +1,42 @@
-const DefaultController = require('./controller_default');
 const { meta } = require('./utilities.js');
+const DefaultController = require('./controller_default');
+const SubmitHandler = require('./submit_handler');
 
 class FromAddressController extends DefaultController {
   constructor(app) {
     super(app);
+
     switch(app.page.action) {
       case 'create':
       case 'index':
-        this.index();
+        this.#index();
       break;
     }
+    
+    
   }
 
-  index() {
+  #index() {
+    const view = this;
+    const  $form = $('#edit_from_address_1');
+
+    this.submitHandler = new SubmitHandler($form, {
+      text: {
+        submitted: view.text.actions.saved,
+        unsubmitted: view.text.actions.save,
+        submitting: view.text.actions.saving,
+        description: view.text.aria.disabled_save_description,
+      },
+      buttonSelector: '.fb-govuk-button[type="submit"]',
+      preventUnload: false,
+    });
+
+    // Don't show 'saved' if there are validation errors.
+    if(!$form.hasClass('with-errors')) {
+      this.submitHandler.submittable = false;
+    }
+
+    this.submitHandler.$form.on('change', (event) => { this.submitHandler.submittable = true } );
     this.#enhanceRemoteButtons();
   }
 

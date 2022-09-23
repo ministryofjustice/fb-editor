@@ -6,11 +6,13 @@ const PublishController = require('./controller_publish');
 const BranchesController = require('./controller_branches');
 const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
-
+const {
+  snakeToPascalCase, 
+} = require('./utilities');
 
 // Determine the controller we need to use
 function controllerAndAction() {
-  var controller = app.page.controller.charAt(0).toUpperCase() + app.page.controller.slice(1);
+  var controller = snakeToPascalCase(app.page.controller);
   return controller + "Controller#" + app.page.action;
 }
 
@@ -61,13 +63,13 @@ switch(controllerAndAction()) {
        Controller = PublishController;
   break;
 
-  case "Form_analyticsController#create":
-  case "Form_analyticsController#index":
+  case "FormAnalyticsController#create":
+  case "FormAnalyticsController#index":
        Controller = FormAnalyticsController;
   break;
 
-  case "From_addressController#index":
-  case "From_addressController#create":
+  case "FromAddressController#index":
+  case "FromAddressController#create":
       Controller = FromAddressController;
   break;
 

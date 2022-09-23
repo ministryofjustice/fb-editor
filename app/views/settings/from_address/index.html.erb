@@ -2,12 +2,13 @@
   <%= form_for @from_address,
     method: :post,
     url: settings_from_address_index_path(service.service_id),
+    html: { class: (@from_address.errors.any? ? 'with-errors' : '') },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-    <%= f.govuk_error_summary link_base_errors_to: :email %>
+    <%= f.govuk_error_summary link_base_errors_to: :email, class: "govuk-!-margin-bottom-6 govuk-!-margin-top-6" %>
 
-    <% if @presenter.message[:status] == 'pending' %>
-      <%= govuk_notification_banner(title_text: t('notification_banners.important')) do %>
+    <% if @presenter.message[:status] == 'pending' && !@from_address.errors.any? %>
+      <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
         <%= @presenter.message[:text].html_safe %>
         <p>
           <span role="alert"></span>
@@ -44,8 +45,9 @@
       </p>
     <% end %>
 
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button" aria-describedby="save_description">
       <%= t('actions.save') %>
-    </button>
+    </button> 
+    <span class="sr-only" id="save_description"></span>
   <% end %>
 <% end %>
