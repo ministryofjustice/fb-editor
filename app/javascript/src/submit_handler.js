@@ -1,4 +1,25 @@
-
+/**
+ * Submit Handler 
+ * -----------------------------------------------------------------------------
+ * Description:
+ * A wrapper for a form that adds enhancements to the submit behaviour:
+ *  - Accessibly disables the submit button when there are no changes to save
+ *  - Can also update an aria-live button description element to explain the
+*  disabled state of the button to AT users
+ *  - Updates the submit button text to match the current state
+ *  - Optionally provides window.unload protections to prevent changes being
+ *  lost
+ *
+ * Configuration:
+ * The constructor accepts a config object with the following properties:
+*  - text (object) text strings of the button labels  for the three states of
+*  the button: submitted, unsubmitted and submitting.
+*  - buttonSelector (string) jQuery selector for the forms button
+*  - buttonDescriptionSelector (string) jQuery selector for the buttons
+*  accessible description 
+*  - preventUnload (boolean) whether or not to enable the window unload event
+*  listeners.
+**/
 const {
   mergeObjects
 } = require('./utilities');
@@ -13,6 +34,7 @@ class SubmitHandler {
         submitted: '',
         unsubmitted: '',
         submitting: '',
+        description: '',
       },
       buttonSelector: ':submit',
       buttonDescriptionSelector: '',
@@ -22,10 +44,8 @@ class SubmitHandler {
     this.$form = $form;
     this.$button = this.$form.find(this.#config.buttonSelector);
     this.text = this.#config.text;
-    if(this.#config.buttonDescriptionSelector) {
-      this.$buttonDescription = this.$form.find(this.#config.buttonDescriptionSelector);
-    }
-
+    this.$buttonDescription = this.$form.find(this.#config.buttonDescriptionSelector);
+    
     this.$form.on('submit', (event) => this.#handleSubmit(event));
     this.$button.on('click', (event) => this.#handleClick(event));
   }
@@ -34,6 +54,10 @@ class SubmitHandler {
     return this.#submitEnabled;
   }
 
+  /*
+  * Toggle the state.  
+  * Set required = true to enable the submit button and prevent window unloading (if configured) 
+ */
   set required(required) {
     if(required) { 
       this.#enable();
@@ -42,17 +66,18 @@ class SubmitHandler {
     }
   }
 
-  forceSubmit() {
-    const currentState = this.#submitEnabled;
+  /*
+  * Provide the ability to programatically submit the form, regardless of the
+  * state of the UI button, and without affecting the UI.
+  */
+  submit() {
     this.#submitEnabled = true;
     this.$form.submit();
-    this.#submitEnabled = currentState;
   }
 
   #handleClick(event) {
     if(this.required) {
-      this.#removeBeforeUnloadListener();
-      $(event.target).prop("value", this.#config.text.submitting );
+      this.#setButtonText(this.#config.text.submitting)
     } else {
       event.preventDefault();
     }
@@ -60,7 +85,6 @@ class SubmitHandler {
 
   #handleSubmit(event) {
     if(this.required) {
-      $(document).trigger('Save');
       this.#removeBeforeUnloadListener();
     } else {
       event.preventDefault();
@@ -86,22 +110,32 @@ class SubmitHandler {
 
   #enable() {
     this.#submitEnabled = true;
-    this.$button.prop("value", this.#config.text.unsubmitted );
+
+    this.#setButtonText(this.#config.text.unsubmitted)
     this.$button.attr("aria-disabled", false);
-    if(this.$buttonDescription) {
-      this.$buttonDescription.text("");
-    }
+    this.$buttonDescription.text("");
+
     this.#addBeforeUnloadListener();
   }
 
   #disable() {
     this.#submitEnabled = false;
-    this.$button.prop("value", this.#config.text.submitted );
+
+    this.#setButtonText(this.#config.text.submitted)
     this.$button.attr("aria-disabled", true);
-    if(this.$buttonDescription) {
-      this.$buttonDescription.text(this.#config.text.description);
-    }
+    this.$buttonDescription.text(this.#config.text.description);
+
     this.#removeBeforeUnloadListener();
+  }
+
+  #setButtonText(text) {
+    if(this.$button.is('button')) {
+      this.$button.text(text);
+    }
+
+    if(this.$button.is('input')) {
+      this.$button.val(text);
+    }
   }
 }
 

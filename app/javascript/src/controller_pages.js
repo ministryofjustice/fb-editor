@@ -81,7 +81,7 @@ PagesController.edit = function() {
     text: {
       submitted: view.text.actions.saved,
       unsubmitted: view.text.actions.save,
-      saving: view.text.actions.saving,
+      submitting: view.text.actions.saving,
       description: view.text.aria.disabled_save_description,
     },
     buttonDescriptionSelector: '#save_description',
@@ -146,7 +146,7 @@ PagesController.edit = function() {
 
   submitHandler.required = false;
   this.$document.on("SaveRequired", () => submitHandler.required = true );
-  this.$document.on("Save", () => this.updateComponents() );
+  this.submitHandler.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
   // The static content is wrapped in [fb-content-type=static] to help identify it.
@@ -199,9 +199,8 @@ class AddComponent {
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
   if( action != "none" ) {
-    console.log('addCompoennt');
     updateHiddenInputOnForm(this.submitHandler.$form, "page[add_component]", action);
-    this.submitHandler.forceSubmit();
+    this.submitHandler.submit();
 
   }
 }
@@ -219,7 +218,7 @@ class AddContent {
 
     $button.on("click.AddContent", () => {
       updateHiddenInputOnForm(config.$form, fieldname, "content");
-      this.submitHandler.forceSubmit();
+      this.submitHandler.submit();
     });
 
     $node.addClass("AddContent");
