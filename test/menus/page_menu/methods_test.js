@@ -82,26 +82,15 @@ describe("PageMenu", function() {
     /* TEST METHOD: link()
      **/
     describe("link()", function() {
-      it("should trigger link() when passed an unfound action", function() {
-        var originalLink = c.PageMenuClass.prototype.link;
-        var $item = created.$node.find("li[data-action=none]");
-        var called = false;
+      it("should follow the elements natural link/href value", function() {
+        var $element = created.$node.find("[data-action=none]");
+        global.location = {};
 
-        c.PageMenuClass.prototype.link = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
+        expect($element.length).to.equal(1);
+        expect(location.href).to.equal(undefined);
 
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.link = originalLink;
+        created.item.link($element);
+        expect(location.href).to.equal($element.find("> a").attr("href"));
       });
     });
 
