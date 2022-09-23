@@ -14,7 +14,7 @@ module EmailService
       end
 
       def delete_email_identity(_identity)
-        {}
+        OpenStruct.new(successful?: true)
       end
     end
   end

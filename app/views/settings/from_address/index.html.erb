@@ -10,7 +10,7 @@
       <%= govuk_notification_banner(title_text: t('notification_banners.important')) do %>
         <%= @presenter.message[:text].html_safe %>
         <p>
-          <span role="alert"></span> 
+          <span role="alert"></span>
           <%= tag.button t('settings.from_address.resend_link_text'),
             class: 'fb-link-button',
             data: {

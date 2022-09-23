@@ -34,6 +34,24 @@ class FromAddressCreation
     end
   end
 
+  def resend_validation
+    response = email_service.delete_email_identity(@from_address.decrypt_email)
+
+    if response.successful?
+      Rails.logger.info("Creating email identity for service #{from_address.service_id}")
+
+      email_service.create_email_identity(@from_address.decrypt_email)
+    else
+      Rails.logger.info("Delete email identity unsuccessful for service #{from_address.service_id}")
+
+      nil
+    end
+  rescue EmailServiceError
+    Rails.logger.info("Resend Validation unsuccessful for service #{from_address.service_id}")
+
+    nil
+  end
+
   def all_identities
     email_service.list_email_identities.email_identities
   end

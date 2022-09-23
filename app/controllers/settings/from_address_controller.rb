@@ -1,15 +1,11 @@
 class Settings::FromAddressController < FormController
-  before_action :assign_from_address
+  include FromAddressObjects
+
+  before_action :assign_from_address, :assign_from_address_presenter
 
   def index; end
 
   def create
-    from_address_creation = FromAddressCreation.new(
-      from_address: @from_address,
-      from_address_params: from_address_params,
-      email_service: email_service
-    )
-
     if from_address_creation.save
       redirect_to settings_from_address_index_path(service.service_id)
     else
@@ -23,17 +19,7 @@ class Settings::FromAddressController < FormController
 
   private
 
-  def assign_from_address
-    # initialize for those forms that were created before FromAddress records existed
-    @from_address = FromAddress.find_or_initialize_by(service_id: service.service_id)
+  def assign_from_address_presenter
     @presenter = FromAddressPresenter.new(@from_address)
-  end
-
-  def email_service
-    @email_service ||= if Rails.env.development?
-                         EmailService::Adapters::Local.new
-                       else
-                         EmailService::Adapters::AwsSesClient.new
-                       end
   end
 end
