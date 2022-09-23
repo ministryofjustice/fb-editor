@@ -65,26 +65,16 @@ describe("PageMenu", function() {
     /* TEST METHOD: moveItemApi()
      **/
     describe("moveItemApi()", function() {
-      it("should trigger moveItemApi() when passed 'delete' action", function() {
-        var originalMoveItemApi = c.PageMenuClass.prototype.moveItemApi;
-        var $item = created.$node.find("li[data-action=move-api]");
-        var called = false;
+      it("should open a DialogForm component", function() {
+        var $element = created.$node.find("[data-action=move-api]");
+        var $dialog;
 
-        c.PageMenuClass.prototype.moveItemApi = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
+        expect($element.length).to.equal(1);
+        created.item.moveItemApi($element);
 
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.moveItemApi = originalMoveItemApi;
+        $dialog = $("#" + ID + c.ID_RESPONSE_SUFFIX);
+        expect($dialog.length).to.equal(1);
+        expect($dialog.parent(".DialogForm").length).to.equal(1);
       });
     });
 
