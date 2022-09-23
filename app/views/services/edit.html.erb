@@ -2,6 +2,12 @@
   preview_service_path(service.service_id),
   class: 'govuk-button fb-govuk-button fb-preview-button',
   target: '_blank' %>
+  <% if @showbutton %>
+    <%= link_to 'undo',
+    api_service_previous_version_path(service.service_id),
+    class: 'govuk-button fb-govuk-button fb-preview-button' %>
+  <% end %>
+
 
 <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 

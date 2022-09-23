@@ -8,6 +8,7 @@ module Api
 
     def create
       destination.change
+      session[:undo] = 'move'
       redirect_to edit_service_path(service.service_id)
     end
 

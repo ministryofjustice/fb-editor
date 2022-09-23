@@ -94,6 +94,9 @@ Rails.application.routes.draw do
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
       post 'settings/from_address/resend', to: 'from_address#resend_validation'
+
+      get '/versions/previous', to: 'undo#previous', as:
+      :previous_version
     end
   end
 

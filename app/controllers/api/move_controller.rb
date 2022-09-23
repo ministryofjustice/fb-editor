@@ -8,6 +8,8 @@ module Api
     def change
       @move = Move.new(base_params.merge(change_params))
       @move.change
+
+      session[:undo] = 'move' if @move.valid?
       redirect_to edit_service_path(service.service_id)
     end
 
