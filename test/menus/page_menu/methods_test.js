@@ -7,6 +7,7 @@ describe("PageMenu", function() {
 
   describe("Methods", function() {
     var created;
+    var server;
 
     beforeEach(function() {
       helpers.setupView(ID);
@@ -30,26 +31,16 @@ describe("PageMenu", function() {
     /* TEST METHOD: deleteItemApi()
      **/
     describe("deleteItemApi()", function() {
-      it("should trigger deleteItemApi() when passed 'delete' action", function() {
-        var originalDeleteItemApi = c.PageMenuClass.prototype.deleteItemApi;
-        var $item = created.$node.find("li[data-action=delete-api]");
-        var called = false;
+      it("should open a DialogApiRequest component", function() {
+        var $element = created.$node.find("[data-action=delete-api]");
+        var $dialog;
 
-        c.PageMenuClass.prototype.deleteItemApi = function(item) {
-              called = true;
-              item.data("tested", true);
-            }
+        expect($element.length).to.equal(1);
+        created.item.deleteItemApi($element);
 
-        // Invoke function via event.
-        $item.click();
-
-        // Test
-        expect(created.item.selection).to.exist;
-        expect(called).to.be.true;
-        expect($item.data("tested")).to.be.true;
-
-        // Reset previewPage() back to original.
-        c.PageMenuClass.prototype.deleteItemApi = originalDeleteItemApi;
+        $dialog = $("#" + ID + c.ID_RESPONSE_SUFFIX);
+        expect($dialog.length).to.equal(1);
+        expect($dialog.parent(".DialogApiRequest").length).to.equal(1);
       });
     });
 
