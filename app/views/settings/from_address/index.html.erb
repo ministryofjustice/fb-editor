@@ -7,7 +7,7 @@
 
     <%= f.govuk_error_summary link_base_errors_to: :email, class: "govuk-!-margin-bottom-6 govuk-!-margin-top-6" %>
 
-    <% if @presenter.message[:status] == 'pending' && !@from_address.errors.any? %>
+    <% if @presenter.message[:status] == 'pending' && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
         <%= @presenter.message[:text].html_safe %>
         <p>
