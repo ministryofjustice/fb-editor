@@ -3,10 +3,9 @@
   class: 'govuk-button fb-govuk-button fb-preview-button',
   target: '_blank' %>
   <% if @showbutton %>
-  <%= link_to 'undo',
-  '#',
-  class: 'govuk-button fb-govuk-button fb-preview-button',
-  target: '_blank' %>
+    <%= link_to 'undo',
+    api_service_previous_version_path(service.service_id),
+    class: 'govuk-button fb-govuk-button fb-preview-button' %>
   <% end %>
 
 
