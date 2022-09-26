@@ -40,6 +40,7 @@ class PublishServiceCreation
 
     ActiveRecord::Base.transaction do
       create_publish_service
+      assign_service_email_from
 
       if require_authentication?
         create_service_configurations
@@ -162,5 +163,15 @@ class PublishServiceCreation
       service_id: service_id,
       deployment_environment: deployment_environment
     ).try(:service_csv_output?)
+  end
+
+  def assign_service_email_from
+    create_or_update_configuration(
+      name: 'SERVICE_EMAIL_FROM', value: from_address_email
+    )
+  end
+
+  def from_address_email
+    FromAddress.find_or_initialize_by(service_id: service_id).email_address
   end
 end

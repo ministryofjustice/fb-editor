@@ -12,7 +12,6 @@ class EmailSettingsUpdater
     SERVICE_EMAIL_SUBJECT
     SERVICE_EMAIL_BODY
     SERVICE_EMAIL_PDF_HEADING
-    SERVICE_EMAIL_FROM
   ].freeze
 
   def initialize(email_settings:, service:)

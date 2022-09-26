@@ -28,7 +28,6 @@ class Settings::EmailController < FormController
       :deployment_environment,
       :send_by_email,
       :service_email_output,
-      :service_email_from,
       :service_email_subject,
       :service_email_body,
       :service_email_pdf_heading,

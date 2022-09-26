@@ -388,9 +388,13 @@ workflows:
       - acceptance_tests_eks:
           requires:
             - deploy_to_test_eks
+      - confirm_live_deploy:
+          type: approval
+          requires:
+          - acceptance_tests_eks
       - deploy_to_live_eks:
           requires:
-            - acceptance_tests_eks
+            - confirm_live_deploy
   deploy_testable_branch:
     jobs:
       - build:
