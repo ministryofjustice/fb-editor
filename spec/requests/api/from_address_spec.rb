@@ -56,10 +56,6 @@ RSpec.describe 'From Address spec', type: :request do
 
         request
       end
-
-      it 'raises an EmailServiceError' do
-        expect(response.status).to eq(400)
-      end
     end
   end
 end
