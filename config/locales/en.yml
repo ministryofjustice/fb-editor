@@ -287,7 +287,7 @@ en:
         pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
         verified: This email address has been validated.
       resend_link_text: Resend validation link
-      link_resent_success: Link resent - now check your email 
+      link_resent_success: Link resent - now check your email
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).
@@ -331,6 +331,11 @@ en:
       warning: Warning
       message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
       link: submission settings
+    from_address:
+      messages:
+        verified: 'Your from address has been validated'
+        pending: 'You need to validate your from address'
+        default: 'You need to set a from address'
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view

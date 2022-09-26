@@ -76,6 +76,8 @@ class PublishServiceCreation
     send_by_email.blank? || (send_by_email.present? && service_email_output.blank?)
   end
 
+  delegate :verified?, to: :from_address, prefix: true
+
   private
 
   def create_publish_service
@@ -172,6 +174,10 @@ class PublishServiceCreation
   end
 
   def from_address_email
-    FromAddress.find_or_initialize_by(service_id: service_id).email_address
+    from_address.email_address
+  end
+
+  def from_address
+    @from_address ||= FromAddress.find_or_initialize_by(service_id: service_id)
   end
 end

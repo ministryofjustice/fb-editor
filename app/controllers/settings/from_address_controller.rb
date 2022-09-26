@@ -20,6 +20,6 @@ class Settings::FromAddressController < FormController
   private
 
   def assign_from_address_presenter
-    @presenter = FromAddressPresenter.new(@from_address)
+    @presenter = FromAddressPresenter.new(@from_address, :from_address)
   end
 end
