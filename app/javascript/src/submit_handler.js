@@ -41,9 +41,10 @@ class SubmitHandler {
     
     this.$form = $form;
     this.$button = this.$form.find(this.#config.buttonSelector);
-    this.text = this.#config.text;
     this.$buttonDescription = this.$form.find('#'+this.$button.attr('aria-describedby'));
     
+    this.#submitEnabled = true;
+
     this.$form.on('submit', (event) => this.#handleSubmit(event));
     this.$button.on('click', (event) => this.#handleClick(event));
   }
@@ -128,11 +129,10 @@ class SubmitHandler {
   }
 
   #setButtonText(text) {
-    if(this.$button.is('button')) {
+    if(this.$button.is('button[type="submit"]')) {
       this.$button.text(text);
-    }
-
-    if(this.$button.is('input')) {
+    } 
+    else if(this.$button.is('input[type="submit"]')) {
       this.$button.val(text);
     }
   }
