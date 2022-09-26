@@ -30,6 +30,7 @@ const ActivatedMenu = require('./components/menus/activated_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const Content = require('./content');
+const SubmitHandler = require('./submit_handler');
 
 const CheckboxesQuestion = require('./question_checkboxes');
 const RadiosQuestion = require('./question_radios');
@@ -61,6 +62,12 @@ class PagesController extends DefaultController {
         break;
     }
   }
+
+  updateComponents() {
+    $(".fb-editable").each(function() {
+      $(this).data("instance").save();
+    });
+  }
 }
 
 /* ------------------------------
@@ -68,10 +75,20 @@ class PagesController extends DefaultController {
  * ------------------------------ */
 PagesController.edit = function() {
   var view = this;
-  var dataController = new DataController(view);
+  var $form = $("#editContentForm");
+
+  var submitHandler = new SubmitHandler($form, {
+    text: {
+      submitted: view.text.actions.saved,
+      unsubmitted: view.text.actions.save,
+      submitting: view.text.actions.saving,
+      description: view.text.aria.disabled_save_description,
+    },
+    preventUnload: true,
+  });
 
   this.$editable = $(".fb-editable");
-  this.dataController = dataController;
+  this.submitHandler = submitHandler;
   this.dialogConfiguration = createDialogConfiguration.call(this);
    
 
@@ -105,14 +122,14 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: dataController.$form, view: view });
+    new AddContent($node, { $form: submitHandler.$form, view: view });
   });
 
   // Enhance any Add Component buttons.
   view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
-    new AddComponent($node, { $form: dataController.$form });
+    new AddComponent($node, { $form: submitHandler.$form });
   });
 
   // Setting focus for editing.
@@ -126,9 +143,9 @@ PagesController.edit = function() {
   addContentMenuListeners(view);
   addEditableComponentItemMenuListeners(view);
 
-  dataController.saveRequired(false);
-  this.$document.on("SaveRequired", () => dataController.saveRequired(true) );
-
+  submitHandler.submittable = false;
+  this.$document.on("SaveRequired", () => submitHandler.submittable = true );
+  this.submitHandler.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
   // The static content is wrapped in [fb-content-type=static] to help identify it.
@@ -148,70 +165,6 @@ PagesController.create = function() {
 }
 
 
-class DataController {
-  constructor(view) {
-    var $form = $("#editContentForm");
-
-    this.text = view.text;
-    this.$form = $form;
-    this.$submitButton = this.$form.find(':submit');
-    this.$saveDescription = this.$form.find('#save_description');
-
-    this.$form.on('submit', (event) => {
-      if(this.submitEnabled) {
-        this.update();
-        this.removeBeforeUnloadListener();
-      } else {
-        event.preventDefault();
-      }
-    });
-
-    this.$submitButton.on('click', (event) => {
-      if(this.submitEnabled) {
-        this.removeBeforeUnloadListener();
-        $(event.target).prop("value", this.text.actions.saving );
-      } else {
-        event.preventDefault();
-      }
-    });
-  }
-  
-  beforeUnloadListener(event) {
-      event.preventDefault();
-      return event.returnValue = 'Changes you have made will not be saved';
-  }
-
-  addBeforeUnloadListener() {
-      window.addEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
-  }
-
-  removeBeforeUnloadListener() {  
-      window.removeEventListener('beforeunload', this.beforeUnloadListener, {capture: true});
-  }
-
-  saveRequired(required) {
-    if(required) { 
-      this.$submitButton.prop("value", this.text.actions.save );
-      this.$submitButton.attr("aria-disabled", false);
-      this.$saveDescription.text("");
-      this.submitEnabled = true;
-      this.addBeforeUnloadListener();
-    } else {
-      this.$submitButton.prop("value", this.text.actions.saved );
-      // Use aria-disabled so AT users can still discover the button
-      this.$submitButton.attr("aria-disabled", true);
-      this.$saveDescription.text(this.text.aria.disabled_save_description);
-      this.submitEnabled = false;
-      this.removeBeforeUnloadListener();
-    }
-  }
-
-  update() {
-    $(".fb-editable").each(function() {
-      $(this).data("instance").save();
-    });
-  }
-}
 
 
 /* Gives add component buttons functionality to select a component type
@@ -245,12 +198,8 @@ class AddComponent {
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
   if( action != "none" ) {
-    var submitEnabled = this.dataController.submitEnabled;
-
-    updateHiddenInputOnForm(this.dataController.$form, "page[add_component]", action);
-    this.dataController.submitEnabled = true;
-    this.dataController.$form.submit();
-    this.dataController.suibmitEnabled = submitEnabled;
+    updateHiddenInputOnForm(this.submitHandler.$form, "page[add_component]", action);
+    this.submitHandler.submit();
 
   }
 }
@@ -264,15 +213,11 @@ class AddContent {
     var fieldname = $node.data("fb-field-name") || "page[add_component]";
     this.$button = $button;
     this.$node = $node;
-    this.dataController = config.view.dataController;
+    this.submitHandler = config.view.submitHandler;
 
     $button.on("click.AddContent", () => {
-      var submitEnabled = this.dataController.submitEnabled;
-
       updateHiddenInputOnForm(config.$form, fieldname, "content");
-      this.dataController.submitEnabled = true;
-      this.dataController.$form.submit();
-      this.dataController.suibmitEnabled = submitEnabled;
+      this.submitHandler.submit();
     });
 
     $node.addClass("AddContent");
@@ -304,11 +249,11 @@ function addQuestionMenuListeners(view) {
       // 1. First remove component from view
           question.$node.hide();
       // 2. Update form (in case anything else has changed)
-          view.dataController.update();
+          view.updateComponents();
       // 3. Remove corresponding component from form
           question.remove();
       // 4. Trigger save required (to enable Save button)
-          view.dataController.saveRequired(true);
+          view.submitHandler.submittable = true;
         });
       }
     });
@@ -525,9 +470,9 @@ function addContentMenuListeners(view) {
     view.dialogConfirmationDelete.onConfirm = function() {
       // Workaround solution that doesn't require extra backend work
       component.$node.hide(); // 1. First remove component from view
-      view.dataController.update(); // 2. Update form (in case anything else has changed)
+      view.updateComponents(); // 2. Update form (in case anything else has changed)
       component.remove(); // 3. Remove corresponding component from form
-      view.dataController.saveRequired(true); // 4. Trigger save required (to enable Save button)
+      view.submitHandler.submittable = true; // 4. Trigger save required (to enable Save button)
     };
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
@@ -566,7 +511,7 @@ function enhanceContent(view) {
     new EditableElement($node, {
       editClassname: "active",
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       id: $node.data("fb-content-id"),
       htmlAdjustment: htmlAdjustment,
       markdownAdjustment: markdownAdjustment,
@@ -581,7 +526,7 @@ function enhanceContent(view) {
   view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
     var $node = $(node);
     new Content($node, {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       text: {
         default_content: view.text.defaults.content
       },
@@ -597,7 +542,7 @@ function enhanceContent(view) {
 function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
     var question = new TextQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
@@ -608,7 +553,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=autocomplete]").each(function(i, node) {
     var question = new AutocompleteQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
@@ -620,7 +565,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     var question = new DateQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
@@ -630,7 +575,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
     var question = new TextareaQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
@@ -640,7 +585,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     var question = new CheckboxesQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       view: view,
       text: {
         edit: view.text.actions.edit,
@@ -671,7 +616,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     var question = new RadiosQuestion($(this), {
-      form: view.dataController.$form,
+      form: view.submitHandler.$form,
       view: view,
       text: {
         edit: view.text.actions.edit,
