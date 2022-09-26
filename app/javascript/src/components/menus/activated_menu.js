@@ -65,6 +65,7 @@ class ActivatedMenu {
   #config
   #position
   #state
+  #currentFocusIndex
 
   constructor($menu, config) {
     if(!config.container_id) {
@@ -77,7 +78,7 @@ class ActivatedMenu {
 
     this.#addAttributes();
     this.activator = new ActivatedMenuActivator(this, config);
-    this.container = new ActivatedMenuContainer(this, config);  
+    this.container = new ActivatedMenuContainer(this, config);
 
     // Default position settings (can be set on instantiation or overide
     // on-the-fly by passing to component.open() function. Passing in a
@@ -104,7 +105,7 @@ class ActivatedMenu {
 
     this.$node.data("instance", this); // Add reference for instance from original node.
     this.$items = this.$node.find(ITEMS_SELECTOR);
-    this.currentFocusIndex = 0;    
+    this.#currentFocusIndex = 0;
     this.close();
   }
 
@@ -118,6 +119,10 @@ class ActivatedMenu {
 
   get position() {
     return this.#position;
+  }
+
+  get currentFocusItem() {
+    return this.$items.eq(this.#currentFocusIndex);
   }
 
   set currentActivator(element) {
@@ -163,7 +168,7 @@ class ActivatedMenu {
       $(this).hide();
     });
   }
-  
+
   focus(index = 0) {
     var $items = this.$items;
 
@@ -176,34 +181,34 @@ class ActivatedMenu {
     var $item = $($items[index]).find('> :first-child');
     if($item.parent().is('[aria-disabled]')) {
       // if item is disabled, skip it
-      if( index > this.currentFocusIndex) {
-        this.focus(index+1);  
+      if( index > this.#currentFocusIndex) {
+        this.focus(index+1);
       } else {
-        this.focus(index-1);  
+        this.focus(index-1);
       }
     } else {
-      this.currentFocusIndex = index;
+      this.#currentFocusIndex = index;
       $item.focus();
       this.$node.attr('aria-activedescendant', $item.attr('id'));
     }
   }
 
   focusNext(){
-    this.focus( this.currentFocusIndex + 1 ); 
+    this.focus( this.#currentFocusIndex + 1 );
   }
 
   focusPrev() {
-    this.focus( this.currentFocusIndex - 1 ); 
+    this.focus( this.#currentFocusIndex - 1 );
   }
 
   focusItem($node) {
-      const index = this.$items.index($node);
-      this.focus(index);
+    const index = this.$items.index($node);
+    this.focus(index);
   }
 
   focusLast() {
-      const index = this.$items.length - 1;
-      this.focus(index);
+    const index = this.$items.length - 1;
+    this.focus(index);
   }
 
   #initializeMenuItems() {
@@ -260,7 +265,7 @@ class ActivatedMenu {
             event.preventDefault();
             this.focusPrev();
             break;
-          case 'Escape': 
+          case 'Escape':
             this.close();
             this.activator.$node.focus();
             break;
@@ -277,7 +282,7 @@ class ActivatedMenu {
             } else {
               tabbableElements[index+1].focus();
             }
-            break; 
+            break;
         }
       }
     });
@@ -309,7 +314,7 @@ class ActivatedMenu {
     }
   }
 
-  /* 
+  /*
    * Sets the menu position to the passed setting or uses the
    * default setting (which can also be changed in constructor
    * by passing in configuration at instantiation time.
@@ -331,7 +336,7 @@ class ActivatedMenu {
     }
   }
 
-  /* 
+  /*
    * Positions the menu in relation to the activator and default
    * position values, but tries to calculate if needs to reverse
    * the open position based on if the activator is too far right.
@@ -376,7 +381,6 @@ class ActivatedMenu {
     this.#state.position = null; // Reset because this one is set on-the-fly
   }
 }
+
+
 module.exports = ActivatedMenu;
-
-
-

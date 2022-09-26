@@ -156,7 +156,7 @@ function createRemoteDialog(id, server, config) {
  *
  **/
 function setupView(id, withErrors) {
-  var error = '<span class="' + constants.CLASSNAME_ERROR_MESSAGE  + '">' + constants.TEXT_ERROR_MESSAGE  + '</span>';
+  var error = '<span id="' + id + "error" + '" class="' + constants.CLASSNAME_ERROR_MESSAGE  + '">' + constants.TEXT_ERROR_MESSAGE  + '</span>';
   var html = `<div class="component-dialog-form"
                    id="` + id + `"
                    data-component="FormDialog">
@@ -179,6 +179,7 @@ function setupView(id, withErrors) {
  **/
 function teardownView(id) {
   $("#" + id).remove();
+  $("#" + id + "error").remove();
 }
 
 
