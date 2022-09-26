@@ -18,8 +18,8 @@ class PageMenu extends ActivatedMenu {
       this.selection(event, ui.item);
     });
 
-    this.activator.$node.addClass("FlowItemMenuActivator");
-    this.container.$node.addClass("FlowItemMenu");
+    this.activator.$node.addClass("PageMenuActivator");
+    this.container.$node.addClass("PageMenu");
     this.uuid = $node.data("uuid");
     this.title = $node.data("title");
   }
@@ -32,18 +32,6 @@ class PageMenu extends ActivatedMenu {
     switch(action) {
       case "preview":
            this.previewPage(item);
-           break;
-
-      case "add":
-           this.addPage(item);
-           break;
-
-      case "destination":
-           this.changeDestination(item);
-           break;
-
-      case "delete":
-           this.deleteItem(item);
            break;
 
       case "delete-api":
@@ -70,40 +58,6 @@ class PageMenu extends ActivatedMenu {
   previewPage(element) {
     var $link = element.find("> a");
     window.open($link.attr("href"));
-  }
-
-  // Open the views Page Addition Menu
-  addPage(element) {
-    var menu = this._config.view.pageAdditionMenu;
-    menu.addPageAfter = this.uuid;
-    menu.open({
-      my: "left top",
-      at: "right top",
-      of: element
-    });
-  }
-
-  // Open an API request dialog to change destination
-  // TODO - is this used? Change Destination is called from the connection menu
-  changeDestination(element) {
-    var $link = element.find("> a");
-    new DialogForm($link.attr("href"), {
-      activator: $link,
-      autoOpen: true,
-      remote: false,
-    });
-  }
-
-  // Use standard delete modal to remove
-  // TODO - is this used? I think all deletes are via API request now
-  deleteItem(element) {
-    var view = this._config.view;
-    var $link = element.find("> a");
-    view.dialogConfirmationDelete.onConfirm = () => { post($link.attr("href"), { _method: "delete" }) };
-    view.dialogConfirmationDelete.open({
-      heading: view.text.dialogs.heading_delete.replace(/%{label}/, this.title),
-      confirm: view.text.dialogs.button_delete_page
-    });
   }
 
   deleteItemApi(element) {
