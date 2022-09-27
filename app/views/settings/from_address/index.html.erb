@@ -10,6 +10,7 @@
     <% if @presenter.message[:status] == 'pending' && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
         <%= @presenter.message[:text].html_safe %>
+
         <p>
           <span role="alert"></span>
           <%= tag.button t('settings.from_address.resend_link_text'),
@@ -47,7 +48,7 @@
 
     <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button" aria-describedby="save_description">
       <%= t('actions.save') %>
-    </button> 
+    </button>
     <span class="sr-only" id="save_description"></span>
   <% end %>
 <% end %>

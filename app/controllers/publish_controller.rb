@@ -1,5 +1,5 @@
 class PublishController < FormController
-  before_action :assign_form_objects, :assign_autocomplete_warning
+  before_action :assign_form_objects, :assign_autocomplete_warning, :assign_from_address_presenter
 
   def index
     @published_dev = published?(service.service_id, 'dev')
@@ -53,6 +53,14 @@ class PublishController < FormController
 
   def assign_autocomplete_warning
     @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
+  end
+
+  def assign_from_address_presenter
+    @from_address_presenter = FromAddressPresenter.new(from_address, :publish)
+  end
+
+  def from_address
+    @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 
   def published?(service_id, environment)

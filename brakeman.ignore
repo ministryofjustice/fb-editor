@@ -26,19 +26,19 @@
     {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 2,
-      "fingerprint": "62b97237b5296e61b21dccc5d3df3549d75931c8cc7a459843d9109432b60a22",
+      "fingerprint": "8cde876c3a74d83f589dbdc13368f0699ac1aacaa5f27c98218c14b84fb4f85b",
       "check_name": "CrossSiteScripting",
       "message": "Unescaped model attribute",
       "file": "app/views/settings/from_address/index.html.erb",
-      "line": 13,
+      "line": 12,
       "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
-      "code": "FromAddressPresenter.new(FromAddress.find_or_initialize_by(:service_id => service.service_id)).message[:text]",
+      "code": "FromAddressPresenter.new(FromAddress.find_or_initialize_by(:service_id => service.service_id), :from_address).message[:text]",
       "render_path": [
         {
           "type": "controller",
           "class": "Settings::FromAddressController",
           "method": "index",
-          "line": 5,
+          "line": 7,
           "file": "app/controllers/settings/from_address_controller.rb",
           "rendered": {
             "name": "settings/from_address/index",
@@ -138,6 +138,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-09-16 09:32:34 +0100",
+  "updated": "2022-09-27 09:30:48 +0100",
   "brakeman_version": "5.3.1"
 }
