@@ -32,9 +32,11 @@
 
     <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
 
+  <% if ENV['FROM_ADDRESS'] == 'enabled' %>
     <% if !@publish_service_creation_dev.from_address_verified? %>
       <%= govuk_warning_text(text: @from_address_presenter.message[:text]) %>
     <% end %>
+  <% end %>
 
     <button class="govuk-button fb-govuk-button"
         data-module="govuk-button"
@@ -84,9 +86,11 @@
 
     <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
 
+  <% if ENV['FROM_ADDRESS'] == 'enabled' %>
     <% if !@publish_service_creation_dev.from_address_verified? %>
       <%= govuk_warning_text(text: @from_address_presenter.message[:text]) %>
     <% end %>
+  <% end %>
 
     <button class="govuk-button fb-govuk-button"
             data-module="govuk-button"
