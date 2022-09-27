@@ -1,10 +1,11 @@
 RSpec.describe EmailSettings do
   subject(:email_settings) do
     described_class.new(
-      params.merge(service: service)
+      params.merge(service: service, from_address: from_address)
     )
   end
   let(:params) { {} }
+  let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
 
   describe '#valid?' do
     context 'when send by email is ticked' do
@@ -71,47 +72,6 @@ RSpec.describe EmailSettings do
 
     context 'when user submits a value' do
       let(:params) do
-        {
-          deployment_environment: 'dev',
-          service_email_output: 'han.solo@milleniumfalcon.uk'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_output
-        ).to eq('han.solo@milleniumfalcon.uk')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'dev' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :dev,
-          :service_email_output,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_output
-        ).to eq(service_configuration.decrypt_value)
-      end
-    end
-  end
-
-  describe '#service_email_output' do
-    context 'when email is empty' do
-      it 'returns nil' do
-        expect(email_settings.service_email_output).to eq('')
-      end
-    end
-
-    context 'when user submits a value' do
-      let(:params) do
         { deployment_environment: 'production',
           service_email_output: 'han.solo@milleniumfalcon.uk' }
       end
@@ -139,6 +99,12 @@ RSpec.describe EmailSettings do
           email_settings.service_email_output
         ).to eq(service_configuration.decrypt_value)
       end
+    end
+  end
+
+  describe '#service_email_from' do
+    it 'returns the from address value' do
+      expect(email_settings.service_email_from).to eq(from_address.email_address)
     end
   end
 
