@@ -1,12 +1,12 @@
 RSpec.describe PublishPresenter do
   let(:publish_warning_both_pages) do
-    I18n.t('publish.warning.both_pages')
+    I18n.t('warnings.submission_pages.dev.both_pages')
   end
   let(:publish_warning_cya_page) do
-    I18n.t('publish.warning.cya')
+    I18n.t('warnings.submission_pages.dev.cya_page')
   end
   let(:publish_warning_confirmation_page) do
-    I18n.t('publish.warning.confirmation')
+    I18n.t('warnings.submission_pages.dev.confirmation_page')
   end
   let(:confirmation_uuid) { '778e364b-9a7f-4829-8eb2-510e08f156a3' }
   let(:checkanswers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
@@ -25,7 +25,7 @@ RSpec.describe PublishPresenter do
 
   describe '#message' do
     let(:presenter) do
-      PublishPresenter.new(service)
+      PublishPresenter.new(service, I18n.t("warnings.submission_pages.dev"))
     end
     context 'check presence of cya and confirmation page' do
       context 'when there is both a check answers and confirmation page' do

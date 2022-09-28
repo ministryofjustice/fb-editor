@@ -29,21 +29,7 @@
       <%= render 'service_output_warning', environment: t('publish.environment.test') %>
     <% end %>
 
-    <div>
-      <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-          <span class="govuk-warning-text__assistive"><%= @submission_presenter.heading %></span>
-          <%= @submission_presenter.heading %>
-        </strong>
-      </div>
-
-      <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-7">
-        <% @submission_presenter.presenters.each do |presenter| %>
-          <li><%= presenter.message %></li>
-        <% end %>
-      </ul>
-    </div>
+    <%= render 'submission_warning', submission_presenter: @submission_presenter_dev %>
 
     <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
 
@@ -93,13 +79,9 @@
       <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
-    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
+    <%= render 'submission_warning', submission_presenter: @submission_presenter_production %>
 
-  <% if ENV['FROM_ADDRESS'] == 'enabled' %>
-    <% if !@publish_service_creation_dev.from_address_verified? %>
-      <%= govuk_warning_text(text: @from_address_presenter.message) %>
-    <% end %>
-  <% end %>
+    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
 
     <button class="govuk-button fb-govuk-button"
             data-module="govuk-button"

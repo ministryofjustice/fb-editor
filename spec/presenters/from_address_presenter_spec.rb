@@ -1,13 +1,13 @@
 RSpec.describe FromAddressPresenter do
-  subject(:from_address_presenter) { described_class.new(from_address, controller) }
+  subject(:from_address_presenter) { described_class.new(from_address, messages, service_id) }
   let(:service_id) { SecureRandom.uuid }
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
 
   describe '#message' do
     context 'when from address page' do
-      let(:controller) { :from_address }
+      let(:messages) { I18n.t('warnings.from_address.settings') }
       context 'when from address is verified' do
-        let(:expected_message) { I18n.t('settings.from_address.messages.verified') }
+        let(:expected_message) { I18n.t('warnings.from_address.settings.verified') }
 
         before do
           create(:from_address, :verified, service_id: service_id)
@@ -19,7 +19,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('settings.from_address.messages.pending') }
+        let(:expected_message) { I18n.t('warnings.from_address.settings.pending') }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -31,46 +31,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('settings.from_address.messages.default') }
-
-        before do
-          create(:from_address, :default, service_id: service_id)
-        end
-
-        it 'returns the default message' do
-          expect(from_address_presenter.message).to eq(expected_message)
-        end
-      end
-    end
-
-    context 'when publishing page' do
-      let(:controller) { :publish }
-      context 'when from address is verified' do
-        let(:expected_message) { I18n.t('publish.from_address.messages.verified') }
-
-        before do
-          create(:from_address, :verified, service_id: service_id)
-        end
-
-        it 'returns the verified message' do
-          expect(from_address_presenter.message).to eq(expected_message)
-        end
-      end
-
-      context 'when from address is pending' do
-        let(:expected_message) { I18n.t('publish.from_address.messages.pending') }
-
-        before do
-          create(:from_address, :pending, service_id: service_id)
-        end
-
-        it 'returns the pending message' do
-          expect(from_address_presenter.message).to eq(expected_message)
-        end
-      end
-
-      context 'when from address is default' do
-        let(:expected_message) { I18n.t('publish.from_address.messages.default') }
+        let(:expected_message) { I18n.t('warnings.from_address.settings.default') }
 
         before do
           create(:from_address, :default, service_id: service_id)
@@ -83,10 +44,22 @@ RSpec.describe FromAddressPresenter do
     end
 
     context 'when send by email page' do
-      let(:controller) { :email }
+      let(:messages) { I18n.t('warnings.from_address.send_by_email') }
+
+      context 'when from address is verified' do
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.verified') }
+
+        before do
+          create(:from_address, :verified, service_id: service_id)
+        end
+
+        it 'returns the verified message' do
+          expect(from_address_presenter.message).to eq(expected_message)
+        end
+      end
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('activemodel.attributes.email_settings.from_address.pending') }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.pending') }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -98,7 +71,35 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('activemodel.attributes.email_settings.from_address.default') }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default') }
+
+        before do
+          create(:from_address, :default, service_id: service_id)
+        end
+
+        it 'returns the default message' do
+          expect(from_address_presenter.message).to eq(expected_message)
+        end
+      end
+    end
+
+    context 'when publishing page' do
+      let(:messages) { I18n.t('warnings.from_address.publishing.dev') }
+
+      context 'when from address is pending' do
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending') }
+
+        before do
+          create(:from_address, :pending, service_id: service_id)
+        end
+
+        it 'returns the pending message' do
+          expect(from_address_presenter.message).to eq(expected_message)
+        end
+      end
+
+      context 'when from address is default' do
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default') }
 
         before do
           create(:from_address, :default, service_id: service_id)
