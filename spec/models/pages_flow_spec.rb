@@ -2057,9 +2057,9 @@ RSpec.describe PagesFlow do
     context 'service with warning objects' do
       let(:service) { MetadataPresenter::Service.new(latest_metadata) }
       let(:latest_metadata) { metadata_fixture(:branching) }
-      let(:delete_warning_both_pages) { I18n.t('pages.flow.delete_warning_both_pages') }
-      let(:delete_warning_cya_page) { I18n.t('pages.flow.delete_warning_cya_page') }
-      let(:delete_warning_confirmation_page) { I18n.t('pages.flow.delete_warning_confirmation_page') }
+      let(:delete_warning_both_pages) { I18n.t('warnings.pages_flow.both_pages') }
+      let(:delete_warning_cya_page) { I18n.t('warnings.pages_flow.cya_page') }
+      let(:delete_warning_confirmation_page) { I18n.t('warnings.pages_flow.confirmation_page') }
       let(:confirmation_uuid) { '778e364b-9a7f-4829-8eb2-510e08f156a3' }
       let(:checkanswers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
       let(:arnold_incomplete_answers) do

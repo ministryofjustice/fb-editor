@@ -7,9 +7,9 @@
 
     <%= f.govuk_error_summary link_base_errors_to: :email, class: "govuk-!-margin-bottom-6 govuk-!-margin-top-6" %>
 
-    <% if @presenter.message[:status] == 'pending' && @from_address.errors.blank? %>
+    <% if @from_address.pending? && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
-        <%= @presenter.message[:text].html_safe %>
+        <%= @presenter.message.html_safe %>
 
         <p>
           <span role="alert"></span>
@@ -35,14 +35,14 @@
       value: f.object.email_address
     %>
 
-    <% if @presenter.message[:status] == 'default' %>
-      <%= govuk_warning_text(text: @presenter.message[:text]) %>
+    <% if @from_address.default? %>
+      <%= govuk_warning_text(text: @presenter.message) %>
     <% end %>
 
-    <% if @presenter.message[:status] == 'verified' %>
+    <% if @from_address.verified? %>
       <p class="fb-status-message govuk-!-margin-bottom-6">
         <span class="fb-status-message__icon" aria-hidden="true"></span>
-        <span class="fb-status-message__text"><%= @presenter.message[:text] %></span>
+        <span class="fb-status-message__text"><%= @presenter.message %></span>
       </p>
     <% end %>
 

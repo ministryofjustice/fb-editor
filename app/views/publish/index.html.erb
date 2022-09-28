@@ -1,42 +1,27 @@
 <h1 class="govuk-heading-xl"><%= t('publish.heading') %></h1>
 <p id="publish-intro">
-  <%# COMMENT: Should we have service.updated_at instead of creation date? %>
   You are publishing the version from <span class="date version">
   <%= l(service.created_at.to_time.in_time_zone('London'), format: :date) %></span>
   <span class="time version">
   <%= l(service.created_at.to_time.in_time_zone('London'), format: :time) %></span>.
-  <%# TODO: Require BE to expose this data before we can see it %>
-  <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
-<%= render 'publish_warning', warning: @publish_warning %>
 
 <dl id="publish-environments">
   <dt class="environment govuk-heading-l"><%= t('publish.test.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.test.description') %></p>
-    <%# TODO: Require BE to expose this data before we can see it. %>
-    <%# p %>
-      <%# t('publish.test.version') %>
-      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
-      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
-      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
-    <%# /p %>
 
     <% if @published_dev %>
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
     <% end %>
 
-    <% if @publish_service_creation_dev.no_service_output? %>
+    <% if @publish_page_presenter_dev.no_service_output? %>
       <%= render 'service_output_warning', environment: t('publish.environment.test') %>
     <% end %>
 
-    <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
+    <%= render 'submission_warning', submission_presenter: @publish_page_presenter_dev.submission_warnings %>
 
-  <% if ENV['FROM_ADDRESS'] == 'enabled' %>
-    <% if !@publish_service_creation_dev.from_address_verified? %>
-      <%= govuk_warning_text(text: @from_address_presenter.message[:text]) %>
-    <% end %>
-  <% end %>
+    <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
 
     <button class="govuk-button fb-govuk-button"
         data-module="govuk-button"
@@ -46,10 +31,7 @@
         <%= t('actions.publish_to_test') %>
     </button>
 
-    <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
-    <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
-    <%#       be dynamic to control dialog visibility.                                        %>
-    <%= form_for(@publish_service_creation_dev,
+    <%= form_for(@publish_page_presenter_dev.publish_creation,
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-dev', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
@@ -68,29 +50,18 @@
   <dt class="environment govuk-heading-l"><%= t('publish.live.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.live.description') %></p>
-    <%# TODO: Require BE to expose this data before we can see it.%>
-    <%# p %>
-      <%# t('publish.live.version') %>
-      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
-      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
-      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
-    <%# /p %>
 
     <% if @published_production %>
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
     <% end %>
 
-    <% if @publish_service_creation_production.no_service_output? %>
+    <% if @publish_page_presenter_production.no_service_output? %>
       <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
-    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
+    <%= render 'submission_warning', submission_presenter: @publish_page_presenter_production.submission_warnings %>
 
-  <% if ENV['FROM_ADDRESS'] == 'enabled' %>
-    <% if !@publish_service_creation_dev.from_address_verified? %>
-      <%= govuk_warning_text(text: @from_address_presenter.message[:text]) %>
-    <% end %>
-  <% end %>
+    <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
 
     <button class="govuk-button fb-govuk-button"
             data-module="govuk-button"
@@ -101,8 +72,7 @@
             <%= t('actions.publish_to_live') %>
     </button>
 
-    <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
-    <%= form_for(@publish_service_creation_production,
+    <%= form_for(@publish_page_presenter_production.publish_creation,
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>

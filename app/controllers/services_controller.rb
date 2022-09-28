@@ -19,7 +19,7 @@ class ServicesController < PermissionsController
   def edit
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
-    @publish_warning = PublishPresenter.new(service)
+    @publish_warning = SubmissionPagesPresenter.new(service, I18n.t('warnings.pages_flow'))
     @detached_flows = flow.detached_flows
     @page_creation = PageCreation.new
   end

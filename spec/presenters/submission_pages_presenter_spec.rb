@@ -1,12 +1,12 @@
-RSpec.describe DeletePresenter do
-  let(:delete_warning_both_pages) do
-    I18n.t('pages.flow.delete_warning_both_pages')
+RSpec.describe SubmissionPagesPresenter do
+  let(:publish_warning_both_pages) do
+    I18n.t('warnings.submission_pages.dev.both_pages')
   end
-  let(:delete_warning_cya_page) do
-    I18n.t('pages.flow.delete_warning_cya_page')
+  let(:publish_warning_cya_page) do
+    I18n.t('warnings.submission_pages.dev.cya_page')
   end
-  let(:delete_warning_confirmation_page) do
-    I18n.t('pages.flow.delete_warning_confirmation_page')
+  let(:publish_warning_confirmation_page) do
+    I18n.t('warnings.submission_pages.dev.confirmation_page')
   end
   let(:confirmation_uuid) { '778e364b-9a7f-4829-8eb2-510e08f156a3' }
   let(:checkanswers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
@@ -25,9 +25,8 @@ RSpec.describe DeletePresenter do
 
   describe '#message' do
     let(:presenter) do
-      DeletePresenter.new(service)
+      SubmissionPagesPresenter.new(service, I18n.t('warnings.submission_pages.dev'))
     end
-
     context 'check presence of cya and confirmation page' do
       context 'when there is both a check answers and confirmation page' do
         let(:service) { MetadataPresenter::Service.new(latest_metadata) }
@@ -43,7 +42,7 @@ RSpec.describe DeletePresenter do
         end
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(delete_warning_both_pages)
+          expect(presenter.message).to eq(publish_warning_both_pages)
         end
       end
     end
@@ -65,7 +64,7 @@ RSpec.describe DeletePresenter do
         end
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(delete_warning_cya_page)
+          expect(presenter.message).to eq(publish_warning_cya_page)
         end
       end
 
@@ -78,7 +77,7 @@ RSpec.describe DeletePresenter do
         end
 
         it 'returns the correct message' do
-          expect(presenter.message).to eq(delete_warning_cya_page)
+          expect(presenter.message).to eq(publish_warning_cya_page)
         end
       end
     end
@@ -98,7 +97,7 @@ RSpec.describe DeletePresenter do
         end
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(delete_warning_confirmation_page)
+          expect(presenter.message).to eq(publish_warning_confirmation_page)
         end
       end
 
@@ -109,7 +108,7 @@ RSpec.describe DeletePresenter do
         end
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(delete_warning_confirmation_page)
+          expect(presenter.message).to eq(publish_warning_confirmation_page)
         end
       end
     end

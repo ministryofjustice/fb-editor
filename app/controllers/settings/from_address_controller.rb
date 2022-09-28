@@ -20,6 +20,6 @@ class Settings::FromAddressController < FormController
   private
 
   def assign_from_address_presenter
-    @presenter = FromAddressPresenter.new(@from_address, :from_address)
+    @presenter = FromAddressPresenter.new(@from_address, I18n.t('warnings.from_address.settings'), service.service_id)
   end
 end

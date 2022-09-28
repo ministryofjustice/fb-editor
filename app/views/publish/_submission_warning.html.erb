@@ -1,0 +1,9 @@
+<div>
+  <%= govuk_warning_text(text: submission_presenter.heading, icon_fallback_text: submission_presenter.icon_fallback) %>
+
+  <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-7">
+    <% submission_presenter.messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
