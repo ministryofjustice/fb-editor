@@ -59,7 +59,7 @@ RSpec.describe 'Destinations spec', type: :request do
     let(:metadata) { metadata_fixture(:branching_2) }
     let(:request) do
       post "/api/services/#{service.service_id}/flow/#{flow_uuid}/destinations",
-           params: { destination_uuid: destination_uuid }
+            params: { destination_uuid: destination_uuid }
     end
     let(:flow_uuid) { '393645a4-f037-4e75-8359-51f9b0e360fb' }
     let(:destination_uuid) { '68fbb180-9a2a-48f6-9da6-545e28b8d35a' }
@@ -84,6 +84,11 @@ RSpec.describe 'Destinations spec', type: :request do
     it 'changes the destination' do
       expect_any_instance_of(Destination).to receive(:change)
       request
+    end
+
+    it 'set the session key \'undo\' to \'next_page\'' do
+      request
+      expect(session[:undo]).to eql('next_page')
     end
   end
 end
