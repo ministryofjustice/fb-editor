@@ -138,16 +138,11 @@ function setupView(id) {
               <a href="` + constants.TEXT_CHANGE_DESTINATION_URL + `">` + constants.TEXT_CHANGE_DESTINATION + `</a>
             </li>
             <li data-action="` + constants.TEXT_ACTION_RECONNECT + `">
-              <a href="` + constants.TEXT_CHANGE_RECONNECT_URL + `">` + constants.TEXT_RECONNECT + `</a>
+              <a href="` + constants.TEXT_RECONNECT_CONFIRMATION_URL + `">` + constants.TEXT_RECONNECT_CONFIRMATION + `</a>
             </li>
           </ul>
         </div>
       `);
-
-
-
-
-
 
   $(document.body).append($container);
 }
@@ -160,7 +155,6 @@ function teardownView(id) {
   $("#" + id + constants.ID_COMPONENT_SUFFIX).parent(".ConnectionMenu").remove();
   $("#" + id + constants.ID_RESPONSE_SUFFIX).parent("[role=dialog]").remove();
 }
-
 
 
 module.exports = {

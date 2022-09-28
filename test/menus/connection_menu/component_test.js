@@ -24,7 +24,7 @@ describe("ConnectionMenu", function() {
       expect(created.$node.length).to.equal(1);
       expect(created.$node.get(0).tagName.toLowerCase()).to.equal("ul");
       expect(created.$node.attr("id")).to.equal(ID + c.ID_COMPONENT_SUFFIX);
-      expect(created.$node.find("li").length).to.equal(14);
+      expect(created.$node.find("li").length).to.equal(15);
     });
 
     it("should have the component class name present", function() {
