@@ -29,6 +29,9 @@ const constants = {
   TEXT_CHANGE_DESTINATION: "Change next page...",
   TEXT_CHANGE_DESTINATION_URL: "/services/destinations/new",
 
+  TEXT_RECONNECT_CONFIRMATION: "Reconnect confirmation",
+  TEXT_RECONNECT_CONFIRMATION_URL: "/services/reconnect/confirmation",
+
   TEXT_PAGE_TYPE_TEXT: "text",
   TEXT_PAGE_TYPE_TEXTAREA: "textarea",
   TEXT_PAGE_TYPE_EMAIL: "email",
@@ -45,7 +48,8 @@ const constants = {
 
   TEXT_ACTION_NONE: "none",
   TEXT_ACTION_LINK: "link",
-  TEXT_ACTION_DESTINATION: "destination"
+  TEXT_ACTION_DESTINATION: "destination",
+  TEXT_ACTION_RECONNECT: "reconnect-confirmation"
 
 }
 
@@ -132,6 +136,9 @@ function setupView(id) {
             </li>
             <li data-action="` + constants.TEXT_ACTION_DESTINATION + `">
               <a href="` + constants.TEXT_CHANGE_DESTINATION_URL + `">` + constants.TEXT_CHANGE_DESTINATION + `</a>
+            </li>
+            <li data-action="` + constants.TEXT_ACTION_RECONNECT + `">
+              <a href="` + constants.TEXT_CHANGE_RECONNECT_URL + `">` + constants.TEXT_RECONNECT + `</a>
             </li>
           </ul>
         </div>
