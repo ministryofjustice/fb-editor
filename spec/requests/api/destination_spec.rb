@@ -85,5 +85,10 @@ RSpec.describe 'Destinations spec', type: :request do
       expect_any_instance_of(Destination).to receive(:change)
       request
     end
+
+    it 'set the session key \'undo\' to \'next_page\'' do
+      request
+      expect(session[:undo]).to eql('next_page')
+    end
   end
 end

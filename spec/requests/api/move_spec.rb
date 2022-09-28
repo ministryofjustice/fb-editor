@@ -247,5 +247,23 @@ RSpec.describe 'Move spec', type: :request do
       expect_any_instance_of(Move).to receive(:change)
       request
     end
+
+    context 'undo' do
+      it 'set the session key \'undo\' to \'undo move\'' do
+        request
+        expect(session[:undo]).to  eq(I18n.t('actions.undo_redo.undo_move'))
+      end
+    end
+
+    context 'undo when move is invalid' do
+      before do
+        allow_any_instance_of(Move).to receive(:valid?).and_return(false)
+      end
+
+      it 'doesn\'t set to \'move\' if move is invalid' do
+        request
+        expect(session[:undo]).to be_falsey
+      end
+    end
   end
 end
