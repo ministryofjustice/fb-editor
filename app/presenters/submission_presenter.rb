@@ -1,11 +1,16 @@
 class SubmissionPresenter
-  attr_reader :presenters
+  attr_reader :presenters, :deployment_environment
 
-  def initialize(presenters)
+  def initialize(presenters, deployment_environment)
     @presenters = presenters
+    @deployment_environment = deployment_environment
   end
 
   def heading
-    'Your form has issue(s) preventing submissions from being sent'
+    I18n.t("warnings.publish.#{deployment_environment}.heading")
+  end
+
+  def icon_fallback
+    I18n.t("warnings.publish.#{deployment_environment}.icon_fallback")
   end
 end

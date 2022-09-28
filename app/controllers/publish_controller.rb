@@ -1,11 +1,9 @@
 class PublishController < FormController
-  before_action :assign_form_objects, :assign_autocomplete_warning, :assign_from_address_presenter
+  before_action :assign_form_objects, :assign_autocomplete_objects
 
   def index
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
-    @publish_warning = PublishPresenter.new(service)
-    @submission_presenter = SubmissionPresenter.new([@publish_warning, @from_address_presenter])
   end
 
   def create
@@ -42,22 +40,58 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_service_creation_dev = PublishServiceCreation.new(
-      service_id: service.service_id,
-      deployment_environment: 'dev'
-    )
-    @publish_service_creation_production = PublishServiceCreation.new(
-      service_id: service.service_id,
-      deployment_environment: 'production'
+    set_from_address('dev')
+    set_from_address('production')
+    set_publish_warning('dev')
+    set_publish_warning('production')
+    set_publish_creation('dev')
+    set_publish_creation('production')
+    set_submission_presenter('dev')
+    set_submission_presenter('production')
+  end
+
+  def set_from_address(deployment_environment)
+    instance_variable_set(
+      :"@from_address_presenter_#{deployment_environment}", FromAddressPresenter.new(
+        from_address,
+        I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
+        service.service_id
+      )
     )
   end
 
-  def assign_autocomplete_warning
+  def set_publish_warning(deployment_environment)
+    instance_variable_set(
+      :"@publish_warning_#{deployment_environment}",
+      PublishPresenter.new(service,
+      I18n.t("warnings.submission_pages.#{deployment_environment}"))
+    )
+  end
+
+  def set_publish_creation(deployment_environment)
+    instance_variable_set(
+      :"@publish_service_creation_#{deployment_environment}", PublishServiceCreation.new(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    )
+  end
+
+  def set_submission_presenter(deployment_environment)
+    instance_variable_set(
+      :"@submission_presenter_#{deployment_environment}",
+      SubmissionPresenter.new(
+        [
+          instance_variable_get(:"@publish_warning_#{deployment_environment}"),
+          instance_variable_get(:"@from_address_presenter_#{deployment_environment}")
+        ],
+        deployment_environment
+      )
+    )
+  end
+
+  def assign_autocomplete_objects
     @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
-  end
-
-  def assign_from_address_presenter
-    @from_address_presenter = FromAddressPresenter.new(from_address, :publish)
   end
 
   def from_address
