@@ -134,8 +134,22 @@ html {
   @include button_type_link;
 }
 
-.fb-preview-button {
-  float: right;
+// .fb-preview-button {
+//   float: right;
+// }
+
+.flow-view-buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  > * {
+    margin-left: 12px;
+
+  }
+
 }
 
 .fb-link-button {
