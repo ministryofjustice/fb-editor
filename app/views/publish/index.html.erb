@@ -25,11 +25,11 @@
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
     <% end %>
 
-    <% if @publish_service_creation_dev.no_service_output? %>
+    <% if @publish_page_presenter_dev.no_service_output? %>
       <%= render 'service_output_warning', environment: t('publish.environment.test') %>
     <% end %>
 
-    <%= render 'submission_warning', submission_presenter: @submission_presenter_dev %>
+    <%= render 'submission_warning', submission_presenter: @publish_page_presenter_dev.submission_warnings %>
 
     <%= render 'autocomplete_warning', environment: t('publish.environment.test'), text: 'publish.warning.autocomplete_items' %>
 
@@ -44,7 +44,7 @@
     <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
     <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
     <%#       be dynamic to control dialog visibility.                                        %>
-    <%= form_for(@publish_service_creation_dev,
+    <%= form_for(@publish_page_presenter_dev.publish_creation,
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-dev', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
@@ -75,11 +75,11 @@
       <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
     <% end %>
 
-    <% if @publish_service_creation_production.no_service_output? %>
+    <% if @publish_page_presenter_production.no_service_output? %>
       <%= render 'service_output_warning', environment: t('publish.environment.live') %>
     <% end %>
 
-    <%= render 'submission_warning', submission_presenter: @submission_presenter_production %>
+    <%= render 'submission_warning', submission_presenter: @publish_page_presenter_production.submission_warnings %>
 
     <%= render 'autocomplete_warning', environment: t('publish.environment.live'), text: 'publish.error.autocomplete_items' %>
 
@@ -93,7 +93,7 @@
     </button>
 
     <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
-    <%= form_for(@publish_service_creation_production,
+    <%= form_for(@publish_page_presenter_production.publish_creation,
         url: publish_index_path(service.service_id),
         html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>

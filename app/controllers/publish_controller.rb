@@ -40,14 +40,8 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    set_from_address('dev')
-    set_from_address('production')
-    set_publish_warning('dev')
-    set_publish_warning('production')
-    set_publish_creation('dev')
-    set_publish_creation('production')
-    set_submission_presenter('dev')
-    set_submission_presenter('production')
+    @publish_page_presenter_dev = PublishingPagePresenter.new(service, 'dev')
+    @publish_page_presenter_production = PublishingPagePresenter.new(service, 'production')
   end
 
   def set_from_address(deployment_environment)
