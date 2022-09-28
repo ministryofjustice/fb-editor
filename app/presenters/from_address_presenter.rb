@@ -14,6 +14,10 @@ class FromAddressPresenter
       verified: I18n.t('publish.from_address.messages.verified'),
       pending: I18n.t('publish.from_address.messages.pending'),
       default: I18n.t('publish.from_address.messages.default')
+    },
+    email: {
+      pending: I18n.t('activemodel.attributes.email_settings.from_address.pending'),
+      default: I18n.t('activemodel.attributes.email_settings.from_address.default')
     }
   }.freeze
 

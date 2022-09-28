@@ -394,6 +394,7 @@ en:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
         service_email_output: Send email to
+        service_email_from: 'From:'
         service_email_subject: Email subject
         service_email_body: Email text
         service_email_pdf_heading: Heading
@@ -407,6 +408,11 @@ en:
         csv_hint: A comma-separated values (CSV) lists all the answers in plain text, separated by commas. It can be imported into spreadsheets and other applications.
         csv_sample: See sample CSV
         csv_checkbox: Send a separate email with answers in a CSV
+        from_address:
+          default: You need to set and validate a team email address.
+          pending: You need to validate this email address.
+          pending_link: Get validation link
+          link: Change ’from’ address
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"

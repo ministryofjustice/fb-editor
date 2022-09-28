@@ -2,9 +2,9 @@ class EmailSettings
   include ActiveModel::Model
   attr_accessor :deployment_environment,
                 :service,
+                :from_address,
                 :send_by_email,
                 :service_email_output,
-                :service_email_from,
                 :service_email_subject,
                 :service_email_body,
                 :service_email_pdf_heading,
@@ -17,8 +17,7 @@ class EmailSettings
 
   validates :service_email_output, presence: true, if: :send_by_email?
 
-  validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP },
-                                   allow_blank: true
+  validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(
@@ -36,7 +35,7 @@ class EmailSettings
   end
 
   def service_email_from
-    settings_for(:service_email_from)
+    from_address.email_address
   end
 
   def service_email_subject

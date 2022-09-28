@@ -94,5 +94,35 @@ RSpec.describe FromAddressPresenter do
         end
       end
     end
+
+    context 'when send by email page' do
+      let(:controller) { :email }
+
+      context 'when from address is pending' do
+        let(:text) { I18n.t('activemodel.attributes.email_settings.from_address.pending') }
+        let(:status) { 'pending' }
+
+        before do
+          create(:from_address, :pending, service_id: service_id)
+        end
+
+        it 'returns the pending message' do
+          expect(from_address_presenter.message).to eq(expected_message)
+        end
+      end
+
+      context 'when from address is default' do
+        let(:text) { I18n.t('activemodel.attributes.email_settings.from_address.default') }
+        let(:status) { 'default' }
+
+        before do
+          create(:from_address, :default, service_id: service_id)
+        end
+
+        it 'returns the default message' do
+          expect(from_address_presenter.message).to eq(expected_message)
+        end
+      end
+    end
   end
 end
