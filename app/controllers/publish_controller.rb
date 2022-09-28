@@ -5,6 +5,7 @@ class PublishController < FormController
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
     @publish_warning = PublishPresenter.new(service)
+    @submission_presenter = SubmissionPresenter.new([@publish_warning, @from_address_presenter])
   end
 
   def create

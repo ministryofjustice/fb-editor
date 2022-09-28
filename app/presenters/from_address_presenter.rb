@@ -23,11 +23,7 @@ class FromAddressPresenter
 
   def message
     key = from_address.status&.to_sym || :default
-
-    {
-      text: MESSAGES[@controller][key],
-      status: from_address.status
-    }
+    MESSAGES[@controller][key]
   end
 
   private

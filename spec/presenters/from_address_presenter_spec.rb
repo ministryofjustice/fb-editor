@@ -4,18 +4,10 @@ RSpec.describe FromAddressPresenter do
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
 
   describe '#message' do
-    let(:expected_message) do
-      {
-        text: text,
-        status: status
-      }
-    end
-
     context 'when from address page' do
       let(:controller) { :from_address }
       context 'when from address is verified' do
-        let(:text) { I18n.t('settings.from_address.messages.verified') }
-        let(:status) { 'verified' }
+        let(:expected_message) { I18n.t('settings.from_address.messages.verified') }
 
         before do
           create(:from_address, :verified, service_id: service_id)
@@ -27,8 +19,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is pending' do
-        let(:text) { I18n.t('settings.from_address.messages.pending') }
-        let(:status) { 'pending' }
+        let(:expected_message) { I18n.t('settings.from_address.messages.pending') }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -40,8 +31,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:text) { I18n.t('settings.from_address.messages.default') }
-        let(:status) { 'default' }
+        let(:expected_message) { I18n.t('settings.from_address.messages.default') }
 
         before do
           create(:from_address, :default, service_id: service_id)
@@ -56,8 +46,7 @@ RSpec.describe FromAddressPresenter do
     context 'when publishing page' do
       let(:controller) { :publish }
       context 'when from address is verified' do
-        let(:text) { I18n.t('publish.from_address.messages.verified') }
-        let(:status) { 'verified' }
+        let(:expected_message) { I18n.t('publish.from_address.messages.verified') }
 
         before do
           create(:from_address, :verified, service_id: service_id)
@@ -69,8 +58,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is pending' do
-        let(:text) { I18n.t('publish.from_address.messages.pending') }
-        let(:status) { 'pending' }
+        let(:expected_message) { I18n.t('publish.from_address.messages.pending') }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -82,8 +70,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:text) { I18n.t('publish.from_address.messages.default') }
-        let(:status) { 'default' }
+        let(:expected_message) { I18n.t('publish.from_address.messages.default') }
 
         before do
           create(:from_address, :default, service_id: service_id)
@@ -99,8 +86,7 @@ RSpec.describe FromAddressPresenter do
       let(:controller) { :email }
 
       context 'when from address is pending' do
-        let(:text) { I18n.t('activemodel.attributes.email_settings.from_address.pending') }
-        let(:status) { 'pending' }
+        let(:expected_message) { I18n.t('activemodel.attributes.email_settings.from_address.pending') }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -112,8 +98,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:text) { I18n.t('activemodel.attributes.email_settings.from_address.default') }
-        let(:status) { 'default' }
+        let(:expected_message) { I18n.t('activemodel.attributes.email_settings.from_address.default') }
 
         before do
           create(:from_address, :default, service_id: service_id)
