@@ -1,5 +1,5 @@
 class PublishController < FormController
-  before_action :assign_form_objects, :assign_autocomplete_objects
+  before_action :assign_form_objects
 
   def index
     @published_dev = published?(service.service_id, 'dev')
@@ -40,12 +40,8 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_page_presenter_dev = PublishingPagePresenter.new(service, 'dev')
-    @publish_page_presenter_production = PublishingPagePresenter.new(service, 'production')
-  end
-
-  def assign_autocomplete_objects
-    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
+    @publish_page_presenter_dev = PublishingPagePresenter.new(service, 'dev', service_autocomplete_items)
+    @publish_page_presenter_production = PublishingPagePresenter.new(service, 'production', service_autocomplete_items)
   end
 
   def from_address

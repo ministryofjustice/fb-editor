@@ -1,5 +1,5 @@
 class PublishingPagePresenter
-  def initialize(service, deployment_environment)
+  def initialize(service, deployment_environment, service_autocomplete_items)
     @deployment_environment = deployment_environment
     @service = service
     @publish_creation = PublishServiceCreation.new(
@@ -26,6 +26,17 @@ class PublishingPagePresenter
       [submission_pages_presenter, from_address_presenter],
       deployment_environment
     )
+  end
+
+  def autocomplete_warning
+    @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items)
+  end
+
+  def enable_button?
+    return true if no_service_output?
+    return true unless deployment_environment == 'production'
+
+    submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end
 
   private
