@@ -5,6 +5,7 @@ class PublishingPagePresenter
   end
 
   attr_reader :service, :deployment_environment
+
   delegate :no_service_output?, to: :publish_creation
 
   def from_address_presenter
@@ -24,7 +25,7 @@ class PublishingPagePresenter
 
   def submission_warnings
     @submission_warnings ||= SubmissionWarningsPresenter.new(
-      [ submission_pages_presenter, from_address_presenter ],
+      [submission_pages_presenter, from_address_presenter],
       deployment_environment
     )
   end

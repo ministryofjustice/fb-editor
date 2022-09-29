@@ -18,8 +18,8 @@ class FromAddressPresenter
 
   def link
     link_to(
-              I18n.t('warnings.from_address.publishing.link'),
-              Rails.application.routes.url_helpers.settings_from_address_index_path(service_id)
-            )
+      I18n.t('warnings.from_address.publishing.link'),
+      Rails.application.routes.url_helpers.settings_from_address_index_path(service_id)
+    )
   end
 end

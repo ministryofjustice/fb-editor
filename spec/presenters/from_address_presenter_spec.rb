@@ -2,6 +2,7 @@ RSpec.describe FromAddressPresenter do
   subject(:from_address_presenter) { described_class.new(from_address, messages, service_id) }
   let(:service_id) { SecureRandom.uuid }
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
+  let(:link) { "<a href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>" }
 
   describe '#message' do
     context 'when from address page' do
@@ -71,10 +72,11 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default') }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default', href: link) }
 
         before do
           create(:from_address, :default, service_id: service_id)
+          allow_any_instance_of(FromAddressPresenter).to receive(:link).and_return(link)
         end
 
         it 'returns the default message' do
@@ -87,10 +89,11 @@ RSpec.describe FromAddressPresenter do
       let(:messages) { I18n.t('warnings.from_address.publishing.dev') }
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending') }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending', href: link) }
 
         before do
           create(:from_address, :pending, service_id: service_id)
+          allow_any_instance_of(FromAddressPresenter).to receive(:link).and_return(link)
         end
 
         it 'returns the pending message' do
@@ -99,7 +102,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default') }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default', href: link) }
 
         before do
           create(:from_address, :default, service_id: service_id)
