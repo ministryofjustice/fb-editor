@@ -5,6 +5,7 @@ class PublishingPagePresenter
   end
 
   attr_reader :service, :deployment_environment
+
   delegate :no_service_output?, to: :publish_creation
 
   def from_address_presenter
@@ -31,9 +32,16 @@ class PublishingPagePresenter
 
   def submission_warnings
     @submission_warnings ||= SubmissionPresenter.new(
-      [ submission_pages, from_address_presenter ],
+      [submission_pages, from_address_presenter],
       deployment_environment
     )
+  end
+
+  def publish_button_disabled?(autocomplete_warning)
+    return false if no_service_output?
+    return false unless deployment_environment == 'production'
+
+    submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end
 
   private

@@ -175,20 +175,41 @@ html {
 }
 
 #publish-intro {
+  margin-top: govuk-spacing(2);
   .time {
     color: $govuk-secondary-text-colour;
   }
 }
 
 #publish-environments {
-  padding-top: 1.5em;
+  margin-top: govuk-spacing(8);
+}
 
-  dd {
-    margin: 0 0 1em 0;
+.publish-environment {
+  margin-bottom: govuk-spacing(8);
+
+  h2 {
+    margin-bottom: govuk-spacing(1);
   }
 
   .description {
-    color: $govuk-secondary-text-colour;
+    margin-top: 0;
+  }
+
+  .govuk-warning-text {
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__issues-list {
+    @extend .govuk-list;
+    @extend .govuk-list--bullet;
+    @extend .govuk-list--spaced;
+
+    margin-left: govuk-spacing(7);
+  }
+
+  button[data-fb-action="publish"] {
+    margin-top: govuk-spacing(6);
   }
 }
 
