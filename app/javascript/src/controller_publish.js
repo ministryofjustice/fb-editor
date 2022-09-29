@@ -130,7 +130,7 @@ class ContentVisibilityController {
  **/
 function setupPublishForms(page) {
   this.publishFormTest = new PublishForm($("#publish-form-dev"));
-  this.publishFormProd = new PublishForm($("#publish-form-live"));
+  this.publishFormProd = new PublishForm($("#publish-form-production"));
 }
 
 module.exports = PublishController;
