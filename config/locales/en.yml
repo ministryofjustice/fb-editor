@@ -204,9 +204,6 @@ en:
     flow:
       heading: 'Pages flow'
       detached: 'Unconnected pages'
-      delete_warning_both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
-      delete_warning_cya_page: 'You won’t receive any user data without a check answers page'
-      delete_warning_confirmation_page: 'You won’t receive any user data without a confirmation page'
       reconnect_hint: 'How do I reconnect these?'
     name: 'Pages'
     create: 'Add page'
@@ -337,6 +334,10 @@ en:
         both_pages: 'You need to add a check answers page and a confirmation page'
         cya_page: 'You need to add a check answers page'
         confirmation_page: 'You need to add a confirmation page'
+    pages_flow:
+      both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
+      cya_page: 'You won’t receive any user data without a check answers page'
+      confirmation_page: 'You won’t receive any user data without a confirmation page'
     publish:
       dev:
         icon_fallback: 'Warning'
