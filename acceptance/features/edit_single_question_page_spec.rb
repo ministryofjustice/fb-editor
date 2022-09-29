@@ -21,6 +21,7 @@ feature 'Edit single question page' do
   scenario 'when editing text component' do
     given_I_have_a_single_question_page_with_text
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     when_I_update_the_optional_section_heading
     when_I_delete_the_optional_section_heading_text
@@ -31,6 +32,7 @@ feature 'Edit single question page' do
   scenario 'when editing textarea component' do
     given_I_have_a_single_question_page_with_textarea
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     when_I_update_the_optional_section_heading
     when_I_delete_the_optional_section_heading_text
@@ -41,6 +43,7 @@ feature 'Edit single question page' do
   scenario 'when editing number component' do
     given_I_have_a_single_question_page_with_number
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     when_I_update_the_optional_section_heading
     when_I_delete_the_optional_section_heading_text
@@ -51,6 +54,7 @@ feature 'Edit single question page' do
   scenario 'when editing upload component' do
     given_I_have_a_single_question_page_with_upload
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview
@@ -59,6 +63,7 @@ feature 'Edit single question page' do
   scenario 'when editing date component' do
     given_I_have_a_single_question_page_with_date
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     when_I_update_the_optional_section_heading
     when_I_delete_the_optional_section_heading_text
@@ -69,6 +74,7 @@ feature 'Edit single question page' do
   scenario 'when editing email component' do
     given_I_have_a_single_question_page_with_email
     and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
     when_I_update_the_question_name
     when_I_update_the_optional_section_heading
     when_I_delete_the_optional_section_heading_text
@@ -125,6 +131,7 @@ feature 'Edit single question page' do
 
   def when_I_update_the_question_name
     and_I_edit_the_question
+    then_I_should_be_warned_when_leaving_page
     when_I_save_my_changes
   end
 
@@ -183,4 +190,7 @@ feature 'Edit single question page' do
   def and_I_have_optional_section_heading_text
     expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
+
+  
 end
+

@@ -41,12 +41,15 @@ feature 'Edit multiple questions page' do
 
     scenario 'adding and updating components' do
       and_I_edit_the_page(url: page_heading)
+      then_the_save_button_should_be_disabled
       and_I_add_the_component(I18n.t('components.list.text'))
       and_I_add_the_component(I18n.t('components.list.textarea'))
       and_I_add_the_component(I18n.t('components.list.email'))
       and_I_add_the_component(I18n.t('components.list.radios'))
       and_I_add_the_component(I18n.t('components.list.checkboxes'))
+      then_the_save_button_should_be_disabled
       and_I_update_the_components
+      then_I_should_be_warned_when_leaving_page
       when_I_save_my_changes
       and_I_return_to_flow_page
       preview_form = and_I_preview_the_form
@@ -58,6 +61,7 @@ feature 'Edit multiple questions page' do
       and_I_add_the_component(I18n.t('components.list.text'))
       and_I_add_the_component(I18n.t('components.list.textarea'))
       and_I_change_the_text_component(text_component_question)
+      then_I_should_be_warned_when_leaving_page
       when_I_save_my_changes
       when_I_want_to_select_component_properties('h2', text_component_question)
       and_I_want_to_delete_a_component(text_component_question)
@@ -71,6 +75,7 @@ feature 'Edit multiple questions page' do
       and_I_add_the_component(I18n.t('components.list.textarea'))
       and_I_add_the_component(I18n.t('components.list.email'))
       and_I_change_the_email_component(email_component_question)
+      then_I_should_be_warned_when_leaving_page
       when_I_save_my_changes
       when_I_want_to_select_component_properties('h2', email_component_question)
       and_I_want_to_delete_a_component(email_component_question)
