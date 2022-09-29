@@ -6,9 +6,9 @@ feature 'Publishing' do
   let(:service_name) { generate_service_name }
   let(:page_url) { 'palpatine' }
   let(:exit_url) { 'exit' }
-  let(:warning_both) { I18n.t('publish.warning.both_pages') }
-  let(:warning_cya) { I18n.t('publish.warning.cya') }
-  let(:warning_confirmation) { I18n.t('publish.warning.confirmation') }
+  let(:warning_both) { I18n.t('warnings.submission_pages.dev.both_pages') }
+  let(:warning_cya) { I18n.t('warnings.submission_pages.dev.cya_page') }
+  let(:warning_confirmation) { I18n.t('warnings.submission_pages.dev.confirmation_page') }
   let(:modal_description) { I18n.t('activemodel.attributes.publish_service_creation.description') }
   let(:allow_anyone_text) { I18n.t('publish.dialog.option_1') }
   let(:username_and_password_text) { I18n.t('publish.dialog.option_2') }
@@ -224,7 +224,7 @@ feature 'Publishing' do
   end
 
   def then_I_should_not_see_warning_cya_text
-    expect(editor).to_not have_content(warning_cya)
+    expect(editor).to_not have_content(exact_text: warning_cya)
   end
 
   def then_I_should_not_see_warning_confirmation_text
