@@ -44,46 +44,6 @@ class PublishController < FormController
     @publish_page_presenter_production = PublishingPagePresenter.new(service, 'production')
   end
 
-  def set_from_address(deployment_environment)
-    instance_variable_set(
-      :"@from_address_presenter_#{deployment_environment}", FromAddressPresenter.new(
-        from_address,
-        I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
-        service.service_id
-      )
-    )
-  end
-
-  def set_publish_warning(deployment_environment)
-    instance_variable_set(
-      :"@publish_warning_#{deployment_environment}",
-      PublishPresenter.new(service,
-      I18n.t("warnings.submission_pages.#{deployment_environment}"))
-    )
-  end
-
-  def set_publish_creation(deployment_environment)
-    instance_variable_set(
-      :"@publish_service_creation_#{deployment_environment}", PublishServiceCreation.new(
-        service_id: service.service_id,
-        deployment_environment: deployment_environment
-      )
-    )
-  end
-
-  def set_submission_presenter(deployment_environment)
-    instance_variable_set(
-      :"@submission_presenter_#{deployment_environment}",
-      SubmissionPresenter.new(
-        [
-          instance_variable_get(:"@publish_warning_#{deployment_environment}"),
-          instance_variable_get(:"@from_address_presenter_#{deployment_environment}")
-        ],
-        deployment_environment
-      )
-    )
-  end
-
   def assign_autocomplete_objects
     @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
