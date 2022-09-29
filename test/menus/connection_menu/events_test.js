@@ -62,9 +62,9 @@ describe("ConnectionMenu", function() {
      **/
     describe("menuselect", function() {
 
-      it("should not call the selection method when menuselect is triggered with action 'none'", function() {
+      it("should call the selection method when menuselect is triggered with action 'none'", function() {
         var called = testSelectionCalled(created.item, "li[data-action=" + c.TEXT_ACTION_NONE + "]");
-        //expect(called).to.be.false;
+        expect(called).to.be.true;
       });
 
       // link
