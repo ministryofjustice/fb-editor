@@ -32,9 +32,16 @@ class PublishingPagePresenter
     @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items)
   end
 
-  def enable_button?
-    return true if no_service_output?
-    return true unless deployment_environment == 'production'
+  def submission_warnings
+    @submission_warnings ||= SubmissionPresenter.new(
+      [submission_pages, from_address_presenter],
+      deployment_environment
+    )
+  end
+
+  def publish_button_disabled?(autocomplete_warning)
+    return false if no_service_output?
+    return false unless deployment_environment == 'production'
 
     submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end

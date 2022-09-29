@@ -1,5 +1,5 @@
 /*
-* Some simple tweaks to the default warning text to improve the alignment of 
+* Some simple tweaks to the default warning text to improve the alignment of
 * icon and warning text using display: flex.  The simple usage of flex here is
 * supported from IE10 so should be no browser support issues.
 *
@@ -30,15 +30,65 @@
     }
   }
 
+  @mixin triangle {
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  }
+
+  @mixin hexagon {
+      --zero: 0%;
+      --min: 30%;
+      --mid: 50%;
+      --max: 70%;
+      --full: 100%;
+      clip-path: polygon(
+        var(--min) var(--zero),
+        var(--max) var(--zero),
+        var(--full) var(--mid),
+        var(--max) var(--full),
+        var(--min) var(--full),
+        var(--zero) var(--mid)
+        );
+      padding-top: 3px;
+  }
+
+  @mixin octagon {
+      aspect-ratio: 1;
+      --zero: 0%;
+      --min: 30%;
+      --max: 70%;
+      --full: 100%;
+      clip-path: polygon(
+        var(--min) var(--zero),
+        var(--max) var(--zero),
+        var(--full) var(--min),
+        var(--full) var(--max),
+        var(--max) var(--full),
+        var(--min) var(--full),
+        var(--zero) var(--max),
+        var(--zero) var(--min)
+        );
+      padding-top: 5px;
+  }
+
   &--error {
     .govuk-warning-text__icon {
       border: none;
       background-color: $govuk-error-colour;
       border-radius: unset;
-      clip-path: polygon(50% 0, 100% 100%, 0 100%);
       min-width: 40px;
-      padding-top: 5px;
+      @include hexagon;
+    }
 
+    &.icon-triangle .govuk-warning-text__icon {
+      @include triangle;
+    }
+
+    &.icon-octagon .govuk-warning-text__icon {
+      @include octagon;
+    }
+
+    &.icon-hexagon .govuk-warning-text__icon {
+      @include hexagon;
     }
 
     .govuk-warning-text__text {

@@ -1,11 +1,9 @@
 <% @autocomplete_warning.messages.each do |message| %>
-  <div class="govuk-warning-text <%= environment == t('publish.environment.live') ? 'govuk-warning-text--error' : '' -%>">
-  <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-  <strong class="govuk-warning-text__text">
-    <span class="govuk-warning-text__assistive"><%= t('publish.warning.heading') %></span>
-        <%= t(text,
-          title: link_to(message[:component_title],
-          edit_page_path(service.service_id, message[:page_uuid]))).html_safe %>
-  </strong>
-</div>
+  <%= govuk_warning_text(
+    text: t("publish.autocomplete_items.#{environment}.message",
+            title: govuk_link_to(message[:component_title],
+            edit_page_path(service.service_id, message[:page_uuid]))).html_safe,
+    icon_fallback_text: t("publish.autocomplete_items.#{environment}.icon_fallback"),
+    classes: environment == 'production' ? 'govuk-warning-text--error' : ''
+  ) %>
 <% end %>

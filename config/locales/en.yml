@@ -321,7 +321,7 @@ en:
         link: ‘from’ address
         dev:
           pending: 'You have not validated your %{href} for emails'
-          default: 'You have not to set a %{href} for emails'
+          default: 'You have not set a %{href} for emails'
         production:
           pending: 'You need to validate your %{href} for emails'
           default: 'You need to set a %{href} for emails'
@@ -351,17 +351,19 @@ en:
   publish:
     name: 'Publishing'
     heading: 'Publishing'
-    warning:
-      autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
-    error:
-      autocomplete_items: 'You need to upload some autocomplete options for "%{title}"'
+    autocomplete_items:
+      dev:
+        icon_fallback: 'Warning'
+        message: '“%{title}” has no autocomplete options and cannot be answered.'
+      production:
+        icon_fallback: 'Error'
+        message: 'You need to upload some autocomplete options for “%{title}”'
     environment:
-      test: Test
-      live: Live
+      dev: Test
+      production: Live
     service_output:
-      warning: Warning
-      message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
-      link: submission settings
+      icon_fallback: Warning
+      message: "No submission method is enabled, you will not receive any response"
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view
@@ -369,14 +371,14 @@ en:
       alert_heading: Your form is being published
       alert_text: 'It may take up to 15 minutes for your link to work.<br />Future updates will happen straight away.'
       alert_button: I understand
-    test:
+    dev:
       button: Publish to Test
       heading: 'Test site'
       description: 'Where you can check your form works and get feedback.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
-    live:
+    production:
       button: Publish to Live
       heading: 'Live site'
       description: 'Where the public can access and use your form.'
