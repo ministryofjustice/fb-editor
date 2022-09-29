@@ -2,9 +2,14 @@ class PublishingPagePresenter
   def initialize(service, deployment_environment)
     @deployment_environment = deployment_environment
     @service = service
+    @publish_creation = PublishServiceCreation.new(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment
+    )
   end
 
   attr_reader :service, :deployment_environment
+  attr_accessor :publish_creation
 
   delegate :no_service_output?, to: :publish_creation
 
@@ -13,13 +18,6 @@ class PublishingPagePresenter
       from_address,
       I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
       service.service_id
-    )
-  end
-
-  def publish_creation
-    @publish_creation ||= PublishServiceCreation.new(
-      service_id: service.service_id,
-      deployment_environment: deployment_environment
     )
   end
 

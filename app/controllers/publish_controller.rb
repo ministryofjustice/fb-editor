@@ -60,11 +60,10 @@ class PublishController < FormController
   end
 
   def update_form_objects
-    @publish_warning = SubmissionPagesPresenter.new(service)
     if @publish_service_creation.deployment_environment == 'dev'
-      @publish_service_creation_dev = @publish_service_creation
+      @publish_page_presenter_dev.publish_creation = @publish_service_creation
     else
-      @publish_service_creation_production = @publish_service_creation
+      @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
   end
 end
