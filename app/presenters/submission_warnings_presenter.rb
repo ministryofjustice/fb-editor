@@ -1,4 +1,4 @@
-class SubmissionPresenter
+class SubmissionWarningsPresenter
   attr_reader :presenters, :deployment_environment
 
   def initialize(presenters, deployment_environment)

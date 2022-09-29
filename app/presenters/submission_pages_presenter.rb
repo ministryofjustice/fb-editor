@@ -1,4 +1,4 @@
-class PublishPresenter < WarningPresenter
+class SubmissionPagesPresenter < WarningPresenter
   attr_reader :messages
 
   def initialize(service, messages)

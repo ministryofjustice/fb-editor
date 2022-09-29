@@ -1,4 +1,4 @@
-RSpec.describe PublishPresenter do
+RSpec.describe SubmissionPagesPresenter do
   let(:publish_warning_both_pages) do
     I18n.t('warnings.submission_pages.dev.both_pages')
   end
@@ -25,7 +25,7 @@ RSpec.describe PublishPresenter do
 
   describe '#message' do
     let(:presenter) do
-      PublishPresenter.new(service, I18n.t("warnings.submission_pages.dev"))
+      SubmissionPagesPresenter.new(service, I18n.t("warnings.submission_pages.dev"))
     end
     context 'check presence of cya and confirmation page' do
       context 'when there is both a check answers and confirmation page' do

@@ -15,13 +15,6 @@ class PublishingPagePresenter
     )
   end
 
-  def submission_pages
-    @submission_pages ||= PublishPresenter.new(
-      service,
-      I18n.t("warnings.submission_pages.#{deployment_environment}")
-    )
-  end
-
   def publish_creation
     @publish_creation ||= PublishServiceCreation.new(
       service_id: service.service_id,
@@ -30,8 +23,8 @@ class PublishingPagePresenter
   end
 
   def submission_warnings
-    @submission_warnings ||= SubmissionPresenter.new(
-      [ submission_pages, from_address_presenter ],
+    @submission_warnings ||= SubmissionWarningsPresenter.new(
+      [ submission_pages_presenter, from_address_presenter ],
       deployment_environment
     )
   end
@@ -39,6 +32,13 @@ class PublishingPagePresenter
   private
 
   def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
+    FromAddress.find_or_initialize_by(service_id: service.service_id)
+  end
+
+  def submission_pages_presenter
+    SubmissionPagesPresenter.new(
+      service,
+      I18n.t("warnings.submission_pages.#{deployment_environment}")
+    )
   end
 end
