@@ -124,4 +124,48 @@ RSpec.describe MetadataApiClient::Version do
       expect(described_class.new(version_attributes.stringify_keys).created_at).to eq('sometime')
     end
   end
+
+  describe '.previous' do
+    let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions/previous" }
+    let(:version_attributes) do
+      {
+        version_id: SecureRandom.uuid,
+        created_at: '07:00pm'
+      }
+    end
+    let(:version) do
+      MetadataApiClient::Version.new(version_attributes.stringify_keys)
+    end
+
+    context 'if the metadata api service is working fine' do
+      before do
+        stub_request(:get, expected_url)
+          .to_return(status: 200, body: version_attributes.to_json, headers: {})
+      end
+
+      it 'returns the response body with a correct format ' do
+        result = described_class.previous(service_id)
+        expect(result).to eq(version)
+      end
+    end
+
+    context 'if there is a problem on the Metadata API' do
+      let(:expected_body) do
+        { 'message': ['Oh no!'] }
+      end
+
+      before do
+        stub_request(:get, expected_url)
+          .to_return(status: 400, body: expected_body.to_json, headers: {})
+      end
+
+      it 'assigns an error message' do
+        expect(
+          described_class.previous(service_id)
+        ).to eq(
+          MetadataApiClient::ErrorMessages.new(['Oh no!'])
+        )
+      end
+    end
+  end
 end
