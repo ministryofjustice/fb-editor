@@ -31,9 +31,11 @@ module MetadataApiClient
 
     def self.previous(service_id)
       response = connection.get(
-        "/services/#{service_id}/versions/previous/"
+        "/services/#{service_id}/versions/previous"
       )
       new(response.body)
+    rescue Faraday::ClientError => e
+      error_messages(e)
     end
 
     def version_id

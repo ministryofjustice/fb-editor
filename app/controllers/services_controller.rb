@@ -17,14 +17,7 @@ class ServicesController < PermissionsController
   end
 
   def edit
-    case session['undo']
-    when 'move'
-      @show_button = 'move'
-      session.delete(:undo)
-    when 'change_next_page'
-      @show_button = 'next_page'
-      session.delete(:undo)
-    end
+    @show_button = session.delete(:undo)
 
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
