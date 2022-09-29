@@ -301,8 +301,8 @@ en:
         label: 'Send data by email'
         help: ''
         configure_pdf_label: PDF attachment
-        save_test: Save Test settings
-        save_live: Save Live settings
+        save_dev: Save Test settings
+        save_production: Save Live settings
       from_address:
         label: "‘From’ address"
         hint: Emails sent by your form will come from this address
