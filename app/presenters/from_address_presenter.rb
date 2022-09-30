@@ -10,6 +10,8 @@ class FromAddressPresenter
 
   def message
     key = from_address.status&.to_sym || :default
+    return unless messages.key?(key)
+
     messages[key].gsub('%{href}', link).html_safe
   end
 
