@@ -1,3 +1,84 @@
+/**
+* Dialog Form Component
+* ------------------------------------------------------------------------------
+* Author: Chris Pymm (chris.pymm@digital.justice.gov.uk)
+*
+* Description
+* ===========
+* Provides a jQuery UI dialog around either a provided HTML template node wihtin
+* the page, or an HTML teplate recieved via an API request.
+*
+* This class is effectively a combination of the Dialog and DialogApiRequest
+* classes with added functionality to handle forms.  
+*
+* The form within the dialog can either be submitted synchronoously or
+* asynchronously.
+*
+* Configuration
+* =============
+* Accepts a configuration object with the following properties in the format
+* property (type) [default value]:
+*
+*  - activator ($node | boolean) [false]
+*    Either an existing node that will trigger the dialog, or a boolean value 
+*    indicating whether or not to create an activator
+*
+*  - autoOpen (boolean) [false]
+*    Open the dialog on creation.
+*
+*  - classes (object) [{}] 
+*    An object of jQuery ui classes that will be applied to the UI dialog
+*    elements
+*  
+*  - closeOnClickSelector (string) ['button[type="button]']
+*    jQuery selector string for elements that will close the dialog when
+*    clicked.
+*
+*  - submitOnClickSelector (string) ['button[type="submit"]']
+*    jQuery selector string for the button that will submit the form wihtin the 
+*    dialog when clicked.
+*
+*  - remote (boolean) [false]
+*    Whether the form will submit async or not
+*
+*  - disableOnSubmit (false|string) [false]
+*    Only used when remote is true.  If a string is provided, the submit button
+*    will be disabled on submit, and its label set to the value of this option.
+*
+*  - onOpen (function(dialog)) 
+*    Callable that will be called when the dialog is opened. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onClose (function(dialog))
+*    Callable that will be called when the dialog is closed. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onLoad (function(dialog))
+*    Callable that will be called when the response from the server is
+*    successfully recieved, but before the jQuery dialog is initialized or any
+*    enhancements ahve been applied to the repsonse. Recieves the Dialog class 
+*    instance as an argument
+*
+*  - onReady (function(dialog))
+*    Callable that will be called when the dialog has been instantiated and all
+*    event listeners / JS enhancements have been applied. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onError (function(dialog))
+*    Callable that will be called if there is an error in submitting the form
+*    asynchronously. Recieves the Dialog class instance as an argument
+*
+*  - onSuccess (function(dialog))
+*    Callable that will be called on successful async submission of the form.
+*    Recieves the Dialog class instance as an argument
+*
+*  - beforeSubmit (function(dialog))
+*    Callable that will be called on click of the submit button but before
+*    dialog.submit() is called.  Allows manipulation of form values / data if
+*    required. Recieves the Dialog class instance as an argument
+*
+**/
+
 const {
 mergeObjects,
 safelyActivateFunction, 
@@ -11,6 +92,10 @@ class DialogForm {
   #remoteSource;
   #state;
 
+  /**
+  * @param {string|jQuery} source - Either a url to request html from or jQuery node 
+  * @param {Object} config - config key/value pairs
+  */ 
   constructor(source, config) {
     this.#config = mergeObjects({
       activator: false,
@@ -42,12 +127,12 @@ class DialogForm {
     return this.#config.activator;
   }
 
-  set activator($node) {
-    this.#config.activator = $node;
-  }
-
   get state() {
     return this.#state;
+  }
+
+  set activator($node) {
+    this.#config.activator = $node;
   }
 
   isOpen() {
@@ -150,8 +235,9 @@ class DialogForm {
   #build() {
     var dialog = this;
     
+    // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
-      this.#createActivator();
+      this.#addActivator();
     }
 
     this.$node.dialog({
@@ -237,7 +323,7 @@ class DialogForm {
     this.$node.remove();
   }
 
-  #createActivator() {
+  #addActivator() {
     var $marker = $("<span></span>");
 
     this.$node.before($marker);

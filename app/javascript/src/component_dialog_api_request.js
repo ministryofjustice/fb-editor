@@ -1,18 +1,73 @@
 /**
- * Dialog API Request Component
- * ----------------------------------------------------
- * Description:
- * Expects response content from an API request, which it can wrap in a Dialog effect.
- *
- * Documentation:
- *
- *     - jQueryUI
- *       https://api.jqueryui.com/dialog
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
- **/
+* Dialog API Request Component
+* ------------------------------------------------------------------------------
+* Author: Chris Pymm (chris.pymm@digital.justice.gov.uk)
+*
+* Description
+* ===========
+* Provides jQuery UI Dialog around template HTML returned from a server API
+* request.
+*
+* These dialogs are ephemeral - they are created on a successful API request,
+* and removed entirely from the DOM once closed.
+*
+* While it is possible to pass in buttons for jQuery UI to use within the config 
+* options, it is recommended to have the controlling buttons included within the 
+* markup in the returned template.
+*
+* Configuration
+* =============
+* Accepts a configuration object with the following properties in the format
+* property (type) [default value]:
+*
+*  - activator ($node | boolean) [false]
+*    Either an existing node that will trigger the dialog, or a boolean value 
+*    indicating whether or not to create an activator
+*
+*  - autoOpen (boolean) [false]
+*    Open the dialog on creation.
+*
+*  - buttons (Object[]) [[]]
+*    Two element Array containing objects used for passing to the jQueryUI dialog.
+*    Do not include config.closeOnClickSelector option when using this one.
+*    Use of closeOnClickSelector will cause constructor to ignore config.buttons.
+*    Each array element should be of the construction:
+*            {
+*               text: "This is used for button text",
+*               click: function(dialog) {
+*                 // an action to run on click that receives the DialogApiRequest 
+*                 // instance as an argument.
+*               }
+*            }
+*
+*  - classes (object) [{}] 
+*    An object of jQuery ui classes that will be applied to the UI dialog
+*    elements
+*  
+*  - closeOnClickSelector (string) ['']
+*    jQuery selector string for elements that will close the dialog when
+*    clicked. Use this option if you do not pass in buttons. 
+*
+*  - onOpen (function(dialog)) 
+*    Callable that will be called when the dialog is opened. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onClose (function(dialog))
+*    Callable that will be called when the dialog is closed. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onLoad (function(dialog))
+*    Callable that will be called when the response from the server is
+*    successfully recieved, but before the jQuery dialog is initialized or any
+*    enhancements ahve been applied to the repsonse. Recieves the Dialog class 
+*    instance as an argument
+*
+*  - onReady (function(dialog))
+*    Callable that will be called when the dialog has been instantiated and all
+*    event listeners / JS enhancements have been applied. Recieves the
+*    Dialog class instance as an argument
+
+**/
 
 const {
   mergeObjects,
@@ -21,42 +76,15 @@ const {
 
 const DialogActivator = require('./component_dialog_activator');
 
-/* See jQueryUI Dialog for config options (all are passed straight in).
- *
- * Extra config options specific to this enhancement
- *
- * @url    (URL) API request that gets the HTML used to populate the dialog.
- * @config (Object) Configurable key/value pairs.
- *
- * {
- *   activator: HTML node that activated the initial request and resulting dialog
- *
- *   build: A function that will run just before the dialog is created.
- *          This function is passed the API response HTML wrapped in a jQuery object.
- *
- *   buttons: Two element Array containing objects used for passing to the jQueryUI dialog.
- *
- *            Do not include config.closeOnClickSelector option when using this one.
- *            User of closeOnClickSelector will cause constructor to bypass config.buttons.
- *
- *            Each array element should be of the construction:
- *            {
- *               text: "This is used for button text",
- *               click: function(dialog) {
- *                 // an action to run on click that receives the DialogApiRequest instance as an argument.
- *               }
- *            }
- *
- *   closeOnClickSelector: jQuery selector to find elements that will close the dialog on their click event.
- *                         You need this option if you don't pass in any buttons (see above) through config.
- *                         This is useful when target elements are in response HTML.
- * }
- **/
 class DialogApiRequest {
   #className = 'DialogApiRequest';
   #config;
   #state;
 
+  /**
+  * @param {string} url - The url to request the template from
+  * @param {Object} config - config key/value pairs
+  */ 
   constructor(url, config) {
     this.#config = mergeObjects({
       activator: false,
@@ -81,12 +109,12 @@ class DialogApiRequest {
     return this.#config.activator;
   }
 
-  set activator($node) {
-    this.#config.activator = $node;
-  }
-
   get state() {
     return this.#state;
+  }
+
+  set activator($node) {
+    this.#config.activator = $node;
   }
 
   isOpen() {
@@ -145,8 +173,9 @@ class DialogApiRequest {
   #build() {
     const dialog = this;
     
+    // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
-      this.#createActivator();
+      this.#addActivator();
     }
 
     this.$node.dialog({
@@ -223,7 +252,7 @@ class DialogApiRequest {
     this.$node.remove();
   }
 
-  #createActivator() {
+  #addActivator() {
     var $marker = $("<span></span>");
 
     this.$node.before($marker);

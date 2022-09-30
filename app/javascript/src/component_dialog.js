@@ -1,3 +1,90 @@
+/**
+* Dialog Component
+* ------------------------------------------------------------------------------
+* Author: Chris Pymm (chris.pymm@digital.justice.gov.uk)
+*
+* Description
+* ===========
+* Wraps a provided jQuery node with jQuery UI Dialog functionality.  The node
+* provided should include any ui buttons to confirm / cancel the action as we do
+* not use the native jQuery UI dialog buttons.
+*
+* These dialogs are intended to be used with a static template (always) present
+* in the page, that does not contain the text content. 
+*
+* When the dialog is required the open method is called with the desired
+* content, which is then injected into the template and the dialog opened and
+* shown to the user.
+*
+* Configuration
+* =============
+* Accepts a configuration object with the following properties in the format
+* property (type) [default value]:
+*
+*  - activator ($node | boolean) [false]
+*    Either an existing node that will trigger the dialog, or a boolean value 
+*    indicating whether or not to create an activator
+*
+*  - autoOpen (boolean) [false]
+*    Open the dialog on creation.
+*
+*  - classes (object) [{}] 
+*    An object of jQuery ui classes that will be applied to the UI dialog
+*    elements
+*  
+*  - closeOnClickSelector (string) [button:not([data-node="confirm"])]
+*    jQuery selector string for elements that will close the dialog when
+*    clicked.  Should *not* include the confirmation element.
+*
+*  - confirmOnClickSelector (string) [button[data-node="confirm"]]
+*    jQuery selector string for the 'confirmation' action for the dialog.
+*    bin
+*
+*  - onOpen (function(dialog)) 
+*    Callable that will be called when the dialog is opened. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onClose (function(dialog))
+*    Callable that will be called when the dialog is closed. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onConfirm (function(dialog))
+*    Callable that will be called when the confirm UI button is clicked. Recieves the
+*    Dialog class instance as an argument
+*
+*  - onReady (function(dialog))
+*    Callable that will be called when the dialog has been instantiated and all
+*    event listeners / JS enhancements have been applied. Recieves the
+*    Dialog class instance as an argument
+*    
+* Setters
+* =======
+* As the dialog is initialised on a template node and reused with different
+* injected content for many actions within the app, the following setters are 
+* provided to override the global config.
+*
+* content(text)
+* Allows the injection of content for the dialog.  Expects an object with the
+* following properties:
+*  - heading: The dialog heading/title
+*  - content: The main dialog content
+*  - confirm: The label for the confirm button
+*  - cancel: The label for the (optional) cancel button
+*
+*  onClose(callable)
+*  Allows for a custom onClose callback to be provided for a Dialog instance
+*
+*  onConfirm(callable)
+*  Allows for a custom onConfirm callback to be provided for a Dialog instance
+*
+*  onOpen(callable)
+*  Allows for a custom onOpen callback to be provided for a Dialog instance
+*
+* References
+* ==========
+*  - jQueryUI Dialog: https://api.jqueryui.com/dialog
+**/
+
 const {
   mergeObjects,
   safelyActivateFunction,
@@ -11,7 +98,11 @@ class Dialog {
   #defaultText = {};
   #elements = {};
   #state;
-  
+
+  /**
+   * @param {jQuery} $node - the HTML template node
+   * @param {Object} config - config key/value pairs
+   */
   constructor($node, config) {
     this.#config = mergeObjects({
       activator: false,
@@ -36,6 +127,14 @@ class Dialog {
     return this.#config.activator;
   }
 
+  get state(){
+    return this.#state;
+  }
+
+  get content() {
+    return this.#elements;
+  }
+
   set activator($node) {
     this.#config.activator = $node;
   }
@@ -53,14 +152,6 @@ class Dialog {
   set onOpen(callable) {
     this.originalOnOpen = this.#config.onOpen;
     this.#config.onOpen = callable;
-  }
-
-  get state(){
-    return this.#state;
-  }
-
-  get content() {
-    return this.#elements;
   }
 
   set content(text) {
@@ -134,9 +225,10 @@ class Dialog {
 
   #build() {
     var dialog = this;
-
+    
+    // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
-      this.#createActivator();
+      this.#addActivator();
     }
 
     this.$node.dialog({
@@ -188,7 +280,7 @@ class Dialog {
     }
   }
 
-  /* add event listeners to configured close buttons */
+  /* Add event listeners to configured close buttons */
   #setupCloseButtons() {
     const dialog = this;
 
@@ -209,7 +301,7 @@ class Dialog {
     });
   }
   
-  #createActivator() {
+  #addActivator() {
     var $marker = $("<span></span>");
 
     this.$node.before($marker);
