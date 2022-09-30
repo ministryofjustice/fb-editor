@@ -31,7 +31,7 @@ class PublishingPagePresenter
   end
 
   def publish_button_disabled?
-    return if no_service_output?
+    return true if no_service_output?
 
     return unless deployment_environment == 'production'
 
