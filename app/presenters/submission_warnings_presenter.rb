@@ -19,7 +19,7 @@ class SubmissionWarningsPresenter
       presenters.map(&:message).compact
     else
       presenters.reject{ |p| p.is_a?(FromAddressPresenter) }
-      presenters.map(&:message).compact
+                .map(&:message).compact
     end
   end
 end

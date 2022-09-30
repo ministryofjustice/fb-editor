@@ -20,7 +20,7 @@
       data-module="govuk-button"
       type="button"
       data-fb-action="publish"
-      aria-disabled="<%= presenter.publish_button_disabled?(@autocomplete_warning).to_s %>"
+      aria-disabled="<%= presenter.publish_button_disabled? %>"
       hidden >
       <%= t("publish.#{environment}.button") %>
   </button>
@@ -41,5 +41,4 @@
         </button>
       </div>
     <% end %>
-
 </section>

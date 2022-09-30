@@ -23,7 +23,7 @@ class PublishController < FormController
   private
 
   def service_autocomplete_items
-    MetadataApiClient::Items.all(service_id: service.service_id)
+    @service_autocomplete_items ||= MetadataApiClient::Items.all(service_id: service.service_id)
   end
 
   def publish_service_params
