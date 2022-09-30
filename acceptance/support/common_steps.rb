@@ -177,7 +177,7 @@ module CommonSteps
   end
 
   def and_I_return_to_flow_page
-    accept_alert(wait: 1) { editor.pages_link.click }
+    accept_confirm(wait: 1) { editor.pages_link.click }
     rescue Capybara::ModalNotFound
       editor.pages_link.click
     ensure
@@ -244,8 +244,19 @@ module CommonSteps
   def when_I_save_my_changes
     # click outside of fields that will make save button re-enable
     editor.service_name.click
-    expect(editor.save_page_button).to_not be_disabled
+    expect(editor.save_page_button['aria-disabled']).to eq('false')
     editor.save_page_button.click
+    expect(editor.save_page_button['aria-disabled']).to eq('true')
+  end
+
+  def then_the_save_button_should_be_disabled
+    expect(editor.save_page_button['aria-disabled']).to eq('true')
+  end
+
+  def then_I_should_be_warned_when_leaving_page
+    # click outside of fields that will make save button re-enable
+    editor.service_name.click
+    dismiss_confirm(wait: 1) { editor.pages_link.click }
   end
 
   def when_I_want_to_select_question_properties
