@@ -8,9 +8,9 @@
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h2 class="govuk-fieldset__heading"><%= t('publish.test.heading') %></h2>
+          <h2 class="govuk-fieldset__heading"><%= t('publish.dev.heading') %></h2>
         </legend>
-        <div class="govuk-hint"><%= t('publish.test.hint') %></div>
+        <div class="govuk-hint"><%= t('publish.dev.hint') %></div>
         <div class="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <%= f.check_box :send_by_email_dev, class: 'govuk-checkboxes__input',
@@ -36,9 +36,9 @@
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h2 class="govuk-fieldset__heading"><%= t('publish.live.heading') %></h2>
+          <h2 class="govuk-fieldset__heading"><%= t('publish.production.heading') %></h2>
         </legend>
-        <div class="govuk-hint"><%= t('publish.live.hint') %></div>
+        <div class="govuk-hint"><%= t('publish.production.hint') %></div>
         <div class="govuk-checkboxes">
           <div class="govuk-checkboxes__item">
             <%= f.check_box :send_by_email_production, class: 'govuk-checkboxes__input',
