@@ -13,14 +13,14 @@
       ) %>
   <% else %>
     <%= render 'submission_warning', submission_presenter: presenter.submission_warnings, environment: environment %>
-    <%= render 'autocomplete_warning', environment: environment %>
+    <%= render 'autocomplete_warning', autocomplete_warning: presenter.autocomplete_warning, environment: environment %>
   <% end %>
 
   <button class="govuk-button fb-govuk-button"
       data-module="govuk-button"
       type="button"
       data-fb-action="publish"
-      aria-disabled="<%= presenter.publish_button_disabled?(@autocomplete_warning).to_s %>"
+      aria-disabled="<%= presenter.publish_button_disabled? %>"
       hidden >
       <%= t("publish.#{environment}.button") %>
   </button>
@@ -41,5 +41,4 @@
         </button>
       </div>
     <% end %>
-
 </section>

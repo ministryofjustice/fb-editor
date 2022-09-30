@@ -2,7 +2,7 @@ class FromAddressPresenter
   include ActionView::Helpers
   include GovukLinkHelper
 
-  def initialize(from_address, messages, service_id)
+  def initialize(from_address:, messages:, service_id:)
     @from_address = from_address
     @service_id = service_id
     @messages = messages
@@ -10,6 +10,8 @@ class FromAddressPresenter
 
   def message
     key = from_address.status&.to_sym || :default
+    return unless messages.key?(key)
+
     messages[key].gsub('%{href}', link).html_safe
   end
 

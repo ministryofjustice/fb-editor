@@ -1,12 +1,21 @@
 RSpec.describe FromAddressPresenter do
-  subject(:from_address_presenter) { described_class.new(from_address, messages, service_id) }
+  subject(:from_address_presenter) do
+    described_class.new(
+      from_address: from_address,
+      messages: messages,
+      service_id: service_id
+    )
+  end
   let(:service_id) { SecureRandom.uuid }
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
-  let(:link) { "<a href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>" }
+  let(:link) do
+    "<a class=\"govuk-link\" href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>"
+  end
 
   describe '#message' do
     context 'when from address page' do
       let(:messages) { I18n.t('warnings.from_address.settings') }
+
       context 'when from address is verified' do
         let(:expected_message) { I18n.t('warnings.from_address.settings.verified') }
 
@@ -40,6 +49,15 @@ RSpec.describe FromAddressPresenter do
 
         it 'returns the default message' do
           expect(from_address_presenter.message).to eq(expected_message)
+        end
+
+        context 'when messages does not contain a specific key' do
+          # some messages are not shown at all if the email address is verified
+          let(:messages) { I18n.t('warnings.from_address.publishing') }
+
+          it 'returns nil' do
+            expect(from_address_presenter.message).to be_nil
+          end
         end
       end
     end

@@ -1,4 +1,4 @@
-<% @autocomplete_warning.messages.each do |message| %>
+<% autocomplete_warning.messages.each do |message| %>
   <%= govuk_warning_text(
     text: t("publish.autocomplete_items.#{environment}.message",
             title: govuk_link_to(message[:component_title],

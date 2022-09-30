@@ -63,9 +63,9 @@ class Settings::EmailController < FormController
 
   def assign_from_address_presenter
     @from_address_presenter = FromAddressPresenter.new(
-      from_address,
-      I18n.t('warnings.email_settings'),
-      service.service_id
+      from_address: from_address,
+      messages: I18n.t('warnings.email_settings'),
+      service_id: service.service_id
     )
   end
 
