@@ -2,7 +2,9 @@ RSpec.describe FromAddressPresenter do
   subject(:from_address_presenter) { described_class.new(from_address, messages, service_id) }
   let(:service_id) { SecureRandom.uuid }
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
-  let(:link) { "<a href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>" }
+  let(:link) do
+    "<a class=\"govuk-link\" href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>"
+  end
 
   describe '#message' do
     context 'when from address page' do
