@@ -49,10 +49,8 @@ feature 'Undo redo page' do
     and_I_select_a_target(page_2)
     and_I_click_the_move_button
     then_page_1_should_be_after_page_2
-    # and_I_click_on_undo_move
     and_I_click_button('undo_move')
     then_page_2_should_be_after_page_1
-    # and_I_click_on_redo_move
     and_I_click_button('redo_move')
     then_page_1_should_be_after_page_2
   end
@@ -61,7 +59,6 @@ feature 'Undo redo page' do
     given_I_want_to_change_destination_of_a_page(page_2)
     when_I_change_destination_to_page('page 1')
     then_next_to_page_2_is_page_1
-    # and_I_click_on_undo_change_next_page
     and_I_click_button('undo_change_next_page')
     then_page_2_should_be_after_page_1
     and_I_click_button('redo_change_next_page')
