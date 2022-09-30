@@ -1,5 +1,11 @@
 RSpec.describe FromAddressPresenter do
-  subject(:from_address_presenter) { described_class.new(from_address, messages, service_id) }
+  subject(:from_address_presenter) do
+    described_class.new(
+      from_address: from_address,
+      messages: messages,
+      service_id: service_id
+    )
+  end
   let(:service_id) { SecureRandom.uuid }
   let(:from_address) { FromAddress.find_by(service_id: service_id) }
   let(:link) do

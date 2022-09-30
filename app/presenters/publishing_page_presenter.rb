@@ -1,5 +1,5 @@
 class PublishingPagePresenter
-  def initialize(service, deployment_environment, service_autocomplete_items)
+  def initialize(service:, deployment_environment:, service_autocomplete_items:)
     @deployment_environment = deployment_environment
     @service = service
     @service_autocomplete_items = service_autocomplete_items
@@ -13,9 +13,9 @@ class PublishingPagePresenter
 
   def from_address_presenter
     @from_address_presenter ||= FromAddressPresenter.new(
-      from_address,
-      I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
-      service.service_id
+      from_address: from_address,
+      messages: I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
+      service_id: service.service_id
     )
   end
 

@@ -2,7 +2,7 @@ class FromAddressPresenter
   include ActionView::Helpers
   include GovukLinkHelper
 
-  def initialize(from_address, messages, service_id)
+  def initialize(from_address:, messages:, service_id:)
     @from_address = from_address
     @service_id = service_id
     @messages = messages

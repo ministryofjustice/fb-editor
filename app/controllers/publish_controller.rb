@@ -40,8 +40,16 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_page_presenter_dev = PublishingPagePresenter.new(service, 'dev', service_autocomplete_items)
-    @publish_page_presenter_production = PublishingPagePresenter.new(service, 'production', service_autocomplete_items)
+    @publish_page_presenter_dev = PublishingPagePresenter.new(
+      service: service,
+      deployment_environment: 'dev',
+      service_autocomplete_items: service_autocomplete_items
+    )
+    @publish_page_presenter_production = PublishingPagePresenter.new(
+      service: service,
+      deployment_environment: 'production',
+      service_autocomplete_items: service_autocomplete_items
+    )
   end
 
   def from_address
