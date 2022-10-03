@@ -169,6 +169,11 @@ en:
     submit: 'Submit'
     upload_options: Upload options
     open_in_new_window: '(opens in a new window)'
+    undo_redo:
+      undo_next_page: 'Undo change next page'
+      undo_move: 'Undo move'
+      redo_next_page: 'Redo next page'
+      redp_move: 'Redo move'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'

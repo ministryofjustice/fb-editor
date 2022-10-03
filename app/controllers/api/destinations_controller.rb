@@ -8,7 +8,7 @@ module Api
 
     def create
       destination.change
-      session[:undo] = 'next_page'
+      session[:undo] = t('actions.undo_redo.undo_change_next_page')
       redirect_to edit_service_path(service.service_id)
     end
 

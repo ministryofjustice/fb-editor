@@ -1,16 +1,10 @@
 <div class="flow-view-buttons fb-preview-button">
 
-  <% if @show_button == 'move' %>
-    <%= link_to 'Undo move',
+  <% if @undo_redo_button.present?%>
+    <%= link_to @undo_redo_button,
     api_service_previous_version_path(service.service_id),
     class: 'govuk-button fb-govuk-button' %>
   <% end %>
-  <% if @show_button == 'next_page' %>
-    <%= link_to 'Undo change next page',
-    api_service_previous_version_path(service.service_id),
-    class: 'govuk-button fb-govuk-button' %>
-  <% end %>
-
   <%= link_to t('actions.preview_form'),
       preview_service_path(service.service_id),
       class: 'govuk-button fb-govuk-button',
