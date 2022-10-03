@@ -6,8 +6,9 @@ const PublishController = require('./controller_publish');
 const BranchesController = require('./controller_branches');
 const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
+const CollectionEmailController = require('./controller_collection_email');
 const {
-  snakeToPascalCase, 
+  snakeToPascalCase,
 } = require('./utilities');
 
 // Determine the controller we need to use
@@ -71,6 +72,11 @@ switch(controllerAndAction()) {
   case "FromAddressController#index":
   case "FromAddressController#create":
       Controller = FromAddressController;
+  break;
+
+  case "EmailController#index":
+  case "EmailController#create":
+      Controller = CollectionEmailController;
   break;
 
   default:
