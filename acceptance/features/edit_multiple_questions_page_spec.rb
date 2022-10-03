@@ -116,6 +116,15 @@ feature 'Edit multiple questions page' do
     end
   end
 
+  def when_I_save_my_changes
+    # click outside of fields that will make save button re-enable
+    editor.service_name.click
+    expect(editor.save_page_button['aria-disabled']).to eq('false')
+    editor.save_page_button.click
+    expect(editor.save_page_button['aria-disabled']).to eq('true')
+  end
+
+
   def then_I_add_a_content_component(content:)
     and_I_add_a_component
     and_I_add_a_content_area
