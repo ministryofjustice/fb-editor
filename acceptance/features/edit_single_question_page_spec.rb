@@ -129,6 +129,14 @@ feature 'Edit single question page' do
     end
   end
 
+  def when_I_save_my_changes
+    # click outside of fields that will make save button re-enable
+    editor.service_name.click
+    expect(editor.save_page_button['aria-disabled']).to eq('false')
+    editor.save_page_button.click
+    expect(editor.save_page_button['aria-disabled']).to eq('true')
+  end
+
   def when_I_update_the_question_name
     and_I_edit_the_question
     then_I_should_be_warned_when_leaving_page
@@ -191,6 +199,6 @@ feature 'Edit single question page' do
     expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
 
-  
+
 end
 
