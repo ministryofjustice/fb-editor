@@ -169,9 +169,16 @@ feature 'Publishing' do
     editor.find(:css, '#email_settings_send_by_email_dev', visible: false).set(value)
   end
 
-  def and_I_set_the_email_field
+  # This is terrible
+  # For some reason the summary click opens the section, but then it is auto closed
+  # again therefore the test is unable to find the field.
+  # In those instance rescue and try one more time
+  def and_I_set_the_email_field(value = 'paul@atreides.com')
     editor.find(:css, '#configure-dev').click
-    editor.find(:css, '#service_email_output_dev').set('paul@atreides.com')
+    editor.find(:css, '#service_email_output_dev').set(value)
+  rescue Capybara::ElementNotFound
+    editor.find(:css, '#configure-dev').click
+    editor.find(:css, '#service_email_output_dev').set(value)
   end
 
   def and_I_save_my_email_settings
@@ -275,8 +282,7 @@ feature 'Publishing' do
     # will have been deleted by the Metadata API as it cleans up after acceptance
     # test runs.
     and_I_click_the_submission_settings_link
-    editor.find(:css, '#configure-dev').click
-    editor.find(:css, '#service_email_output_dev').set('')
+    and_I_set_the_email_field('')
     and_I_save_my_email_settings
   end
 
