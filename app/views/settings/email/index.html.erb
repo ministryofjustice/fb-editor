@@ -4,7 +4,7 @@
 
   <%= form_for @email_settings_dev,
     url: settings_email_index_path(service.service_id),
-    html: { id: 'email-submission-dev' } do |f| %>
+    html: { id: 'email-submission-dev', class: 'collect-info-environment-config' } do |f| %>
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -32,7 +32,7 @@
 
   <%= form_for @email_settings_production,
     url: settings_email_index_path(service.service_id),
-    html: { id: 'email-submission-production' } do |f| %>
+    html: { id: 'email-submission-production', class: 'collect-info-environment-config' } do |f| %>
     <div class="govuk-form-group">
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
