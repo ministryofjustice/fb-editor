@@ -19,7 +19,7 @@
     "resolve-url-loader": "^5.0.0",
     "sanitize-html": "^2.7.2",
     "showdown": "^2.1.0",
-    "sinon": "^14.0.0",
+    "sinon": "^14.0.1",
     "tabbable": "^6.0.0"
   },
   "version": "0.1.0",
