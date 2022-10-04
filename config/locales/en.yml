@@ -344,7 +344,7 @@ en:
         heading: 'Your form has issue(s) preventing submissions from being sent'
       production:
         icon_fallback: 'Error'
-        heading: 'Your form has issue(s) preventing submission from being sent, Publishing to live won’t be possible until they are resolved.'
+        heading: 'Your form has issue(s) preventing submissions from being sent, Publishing to live won’t be possible until they are resolved'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.

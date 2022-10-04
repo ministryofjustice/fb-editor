@@ -31,9 +31,9 @@ class PublishingPagePresenter
   end
 
   def publish_button_disabled?
-    return true if no_service_output?
+    return if deployment_environment == 'dev'
 
-    return unless deployment_environment == 'production'
+    return true if no_service_output?
 
     submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end
