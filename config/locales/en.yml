@@ -303,9 +303,6 @@ en:
         configure_pdf_label: PDF attachment
         save_dev: Save Test settings
         save_production: Save Live settings
-      from_address:
-        label: "‘From’ address"
-        hint: Emails sent by your form will come from this address
   warnings:
     from_address:
       send_by_email:
@@ -344,7 +341,7 @@ en:
         heading: 'Your form has issue(s) preventing submissions from being sent'
       production:
         icon_fallback: 'Error'
-        heading: 'Your form has issue(s) preventing submissions from being sent, Publishing to live won’t be possible until they are resolved'
+        heading: 'Your form has issue(s) preventing submissions from being sent. Publishing to Live won’t be possible until they are resolved'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.

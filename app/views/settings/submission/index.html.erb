@@ -5,8 +5,8 @@
     <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
       <% if ENV['FROM_ADDRESS'] == 'enabled' %>
         <div>
-          <dt><%= link_to t('settings.submission.from_address.label'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint"><%= t('settings.form_information.description') %></dd>
+          <dt><%= link_to t('settings.from_address.heading'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
+          <dd class="govuk-hint"><%= t('settings.from_address.lede') %></dd>
         </div>
       <% end %>
       <div>
