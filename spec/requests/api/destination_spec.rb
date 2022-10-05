@@ -88,7 +88,7 @@ RSpec.describe 'Destinations spec', type: :request do
 
     it 'set the session key \'undo\' to \'next_page\'' do
       request
-      expect(session[:undo]).to eq(I18n.t('actions.undo_redo.undo_change_next_page'))
+      expect(session[:undo][:text]).to eq(I18n.t('actions.undo_redo.undo_change_next_page'))
     end
   end
 end

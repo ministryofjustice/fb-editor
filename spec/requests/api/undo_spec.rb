@@ -1,6 +1,7 @@
 RSpec.describe 'Undo spec', type: :request do
   describe 'GET /api/services/:service_id/versions/previous' do
     let(:service_id) { SecureRandom.uuid }
+    let(:action) { 'undo' }
     let(:url) { "/api/services/#{service.service_id}/versions/previous" }
     let(:request) { get url }
     let(:expected_body) do

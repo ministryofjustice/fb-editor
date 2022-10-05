@@ -251,7 +251,7 @@ RSpec.describe 'Move spec', type: :request do
     context 'undo' do
       it 'set the session key \'undo\' to \'undo move\'' do
         request
-        expect(session[:undo]).to  eq(I18n.t('actions.undo_redo.undo_move'))
+        expect(session[:undo][:text]).to eq(I18n.t('actions.undo_redo.undo_move'))
       end
     end
 

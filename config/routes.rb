@@ -95,8 +95,7 @@ Rails.application.routes.draw do
 
       post 'settings/from_address/resend', to: 'from_address#resend_validation'
 
-      get '/versions/previous', to: 'undo#previous', as:
-      :previous_version
+      get '/versions/previous/:action',  to: 'undo#', as: :previous_version
     end
   end
 
