@@ -2,59 +2,38 @@
   <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
   <p><%= t('settings.submission.email.help') %></p>
 
-  <%= form_for @email_settings_dev,
-    url: settings_email_index_path(service.service_id),
-    html: { id: 'email-submission-dev', class: 'collect-info-environment-config' } do |f| %>
-    <div class="govuk-form-group">
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h2 class="govuk-fieldset__heading"><%= t('publish.dev.heading') %></h2>
-        </legend>
-        <div class="govuk-hint"><%= t('publish.dev.hint') %></div>
-        <div class="govuk-checkboxes">
-          <div class="govuk-checkboxes__item">
-            <%= f.check_box :send_by_email_dev, class: 'govuk-checkboxes__input',
-              checked: f.object.send_by_email_checked? %>
-            <%= f.label :send_by_email_dev,
-              f.object.class.human_attribute_name(:send_by_email_dev),
-              class: 'govuk-label govuk-checkboxes__label' %>
-          </div>
+
+    <% if @email_settings_dev.errors.present? %>
+      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+          <%= t('activemodel.errors.summary_title') %>
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <% @email_settings_dev.errors.each do |error|  %>
+              <li><a href="#<%= error.attribute %>_dev"><%= error.message %></a></li>
+            <% end %>
+          </ul>
         </div>
-      </fieldset>
-    </div>
+      </div>
+    <% end %>
 
-    <%= render 'form', f: f, deployment_environment: 'dev' %>
-
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t('settings.submission.email.save_dev') %>
-    </button>
-  <% end %>
-
-  <%= form_for @email_settings_production,
-    url: settings_email_index_path(service.service_id),
-    html: { id: 'email-submission-production', class: 'collect-info-environment-config' } do |f| %>
-    <div class="govuk-form-group">
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-          <h2 class="govuk-fieldset__heading"><%= t('publish.production.heading') %></h2>
-        </legend>
-        <div class="govuk-hint"><%= t('publish.production.hint') %></div>
-        <div class="govuk-checkboxes">
-          <div class="govuk-checkboxes__item">
-            <%= f.check_box :send_by_email_production, class: 'govuk-checkboxes__input',
-              checked: f.object.send_by_email_checked? %>
-            <%= f.label :send_by_email_production,
-              f.object.class.human_attribute_name(:send_by_email_production),
-              class: 'govuk-label govuk-checkboxes__label' %>
-          </div>
+    <% if @email_settings_production.errors.present? %>
+      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+          <%= t('activemodel.errors.summary_title') %>
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <% @email_settings_production.errors.each do |error|  %>
+              <li><a href="#<%= error.attribute %>_production"><%= error.message %></a></li>
+            <% end %>
+          </ul>
         </div>
-      </fieldset>
-    </div>
+      </div>
+    <% end %>
 
-    <%= render 'form', f: f, deployment_environment: 'production' %>
+    <%= render 'form', object: @email_settings_dev, deployment_environment: 'dev' %>
+    <%= render 'form', object: @email_settings_production, deployment_environment: 'production' %>
 
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t('settings.submission.email.save_production') %>
-    </button>
-  <% end %>
 <% end %>
