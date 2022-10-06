@@ -1,0 +1,28 @@
+<%= f.govuk_fieldset(
+  legend: { text: f.object.class.human_attribute_name(:pdf_fieldset) },
+  aria: { describedby: "pdf_#{deployment_environment}_hint"},
+  class: 'govuk-!-margin-top-6') do %>
+
+  <div class="govuk-hint govuk-!-margin-bottom-0"  id="pdf_<%=deployment_environment%>_hint">
+    <%= f.object.class.human_attribute_name :pdf_hint %>
+  </div>
+  <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+    <%= link_to f.object.class.human_attribute_name(:pdf_sample), asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' %>
+  </p>
+
+  <%= f.govuk_text_field :service_email_pdf_heading,
+    label: {
+      text: f.object.class.human_attribute_name(:service_email_pdf_heading),
+      for: "service_email_pdf_heading_#{deployment_environment}"
+    },
+    width: 'two-thirds',
+    id: "service_email_pdf_heading_#{deployment_environment}" %>
+
+  <%= f.govuk_text_field :service_email_pdf_subheading,
+    label: {
+      text: f.object.class.human_attribute_name(:service_email_pdf_subheading),
+      for: "service_email_pdf_subheading_#{deployment_environment}"
+    },
+    width: 'two-thirds',
+    id: "service_email_pdf_subheading_#{deployment_environment}" %>
+<% end %>

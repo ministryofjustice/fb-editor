@@ -422,8 +422,8 @@ en:
         service_email_from: 'From:'
         service_email_subject: Email subject
         service_email_body: Email text
-        service_email_pdf_heading: Heading
-        service_email_pdf_subheading: Subheading
+        service_email_pdf_heading: PDF heading
+        service_email_pdf_subheading: PDF subheading (optional)
         email_fieldset: Email
         pdf_fieldset: PDF attachment
         service_email_body_hint: The email text that will be sent
