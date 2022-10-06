@@ -7,8 +7,8 @@
 
     <%= f.govuk_check_boxes_fieldset :"send_by_email_#{deployment_environment}",
       multiple: false,
-      legend: { text: t('publish.test.heading'), size: 'l'} do %>
-      <div class="govuk-hint" id="send_by_email_#{deployment_environment}_hint"><%= t('publish.test.hint') %></div>
+      legend: { text: t("publish.#{deployment_environment}.heading"), size: 'l'} do %>
+      <div class="govuk-hint" id="send_by_email_#{deployment_environment}_hint"><%= t("publish.#{deployment_environment}.description") %></div>
       <%= f.govuk_check_box :"send_by_email_#{deployment_environment}", 1, 0,
         multiple: false,
         link_errors: true,
@@ -17,7 +17,7 @@
       %>
     <% end %>
 
-    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_label").html_safe) do %>
+    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_details_summary").html_safe) do %>
       <%= render "email_fieldset", f: f, deployment_environment: deployment_environment %>
       <%= render "pdf_fieldset",   f: f, deployment_environment: deployment_environment %>
       <%= render "csv_fieldset",   f: f, deployment_environment: deployment_environment %>

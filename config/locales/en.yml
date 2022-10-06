@@ -301,8 +301,12 @@ en:
         label: 'Send data by email'
         help: ''
         configure_pdf_label: PDF attachment
-        save_dev: Save Test settings
-        save_production: Save Live settings
+        dev:
+          config_details_summary: Configure <span class="sr-only">test settings</span>
+          save_button: Save Test settings
+        production:
+          config_details_summary: Configure <span class="sr-only">live settings</span>
+          save_button: Save Live settings
   warnings:
     from_address:
       send_by_email:
@@ -422,8 +426,8 @@ en:
         service_email_from: 'From:'
         service_email_subject: Email subject
         service_email_body: Email text
-        service_email_pdf_heading: PDF heading
-        service_email_pdf_subheading: PDF subheading (optional)
+        service_email_pdf_heading: Heading
+        service_email_pdf_subheading: Subheading
         email_fieldset: Email
         pdf_fieldset: PDF attachment
         service_email_body_hint: The email text that will be sent
