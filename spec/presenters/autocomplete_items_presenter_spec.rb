@@ -1,7 +1,7 @@
 RSpec.describe AutocompleteItemsPresenter do
   subject(:autocomplete_items_presenter) { described_class.new(service, autocomplete_items) }
   let(:autocomplete_warning) do
-    I18n.t('publish.warning.autocomplete_items')
+    I18n.t('publish.autocomplete_items.dev.message')
   end
   let(:page) { service.find_page_by_url('countries') }
   let(:component_uuid) { page.components.first.uuid }

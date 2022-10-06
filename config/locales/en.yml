@@ -204,9 +204,6 @@ en:
     flow:
       heading: 'Pages flow'
       detached: 'Unconnected pages'
-      delete_warning_both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
-      delete_warning_cya_page: 'You won’t receive any user data without a check answers page'
-      delete_warning_confirmation_page: 'You won’t receive any user data without a confirmation page'
       reconnect_hint: 'How do I reconnect these?'
     name: 'Pages'
     create: 'Add page'
@@ -282,10 +279,6 @@ en:
     from_address:
       heading: "‘From’ address"
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address
-      messages:
-        default: You need to change the default no-reply-moj-forms address before your form can go live
-        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
-        verified: This email address has been validated.
       resend_link_text: Resend validation link
       link_resent_success: Link resent - now check your email
     form_analytics:
@@ -308,34 +301,66 @@ en:
         label: 'Send data by email'
         help: ''
         configure_pdf_label: PDF attachment
-        save_test: Save Test settings
-        save_live: Save Live settings
-      from_address:
-        label: "‘From’ address"
-        hint: Emails sent by your form will come from this address
+        save_dev: Save Test settings
+        save_production: Save Live settings
+  warnings:
+    from_address:
+      send_by_email:
+        verified: 'Your from address has been validated'
+        pending: 'You need to validate your from address'
+        default: 'You need to set a %{href}'
+        link: ‘from’ address
+      settings:
+        default: You need to change the default no-reply-moj-forms address before your form can go live
+        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
+        verified: This email address has been validated.
+      publishing:
+        link: ‘from’ address
+        dev:
+          pending: 'You have not validated your %{href} for emails'
+          default: 'You have not set a %{href} for emails'
+        production:
+          pending: 'You need to validate your %{href} for emails'
+          default: 'You need to set a %{href} for emails'
+    submission_pages:
+      dev:
+        both_pages: 'Your form has no check answers page or confirmation page'
+        cya_page: 'Your form has no check answers page'
+        confirmation_page: 'Your form has no confirmation page'
+      production:
+        both_pages: 'You need to add a check answers page and a confirmation page'
+        cya_page: 'You need to add a check answers page'
+        confirmation_page: 'You need to add a confirmation page'
+    pages_flow:
+      both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
+      cya_page: 'You won’t receive any user data without a check answers page'
+      confirmation_page: 'You won’t receive any user data without a confirmation page'
+    publish:
+      dev:
+        icon_fallback: 'Warning'
+        heading: 'Your form has issue(s) preventing submissions from being sent'
+      production:
+        icon_fallback: 'Error'
+        heading: 'Your form has issue(s) preventing submissions from being sent. Publishing to Live won’t be possible until they are resolved'
+    email_settings:
+      default: You need to set and validate a team email address.
+      pending: You need to validate this email address.
   publish:
     name: 'Publishing'
     heading: 'Publishing'
-    warning:
-      heading: 'Warning'
-      confirmation: 'Your form has no confirmation page - you will not receive any responses.'
-      cya: 'Your form has no check answers page - you will not receive any responses.'
-      both_pages: 'Your form has no check answers page or confirmation page - you will not receive any responses.'
-      autocomplete_items: '"%{title}" has no autocomplete options and cannot be answered.'
-    error:
-      autocomplete_items: 'You need to upload some autocomplete options for "%{title}"'
+    autocomplete_items:
+      dev:
+        icon_fallback: 'Warning'
+        message: '“%{title}” has no autocomplete options and cannot be answered.'
+      production:
+        icon_fallback: 'Error'
+        message: 'You need to upload some autocomplete options for “%{title}”'
     environment:
-      test: Test
-      live: Live
+      dev: Test
+      production: Live
     service_output:
-      warning: Warning
-      message: "Your %{environment} site %{href} are incomplete - you will not receive any emails."
-      link: submission settings
-    from_address:
-      messages:
-        verified: 'Your from address has been validated'
-        pending: 'You need to validate your from address'
-        default: 'You need to set a from address'
+      icon_fallback: Warning
+      message: "No submission method is enabled, you will not receive any response"
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view
@@ -343,14 +368,14 @@ en:
       alert_heading: Your form is being published
       alert_text: 'It may take up to 15 minutes for your link to work.<br />Future updates will happen straight away.'
       alert_button: I understand
-    test:
+    dev:
       button: Publish to Test
       heading: 'Test site'
       description: 'Where you can check your form works and get feedback.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
-    live:
+    production:
       button: Publish to Live
       heading: 'Live site'
       description: 'Where the public can access and use your form.'
@@ -409,8 +434,6 @@ en:
         csv_sample: See sample CSV
         csv_checkbox: Send a separate email with answers in a CSV
         from_address:
-          default: You need to set and validate a team email address.
-          pending: You need to validate this email address.
           pending_link: Get validation link
           link: Change ’from’ address
       page_creation:
@@ -479,9 +502,7 @@ en:
           empty: The selected file must contain some data
           format: "%{message}"
           virus_found: "'%{attribute}' contains a virus - choose a different file"
-          scan_error: "An error has occurred, try again in a few minutes"
           too_big: "The selected file must be smaller than 1MB"
-          empty_value_cell: "CSV file has an empty value cell"
           scan_error:  There was a problem with the file upload - try again later
           empty_value_cell: "The selected file cannot contain blank fields"
           invalid_headings: "The selected file's header fields must be labelled correctly"

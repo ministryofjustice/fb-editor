@@ -8,9 +8,9 @@ module CommonSteps
   ].freeze
   ERROR_MESSAGE = I18n.t('activemodel.errors.summary_title').freeze
   DELETE_WARNING = [
-    I18n.t('pages.flow.delete_warning_cya_page'),
-    I18n.t('pages.flow.delete_warning_confirmation_page'),
-    I18n.t('pages.flow.delete_warning_both_pages')
+    I18n.t('warnings.pages_flow.cya_page'),
+    I18n.t('warnings.pages_flow.confirmation_page'),
+    I18n.t('warnings.pages_flow.both_pages')
   ].freeze
 
   def given_I_am_logged_in

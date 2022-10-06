@@ -1,0 +1,44 @@
+<section class="publish-environment publish-environment--<%=environment%>">
+  <h2 class="govuk-heading-l"><%= t("publish.#{environment}.heading") %></h2>
+  <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+  <% if published %>
+    <p><%= PublishServicePresenter.hostname_for(deployment_environment: environment, view: self) %></p>
+  <% end %>
+
+  <% if presenter.no_service_output? %>
+    <%= govuk_warning_text(
+        text: t('publish.service_output.message'),
+        icon_fallback_text: t('publish.service_output.icon_fallback'),
+      ) %>
+  <% else %>
+    <%= render 'submission_warning', submission_presenter: presenter.submission_warnings, environment: environment %>
+    <%= render 'autocomplete_warning', autocomplete_warning: presenter.autocomplete_warning, environment: environment %>
+  <% end %>
+
+  <button class="govuk-button fb-govuk-button"
+      data-module="govuk-button"
+      type="button"
+      data-fb-action="publish"
+      aria-disabled="<%= presenter.publish_button_disabled? %>"
+      hidden >
+      <%= t("publish.#{environment}.button") %>
+  </button>
+
+    <%= form_for(presenter.publish_creation,
+        url: publish_index_path(service.service_id),
+        html: { id: "publish-form-#{environment}", class: 'publish-form', data: { first_publish: false } }) do |f| %>
+
+      <%= render 'form', f: f, deployment_environment: environment %>
+
+      <div class="govuk-button-group govuk-!-margin-bottom-0">
+        <button class="govuk-button fb-govuk-button" type="submit">
+          <%= t("publish.#{environment}.button") %>
+        </button>
+
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
+          <%= t('actions.cancel') %>
+        </button>
+      </div>
+    <% end %>
+</section>

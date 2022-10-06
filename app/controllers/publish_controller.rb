@@ -1,10 +1,9 @@
 class PublishController < FormController
-  before_action :assign_form_objects, :assign_autocomplete_warning, :assign_from_address_presenter
+  before_action :assign_form_objects
 
   def index
     @published_dev = published?(service.service_id, 'dev')
     @published_production = published?(service.service_id, 'production')
-    @publish_warning = PublishPresenter.new(service)
   end
 
   def create
@@ -24,7 +23,7 @@ class PublishController < FormController
   private
 
   def service_autocomplete_items
-    MetadataApiClient::Items.all(service_id: service.service_id)
+    @service_autocomplete_items ||= MetadataApiClient::Items.all(service_id: service.service_id)
   end
 
   def publish_service_params
@@ -41,22 +40,16 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_service_creation_dev = PublishServiceCreation.new(
-      service_id: service.service_id,
-      deployment_environment: 'dev'
+    @publish_page_presenter_dev = PublishingPagePresenter.new(
+      service: service,
+      deployment_environment: 'dev',
+      service_autocomplete_items: service_autocomplete_items
     )
-    @publish_service_creation_production = PublishServiceCreation.new(
-      service_id: service.service_id,
-      deployment_environment: 'production'
+    @publish_page_presenter_production = PublishingPagePresenter.new(
+      service: service,
+      deployment_environment: 'production',
+      service_autocomplete_items: service_autocomplete_items
     )
-  end
-
-  def assign_autocomplete_warning
-    @autocomplete_warning = AutocompleteItemsPresenter.new(service, service_autocomplete_items)
-  end
-
-  def assign_from_address_presenter
-    @from_address_presenter = FromAddressPresenter.new(from_address, :publish)
   end
 
   def from_address
@@ -71,11 +64,10 @@ class PublishController < FormController
   end
 
   def update_form_objects
-    @publish_warning = PublishPresenter.new(service)
     if @publish_service_creation.deployment_environment == 'dev'
-      @publish_service_creation_dev = @publish_service_creation
+      @publish_page_presenter_dev.publish_creation = @publish_service_creation
     else
-      @publish_service_creation_production = @publish_service_creation
+      @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
   end
 end

@@ -146,7 +146,7 @@ class PublishServiceCreation
   end
 
   def send_by_email
-    SubmissionSetting.find_by(
+    @send_by_email ||= SubmissionSetting.find_by(
       service_id: service_id,
       deployment_environment: deployment_environment
     ).try(:send_email?)

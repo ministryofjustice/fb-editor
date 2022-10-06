@@ -13,18 +13,20 @@
 
   <% if ENV['FROM_ADDRESS'] == 'enabled' %>
     <div class="govuk-form-group">
-      <%= f.object.class.human_attribute_name :service_email_from %>
-      <strong><%= f.object.service_email_from %></strong>
+      <div class="govuk-!-margin-bottom-2">
+        <%= f.object.class.human_attribute_name :service_email_from %>
+        <strong><%= f.object.service_email_from %></strong>
+      </div>
 
       <% unless @from_address.verified? %>
-        <%= govuk_warning_text(text: @from_address_presenter.message[:text]) %>
+        <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
       <% end %>
 
       <% if @from_address.pending? %>
-        <%= link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
-          settings_from_address_index_path(service.service_id))%>
+        <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
+                          settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
       <% else %>
-        <%= link_to(t('activemodel.attributes.email_settings.from_address.link'),
+        <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
           settings_from_address_index_path(service.service_id))%>
       <% end %>
     </div>
