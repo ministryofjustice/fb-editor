@@ -6,7 +6,8 @@ metadata:
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
   schedule: "*/2 * * * *"
-  successfulJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
