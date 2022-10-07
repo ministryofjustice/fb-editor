@@ -9,8 +9,8 @@ class EmailSettings
                 :service_email_body,
                 :service_email_pdf_heading,
                 :service_email_pdf_subheading,
-                :service_csv_output,
-                :send_by_email_dev,
+                :service_csv_output
+  attr_reader   :send_by_email_dev,
                 :send_by_email_production
 
   validates :deployment_environment, inclusion: {
