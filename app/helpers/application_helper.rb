@@ -75,10 +75,10 @@ module ApplicationHelper
     end
   end
 
-  def moj_forms_team?
+  def moj_forms_admin?
     return if current_user.blank?
 
-    Rails.application.config.moj_forms_team.include?(current_user.email)
+    Rails.application.config.moj_forms_admin.include?(current_user.email)
   end
 
   def moj_forms_dev?

@@ -30,7 +30,7 @@ RSpec.describe 'Authorisation spec', type: :request do
   shared_examples 'an authorisation action' do
     context 'when admin user' do
       before do
-        allow_any_instance_of(PermissionsController).to receive(:moj_forms_team?).and_return(true)
+        allow_any_instance_of(PermissionsController).to receive(:moj_forms_admin?).and_return(true)
       end
 
       it 'allows access' do

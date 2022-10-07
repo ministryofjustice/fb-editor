@@ -1,6 +1,6 @@
 module AuthorisationHelper
   def authorised_access
-    return if moj_forms_team? || moj_forms_dev?
+    return if moj_forms_admin? || moj_forms_dev?
 
     unless current_user.id == service.created_by
       redirect_to redirect_unauthorised_path

@@ -20,7 +20,7 @@
           <li>
             <%= link_to t('.user_guide'), t('.user_guide_url'), target: :_blank %>
           </li>
-          <% if moj_forms_dev? || moj_forms_team? %>
+          <% if moj_forms_dev? || moj_forms_admin? %>
             <li>
               <%= link_to t('.admin'), admin_root_path %>
             </li>
