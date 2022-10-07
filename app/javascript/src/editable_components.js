@@ -7,10 +7,6 @@
  * Requires: jQuery
  * Documentation:
  *
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 

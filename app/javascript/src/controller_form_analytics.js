@@ -11,9 +11,6 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 

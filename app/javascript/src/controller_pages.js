@@ -10,13 +10,10 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
-const  { 
+const  {
   updateHiddenInputOnForm,
   stringInject,
 }  = require('./utilities');
@@ -90,7 +87,7 @@ PagesController.edit = function() {
   this.$editable = $(".fb-editable");
   this.submitHandler = submitHandler;
   this.dialogConfiguration = createDialogConfiguration.call(this);
-   
+
 
   workaroundForDefaultText(view);
   enhanceContent(view);
@@ -236,7 +233,7 @@ function addQuestionMenuListeners(view) {
   view.$document.on("QuestionMenuSelectionRemove", function(event, question) {
     var questionUuid = question.data._uuid;
     var apiUrl = question.menu.selectedItem.data('apiPath').replace('question_uuid', questionUuid);
-    
+
     new DialogApiRequest(apiUrl, {
       activator: question.menu.selectedItem,
       closeOnClickSelector: ".govuk-button",
@@ -266,7 +263,7 @@ function addQuestionMenuListeners(view) {
     var regex = new RegExp("(input.*name=\"required\".*value=\"" + required + "\")", "mig");
     html = html.replace(regex, "$1 checked=\"true\"");
     view.dialogConfiguration.onConfirm = (dialog) => { question.required = dialog.content.content };
-    view.dialogConfiguration.open({ 
+    view.dialogConfiguration.open({
         content: html
       });
   });
@@ -274,12 +271,12 @@ function addQuestionMenuListeners(view) {
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
     const {question, validation} = details;
     var apiUrl = question.menu.selectedItem.data('apiPath');
-    
+
     new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
       remote: true,
       autoOpen: true,
-      /* 
+      /*
        * Function runs after the modal content has been returned by the api
        * as it is possible to open and edit the validations multiple times
        * before saving.  We need to load the current validation state from the
@@ -316,38 +313,38 @@ function addQuestionMenuListeners(view) {
             // Check the appropriate radio in the modal based on the validation type
             var currentValue = question.data.validation['min_length'] || question.data.validation['min_word'];
             if( question.data.validation.hasOwnProperty('min_length')) {
-              $charsRadio.prop('checked', true); 
+              $charsRadio.prop('checked', true);
             }
             if( question.data.validation.hasOwnProperty('min_word')) {
-              $wordsRadio.prop('checked', true); 
+              $wordsRadio.prop('checked', true);
             }
             break;
           case 'max_string_length':
             // Check the appropriate radio in the modal based on the validation type
             var currentValue = question.data.validation['max_length'] || question.data.validation['max_word'];
             if( question.data.validation.hasOwnProperty('max_length')) {
-              $charsRadio.prop('checked', true); 
+              $charsRadio.prop('checked', true);
             }
             if( question.data.validation.hasOwnProperty('max_word')) {
-              $wordsRadio.prop('checked', true); 
+              $wordsRadio.prop('checked', true);
             }
             break;
           default:
             var currentValue = question.data.validation[validation];
             break;
         }
-        
+
         // If its a standard validationl just set the value filed to the current value
         if($valueField) {
           $valueField.val( currentValue ?? '');
         }
-        
+
         // Presence of current value indicates whether the validation is enabled/disabled
         if(currentValue) {
           $statusField.prop('checked', true);
         } else {
           $statusField.prop('checked', false);
-        } 
+        }
       },
 
       onReady: function(dialog) {
@@ -418,11 +415,11 @@ function addEditableComponentItemMenuListeners(view) {
     var path = selectedItem.data('api-path');
 
     var questionUuid =  collectionItem.component.data._uuid;
-    var optionUuid =  collectionItem.data._uuid; 
+    var optionUuid =  collectionItem.data._uuid;
 
-    var url = stringInject(path, { 
-      'question_uuid': questionUuid, 
-      'option_uuid': optionUuid ?? 'new', 
+    var url = stringInject(path, {
+      'question_uuid': questionUuid,
+      'option_uuid': optionUuid ?? 'new',
     });
 
     if( !optionUuid ) {
@@ -446,7 +443,7 @@ function addEditableComponentItemMenuListeners(view) {
         dialogContent = view.text.dialogs.message_delete_radio_min;
       } else if (collectionItem.type == 'checkboxes') {
         dialogContent = view.text.dialogs.message_delete_checkbox_min;
-      } 
+      }
       dialog.open({
         heading: view.text.dialogs.heading_can_not_delete_option,
         content: dialogContent,

@@ -10,13 +10,10 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
-const { mergeObjects } = require('./utilities'); 
+const { mergeObjects } = require('./utilities');
 const editableComponent = require('./editable_components').editableComponent;
 const ContentMenu = require('./components/menus/content_menu');
 

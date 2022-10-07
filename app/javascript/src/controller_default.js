@@ -11,9 +11,6 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -82,7 +79,7 @@ class DefaultController {
 
 
 /* Create standard Dialog component with single 'ok' type button.
- **/ 
+ **/
 function createDialog() {
   var $template = $("[data-component-template=Dialog]");
   var $node = $($template.text());

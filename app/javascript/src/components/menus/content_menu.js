@@ -9,9 +9,6 @@
  *     - jQueryUI
  *       https://api.jqueryui.com/menu
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 const {
   safelyActivateFunction,
@@ -38,7 +35,7 @@ class ContentMenu extends ActivatedMenu {
 
     this.container.$node.addClass("ContentMenu");
     this.component = component;
-  }  
+  }
 
   selection(event, item) {
     var action = item.data("action");
@@ -77,4 +74,4 @@ class ContentMenu extends ActivatedMenu {
   }
 }
 
-module.exports = ContentMenu; 
+module.exports = ContentMenu;

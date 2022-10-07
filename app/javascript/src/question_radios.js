@@ -10,9 +10,6 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -75,7 +72,7 @@ class RadiosQuestion extends Question {
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
     $node.find(".EditableComponentCollectionItem").first().parent().attr("aria-label", config.text.aria.answers);
-    
+
 
     this._preservedItemCount = 2;
   }
