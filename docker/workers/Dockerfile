@@ -30,8 +30,9 @@ COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 RUN gem install bundler
 
 RUN bundle config set no-cache 'true'
-ARG BUNDLE_ARGS='--jobs 2 --without test development'
-RUN bundle install ${BUNDLE_ARGS}
+RUN bundle config set without 'test development'
+RUN bundle config set jobs '2'
+RUN bundle install
 
 COPY --chown=appuser:appgroup . .
 
