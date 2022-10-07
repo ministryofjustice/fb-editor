@@ -5,14 +5,13 @@ RSpec.describe FromAddressCreation, type: :model do
   let(:params) do
     {
       from_address: from_address,
-      from_address_params: from_address_params,
       email_service: email_service
     }
   end
 
   let(:email) { FromAddress::DEFAULT_EMAIL_FROM }
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.find_or_initialize_by(service_id: service_id) }
+  let(:from_address) { FromAddress.find_or_initialize_by(from_address_params.merge(service_id: service_id)) }
   let(:from_address_params) { { email: email } }
   let(:email_service) { double }
 
@@ -62,7 +61,7 @@ RSpec.describe FromAddressCreation, type: :model do
 
     context 'if it fails to save' do
       before do
-        allow(from_address).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
+        allow(from_address).to receive(:save!).and_raise(ActiveRecord::RecordInvalid)
       end
 
       it 'returns false' do
@@ -90,22 +89,6 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
-    context 'when sending enabled is false but from address record is verified' do
-      let(:email_identity) { double(sending_enabled: false) }
-      let(:email) { 'artax@justice.gov.uk' }
-
-      before do
-        create(:from_address, :verified, service_id: service_id, email: email)
-        allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
-        allow(email_service).to receive(:get_email_identity).and_return(double)
-        from_address_creation.save
-      end
-
-      it 'sets the from address status to default' do
-        expect(from_address.reload.status).to eq('default')
-      end
-    end
-
     context 'when the email is blank' do
       let(:email) { '' }
       it 'saves the default email address to the DB' do
@@ -125,6 +108,14 @@ RSpec.describe FromAddressCreation, type: :model do
 
       it 'set correct error message' do
         expect(from_address.errors.full_messages.first).to eq(I18n.t('activemodel.errors.models.from_address.email_service_error'))
+      end
+    end
+
+    context 'when email is invalid' do
+      let(:email) { 'bob' }
+
+      it 'does not make AWS call' do
+        expect(from_address_creation).to_not receive(:verify_email)
       end
     end
   end
