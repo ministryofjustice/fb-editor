@@ -15,9 +15,9 @@
     link_errors: true,
     label: {
       text: f.object.class.human_attribute_name(:csv_checkbox),
-      for:  "service_csv_output_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_csv_output, deployment_environment)
     },
     checked: f.object.service_csv_output_checked?,
-    id: "service_csv_output_#{deployment_environment}"
+    id: email_settings_field_id(f, :service_csv_output, deployment_environment)
   %>
 <% end %>

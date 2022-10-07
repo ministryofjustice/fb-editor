@@ -1,0 +1,19 @@
+module SettingsEmailHelper
+  def email_settings_error_summary(object, deployment_environment)
+    EmailSettingsErrorSummaryPresenter.new(object.errors.messages, deployment_environment)
+  end
+
+  def email_settings_field_id(f, attribute_name, deployment_environment)
+    id_type = f.object.errors.messages[attribute_name].present? 'field-error' : 'field'
+      [
+        f.object,
+        attribute_name,
+        deployment_environment
+        id_type
+      ]
+        .compact
+        .join(delimiter)
+        .parameterize
+        .tr(replace, delimiter)
+  end
+end

@@ -2,10 +2,12 @@
   <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
   <p><%= t('settings.submission.email.help') %></p>
 
-    <%= render 'error_summary', object: @email_settings_dev, deployment_environment: 'dev' %>
-    <%= render 'error_summary', object: @email_settings_production, deployment_environment: 'production' %>
-
+  <% content_for :forms do %>
     <%= render 'form', object: @email_settings_dev, deployment_environment: 'dev' %>
     <%= render 'form', object: @email_settings_production, deployment_environment: 'production' %>
+  <% end %>
+
+  <%= yield :error_summary %>
+  <%= yield :forms %>
 
 <% end %>

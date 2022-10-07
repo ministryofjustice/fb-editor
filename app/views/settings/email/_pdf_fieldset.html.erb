@@ -13,16 +13,16 @@
   <%= f.govuk_text_field :service_email_pdf_heading,
     label: {
       text: f.object.class.human_attribute_name(:service_email_pdf_heading),
-      for: "service_email_pdf_heading_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_email_pdf_heading, deployment_environment)
     },
     width: 'two-thirds',
-    id: "service_email_pdf_heading_#{deployment_environment}" %>
+    id: email_settings_field_id(f, :service_email_pdf_heading, deployment_environment) %>
 
   <%= f.govuk_text_field :service_email_pdf_subheading,
     label: {
       text: f.object.class.human_attribute_name(:service_email_pdf_subheading),
-      for: "service_email_pdf_subheading_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_email_pdf_subheading, deployment_environment)
     },
     width: 'two-thirds',
-    id: "service_email_pdf_subheading_#{deployment_environment}" %>
+    id: email_settings_field_id(f, :service_email_pdf_subheading, deployment_environment) %>
 <% end %>

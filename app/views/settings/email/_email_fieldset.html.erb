@@ -10,7 +10,7 @@
 
       <% if @from_address.pending? %>
         <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
-                          settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
+          settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
       <% else %>
         <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
           settings_from_address_index_path(service.service_id))%>
@@ -21,24 +21,24 @@
   <%= f.govuk_email_field :service_email_output,
     label: {
       text: f.object.class.human_attribute_name(:service_email_output),
-      for:"service_email_output_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_email_output, deployment_environment)
     },
     width: 'two-thirds',
-    id: "service_email_output_#{deployment_environment}" %>
+    id: email_settings_field_id(f, :service_email_output, deployment_environment) %>
 
   <%= f.govuk_text_field :service_email_subject,
     label: {
       text: f.object.class.human_attribute_name(:service_email_subject),
-      for: "service_email_subject_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_email_subject, deployment_environment)
     },
-    id: "service_email_subject_#{deployment_environment}"  %>
+    id: email_settings_field_id(f, :service_email_subject, deployment_environment) %>
 
   <%= f.govuk_text_area :service_email_body,
     label: {
       text: f.object.class.human_attribute_name(:service_email_body),
-      for: "service_email_body_#{deployment_environment}"
+      for: email_settings_field_id(f, :service_email_body, deployment_environment)
     },
     hint: { text: f.object.class.human_attribute_name(:service_email_body_hint) },
-    id:  "service_email_body_#{deployment_environment}",
+    id:  "service-email-body-#{deployment_environment}-field",
     rows: 5 %>
 <% end %>
