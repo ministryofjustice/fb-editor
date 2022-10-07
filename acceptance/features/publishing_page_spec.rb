@@ -181,15 +181,15 @@ feature 'Publishing' do
   end
 
   def and_I_set_send_by_email(value)
-    editor.find(:css, "#email_settings_send_by_email_#{environment}", visible: false).set(value)
+    editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
   end
 
   def and_I_set_the_email_field(value = 'paul@atreides.com')
-    editor.find(:css, "#service_email_output_#{environment}").set(value)
+    editor.find(:css, "#email-settings-service-email-output-#{environment}-field").set(value)
   end
 
   def and_I_save_my_email_settings
-    click_button(I18n.t("settings.submission.email.save_#{environment}"))
+    click_button(I18n.t("settings.submission.email.#{environment}.save_button"))
   end
 
   def then_I_should_see_username_and_password_fields
@@ -261,7 +261,7 @@ feature 'Publishing' do
     # will have been deleted by the Metadata API as it cleans up after acceptance
     # test runs.
     and_I_visit_the_submission_settings_page
-    editor.find(:css, "#configure-#{environment}").click
+    editor.find(:css, "details.configure-#{environment} summary").click
     and_I_set_the_email_field('')
     and_I_set_send_by_email(false)
     and_I_save_my_email_settings

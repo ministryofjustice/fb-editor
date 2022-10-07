@@ -24,7 +24,7 @@
       %>
     <% end %>
 
-    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_details_summary").html_safe) do %>
+    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_details_summary").html_safe, classes: "configure-#{deployment_environment}") do %>
       <%= render "email_fieldset", f: f, deployment_environment: deployment_environment %>
       <%= render "pdf_fieldset",   f: f, deployment_environment: deployment_environment %>
       <%= render "csv_fieldset",   f: f, deployment_environment: deployment_environment %>
