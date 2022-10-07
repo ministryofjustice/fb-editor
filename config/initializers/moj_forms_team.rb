@@ -12,7 +12,7 @@ MOJ_FORMS_DEVS = [
   'hellema.ibrahim@digital.justice.gov.uk'
 ].freeze
 
-MOJ_FORMS_TEAM = [
+MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS + [
   'assma.banaris@digital.justice.gov.uk',
   'fabien.marry@digital.justice.gov.uk',
   'howard.davies@digital.justice.gov.uk'
