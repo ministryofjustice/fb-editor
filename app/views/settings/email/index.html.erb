@@ -2,36 +2,8 @@
   <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
   <p><%= t('settings.submission.email.help') %></p>
 
-
-    <% if @email_settings_dev.errors.present? %>
-      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-        <h2 class="govuk-error-summary__title" id="error-summary-title">
-          <%= t('activemodel.errors.summary_title') %>
-        </h2>
-        <div class="govuk-error-summary__body">
-          <ul class="govuk-list govuk-error-summary__list">
-            <% @email_settings_dev.errors.each do |error|  %>
-              <li><a href="#<%= error.attribute %>_dev"><%= error.message %></a></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    <% end %>
-
-    <% if @email_settings_production.errors.present? %>
-      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-        <h2 class="govuk-error-summary__title" id="error-summary-title">
-          <%= t('activemodel.errors.summary_title') %>
-        </h2>
-        <div class="govuk-error-summary__body">
-          <ul class="govuk-list govuk-error-summary__list">
-            <% @email_settings_production.errors.each do |error|  %>
-              <li><a href="#<%= error.attribute %>_production"><%= error.message %></a></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    <% end %>
+    <%= render 'error_summary', object: @email_settings_dev, deployment_environment: 'dev' %>
+    <%= render 'error_summary', object: @email_settings_production, deployment_environment: 'production' %>
 
     <%= render 'form', object: @email_settings_dev, deployment_environment: 'dev' %>
     <%= render 'form', object: @email_settings_production, deployment_environment: 'production' %>

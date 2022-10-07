@@ -1,6 +1,9 @@
   <%= form_for object,
     url: settings_email_index_path(service.service_id),
-    html: { id: "email-submission-#{deployment_environment}", class: 'collect-info-environment-config' },
+    html: {
+      id: "email-submission-#{deployment_environment}",
+      class: 'collect-info-environment-config govuk-!-margin-top-8'
+    },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
     <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
