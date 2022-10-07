@@ -10,13 +10,10 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO::
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
-const { 
+const {
   mergeObjects,
   filterObject,
 }  = require('./utilities');
@@ -71,29 +68,29 @@ class Question {
     this.menu.setEnabledValidations();
     this.setRequiredFlag();
   }
-  
+
   /*
   * Applies the validation settings to the questions data.validations key
   * @param {Object} config - the settings for the validation to be applied
   *                          expected format: { validationName: value }
-  *                          
-  */ 
+  *
+  */
   set validation(config) {
     let [validationName, _] = Object.entries(config)[0];
     let data = this.data.validation;
-    
+
     // Merge our new validation data with the current data on the question
     data =  mergeObjects(data, config);
-    // Remove keys with empty values 
-    data = filterObject(data, ([_, val]) => val != '' ); 
-  
+    // Remove keys with empty values
+    data = filterObject(data, ([_, val]) => val != '' );
+
     // Ensure we don't have conflicting min_length/word and max_length/word keys
     switch(validationName) {
       case 'min_length':
-        data = filterObject(data, ([key, _]) => key != 'min_word');         
+        data = filterObject(data, ([key, _]) => key != 'min_word');
         break;
       case 'min_word':
-        data = filterObject(data, ([key, _]) => key != 'min_length');  
+        data = filterObject(data, ([key, _]) => key != 'min_length');
         break;
       case 'max_length':
         data = filterObject(data, ([key, _]) => key != 'max_word');
@@ -161,7 +158,7 @@ function createQuestionMenu() {
     $target: question.$heading,
     question: question,
     menu: {
-      position: { 
+      position: {
         my: "left top",
         at: "left top",
       }

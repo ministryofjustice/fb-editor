@@ -12,7 +12,6 @@
  *
  *     - TODO:
  *       /documentation/services/editor/javascript/controller-branches.html
- *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
 

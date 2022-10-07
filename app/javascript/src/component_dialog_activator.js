@@ -4,11 +4,6 @@
  * Description:
  * Creates a button to open an associated dialog component.
  *
- * Documentation:
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -30,7 +25,7 @@ class DialogActivator {
       text: "",
       classes: ""
     }, config);
-    
+
     if(!$node || !($node instanceof jQuery && $node.length)) {
       $node = this.#createActivator(conf.$target, conf.text);
     }

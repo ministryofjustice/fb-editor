@@ -12,9 +12,6 @@
  *     - jQueryUI
  *       https://api.jqueryui.com/dialog
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 

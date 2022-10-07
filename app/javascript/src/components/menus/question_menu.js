@@ -9,9 +9,6 @@
  *     - jQueryUI
  *       https://api.jqueryui.com/menu
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 const { mergeObjects }  = require('../../utilities');
 const ActivatedMenu = require('./activated_menu');
@@ -85,13 +82,13 @@ class QuestionMenu extends ActivatedMenu {
   }
 
   close() {
-    super.close(); 
+    super.close();
     this.activator.$node.removeClass("active");
   }
 
   setEnabledValidations() {
     var validationData = Object.assign( {}, this.question.data.validation ); // don't mutate the question data
-    
+
     if(validationData.hasOwnProperty('min_length') || validationData.hasOwnProperty('min_word') ){
       validationData.min_string_length = true;
     }
@@ -111,4 +108,4 @@ class QuestionMenu extends ActivatedMenu {
   }
 
 }
-module.exports = QuestionMenu; 
+module.exports = QuestionMenu;

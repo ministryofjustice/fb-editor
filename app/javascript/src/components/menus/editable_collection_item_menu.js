@@ -10,9 +10,6 @@
  *     - jQueryUI
  *       https://api.jqueryui.com/menu
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -52,7 +49,7 @@ class EditableCollectionItemMenu extends ActivatedMenu {
     event.preventDefault();
     switch(action) {
       case "remove":
-        $(document).trigger("EditableCollectionItemMenuSelectionRemove", { 
+        $(document).trigger("EditableCollectionItemMenuSelectionRemove", {
           selectedItem: item,
           collectionItem: this.collectionItem
         });
@@ -64,8 +61,8 @@ class EditableCollectionItemMenu extends ActivatedMenu {
   }
 
   close() {
-    super.close(); 
+    super.close();
     this.activator.$node.removeClass("active");
   }
 }
-module.exports = EditableCollectionItemMenu; 
+module.exports = EditableCollectionItemMenu;

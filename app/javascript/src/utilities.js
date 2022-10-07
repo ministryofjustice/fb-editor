@@ -7,10 +7,6 @@
  * Requires: jQuery
  * Documentation:
  *
- *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -77,7 +73,7 @@ function createElement(tag, text, classes) {
  *   run it only if that proves true.
  *
  * @func (Function) Expected to be required function.
- * 
+ *
  * Note: You can also pass in several other arguments (as is possible with
  * JavaScript functions, and these will be passed to the called function).
  **/
@@ -341,7 +337,7 @@ function highestNumber(numbers) {
 /* Filter an object using a passed callback function
   * @param {Object} obj - the object to be filtered
   * @param {callable} predicate - function used for filtering, should return a
-  * boolean 
+  * boolean
   * @return {Object}
   */
 function filterObject(obj, predicate) {
@@ -353,7 +349,7 @@ function filterObject(obj, predicate) {
 function snakeToPascalCase( str ){
     str+='';
     str = str.split('_');
-    for(var i=0;i<str.length;i++){ 
+    for(var i=0;i<str.length;i++){
         str[i] = str[i].charAt(0).toUpperCase() + str[i].substring(1);
     }
     return str.join('');
@@ -363,7 +359,7 @@ function snakeToPascalCase( str ){
 
 
 // Make available for importing.
-module.exports  = { 
+module.exports  = {
   mergeObjects: mergeObjects,
   createElement: createElement,
   safelyActivateFunction: safelyActivateFunction,

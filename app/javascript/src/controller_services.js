@@ -10,9 +10,6 @@
  *       https://api.jquery.com/
  *       https://api.jqueryui.com/
  *
- *     - TODO:
- *       (steven.burnell@digital.justice.gov.uk to add).
- *
  **/
 
 
@@ -112,7 +109,7 @@ function createPageMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { 
+        position: {
           my: "left top",
           at: "left top",
         }
@@ -132,7 +129,7 @@ function createConnectionMenus(view) {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
-        position: { 
+        position: {
           my: "left top",
           at: "left top",
         }
@@ -320,7 +317,7 @@ function adjustBranchConditionPositions($overview) {
     var expressionHeight = Number($this.height()) || 0;
     $this.css({
       position: "relative",
-      top: "-" + (expressionHeight + (lineHeight * 2) ) + "px" 
+      top: "-" + (expressionHeight + (lineHeight * 2) ) + "px"
     });
   });
 }
@@ -331,7 +328,7 @@ function adjustBranchConditionPositions($overview) {
  * Because flow items are absolutely positioned, they will take up
  * no space in their container. To compensate for this lack of
  * container height, we manually calculate the required height and
- * apply dimensional adjustments. 
+ * apply dimensional adjustments.
  **/
 function adjustOverviewHeight($overview) {
   var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
@@ -347,7 +344,7 @@ function adjustOverviewHeight($overview) {
     bottomNumbers.push(top + $item.height());
     topNumbers.push(top);
   });
-  
+
   top = utilities.lowestNumber(topNumbers);
   bottom = utilities.highestNumber(bottomNumbers);
   topOverlap = $overview.offset().top - top;
@@ -778,9 +775,9 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
         container: $overview,
         top: 0,                     // TODO: Is this and the height below the best way to position
         bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-      }); 
+      });
 
-    
+
   });
 }
 

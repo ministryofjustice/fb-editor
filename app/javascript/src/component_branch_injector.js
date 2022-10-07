@@ -9,7 +9,6 @@
  *
  *     - TODO:
  *       /documentation/services/editor/javascript/component-branch-injector.html
- *       (steven.burnell@digital.justice.gov.uk to add).
  *
  **/
 
