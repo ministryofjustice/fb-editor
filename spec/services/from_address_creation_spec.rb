@@ -89,22 +89,6 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
-    # context 'when sending enabled is false but from address record is verified' do
-    #   let(:email_identity) { double(sending_enabled: false) }
-    #   let(:email) { 'artax@justice.gov.uk' }
-
-    #   before do
-    #     create(:from_address, :verified, service_id: service_id, email: email)
-    #     allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
-    #     allow(email_service).to receive(:get_email_identity).and_return(double)
-    #     from_address_creation.save
-    #   end
-
-    #   it 'sets the from address status to default' do
-    #     expect(from_address.reload.status).to eq('default')
-    #   end
-    # end
-
     context 'when the email is blank' do
       let(:email) { '' }
       it 'saves the default email address to the DB' do
