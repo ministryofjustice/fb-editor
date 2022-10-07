@@ -23,7 +23,7 @@
     <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors_present?(environment) ? 'govuk-form-group--error' : 'govuk-details__text' %>">
       <% if f.object.errors_present?(environment) %>
         <% f.object.errors.full_messages_for(:"form_analytics_settings_#{environment}").each do |error_message| %>
-          <p id="<%= "form_analytics_settings_#{environment}_error" %>" class="govuk-error-message">
+          <p id="<%= "form-analytics-settings-form-analytics-settings-#{environment}-field-error" %>" class="govuk-error-message">
             <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
           </p>
         <% end %>

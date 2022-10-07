@@ -1,23 +1,11 @@
 <%= editor_settings_screen(settings_path) do %>
-    <% if @form_analytics.errors.present? %>
-      <div class="govuk-grid-column-two-thirds govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
-        <h2 class="govuk-error-summary__title" id="error-summary-title">
-          <%= t('activemodel.errors.summary_title') %>
-        </h2>
-        <div class="govuk-error-summary__body">
-          <ul class="govuk-list govuk-error-summary__list">
-            <% @form_analytics.errors.each do |error|  %>
-              <li><a href="#<%= error.attribute %>"><%= error.message %></a></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    <% end %>
     <h1 class="govuk-heading-xl"><%= t('settings.form_analytics.name') %></h1>
     <p class="govuk-body"><%= t('settings.form_analytics.intro') %></p>
-
     <%= form_for @form_analytics, url: settings_form_analytics_path(service.service_id),
-      html: { id: 'form-analytics-settings' } do |f| %>
+      html: { id: 'form-analytics-settings' },
+      builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+
+      <%= f.govuk_error_summary %>
 
       <%= render partial: 'form', locals: { f: f, environment: 'test' } %>
       <%= render partial: 'form', locals: { f: f, environment: 'live' } %>

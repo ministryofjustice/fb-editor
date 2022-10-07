@@ -1,0 +1,23 @@
+<%= f.govuk_fieldset(
+  legend: { text: f.object.class.human_attribute_name(:csv_attachment) },
+  aria: { describedby: "csv_#{deployment_environment}_hint" },
+  class: 'govuk-!-margin-top-6') do %>
+
+  <div class="govuk-hint govuk-!-margin-bottom-0" id="csv_<%=deployment_environment%>_hint">
+    <%= f.object.class.human_attribute_name :csv_hint %>
+  </div>
+  <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-5">
+    <%= link_to f.object.class.human_attribute_name(:csv_sample), asset_url('/sample.csv'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' %>
+  </p>
+
+  <%= f.govuk_check_box :service_csv_output, 1, 0,
+    multiple: false,
+    link_errors: true,
+    label: {
+      text: f.object.class.human_attribute_name(:csv_checkbox),
+      for: email_settings_field_id(f, :service_csv_output, deployment_environment)
+    },
+    checked: f.object.service_csv_output_checked?,
+    id: email_settings_field_id(f, :service_csv_output, deployment_environment)
+  %>
+<% end %>
