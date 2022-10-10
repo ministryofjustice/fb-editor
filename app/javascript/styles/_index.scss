@@ -130,6 +130,10 @@ html {
   @include fb-govuk-button;
 }
 
+.fb-govuk-button--inline {
+  width: auto;
+}
+
 .fb-govuk-button-inverted {
   @include button_type_link;
 }
@@ -150,27 +154,6 @@ html {
 
   }
 
-}
-
-.fb-link-button {
-  @include button_as_link;
-}
-
-.fb-back-link {
-  @extend %govuk-link;
-  @extend %govuk-body-s;
-  @include govuk-link-style-text;
-  @include govuk-link-style-no-underline;
-
-  display: inline-flex;
-  align-items: center;
-  position: absolute;
-  top: 16px;
-  left: 0;
-
-  > span:first-child {
-    margin-right: 4px;
-  }
 }
 
 .fb-settings-screen {
@@ -580,12 +563,36 @@ html {
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .services-edit {
-  h1 {
-    clear: both;
+
+  .flow-titlebar {
     z-index: 1;
+    margin-bottom: govuk-spacing(8);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+
+    > * {
+      margin-right: govuk-spacing(3);
+      margin-bottom: 0;
+      &:last-child {
+        margin-right: 0
+      }
+    }
+
+    h1 {
+      flex: 1 0 100%;
+      margin-bottom: govuk-spacing(2);
+      margin-left: 0;
+      margin-right: auto;
+    }
 
     @include govuk-media-query($from: tablet) {
-      clear: none;
+      justify-content: flex-start;
+      h1 {
+        flex: 1 1 auto;
+        margin-bottom: 0;
+      }
     }
   }
 
@@ -613,13 +620,12 @@ html {
     z-index: 2
   }
 
-
   .ConnectionMenuActivator {
     z-index: 4;
   }
 
 
-  .PageMenu,
+  .FlowItemMenu,
   .ConnectionMenu {
     z-index: 5;
   }
@@ -627,13 +633,13 @@ html {
   .ui-dialog {
     z-index: 6;
   }
-  
+
   // The flow conditions list is over the lines meaning that they cannot be
   // hovered.  Removing pointer-events allows the hover to "pass-through" to the
-  // underlying line.  
+  // underlying line.
   .flow-conditions {
     pointer-events: none;
-    
+
     // The branch connection menus are within the conditions container and
     // still need to receive pointer events, so we turn them back on.
     .branch-connection-menu-activator {
@@ -726,7 +732,7 @@ html {
     text-align: center;
     text-decoration: none;
   }
-  
+
   // without clip-path support we use the imagemap, so hide the svg element
   & svg {
     display: none;
@@ -738,7 +744,7 @@ html {
     & map {
       display: none;
     }
-    
+
     // make the link fill the whole area and clip it
     & > a {
      clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
@@ -748,7 +754,7 @@ html {
      bottom: 0;
      padding: 30px 48px; // keep text area same as without clip-path
     }
-    
+
     // show the svg and make it fill the container
     & svg {
       display: block;
@@ -759,7 +765,7 @@ html {
       top: 0;
       left: 0;
     }
-    
+
     svg polygon {
       fill: #fff;
       stroke: $govuk-link-colour;
@@ -776,8 +782,8 @@ html {
       stroke: govuk-colour('black');
     }
   }
-  
-  .PageMenuActivator {
+
+  .FlowItemMenuActivator {
     bottom: 10px;
     left: 82px;
     top: calc(125px - 45px);
@@ -804,7 +810,7 @@ html {
     left: calc(100% - 24px);
     top: -17px;
   }
-  
+
   &::after {
     content: url('../images/plus-blue.svg');
     top: 0;
@@ -841,7 +847,7 @@ html {
   .condition-operator {
     text-transform: uppercase;
     font-weight: bold;
-  } 
+  }
 }
 
 .flow-conditions {
@@ -953,7 +959,7 @@ html {
 
   p.help {
     margin: 0 0 38px 0;
-  } 
+  }
 
   .flow-detached-group {
     position: relative;

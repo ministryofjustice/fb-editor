@@ -1,17 +1,17 @@
-<div class="flow-view-buttons fb-preview-button">
+<div class="flow-titlebar">
+  <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
   <% if @undo_redo_button.present?%>
     <%= link_to @undo_redo_button[:text],
     api_service_previous_version_path(service.service_id, @undo_redo_button[:action]),
-    class: 'govuk-button fb-govuk-button' %>
+    class: 'fb-govuk-button fb-govuk-button-inverted fb-govuk-button--inline' %>
   <% end %>
-  <%= link_to t('actions.preview_form'),
-      preview_service_path(service.service_id),
-      class: 'govuk-button fb-govuk-button',
-      target: '_blank' %>
-</div>
 
-<h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
+  <%= link_to t('actions.preview_form'),
+    preview_service_path(service.service_id),
+    class: 'govuk-button fb-govuk-button fb-govuk-button--inline',
+    target: '_blank' %>
+</div>
 
 <%# Flow overview layout for pages, branches, and conditions %>
 <section id="flow-overview">

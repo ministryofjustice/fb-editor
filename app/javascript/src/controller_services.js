@@ -406,8 +406,7 @@ function addServicesContentScrollContainer(view) {
   var $html = $("html");
   var $body = $("body");
   var $main = $("#main-content");
-  var $title = $("h1");
-  var $button = $(".fb-preview-button");
+  var $title = $(".flow-titlebar");
   var $header = $("header");
   var $nav = $("#form-navigation");
   var $footer = $("footer");
@@ -431,7 +430,7 @@ function addServicesContentScrollContainer(view) {
   $footer.css("position", "relative");
 
   // Make adjustments based on content.
-  adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+  adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $footer, $footerContent);
 
   // So the dimension self-correct upon browser resizing (or tablet rotate).
   $(window).on("resize", function() {
@@ -448,11 +447,10 @@ function addServicesContentScrollContainer(view) {
       $header.get(0).style = "";
       $nav.get(0).style = "";
       $title.get(0).style = "";
-      $button.get(0).style = "";
       $footer.get(0).style = "";
       $footerContent.get(0).style = "";
 
-      adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent);
+      adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $footer, $footerContent);
 
       // Finished so reveal updated content
       $main.addClass(view.constants.JS_ENHANCEMENT_DONE);
@@ -466,13 +464,12 @@ function addServicesContentScrollContainer(view) {
  * Sort out the required dimensions and position for the scrollable area.
  * @$container (jQuery node) The dynamically added container applied to main scrollable content.
  **/
-function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $button, $footer, $footerContent) {
+function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $nav, $title, $footer, $footerContent) {
   var viewWidth = window.innerWidth;
   var mainLeft = $main.offset().left;
   var headerTop = $header.position().top;
   var navTop = $nav.position().top;
   var titleTop = $title.offset().top;
-  var buttonTop = $button.offset().top;
   var containerTop = titleTop + $title.outerHeight();
   var containerWidth = mainLeft + $container.get(0).scrollWidth;
 
@@ -482,14 +479,9 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
   // Fix/update the position of some elements (the order is important).
   $title.css({
     left: mainLeft + "px",
-    position: "fixed",
-    top: titleTop + "px"
-  });
-
-  $button.css({
     right: mainLeft + "px",
     position: "fixed",
-    top: buttonTop + "px"
+    top: titleTop + "px"
   });
 
   $nav.css({
