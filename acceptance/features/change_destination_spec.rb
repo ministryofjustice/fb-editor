@@ -29,22 +29,12 @@ feature 'Deleting page' do
     then_I_should_see_unconnected_pages
   end
 
-  def given_I_want_to_change_destination_of_a_page(page)
-    editor.connection_menu(page).click
-    editor.change_destination_link.click
-  end
-
   def then_I_should_not_see_unconnected_pages
     expect(editor).not_to have_selector('.destination-optgroup')
   end
 
   def then_I_should_see_unconnected_pages
     expect(editor).to have_selector('.destination-optgroup')
-  end
-
-  def when_I_change_destination_to_page(page)
-    select page
-    editor.change_next_page_button.click
   end
 
   def then_cya_and_confirmation_pages_should_be_unconnected
