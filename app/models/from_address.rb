@@ -7,8 +7,6 @@ class FromAddress < ApplicationRecord
     message: I18n.t('activemodel.errors.models.from_address.invalid')
   }, allow_blank: true
 
-  validates_with EmailDomainValidator, if: proc { |obj| obj.run_validation? }, allow_blank: true
-
   enum status: {
     default: 0,
     pending: 1,
@@ -31,6 +29,10 @@ class FromAddress < ApplicationRecord
 
   def default_email?
     email_address == DEFAULT_EMAIL_FROM
+  end
+
+  def allowlist?
+    EmailDomainValidator.new.allowed?(decrypt_email)
   end
 
   # If the email is already encrypted then it won't be a

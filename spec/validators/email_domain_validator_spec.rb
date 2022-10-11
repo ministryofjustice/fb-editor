@@ -1,43 +1,27 @@
 RSpec.describe EmailDomainValidator do
-  let(:subject) { FromAddress.new(params) }
-  let(:params) do
-    {
-      service_id: SecureRandom.uuid,
-      email: email
-    }
-  end
+  let(:validator) { EmailDomainValidator.new }
   let(:email) { 'buck.rogers@digital.justice.gov.uk' }
 
-  describe '#validate' do
-    before do
-      subject.validate
-    end
-
+  describe '#allowed?' do
     context 'when email is allowed' do
-      it 'is valid' do
-        expect(subject).to be_valid
+      it 'returns true' do
+        expect(validator.allowed?(email)).to be_truthy
       end
     end
 
     context 'when email is not allowed' do
       let(:email) { 'buck.rogers@gmail.com' }
 
-      it 'is not valid' do
-        expect(subject).to_not be_valid
-      end
-
-      it 'returns the correct error message' do
-        expect(subject.errors.full_messages).to eq([I18n.t(
-          'activemodel.errors.models.from_address.invalid_domain'
-        )])
+      it 'returns false' do
+        expect(validator.allowed?(email)).to be_falsey
       end
     end
 
     context 'when email is blank' do
       let(:email) { '' }
 
-      it 'is valid' do
-        expect(subject).to be_valid
+      it 'returns nil' do
+        expect(validator.allowed?(email)).to be_nil
       end
     end
   end

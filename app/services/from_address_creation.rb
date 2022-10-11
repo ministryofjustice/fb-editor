@@ -5,7 +5,8 @@ class FromAddressCreation
   def save
     return if from_address.invalid?
 
-    from_address.status = verify_email
+    from_address.status = allowed_email? ? verify_email : :pending
+
     from_address.save!
   rescue ActiveRecord::RecordInvalid
     false
@@ -67,5 +68,9 @@ class FromAddressCreation
   def use_default_email?
     from_address.email.blank? ||
       from_address.email == FromAddress::DEFAULT_EMAIL_FROM
+  end
+
+  def allowed_email?
+    from_address.email.blank? || EmailDomainValidator.new.allowed?(from_address.email)
   end
 end

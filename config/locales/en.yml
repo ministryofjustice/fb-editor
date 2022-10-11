@@ -281,6 +281,8 @@ en:
       lede: Emails sent by your form, either to you or to people filling it in, will come from this address
       resend_link_text: Resend validation link
       link_resent_success: Link resent - now check your email
+      link_contact_us: Contact us
+      contact_url: https://moj-forms.service.justice.gov.uk/contact/
     form_analytics:
       name: Google Analytics
       hint:  Monitor your form's performance (requires a Google Analytics account).
@@ -318,6 +320,7 @@ en:
         default: You need to change the default no-reply-moj-forms address before your form can go live
         pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
         verified: This email address has been validated.
+        contact_us: <strong>Contact us to approve your ‘from’ address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
       publishing:
         link: ‘from’ address
         dev:
@@ -460,7 +463,6 @@ en:
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
-          invalid_domain:  You will need a @digital.justice.gov.uk or @justice.gov.uk email address
           email_service_error: We were unable to save your email address. Please try again.
           format: "%{message}"
         publish_service_creation:

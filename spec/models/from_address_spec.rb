@@ -82,12 +82,8 @@ RSpec.describe FromAddress, type: :model do
     context 'when email domain is not digital or justice' do
       let(:email) { 'starbuck@bsg.com' }
 
-      it 'returns invalid' do
-        expect(from_address).to_not be_valid
-      end
-
-      it 'returns the correct error message' do
-        expect(from_address.errors.first.message).to eq(I18n.t('activemodel.errors.models.from_address.invalid_domain'))
+      it 'returns valid' do
+        expect(from_address).to be_valid
       end
     end
   end

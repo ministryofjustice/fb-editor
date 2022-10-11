@@ -9,19 +9,27 @@
 
     <% if @from_address.pending? && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
-        <%= @presenter.message.html_safe %>
-
-        <p>
-          <span role="alert"></span>
-          <%= tag.button t('settings.from_address.resend_link_text'),
-            class: 'fb-link-button',
-            data: {
-              remote: true,
-              method: 'post',
-              url: api_service_settings_from_address_resend_path(service.service_id),
-              success: t('settings.from_address.link_resent_success')
-            } %>
-        </p>
+        <% if @from_address.allowlist? %>
+          <%= @presenter.message.html_safe %>
+            <p>
+              <span role="alert"></span>
+              <%= tag.button t('settings.from_address.resend_link_text'),
+                class: 'fb-link-button',
+                data: {
+                  remote: true,
+                  method: 'post',
+                  url: api_service_settings_from_address_resend_path(service.service_id),
+                  success: t('settings.from_address.link_resent_success')
+                } %>
+            </p>
+        <% else %>
+          <%= t('warnings.from_address.settings.contact_us').html_safe %>
+            <p>
+              <%= link_to t('settings.from_address.link_contact_us'),
+                t('settings.from_address.contact_url'),
+                class: 'fb-link-button' %>
+            </p>
+        <% end %>
       <% end %>
     <% end %>
 
