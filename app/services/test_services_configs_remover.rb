@@ -16,7 +16,7 @@ class TestServicesConfigsRemover
   end
 
   def user_ids
-    User.all.select { |user| user.id if user.email.in?(team_emails) }.compact
+    User.all.map { |user| user.id if user.email.in?(team_emails) }.compact
   end
 
   def team_emails
