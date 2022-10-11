@@ -171,19 +171,6 @@ feature 'Publishing' do
     and_I_save_my_email_settings
   end
 
-  def and_I_visit_the_submission_settings_page
-    editor.settings_link.click
-    page.find('#main-content', visible: true)
-    editor.submission_settings_link.click
-    page.find('#main-content', visible: true)
-    editor.send_data_by_email_link.click
-    page.find('#main-content', visible: true)
-  end
-
-  def and_I_set_send_by_email(value)
-    editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
-  end
-
   def and_I_set_the_email_field(value = 'paul@atreides.com')
     editor.find(:css, "#email-settings-service-email-output-#{environment}-field").set(value)
   end

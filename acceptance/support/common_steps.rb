@@ -483,4 +483,18 @@ module CommonSteps
     csv_file
     editor.find('.ui-dialog').find(:button, text: upload_button).click
   end
+
+  ## Submission Settings Page
+  def and_I_visit_the_submission_settings_page
+    editor.settings_link.click
+    page.find('#main-content', visible: true)
+    editor.submission_settings_link.click
+    page.find('#main-content', visible: true)
+    editor.send_data_by_email_link.click
+    page.find('#main-content', visible: true)
+  end
+
+  def and_I_set_send_by_email(value)
+    editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
+  end
 end
