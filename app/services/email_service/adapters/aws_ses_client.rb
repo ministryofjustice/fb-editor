@@ -26,6 +26,8 @@ module EmailService
 
       def delete_email_identity(identity)
         call(:delete_email_identity, { email_identity: identity })
+      rescue EmailServiceNotFoundError
+        nil
       end
 
       private

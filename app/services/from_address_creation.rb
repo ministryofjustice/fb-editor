@@ -32,18 +32,17 @@ class FromAddressCreation
         "Updated from address status for service #{from_address.service_id} to verified"
       )
       :verified
-    elsif !email_identity.sending_enabled && from_address.verified?
-      Rails.logger.info(
-        "Updated from address status for service #{from_address.service_id} to default"
-      )
-      :default
     end
   end
 
   def resend_validation
     response = email_service.delete_email_identity(@from_address.decrypt_email)
 
-    if response.successful?
+    # A blank response means the email address was not found. This is
+    # because the email identity was not created in the first place as
+    # we do not create an email identity for emails that are not
+    # initially on the allow list
+    if response.blank? || response.successful?
       Rails.logger.info("Creating email identity for service #{from_address.service_id}")
 
       email_service.create_email_identity(@from_address.decrypt_email)
