@@ -134,4 +134,28 @@ RSpec.describe FromAddress, type: :model do
       end
     end
   end
+
+  describe 'allowed_domain?' do
+    context 'when email is on the allowed list' do
+      it 'returns true' do
+        expect(from_address.allowed_domain?).to be_truthy
+      end
+    end
+
+    context 'when email is not on the allowed list' do
+      let(:email) { 'buck.rogers@gmail.com' }
+
+      it 'returns false' do
+        expect(from_address.allowed_domain?).to be_falsey
+      end
+    end
+
+    context 'when email is blank' do
+      let(:email) { '' }
+
+      it 'returns true' do
+        expect(from_address.allowed_domain?).to be_truthy
+      end
+    end
+  end
 end

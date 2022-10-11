@@ -9,7 +9,7 @@
 
     <% if @from_address.pending? && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
-        <% if @from_address.allowlist? %>
+        <% if @from_address.allowed_domain? %>
           <%= @presenter.message.html_safe %>
             <p>
               <span role="alert"></span>

@@ -2,11 +2,12 @@ class FromAddressCreation
   include ActiveModel::Model
   attr_accessor :from_address, :email_service
 
+  delegate :allowed_domain?, to: :from_address
+
   def save
     return if from_address.invalid?
 
-    from_address.status = allowed_email? ? verify_email : :pending
-
+    from_address.status = verify_email
     from_address.save!
   rescue ActiveRecord::RecordInvalid
     false
@@ -19,7 +20,9 @@ class FromAddressCreation
     return :default if use_default_email?
 
     if email_service.get_email_identity(from_address.email).blank?
-      email_service.create_email_identity(from_address.email)
+      # Although we save all email addresses with the status as 'pending',
+      # we only want to call AWS if the domain is on the allow list
+      email_service.create_email_identity(from_address.email) if allowed_domain?
 
       Rails.logger.info("Created email identity for service #{from_address.service_id}")
       :pending
@@ -68,9 +71,5 @@ class FromAddressCreation
   def use_default_email?
     from_address.email.blank? ||
       from_address.email == FromAddress::DEFAULT_EMAIL_FROM
-  end
-
-  def allowed_email?
-    from_address.email.blank? || EmailDomainValidator.new.allowed?(from_address.email)
   end
 end

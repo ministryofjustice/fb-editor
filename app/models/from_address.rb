@@ -1,4 +1,9 @@
 class FromAddress < ApplicationRecord
+  ALLOWED_DOMAINS = [
+    'justice.gov.uk',
+    'digital.justice.gov.uk'
+  ].freeze
+
   before_save :encrypt_email
 
   validates :email, format: {
@@ -31,8 +36,9 @@ class FromAddress < ApplicationRecord
     email_address == DEFAULT_EMAIL_FROM
   end
 
-  def allowlist?
-    EmailDomainValidator.new.allowed?(decrypt_email)
+  def allowed_domain?
+    domain = email_address.split('@').last
+    domain.in?(ALLOWED_DOMAINS)
   end
 
   # If the email is already encrypted then it won't be a
