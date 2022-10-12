@@ -1,6 +1,6 @@
 RSpec.describe Settings::FromAddressController do
   describe '#from_address_params' do
-    let(:default_email) { 'moj-forms@digital.justice.gov.uk' }
+    let(:default_email) { I18n.t('default_values.service_email_from') }
 
     let(:params) do
       {
