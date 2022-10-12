@@ -49,16 +49,6 @@ spec:
                   secretKeyRef:
                     name: {{ .Values.bearer_token }}
                     key: token
-              - name: AWS_SES_ACCESS_KEY_ID
-                valueFrom:
-                  secretKeyRef:
-                    name: fb-editor-secrets-{{ .Values.environmentName }}
-                    key: aws_ses_access_key_id
-              - name: AWS_SES_SECRET_ACCESS_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: fb-editor-secrets-{{ .Values.environmentName }}
-                    key: aws_ses_secret_access_key
               - name: ENCRYPTION_KEY
                 valueFrom:
                   secretKeyRef:
