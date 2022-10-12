@@ -30,10 +30,10 @@ class UnpublishTestServices
   end
 
   def dev
-    published_services.select { |ps| ps.status == 'dev' }
+    published_services.select { |ps| ps.deployment_environment == 'dev' }
   end
 
   def production
-    published_services.select { |ps| ps.status == 'production' }
+    published_services.select { |ps| ps.deployment_environment == 'production' }
   end
 end
