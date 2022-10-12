@@ -1,4 +1,9 @@
 class FromAddress < ApplicationRecord
+  ALLOWED_DOMAINS = [
+    'justice.gov.uk',
+    'digital.justice.gov.uk'
+  ].freeze
+
   before_save :encrypt_email
 
   validates :email, format: {
@@ -6,8 +11,6 @@ class FromAddress < ApplicationRecord
     with: URI::MailTo::EMAIL_REGEXP,
     message: I18n.t('activemodel.errors.models.from_address.invalid')
   }, allow_blank: true
-
-  validates_with EmailDomainValidator, if: proc { |obj| obj.run_validation? }, allow_blank: true
 
   enum status: {
     default: 0,
@@ -31,6 +34,11 @@ class FromAddress < ApplicationRecord
 
   def default_email?
     email_address == DEFAULT_EMAIL_FROM
+  end
+
+  def allowed_domain?
+    domain = email_address.split('@').last
+    domain.in?(ALLOWED_DOMAINS)
   end
 
   # If the email is already encrypted then it won't be a

@@ -28,7 +28,7 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
-    context 'with the user inputed and non default email' do
+    context 'with email on allow list' do
       let(:email) { 'falkor@justice.gov.uk' }
 
       context 'Writing on the database' do
@@ -54,6 +54,29 @@ RSpec.describe FromAddressCreation, type: :model do
 
         it 'makes AWS call and creates identity' do
           expect_any_instance_of(Aws::SESV2::Client).to receive(:create_email_identity).with(email_identity: email)
+          from_address_creation.save
+        end
+      end
+    end
+
+    context 'with email not on allow list' do
+      let(:email) { 'galadriel@valinor.me' }
+
+      context 'Writing on the database' do
+        let(:email_service) { double(get_email_identity: nil) }
+        before do
+          from_address_creation.save
+        end
+
+        it 'saves sucessfully' do
+          expect(from_address.reload.email_address).to eq(email)
+        end
+
+        it 'updates status to pending' do
+          expect(from_address.reload.status).to eq('pending')
+        end
+        it 'does not make AWS call' do
+          expect_any_instance_of(Aws::SESV2::Client).to_not receive(:create_email_identity)
           from_address_creation.save
         end
       end

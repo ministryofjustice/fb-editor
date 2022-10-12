@@ -82,12 +82,8 @@ RSpec.describe FromAddress, type: :model do
     context 'when email domain is not digital or justice' do
       let(:email) { 'starbuck@bsg.com' }
 
-      it 'returns invalid' do
-        expect(from_address).to_not be_valid
-      end
-
-      it 'returns the correct error message' do
-        expect(from_address.errors.first.message).to eq(I18n.t('activemodel.errors.models.from_address.invalid_domain'))
+      it 'returns valid' do
+        expect(from_address).to be_valid
       end
     end
   end
@@ -135,6 +131,30 @@ RSpec.describe FromAddress, type: :model do
     context 'when it is not default address' do
       it 'returns false' do
         expect(from_address.default_email?).to be_falsey
+      end
+    end
+  end
+
+  describe 'allowed_domain?' do
+    context 'when email is on the allowed list' do
+      it 'returns true' do
+        expect(from_address.allowed_domain?).to be_truthy
+      end
+    end
+
+    context 'when email is not on the allowed list' do
+      let(:email) { 'buck.rogers@gmail.com' }
+
+      it 'returns false' do
+        expect(from_address.allowed_domain?).to be_falsey
+      end
+    end
+
+    context 'when email is blank' do
+      let(:email) { '' }
+
+      it 'returns true' do
+        expect(from_address.allowed_domain?).to be_truthy
       end
     end
   end
