@@ -42,8 +42,6 @@ feature 'Publishing' do
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_cya_text
       then_I_should_not_see_warning_confirmation_text
-
-      cleanup_service_configuration
     end
 
     scenario 'when visiting the publishing page without submitting pages present' do
@@ -66,8 +64,6 @@ feature 'Publishing' do
       then_I_should_see_warning_both_text
       then_I_should_not_see_warning_cya_text
       then_I_should_not_see_warning_confirmation_text
-
-      cleanup_service_configuration
     end
 
     scenario 'when visiting the publishing page without confirmation page present' do
@@ -80,8 +76,6 @@ feature 'Publishing' do
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_cya_text
       then_I_should_see_warning_confirmation_text
-
-      cleanup_service_configuration
     end
 
     scenario 'autocomplete item warning messages' do
@@ -105,8 +99,6 @@ feature 'Publishing' do
       when_I_visit_the_publishing_page
       then_I_should_not_see_autocomplete_warnings
       then_I_should_see_the_publish_button
-
-      cleanup_service_configuration
     end
 
     scenario 'when from address is not validated' do
@@ -119,8 +111,6 @@ feature 'Publishing' do
 
       when_I_visit_the_publishing_page
       then_I_should_see_from_address_warning('pending')
-
-      cleanup_service_configuration
     end
   end
 
@@ -258,18 +248,6 @@ feature 'Publishing' do
 
   def then_I_should_see_from_address_warning(status)
     expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", href: I18n.t("warnings.from_address.publishing.link")))
-  end
-
-  def cleanup_service_configuration
-    # The service config is saved to the DB only using the service id as an identifier.
-    # This is just to stop the build up of table rows related to services that
-    # will have been deleted by the Metadata API as it cleans up after acceptance
-    # test runs.
-    and_I_visit_the_submission_settings_page
-    editor.find(:css, "details.configure-#{environment} summary").click
-    and_I_set_the_email_field('')
-    and_I_set_send_by_email(false)
-    and_I_save_my_email_settings
   end
 
   def then_I_should_see_autocomplete_warnings
