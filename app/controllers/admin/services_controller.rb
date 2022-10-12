@@ -55,6 +55,28 @@ module Admin
       redirect_to admin_services_path
     end
 
+    def edit
+        @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+        @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+
+        @maintenance_mode_configuration = maintenance_mode_configuration
+    end
+
+    def update
+        @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+        @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+
+        @maintenance_mode_configuration = maintenance_mode_configuration
+
+        %w(maintenance_mode maintenance_page_heading maintenance_page_content).each do |key|
+          config = service_configuration(name: key)
+          config.value = params[key].strip
+          config.save!
+        end
+
+        redirect_to admin_services_path
+    end
+
     def unpublish
       if queued?
         flash[:notice] = "Already queued for unpublishing from #{params[:deployment_environment]}"
@@ -156,6 +178,25 @@ module Admin
         service_id: @service.service_id,
         deployment_environment: environment
       ).last&.unpublished?
+    end
+
+    def service_slug(version_metadata)
+      service = MetadataPresenter::Service.new(version_metadata, editor: true)
+      service.service_slug
+    end
+
+    def service_configuration(name: ,deployment_environment: 'production')
+      ServiceConfiguration.find_or_initialize_by(
+        service_id: @service.service_id,
+        deployment_environment: deployment_environment,
+        name: name
+      )
+    end
+
+    def maintenance_mode_configuration
+      %w(maintenance_mode maintenance_page_heading maintenance_page_content).each_with_object({}) do |key, hash|
+        hash[key] = service_configuration(name: key).decrypt_value
+      end
     end
   end
 end

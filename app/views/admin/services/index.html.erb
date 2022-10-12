@@ -59,6 +59,9 @@ It renders the `_table` partial to display details about the resources.
           <td class="govuk-table__cell" id="service-id">
             <%= link_to service.id, admin_service_path(service.id) %>
           </td>
+          <td class="govuk-table__cell" id="service-id">
+            <%= link_to 'Edit', edit_admin_service_path(service.id) %>
+          </td>
           <% if Rails.env.development? %>
           <td class="govuk-table__cell">
             <%= link_to 'Duplicate',
