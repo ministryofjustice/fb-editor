@@ -108,6 +108,20 @@ feature 'Publishing' do
 
       cleanup_service_configuration
     end
+
+    scenario 'when from address is not validated' do
+      when_I_enable_the_submission_settings
+      when_I_visit_the_publishing_page
+      then_I_should_see_from_address_warning('default')
+
+      when_I_visit_the_from_address_settings_page
+      when_I_change_my_from_address('miriel@numenor.me')
+
+      when_I_visit_the_publishing_page
+      then_I_should_see_from_address_warning('pending')
+
+      cleanup_service_configuration
+    end
   end
 
   context 'when dev environment' do
@@ -240,6 +254,10 @@ feature 'Publishing' do
 
   def then_I_should_see_the_submission_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
+  end
+
+  def then_I_should_see_from_address_warning(status)
+    expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", href: I18n.t("warnings.from_address.publishing.link")))
   end
 
   def cleanup_service_configuration

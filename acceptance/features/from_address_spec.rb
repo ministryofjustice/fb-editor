@@ -70,14 +70,6 @@ feature 'From address' do
   end
 
   ## From Address Settings page
-  def when_I_visit_the_from_address_settings_page
-    page.find(:css, '#main-content', visible: true)
-    editor.click_link(I18n.t('settings.name'))
-    editor.click_link(I18n.t('settings.submission.name'))
-    expect(page).to have_content(I18n.t('settings.from_address.heading'))
-    editor.click_link(I18n.t('settings.from_address.heading'))
-  end
-
   def then_I_should_see_the_from_address_settings_page
     expect(page).to have_content(I18n.t('settings.from_address.heading'))
     expect(page).to have_content(I18n.t('settings.from_address.lede'))
@@ -87,11 +79,6 @@ feature 'From address' do
   def then_I_should_see_the_from_address_defaults
     expect(page).to have_field(I18n.t('activemodel.attributes.from_address.email'), with: configs[:default][:email])
     expect(page).to have_content(I18n.t('warnings.from_address.settings.default'))
-  end
-
-  def when_I_change_my_from_address(email)
-    page.find(:css, '.govuk-input').set(email)
-    editor.save_button.click
   end
 
   def then_I_should_see_the_contact_us_message

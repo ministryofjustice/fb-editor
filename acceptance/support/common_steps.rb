@@ -497,4 +497,18 @@ module CommonSteps
   def and_I_set_send_by_email(value)
     editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
   end
+
+  ## From Address Settings page
+  def when_I_visit_the_from_address_settings_page
+    page.find(:css, '#main-content', visible: true)
+    editor.click_link(I18n.t('settings.name'))
+    editor.click_link(I18n.t('settings.submission.name'))
+    expect(page).to have_content(I18n.t('settings.from_address.heading'))
+    editor.click_link(I18n.t('settings.from_address.heading'))
+  end
+
+  def when_I_change_my_from_address(email)
+    page.find(:css, '.govuk-input').set(email)
+    editor.save_button.click
+  end
 end
