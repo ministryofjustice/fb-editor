@@ -1,0 +1,63 @@
+.app-container {
+
+  .fb-admin-markdown-editor {
+    position: relative;
+
+    button {
+      position:absolute;
+      right: 1em;
+      top:1em;
+      border: #1d70b8 solid 2px;
+    border-radius: 0;
+    padding: 5px 10px;
+    }
+
+
+
+    .preview {
+      * {
+        all: unset;
+      }
+
+      @include govuk-typography-common;
+      @include govuk-global-styles;
+      @extend .govuk-textarea;
+      @extend %govuk-body-m;
+
+      p, ul, ol {
+        display: block;
+      }
+
+      ul, ol {
+        @extend %govuk-list;
+      }
+
+      ul {
+        @extend %govuk-list--bullet;
+      }
+
+      ol {
+        @extend %govuk-list--number;
+      }
+
+      ul li, ol li {
+        @include govuk-typography-common;
+        @extend %govuk-body-m;
+        display: list-item;
+        margin-bottom: govuk-spacing(1);
+      }
+
+      h1 {
+        @extend %govuk-heading-l;
+      }
+
+      h2 {
+        @extend %govuk-heading-m;
+      }
+
+      h3 {
+        @extend %govuk-heading-s;
+      }
+    }
+  }
+}

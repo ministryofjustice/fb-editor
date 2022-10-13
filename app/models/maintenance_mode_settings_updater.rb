@@ -8,7 +8,7 @@ class MaintenanceModeSettingsUpdater
     MAINTENANCE_PAGE_CONTENT
   ].freeze
 
-  def initialize(settings: , service_id:)
+  def initialize(settings:, service_id:)
     @settings = settings
     @service_id = service_id
   end
