@@ -68,7 +68,7 @@ module Admin
 
         @maintenance_mode_configuration = maintenance_mode_configuration
 
-        %w(maintenance_mode maintenance_page_heading maintenance_page_content).each do |key|
+        maintenance_mode_fields.each do |key|
           config = service_configuration(name: key)
           config.value = params[key].strip
           config.save!
@@ -194,9 +194,13 @@ module Admin
     end
 
     def maintenance_mode_configuration
-      %w(maintenance_mode maintenance_page_heading maintenance_page_content).each_with_object({}) do |key, hash|
+      maintenance_mode_fields.each_with_object({}) do |key, hash|
         hash[key] = service_configuration(name: key).decrypt_value
       end
+    end
+
+    def maintenance_mode_fields
+      %w(maintenance_mode maintenance_page_heading maintenance_page_content)
     end
   end
 end
