@@ -27,49 +27,34 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
 </header>
 
 <section class="main-content__body">
-  <div class="">
-    <a href="<%= admin_services_path %>" class="govuk-back-link">
+
+  <%= form_for(@maintenance_mode_settings,
+               url: admin_service_path(@service.service_id),
+               method: :put,
+               builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+<div class="govuk-!-margin-bottom-5" style="display: flex; justify-content: space-between; align-items: center;">
+    <a href="<%= admin_services_path %>" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
       Back to services
     </a>
+    <%= f.submit 'Save', class: 'govuk-button fb-govuk-button govuk-!-margin-bottom-0' %>
   </div>
-     <%= form_with(
-        url: admin_service_path(@service.service_id),
-        method: :put,
-        local: true) do |f| %>
-        <%= f.submit 'Save', class: 'govuk-button fb-govuk-button', id: 'version-save' %>
-<div class="govuk-form-group">
-  <fieldset class="govuk-fieldset" aria-describedby="maintenance-mode-hint">
-    <legend class="govuk-fieldset__legend">
-      Maintenance Mode
-    </legend>
-    <div id="maintenance mode-hint" class="govuk-hint">
-      Prevent public access to this form during a period of maintenance
-    </div>
-    <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
-      <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="maintenance_mode" name="maintenance_mode" type="radio" value="0" <%= @maintenance_mode_configuration['maintenance_mode'] != '1' ? 'checked="checked"' : '' %> >
-        <label class="govuk-label govuk-radios__label" for="maintenance_mode">
-          Disabled
-        </label>
-      </div>
-      <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="maintenance_mode_2" name="maintenance_mode" type="radio" value="1" <%= @maintenance_mode_configuration['maintenance_mode'] == '1' ? 'checked="checked"' : '' %> >
-        <label class="govuk-label govuk-radios__label" for="maintenance_mode_2">
-          Enabled
-        </label>
-      </div>
-    </div>
-  </fieldset>
-</div>
-<div class="govuk-form-group">
-  <label class="govuk-label" for="maintenance_mode_heading">Maintenance Page Heading</label>
-  <input type="text" id="maintenance_mode_heading" name="maintenance_page_heading" class="govuk-input" value="<%= @maintenance_mode_configuration['maintenance_page_heading'] || t('presenter.maintenance.heading') %> " />
-</div>
-<div class="govuk-form-group">
-    <label class="govuk-label" for="maintenance_page_content">Maintenance Page content</label>
-    <p class="govuk-hint" id="content-hint">Should be formatted as markdown</p>
-    <textarea class="govuk-textarea" id="version" name="maintenance_page_content" rows="20" style="max-width:100%" aria-describedby="content-hint"><%= @maintenance_mode_configuration['maintenance_page_content'] || t('presenter.maintenance.content') %></textarea>
-  </div>
+
+      <%= f.govuk_error_summary %>
+
+      <%= f.govuk_radio_buttons_fieldset(:maintenance_mode, legend: { size: 's', text: 'Maintenance mode' }) do %>
+        <%= f.govuk_radio_button :maintenance_mode, 1,
+          link_errors: true,
+          label: { text: 'Enabled' },
+          checked:  @maintenance_mode_settings.maintenance_mode == '1' %>
+        <%= f.govuk_radio_button :maintenance_mode, 0,
+          link_errors: true,
+          label: { text: 'Disabled' },
+          checked:  @maintenance_mode_settings.maintenance_mode != '1' %>
+    <% end %>
+
+    <%= f.govuk_text_field :maintenance_page_heading, label: { text: 'Maintenance page heading' } %>
+
+    <%= f.govuk_text_area :maintenance_page_content, label: { text: 'Maintenance page content' }, rows: 15 %>
 <% end %>
 
 </section>
