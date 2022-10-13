@@ -59,22 +59,30 @@ module Admin
         @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
         @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
 
-        @maintenance_mode_configuration = maintenance_mode_configuration
+        @maintenance_mode_settings = MaintenanceModeSettings.new(
+          service_id: @service.service_id,
+          deployment_environment: 'production'
+        )
     end
 
     def update
         @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
         @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
 
-        @maintenance_mode_configuration = maintenance_mode_configuration
+        @maintenance_mode_settings = MaintenanceModeSettings.new(
+          maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
+        )
 
-        maintenance_mode_fields.each do |key|
-          config = service_configuration(name: key)
-          config.value = params[key].strip
-          config.save!
+        if @maintenance_mode_settings.valid?
+          MaintenanceModeSettingsUpdater.new(
+            settings: @maintenance_mode_settings,
+            service_id: @service.service_id
+          ).create_or_update!
+
+          redirect_to admin_services_path
+        else
+          render action: 'edit'
         end
-
-        redirect_to admin_services_path
     end
 
     def unpublish
@@ -185,22 +193,12 @@ module Admin
       service.service_slug
     end
 
-    def service_configuration(name: ,deployment_environment: 'production')
-      ServiceConfiguration.find_or_initialize_by(
-        service_id: @service.service_id,
-        deployment_environment: deployment_environment,
-        name: name
+    def maintenance_mode_params
+      params.require(:maintenance_mode_settings).permit(
+        :maintenance_mode,
+        :maintenance_page_heading,
+        :maintenance_page_content
       )
-    end
-
-    def maintenance_mode_configuration
-      maintenance_mode_fields.each_with_object({}) do |key, hash|
-        hash[key] = service_configuration(name: key).decrypt_value
-      end
-    end
-
-    def maintenance_mode_fields
-      %w(maintenance_mode maintenance_page_heading maintenance_page_content)
     end
   end
 end
