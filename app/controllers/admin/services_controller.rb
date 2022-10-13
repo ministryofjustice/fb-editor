@@ -56,33 +56,33 @@ module Admin
     end
 
     def edit
-        @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-        @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
 
-        @maintenance_mode_settings = MaintenanceModeSettings.new(
-          service_id: @service.service_id,
-          deployment_environment: 'production'
-        )
+      @maintenance_mode_settings = MaintenanceModeSettings.new(
+        service_id: @service.service_id,
+        deployment_environment: 'production'
+      )
     end
 
     def update
-        @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-        @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
 
-        @maintenance_mode_settings = MaintenanceModeSettings.new(
-          maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
-        )
+      @maintenance_mode_settings = MaintenanceModeSettings.new(
+        maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
+      )
 
-        if @maintenance_mode_settings.valid?
-          MaintenanceModeSettingsUpdater.new(
-            settings: @maintenance_mode_settings,
-            service_id: @service.service_id
-          ).create_or_update!
+      if @maintenance_mode_settings.valid?
+        MaintenanceModeSettingsUpdater.new(
+          settings: @maintenance_mode_settings,
+          service_id: @service.service_id
+        ).create_or_update!
 
-          redirect_to admin_services_path
-        else
-          render action: 'edit'
-        end
+        redirect_to admin_services_path
+      else
+        render action: 'edit'
+      end
     end
 
     def unpublish

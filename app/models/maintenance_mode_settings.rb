@@ -26,7 +26,7 @@ class MaintenanceModeSettings
   end
 
   def settings_for(setting_name)
-    (params(setting_name).present?  ? params(setting_name) : nil )  ||
+    params(setting_name).presence ||
       database(setting_name) ||
       default_value(setting_name)
   end
