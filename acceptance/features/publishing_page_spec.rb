@@ -108,6 +108,20 @@ feature 'Publishing' do
 
       cleanup_service_configuration
     end
+
+    scenario 'when from address is not validated' do
+      when_I_enable_the_submission_settings
+      when_I_visit_the_publishing_page
+      then_I_should_see_from_address_warning('default')
+
+      when_I_visit_the_from_address_settings_page
+      when_I_change_my_from_address('miriel@numenor.me')
+
+      when_I_visit_the_publishing_page
+      then_I_should_see_from_address_warning('pending')
+
+      cleanup_service_configuration
+    end
   end
 
   context 'when dev environment' do
@@ -169,19 +183,6 @@ feature 'Publishing' do
     and_I_set_send_by_email(true)
     and_I_set_the_email_field
     and_I_save_my_email_settings
-  end
-
-  def and_I_visit_the_submission_settings_page
-    editor.settings_link.click
-    page.find('#main-content', visible: true)
-    editor.submission_settings_link.click
-    page.find('#main-content', visible: true)
-    editor.send_data_by_email_link.click
-    page.find('#main-content', visible: true)
-  end
-
-  def and_I_set_send_by_email(value)
-    editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
   end
 
   def and_I_set_the_email_field(value = 'paul@atreides.com')
@@ -253,6 +254,10 @@ feature 'Publishing' do
 
   def then_I_should_see_the_submission_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
+  end
+
+  def then_I_should_see_from_address_warning(status)
+    expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", href: I18n.t("warnings.from_address.publishing.link")))
   end
 
   def cleanup_service_configuration
