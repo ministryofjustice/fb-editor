@@ -26,7 +26,7 @@ en:
     option_hint: '[Optional hint text]'
   default_values:
     service_email_output: ''
-    service_email_from: 'moj-forms@digital.justice.gov.uk'
+    service_email_from: 'no-reply-moj-forms@digital.justice.gov.uk'
     service_email_subject: 'Submission from %{service_name}'
     service_email_body: 'Please find attached a submission sent from %{service_name}'
     service_email_pdf_heading: 'Submission for %{service_name}'
