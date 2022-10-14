@@ -1,5 +1,41 @@
 module Api
   class UndoController < ApiController
+    def undo
+      case params[:undoable_action]
+      when 'change_next_page'
+        session[:undo] = {
+          action: 'undo',
+          undoable_action: 'change_next_page',
+          text: t('actions.undo_redo.undo_change_next_page')
+        }
+      when 'move'
+        session[:undo] = {
+          action: 'undo',
+          undoable_action: 'move',
+          text: t('actions.undo_redo.undo_move')
+        }
+      end
+      previous
+    end
+
+    def redo
+      case params[:undoable_action]
+      when 'move'
+        session[:undo] = {
+          action: 'redo',
+          undoable_action: 'move',
+          text: t('actions.undo_redo.redo_move')
+        }
+      when 'change_next_page'
+        session[:undo] = {
+          action: 'redo',
+          undoable_action: 'change_next_page',
+          text: t('actions.undo_redo.redo_change_next_page')
+        }
+      end
+      previous
+    end
+
     def previous
       response = MetadataApiClient::Version.previous(service.service_id)
       return head :bad_request if response.errors?
@@ -15,22 +51,26 @@ module Api
       if session[:undo][:text] == t('actions.undo_redo.undo_move')
         session[:undo] = {
           action: 'redo',
+          undoable_action: 'move',
           text: t('actions.undo_redo.redo_move')
         }
       elsif session[:undo][:text] == t('actions.undo_redo.undo_change_next_page')
         session[:undo] = {
           action: 'redo',
+          undoable_action: 'change_next_page',
           text: t('actions.undo_redo.redo_change_next_page')
         }
       elsif session[:undo][:text] == t('actions.undo_redo.redo_move')
         session[:undo] = {
           action: 'undo',
+          undoable_action: 'move',
           text: t('actions.undo_redo.undo_move')
         }
       elsif session[:undo][:text] == t('actions.undo_redo.redo_change_next_page')
         session[:undo] = {
           action: 'undo',
-          text: t('actions.undo_redo.redo_change_next_page')
+          undoable_action: 'change_next_page',
+          text: t('actions.undo_redo.undo_change_next_page')
         }
       end
     end

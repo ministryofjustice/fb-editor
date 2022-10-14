@@ -12,10 +12,11 @@ module Api
       if @move.valid?
         session[:undo] = {
           action: 'undo',
+          undoable_action: 'move',
           text: t('actions.undo_redo.undo_move')
         }
       end
-
+      # TODO: do we want to add here in this path toos
       redirect_to edit_service_path(service.service_id)
     end
 

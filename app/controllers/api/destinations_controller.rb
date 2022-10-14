@@ -10,6 +10,7 @@ module Api
       destination.change
       session[:undo] = {
         action: 'undo',
+        undoable_action: 'change_next_page',
         text: t('actions.undo_redo.undo_change_next_page')
       }
       redirect_to edit_service_path(service.service_id)
