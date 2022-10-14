@@ -130,7 +130,7 @@ class Publisher
     end
 
     def config_map
-      service_configuration.reject(&:secrets?).reject(&:do_not_send_submission?).reject(&:do_not_send_confirmation_email?)
+      service_configuration.reject(&:secrets?).reject(&:do_not_send_submission?).reject(&:do_not_send_confirmation_email?).reject(&:not_in_maintenance_mode?)
     end
 
     def secrets
