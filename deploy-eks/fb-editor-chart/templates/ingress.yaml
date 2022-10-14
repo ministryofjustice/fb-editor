@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: "{{ .Values.app_name }}-ing-{{ .Values.environmentName }}"
@@ -22,6 +22,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: "{{ .Values.app_name }}-svc-{{ .Values.environmentName }}"
-          servicePort: 80
+          service:
+            name: "{{ .Values.app_name }}-svc-{{ .Values.environmentName }}"
+            port:
+              number: 80
