@@ -12,8 +12,10 @@
         <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
           settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
       <% else %>
-        <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
-          settings_from_address_index_path(service.service_id))%>
+        <p class="govuk-!-margin-top-2">
+          <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
+            settings_from_address_index_path(service.service_id))%>
+        </p>
       <% end %>
     </div>
   <% end %>
