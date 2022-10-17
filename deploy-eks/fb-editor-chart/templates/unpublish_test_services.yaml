@@ -49,6 +49,11 @@ spec:
                   secretKeyRef:
                     name: {{ .Values.bearer_token }}
                     key: token
+              - name: ENCODED_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fb-editor-secrets-{{ .Values.environmentName }}
+                    key: encoded_private_key
               - name: ENCRYPTION_KEY
                 valueFrom:
                   secretKeyRef:
