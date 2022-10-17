@@ -57,12 +57,9 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
     <div class="govuk-form-group">
       <%= f.label :maintenance_page_content, class: 'govuk-label' %>
       <p class="govuk-hint">Content should be formatted as markdown. N.B. For a single line break, the line must end in a double space</p>
-        <div class="fb-admin-markdown-editor" x-data="{ preview: false, html: '', }" x-init="">
-          <button @click.prevent="html = window.marked($refs.editor.value);preview=!preview" x-text="preview ? 'Edit' : 'Preview'" :class="preview ? 'fb-govuk-button' : 'fb-govuk-button-inverted'"></button>
-          <%= f.text_area :maintenance_page_content, class: 'govuk-textarea', rows: 15, 'x-ref': "editor", 'x-show': "!preview"  %>
-          <div x-ref="preview" x-show="preview" class="govuk-body-m preview" x-html="html"></div>
+        <div class="fb-admin-markdown-editor" >
+          <%= f.text_area :maintenance_page_content, class: 'govuk-textarea', rows: 15 %>
         </div>
     </div>
 <% end %>
-
 </section>
