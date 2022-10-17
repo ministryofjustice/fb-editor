@@ -3,12 +3,10 @@
   <p class="govuk-body"><%= t('settings.submission.sub_heading') %></p>
   <nav class="govuk-navigation" aria-labelledby="settings-navigation-heading">
     <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
-      <% if ENV['FROM_ADDRESS'] == 'enabled' %>
-        <div>
-          <dt><%= link_to t('settings.from_address.heading'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint"><%= t('settings.from_address.lede') %></dd>
-        </div>
-      <% end %>
+      <div>
+        <dt><%= link_to t('settings.from_address.heading'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint"><%= t('settings.from_address.lede') %></dd>
+      </div>
       <div>
         <dt><%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
       </div>

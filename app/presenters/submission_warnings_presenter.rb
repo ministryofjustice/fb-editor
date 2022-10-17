@@ -15,11 +15,6 @@ class SubmissionWarningsPresenter
   end
 
   def messages
-    if ENV['FROM_ADDRESS'] == 'enabled'
-      presenters.map(&:message).compact
-    else
-      presenters.reject { |p| p.is_a?(FromAddressPresenter) }
-                .map(&:message).compact
-    end
+    presenters.map(&:message).compact
   end
 end
