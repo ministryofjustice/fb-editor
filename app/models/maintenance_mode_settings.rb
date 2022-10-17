@@ -22,7 +22,7 @@ class MaintenanceModeSettings
   end
 
   def maintenance_page_content
-    settings_for(:maintenance_page_content)
+    Base64.decode64(settings_for(:maintenance_page_content))
   end
 
   def settings_for(setting_name)

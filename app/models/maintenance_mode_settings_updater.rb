@@ -40,8 +40,12 @@ class MaintenanceModeSettingsUpdater
   end
 
   def create_or_update_the_service_configuration(config)
+    value = params(config)
+    if config == 'MAINTENANCE_PAGE_CONTENT'
+      value = Base64.encode64(value)
+    end
     setting = find_or_initialize_setting(config)
-    setting.value = params(config)
+    setting.value = value
     setting.save!
   end
 
