@@ -22,7 +22,7 @@ class MaintenanceModeSettings
   end
 
   def maintenance_page_content
-    settings_for(:maintenance_page_content)
+    Base64.decode64(settings_for(:maintenance_page_content))
   end
 
   def settings_for(setting_name)
@@ -40,7 +40,11 @@ class MaintenanceModeSettings
   end
 
   def default_value(setting_name)
-    I18n.t("presenter.maintenance.#{setting_name}")
+    if setting_name == :maintenance_page_content
+      Base64.encode64(I18n.t("presenter.maintenance.#{setting_name}"))
+    else
+      I18n.t("presenter.maintenance.#{setting_name}")
+    end
   end
 
   def params(setting_name)

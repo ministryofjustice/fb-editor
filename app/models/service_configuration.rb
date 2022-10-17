@@ -56,6 +56,7 @@ class ServiceConfiguration < ApplicationRecord
         service_id: service_id,
         deployment_environment: deployment_environment
       ).try(:send_confirmation_email?).blank?
+  end
 
   def not_in_maintenance_mode?
     name.in?(MAINTENANCE) &&
