@@ -1,1 +1,12 @@
-CONFIRMATION EMAIL!!
+<%= editor_settings_screen(settings_submission_index_path) do %>
+  <h1 class="govuk-heading-xl"><%= t('settings.confirmation_email.email.label') %></h1>
+  <p><%= t('settings.confirmation_email.email.help') %></p>
+
+  <% content_for :forms do %>
+    <%= render 'form', object: @confirmation_email_settings_dev,deployment_environment: 'dev' %>
+    <%= render 'form', object: @confirmation_email_settings_production,deployment_environment: 'production' %>
+  <% end %>
+
+  <%= yield :error_summary %>
+  <%= yield :forms %>
+<% end %>

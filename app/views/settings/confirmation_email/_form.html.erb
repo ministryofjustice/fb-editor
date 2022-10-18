@@ -1,0 +1,34 @@
+  <%= form_for object,
+    url: settings_confirmation_email_index_path(service.service_id),
+    html: {
+      id: "confirmation-email-submission-#{deployment_environment}",
+      class: 'collect-info-environment-config govuk-!-margin-top-8'
+    },
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+
+    <% content_for :error_summary do %>
+      <%= f.govuk_error_summary(presenter: email_settings_error_summary(f.object, deployment_environment)) %>
+    <% end %>
+
+    <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
+
+    <%= f.govuk_check_boxes_fieldset :"send_by_confirmation_email_#{deployment_environment}",
+      multiple: false,
+      legend: { text: t("publish.#{deployment_environment}.heading"), size: 'l'} do %>
+      <div class="govuk-hint" id="send_by_confirmation_email_#{deployment_environment}_hint"><%= t("publish.#{deployment_environment}.description") %></div>
+      <%= f.govuk_check_box :"send_by_confirmation_email_#{deployment_environment}", 1, 0,
+        multiple: false,
+        link_errors: true,
+        label: { text: t("activemodel.attributes.confirmation_email.send_by_confirmation_email_#{deployment_environment}") },
+        checked: f.object.send_by_confirmation_email_checked?
+      %>
+    <% end %>
+
+    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_details_summary").html_safe, classes: "configure-#{deployment_environment}") do %>
+      <%= render "email_fieldset", f: f, deployment_environment: deployment_environment %>
+    <% end %>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t("settings.submission.email.#{deployment_environment}.save_button") %>
+    </button>
+  <% end %>

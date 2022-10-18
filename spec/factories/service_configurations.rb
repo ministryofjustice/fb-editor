@@ -69,5 +69,15 @@ FactoryBot.define do
       name { 'SERVICE_EMAIL_FROM' }
       value { 'luke.piewalker@digital.justice.gov.uk' }
     end
+
+    trait :confirmation_email_subject do
+      name { 'CONFIRMATION_EMAIL_SUBJECT' }
+      value { "You're gonna need a bigger boat" }
+    end
+
+    trait :confirmation_email_body do
+      name { 'CONFIRMATION_EMAIL_BODY' }
+      value { 'We could not talk or talk forever and still find things to not talk about' }
+    end
   end
 end
