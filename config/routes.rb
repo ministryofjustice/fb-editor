@@ -52,6 +52,7 @@ Rails.application.routes.draw do
           collection do
             resources :from_address, only: [:index, :create]
             resources :email, only: [:index, :create]
+            resources :confirmation_email, only: [:index, :create]
           end
         end
       end
