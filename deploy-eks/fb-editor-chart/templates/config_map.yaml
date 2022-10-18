@@ -14,3 +14,4 @@ data:
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}
   AV_HOST: fb-av-svc-{{ .Values.environmentName }}
   CONFIRMATION_EMAIL: {{ .Values.confirmation_email }}
+  UNDO_REDO: {{ .Values.undo_redo }}

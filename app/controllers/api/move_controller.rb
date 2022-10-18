@@ -16,7 +16,6 @@ module Api
           text: t('actions.undo_redo.undo_move')
         }
       end
-      # TODO: do we want to add here in this path toos
       redirect_to edit_service_path(service.service_id)
     end
 

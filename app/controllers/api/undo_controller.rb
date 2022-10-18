@@ -15,7 +15,7 @@ module Api
           text: t('actions.undo_redo.undo_move')
         }
       end
-      previous
+      call_previous_version
     end
 
     def redo
@@ -33,10 +33,10 @@ module Api
           text: t('actions.undo_redo.redo_change_next_page')
         }
       end
-      previous
+      call_previous_version
     end
 
-    def previous
+    def call_previous_version
       response = MetadataApiClient::Version.previous(service.service_id)
       return head :bad_request if response.errors?
 
