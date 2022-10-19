@@ -29,7 +29,7 @@ class Settings::ConfirmationEmailController < FormController
     confirmation_email_params.permit(
       :deployment_environment,
       :send_by_confirmation_email,
-      :confirmation_email_output,
+      :confirmation_email_component_id,
       :confirmation_email_subject,
       :confirmation_email_body
     )

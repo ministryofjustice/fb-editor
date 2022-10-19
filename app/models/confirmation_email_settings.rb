@@ -3,7 +3,7 @@ class ConfirmationEmailSettings < BaseEmailSettings
                 :service,
                 :from_address,
                 :send_by_confirmation_email,
-                :confirmation_email_output,
+                :confirmation_email_component_id,
                 :confirmation_email_subject,
                 :confirmation_email_body
 
@@ -14,9 +14,9 @@ class ConfirmationEmailSettings < BaseEmailSettings
     in: Rails.application.config.deployment_environments
   }
 
-  validates :confirmation_email_output, presence: true, if: :send_by_confirmation_email?
+  validates :confirmation_email_component_id, presence: true, if: :send_by_confirmation_email?
 
-  validates :confirmation_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+  validates :confirmation_email_component_id, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
@@ -29,8 +29,8 @@ class ConfirmationEmailSettings < BaseEmailSettings
     send_by_confirmation_email == '1'
   end
 
-  def confirmation_email_output
-    settings_for(:confirmation_email_output)
+  def confirmation_email_component_id
+    settings_for(:confirmation_email_component_id)
   end
 
   def confirmation_email_subject

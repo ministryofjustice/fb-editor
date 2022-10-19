@@ -452,7 +452,7 @@ en:
           pending_link: Get validation link
           link: Change ’from’ address
       confirmation_email:
-        confirmation_email_output: To the email address captured by
+        confirmation_email_component_id: To the email address captured by
         confirmation_email_subject: Subject
         confirmation_email_body: Message
         send_by_confirmation_email_dev: Enable confirmation email on Test
