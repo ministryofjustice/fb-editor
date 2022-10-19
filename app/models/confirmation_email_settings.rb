@@ -16,8 +16,6 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   validates :confirmation_email_component_id, presence: true, if: :send_by_confirmation_email?
 
-  validates :confirmation_email_component_id, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
-
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
       service_id: service.service_id,

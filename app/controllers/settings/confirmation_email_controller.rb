@@ -9,14 +9,14 @@ class Settings::ConfirmationEmailController < FormController
     )
 
     if @confirmation_email.valid?
-      EmailSettingsUpdater.new(
-        email_settings: @confirmation_email,
+      ConfirmationEmailSettingsUpdater.new(
+        confirmation_email_settings: @confirmation_email,
         service: service
       ).create_or_update!
 
-      redirect_to settings_email_index_path(service_id: service.service_id)
+      redirect_to settings_confirmation_email_index_path(service_id: service.service_id)
     else
-      if email_settings_params[:deployment_environment] == 'dev'
+      if confirmation_email_settings_params[:deployment_environment] == 'dev'
         @confirmation_email_settings_dev = @confirmation_email
       else
         @confirmation_email_settings_production = @confirmation_email

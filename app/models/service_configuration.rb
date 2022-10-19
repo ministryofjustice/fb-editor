@@ -13,7 +13,13 @@ class ServiceConfiguration < ApplicationRecord
     SERVICE_EMAIL_PDF_HEADING
     SERVICE_EMAIL_PDF_SUBHEADING
     SERVICE_CSV_OUTPUT
-  ]
+  ].freeze
+  CONFIRMATION_EMAIL = %w[
+    CONFIRMATION_EMAIL_COMPONENT_ID
+    SERVICE_EMAIL_FROM
+    CONFIRMATION_EMAIL_SUBJECT
+    CONFIRMATION_EMAIL_BODY
+  ].freeze
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
 
@@ -39,6 +45,14 @@ class ServiceConfiguration < ApplicationRecord
         service_id: service_id,
         deployment_environment: deployment_environment
       ).try(:send_email?).blank?
+  end
+
+  def do_not_send_confirmation_email?
+    name.in?(CONFIRMATION_EMAIL) &&
+      SubmissionSetting.find_by(
+        service_id: service_id,
+        deployment_environment: deployment_environment
+      ).try(:send_confirmation_email?).blank?
   end
 
   def decrypt_value

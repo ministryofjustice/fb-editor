@@ -79,5 +79,10 @@ FactoryBot.define do
       name { 'CONFIRMATION_EMAIL_BODY' }
       value { 'We could not talk or talk forever and still find things to not talk about' }
     end
+
+    trait :confirmation_email_component_id do
+      name { 'CONFIRMATION_EMAIL_COMPONENT_ID' }
+      value { 'email_question_1' }
+    end
   end
 end
