@@ -48,6 +48,7 @@ class Settings::ConfirmationEmailController < FormController
       deployment_environment: 'production',
       from_address: from_address
     )
+    @email_components = email_components
   end
 
   def confirmation_email_params
@@ -70,5 +71,12 @@ class Settings::ConfirmationEmailController < FormController
 
   def from_address
     @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
+  end
+
+  def email_components
+    @email_components ||= begin
+      components = service.pages.map(&:components).flatten
+      components.select { |component| component.type == 'email' }
+    end
   end
 end
