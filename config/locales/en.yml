@@ -32,6 +32,8 @@ en:
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
+    confirmation_email_subject: "Your submission to ‘%{service_name}’"
+    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’.\n\r\nA copy of the information you provided is attached to this email."
   notifictaion_banners:
     important: Important
     success: Success
@@ -309,6 +311,12 @@ en:
         production:
           config_details_summary: Configure <span class="sr-only">live settings</span>
           save_button: Save Live settings
+    confirmation_email:
+      heading: 'Send a confirmation email'
+      lede: Send the people who complete your form a copy of their data
+      email:
+        label: Send a confirmation email
+        help: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
     from_address:
       send_by_email:
@@ -329,6 +337,9 @@ en:
         production:
           pending: 'You need to validate your %{href} for emails'
           default: 'You need to set a %{href} for emails'
+    confirmation_email:
+      message: 'Your form must include an email question to enable a %{href}.'
+      link: confirmation email
     submission_pages:
       dev:
         both_pages: 'Your form has no check answers page or confirmation page'
@@ -443,6 +454,12 @@ en:
         from_address:
           pending_link: Get validation link
           link: Change ’from’ address
+      confirmation_email:
+        confirmation_email_component_id: To the email address captured by
+        confirmation_email_subject: Subject
+        confirmation_email_body: Message
+        send_by_confirmation_email_dev: Enable confirmation email on Test
+        send_by_confirmation_email_production: Enable confirmation email on Live
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"

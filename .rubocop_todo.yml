@@ -17,6 +17,7 @@ Lint/ConstantDefinitionInBlock:
 Lint/DuplicateMethods:
   Exclude:
     - 'app/models/email_settings.rb'
+    - 'app/models/confirmation_email_settings.rb'
     - 'app/services/publish_service_creation.rb'
 
 # Offense count: 1
