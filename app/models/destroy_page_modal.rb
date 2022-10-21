@@ -9,6 +9,7 @@ class DestroyPageModal
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
     branch_destination_with_default_next?: 'delete_branch_destination_page',
     branch_destination_no_default_next?: 'delete_branch_destination_page_no_default_next',
+    delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
     default?: 'delete'
   }.freeze
 
@@ -34,6 +35,10 @@ class DestroyPageModal
 
   def branch_destination_no_default_next?
     branch_destination? && page_flow_object.default_next.blank?
+  end
+
+  def delete_page_used_for_confirmation_email?
+    email_components_on_page.any? && email_component_used_for_confirmation_email?
   end
 
   # If the other checks returns false it means the page can be deleted
@@ -71,5 +76,29 @@ class DestroyPageModal
 
   def branch_destinations
     branches.map(&:all_destination_uuids).flatten
+  end
+
+  def confirmation_email_component_id
+    @confirmation_email_component_id ||= ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'CONFIRMATION_EMAIL_COMPONENT_ID'
+    )
+  end
+
+  def email_components_on_page
+    @email_components_on_page ||=
+      page.components.select do |component|
+        component.type == 'email'
+      end
+  end
+
+  def email_component_ids_on_page
+    @email_component_ids_on_page ||= email_components_on_page.map(&:id)
+  end
+
+  def email_component_used_for_confirmation_email?
+    return if confirmation_email_component_id.nil?
+
+    email_component_ids_on_page.include?(confirmation_email_component_id.decrypt_value)
   end
 end

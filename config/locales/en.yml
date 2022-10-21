@@ -220,6 +220,9 @@ en:
       you_cannot_delete_this_page: 'You cannot delete this page yet'
       delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first, then try again.'
       stack_branches_not_supported_message: 'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
+      can_not_delete_email_page_heading: 'You cannot delete this page yet'
+      can_not_delete_email_page_message: 'You cannot delete this page because it is used by the confirmation email. Update the email settings first.'
+      go_to_email_settings: 'Go to email settings'
     destination:
       heading: 'Change destination'
       lede: 'Update this connection to lead to the following page:'
