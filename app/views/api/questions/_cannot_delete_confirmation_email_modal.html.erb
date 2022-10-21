@@ -1,0 +1,16 @@
+<div class="component component-dialog component-dialog-delete" id="dialog-confirmation-delete">
+  <h3 data-node="heading" class="govuk-label govuk-label--m">
+    <%= t('questions.delete_modal.can_not_delete_heading') %>
+  </h3>
+  <p data-node="content">
+    <%= t('questions.delete_modal.can_not_delete_message_confirmation_email') %>
+  </p>
+
+  <div class="govuk-button-group">
+    <%= link_to t('pages.delete_modal.go_to_email_settings'),
+    settings_confirmation_email_index_path(service.service_id),
+    class: "govuk-button fb-govuk-button"%>
+
+    <button class="govuk-button govuk-button--secondary ui-button"><%= t('dialogs.button_cancel') %></button>
+  </div>
+</div>
