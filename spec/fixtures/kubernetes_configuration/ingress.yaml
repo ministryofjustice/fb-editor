@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: acceptance-tests-date-ingress
@@ -25,6 +25,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: acceptance-tests-date
-          servicePort: 3000
+          service:
+            name: acceptance-tests-date
+            port:
+              number: 3000
