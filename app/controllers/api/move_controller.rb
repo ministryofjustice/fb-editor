@@ -13,7 +13,7 @@ module Api
         session[:undo] = {
           action: 'undo',
           undoable_action: 'move',
-          text: t('actions.undo_redo.undo_move')
+          text: UndoPresenter.provide_text_undo('undo', 'move')
         }
       end
       redirect_to edit_service_path(service.service_id)

@@ -2,11 +2,13 @@ class UndoPresenter
   attr_accessor :action, :undoable_action
   attr_reader :text
 
+  # rubocop:disable Lint/UnusedMethodArgument
   def initialize(action:, undoable_action:, text: '')
     @action = action
     @undoable_action = undoable_action
     @text = self.class.provide_text_undo(action, undoable_action)
   end
+  # rubocop:enable Lint/UnusedMethodArgument
 
   def toggled_presenter
     if @text == I18n.t('actions.undo_redo.undo_move')
