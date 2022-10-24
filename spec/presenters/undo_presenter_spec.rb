@@ -18,6 +18,10 @@ RSpec.describe UndoPresenter do
     it 'provide text returns the right text' do
       expect(subject.text).to eq(I18n.t('actions.undo_redo.undo_move'))
     end
+
+    it 'toggle to redo move' do
+      expect(subject.toggled_presenter[:text]).to eq(I18n.t('actions.undo_redo.redo_move'))
+    end
   end
 
   describe 'for redo change next page' do
@@ -26,7 +30,8 @@ RSpec.describe UndoPresenter do
     it 'provide text returns the right text' do
       expect(subject.text).to eq(I18n.t('actions.undo_redo.redo_change_next_page'))
     end
+    it 'toggle to undo change next page' do
+      expect(subject.toggled_presenter[:text]).to eq(I18n.t('actions.undo_redo.undo_change_next_page'))
+    end
   end
-
-
 end

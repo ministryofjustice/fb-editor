@@ -8,6 +8,34 @@ class UndoPresenter
     @text = self.class.provide_text_undo(action, undoable_action)
   end
 
+  def toggled_presenter
+    if @text == I18n.t('actions.undo_redo.undo_move')
+      {
+        action: 'redo',
+        undoable_action: 'move',
+        text: I18n.t('actions.undo_redo.redo_move')
+      }
+    elsif @text == I18n.t('actions.undo_redo.undo_change_next_page')
+      {
+        action: 'redo',
+        undoable_action: 'change_next_page',
+        text: I18n.t('actions.undo_redo.redo_change_next_page')
+      }
+    elsif @text == I18n.t('actions.undo_redo.redo_move')
+      {
+        action: 'undo',
+        undoable_action: 'move',
+        text: I18n.t('actions.undo_redo.undo_move')
+      }
+    elsif @text == I18n.t('actions.undo_redo.redo_change_next_page')
+      {
+        action: 'undo',
+        undoable_action: 'change_next_page',
+        text: I18n.t('actions.undo_redo.undo_change_next_page')
+      }
+    end
+  end
+
   def self.provide_text_undo(action, undoable_action)
     case action
     when 'undo'
