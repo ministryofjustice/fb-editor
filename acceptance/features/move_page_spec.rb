@@ -146,25 +146,12 @@ feature 'Move a page' do
     then_no_pages_should_have_moved
   end
 
-  def and_I_select_a_target(target)
-    find('select#move_target_uuid').select(target)
-  end
-
-  def and_I_click_the_move_button
-    find('button', text: I18n.t('dialogs.move.button')).click
-  end
-
   def and_I_click_on_an_unconnected_page_menu(flow_title)
     flow_item = all('.flow-detached-group .flow-item .flow-thumbnail').find do |page_flow|
       page_flow.text.include?(flow_title)
     end
     flow_item.hover
     editor.three_dots_button.click
-  end
-
-  def then_I_should_see_the_move_target_list(page_title)
-    find('div#move_targets_list', visible: true)
-    expect(editor).to have_content(I18n.t('dialogs.move.label', title: page_title))
   end
 
   def then_page_H_should_be_after_page_B

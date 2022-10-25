@@ -511,4 +511,28 @@ module CommonSteps
     page.find(:css, '.govuk-input').set(email)
     editor.save_button.click
   end
+
+  # Change page position
+  def given_I_want_to_change_destination_of_a_page(page)
+    editor.connection_menu(page).click
+    editor.change_destination_link.click
+  end
+
+  def when_I_change_destination_to_page(page)
+    select page
+    editor.change_next_page_button.click
+  end
+
+  def and_I_select_a_target(target)
+    find('select#move_target_uuid').select(target)
+  end
+
+  def and_I_click_the_move_button
+    find('button', text: I18n.t('dialogs.move.button')).click
+  end
+
+  def then_I_should_see_the_move_target_list(page_title)
+    find('div#move_targets_list', visible: true)
+    expect(editor).to have_content(I18n.t('dialogs.move.label', title: page_title))
+  end
 end

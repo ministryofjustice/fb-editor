@@ -17,6 +17,8 @@ class ServicesController < PermissionsController
   end
 
   def edit
+    @undo_redo_button = session.delete(:undo)
+
     flow = PagesFlow.new(service)
     @pages_flow = flow.build
     @publish_warning = SubmissionPagesPresenter.new(service, I18n.t('warnings.pages_flow'))
