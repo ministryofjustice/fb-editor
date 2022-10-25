@@ -14,7 +14,7 @@ class TestServicesConfigsRemover
   private
 
   def moj_forms_team_service_ids
-    @moj_forms_team_service_ids ||= team_services.map(&:id).reject { |id| id.in?(RUNNER_ACCEPTANCE_TEST_FORMS) }
+    @moj_forms_team_service_ids ||= team_services.map(&:id) + RUNNER_ACCEPTANCE_TEST_FORMS
   end
 
   def team_services
