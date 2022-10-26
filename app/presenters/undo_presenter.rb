@@ -10,20 +10,22 @@ class UndoPresenter
     }
   }.freeze
 
-  def self.toggle(action, undoable_action)
-    reversed_action = action == 'undo' ? 'redo' : 'undo'
-    {
-      action: reversed_action,
-      undoable_action: undoable_action,
-      text: UNDO_REDO_TEXT[reversed_action][undoable_action]
-    }
-  end
+  class << self
+    def toggle(action, undoable_action)
+      reversed_action = action == 'undo' ? 'redo' : 'undo'
+      {
+        action: reversed_action,
+        undoable_action: undoable_action,
+        text: UNDO_REDO_TEXT[reversed_action][undoable_action]
+      }
+    end
 
-  def self.presenter(action, undoable_action)
-    {
-      action: action,
-      undoable_action: undoable_action,
-      text: UNDO_REDO_TEXT[action][undoable_action]
-    }
+    def undo_session_data(action, undoable_action)
+      {
+        action: action,
+        undoable_action: undoable_action,
+        text: UNDO_REDO_TEXT[action][undoable_action]
+      }
+    end
   end
 end

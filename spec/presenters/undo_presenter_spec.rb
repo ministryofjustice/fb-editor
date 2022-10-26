@@ -8,7 +8,7 @@ RSpec.describe UndoPresenter do
     end
 
     it 'returns the right presenter' do
-      expect(UndoPresenter.presenter(action, undoable_action)).to eq(
+      expect(UndoPresenter.undo_session_data(action, undoable_action)).to eq(
         {
           action: 'undo',
           undoable_action: 'move',
@@ -36,7 +36,7 @@ RSpec.describe UndoPresenter do
     end
 
     it 'returns the right presenter' do
-      expect(UndoPresenter.presenter(action, undoable_action)).to eq(
+      expect(UndoPresenter.undo_session_data(action, undoable_action)).to eq(
         {
           action: 'redo',
           undoable_action: 'change_next_page',

@@ -11,7 +11,7 @@ module Api
     end
 
     def store_session
-      session[:undo] = UndoPresenter.presenter(params[:action], params[:undoable_action])
+      session[:undo] = UndoPresenter.undo_session_data(params[:action], params[:undoable_action])
     end
 
     def call_previous_version
