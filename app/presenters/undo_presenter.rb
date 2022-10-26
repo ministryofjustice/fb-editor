@@ -1,67 +1,29 @@
 class UndoPresenter
-  attr_accessor :action, :undoable_action
-  attr_reader :text
+  UNDO_REDO_TEXT = {
+    undo: {
+      change_next_page: I18n.t('actions.undo_redo.undo_change_next_page'),
+      move: I18n.t('actions.undo_redo.undo_move')
+    },
+    redo: {
+      change_next_page: I18n.t('actions.undo_redo.redo_change_next_page'),
+      move: I18n.t('actions.undo_redo.redo_move')
+    }
+  }.freeze
 
-  # rubocop:disable Lint/UnusedMethodArgument
-  def initialize(action:, undoable_action:, text: '')
-    @action = action
-    @undoable_action = undoable_action
-    @text = self.class.provide_text_undo(action, undoable_action)
-  end
-  # rubocop:enable Lint/UnusedMethodArgument
-
-  def toggled_presenter
-    if @text == I18n.t('actions.undo_redo.undo_move')
-      {
-        action: 'redo',
-        undoable_action: 'move',
-        text: I18n.t('actions.undo_redo.redo_move')
-      }
-    elsif @text == I18n.t('actions.undo_redo.undo_change_next_page')
-      {
-        action: 'redo',
-        undoable_action: 'change_next_page',
-        text: I18n.t('actions.undo_redo.redo_change_next_page')
-      }
-    elsif @text == I18n.t('actions.undo_redo.redo_move')
-      {
-        action: 'undo',
-        undoable_action: 'move',
-        text: I18n.t('actions.undo_redo.undo_move')
-      }
-    elsif @text == I18n.t('actions.undo_redo.redo_change_next_page')
-      {
-        action: 'undo',
-        undoable_action: 'change_next_page',
-        text: I18n.t('actions.undo_redo.undo_change_next_page')
-      }
-    end
+  def self.toggle(action, undoable_action)
+    reversed_action = action == :undo ? :redo : :undo
+    {
+      action: reversed_action.to_s,
+      undoable_action: undoable_action.to_s,
+      text: UNDO_REDO_TEXT[reversed_action][undoable_action]
+    }
   end
 
-  def self.provide_text_undo(action, undoable_action)
-    case action
-    when 'undo'
-      case undoable_action
-      when 'change_next_page'
-        I18n.t('actions.undo_redo.undo_change_next_page')
-      when 'move'
-        I18n.t('actions.undo_redo.undo_move')
-      end
-    when 'redo'
-      case undoable_action
-      when 'change_next_page'
-        I18n.t('actions.undo_redo.redo_change_next_page')
-      when 'move'
-        I18n.t('actions.undo_redo.redo_move')
-      end
-    end
-  end
-
-  def undo_presenter
-    @undo_presenter ||= UndoPresenter.new(
-      action: action,
-      undoable_action: undoable_action,
-      text: self.class.provide_text_undo(action, undoable_action)
-    )
+  def self.presenter(action, undoable_action)
+    {
+      action: action.to_s,
+      undoable_action: undoable_action.to_s,
+      text: UNDO_REDO_TEXT[action][undoable_action]
+    }
   end
 end
