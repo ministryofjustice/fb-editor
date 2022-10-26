@@ -33,7 +33,7 @@ feature 'Publishing' do
       when_I_visit_the_publishing_page
 
       then_I_should_see_the_no_service_output_message
-      then_I_should_see_the_publish_button
+      then_the_publish_button_should_be_enabled
 
       when_I_enable_the_submission_settings
 
@@ -152,6 +152,10 @@ feature 'Publishing' do
 
   def then_I_should_see_the_publish_button
     expect(environment_section.find(:css, 'button')[:'aria-disabled']).to eq(button_disabled)
+  end
+
+  def then_the_publish_button_should_be_enabled
+    expect(environment_section.find(:css, 'button')[:'aria-disabled']).to eq('false').or eq('')
   end
 
   def environment_section
