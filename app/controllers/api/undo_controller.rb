@@ -11,12 +11,7 @@ module Api
     end
 
     def store_session
-      text = UndoPresenter.provide_text_undo(params[:action], params[:undoable_action])
-      session[:undo] = {
-        action: params[:action],
-        undoable_action: params[:undoable_action],
-        text: text
-      }
+      session[:undo] = UndoPresenter.presenter(params[:action], params[:undoable_action])
     end
 
     def call_previous_version
@@ -26,7 +21,7 @@ module Api
       new_version = MetadataApiClient::Version.create(service_id: service.service_id, payload: response.metadata)
       return head :bad_request if new_version.errors?
 
-      session[:undo] = UndoPresenter.new(action: session[:undo][:action], undoable_action: session[:undo][:undoable_action]).toggled_presenter if session[:undo]
+      session[:undo] = UndoPresenter.toggle(session[:undo][:action], session[:undo][:undoable_action]) if session[:undo]
 
       redirect_to edit_service_path(service.service_id)
     end

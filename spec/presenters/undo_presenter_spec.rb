@@ -1,6 +1,6 @@
 RSpec.describe UndoPresenter do
-  let(:action) { :undo }
-  let(:undoable_action) { :move }
+  let(:action) { 'undo' }
+  let(:undoable_action) { 'move' }
 
   describe 'for undo move' do
     it 'returns the right text' do
@@ -29,8 +29,8 @@ RSpec.describe UndoPresenter do
   end
 
   describe 'for redo change next page' do
-    let(:action) { :redo }
-    let(:undoable_action) { :change_next_page }
+    let(:action) { 'redo' }
+    let(:undoable_action) { 'change_next_page' }
     it 'returns the right text' do
       expect(UndoPresenter::UNDO_REDO_TEXT[action][undoable_action]).to eq(I18n.t('actions.undo_redo.redo_change_next_page'))
     end
