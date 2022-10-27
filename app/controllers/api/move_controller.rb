@@ -10,11 +10,7 @@ module Api
       @move.change
 
       if @move.valid?
-        session[:undo] = {
-          action: 'undo',
-          undoable_action: 'move',
-          text: t('actions.undo_redo.undo_move')
-        }
+        session[:undo] = UndoPresenter.undo_session_data('undo', 'move')
       end
       redirect_to edit_service_path(service.service_id)
     end
