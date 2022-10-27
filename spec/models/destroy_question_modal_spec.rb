@@ -38,44 +38,97 @@ RSpec.describe DestroyQuestionModal do
 
     context 'confirmation email questions' do
       let(:service_metadata) { metadata_fixture(:branching_12) }
+      let(:default_destroy_partial) { 'api/questions/destroy_message_modal' }
       let(:service_configuration) do
         create(
           :service_configuration,
           name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
-          value: 'multi2_email_1',
+          value: value,
           deployment_environment: 'dev'
-        )
+        ).decrypt_value
+      end
+      let(:page) { service.find_page_by_url('multi2') }
+
+      context 'when confirmation email setting is checked in dev' do
+        let(:value) { 'multi2_email_1' }
+
+        context 'and confirmation email depends on a question' do
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_question_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns can not delete the question modal' do
+            expect(partial).to eq('api/questions/cannot_delete_confirmation_email_modal')
+          end
+        end
+
+        context 'and confirmation email does not depend on a question' do
+          let(:value) { 'email_not_used' }
+
+          before do
+            create(:submission_setting, :dev, send_confirmation_email: false, service_id: service.service_id)
+          end
+
+          it 'returns default delete partial' do
+            expect(partial).to eq(default_destroy_partial)
+          end
+        end
       end
 
-      before do
-        allow(destroy_question_modal).to receive(:confirmation_email_component_id).and_return(service_configuration)
-      end
+      context 'when CONFIRMATION_EMAIL_COMPONENT_ID is present in both environments' do
+        let(:value) { 'multi2_email_1' }
+        let(:service_configuration_production) do
+          create(
+            :service_configuration,
+            name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
+            value: 'email-component-production',
+            deployment_environment: 'production'
+          ).decrypt_value
+        end
 
-      context 'when confirmation email depends on a question' do
-        let(:page) { service.find_page_by_url('multi2') }
+        before do
+          allow(destroy_question_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
+        end
 
-        it 'returns can not delete the question modal' do
-          expect(partial).to eq('api/questions/cannot_delete_confirmation_email_modal')
+        context 'and confirmation email is checked in dev only' do
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+          end
+
+          it 'returns can not delete the question modal' do
+            expect(partial).to eq('api/questions/cannot_delete_confirmation_email_modal')
+          end
+        end
+
+        context 'and confirmation email is not checked in either environment' do
+          before do
+            create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
+            create(:submission_setting, :production, send_confirmation_email: nil, service_id: service.service_id)
+          end
+
+          it 'returns default delete partial' do
+            expect(partial).to eq(default_destroy_partial)
+          end
         end
       end
 
       context 'when a confirmation email does not depend on a question' do
         let(:page) { service.find_page_by_url('email') }
 
-        it 'returns default delete question modal' do
-          expect(partial).to eq('api/questions/destroy_message_modal')
+        it 'returns default delete partial' do
+          expect(partial).to eq(default_destroy_partial)
         end
       end
 
-      context 'when confirmation email has not been set' do
-        let(:page) { service.find_page_by_url('email') }
-
+      context 'when confirmation email has not been checked' do
         before do
-          allow(destroy_question_modal).to receive(:confirmation_email_component_id).and_return(nil)
+          create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
+          create(:submission_setting, :production, send_confirmation_email: nil, service_id: service.service_id)
         end
 
-        it 'returns default delete question modal' do
-          expect(partial).to eq('api/questions/destroy_message_modal')
+        it 'returns default delete partial' do
+          expect(partial).to eq(default_destroy_partial)
         end
       end
     end

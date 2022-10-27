@@ -1,5 +1,7 @@
 class DestroyPageModal
   include ActiveModel::Model
+  include ConfirmationEmailModalHelper
+
   attr_accessor :service, :page
 
   delegate :expressions, :branches, to: :service
@@ -38,7 +40,9 @@ class DestroyPageModal
   end
 
   def delete_page_used_for_confirmation_email?
-    email_components_on_page.any? && email_component_used_for_confirmation_email?
+    return unless confirmation_email_setting_checked?
+
+    email_component_used_for_confirmation_email?
   end
 
   # If the other checks returns false it means the page can be deleted
@@ -78,11 +82,8 @@ class DestroyPageModal
     branches.map(&:all_destination_uuids).flatten
   end
 
-  def confirmation_email_component_id
-    @confirmation_email_component_id ||= ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'CONFIRMATION_EMAIL_COMPONENT_ID'
-    )
+  def email_component_used_for_confirmation_email?
+    (email_component_id_on_page & confirmation_email_component_ids).any?
   end
 
   def email_components_on_page
@@ -92,13 +93,7 @@ class DestroyPageModal
       end
   end
 
-  def email_component_ids_on_page
-    @email_component_ids_on_page ||= email_components_on_page.map(&:id)
-  end
-
-  def email_component_used_for_confirmation_email?
-    return if confirmation_email_component_id.nil?
-
-    email_component_ids_on_page.include?(confirmation_email_component_id.decrypt_value)
+  def email_component_id_on_page
+    @email_component_id_on_page ||= email_components_on_page.map(&:id)
   end
 end

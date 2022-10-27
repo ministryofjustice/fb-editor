@@ -6,6 +6,7 @@ RSpec.describe DestroyPageModal do
     )
   end
   let(:service_metadata) { metadata_fixture(:branching_2) }
+  let(:page) { service.find_page_by_url('page-h') }
 
   describe '#to_partial_path' do
     subject(:partial) { destroy_page_modal.to_partial_path }
@@ -52,44 +53,115 @@ RSpec.describe DestroyPageModal do
     end
 
     context 'confirmation email' do
-      context 'when there is a confirmation email that depends on the page' do
-        let(:service_configuration) do
+      let(:service_metadata) { metadata_fixture(:version) }
+      let(:page) { service.find_page_by_url('email-address') }
+      let(:default_delete_partial) { 'api/pages/delete_modal' }
+      let(:service_configuration) do
+        create(
+          :service_configuration,
+          name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
+          value: value,
+          deployment_environment: environment
+        ).decrypt_value
+      end
+
+      context 'when confirmation email setting is checked in dev' do
+        let(:environment) { 'dev' }
+
+        context 'and the component is used on the page' do
+          let(:value) { 'email-address_email_1' }
+
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns delete_page_used_for_confirmation_email' do
+            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+          end
+        end
+
+        context 'and the component is not used on the page' do
+          let(:value) { 'email-address_not-used' }
+
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns the default delete partial' do
+            expect(partial).to eq(default_delete_partial)
+          end
+        end
+      end
+
+      context 'when confirmation email setting is checked in production' do
+        context 'and the component is not used on the page' do
+          let(:environment) { 'production' }
+          let(:value) { 'email-address_not_used' }
+
+          before do
+            create(:submission_setting, :production, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns the default delete partial' do
+            expect(partial).to eq(default_delete_partial)
+          end
+        end
+      end
+
+      context 'when there is a CONFIRMATION_EMAIL_COMPONENT_ID in both env' do
+        let(:service_configuration_production) do
           create(
             :service_configuration,
             name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
             value: 'email-address_email_1',
-            deployment_environment: 'dev'
-          )
+            deployment_environment: 'production'
+          ).decrypt_value
         end
-        let(:service_metadata) { metadata_fixture(:version) }
-        let(:page) { service.find_page_by_url('email-address') }
+        let(:environment) { 'dev' }
+        let(:value) { 'email-address_email_1' }
 
-        before do
-          allow(destroy_page_modal).to receive(:confirmation_email_component_id).and_return(service_configuration)
+        context 'and only confirmation email setting is checked in dev' do
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns delete_page_used_for_confirmation_email' do
+            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+          end
         end
 
-        it 'returns delete_page_used_for_confirmation_email' do
-          expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+        context 'and no confirmation email settings have been checked' do
+          before do
+            create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
+            create(:submission_setting, :production, send_confirmation_email: nil, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
+          end
+
+          it 'returns the default delete partial' do
+            expect(partial).to eq(default_delete_partial)
+          end
         end
       end
 
       context 'when deleting a page without any consequences' do
-        let(:page) { service.find_page_by_url('page-h') }
-
         it 'returns the default delete partial' do
-          expect(partial).to eq('api/pages/delete_modal')
+          expect(partial).to eq(default_delete_partial)
         end
       end
 
-      context 'when confirmation email is not set' do
-        let(:page) { service.find_page_by_url('page-h') }
-
+      context 'when send_confirmation_email is not set' do
         before do
-          allow(destroy_page_modal).to receive(:confirmation_email_component_id).and_return(nil)
+          create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
+          create(:submission_setting, :production, send_confirmation_email: nil, service_id: service.service_id)
         end
 
         it 'returns the default delete partial' do
-          expect(partial).to eq('api/pages/delete_modal')
+          expect(partial).to eq(default_delete_partial)
         end
       end
     end
