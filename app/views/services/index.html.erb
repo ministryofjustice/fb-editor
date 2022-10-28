@@ -31,6 +31,7 @@
             <%= f.label :service_name, class: "govuk-label govuk-label--m" %>
             <% f.object.errors.each do |error|  %>
               <p class="govuk-error-message"><%= error.message %></p>
+              <div id="hint">Give your form a name, your form name cannot begin with a number</div>
             <% end %>
             <%= f.text_field :service_name, class: "govuk-input", 'aria-describedby' => 'hint'%>
           </div>
