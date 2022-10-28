@@ -1,6 +1,5 @@
-<%= f.govuk_fieldset(legend: { text: f.object.class.human_attribute_name(:email_fieldset) }) do %>
     <div class="govuk-form-group">
-      <%= f.object.class.human_attribute_name :service_email_from %>
+      <%= t('activemodel.attributes.email_settings.service_email_from')%>
       <strong><%= f.object.service_email_from %></strong>
 
       <% unless @from_address.verified? %>
@@ -20,26 +19,26 @@
 
     <%= f.govuk_collection_select :confirmation_email_component_id, f.object.email_components, :id, :label,
     label: {
-      text: t('activemodel.attributes.confirmation_email.confirmation_email_component_id'),
-      for: "confirmation-email"
+      text: f.object.class.human_attribute_name(:confirmation_email_component_id),
+      for: settings_field_id(f, :confirmation_email_component_id, deployment_environment)
     },
-    id: "confirmation-email-settings-confirmation-email-output-#{deployment_environment}-field",
+    id: settings_field_id(f, :confirmation_email_component_id, deployment_environment),
     class: "govuk-!-width-two-thirds"
     %>
 
   <%= f.govuk_text_field :confirmation_email_subject,
     label: {
-      text: t('activemodel.attributes.confirmation_email.confirmation_email_subject'),
-      for: email_settings_field_id(f, :confirmation_email_subject, deployment_environment)
+      text: f.object.class.human_attribute_name(:confirmation_email_subject),
+      for: settings_field_id(f, :confirmation_email_subject, deployment_environment)
     },
-    id: email_settings_field_id(f, :confirmation_email_subject, deployment_environment) %>
+    id: settings_field_id(f, :confirmation_email_subject, deployment_environment) %>
 
   <%= f.govuk_text_area :confirmation_email_body,
     label: {
-      text: t('activemodel.attributes.confirmation_email.confirmation_email_body'),
-      for: email_settings_field_id(f, :confirmation_email_body, deployment_environment)
+      text: f.object.class.human_attribute_name(:confirmation_email_body),
+      for: settings_field_id(f, :confirmation_email_body, deployment_environment)
     },
-    id:  "service-email-body-#{deployment_environment}-field",
+    id: settings_field_id(f, :confirmation_email_body, deployment_environment),
     rows: 5 %>
 
   <div class="govuk-!-margin-bottom-2"  id="pdf_<%=deployment_environment%>_hint">
@@ -48,4 +47,3 @@
   <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-2">
     <%= link_to t('activemodel.attributes.email_settings.pdf_sample'), asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' %>
   </p>
-<% end %>
