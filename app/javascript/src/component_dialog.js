@@ -10,7 +10,7 @@
 * not use the native jQuery UI dialog buttons.
 *
 * These dialogs are intended to be used with a static template (always) present
-* in the page, that does not contain the text content. 
+* in the page, that does not contain the text content.
 *
 * When the dialog is required the open method is called with the desired
 * content, which is then injected into the template and the dialog opened and
@@ -22,16 +22,16 @@
 * property (type) [default value]:
 *
 *  - activator ($node | boolean) [false]
-*    Either an existing node that will trigger the dialog, or a boolean value 
+*    Either an existing node that will trigger the dialog, or a boolean value
 *    indicating whether or not to create an activator
 *
 *  - autoOpen (boolean) [false]
 *    Open the dialog on creation.
 *
-*  - classes (object) [{}] 
+*  - classes (object) [{}]
 *    An object of jQuery ui classes that will be applied to the UI dialog
 *    elements
-*  
+*
 *  - closeOnClickSelector (string) [button:not([data-node="confirm"])]
 *    jQuery selector string for elements that will close the dialog when
 *    clicked.  Should *not* include the confirmation element.
@@ -40,7 +40,7 @@
 *    jQuery selector string for the 'confirmation' action for the dialog.
 *    bin
 *
-*  - onOpen (function(dialog)) 
+*  - onOpen (function(dialog))
 *    Callable that will be called when the dialog is opened. Recieves the
 *    Dialog class instance as an argument
 *
@@ -56,11 +56,11 @@
 *    Callable that will be called when the dialog has been instantiated and all
 *    event listeners / JS enhancements have been applied. Recieves the
 *    Dialog class instance as an argument
-*    
+*
 * Setters
 * =======
 * As the dialog is initialised on a template node and reused with different
-* injected content for many actions within the app, the following setters are 
+* injected content for many actions within the app, the following setters are
 * provided to override the global config.
 *
 * content(text)
@@ -184,7 +184,7 @@ class Dialog {
   close(callback) {
     const dialog = this;
 
-    this.focusActivator(); 
+    this.focusActivator();
 
     this.$node.dialog('close');
     this.#state = 'closed';
@@ -198,7 +198,7 @@ class Dialog {
   }
 
   focus() {
-    const el = this.$node.find('button:not([type="disabled"]):not([data-method="delete"])').eq(0);
+    const el = this.$node.find('.govuk-button:not([type="disabled"]):not([data-method="delete"])').eq(0);
     if(el){
       el.focus();
     }
@@ -225,7 +225,7 @@ class Dialog {
 
   #build() {
     var dialog = this;
-    
+
     // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
       this.#addActivator();
@@ -239,7 +239,7 @@ class Dialog {
       modal: true,
       resizable: false,
     });
-    
+
     this.$container = dialog.$node.parents(".ui-dialog");
     this.$container.addClass(dialog.#className);
     this.$node.data("instance", dialog);
@@ -289,18 +289,18 @@ class Dialog {
       $buttons.on("click", function() {
         dialog.close();
       });
-    } 
+    }
   }
 
   #setupConfirmButton() {
     const dialog = this;
     const $button = $(this.#config.confirmOnClickSelector, this.$container).first();
     $button.on("click", function(e) {
-      e.preventDefault(); 
+      e.preventDefault();
       dialog.close(dialog.#config.onConfirm);
     });
   }
-  
+
   #addActivator() {
     var $marker = $("<span></span>");
 

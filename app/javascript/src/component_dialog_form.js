@@ -9,7 +9,7 @@
 * the page, or an HTML teplate recieved via an API request.
 *
 * This class is effectively a combination of the Dialog and DialogApiRequest
-* classes with added functionality to handle forms.  
+* classes with added functionality to handle forms.
 *
 * The form within the dialog can either be submitted synchronoously or
 * asynchronously.
@@ -20,22 +20,22 @@
 * property (type) [default value]:
 *
 *  - activator ($node | boolean) [false]
-*    Either an existing node that will trigger the dialog, or a boolean value 
+*    Either an existing node that will trigger the dialog, or a boolean value
 *    indicating whether or not to create an activator
 *
 *  - autoOpen (boolean) [false]
 *    Open the dialog on creation.
 *
-*  - classes (object) [{}] 
+*  - classes (object) [{}]
 *    An object of jQuery ui classes that will be applied to the UI dialog
 *    elements
-*  
+*
 *  - closeOnClickSelector (string) ['button[type="button]']
 *    jQuery selector string for elements that will close the dialog when
 *    clicked.
 *
 *  - submitOnClickSelector (string) ['button[type="submit"]']
-*    jQuery selector string for the button that will submit the form wihtin the 
+*    jQuery selector string for the button that will submit the form wihtin the
 *    dialog when clicked.
 *
 *  - remote (boolean) [false]
@@ -45,7 +45,7 @@
 *    Only used when remote is true.  If a string is provided, the submit button
 *    will be disabled on submit, and its label set to the value of this option.
 *
-*  - onOpen (function(dialog)) 
+*  - onOpen (function(dialog))
 *    Callable that will be called when the dialog is opened. Recieves the
 *    Dialog class instance as an argument
 *
@@ -56,7 +56,7 @@
 *  - onLoad (function(dialog))
 *    Callable that will be called when the response from the server is
 *    successfully recieved, but before the jQuery dialog is initialized or any
-*    enhancements ahve been applied to the repsonse. Recieves the Dialog class 
+*    enhancements ahve been applied to the repsonse. Recieves the Dialog class
 *    instance as an argument
 *
 *  - onReady (function(dialog))
@@ -81,7 +81,7 @@
 
 const {
 mergeObjects,
-safelyActivateFunction, 
+safelyActivateFunction,
 } = require('./utilities');
 
 const DialogActivator = require('./component_dialog_activator');
@@ -93,9 +93,9 @@ class DialogForm {
   #state;
 
   /**
-  * @param {string|jQuery} source - Either a url to request html from or jQuery node 
+  * @param {string|jQuery} source - Either a url to request html from or jQuery node
   * @param {Object} config - config key/value pairs
-  */ 
+  */
   constructor(source, config) {
     this.#config = mergeObjects({
       activator: false,
@@ -113,7 +113,7 @@ class DialogForm {
       onOpen: function(dialog) {},
       onClose: function(dialog) {},
     }, config);
-   
+
     this.#remoteSource = false;
     this.#state = "closed";
     this.$node = $(); // Should be overwritten once intialised
@@ -180,7 +180,7 @@ class DialogForm {
   focus() {
     var el = this.$node.parent().find('input[aria-invalid]').get(0);
     if(!el) {
-      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), .govuk-button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
     }
     if(el){
       el.focus();
@@ -194,10 +194,10 @@ class DialogForm {
     }
   }
 
-  /* 
-  * simply a function alias for better readability / nicer api 
-  * expected to be called if the dialog html is changed dynamically 
-  * will re-enhance the html to add the required functionality 
+  /*
+  * simply a function alias for better readability / nicer api
+  * expected to be called if the dialog html is changed dynamically
+  * will re-enhance the html to add the required functionality
   * */
   refresh() {
     this.#enhance();
@@ -211,15 +211,15 @@ class DialogForm {
       $.get(source)
       .done((response) => {
         this.$node = $(response);
-        this.#build(); 
-        // Allow a function to be specified in dialog config 
+        this.#build();
+        // Allow a function to be specified in dialog config
         safelyActivateFunction(dialog.#config.onLoad, dialog);
         this.#enhance();
         if(this.#config.autoOpen) {
           this.open();
         }
       })
-    } else { 
+    } else {
       this.$node = source;
 
       this.#build();
@@ -234,7 +234,7 @@ class DialogForm {
 
   #build() {
     var dialog = this;
-    
+
     // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
       this.#addActivator();
@@ -248,7 +248,7 @@ class DialogForm {
       modal: true,
       resizable: false,
     });
-    
+
     this.$container = dialog.$node.parents(".ui-dialog");
     this.$container.addClass(dialog.#className);
     this.$node.data("instance", dialog);
@@ -278,7 +278,7 @@ class DialogForm {
       $buttons.on("click", function() {
         dialog.close();
       });
-    } 
+    }
   }
 
   /* add event listeners to configured submit button */
@@ -286,7 +286,7 @@ class DialogForm {
     var dialog = this;
     let $button = $(this.#config.submitOnClickSelector, this.$container).first();
     $button.on("click", function(e) {
-      e.preventDefault(); 
+      e.preventDefault();
       if(dialog.#config.remote && dialog.#config.disableOnSubmit) {
         $button.text(dialog.#config.disableOnSubmit);
         $button.attr('disabled', 'disabled');
@@ -299,7 +299,7 @@ class DialogForm {
   #submitRemote() {
     var dialog = this;
 
-    $.ajax({ 
+    $.ajax({
       type: 'POST',
       url: dialog.$form.attr('action'),
       data: new FormData(dialog.$form.get(0)),
@@ -318,7 +318,7 @@ class DialogForm {
 
   #destroy() {
     if(this.$node.dialog('instance')) {
-      this.$node.dialog('destroy'); 
+      this.$node.dialog('destroy');
     }
     this.$node.remove();
   }

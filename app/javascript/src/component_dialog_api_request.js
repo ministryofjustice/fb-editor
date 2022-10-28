@@ -11,8 +11,8 @@
 * These dialogs are ephemeral - they are created on a successful API request,
 * and removed entirely from the DOM once closed.
 *
-* While it is possible to pass in buttons for jQuery UI to use within the config 
-* options, it is recommended to have the controlling buttons included within the 
+* While it is possible to pass in buttons for jQuery UI to use within the config
+* options, it is recommended to have the controlling buttons included within the
 * markup in the returned template.
 *
 * Configuration
@@ -21,7 +21,7 @@
 * property (type) [default value]:
 *
 *  - activator ($node | boolean) [false]
-*    Either an existing node that will trigger the dialog, or a boolean value 
+*    Either an existing node that will trigger the dialog, or a boolean value
 *    indicating whether or not to create an activator
 *
 *  - autoOpen (boolean) [false]
@@ -35,20 +35,20 @@
 *            {
 *               text: "This is used for button text",
 *               click: function(dialog) {
-*                 // an action to run on click that receives the DialogApiRequest 
+*                 // an action to run on click that receives the DialogApiRequest
 *                 // instance as an argument.
 *               }
 *            }
 *
-*  - classes (object) [{}] 
+*  - classes (object) [{}]
 *    An object of jQuery ui classes that will be applied to the UI dialog
 *    elements
-*  
+*
 *  - closeOnClickSelector (string) ['']
 *    jQuery selector string for elements that will close the dialog when
-*    clicked. Use this option if you do not pass in buttons. 
+*    clicked. Use this option if you do not pass in buttons.
 *
-*  - onOpen (function(dialog)) 
+*  - onOpen (function(dialog))
 *    Callable that will be called when the dialog is opened. Recieves the
 *    Dialog class instance as an argument
 *
@@ -59,7 +59,7 @@
 *  - onLoad (function(dialog))
 *    Callable that will be called when the response from the server is
 *    successfully recieved, but before the jQuery dialog is initialized or any
-*    enhancements ahve been applied to the repsonse. Recieves the Dialog class 
+*    enhancements ahve been applied to the repsonse. Recieves the Dialog class
 *    instance as an argument
 *
 *  - onReady (function(dialog))
@@ -84,7 +84,7 @@ class DialogApiRequest {
   /**
   * @param {string} url - The url to request the template from
   * @param {Object} config - config key/value pairs
-  */ 
+  */
   constructor(url, config) {
     this.#config = mergeObjects({
       activator: false,
@@ -126,7 +126,7 @@ class DialogApiRequest {
 
     this.$node.dialog("open");
     safelyActivateFunction(this.#config.onOpen, dialog);
-    
+
     queueMicrotask(() => {
       dialog.focus();
     });
@@ -140,7 +140,7 @@ class DialogApiRequest {
   }
 
   focus() {
-    const el = this.$node.find('button:not([type="disabled"]):not([data-method="delete"])').eq(0);
+    const el = this.$node.find('.govuk-button:not([type="disabled"]):not([data-method="delete"])').eq(0);
     if(el){
       el.focus();
     }
@@ -172,7 +172,7 @@ class DialogApiRequest {
 
   #build() {
     const dialog = this;
-    
+
     // this.activator is true || $node setup a DialogActivator
     if(this.activator) {
       this.#addActivator();
@@ -186,9 +186,9 @@ class DialogApiRequest {
       modal: true,
       resizable: false,
       open: function() { dialog.#state = "open" },
-      close: function() { 
-        dialog.#state = "closed"; 
-        dialog.focusActivator(); 
+      close: function() {
+        dialog.#state = "closed";
+        dialog.focusActivator();
         dialog.#destroy();
       }
     });
@@ -247,7 +247,7 @@ class DialogApiRequest {
 
   #destroy() {
     if(this.$node.dialog('instance')) {
-      this.$node.dialog('destroy'); 
+      this.$node.dialog('destroy');
     }
     this.$node.remove();
   }
