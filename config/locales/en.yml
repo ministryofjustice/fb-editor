@@ -199,8 +199,8 @@ en:
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
-      can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first, then try again.'
-      can_not_delete_message_confirmation_email: 'You cannot delete this question because it is used by the confirmation email. Update the email settings.'
+      can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first.'
+      can_not_delete_message_confirmation_email: 'You cannot delete this question because it is required by the confirmation email. Update the email settings first.'
   question_items:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this option yet'
@@ -224,10 +224,10 @@ en:
       delete_branch_destination_page_no_default_next_message: 'You cannot leave a branch without any pages. Either edit the branching point or add another page to the branch first.'
       delete_and_update_branching: 'Delete and update branching'
       you_cannot_delete_this_page: 'You cannot delete this page yet'
-      delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first, then try again.'
+      delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first.'
       stack_branches_not_supported_message: 'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
       can_not_delete_email_page_heading: 'You cannot delete this page yet'
-      can_not_delete_email_page_message: 'You cannot delete this page because it is used by the confirmation email. Update the email settings first.'
+      can_not_delete_email_page_message: 'You cannot delete this page because it is required by the confirmation email. Update the email settings first.'
       go_to_email_settings: 'Go to email settings'
     destination:
       heading: 'Change destination'
