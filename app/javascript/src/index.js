@@ -7,6 +7,7 @@ const BranchesController = require('./controller_branches');
 const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
 const CollectionEmailController = require('./controller_collection_email');
+const ConfirmationEmailController = require('./controller_confirmation_email');
 const {
   snakeToPascalCase,
 } = require('./utilities');
@@ -78,6 +79,11 @@ switch(controllerAndAction()) {
   case "EmailController#create":
       Controller = CollectionEmailController;
   break;
+
+  case "ConfirmationEmailController#index":
+  case "ConfirmationEmailController#create":
+    Controller = ConfirmationEmailController;
+    break;
 
   default:
        console.log(controllerAndAction());
