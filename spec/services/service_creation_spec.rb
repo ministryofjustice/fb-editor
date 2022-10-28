@@ -79,6 +79,14 @@ RSpec.describe ServiceCreation do
           ).to include('is already used by another form. Please modify it.')
         end
       end
+
+      context 'when name starts with a number' do
+        let(:attributes) { { service_name: '1st-form' } }
+
+        it 'returns false' do
+          expect(service_creation.create).to be_falsey
+        end
+      end
     end
 
     context 'when is valid' do
