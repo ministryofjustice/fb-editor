@@ -21,22 +21,22 @@
   <%= f.govuk_email_field :service_email_output,
     label: {
       text: f.object.class.human_attribute_name(:service_email_output),
-      for: email_settings_field_id(f, :service_email_output, deployment_environment)
+      for: settings_field_id(f, :service_email_output, deployment_environment)
     },
     width: 'two-thirds',
-    id: email_settings_field_id(f, :service_email_output, deployment_environment) %>
+    id: settings_field_id(f, :service_email_output, deployment_environment) %>
 
   <%= f.govuk_text_field :service_email_subject,
     label: {
       text: f.object.class.human_attribute_name(:service_email_subject),
-      for: email_settings_field_id(f, :service_email_subject, deployment_environment)
+      for: settings_field_id(f, :service_email_subject, deployment_environment)
     },
-    id: email_settings_field_id(f, :service_email_subject, deployment_environment) %>
+    id: settings_field_id(f, :service_email_subject, deployment_environment) %>
 
   <%= f.govuk_text_area :service_email_body,
     label: {
       text: f.object.class.human_attribute_name(:service_email_body),
-      for: email_settings_field_id(f, :service_email_body, deployment_environment)
+      for: settings_field_id(f, :service_email_body, deployment_environment)
     },
     hint: { text: f.object.class.human_attribute_name(:service_email_body_hint) },
     id:  "service-email-body-#{deployment_environment}-field",
