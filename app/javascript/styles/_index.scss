@@ -1,4 +1,4 @@
-/* Note:
+/*fNote:
  * These styles rely on some sass code from the govuk design files.
  * Specific customisations for the MOJ form builder Editor.
  **/
@@ -132,6 +132,10 @@ html {
 
 .fb-govuk-button--inline {
   width: auto;
+}
+
+.fb-link-button {
+  @include button_as_link;
 }
 
 .fb-govuk-button-inverted {
