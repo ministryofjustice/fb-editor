@@ -27,15 +27,14 @@
            data-component="FormCreateDialog">
         <%= form_for(@service_creation, url: services_path) do |f| %>
           <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
-            <div id="hint">Give your form a name, your form name cannot begin with a number</div>
             <%= f.label :service_name, class: "govuk-label govuk-label--m" %>
             <% f.object.errors.each do |error|  %>
               <p class="govuk-error-message"><%= error.message %></p>
               <div id="hint">Give your form a name, your form name cannot begin with a number</div>
             <% end %>
+            <div class="govuk-hint" id="hint">Give your form a name, your form name cannot begin with a number</div>
             <%= f.text_field :service_name, class: "govuk-input", 'aria-describedby' => 'hint'%>
           </div>
-
           <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>
           <%# f.button t('actions.cancel'), class: "govuk-button govuk-button--secondary", type: 'button' %>
         <% end %>
