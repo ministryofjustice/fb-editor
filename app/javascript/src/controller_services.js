@@ -530,7 +530,6 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
     $header.css("top", (y) + "px");
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
-    $button.css("top", (y + buttonTop) + "px");
   });
 }
 
@@ -553,22 +552,29 @@ function applyPageFlowConnectorPaths(view, $overview) {
     var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
     var fromY = $item.position().top + (rowHeight / 4);
     var $next = $("[data-fb-id=" + next + "]", $overview);
-    var toX = $next.position().left - 1; // - 1 for design spacing
-    var toY = $next.position().top + (rowHeight / 4);
 
-    calculateAndCreatePageFlowConnectorPath({
-      from_x: fromX,
-      from_y: fromY,
-      to_x: toX,
-      to_y: toY,
-      via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
+    if($next.length) {
+      var toX = $next.position().left - 1; // - 1 for design spacing
+      var toY = $next.position().top + (rowHeight / 4);
+    } else {
+      // TODO - notify Dev team of issue
+    }
+
+    if( fromX && fromY && toX && toY) {
+      calculateAndCreatePageFlowConnectorPath({
+        from_x: fromX,
+        from_y: fromY,
+        to_x: toX,
+        to_y: toY,
+        via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
       }, {
-      from: $item.data("instance"),
-      to: $next.data("instance"),
-      container: $overview,
-      top: 0,                     // TODO: Is this and the height below the best way to position
-      bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-    });
+        from: $item.data("instance"),
+        to: $next.data("instance"),
+        container: $overview,
+        top: 0,                     // TODO: Is this and the height below the best way to position
+        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+      });
+    }
   });
 }
 
