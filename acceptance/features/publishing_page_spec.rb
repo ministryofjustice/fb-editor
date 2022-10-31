@@ -155,7 +155,7 @@ feature 'Publishing' do
   end
 
   def then_the_publish_button_should_be_enabled
-    # expect(environment_section.find(:css, 'button')[:'aria-disabled']).to eq('false').or eq('')
+    expect(environment_section.find(:css, 'button')[:'aria-disabled']).to eq('false').or eq('')
   end
 
   def environment_section
