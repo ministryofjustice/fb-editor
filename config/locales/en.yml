@@ -289,7 +289,8 @@ en:
         warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
     from_address:
       heading: "‘From’ address"
-      lede: Emails sent by your form, either to you or to people filling it in, will come from this address
+      lede: Emails sent by your form will come from this address
+      description: Emails sent by your form, either to you or to people filling it in, will come from this address
       resend_link_text: Resend validation link
       link_resent_success: Link resent - now check your email
       link_contact_us: Contact us
@@ -319,12 +320,11 @@ en:
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'
+      description: 'Receive your form data in PDF and CSV attached to emails.'
     confirmation_email:
       heading: 'Send a confirmation email'
       lede: Send the people who complete your form a copy of their data
-      email:
-        label: Send a confirmation email
-        help: Send the people completing your form a confirmation email with their information attached in a PDF.
+      description: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
     from_address:
       send_by_email:

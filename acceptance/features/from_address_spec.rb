@@ -72,7 +72,7 @@ feature 'From address' do
   ## From Address Settings page
   def then_I_should_see_the_from_address_settings_page
     expect(page).to have_content(I18n.t('settings.from_address.heading'))
-    expect(page).to have_content(I18n.t('settings.from_address.lede'))
+    expect(page).to have_content(I18n.t('settings.from_address.description'))
     expect(page).to have_content(I18n.t('activemodel.attributes.from_address.from_address_hint'))
   end
 

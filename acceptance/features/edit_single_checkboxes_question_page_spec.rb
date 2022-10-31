@@ -128,7 +128,7 @@ feature 'Edit single radios question page' do
 
   def and_I_add_an_option(option_label)
     click_button(I18n.t('actions.option_add'))
-    page.find('label', text: I18n.t('default_text.option')).set('').base.send_keys(option_label)
+    page.find('label', text: I18n.t('default_text.option')).set(option_label)
     when_I_save_my_changes
   end
 
