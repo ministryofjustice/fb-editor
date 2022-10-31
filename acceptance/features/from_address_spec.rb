@@ -97,12 +97,12 @@ feature 'From address' do
 
   ## Send data by email page
   def then_I_should_see_the_send_data_by_email_page
-    expect(page).to have_content(I18n.t('settings.submission.email.label'))
+    expect(page).to have_content(I18n.t('settings.collection_email.heading'))
     expect(page).to have_content(I18n.t('settings.form_analytics.test.description'))
     expect(page).to have_content(I18n.t('settings.form_analytics.live.description'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.send_by_email_dev'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.send_by_email_production'))
-    expect(page).to have_button(I18n.t('settings.submission.email.dev.save_button'))
+    expect(page).to have_button(I18n.t('actions.save'))
   end
 
   def then_I_should_see_the_send_data_by_email_from_address_warnings(status)

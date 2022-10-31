@@ -24,11 +24,11 @@
       %>
     <% end %>
 
-    <%= govuk_details(summary_text: t("settings.submission.email.#{deployment_environment}.config_details_summary").html_safe, classes: "configure-#{deployment_environment}") do %>
+    <%= govuk_details(summary_text: t("settings.submission.#{deployment_environment}.config_details_summary").html_safe, classes: "configure-#{deployment_environment}") do %>
       <%= render "email_fields", f: f, deployment_environment: deployment_environment %>
     <% end %>
 
     <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t("settings.submission.email.#{deployment_environment}.save_button") %>
+      <%= t("settings.submission.#{deployment_environment}.save_button") %>
     </button>
   <% end %>

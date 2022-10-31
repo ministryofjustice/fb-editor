@@ -184,7 +184,7 @@ feature 'Publishing' do
   end
 
   def and_I_save_my_email_settings
-    click_button(I18n.t("settings.submission.email.#{environment}.save_button"))
+    click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
   def then_I_should_see_username_and_password_fields

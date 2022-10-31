@@ -1,6 +1,6 @@
 <%= editor_settings_screen(settings_submission_index_path) do %>
-  <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
-  <p><%= t('settings.submission.email.help') %></p>
+  <h1 class="govuk-heading-xl"><%= t('settings.collection_email.heading') %></h1>
+  <p><%= t('settings.collection_email.lede') %></p>
 
   <% content_for :forms do %>
     <%= render 'form', object: @email_settings_dev, deployment_environment: 'dev' %>

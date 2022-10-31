@@ -310,16 +310,15 @@ en:
       name: 'Submission settings'
       hint: 'Set what happens when a user submits their data.'
       sub_heading: 'Use these settings to control what happens when a user submits the form on Test or Live.'
-      email:
-        label: 'Send data by email'
-        help: ''
-        configure_pdf_label: PDF attachment
-        dev:
-          config_details_summary: Configure <span class="sr-only">test settings</span>
-          save_button: Save Test settings
-        production:
-          config_details_summary: Configure <span class="sr-only">live settings</span>
-          save_button: Save Live settings
+      dev:
+        config_details_summary: Configure <span class="sr-only">test settings</span>
+        save_button: Save Test settings
+      production:
+        config_details_summary: Configure <span class="sr-only">live settings</span>
+        save_button: Save Live settings
+    collection_email:
+      heading: 'Collect information by email'
+      lede: 'Receive your form data in PDF and CSV attached to emails.'
     confirmation_email:
       heading: 'Send a confirmation email'
       lede: Send the people who complete your form a copy of their data
