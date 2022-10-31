@@ -13,6 +13,7 @@ const {
   snakeToPascalCase,
 } = require('./utilities');
 
+
 // Determine the controller we need to use
 function controllerAndAction() {
   var controller = snakeToPascalCase(app.page.controller);

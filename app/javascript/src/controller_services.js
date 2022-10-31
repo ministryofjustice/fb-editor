@@ -67,7 +67,7 @@ ServicesController.edit = function() {
   }
 
   if(view.$flowDetached.length) {
-    layoutDetachedItemsOveriew(view);
+    layoutDetachedItemsOverview(view);
   }
 
   addServicesContentScrollContainer(view);
@@ -192,7 +192,7 @@ function layoutFormFlowOverview(view) {
  *            appear to position correctly with the noticed exception of
  *            the line type mentioned earlier. Double call is quickfix.
 **/
-function layoutDetachedItemsOveriew(view) {
+function layoutDetachedItemsOverview(view) {
   var $container = view.$flowDetached;
   var expander = $container.find('.Expander').data("instance"); // Element is set as an Expander Component.
 
@@ -530,7 +530,6 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
     $header.css("top", (y) + "px");
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
-    //$button.css("top", (y + buttonTop) + "px");
   });
 }
 
@@ -558,9 +557,7 @@ function applyPageFlowConnectorPaths(view, $overview) {
       var toX = $next.position().left - 1; // - 1 for design spacing
       var toY = $next.position().top + (rowHeight / 4);
     } catch(err) {
-      // SEND AN ALERT??
-      Sentry.captureException(err);
-      // console.log('^^^ THIS IS THE ISSUE ^^^');
+      SentryLogger.send(err);
     }
 
     if( fromX && fromY && toX && toY) {
