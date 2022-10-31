@@ -412,7 +412,7 @@ en:
   services:
     heading: 'Your forms'
     edit: 'Edit'
-    form_name_hint: 'Give your form a name, your form name cannot begin with a number'
+    form_name_hint: "It cannot start with a number or include special characters except ' - ( )"
     preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
