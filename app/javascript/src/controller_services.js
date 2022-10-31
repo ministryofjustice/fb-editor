@@ -554,11 +554,12 @@ function applyPageFlowConnectorPaths(view, $overview) {
     var fromY = $item.position().top + (rowHeight / 4);
     var $next = $("[data-fb-id=" + next + "]", $overview);
 
-    if($next.length) {
+    try {
       var toX = $next.position().left - 1; // - 1 for design spacing
       var toY = $next.position().top + (rowHeight / 4);
-    } else {
+    } catch(err) {
       // SEND AN ALERT??
+      Sentry.captureException(err);
       // console.log('^^^ THIS IS THE ISSUE ^^^');
     }
 
