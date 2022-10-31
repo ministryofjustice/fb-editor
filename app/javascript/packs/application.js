@@ -8,6 +8,12 @@
 require("jquery")
 require("jquery-ui")
 require("showdown")
+const Sentry = require('@sentry/browser');
+Sentry.init({
+  dsn: 'https://5c37dde874b24d8988f04157fade6015@o345774.ingest.sentry.io/5684540',
+})
+window.Sentry = Sentry;
+
 require("../src/index")
 
 // Entry point for fb-editor stylesheets
