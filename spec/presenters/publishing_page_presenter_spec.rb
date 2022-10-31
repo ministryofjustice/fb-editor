@@ -85,7 +85,7 @@ RSpec.describe PublishingPagePresenter do
         end
 
         it 'returns falsey' do
-          # expect(subject.publish_button_disabled?).to be_falsey
+          expect(subject.publish_button_disabled?).to be_falsey
         end
       end
     end
@@ -102,12 +102,12 @@ RSpec.describe PublishingPagePresenter do
 
     context 'deployment environment is dev' do
       it 'returns falsey' do
-        # expect(subject.publish_button_disabled?).to be_falsey
+        expect(subject.publish_button_disabled?).to be_falsey
       end
     end
 
     context 'deployment environment is production' do
-      # it_behaves_like 'a publishing button'
+      it_behaves_like 'a publishing button'
     end
   end
 end
