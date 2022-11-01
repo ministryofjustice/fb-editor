@@ -1,5 +1,7 @@
 class DestroyQuestionModal
   include ActiveModel::Model
+  include ConfirmationEmailModalHelper
+
   attr_accessor :service, :page, :question
 
   delegate :expressions, :conditionals, to: :service
@@ -18,15 +20,8 @@ class DestroyQuestionModal
   end
 
   def used_in_confirmation_email?
-    return if confirmation_email_component_id.nil?
+    return unless confirmation_email_setting_checked?
 
-    confirmation_email_component_id.decrypt_value.include?(question.id)
-  end
-
-  def confirmation_email_component_id
-    @confirmation_email_component_id ||= ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'CONFIRMATION_EMAIL_COMPONENT_ID'
-    )
+    question.id.in?(confirmation_email_component_ids)
   end
 end

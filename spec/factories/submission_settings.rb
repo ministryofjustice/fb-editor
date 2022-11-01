@@ -21,5 +21,9 @@ FactoryBot.define do
     trait :service_csv_output do
       service_csv_output { true }
     end
+
+    trait :send_confirmation_email do
+      send_confirmation_email { true }
+    end
   end
 end
