@@ -8,7 +8,6 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
-const SentryLogger = require('./sentry_logger');
 
 const {
   snakeToPascalCase,
