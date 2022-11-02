@@ -17,16 +17,18 @@
 const Sentry = require('@sentry/browser');
 
 class SentryLogger {
-  constructor(app) {
+  constructor() {
+
     Sentry.init({
-      dsn: ''+app.sentry_dsn+'',
+      dsn: window.SENTRY_DSN,
     });
 
+    this.env = window.PLATFORM_ENV;
     this.sentry = Sentry;
   }
 
   send(details) {
-    if(app.platform_env != 'local') {
+    if(this.env != 'local') {
       if(typeof details == 'string') {
         this.sentry.captureMessage(details);
       } else {

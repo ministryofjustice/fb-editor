@@ -557,7 +557,7 @@ function applyPageFlowConnectorPaths(view, $overview) {
       var toX = $next.position().left - 1; // - 1 for design spacing
       var toY = $next.position().top + (rowHeight / 4);
     } catch(err) {
-      window.SentryLogger.send(err);
+      view.sentry.send(err);
     }
 
     if( fromX && fromY && toX && toY) {

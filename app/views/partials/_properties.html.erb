@@ -1,7 +1,7 @@
 <script>
+  var SENTRY_DSN = "<%= ENV['SENTRY_DSN'] %>";
+  var PLATFORM_ENV =  "<%= ENV['PLATFORM_ENV'] %>";
   var app = {
-    sentry_dsn: "<%= ENV['SENTRY_DSN'] %>",
-    platform_env: "<%= ENV['PLATFORM_ENV'] %>",
     api: {
       // FE terminology    | BE terminology
       // --------------------------------------------------------

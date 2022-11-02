@@ -93,7 +93,4 @@ switch(controllerAndAction()) {
        Controller = DefaultController;
 }
 
-$(document).ready( () => {
-  window.SentryLogger = new SentryLogger(app);
-  new Controller(app);
-});
+$(document).ready( () =>  new Controller(app) );
