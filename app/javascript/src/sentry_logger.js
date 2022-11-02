@@ -17,7 +17,7 @@
 const Sentry = require('@sentry/browser');
 
 class SentryLogger {
-  constructor() {
+  constructor(app) {
     Sentry.init({
       dsn: ''+app.sentry_dsn+'',
     });
@@ -36,4 +36,4 @@ class SentryLogger {
   }
 }
 
-module.exports = new SentryLogger
+module.exports = SentryLogger
