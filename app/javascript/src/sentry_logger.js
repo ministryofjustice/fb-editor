@@ -19,14 +19,14 @@ const Sentry = require('@sentry/browser');
 class SentryLogger {
   constructor() {
     Sentry.init({
-      dsn: ''+SENTRY_DSN+'',
+      dsn: ''+app.sentry_dsn+'',
     });
 
     this.sentry = Sentry;
   }
 
   send(details) {
-    if(NODE_ENV != 'development') {
+    if(app.platform_env != 'local') {
       if(typeof details == 'string') {
         this.sentry.captureMessage(details);
       } else {
