@@ -44,18 +44,22 @@ spec:
             value: 65a27a35-c475-48b9-9a20-30142f14
           - name: SERVICE_SLUG
             value: acceptance-tests-date
+          - name: SERVICE_ID
+            value: 0da69306-cafd-4d32-bbee-fff98cac74ce
           - name: PLATFORM_ENV
             value: test
           - name: DEPLOYMENT_ENV
             value: dev
           - name: SECRET_KEY_BASE
             value: 'fdfdd491d611aa1abef54cbf24a709a1bb31ff881a487f8c58c69399202b08f77019920f481e17b40dd7452361055534b9f91f172719ed98a088498242f96f59'
-          - name: SERVICE_METADATA
-            value: "{\"service_name\":\"acceptance-tests-date\",\"test_escaping\":\"I don't know\"}"
-          - name: AUTOCOMPLETE_ITEMS
-            value: "{\"some-component-uuid\":[{\"text\":\"some text\",\"value\":\"some value\"}]}"
           - name: SENTRY_DSN
             value: 'sentry-dsn-test'
+          - name: ACCESS_KEY_ID
+            value: access-key-id
+          - name: SECRET_ACCESS_KEY
+            value: secret-access-key
+          - name: BUCKET_NAME
+            value: bucket-name
           - name: ENCODED_PRIVATE_KEY
             valueFrom:
               secretKeyRef:
@@ -81,10 +85,10 @@ spec:
         ports:
         - containerPort: 3000
         resources:
-           limits:
+          limits:
             cpu: 150m
             memory: 300Mi
-           requests:
+          requests:
             cpu: 10m
             memory: 128Mi
         readinessProbe:

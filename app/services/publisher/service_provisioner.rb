@@ -24,11 +24,11 @@ class Publisher
     LIVE_PRODUCTION = 'live-production'.freeze
 
     def service_metadata
-      service.to_json.inspect
+      service.to_json
     end
 
     def autocomplete_items
-      Hash(autocomplete_response['items']).to_json.inspect
+      Hash(autocomplete_response['items']).to_json
     end
 
     def autocomplete_ids
@@ -135,6 +135,22 @@ class Publisher
 
     def secrets
       service_configuration.select(&:secrets?)
+    end
+
+    def aws_s3_access_key_id
+      ENV["AWS_S3_ACCESS_KEY_ID_#{platform_deployment_underscore}"]
+    end
+
+    def aws_s3_secret_access_key
+      ENV["AWS_S3_SECRET_ACCESS_KEY_#{platform_deployment_underscore}"]
+    end
+
+    def aws_s3_bucket_name
+      ENV["AWS_S3_BUCKET_#{platform_deployment_underscore}"]
+    end
+
+    def platform_deployment_underscore
+      @platform_deployment_underscore ||= platform_deployment.underscore.upcase
     end
 
     private

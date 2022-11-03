@@ -44,18 +44,22 @@ spec:
             value: <%= submission_encryption_key %>
           - name: SERVICE_SLUG
             value: <%= service_slug %>
+          - name: SERVICE_ID
+            value: <%= service_id %>
           - name: PLATFORM_ENV
             value: <%= platform_environment %>
           - name: DEPLOYMENT_ENV
             value: <%= deployment_environment %>
           - name: SECRET_KEY_BASE
             value: <%= secret_key_base %>
-          - name: SERVICE_METADATA
-            value: <%= ERB::Util.json_escape(service_metadata) %>
-          - name: AUTOCOMPLETE_ITEMS
-            value: <%= autocomplete_items %>
           - name: SENTRY_DSN
             value: '<%= service_sentry_dsn %>'
+          - name: ACCESS_KEY_ID
+            value: <%= aws_s3_access_key_id %>
+          - name: SECRET_ACCESS_KEY
+            value: <%= aws_s3_secret_access_key %>
+          - name: BUCKET_NAME
+            value: <%= aws_s3_bucket_name %>
         <% secrets.each do |secret|  %>
           - name: <%= secret.name %>
             valueFrom:
@@ -68,10 +72,10 @@ spec:
         ports:
         - containerPort: <%= container_port %>
         resources:
-           limits:
+          limits:
             cpu: <%= resource_limits_cpu %>
             memory: <%= resource_limits_memory %>
-           requests:
+          requests:
             cpu: <%= resource_requests_cpu %>
             memory: <%= resource_requests_memory %>
         readinessProbe:

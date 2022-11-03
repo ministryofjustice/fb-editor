@@ -2,9 +2,10 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
   subject(:cloud_platform) do
     described_class.new(service_provisioner)
   end
+  let(:service_id) { '0da69306-cafd-4d32-bbee-fff98cac74ce' }
   let(:service_provisioner) do
     ::Publisher::ServiceProvisioner.new(
-      service_id: '0da69306-cafd-4d32-bbee-fff98cac74ce',
+      service_id: service_id,
       platform_environment: 'test',
       deployment_environment: 'dev'
     )
@@ -22,10 +23,11 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
   describe '#pre_publishing' do
     let(:response) { :ok }
 
-    it 'generates kubernetes configuration' do
+    it 'uploads metadata files and generates kubernetes configuration' do
+      expect_any_instance_of(Publisher::Utils::ServiceMetadataFiles).to receive(:upload)
       expect_any_instance_of(Publisher::Utils::KubernetesConfiguration).to receive(:generate)
-          .with(destination: config_dir)
-          .and_return(response)
+        .with(destination: config_dir)
+        .and_return(response)
       expect(cloud_platform.pre_publishing).to be(:ok)
     end
   end
