@@ -15,6 +15,7 @@
 
 
 const Dialog = require('./component_dialog');
+const SentryLogger=  require('./sentry_logger');
 const post = require('./utilities').post;
 
 
@@ -24,6 +25,7 @@ class DefaultController {
     var $document = $(document);
     this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
     this.features = app.features;
+    this.sentry = new SentryLogger();
     this.page = app.page;
     this.text = app.text;
     this.dialog = createDialog.call(this);

@@ -8,9 +8,11 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
+
 const {
   snakeToPascalCase,
 } = require('./utilities');
+
 
 // Determine the controller we need to use
 function controllerAndAction() {
@@ -90,4 +92,4 @@ switch(controllerAndAction()) {
        Controller = DefaultController;
 }
 
-$(document).ready( () => new Controller(app) );
+$(document).ready( () =>  new Controller(app) );
