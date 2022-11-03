@@ -1,6 +1,11 @@
-<%= editor_settings_screen(settings_path) do %>
-  <h1 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.submission.name') %></h1>
-  <nav class="govuk-navigation" aria-labelledby="settings-navigation-heading">
+<%= render MojForms::SettingsScreenComponent.new(
+  heading:t('settings.submission.heading'),
+  description: t('settings.submission.description')
+  ) do |c| %>
+
+  <% c.with_back_link(href: settings_path) %>
+
+  <nav class="govuk-navigation" aria-labelledby="page-heading">
     <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
       <div>
         <dt><%= link_to t('settings.from_address.heading'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>

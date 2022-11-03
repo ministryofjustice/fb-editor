@@ -1,17 +1,21 @@
-<%= editor_settings_screen(settings_path) do %>
-    <h1 class="govuk-heading-xl"><%= t('settings.form_analytics.name') %></h1>
-    <p class="govuk-body"><%= t('settings.form_analytics.intro') %></p>
-    <%= form_for @form_analytics, url: settings_form_analytics_path(service.service_id),
-      html: { id: 'form-analytics-settings' },
-      builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+<%= render MojForms::SettingsScreenComponent.new(
+  heading:t('settings.form_analytics.heading'),
+  description: t('settings.form_analytics.description')
+  ) do |c| %>
 
-      <%= f.govuk_error_summary %>
+  <% c.with_back_link(href: settings_path) %>
 
-      <%= render partial: 'form', locals: { f: f, environment: 'test' } %>
-      <%= render partial: 'form', locals: { f: f, environment: 'live' } %>
+  <%= form_for @form_analytics, url: settings_form_analytics_path(service.service_id),
+    html: { id: 'form-analytics-settings' },
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-      <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-        <%= t('actions.save') %>
-      </button>
+    <%= f.govuk_error_summary %>
+
+    <%= render partial: 'form', locals: { f: f, environment: 'test' } %>
+    <%= render partial: 'form', locals: { f: f, environment: 'live' } %>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('actions.save') %>
+    </button>
   <% end %>
 <% end %>

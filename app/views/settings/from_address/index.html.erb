@@ -1,41 +1,31 @@
-<%= editor_settings_screen(settings_submission_index_path) do %>
-  <%= form_for @from_address,
+<%= form_for @from_address,
     method: :post,
     url: settings_from_address_index_path(service.service_id),
     html: { class: (@from_address.errors.any? ? 'with-errors' : '') },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
+<%= render MojForms::SettingsScreenComponent.new(
+  heading:t('settings.from_address.heading'),
+  description: t('settings.from_address.description')
+  ) do |c| %>
+
+  <% c.with_back_link(href: settings_submission_index_path) %>
+
+  <% c.with_notification do %>
     <%= f.govuk_error_summary link_base_errors_to: :email, class: "govuk-!-margin-bottom-6 govuk-!-margin-top-6" %>
 
     <% if @from_address.pending? && @from_address.errors.blank? %>
       <%= govuk_notification_banner(title_text: t('notification_banners.important'), classes: "govuk-!-margin-top-6") do %>
         <% if @from_address.allowed_domain? %>
           <%= @presenter.message.html_safe %>
-            <p>
-              <span role="alert"></span>
-              <%= tag.button t('settings.from_address.resend_link_text'),
-                class: 'fb-link-button',
-                data: {
-                  remote: true,
-                  method: 'post',
-                  url: api_service_settings_from_address_resend_path(service.service_id),
-                  success: t('settings.from_address.link_resent_success')
-                } %>
-            </p>
+          <%= render "resend_validation_link" %>
         <% else %>
-          <%= t('warnings.from_address.settings.contact_us').html_safe %>
-            <p>
-              <%= link_to t('settings.from_address.link_contact_us'),
-                t('settings.from_address.contact_url'),
-                class: 'fb-link-button' %>
-            </p>
+          <%= render "contact_us" %>
         <% end %>
       <% end %>
     <% end %>
 
-    <h1 class="govuk-heading-xl"><%= t('settings.from_address.heading') %></h1>
-
-    <p class="govuk-!-margin-bottom-7"><%= t('settings.from_address.description') %></p>
+  <% end %>
 
     <%= f.govuk_text_field :email,
       label: { text:  t('activemodel.attributes.from_address.email') },
@@ -58,5 +48,6 @@
       <%= t('actions.save') %>
     </button>
     <span class="sr-only" id="save_description"></span>
+
   <% end %>
 <% end %>
