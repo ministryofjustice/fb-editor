@@ -15,6 +15,6 @@ class SubmissionWarningsPresenter
   end
 
   def messages
-    presenters.map(&:message).compact
+    presenters.map(&:message).compact.flatten
   end
 end

@@ -59,6 +59,10 @@ class PublishingPagePresenter
   end
 
   def submission_warning_presenters
-    [submission_pages_presenter, from_address_presenter]
+    [
+      submission_pages_presenter,
+      autocomplete_warning,
+      from_address_presenter
+    ]
   end
 end
