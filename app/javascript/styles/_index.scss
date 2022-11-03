@@ -153,6 +153,23 @@ html {
   }
 }
 
+.fb-back-link {
+  @extend %govuk-link;
+  @extend %govuk-body-s;
+  @include govuk-link-style-text;
+  @include govuk-link-style-no-underline;
+
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  left: 0;
+
+  > span:first-child {
+    margin-right: 4px;
+  }
+}
+
 
 /* Publishing
  * ------------------- */
@@ -615,7 +632,7 @@ html {
     z-index: 4;
   }
 
-  .FlowItemMenu,
+  .PageMenu,
   .ConnectionMenu {
     z-index: 5;
   }

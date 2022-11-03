@@ -1,6 +1,6 @@
 <%= editor_settings_screen(settings_submission_index_path) do %>
-  <h1 class="govuk-heading-xl"><%= t('settings.confirmation_email.email.label') %></h1>
-  <p><%= t('settings.confirmation_email.email.help') %></p>
+  <h1 class="govuk-heading-xl"><%= t('settings.confirmation_email.heading') %></h1>
+  <p><%= t('settings.confirmation_email.description') %></p>
 
   <% if @email_components.present? %>
     <% content_for :forms do %>
