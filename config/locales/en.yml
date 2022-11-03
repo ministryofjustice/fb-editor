@@ -348,7 +348,8 @@ en:
           default: 'You need to set a %{href} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
-      link: confirmation email
+      link_text: confirmation email
+      link_url: 'https://moj-forms.service.justice.gov.uk/settings/#confirmation-email'
     submission_pages:
       dev:
         both_pages: 'Your form has no check answers page or confirmation page'

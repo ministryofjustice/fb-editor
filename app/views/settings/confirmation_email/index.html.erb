@@ -15,9 +15,10 @@
       text: t('warnings.confirmation_email.message',
       href:
         govuk_link_to(
-          t('warnings.confirmation_email.link'),
-          t('partials.header.user_guide_url'),
-          target: :_blank
+          t('warnings.confirmation_email.link_text'),
+          t('warnings.confirmation_email.link_url'),
+          target: :_blank,
+          rel: 'nofollow noreferrer'
         )
       ).html_safe
     ) %>
