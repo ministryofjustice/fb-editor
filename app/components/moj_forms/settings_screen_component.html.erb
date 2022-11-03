@@ -1,0 +1,20 @@
+<%= tag.div(**html_attributes) do %>
+  <div class="govuk-grid-row">
+    <section class="govuk-grid-column-two-thirds" aria-labelledby="page-heading">
+      <%= back_link if back_link? %>
+
+      <%= notification if notification? %>
+
+      <header class="<%= @header_classes -%>">
+        <% if @heading %>
+          <h1 id="page-heading" class="govuk-heading-xl"><%= @heading %></h1>
+        <% end %>
+        <% if @description %>
+          <p class="mojf-settings-screen__description"><%= @description %></p>
+        <% end %>
+      </header>
+
+      <%= content %>
+    </div>
+  </div>
+<% end %>

@@ -1,18 +1,17 @@
-<%= editor_settings_screen(false) do %>
-  <h1 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.name') %></h1>
-  <nav class="govuk-navigation" aria-labelledby="settings-navigation-heading">
+<%= render MojForms::SettingsScreenComponent.new(heading:t('settings.name')) do |c| %>
+  <nav class="govuk-navigation" aria-labelledby="page-heading">
     <dl class="fb-settings-list">
       <div>
-        <dt><%= link_to t('settings.form_information.name'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint"><%= t('settings.form_information.description') %></dd>
+        <dt><%= link_to t('settings.form_information.heading'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint"><%= t('settings.form_information.lede') %></dd>
       </div>
       <div>
-        <dt><%= link_to t('settings.form_analytics.name'), settings_form_analytics_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.form_analytics.hint') %></dd>
+        <dt><%= link_to t('settings.form_analytics.heading'), settings_form_analytics_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.form_analytics.lede') %></dd>
       </div>
       <div>
-        <dt><%= link_to t('settings.submission.name'), settings_submission_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.submission.hint') %></dd>
+        <dt><%= link_to t('settings.submission.heading'), settings_submission_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.submission.lede') %></dd>
       </div>
     </dl>
   </nav>

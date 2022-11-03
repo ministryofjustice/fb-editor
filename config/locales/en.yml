@@ -34,7 +34,7 @@ en:
     branching_title: 'Branching point %{branching_number}'
     confirmation_email_subject: "Your submission to ‘%{service_name}’"
     confirmation_email_body: "Thank you for your submission to ‘%{service_name}’.\n\r\nA copy of the information you provided is attached to this email."
-  notifictaion_banners:
+  notification_banners:
     important: Important
     success: Success
   dialogs:
@@ -140,6 +140,7 @@ en:
       heading: You don't have access to that page
       body: Contact the form owner or the MoJ Forms team for help.
   actions:
+    back: 'Back'
     edit: 'Edit'
     save: 'Save'
     saving: 'Saving...'
@@ -281,7 +282,8 @@ en:
   settings:
     name: 'Settings'
     form_information:
-      name: 'Form details'
+      heading: 'Form details'
+      lede: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
       description: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
       form_name:
         label: 'Form name'
@@ -296,9 +298,9 @@ en:
       link_contact_us: Contact us
       contact_url: https://moj-forms.service.justice.gov.uk/contact/
     form_analytics:
-      name: Google Analytics
-      hint:  Monitor your form's performance (requires a Google Analytics account).
-      intro: This inserts tracking code in your form, allowing you to view performance metrics in Google Analytics. It requires your own Google Analytics account and at least one tracking ID.
+      heading: Google Analytics
+      lede:  Monitor your form's performance (requires a Google Analytics account).
+      description: This inserts tracking code in your form, allowing you to view performance metrics in Google Analytics. It requires your own Google Analytics account and at least one tracking ID.
       test:
         heading: Test site
         description: Where you can check your form works and get feedback.
@@ -308,9 +310,9 @@ en:
       details: Configure
       details_hint: 'You can use tracking IDs for any of the following Google products:'
     submission:
-      name: 'Submission settings'
-      hint: 'Set what happens when a user submits their data.'
-      sub_heading: 'Use these settings to control what happens when a user submits the form on Test or Live.'
+      heading: 'Submission settings'
+      lede: 'Set what happens when a user submits their data.'
+      description: 'Use these settings to control what happens when a user submits the form on Test or Live.'
       dev:
         config_details_summary: Configure <span class="sr-only">test settings</span>
         save_button: Save Test settings

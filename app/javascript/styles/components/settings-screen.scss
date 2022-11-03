@@ -1,0 +1,17 @@
+.mojf-settings-screen {
+
+  h1 {
+    margin-top: govuk-spacing(6);
+  }
+
+  header.with-description {
+    h1 {
+      margin-bottom: 0;
+    }
+  }
+
+  &__description {
+    margin-top: govuk-spacing(2);
+    margin-bottom: govuk-spacing(8);
+  }
+}

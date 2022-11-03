@@ -1,5 +1,9 @@
-<%= editor_settings_screen(settings_path) do %>
-  <h1 class="govuk-heading-xl"><%= t('settings.form_information.name') %></h1>
+<%= render MojForms::SettingsScreenComponent.new(
+  heading:t('settings.form_information.heading'),
+  description: t('settings.form_information.description')
+) do |c| %>
+
+  <% c .with_back_link(href: settings_path) %>
 
   <%= form_for @settings, as: :service, url: settings_form_information_index_path(service.service_id) do |f| %>
     <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
