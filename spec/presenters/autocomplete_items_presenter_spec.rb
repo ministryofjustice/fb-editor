@@ -1,17 +1,11 @@
 RSpec.describe AutocompleteItemsPresenter do
   subject(:autocomplete_items_presenter) { described_class.new(service, autocomplete_items) }
-  let(:autocomplete_warning) do
-    I18n.t('publish.autocomplete_items.dev.message')
-  end
   let(:page) { service.find_page_by_url('countries') }
   let(:component_uuid) { page.components.first.uuid }
   let(:component_title) { page.components.first.humanised_title }
   let(:page_uuid) { page.uuid }
-  let(:warning_messages) do
-    [
-      { component_title: component_title, page_uuid: page_uuid }
-    ]
-  end
+  let(:environment) { 'test' }
+  let(:warning_messages) { [I18n.t("publish.autocomplete_items.#{environment}.message")] }
 
   describe '#messages' do
     context 'when all components have items' do

@@ -34,13 +34,17 @@ RSpec.describe PublishingPagePresenter do
 
     context 'submission warning presenters' do
       let(:presenters) do
-        [submission_pages_presenter, from_address_presenter]
+        [submission_pages_presenter,
+         autocomplete_warning,
+         from_address_presenter]
       end
       let(:submission_pages_presenter) { double }
+      let(:autocomplete_warning) { double }
       let(:from_address_presenter) { double }
 
       before do
         allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
+        allow(subject).to receive(:autocomplete_warning).and_return(autocomplete_warning)
         allow(subject).to receive(:from_address_presenter).and_return(from_address_presenter)
       end
 

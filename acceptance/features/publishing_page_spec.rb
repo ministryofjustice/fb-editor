@@ -147,7 +147,7 @@ feature 'Publishing' do
 
   def then_I_should_see_the_no_service_output_message
     message = environment_section.find(:css, '.govuk-warning-text__text').text
-    expect(message).to include(I18n.t('publish.service_output.message'))
+    expect(message).to include(I18n.t('publish.service_output.message', href_collection_information_by_email: t('publish.service_output.link') ))
   end
 
   def then_I_should_see_the_publish_button

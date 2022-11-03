@@ -343,24 +343,28 @@ en:
       publishing:
         link: ‘from’ address
         dev:
-          pending: 'you have not validated your %{href} for emails'
-          default: 'you have not set a %{href} for emails'
+          pending: 'You have not validated your %{href} for emails'
+          default: 'You have not set a %{href} for emails'
         production:
-          pending: 'you need to validate your %{href} for emails'
-          default: 'you need to set a %{href} for emails'
+          pending: 'You need to validate your %{href} for emails'
+          default: 'You need to set a %{href} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
       link_text: confirmation email
       link_url: 'https://moj-forms.service.justice.gov.uk/settings/#confirmation-email'
     submission_pages:
       dev:
-        both_pages: 'add a check answers page and a confirmation page'
-        cya_page: 'add a check answers page'
-        confirmation_page: 'add a confirmation page'
+        both_pages: 'it is missing a %{href}'
+        cya_page: 'it is missing a %{href}'
+        confirmation_page: ' it is missing a %{href}'
       production:
-        both_pages: 'add a check answers page and a confirmation page'
-        cya_page: 'add a check answers page'
-        confirmation_page: 'add a confirmation page'
+        both_pages: 'add a %{href}'
+        cya_page: 'add a %{href}'
+        confirmation_page: 'add a %{href}'
+      link:
+        both_pages: 'check answers page and confirmation page'
+        cya_page: 'check answers page'
+        confirmation_page: 'confirmation page'
     pages_flow:
       both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
       cya_page: 'You won’t receive any user data without a check answers page'
@@ -368,7 +372,7 @@ en:
     publish:
       dev:
         icon_fallback: 'Warning'
-        heading: 'You will not receive any responses from this form because: '
+        heading: 'You will not receive any responses from this form because:'
       production:
         icon_fallback: 'Error'
         heading: 'Your form has issue(s) preventing submissions from being sent. Publishing to Live won’t be possible until they are resolved'
@@ -381,7 +385,7 @@ en:
     autocomplete_items:
       dev:
         icon_fallback: 'Warning'
-        message: 'upload some autocomplete options for “%{title}”'
+        message: '“%{title}” has no autocomplete options and cannot be answered.'
       production:
         icon_fallback: 'Error'
         message: 'upload some autocomplete options for “%{title}”'
@@ -390,7 +394,8 @@ en:
       production: Live
     service_output:
       icon_fallback: Warning
-      message: "You have not set your form to collect information and will not receive any responses."
+      message: 'Your form will not send any user submissions until you enable %{href_collection_information_by_email}.'
+      link: collecting information by email
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view

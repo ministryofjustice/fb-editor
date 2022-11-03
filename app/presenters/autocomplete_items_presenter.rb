@@ -25,19 +25,6 @@ class AutocompleteItemsPresenter
   end
 
   def messages
-    @messages ||=
-      pages_with_autocomplete_component.each_with_object([]) do |page, arry|
-        page.components.each do |component|
-          next unless component.uuid.in?(component_uuids_without_items)
-
-          arry.push(
-            { component_title: component.humanised_title, page_uuid: page.uuid }
-          )
-        end
-      end
-  end
-
-  def message
     env = ENV['RAILS_ENV'] == 'development' ? 'dev' : ENV['RAILS_ENV']
     pages_with_autocomplete_component.each_with_object([]) do |page, arry|
       page.components.each do |component|
@@ -51,5 +38,10 @@ class AutocompleteItemsPresenter
         arry.push(msg)
       end
     end
+  end
+
+  def message
+    # because submission warnings presenter expect presenter to have methods message
+    messages
   end
 end
