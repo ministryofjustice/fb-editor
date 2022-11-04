@@ -502,7 +502,7 @@ module CommonSteps
   def when_I_visit_the_from_address_settings_page
     page.find(:css, '#main-content', visible: true)
     editor.click_link(I18n.t('settings.name'))
-    editor.click_link(I18n.t('settings.submission.name'))
+    editor.click_link(I18n.t('settings.submission.heading'))
     expect(page).to have_content(I18n.t('settings.from_address.heading'))
     editor.click_link(I18n.t('settings.from_address.heading'))
   end

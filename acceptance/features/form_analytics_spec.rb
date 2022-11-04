@@ -92,8 +92,8 @@ feature 'Form analytics configuration' do
   def when_I_visit_the_form_analytics_page
     page.find(:css, '#main-content', visible: true)
     editor.click_link(I18n.t('settings.name'))
-    expect(page).to have_content(I18n.t('settings.form_analytics.hint'))
-    editor.click_link(I18n.t('settings.form_analytics.name'))
+    expect(page).to have_content(I18n.t('settings.form_analytics.lede'))
+    editor.click_link(I18n.t('settings.form_analytics.heading'))
   end
 
   def when_I_enable_the_analytics(environment)
@@ -110,8 +110,8 @@ feature 'Form analytics configuration' do
   end
 
   def then_I_should_see_the_settings_configuration
-    expect(page).to have_content(I18n.t('settings.form_analytics.name'))
-    expect(page).to have_content(I18n.t('settings.form_analytics.intro'))
+    expect(page).to have_content(I18n.t('settings.form_analytics.heading'))
+    expect(page).to have_content(I18n.t('settings.form_analytics.description'))
     expect(page).to have_content(I18n.t('settings.form_analytics.test.heading'))
     expect(page).to have_content(I18n.t('settings.form_analytics.test.description'))
     expect(page).to have_content(I18n.t('settings.form_analytics.live.heading'))

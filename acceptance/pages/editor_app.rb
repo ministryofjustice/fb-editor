@@ -46,7 +46,7 @@ class EditorApp < SitePrism::Page
   element :preview_form_button, :link, I18n.t('actions.preview_form')
   element :edit_page_button, :link, I18n.t('actions.edit_page')
 
-  element :submission_settings_link, :link, I18n.t('settings.submission.name')
+  element :submission_settings_link, :link, I18n.t('settings.submission.heading')
   element :send_data_by_email_link, :link, I18n.t('settings.collection_email.heading')
 
   element :page_url_field, :field, I18n.t('activemodel.attributes.page_creation.page_url')
