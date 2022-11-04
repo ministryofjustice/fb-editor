@@ -146,6 +146,7 @@ en:
     saving: 'Saving...'
     saved: 'Saved'
     continue: 'Continue'
+    cancel: 'Cancel'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
     add_branch: 'Add branching'
