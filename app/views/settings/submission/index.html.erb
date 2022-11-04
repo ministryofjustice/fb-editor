@@ -1,6 +1,5 @@
 <%= render MojForms::SettingsScreenComponent.new(
   heading:t('settings.submission.heading'),
-  description: t('settings.submission.description')
   ) do |c| %>
 
   <% c.with_back_link(href: settings_path) %>
