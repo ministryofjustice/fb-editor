@@ -1,7 +1,8 @@
 class FromAddress < ApplicationRecord
   ALLOWED_DOMAINS = [
     'justice.gov.uk',
-    'digital.justice.gov.uk'
+    'digital.justice.gov.uk',
+    'cica.gov.uk'
   ].freeze
 
   before_save :encrypt_email
