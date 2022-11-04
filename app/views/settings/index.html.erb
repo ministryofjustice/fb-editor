@@ -1,18 +1,23 @@
 <%= mojf_settings_screen(heading:t('settings.name')) do |c| %>
   <nav class="govuk-navigation" aria-labelledby="page-heading">
-    <dl class="fb-settings-list">
-      <div>
-        <dt><%= link_to t('settings.form_information.heading'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint"><%= t('settings.form_information.lede') %></dd>
-      </div>
-      <div>
-        <dt><%= link_to t('settings.form_analytics.heading'), settings_form_analytics_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.form_analytics.lede') %></dd>
-      </div>
-      <div>
-        <dt><%= link_to t('settings.submission.heading'), settings_submission_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.submission.lede') %></dd>
-      </div>
-    </dl>
+    <%= mojf_definition_list do %>
+      <%= mojf_definition_list_item(
+        title: t('settings.form_information.heading'),
+        href: settings_form_information_index_path(service.service_id),
+        description: t('settings.form_information.lede')
+      ) %>
+
+      <%= mojf_definition_list_item(
+        title: t('settings.form_analytics.heading'),
+        href: settings_form_analytics_path(service.service_id),
+        description: t('settings.form_analytics.lede')
+      ) %>
+
+      <%= mojf_definition_list_item(
+        title: t('settings.submission.heading'),
+        href: settings_submission_index_path(service.service_id),
+        description: t('settings.submission.lede')
+      ) %>
+    <% end %>
   </nav>
 <% end %>
