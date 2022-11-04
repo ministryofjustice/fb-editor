@@ -4,16 +4,21 @@ module MojForms
 
     attr_reader :title, :href, :description
 
-    def initialize(title: , href: , description: , classes: [], html_attributes: {} )
+    def initialize(title:, href:, description:, display: true, classes: [], html_attributes: {})
       @title = title
       @href = href
       @description = description
-      super(classes:classes, html_attributes: html_attributes)
+      @display = display
+      super(classes: classes, html_attributes: html_attributes)
+    end
+
+    def render?
+      @display
     end
 
     def call
       tag.div(**html_attributes) do
-       safe_join([dt, dd])
+        safe_join([dt, dd])
       end
     end
 
@@ -28,7 +33,7 @@ module MojForms
     end
 
     def default_attributes
-      { class: %w[mojf-definition-list__item]}
+      { class: %w[mojf-definition-list__item] }
     end
   end
 end
