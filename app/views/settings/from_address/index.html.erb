@@ -4,7 +4,7 @@
     html: { class: (@from_address.errors.any? ? 'with-errors' : '') },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-<%= render MojForms::SettingsScreenComponent.new(
+<%= mojf_settings_screen(
   heading:t('settings.from_address.heading'),
   description: t('settings.from_address.description')
   ) do |c| %>
