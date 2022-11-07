@@ -7,11 +7,11 @@ class DestroyPageModal
   delegate :expressions, :branches, to: :service
 
   PARTIALS = {
+    delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
     potential_stacked_branches?: 'stack_branches_not_supported',
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
     branch_destination_with_default_next?: 'delete_branch_destination_page',
     branch_destination_no_default_next?: 'delete_branch_destination_page_no_default_next',
-    delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
     default?: 'delete'
   }.freeze
 
