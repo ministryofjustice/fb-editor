@@ -148,6 +148,38 @@ RSpec.describe DestroyPageModal do
         end
       end
 
+      context 'when confirmation email is used as a branching destination' do
+        let(:environment) { 'dev' }
+        let(:service_metadata) { metadata_fixture(:branching_12) }
+        let(:page) { service.find_page_by_url('email') }
+
+        context 'and the component is used on the page' do
+          let(:value) { 'email_email_1' }
+
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns delete_page_used_for_confirmation_email' do
+            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+          end
+        end
+
+        context 'and the component is not used on the page' do
+          let(:value) { 'email_not_used' }
+
+          before do
+            create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
+            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+          end
+
+          it 'returns deleting branch destination page partial' do
+            expect(partial).to eq('api/pages/delete_branch_destination_page_modal')
+          end
+        end
+      end
+
       context 'when deleting a page without any consequences' do
         it 'returns the default delete partial' do
           expect(partial).to eq(default_delete_partial)
