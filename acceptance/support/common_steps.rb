@@ -535,4 +535,13 @@ module CommonSteps
     find('div#move_targets_list', visible: true)
     expect(editor).to have_content(I18n.t('dialogs.move.label', title: page_title))
   end
+
+  ## Confirmation Email
+  def when_I_visit_the_confirmation_email_settings_page
+    page.find(:css, '#main-content', visible: true)
+    editor.click_link(I18n.t('settings.name'))
+    editor.click_link(I18n.t('settings.submission.heading'))
+    expect(page).to have_content(I18n.t('settings.confirmation_email.heading'))
+    editor.click_link(I18n.t('settings.confirmation_email.heading'))
+  end
 end
