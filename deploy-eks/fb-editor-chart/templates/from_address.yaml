@@ -20,7 +20,6 @@ spec:
             args:
             - /bin/sh
             - -c
-            - /bin/sleep {{ .Values.readinessProbe.web.initialDelaySeconds }}
             - bundle exec rake from_address:sync
             securityContext:
               runAsUser: 1001

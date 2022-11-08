@@ -20,7 +20,6 @@ spec:
             args:
             - /bin/sh
             - -c
-            - /bin/sleep {{ .Values.readinessProbe.web.initialDelaySeconds }}
             - rake db:sessions:trim
             securityContext:
               runAsUser: 1001

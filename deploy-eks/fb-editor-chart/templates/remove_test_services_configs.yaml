@@ -21,7 +21,6 @@ spec:
             args:
             - /bin/sh
             - -c
-            - /bin/sleep {{ .Values.readinessProbe.web.initialDelaySeconds }}
             - bundle exec rake remove:test_services_configs
             securityContext:
               runAsUser: 1001
