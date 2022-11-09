@@ -29,14 +29,9 @@ class SubmissionPagesPresenter
     name_link = I18n.t("warnings.submission_pages.link.#{pages_with_warnings}")
     govuk_link_to(
       name_link,
-      I18n.t('partials.header.user_guide_url')
+      I18n.t('partials.header.user_guide_check_confirm_url'),
+      target: :_blank
     )
-  end
-
-  def adding_guide_link(pages_with_warnings)
-    name_link = I18n.t("warnings.submission_pages.link.#{pages_with_warnings}")
-    link = govuk_link_to(name_link, I18n.t('partials.header.user_guide_url'))
-    warning_message.gsub('%{href}', link).html_safe
   end
 
   def submitting_pages_not_present_message

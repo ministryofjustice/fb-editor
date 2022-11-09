@@ -1,6 +1,6 @@
 RSpec.describe SubmissionPagesPresenter do
   let(:link) do
-    "<a class=\"govuk-link\" href=\"https://moj-forms.service.justice.gov.uk/user-guide/\">#{warning_text}</a>"
+    "<a target=\"_blank\" class=\"govuk-link\" href=\"https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm\">#{warning_text}</a>"
   end
   let(:warning_text) do
     I18n.t("warnings.submission_pages.link.#{page_with_warning}")

@@ -21,11 +21,9 @@ feature 'Publishing' do
 
   shared_examples 'a publishing page environment' do
     let(:exit_url) { 'exit' }
-    let(:warning_both) { I18n.t("warnings.submission_pages.#{environment}.both_pages") }
-    let(:warning_cya) { I18n.t("warnings.submission_pages.#{environment}.cya_page") }
-    let(:warning_confirmation) { I18n.t("warnings.submission_pages.#{environment}.confirmation_page") }
+
     let(:button_class) { '.govuk-button.fb-govuk-button.DialogActivator' }
-    let(:autocomplete_warning_message) {I18n.t("publish.autocomplete_items.#{environment}.message", title: 'Question') }
+    let(:autocomplete_warning_message) { I18n.t("publish.autocomplete_items.#{environment}.message", title: 'Question') }
     let(:upload_button) { I18n.t('dialogs.autocomplete.button') }
     let(:valid_csv_one_column) { './spec/fixtures/autocomplete/valid_one_column.csv' }
 
@@ -118,6 +116,9 @@ feature 'Publishing' do
     let(:environment) { 'dev' }
     let(:publish_button) { I18n.t('publish.dev.button') }
     let(:button_disabled) { '' } # aria-disabled is not set when button is enabled
+    let(:warning_both){ 'it is missing a check answers page and confirmation page' }
+    let(:warning_cya){ 'it is missing a check answers page' }
+    let(:warning_confirmation){ 'it is missing a confirmation page'}
 
     it_behaves_like 'a publishing page environment'
   end
@@ -126,6 +127,9 @@ feature 'Publishing' do
     let(:environment) { 'production' }
     let(:publish_button) { I18n.t('publish.production.button') }
     let(:button_disabled) { 'true' }
+    let(:warning_both){ 'add a check answers page and confirmation page' }
+    let(:warning_cya){ 'add a check answers page' }
+    let(:warning_confirmation){ 'add a confirmation page'}
 
     it_behaves_like 'a publishing page environment'
   end
@@ -147,7 +151,7 @@ feature 'Publishing' do
 
   def then_I_should_see_the_no_service_output_message
     message = environment_section.find(:css, '.govuk-warning-text__text').text
-    expect(message).to include(I18n.t('publish.service_output.message', href_collection_information_by_email: t('publish.service_output.link') ))
+    expect(message).to include(I18n.t('publish.service_output.message', href_collection_information_by_email: I18n.t('publish.service_output.link') ))
   end
 
   def then_I_should_see_the_publish_button

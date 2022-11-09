@@ -120,6 +120,7 @@ en:
       sign_out: Sign out %{user_name}
       user_guide: "User guide"
       user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
+      user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
   home:
     show:
       title: MoJ Forms

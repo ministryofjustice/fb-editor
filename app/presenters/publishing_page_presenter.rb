@@ -27,7 +27,7 @@ class PublishingPagePresenter
   end
 
   def autocomplete_warning
-    @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items)
+    @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items, deployment_environment)
   end
 
   def publish_button_disabled?
