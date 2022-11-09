@@ -1,0 +1,15 @@
+<fieldset class="reference-number-configuration govuk-fieldset" id="reference_number_settings">
+  <div class="govuk-form-group">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading"><%= t('settings.reference_number.heading') %></h2>
+    </legend>
+    <div class="govuk-hint"><%= t('settings.reference_number.hint') %></div>
+
+    <div class="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <%= f.check_box :"enabled", class: 'govuk-checkboxes__input', checked: 'true' %>
+        <%= f.label :"Provide an application reference number", class: 'govuk-label govuk-checkboxes__label' %>
+      </div>
+    </div>
+  </div>
+</fieldset>
