@@ -7,7 +7,8 @@ class Auth0UserSession
     'justice.gov.uk',
     'Justice.gov.uk',
     'cps.gov.uk',
-    'cica.gov.uk'
+    'cica.gov.uk',
+    'CICA.GOV.UK'
   ].freeze
 
   attr_accessor :user_info, :user_id, :created_at, :new_user
