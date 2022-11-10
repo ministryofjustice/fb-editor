@@ -20,6 +20,9 @@
       ) %>
   <% else %>
     <%= render 'submission_warning', submission_presenter: presenter.submission_warnings, environment: environment %>
+    <% if environment == 'dev' %>
+      <%= render 'autocomplete_warning', autocomplete_warning: presenter.autocomplete_warning, environment: environment %>
+    <% end %>
   <% end %>
 
   <button class="govuk-button fb-govuk-button"

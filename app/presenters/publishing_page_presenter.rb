@@ -59,10 +59,10 @@ class PublishingPagePresenter
   end
 
   def submission_warning_presenters
-    [
-      submission_pages_presenter,
-      autocomplete_warning,
-      from_address_presenter
-    ]
+    presenters = [submission_pages_presenter, from_address_presenter]
+
+    return presenters if deployment_environment == 'dev'
+
+    presenters.push(autocomplete_warning)
   end
 end
