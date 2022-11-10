@@ -56,5 +56,5 @@ class Auth0UserSession
         URI::MailTo::EMAIL_REGEXP.match(user_email) &&
           user_email.ends_with?(domain)
       end
-    end
+  end
 end
