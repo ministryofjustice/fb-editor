@@ -347,8 +347,8 @@ en:
           pending: 'You have not validated your %{href} for emails'
           default: 'You have not set a %{href} for emails'
         production:
-          pending: 'You need to validate your %{href} for emails'
-          default: 'You need to set a %{href} for emails'
+          pending: 'validate your %{href} for emails'
+          default: 'set a %{href} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
       link_text: confirmation email
@@ -373,12 +373,12 @@ en:
     publish:
       dev:
         icon_fallback: 'Warning'
-        heading: 'You will not receive any responses from this form because:'
+        heading: 'Your form will not send any user submissions because:'
       production:
         icon_fallback: 'Error'
-        heading: 'Your form has issue(s) preventing submissions from being sent. Publishing to Live won’t be possible until they are resolved'
+        heading: 'Before you can publish to Live you must:'
     email_settings:
-      default: set and validate a team email address.
+      default: You need to set and validate a team email address.
       pending: You need to validate this email address.
   publish:
     name: 'Publishing'

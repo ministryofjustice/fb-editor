@@ -32,7 +32,8 @@ feature 'Publishing' do
 
       then_I_should_see_the_no_service_output_message
       then_the_publish_button_should_be_enabled
-
+      then_I_click_the_collecting_information_by_email_link
+      then_I_should_be_on_collecting_information_by_email_page
       when_I_enable_the_submission_settings
 
       when_I_visit_the_publishing_page
@@ -152,6 +153,14 @@ feature 'Publishing' do
   def then_I_should_see_the_no_service_output_message
     message = environment_section.find(:css, '.govuk-warning-text__text').text
     expect(message).to include(I18n.t('publish.service_output.message', href_collection_information_by_email: I18n.t('publish.service_output.link') ))
+  end
+
+  def then_I_click_the_collecting_information_by_email_link
+    environment_section.find(:css,'.govuk-link').click
+  end
+
+  def then_I_should_be_on_collecting_information_by_email_page
+    expect(page).to have_content(I18n.t('settings.collection_email.heading'))
   end
 
   def then_I_should_see_the_publish_button
