@@ -30,18 +30,20 @@ class AutocompleteItemsPresenter
       page.components.each do |component|
         next unless component.uuid.in?(component_uuids_without_items)
 
-        link = govuk_link_to(component.humanised_title, Rails.application.routes.url_helpers.edit_page_path(service.service_id, page.uuid))
-
-        description = I18n.t("publish.autocomplete_items.#{deployment_environment}.message", title: link)
-
-        msg = description.html_safe
+        msg = I18n.t("publish.autocomplete_items.#{deployment_environment}.message", title: link(component, page)).html_safe
         arry.push(msg)
       end
     end
   end
 
+  # the method message is required by the submission warning presenter
   def message
-    # because submission warnings presenter expect presenter to have methods message
     messages
+  end
+
+  private
+
+  def link(component, page)
+    govuk_link_to(component.humanised_title, Rails.application.routes.url_helpers.edit_page_path(service.service_id, page.uuid))
   end
 end
