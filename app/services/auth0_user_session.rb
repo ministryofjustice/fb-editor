@@ -5,10 +5,8 @@ class Auth0UserSession
 
   VALID_EMAIL_DOMAINS = [
     'justice.gov.uk',
-    'Justice.gov.uk',
     'cps.gov.uk',
-    'cica.gov.uk',
-    'CICA.GOV.UK'
+    'cica.gov.uk'
   ].freeze
 
   attr_accessor :user_info, :user_id, :created_at, :new_user
@@ -52,10 +50,11 @@ class Auth0UserSession
   private
 
   def email_domain_is_valid
+    user_email = email.to_s.downcase
     errors.add(:user_info, "email must end with one of #{VALID_EMAIL_DOMAINS}") \
       unless VALID_EMAIL_DOMAINS.any? do |domain|
-        URI::MailTo::EMAIL_REGEXP.match(email.to_s) &&
-          email.to_s.ends_with?(domain)
+        URI::MailTo::EMAIL_REGEXP.match(user_email) &&
+          user_email.ends_with?(domain)
       end
-  end
+    end
 end
