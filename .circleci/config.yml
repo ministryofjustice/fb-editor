@@ -131,21 +131,6 @@ jobs:
           fail_only: true
           failure_message: ":facepalm:  Failed job ${CIRCLE_JOB} for ${CIRCLE_BRANCH}  :homer-disappear:"
           include_job_number_field: false
-  build_workers_testable_branch:
-    working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
-    steps:
-      - checkout
-      - setup_remote_docker: *remote_docker
-      - run: *build_sha
-      - run: *deploy_scripts
-      - run:
-          name: build testable editor workers docker images
-          environment:
-            ENVIRONMENT_NAME: test
-            IMAGE_TYPE: workers
-          command: './deploy-scripts/bin/build'
-      - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
@@ -427,22 +412,10 @@ workflows:
             branches:
               only:
                 - /testable-.*/
-      - build_workers_testable_branch:
-          context: *context
-          requires:
-            - lint
-            - security
-            - rspec_test
-            - js_test
-          filters:
-            branches:
-              only:
-                - /testable-.*/
       - deploy_testable_branch:
           context: *context
           requires:
             - build_web_testable_branch
-            - build_workers_testable_branch
       - testable_branch_acceptance_tests:
           context: *context
           requires:
