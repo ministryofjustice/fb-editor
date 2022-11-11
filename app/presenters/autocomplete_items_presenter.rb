@@ -26,20 +26,18 @@ class AutocompleteItemsPresenter
   end
 
   def messages
-    pages_with_autocomplete_component.each_with_object([]) do |page, arry|
-      page.components.each do |component|
-        next unless component.uuid.in?(component_uuids_without_items)
+    @messages ||=
+      pages_with_autocomplete_component.each_with_object([]) do |page, arry|
+        page.components.each do |component|
+          next unless component.uuid.in?(component_uuids_without_items)
 
-        msg = I18n.t("publish.autocomplete_items.#{deployment_environment}.message", title: link(component, page)).html_safe
-        arry.push(msg)
+          msg = I18n.t("publish.autocomplete_items.#{deployment_environment}.message", title: link(component, page)).html_safe
+          arry.push(msg)
+        end
       end
-    end
   end
 
-  # the method message is required by the submission warning presenter
-  def message
-    messages
-  end
+  alias_method :message, :messages
 
   private
 
