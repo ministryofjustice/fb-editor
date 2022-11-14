@@ -147,6 +147,90 @@ RSpec.describe ServiceConfiguration, type: :model do
     end
   end
 
+  describe '#do_not_send_confirmation_email?' do
+    subject(:service_configuration) do
+      described_class.new(name: 'CONFIRMATION_EMAIL_COMPONENT_ID')
+    end
+
+    context 'when confirmation email setting exists' do
+      let!(:submission_setting) do
+        create(
+          :submission_setting,
+          :dev,
+          service_id: service.service_id,
+          send_confirmation_email: send_confirmation_email
+        )
+      end
+
+      context 'when send confirmation email flag is true' do
+        let(:send_confirmation_email) { true }
+
+        %w[
+          CONFIRMATION_EMAIL_COMPONENT_ID
+          SERVICE_EMAIL_FROM
+          CONFIRMATION_EMAIL_SUBJECT
+          CONFIRMATION_EMAIL_BODY
+        ].each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_confirmation_email?).to be_falsey
+            end
+          end
+        end
+
+        %w[OTHER_ENV_VARS ENCODED_PRIVATE_KEY].each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_confirmation_email?).to be_falsey
+            end
+          end
+        end
+      end
+
+      context 'when send confirmation email flag is false' do
+        let(:send_confirmation_email) { false }
+
+        %w[OTHER_ENV_VARS ENCODED_PRIVATE_KEY].each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_confirmation_email?).to be_falsey
+            end
+          end
+        end
+      end
+    end
+
+    context 'when submission setting does not exist' do
+      it 'returns true' do
+        expect(service_configuration.do_not_send_confirmation_email?).to be_truthy
+      end
+    end
+  end
+
   context 'encrypting and decrypting values' do
     let(:service_configuration) do
       create(:service_configuration, :dev, :username, value: 'r2d2')
