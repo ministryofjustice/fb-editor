@@ -22,7 +22,9 @@ class MaintenanceModeSettingsUpdater
 
   def save_config
     CONFIGS.each do |config|
-      create_or_update_the_service_configuration(config)
+      if params(config).present?
+        create_or_update_the_service_configuration(config)
+      end
     end
   end
 
