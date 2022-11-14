@@ -1,12 +1,15 @@
 RSpec.describe SubmissionPagesPresenter do
-  let(:publish_warning_both_pages) do
-    I18n.t('warnings.submission_pages.dev.both_pages')
+  let(:link) do
+    "<a target=\"_blank\" class=\"govuk-link\" href=\"https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm\">#{warning_text}</a>"
   end
-  let(:publish_warning_cya_page) do
-    I18n.t('warnings.submission_pages.dev.cya_page')
+  let(:warning_text) do
+    I18n.t("warnings.submission_pages.link.#{page_with_warning}")
   end
-  let(:publish_warning_confirmation_page) do
-    I18n.t('warnings.submission_pages.dev.confirmation_page')
+  let(:publish_warning) do
+    I18n.t(
+      "warnings.submission_pages.dev.#{page_with_warning}",
+      href: link
+    )
   end
   let(:confirmation_uuid) { '778e364b-9a7f-4829-8eb2-510e08f156a3' }
   let(:checkanswers_uuid) { 'e337070b-f636-49a3-a65c-f506675265f0' }
@@ -41,8 +44,9 @@ RSpec.describe SubmissionPagesPresenter do
           MetadataPresenter::Service.new(metadata_fixture(:exit_only_service))
         end
 
+        let(:page_with_warning) { 'both_pages' }
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(publish_warning_both_pages)
+          expect(presenter.message).to eq(publish_warning)
         end
       end
     end
@@ -62,9 +66,10 @@ RSpec.describe SubmissionPagesPresenter do
           end
           metadata
         end
+        let(:page_with_warning) { 'cya_page' }
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(publish_warning_cya_page)
+          expect(presenter.message).to eq(publish_warning)
         end
       end
 
@@ -75,9 +80,10 @@ RSpec.describe SubmissionPagesPresenter do
           arnold_wrong_answers['next']['default'] = confirmation_uuid
           metadata
         end
+        let(:page_with_warning) { 'cya_page' }
 
         it 'returns the correct message' do
-          expect(presenter.message).to eq(publish_warning_cya_page)
+          expect(presenter.message).to eq(publish_warning)
         end
       end
     end
@@ -96,8 +102,10 @@ RSpec.describe SubmissionPagesPresenter do
           metadata
         end
 
+        let(:page_with_warning) { 'confirmation_page' }
+
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(publish_warning_confirmation_page)
+          expect(presenter.message).to eq(publish_warning)
         end
       end
 
@@ -106,9 +114,10 @@ RSpec.describe SubmissionPagesPresenter do
           checkanswers_page['next']['default'] = ''
           metadata
         end
+        let(:page_with_warning) { 'confirmation_page' }
 
         it 'returns the correct warning' do
-          expect(presenter.message).to eq(publish_warning_confirmation_page)
+          expect(presenter.message).to eq(publish_warning)
         end
       end
     end

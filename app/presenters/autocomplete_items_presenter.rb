@@ -1,9 +1,12 @@
 class AutocompleteItemsPresenter
-  attr_reader :autocomplete_items, :service
+  include ActionView::Helpers
+  include GovukLinkHelper
+  attr_reader :autocomplete_items, :service, :deployment_environment
 
-  def initialize(service, autocomplete_items)
+  def initialize(service, autocomplete_items, deployment_environment)
     @service = service
     @autocomplete_items = autocomplete_items
+    @deployment_environment = deployment_environment
   end
 
   def autocomplete_component_uuids
@@ -28,10 +31,17 @@ class AutocompleteItemsPresenter
         page.components.each do |component|
           next unless component.uuid.in?(component_uuids_without_items)
 
-          arry.push(
-            { component_title: component.humanised_title, page_uuid: page.uuid }
-          )
+          msg = I18n.t("publish.autocomplete_items.#{deployment_environment}.message", title: link(component, page)).html_safe
+          arry.push(msg)
         end
       end
+  end
+
+  alias_method :message, :messages
+
+  private
+
+  def link(component, page)
+    govuk_link_to(component.humanised_title, Rails.application.routes.url_helpers.edit_page_path(service.service_id, page.uuid))
   end
 end

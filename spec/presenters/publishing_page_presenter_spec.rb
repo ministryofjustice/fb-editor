@@ -32,10 +32,32 @@ RSpec.describe PublishingPagePresenter do
       expect(subject.submission_warnings).to be_a SubmissionWarningsPresenter
     end
 
-    context 'submission warning presenters' do
+    context 'submission warning presenters in production' do
+      let(:deployment_environment) { 'production' }
       let(:presenters) do
-        [submission_pages_presenter, from_address_presenter]
+        [
+          submission_pages_presenter,
+          autocomplete_warning,
+          from_address_presenter
+        ]
       end
+      let(:submission_pages_presenter) { double }
+      let(:autocomplete_warning) { double }
+      let(:from_address_presenter) { double }
+
+      before do
+        allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
+        allow(subject).to receive(:autocomplete_warning).and_return(autocomplete_warning)
+        allow(subject).to receive(:from_address_presenter).and_return(from_address_presenter)
+      end
+
+      it 'returns the expected presenters' do
+        expect(subject.submission_warnings.presenters).to match_array(presenters)
+      end
+    end
+
+    context 'submission warning presenters in dev' do
+      let(:presenters) { [submission_pages_presenter, from_address_presenter] }
       let(:submission_pages_presenter) { double }
       let(:from_address_presenter) { double }
 
@@ -51,63 +73,97 @@ RSpec.describe PublishingPagePresenter do
   end
 
   describe '#publish_button_disabled?' do
-    RSpec.shared_examples 'a publishing button' do
-      let(:deployment_environment) { 'production' }
-
-      before do
-        allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(false)
-      end
-
-      context 'when there are submission warnings' do
-        before do
-          allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return(['Some messages'])
-        end
-
-        it 'returns truthy' do
-          expect(subject.publish_button_disabled?).to be_truthy
-        end
-      end
-
-      context 'when there are autocomplete warnings' do
-        before do
-          allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return(['Some messages'])
-        end
-
-        it 'returns truthy' do
-          expect(subject.publish_button_disabled?).to be_truthy
-        end
-      end
-
-      context 'when there are no submission or autocomplete warnings' do
-        before do
-          allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return([])
-          allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
-        end
-
-        it 'returns falsey' do
-          expect(subject.publish_button_disabled?).to be_falsey
-        end
-      end
-    end
-
     context 'service output is disabled' do
+      before do
+        allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(true)
+      end
       it 'returns falsey' do
         expect(subject.publish_button_disabled?).to be_falsey
       end
-    end
-
-    context 'service output is enabled' do
-      it_behaves_like 'a publishing button'
     end
 
     context 'deployment environment is dev' do
-      it 'returns falsey' do
-        expect(subject.publish_button_disabled?).to be_falsey
+      context 'when the service output is enabled' do
+        let(:deployment_environment) { 'dev' }
+
+        before do
+          allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(false)
+        end
+
+        context 'when there are submission warnings' do
+          before do
+            allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return(['Some messages'])
+          end
+
+          it 'returns falsey' do
+            expect(subject.publish_button_disabled?).to be_falsey
+          end
+        end
+
+        context 'when there are autocomplete warnings' do
+          before do
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return(['Some messages'])
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:component_uuids_without_items).and_return(['Some components uuids'])
+          end
+
+          it 'returns falsey' do
+            expect(subject.publish_button_disabled?).to be_falsey
+          end
+        end
+
+        context 'when there are no submission or autocomplete warnings' do
+          before do
+            allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return([])
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
+          end
+
+          it 'returns falsey' do
+            expect(subject.publish_button_disabled?).to be_falsey
+          end
+        end
       end
     end
 
-    context 'deployment environment is production' do
-      it_behaves_like 'a publishing button'
+    context 'deployment environment is live' do
+      context 'when the service output is enabled' do
+        let(:deployment_environment) { 'production' }
+
+        before do
+          allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(false)
+        end
+
+        context 'when there are submission warnings' do
+          before do
+            allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return(['Some messages'])
+          end
+
+          it 'returns truthy' do
+            expect(subject.publish_button_disabled?).to be_truthy
+          end
+        end
+
+        context 'when there are autocomplete warnings' do
+          before do
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return(['Some messages'])
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:component_uuids_without_items).and_return(['Some components uuids'])
+          end
+
+          it 'returns truthy' do
+            expect(subject.publish_button_disabled?).to be_truthy
+          end
+        end
+
+        context 'when there are no submission or autocomplete warnings' do
+          before do
+            allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return([])
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
+          end
+
+          it 'returns falsey' do
+            expect(subject.publish_button_disabled?).to be_falsey
+          end
+        end
+      end
     end
   end
 end

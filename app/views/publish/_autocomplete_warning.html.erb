@@ -1,8 +1,6 @@
 <% autocomplete_warning.messages.each do |message| %>
   <%= govuk_warning_text(
-    text: t("publish.autocomplete_items.#{environment}.message",
-            title: govuk_link_to(message[:component_title],
-            edit_page_path(service.service_id, message[:page_uuid]))).html_safe,
+    text: message.html_safe,
     icon_fallback_text: t("publish.autocomplete_items.#{environment}.icon_fallback"),
     classes: environment == 'production' ? 'govuk-warning-text--error' : ''
   ) %>
