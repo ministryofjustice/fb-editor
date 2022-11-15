@@ -16,7 +16,6 @@ class ServiceConfiguration < ApplicationRecord
   ].freeze
   CONFIRMATION_EMAIL = %w[
     CONFIRMATION_EMAIL_COMPONENT_ID
-    SERVICE_EMAIL_FROM
     CONFIRMATION_EMAIL_SUBJECT
     CONFIRMATION_EMAIL_BODY
   ].freeze
