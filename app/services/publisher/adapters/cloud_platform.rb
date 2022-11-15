@@ -2,6 +2,7 @@ class Publisher
   module Adapters
     class CloudPlatform
       class ConfigFilesNotFound < StandardError; end
+      class UploadMetadataError < StandardError; end
       attr_reader :service_provisioner
 
       delegate :service_id,
@@ -18,9 +19,17 @@ class Publisher
       end
 
       def pre_publishing
+        ::Publisher::Utils::ServiceMetadataFiles.new(
+          service_provisioner,
+          Publisher::Adapters::AwsS3Client.new(service_provisioner.platform_deployment_underscore)
+        ).upload
+
         ::Publisher::Utils::KubernetesConfiguration.new(
           service_provisioner
         ).generate(destination: create_config_dir)
+      rescue Aws::S3::Errors::ServiceError => e
+        Sentry.capture_exception(e)
+        raise UploadMetadataError, "Failed to upload metadata for #{service_id}"
       end
 
       def publishing

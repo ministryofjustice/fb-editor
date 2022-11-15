@@ -34,7 +34,7 @@ RSpec.describe Publisher::ServiceProvisioner do
 
     it 'returns slug using the service name' do
       expect(service_provisioner.service_metadata).to eq(
-        JSON.generate(service_metadata).inspect
+        JSON.generate(service_metadata)
       )
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe Publisher::ServiceProvisioner do
 
       it 'generates the correct autocomplete items data structure' do
         expect(service_provisioner.autocomplete_items).to eq(
-          autocomplete_response['items'].to_json.inspect
+          autocomplete_response['items'].to_json
         )
       end
     end
@@ -78,7 +78,7 @@ RSpec.describe Publisher::ServiceProvisioner do
       end
 
       it 'generates the correct empty json string' do
-        expect(service_provisioner.autocomplete_items).to eq('"{}"')
+        expect(service_provisioner.autocomplete_items).to eq('{}')
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe Publisher::ServiceProvisioner do
       end
 
       it 'generates the correct empty json string' do
-        expect(service_provisioner.autocomplete_items).to eq('"{}"')
+        expect(service_provisioner.autocomplete_items).to eq('{}')
       end
     end
   end
