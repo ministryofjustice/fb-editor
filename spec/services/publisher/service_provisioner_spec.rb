@@ -237,6 +237,71 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
   end
 
+  describe '#config_map' do
+    let(:service_id) { SecureRandom.uuid }
+    let(:version_id) { SecureRandom.uuid }
+    let(:attributes) do
+      {
+        service_id: service_id,
+        version_id: version_id,
+        deployment_environment: 'dev',
+        service_configuration: [
+          build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id: service_id ),
+          build(:service_configuration, :username, deployment_environment: 'dev',service_id: service_id ),
+          build(:service_configuration, :service_email_from, deployment_environment: 'dev',service_id: service_id ),
+          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev',service_id: service_id ),
+        ]
+      }
+    end
+
+    context 'secrets' do
+      it 'rejects secrets' do
+        expect(service_provisioner.config_map.map(&:name)).to_not include('BASIC_AUTH_USER')
+        expect(service_provisioner.config_map.map(&:name)).to include('ENCODED_PUBLIC_KEY')
+      end
+    end
+
+    context 'do_not_send_submission' do
+      context 'when send_email is present' do
+        before do
+          create(:submission_setting, :send_email, service_id: service_id, deployment_environment: 'dev')
+        end
+
+        it 'should include submission configuration' do
+          expect(service_provisioner.config_map.map(&:name)).to include('SERVICE_EMAIL_FROM')
+        end
+
+        it 'does not include maintenance page config' do
+          expect(service_provisioner.config_map.map(&:name)).to_not include('MAINTENANCE_PAGE_HEADING')
+        end
+      end
+
+      context 'when send_email is not present' do
+        it 'should include submission configuration' do
+          expect(service_provisioner.config_map.map(&:name)).to_not include('SERVICE_EMAIL_FROM')
+        end
+      end
+    end
+
+    context 'not_in_maintenance_mode' do
+      context 'when in maintenance mode' do
+        before do
+          create(:service_configuration, :maintenance_mode, service_id: service_id, deployment_environment: 'dev')
+        end
+
+        it 'should include the maintenance config' do
+          expect(service_provisioner.config_map.map(&:name)).to include('MAINTENANCE_PAGE_HEADING')
+        end
+      end
+
+      context 'when not in maintenance mode' do
+        it 'should not include the maintenance config' do
+          expect(service_provisioner.config_map.map(&:name)).to_not include('MAINTENANCE_PAGE_HEADING')
+        end
+      end
+    end
+  end
+
   describe '#replicas' do
     let(:service_namespace_configuration) do
       {
