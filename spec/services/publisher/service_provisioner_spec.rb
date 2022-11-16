@@ -184,29 +184,6 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
   end
 
-  describe '#config_map' do
-    let(:attributes) do
-      {
-        service_id: service_id,
-        platform_environment: 'test',
-        deployment_environment: 'dev',
-        service_configuration: [
-          build(:service_configuration, :service_email_from, service_id: service_id, name: 'SERVICE_EMAIL_FROM', deployment_environment: 'dev')
-        ]
-      }
-    end
-
-    let(:service_id) { SecureRandom.uuid }
-
-    before do
-      SubmissionSetting.create(service_id: service_id, deployment_environment: 'dev', send_email: true)
-    end
-
-    it 'should have a email from' do
-      expect(service_provisioner.config_map.map(&:name)).to include('SERVICE_EMAIL_FROM')
-    end
-  end
-
   describe '#strategy_max_surge' do
     it 'returns the max surge configuration' do
       expect(service_provisioner.strategy_max_surge).to eq('200%')
@@ -244,12 +221,13 @@ RSpec.describe Publisher::ServiceProvisioner do
       {
         service_id: service_id,
         version_id: version_id,
+        platform_environment: 'test',
         deployment_environment: 'dev',
         service_configuration: [
-          build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id: service_id ),
-          build(:service_configuration, :username, deployment_environment: 'dev',service_id: service_id ),
-          build(:service_configuration, :service_email_from, deployment_environment: 'dev',service_id: service_id ),
-          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev',service_id: service_id ),
+          build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id: service_id),
+          build(:service_configuration, :username, deployment_environment: 'dev', service_id: service_id),
+          build(:service_configuration, :service_email_from, deployment_environment: 'dev', service_id: service_id),
+          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev', service_id: service_id)
         ]
       }
     end
