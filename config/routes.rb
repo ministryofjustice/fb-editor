@@ -97,6 +97,8 @@ Rails.application.routes.draw do
       get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
 
       post 'settings/from_address/resend', to: 'from_address#resend_validation'
+
+      get '/first-publish', to: 'first_publish#show'
     end
   end
 
