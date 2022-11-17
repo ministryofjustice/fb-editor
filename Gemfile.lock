@@ -375,13 +375,13 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    sentry-delayed_job (5.5.0)
+    sentry-delayed_job (5.6.0)
       delayed_job (>= 4.0)
-      sentry-ruby (~> 5.5.0)
-    sentry-rails (5.5.0)
+      sentry-ruby (~> 5.6.0)
+    sentry-rails (5.6.0)
       railties (>= 5.0)
-      sentry-ruby (~> 5.5.0)
-    sentry-ruby (5.5.0)
+      sentry-ruby (~> 5.6.0)
+    sentry-ruby (5.6.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
     shoulda-matchers (5.2.0)
       activesupport (>= 5.2.0)
@@ -432,7 +432,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.1)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
@@ -471,9 +471,9 @@ DEPENDENCIES
   rubocop-govuk
   sass-rails (>= 6)
   selenium-webdriver (= 4.6.1)
-  sentry-delayed_job (~> 5.5.0)
-  sentry-rails (~> 5.5.0)
-  sentry-ruby (~> 5.5.0)
+  sentry-delayed_job (~> 5.6.0)
+  sentry-rails (~> 5.6.0)
+  sentry-ruby (~> 5.6.0)
   shoulda-matchers
   site_prism
   spring
