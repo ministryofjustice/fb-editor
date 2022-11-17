@@ -8,9 +8,7 @@ class ReferenceNumberSettings
   validates :service_id, presence: true
 
   def reference_number_checked?
-    enabled? || ServiceConfiguration.find_by(
-      service_id: service_id
-    ).try(:reference_number)
+    enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER')
   end
 
   def enabled?
