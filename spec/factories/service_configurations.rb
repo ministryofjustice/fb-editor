@@ -84,5 +84,20 @@ FactoryBot.define do
       name { 'CONFIRMATION_EMAIL_COMPONENT_ID' }
       value { 'email_question_1' }
     end
+
+    trait :encoded_public_key do
+      name { 'ENCODED_PUBLIC_KEY' }
+      value { 'i_am_encoded' }
+    end
+
+    trait :maintenance_mode do
+      name { 'MAINTENANCE_MODE' }
+      value { '1' }
+    end
+
+    trait :maintenance_page_heading do
+      name { 'MAINTENANCE_PAGE_HEADING' }
+      value { 'It is broken' }
+    end
   end
 end

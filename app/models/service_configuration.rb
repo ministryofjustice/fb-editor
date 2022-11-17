@@ -19,6 +19,10 @@ class ServiceConfiguration < ApplicationRecord
     CONFIRMATION_EMAIL_SUBJECT
     CONFIRMATION_EMAIL_BODY
   ].freeze
+  MAINTENANCE = %w[
+    MAINTENANCE_PAGE_HEADING
+    MAINTENANCE_PAGE_CONTENT
+  ]
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
 
@@ -52,6 +56,15 @@ class ServiceConfiguration < ApplicationRecord
         service_id: service_id,
         deployment_environment: deployment_environment
       ).try(:send_confirmation_email?).blank?
+  end
+
+  def not_in_maintenance_mode?
+    name.in?(MAINTENANCE) &&
+      ServiceConfiguration.find_by(
+        service_id: service_id,
+        deployment_environment: deployment_environment,
+        name: 'MAINTENANCE_MODE'
+      ).blank?
   end
 
   def decrypt_value

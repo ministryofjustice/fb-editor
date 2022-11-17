@@ -55,6 +55,36 @@ module Admin
       redirect_to admin_services_path
     end
 
+    def edit
+      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+
+      @maintenance_mode_settings = MaintenanceModeSettings.new(
+        service_id: @service.service_id,
+        deployment_environment: 'production'
+      )
+    end
+
+    def update
+      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+
+      @maintenance_mode_settings = MaintenanceModeSettings.new(
+        maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
+      )
+
+      if @maintenance_mode_settings.valid?
+        MaintenanceModeSettingsUpdater.new(
+          settings: @maintenance_mode_settings,
+          service_id: @service.service_id
+        ).create_or_update!
+
+        redirect_to admin_services_path
+      else
+        render action: 'edit'
+      end
+    end
+
     def unpublish
       if queued?
         flash[:notice] = "Already queued for unpublishing from #{params[:deployment_environment]}"
@@ -156,6 +186,19 @@ module Admin
         service_id: @service.service_id,
         deployment_environment: environment
       ).last&.unpublished?
+    end
+
+    def service_slug(version_metadata)
+      service = MetadataPresenter::Service.new(version_metadata, editor: true)
+      service.service_slug
+    end
+
+    def maintenance_mode_params
+      params.require(:maintenance_mode_settings).permit(
+        :maintenance_mode,
+        :maintenance_page_heading,
+        :maintenance_page_content
+      )
     end
   end
 end

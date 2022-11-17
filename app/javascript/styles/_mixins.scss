@@ -1,6 +1,6 @@
 /* Note:
  * These style rely on some sass code from the govuk design files
- * This should only contain mixins written specifically for the 
+ * This should only contain mixins written specifically for the
  * MOJ form builder (Editor) environment.
  **/
 
@@ -19,7 +19,7 @@
   @include govuk-link-common;
   @include govuk-link-style-default;
   @include govuk-font($size: 19);
-  
+
   background: transparent;
   border: none;
   color: $govuk-link-colour;
@@ -55,6 +55,7 @@
 }
 
 @mixin fb-govuk-button {
+  @include govuk-font($size: 19);
   background-color: govuk-colour("blue");
 
   &:hover,
