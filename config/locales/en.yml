@@ -319,6 +319,7 @@ en:
       description: Generate and provide your users with a unique reference number with each submission. (For details, see the %{href}.)
       href: <a class="govuk-link" href="%{url}" target="_blank">user guide</a>
       warning: Updating these settings will reset the confirmation and submission emails and any changes you have made to the subjects and messages will be lost.
+      label: Enable reference numbers
     submission:
       heading: 'Submission settings'
       lede: 'Set what happens when a user submits their data.'

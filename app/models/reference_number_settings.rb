@@ -1,19 +1,19 @@
-class ReferenceNumberSettings < ApplicationRecord
+class ReferenceNumberSettings
   include ActiveModel::Model
-  attr_accessor :service_id, :enabled
+
+  attr_accessor :service_id,
+                :reference_number,
+                :deployment_environment
+
+  validates :service_id, presence: true
+
+  def reference_number_checked?
+    enabled? || ServiceConfiguration.find_by(
+      service_id: service_id
+    ).try(:reference_number)
+  end
 
   def enabled?
-    public_send("enabled") == '1'
-  end
-
-  def check_enabled?
-    enabled? || previously_configured?
-  end
-
-  private
-
-  def previously_configured?
-    # check database for existing config
-    # SubmissionSetting.where(service_id: service_id).pick(:reference_number)
+    reference_number == '1'
   end
 end
