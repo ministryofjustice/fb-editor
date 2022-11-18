@@ -30,6 +30,14 @@ class PublishingPagePresenter
     @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items, deployment_environment)
   end
 
+  def service_output_warning
+    @service_output_warning ||= ServiceOutputWarningPresenter.new(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment,
+      messages: I18n.t('publish.service_output')
+    )
+  end
+
   def publish_button_disabled?
     return if deployment_environment == 'dev'
 

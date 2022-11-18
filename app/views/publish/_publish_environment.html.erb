@@ -6,18 +6,8 @@
     <p><%= PublishServicePresenter.hostname_for(deployment_environment: environment, view: self) %></p>
   <% end %>
 
-  <% if presenter.no_service_output? %>
-    <%= govuk_warning_text( text:
-      t(
-        'publish.service_output.message',
-        href_collection_information_by_email:
-          govuk_link_to(
-            t('publish.service_output.link'),
-            settings_email_index_path(service.service_id)
-          )
-        ).html_safe,
-        icon_fallback_text: t('publish.service_output.icon_fallback'),
-      ) %>
+  <% if presenter.service_output_warning.present? %>
+    <%= render 'service_output_warning', presenter: presenter.service_output_warning %>
   <% else %>
     <%= render 'submission_warning', submission_presenter: presenter.submission_warnings, environment: environment %>
     <% if environment == 'dev' %>
