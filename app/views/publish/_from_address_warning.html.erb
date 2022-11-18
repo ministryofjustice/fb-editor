@@ -1,0 +1,6 @@
+<% if presenter.message %>
+  <%= govuk_warning_text(
+    text: presenter.message,
+    icon_fallback_text: presenter.icon_fallback,
+  ) %>
+<% end %>

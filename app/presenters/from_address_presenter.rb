@@ -9,10 +9,17 @@ class FromAddressPresenter
   end
 
   def message
-    key = from_address.status&.to_sym || :default
     return unless messages.key?(key)
 
-    messages[key].gsub('%{href}', link).html_safe
+    messages[key][:text].gsub('%{link}', link).html_safe
+  end
+
+  def icon_fallback
+    I18n.t('warnings.publish.dev.icon_fallback')
+  end
+
+  def key
+    from_address.status&.to_sym || :default
   end
 
   private
@@ -21,7 +28,7 @@ class FromAddressPresenter
 
   def link
     govuk_link_to(
-      I18n.t('warnings.from_address.publishing.link'),
+      messages[key][:link],
       Rails.application.routes.url_helpers.settings_from_address_index_path(service_id)
     )
   end
