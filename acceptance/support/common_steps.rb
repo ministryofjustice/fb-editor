@@ -498,6 +498,10 @@ module CommonSteps
     editor.find(:css, "#email-settings-send-by-email-#{environment}-1-field", visible: false).set(value)
   end
 
+  def and_I_set_confirmation_email(value)
+    editor.find(:css, "#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(value)
+  end
+
   ## From Address Settings page
   def when_I_visit_the_from_address_settings_page
     page.find(:css, '#main-content', visible: true)
