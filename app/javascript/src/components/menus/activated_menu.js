@@ -6,7 +6,7 @@
  * button to open the menu.
  *
  * This class does the following:
- *  - Takes the provided jQuery <ul> node and wraps it in an 
+ *  - Takes the provided jQuery <ul> node and wraps it in an
  *    ActvatedMenuContainer
  *  - If an activator node is not provided, creates and inserts an
  *    ActavtedMenuActivator button \
@@ -20,16 +20,16 @@
  *  - activator_classname (string) class(es) to be added to the created activator
  *  - activator_text (string) accessible label for the created activator element
  *  - container_id (string) an HTML id attribute to be applied to the generated
- *                          ActivatedMenuContainer element.  If none is provided 
+ *                          ActivatedMenuContainer element.  If none is provided
  *                          a unique id will be generated.
  *  - container_classname (string) class(es) to be applied to the generated menu
  *                                 container element
- *  - menu (object) 
+ *  - menu (object)
  *  - prevent_default (bool) prevent the default event on item nodes
  *                           (<a>,<button>)
- *  - selection_event (string) if provided, in addition to the  `menuselect` event 
- *                             on the <ul> the component will trigger this event 
- *                             on the `document` allowing external components to 
+ *  - selection_event (string) if provided, in addition to the  `menuselect` event
+ *                             on the <ul> the component will trigger this event
+ *                             on the `document` allowing external components to
  *                             listen for menu events.
  *
  *
@@ -41,8 +41,8 @@
  * References:
  *  - https://www.w3.org/TR/wai-aria-practices/#menu for implemented keyboard
  * behaviours.
- *  - https://api.jqueryui.com/position/ 
- * 
+ *  - https://api.jqueryui.com/position/
+ *
  *
  **/
 
@@ -188,7 +188,7 @@ class ActivatedMenu {
       }
     } else {
       this.#currentFocusIndex = index;
-      $item.focus();
+      $item[0].focus();
       this.$node.attr('aria-activedescendant', $item.attr('id'));
     }
   }
@@ -361,15 +361,15 @@ class ActivatedMenu {
   /*
    * Removes any position values that have occurred as a result of
    * calling the setMenuOpenPosition() function.
-   * Note: This assumes that no external JS script is trying to 
+   * Note: This assumes that no external JS script is trying to
    * set values independently of the ActivatedMenu class functionality.
    * Clearing the values is required to stop jQueryUI position()
    * functionality adding to existing, each time it's called.
-   * An alternative might be to set position once, and not on each 
+   * An alternative might be to set position once, and not on each
    * ActivatedMenu.open call. There is a minor performance gain that
-   * could be claimed, but it would also be less flexible, if the 
+   * could be claimed, but it would also be less flexible, if the
    * activators (used for position reference) need to be dynamically
-   * moved for any enhance or future design improvements. 
+   * moved for any enhance or future design improvements.
    **/
   #resetMenuOpenPosition() {
     var node = this.container.$node.get(0);

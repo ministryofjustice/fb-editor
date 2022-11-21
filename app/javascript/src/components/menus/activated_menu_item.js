@@ -17,7 +17,7 @@ const ActivatedMenuSubmenu =require('./activated_menu_submenu');
 class ActivatedMenuItem {
 
   /*
-   * @param $node (jQuery) a jQuery wrapped node 
+   * @param $node (jQuery) a jQuery wrapped node
    * @param menu (ActivatedMenu) the top-level ActivatedMenu
    **/
   constructor($node, menu) {
@@ -61,7 +61,7 @@ class ActivatedMenuItem {
     }
   }
 
-  #bindEventHandlers() {  
+  #bindEventHandlers() {
     var item = this;
 
     this.$node.on("click", (event) => {
@@ -72,9 +72,9 @@ class ActivatedMenuItem {
     this.$node.on("mouseenter", (event) => {
       if(this.hasSubmenu()) {
         setTimeout(function(e) {
-          item.submenu.open(); 
+          item.submenu.open();
         }, 50);
-      } 
+      }
     });
 
     this.$node.on("mouseout", (event) => {
@@ -82,7 +82,7 @@ class ActivatedMenuItem {
         if( this.submenu.isOpen() ) {
           if(!$.contains(event.currentTarget, event.relatedTarget)) {
             setTimeout(function(e) {
-              item.submenu.close(); 
+              item.submenu.close();
             }, 50);
           }
         }
@@ -99,12 +99,12 @@ class ActivatedMenuItem {
             event.preventDefault();
             event.stopImmediatePropagation();
             if( this.hasSubmenu ) {
-              this.submenu.open(); 
+              this.submenu.open();
               this.submenu.focus();
-            } 
+            }
             break;
           case 'Enter':
-          case 'Space': 
+          case 'Space':
             event.preventDefault();
             if( this.hasSubmenu() ) {
               this.submenu.open();

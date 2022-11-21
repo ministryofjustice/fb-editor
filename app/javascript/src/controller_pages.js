@@ -538,50 +538,46 @@ function enhanceContent(view) {
  **/
 function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
-    var question = new TextQuestion($(this), {
+    new TextQuestion($(this), {
       form: view.submitHandler.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
       }
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=autocomplete]").each(function(i, node) {
-    var question = new AutocompleteQuestion($(this), {
+    new AutocompleteQuestion($(this), {
       form: view.submitHandler.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
       }
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
-    var question = new DateQuestion($(this), {
+    new DateQuestion($(this), {
       form: view.submitHandler.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
-    var question = new TextareaQuestion($(this), {
+    new TextareaQuestion($(this), {
       form: view.submitHandler.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
-    var question = new CheckboxesQuestion($(this), {
+    new CheckboxesQuestion($(this), {
       form: view.submitHandler.$form,
       view: view,
       text: {
@@ -608,11 +604,10 @@ function enhanceQuestions(view) {
         });
       }
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
-    var question = new RadiosQuestion($(this), {
+    new RadiosQuestion($(this), {
       form: view.submitHandler.$form,
       view: view,
       text: {
@@ -641,7 +636,6 @@ function enhanceQuestions(view) {
 
 
     });
-    view.addLastPointHandler(question.menu.activator.$node);
   });
 }
 
