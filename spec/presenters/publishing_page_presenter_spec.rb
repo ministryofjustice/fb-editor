@@ -11,7 +11,7 @@ RSpec.describe PublishingPagePresenter do
 
   describe '#from_address_presenter' do
     it 'returns an instance of a from address presenter' do
-      expect(subject.from_address_presenter).to be_a FromAddressPresenter
+      expect(subject.from_address_warning).to be_a FromAddressPresenter
     end
   end
 
@@ -27,6 +27,12 @@ RSpec.describe PublishingPagePresenter do
     end
   end
 
+  describe '#service_output_warning' do
+    it 'returns an instance of a service output warning presenter' do
+      expect(subject.service_output_warning).to be_a ServiceOutputWarningPresenter
+    end
+  end
+
   describe '#submission_warnings' do
     it 'returns an instance of submission warnings' do
       expect(subject.submission_warnings).to be_a SubmissionWarningsPresenter
@@ -38,17 +44,17 @@ RSpec.describe PublishingPagePresenter do
         [
           submission_pages_presenter,
           autocomplete_warning,
-          from_address_presenter
+          from_address_warning
         ]
       end
       let(:submission_pages_presenter) { double }
       let(:autocomplete_warning) { double }
-      let(:from_address_presenter) { double }
+      let(:from_address_warning) { double }
 
       before do
         allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
         allow(subject).to receive(:autocomplete_warning).and_return(autocomplete_warning)
-        allow(subject).to receive(:from_address_presenter).and_return(from_address_presenter)
+        allow(subject).to receive(:from_address_warning).and_return(from_address_warning)
       end
 
       it 'returns the expected presenters' do
@@ -57,13 +63,11 @@ RSpec.describe PublishingPagePresenter do
     end
 
     context 'submission warning presenters in dev' do
-      let(:presenters) { [submission_pages_presenter, from_address_presenter] }
+      let(:presenters) { [submission_pages_presenter] }
       let(:submission_pages_presenter) { double }
-      let(:from_address_presenter) { double }
 
       before do
         allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
-        allow(subject).to receive(:from_address_presenter).and_return(from_address_presenter)
       end
 
       it 'returns the expected presenters' do
