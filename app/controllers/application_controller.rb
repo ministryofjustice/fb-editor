@@ -71,4 +71,18 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  def show_reference_number
+    I18n.t('default_values.reference_number')
+  end
+  helper_method :show_reference_number
+
+  def reference_number_enabled?
+    reference_number_config.present?
+  end
+  helper_method :reference_number_enabled?
+
+  def reference_number_config
+    @reference_number_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'REFERENCE_NUMBER')
+  end
 end
