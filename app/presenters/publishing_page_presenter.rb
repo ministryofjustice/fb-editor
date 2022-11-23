@@ -41,8 +41,6 @@ class PublishingPagePresenter
   def publish_button_disabled?
     return if deployment_environment == 'dev'
 
-    return false if no_service_output?
-
     submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end
 
@@ -71,7 +69,7 @@ class PublishingPagePresenter
 
     return presenters if deployment_environment == 'dev'
 
-    presenters.push(from_address_warning)
+    presenters.push(from_address_warning) if service_output_warning.blank?
     presenters.push(autocomplete_warning)
   end
 end

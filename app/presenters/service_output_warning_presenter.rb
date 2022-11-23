@@ -15,6 +15,10 @@ class ServiceOutputWarningPresenter
 
   delegate :present?, to: :message
 
+  def blank?
+    !present?
+  end
+
   def message
     key = send_confirmation_email? ? :confirmation_email : :default
 
