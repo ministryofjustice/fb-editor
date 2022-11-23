@@ -162,7 +162,7 @@ RSpec.describe ApplicationController do
     end
   end
 
-  describe '#reference`_number_enabled?' do
+  describe '#reference_number_enabled?' do
     before do
       allow(controller).to receive(:service).and_return(service)
       allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
