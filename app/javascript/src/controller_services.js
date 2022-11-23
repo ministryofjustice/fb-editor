@@ -553,6 +553,7 @@ function applyPageFlowConnectorPaths(view, $overview) {
     var fromY = $item.position().top + (rowHeight / 4);
     var $next = $("[data-fb-id=" + next + "]", $overview);
 
+
     try {
       var toX = $next.position().left - 1; // - 1 for design spacing
       var toY = $next.position().top + (rowHeight / 4);
@@ -889,9 +890,7 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
       }
     }
     else {
-      if(up) {
-        new ConnectorPath.ForwardDownBackwardUpPath(points, config);
-      }
+      new ConnectorPath.ForwardDownBackwardUpPath(points, config);
     }
   }
 }
