@@ -12,7 +12,9 @@
     <li data-action="preview">
       <%= link_to t('actions.preview_page'),
       File.join(preview_service_path(service.service_id), item[:url]),
-      target: '_blank' %>
+      target: '_blank',
+      rel: 'noreferrer nofollow'
+    %>
     </li>
   <% end %>
 

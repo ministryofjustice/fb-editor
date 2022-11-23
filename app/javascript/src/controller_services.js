@@ -104,8 +104,8 @@ function createPageAdditionDialog(view) {
  * Create the context menus for each flow item within an overview layout.
  **/
 function createPageMenus(view) {
-  $("[data-component='ItemActionMenu']").each((i, el) => {
-    var menu = new PageMenu($(el), {
+  $("[data-component='ItemActionMenu']").each((_, el) => {
+    new PageMenu($(el), {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
@@ -115,8 +115,6 @@ function createPageMenus(view) {
         }
       }
     });
-
-    view.addLastPointHandler(menu.activator.$node);
   });
 }
 /* VIEW SETUP FUNCTION:
@@ -124,8 +122,8 @@ function createPageMenus(view) {
  * Create the connection menus for each flow item within an overview layout.
  **/
 function createConnectionMenus(view) {
-  $("[data-component='ConnectionMenu']").each((i, el) => {
-    var menu = new ConnectionMenu($(el), {
+  $("[data-component='ConnectionMenu']").each((_, el) => {
+    new ConnectionMenu($(el), {
       view: view,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
@@ -135,8 +133,6 @@ function createConnectionMenus(view) {
         }
       }
     });
-
-    view.addLastPointHandler(menu.activator.$node);
   });
 }
 
@@ -336,7 +332,7 @@ function adjustOverviewHeight($overview) {
   var topNumbers = [];
   var top, bottom, topOverlap, height;
 
-  $items.each(function(index) {
+  $items.each(function() {
     var $item = $(this);
     // jquery.offset() always returns 0,0 in Safari for scg elements
     // so we use native getBoundingClientRect instead which returns correct values
