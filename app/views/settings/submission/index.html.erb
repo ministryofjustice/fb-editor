@@ -5,19 +5,25 @@
   <% c.with_back_link(href: settings_path) %>
 
   <nav class="govuk-navigation" aria-labelledby="page-heading">
-    <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
-      <div>
-        <dt><%= link_to t('settings.from_address.heading'), settings_from_address_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint"><%= t('settings.from_address.lede') %></dd>
-      </div>
-      <div>
-        <dt><%= link_to t('settings.collection_email.heading'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint"><%= t('settings.collection_email.lede') %></dd>
-      </div>
-        <div>
-          <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
-        </div>
-    </dl>
+    <%= mojf_definition_list do |c| %>
+      <% c.with_items([
+        {
+          title: t('settings.from_address.heading'),
+          href: settings_from_address_index_path(service.service_id),
+          description: t('settings.from_address.lede')
+        },
+        {
+          title: t('settings.collection_email.heading'),
+          href: settings_email_index_path(service.service_id),
+          description: t('settings.collection_email.lede')
+        },
+        {
+          title: t('settings.confirmation_email.heading'),
+          href: settings_confirmation_email_index_path(service.service_id),
+          description: t('settings.confirmation_email.lede'),
+          display: ENV['CONFIRMATION_EMAIL'] == 'enabled'
+        }
+      ]) %>
+    <% end %>
   </nav>
 <% end %>
