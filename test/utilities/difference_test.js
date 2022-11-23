@@ -10,4 +10,8 @@ describe('utilities.difference', function() {
   it("should return b - a when b is greater", function() {
     expect(utilities.difference(7, 12)).to.equal(5);
   });
+
+  it("should return negative number when abs is false", function() {
+    expect(utilities.difference(7,12, false)).to.equal(-5);
+  })
 });
