@@ -30,14 +30,40 @@ feature 'Publishing' do
     scenario 'service email output warning message and submission pages present' do
       when_I_visit_the_publishing_page
 
-      then_I_should_see_the_no_service_output_message
+      then_I_should_see_the_default_no_service_output_warning_message
       then_the_publish_button_should_be_enabled
+
       then_I_click_the_collecting_information_by_email_link
       then_I_should_be_on_collecting_information_by_email_page
       when_I_enable_the_submission_settings
 
       when_I_visit_the_publishing_page
-      then_I_should_see_the_submission_warning_message
+      then_I_should_not_see_the_default_no_service_output_warning_message
+      then_I_should_not_see_warning_both_text
+      then_I_should_not_see_warning_cya_text
+      then_I_should_not_see_warning_confirmation_text
+    end
+
+    scenario 'service email output warning message confirmation email and submission pages present' do
+      when_I_visit_the_publishing_page
+
+      then_I_should_see_the_default_no_service_output_warning_message
+      then_the_publish_button_should_be_enabled
+
+      and_I_add_an_email_question
+      then_I_enable_confirmation_email
+
+      when_I_visit_the_publishing_page
+      then_I_should_see_the_confirmation_email_no_service_output_warning_message
+
+      then_I_click_the_collecting_information_by_email_link
+      then_I_should_be_on_collecting_information_by_email_page
+      when_I_enable_the_submission_settings
+
+      when_I_visit_the_publishing_page
+      then_I_should_not_see_the_default_no_service_output_warning_message
+      then_I_should_not_see_the_confirmation_email_no_service_output_warning_message
+
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_cya_text
       then_I_should_not_see_warning_confirmation_text
@@ -85,7 +111,6 @@ feature 'Publishing' do
 
       when_I_enable_the_submission_settings
       when_I_visit_the_publishing_page
-      then_I_should_see_the_submission_warning_message
       then_I_should_see_autocomplete_warnings
       then_I_should_see_the_publish_button
 
@@ -150,9 +175,41 @@ feature 'Publishing' do
     and_I_cancel
   end
 
-  def then_I_should_see_the_no_service_output_message
-    message = environment_section.find(:css, '.govuk-warning-text__text').text
-    expect(message).to include(I18n.t('publish.service_output.message', href_collection_information_by_email: I18n.t('publish.service_output.link') ))
+  def then_I_should_see_the_default_no_service_output_warning_message
+    expect(environment_section).to have_text(I18n.t('publish.service_output.default', link: I18n.t('publish.service_output.link_text')))
+  end
+
+  def then_I_should_not_see_the_default_no_service_output_warning_message
+      expect(environment_section).to_not have_text(I18n.t('publish.service_output.default', link: I18n.t('publish.service_output.link_text')))
+  end
+
+  def then_I_should_see_the_confirmation_email_no_service_output_warning_message
+    expect(environment_section).to have_text(I18n.t('publish.service_output.confirmation_email', link: I18n.t('publish.service_output.link_text')))
+  end
+
+  def then_I_should_not_see_the_confirmation_email_no_service_output_warning_message
+    expect(environment_section).to_not have_text(I18n.t('publish.service_output.confirmation_email', link: I18n.t('publish.service_output.link_text')))
+  end
+
+  def and_I_add_an_email_question
+    and_I_return_to_flow_page
+    given_I_add_a_single_question_page_with_email
+    and_I_add_a_page_url('email')
+    when_I_add_the_page
+  end
+
+  def then_I_enable_confirmation_email
+    editor.settings_link.click
+    page.find('#main-content', visible: true)
+    editor.submission_settings_link.click
+    page.find('#main-content', visible: true)
+    editor.send_confirmation_email_link.click
+    page.find('#main-content', visible: true)
+
+    and_I_set_confirmation_email(true)
+    within("form#confirmation-email-submission-#{environment}") do
+      find('button[type="submit"]').click
+    end
   end
 
   def then_I_click_the_collecting_information_by_email_link
@@ -263,8 +320,13 @@ feature 'Publishing' do
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
   end
 
+
+  def then_I_should_see_the_submission_confiramtion_email_warning_message
+    expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
+  end
+
   def then_I_should_see_from_address_warning(status)
-    expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", href: I18n.t("warnings.from_address.publishing.link")))
+    expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", link: I18n.t("warnings.from_address.link_text")))
   end
 
   def then_I_should_see_autocomplete_warnings

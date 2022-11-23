@@ -1,12 +1,12 @@
-<% if submission_presenter.messages.any?  %>
+<% if warning.messages.any?  %>
   <%= govuk_warning_text(
-    text: submission_presenter.heading,
-    icon_fallback_text: submission_presenter.icon_fallback,
+    text: warning.heading,
+    icon_fallback_text: warning.icon_fallback,
     classes: environment == 'production' ? 'govuk-warning-text--error icon-hexagon' : ''
   ) %>
 
   <ul class="publish-environment__issues-list">
-    <% submission_presenter.messages.each do |message| %>
+    <% warning.messages.each do |message| %>
       <li><%= message %></li>
     <% end %>
   </ul>

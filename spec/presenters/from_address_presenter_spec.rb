@@ -78,7 +78,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.pending') }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.pending', link: link) }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -90,7 +90,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default', href: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default', link: link) }
 
         before do
           create(:from_address, :default, service_id: service_id)
@@ -107,7 +107,7 @@ RSpec.describe FromAddressPresenter do
       let(:messages) { I18n.t('warnings.from_address.publishing.dev') }
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending', href: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending', link: link) }
 
         before do
           create(:from_address, :pending, service_id: service_id)
@@ -120,7 +120,7 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default', href: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default', link: link) }
 
         before do
           create(:from_address, :default, service_id: service_id)

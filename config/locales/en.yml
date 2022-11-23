@@ -331,24 +331,24 @@ en:
       description: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
     from_address:
+      link_text: ‘from’ address
       send_by_email:
         verified: 'Your from address has been validated'
-        pending: 'You need to validate your from address'
-        default: 'You need to set a %{href}'
-        link: ‘from’ address
+        pending: 'You need to validate your %{link}'
+        default: 'You need to set a %{link}'
       settings:
         default: You need to change the default no-reply-moj-forms address before your form can go live
         pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
         verified: This email address has been validated.
         contact_us: <strong>Contact us to approve your ‘from’ address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
       publishing:
-        link: ‘from’ address
         dev:
-          pending: 'You have not validated your %{href} for emails'
-          default: 'You have not set a %{href} for emails'
+          pending: 'Before you can publish to live, you will need to validate your %{link} for emails'
+          default: 'Before you can publish to live, you will need to set a %{link} for emails'
         production:
-          pending: 'validate your %{href} for emails'
-          default: 'set a %{href} for emails'
+          link: ‘from’ address
+          pending: 'validate your %{link} for emails'
+          default: 'set a %{link} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
       link_text: confirmation email
@@ -395,8 +395,9 @@ en:
       production: Live
     service_output:
       icon_fallback: Warning
-      message: 'Your form will not send any user submissions until you enable %{href_collection_information_by_email}.'
-      link: collecting information by email
+      default: 'Your form will not send any user submissions until you enable %{link}.'
+      confirmation_email: 'Your form will not send any user submissions or confirmation emails until you enable %{link}.'
+      link_text: collecting information by email
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view

@@ -11,8 +11,8 @@ class PublishingPagePresenter
 
   delegate :no_service_output?, to: :publish_creation
 
-  def from_address_presenter
-    @from_address_presenter ||= FromAddressPresenter.new(
+  def from_address_warning
+    @from_address_warning ||= FromAddressPresenter.new(
       from_address: from_address,
       messages: I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
       service_id: service.service_id
@@ -28,6 +28,14 @@ class PublishingPagePresenter
 
   def autocomplete_warning
     @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items, deployment_environment)
+  end
+
+  def service_output_warning
+    @service_output_warning ||= ServiceOutputWarningPresenter.new(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment,
+      messages: I18n.t('publish.service_output')
+    )
   end
 
   def publish_button_disabled?
@@ -59,10 +67,11 @@ class PublishingPagePresenter
   end
 
   def submission_warning_presenters
-    presenters = [submission_pages_presenter, from_address_presenter]
+    presenters = [submission_pages_presenter]
 
     return presenters if deployment_environment == 'dev'
 
+    presenters.push(from_address_warning)
     presenters.push(autocomplete_warning)
   end
 end
