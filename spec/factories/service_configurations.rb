@@ -99,5 +99,10 @@ FactoryBot.define do
       name { 'MAINTENANCE_PAGE_HEADING' }
       value { 'It is broken' }
     end
+
+    trait :reference_number do
+      name { 'REFERENCE_NUMBER' }
+      value { '1' }
+    end
   end
 end
