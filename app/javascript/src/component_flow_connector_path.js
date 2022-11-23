@@ -571,11 +571,12 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
 
   constructor(points, config) {
     super(points, config);
+
     var dimensions = {
       forward1: Math.round(this.points.via_x - CURVE_SPACING),
       down: Math.round(utilities.difference(this.points.from_y, config.bottom) - (CURVE_SPACING * 2)),
       backward: Math.round(utilities.difference(this.points.from_x + this.points.via_x, this.points.to_x)),
-      up: Math.round(utilities.difference(config.bottom, this.points.from_y) + utilities.difference(this.points.from_y, this.points.to_y) - (CURVE_SPACING * 2)),
+      up: Math.round( utilities.difference(config.bottom, this.points.to_y) - (CURVE_SPACING * 2)),
       forward2: 0
     }
 
