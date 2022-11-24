@@ -1,11 +1,14 @@
 <%= f.govuk_check_boxes_fieldset :"reference_number",
       multiple: false,
-      legend: { text: t('settings.reference_number.heading'), size: 'l'} do %>
+      legend: { text: t('settings.reference_number.legend'), size: 'l'} do %>
       <div class="govuk-hint" id="reference_number_hint"><%= t('settings.reference_number.hint') %></div>
       <%= f.govuk_check_box :"reference_number", 1, 0,
         multiple: false,
         link_errors: true,
         label: { text: t('settings.reference_number.label') },
-        checked: f.object.reference_number_checked?
+        checked: f.object.reference_number_checked?,
+        aria: {
+            describedby: 'reference_number_hint reference_number_warning'
+          }
       %>
 <% end %>
