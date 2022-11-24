@@ -281,12 +281,14 @@ function maxWidth($collection) {
 
 
 /* Get the difference between two numbers
+ * defaults to returning an absolute value
  **/
-function difference(a, b) {
-  if(a > b)
+function difference(a, b, abs=true) {
+  if(abs) {
+    return Math.abs(a - b);
+  } else {
     return a - b;
-  else
-    return b - a;
+  }
 }
 
 
