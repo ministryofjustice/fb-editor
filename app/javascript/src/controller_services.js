@@ -807,8 +807,7 @@ function adjustOverlappingFlowConnectorPaths($overview) {
       $paths.each(function() { // or $paths.not($path).each
         var $current = $(this);
         var current = $current.data("instance");
-
-        if(path.id != current.id) {
+        if(path.prop('id') != current.prop('id')) {
 
           // Call the overlap avoidance functionality and register
           // if anything was moved (reported by its return value).
