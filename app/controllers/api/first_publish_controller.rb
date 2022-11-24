@@ -1,12 +1,20 @@
 module Api
   class FirstPublishController < ApiController
-
     def show
-      uri = URI('https://testing-initial-publish-response.test.form.service.justice.gov.uk')
-      Net::HTTP.get(uri)
-      head 200
+      environment = params[:environment]
+      latest_publish = PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: environment
+      )&.last
+
+      url = PublishServicePresenter.new(latest_publish, service).url
+      if url
+        uri = URI(url)
+        Net::HTTP.get(uri)
+        head :ok
+      end
     rescue SocketError
-      head 404
+      head :not_found
     end
   end
 end

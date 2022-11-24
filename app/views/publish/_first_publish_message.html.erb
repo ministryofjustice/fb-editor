@@ -1,0 +1,27 @@
+<p id="first-publish-alert" role="alert"
+                            class="text-error"
+                            data-default-message="<%= t('publish.first_publish_warning') %>"
+                            data-success-message="<%= t('publish.first_publish_success') %>"
+                            data-success-class="text-success">
+
+</p>
+
+<script>
+  $(function() {
+    setTimeout(function() {
+      var $alert = $('#first-publish-alert');
+      $alert.text( $alert.data('default-message'));
+    }, 500);
+
+    var status = setInterval( function() {
+      $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
+        var $alert = $('#first-publish-alert');
+        var className = $alert.data('success-class');
+        var successMessage = $alert.data('success-message');
+
+        $alert.removeClass().addClass(className).text(successMessage);
+        clearInterval(status);
+      });
+    }, 10000);
+  })
+</script>

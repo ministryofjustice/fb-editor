@@ -98,7 +98,7 @@ Rails.application.routes.draw do
 
       post 'settings/from_address/resend', to: 'from_address#resend_validation'
 
-      get '/first-publish', to: 'first_publish#show'
+      get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
     end
   end
 
