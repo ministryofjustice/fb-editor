@@ -9,7 +9,7 @@
 
   <% c.with_back_link(href: settings_path) %>
 
-  <%= govuk_warning_text(text: t('settings.reference_number.warning')) %>
+  <%= govuk_warning_text(text: t('settings.reference_number.warning'), html_attributes: { id: 'reference_number_warning' }) %>
 
     <%= form_for @reference_number, url: settings_reference_number_index_path(service.service_id),
     html: { id: 'reference-number-settings' },
