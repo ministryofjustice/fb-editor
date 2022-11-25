@@ -6,18 +6,8 @@ RSpec.describe ConfirmationEmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
-  let(:default_body) do
-    I18n.t(
-      'default_values.confirmation_email_body',
-      service_name: service.service_name
-    )
-  end
-  let(:default_subject) do
-    I18n.t(
-      'default_values.confirmation_email_subject',
-      service_name: service.service_name
-    )
-  end
+  let(:confirmation_email_subject) { I18n.t('default_values.confirmation_email_subject', service_name: service.service_name) }
+  let(:confirmation_email_body) { I18n.t('default_values.confirmation_email_body', service_name: service.service_name) }
 
   describe '#valid?' do
     context 'when send by confirmation email is ticked' do
@@ -57,7 +47,7 @@ RSpec.describe ConfirmationEmailSettings do
 
       context 'when subject is empty' do
         it 'shows the default value' do
-          expect(confirmation_email_settings.confirmation_email_subject).to eq(default_subject)
+          expect(confirmation_email_settings.confirmation_email_subject).to eq(confirmation_email_subject)
         end
       end
 
@@ -107,7 +97,7 @@ RSpec.describe ConfirmationEmailSettings do
 
       context 'when body is empty' do
         it 'shows the default value' do
-          expect(confirmation_email_settings.confirmation_email_body).to eq(default_body)
+          expect(confirmation_email_settings.confirmation_email_body).to eq(confirmation_email_body)
         end
       end
 

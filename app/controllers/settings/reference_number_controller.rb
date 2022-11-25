@@ -13,7 +13,7 @@ class Settings::ReferenceNumberController < FormController
     if @reference_number.valid?
       ReferenceNumberUpdater.new(
         reference_number_settings: @reference_number,
-        service_id: service.service_id
+        service: service
       ).create_or_update!
 
       redirect_to settings_reference_number_index_path(service_id: service.service_id)

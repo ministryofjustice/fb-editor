@@ -6,6 +6,9 @@ RSpec.describe EmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
+  let(:default_subject) { I18n.t('default_values.service_email_subject', service_name: service.service_name) }
+  let(:default_body) { I18n.t('default_values.service_email_body', service_name: service.service_name) }
+  let(:default_pdf_heading) { I18n.t('default_values.service_email_pdf_heading', service_name: service.service_name) }
 
   describe '#valid?' do
     context 'when send by email is ticked' do
@@ -109,340 +112,204 @@ RSpec.describe EmailSettings do
   end
 
   describe '#service_email_subject' do
-    context 'when subject is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_subject).to eq(
-          "Submission from #{service.service_name}"
-        )
+    RSpec.shared_examples 'service email subject' do
+      let(:deployment_environment) { 'dev' }
+
+      context 'when subject is empty' do
+        it 'shows the default value' do
+          expect(email_settings.service_email_subject).to eq(default_subject)
+        end
+      end
+
+      context 'when user submits a value' do
+        let(:params) do
+          {
+            deployment_environment: deployment_environment,
+            service_email_subject: 'Never tell me the odds.'
+          }
+        end
+
+        it 'shows the submitted value' do
+          expect(
+            email_settings.service_email_subject
+          ).to eq('Never tell me the odds.')
+        end
+      end
+
+      context 'when a value already exists in the db' do
+        let(:params) { { deployment_environment: 'dev' } }
+
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :service_email_subject,
+            deployment_environment: deployment_environment,
+            service_id: service.service_id
+          )
+        end
+
+        it 'shows the value in the db' do
+          expect(
+            email_settings.service_email_subject
+          ).to eq(service_configuration.decrypt_value)
+        end
       end
     end
 
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'dev',
-          service_email_subject: 'Never tell me the odds.'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_subject
-        ).to eq('Never tell me the odds.')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'dev' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :dev,
-          :service_email_subject,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_subject
-        ).to eq(service_configuration.decrypt_value)
-      end
-    end
-  end
-
-  describe '#service_email_subject' do
-    context 'when subject is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_subject).to eq(
-          "Submission from #{service.service_name}"
-        )
-      end
-    end
-
-    context 'when user submits a value' do
-      let(:params) do
-        { deployment_environment: 'production',
-          service_email_subject: 'Never tell me the odds.' }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_subject
-        ).to eq('Never tell me the odds.')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'production' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :production,
-          :service_email_subject,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_subject
-        ).to eq(service_configuration.decrypt_value)
-      end
+    context 'in production environment' do
+      let(:deployment_environment) { 'production' }
+      it_behaves_like 'service email subject'
     end
   end
 
   describe '#service_email_body' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_body).to eq(
-          "Please find attached a submission sent from #{service.service_name}"
-        )
+    RSpec.shared_examples 'service email body' do
+      let(:deployment_environment) { 'dev' }
+
+      context 'when body is empty' do
+        it 'shows the default value' do
+          expect(email_settings.service_email_body).to eq(default_body)
+        end
+      end
+
+      context 'when user submits a value' do
+        let(:params) do
+          {
+            deployment_environment: deployment_environment,
+            service_email_body: 'Please find attached the Death star plans'
+          }
+        end
+
+        it 'shows the submitted value' do
+          expect(
+            email_settings.service_email_body
+          ).to eq('Please find attached the Death star plans')
+        end
+      end
+
+      context 'when a value already exists in the db' do
+        let(:params) { { deployment_environment: 'dev' } }
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :service_email_body,
+            deployment_environment: deployment_environment,
+            service_id: service.service_id
+          )
+        end
+
+        it 'shows the value in the db' do
+          expect(
+            email_settings.service_email_body
+          ).to eq(service_configuration.decrypt_value)
+        end
       end
     end
 
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'dev',
-          service_email_body: 'Please find attached the Death star plans'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_body
-        ).to eq('Please find attached the Death star plans')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'dev' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :dev,
-          :service_email_body,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_body
-        ).to eq(service_configuration.decrypt_value)
-      end
-    end
-  end
-
-  describe '#service_email_body' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_body).to eq(
-          "Please find attached a submission sent from #{service.service_name}"
-        )
-      end
-    end
-
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'production',
-          service_email_body: 'Please find attached the Death star plans'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_body
-        ).to eq('Please find attached the Death star plans')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'production' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :production,
-          :service_email_body,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_body
-        ).to eq(service_configuration.decrypt_value)
-      end
+    context 'in production environment' do
+      let(:deployment_environment) { 'production' }
+      it_behaves_like 'service email body'
     end
   end
 
   describe '#service_email_pdf_heading' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_pdf_heading).to eq(
-          "Submission for #{service.service_name}"
-        )
+    RSpec.shared_examples 'service email pdf heading' do
+      let(:deployment_environment) { 'dev' }
+
+      context 'when body is empty' do
+        it 'shows the default value' do
+          expect(email_settings.service_email_pdf_heading).to eq(default_pdf_heading)
+        end
+      end
+
+      context 'when user submits a value' do
+        let(:params) do
+          {
+            deployment_environment: deployment_environment,
+            service_email_pdf_heading: 'Death star plans'
+          }
+        end
+
+        it 'shows the submitted value' do
+          expect(
+            email_settings.service_email_pdf_heading
+          ).to eq('Death star plans')
+        end
+      end
+
+      context 'when a value already exists in the db' do
+        let(:params) { { deployment_environment: deployment_environment } }
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :service_email_pdf_heading,
+            deployment_environment: deployment_environment,
+            service_id: service.service_id
+          )
+        end
+
+        it 'shows the value in the db' do
+          expect(
+            email_settings.service_email_pdf_heading
+          ).to eq(service_configuration.decrypt_value)
+        end
       end
     end
 
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'dev',
-          service_email_pdf_heading: 'Death star plans'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_pdf_heading
-        ).to eq('Death star plans')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'dev' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :dev,
-          :service_email_pdf_heading,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_pdf_heading
-        ).to eq(service_configuration.decrypt_value)
-      end
-    end
-  end
-
-  describe '#service_email_pdf_heading' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_pdf_heading).to eq(
-          "Submission for #{service.service_name}"
-        )
-      end
-    end
-
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'production',
-          service_email_pdf_heading: 'Death star plans'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_pdf_heading
-        ).to eq('Death star plans')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'production' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :production,
-          :service_email_pdf_heading,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_pdf_heading
-        ).to eq(service_configuration.decrypt_value)
-      end
+    context 'in production environment' do
+      let(:deployment_environment) { 'production' }
+      it_behaves_like 'service email pdf heading'
     end
   end
 
   describe '#service_email_pdf_subheading' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_pdf_subheading).to eq('')
+    RSpec.shared_examples 'service email pdf subheading' do
+      let(:deployment_environment) { 'dev' }
+
+      context 'when body is empty' do
+        it 'shows the default value' do
+          expect(email_settings.service_email_pdf_subheading).to eq('')
+        end
+      end
+
+      context 'when user submits a value' do
+        let(:params) do
+          {
+            deployment_environment: deployment_environment,
+            service_email_pdf_subheading: 'Rebellion ships'
+          }
+        end
+
+        it 'shows the submitted value' do
+          expect(
+            email_settings.service_email_pdf_subheading
+          ).to eq('Rebellion ships')
+        end
+      end
+
+      context 'when a value already exists in the db' do
+        let(:params) { { deployment_environment: deployment_environment } }
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :dev,
+            :service_email_pdf_subheading,
+            deployment_environment: deployment_environment,
+            service_id: service.service_id
+          )
+        end
+
+        it 'shows the value in the db' do
+          expect(
+            email_settings.service_email_pdf_subheading
+          ).to eq(service_configuration.decrypt_value)
+        end
       end
     end
 
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'dev',
-          service_email_pdf_subheading: 'Rebellion ships'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_pdf_subheading
-        ).to eq('Rebellion ships')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'dev' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :dev,
-          :service_email_pdf_subheading,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_pdf_subheading
-        ).to eq(service_configuration.decrypt_value)
-      end
-    end
-  end
-
-  describe '#service_email_pdf_subheading' do
-    context 'when body is empty' do
-      it 'shows the default value' do
-        expect(email_settings.service_email_pdf_subheading).to eq('')
-      end
-    end
-
-    context 'when user submits a value' do
-      let(:params) do
-        {
-          deployment_environment: 'production',
-          service_email_pdf_subheading: 'Rebellion ships'
-        }
-      end
-
-      it 'shows the submitted value' do
-        expect(
-          email_settings.service_email_pdf_subheading
-        ).to eq('Rebellion ships')
-      end
-    end
-
-    context 'when a value already exists in the db' do
-      let(:params) { { deployment_environment: 'production' } }
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :production,
-          :service_email_pdf_subheading,
-          service_id: service.service_id
-        )
-      end
-
-      it 'shows the value in the db' do
-        expect(
-          email_settings.service_email_pdf_subheading
-        ).to eq(service_configuration.decrypt_value)
-      end
+    context 'in production environment' do
+      let(:deployment_environment) { 'production' }
+      it_behaves_like 'service email pdf subheading'
     end
   end
 
