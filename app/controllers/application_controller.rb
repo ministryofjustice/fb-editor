@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   end
 
   def show_reference_number
-    I18n.t('default_values.reference_number')
+    I18n.t('default_values.reference_number.placeholder')
   end
   helper_method :show_reference_number
 

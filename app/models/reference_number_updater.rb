@@ -1,11 +1,20 @@
 class ReferenceNumberUpdater
-  attr_reader :service_id, :reference_number_settings
+  attr_reader :service_id, :reference_number_settings, :service_name
 
   CONFIGS = %w[REFERENCE_NUMBER].freeze
 
-  def initialize(service_id:, reference_number_settings:)
+  CONFIG_WITH_DEFAULTS = %w[
+    CONFIRMATION_EMAIL_SUBJECT
+    CONFIRMATION_EMAIL_BODY
+    SERVICE_EMAIL_SUBJECT
+    SERVICE_EMAIL_BODY
+    SERVICE_EMAIL_PDF_HEADING
+  ].freeze
+
+  def initialize(service_id:, reference_number_settings:, service_name:)
     @service_id = service_id
     @reference_number_settings = reference_number_settings
+    @service_name = service_name
   end
 
   def create_or_update!
@@ -16,12 +25,14 @@ class ReferenceNumberUpdater
 
   def save_config
     CONFIGS.each do |config|
-      if reference_number_settings.enabled? && config.present?
+      if reference_number_settings.enabled?
         create_or_update_the_service_configuration(config, 'dev')
         create_or_update_the_service_configuration(config, 'production')
+        save_config_with_reference_number_defaults
       else
         remove_the_service_configuration(config, 'dev')
         remove_the_service_configuration(config, 'production')
+        save_config_with_defaults
       end
     end
   end
@@ -43,5 +54,41 @@ class ReferenceNumberUpdater
   def remove_the_service_configuration(config, deployment_environment)
     setting = find_or_initialize_setting(config, deployment_environment)
     setting.destroy!
+  end
+
+  def create_or_update_the_service_configuration_adding_default_value(config, deployment_environment, value)
+    setting = find_or_initialize_setting(config, deployment_environment)
+    setting.value = value
+    setting.save!
+  end
+
+  def save_config_with_defaults
+    CONFIG_WITH_DEFAULTS.each do |config|
+      create_or_update_the_service_configuration_adding_default_value(
+        config,
+        'dev',
+        I18n.t("default_values.#{config.downcase}", service_name: service_name)
+      )
+      create_or_update_the_service_configuration_adding_default_value(
+        config,
+        'production',
+        I18n.t("default_values.#{config.downcase}", service_name: service_name)
+      )
+    end
+  end
+
+  def save_config_with_reference_number_defaults
+    CONFIG_WITH_DEFAULTS.each do |config|
+      create_or_update_the_service_configuration_adding_default_value(
+        config,
+        'dev',
+        I18n.t("default_values.reference_number.#{config.downcase}", service_name: service_name)
+      )
+      create_or_update_the_service_configuration_adding_default_value(
+        config,
+        'production',
+        I18n.t("default_values.reference_number.#{config.downcase}", service_name: service_name)
+      )
+    end
   end
 end
