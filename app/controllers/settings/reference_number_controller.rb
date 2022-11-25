@@ -16,11 +16,6 @@ class Settings::ReferenceNumberController < FormController
         service_id: service.service_id
       ).create_or_update!
 
-      ReferenceNumberUpdater.new(
-        reference_number_settings: @reference_number,
-        service_id: service.service_id
-      ).create_or_update!
-
       redirect_to settings_reference_number_index_path(service_id: service.service_id)
     else
       render :index, status: :unprocessable_entity
