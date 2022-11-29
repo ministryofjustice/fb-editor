@@ -34,6 +34,7 @@ en:
     branching_title: 'Branching point %{branching_number}'
     confirmation_email_subject: "Your submission to ‘%{service_name}’"
     confirmation_email_body: "Thank you for your submission to ‘%{service_name}’.\n\r\nA copy of the information you provided is attached to this email."
+    reference_number: '123-ABCD-456'
   notification_banners:
     important: Important
     success: Success

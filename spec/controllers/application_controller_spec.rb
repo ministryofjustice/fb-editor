@@ -161,4 +161,34 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#reference_number_enabled?' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when REFERENCE_NUMBER is enabled' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :reference_number,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns true' do
+        expect(controller.reference_number_enabled?).to be_truthy
+      end
+    end
+
+    context 'when REFERENCE_NUMBER is disabled' do
+      let!(:service_configuration) { nil }
+
+      it 'returns false' do
+        expect(controller.reference_number_enabled?).to be_falsey
+      end
+    end
+  end
 end
