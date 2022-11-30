@@ -7,12 +7,20 @@
   <% end %>
 
   <% if presenter.service_output_warning.present? %>
-    <%= render 'publish/warnings/service_output', warning: presenter.service_output_warning %>
-  <% else %>
-    <%= render 'publish/warnings/submission', warning: presenter.submission_warnings, environment: environment %>
-    <% if environment == 'dev' %>
+    <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
+  <% end %>
+
+  <% if environment == 'dev' %>
+    <% if presenter.service_output_warning.blank? %>
+      <%= render 'publish/warnings/submission', warning: presenter.submission_warnings, environment: environment %>
       <%= render 'publish/warnings/from_address', warning: presenter.from_address_warning, environment: environment %>
-      <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
+    <% end %>
+    <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
+  <% end %>
+
+  <% if environment == 'production' %>
+    <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
+      <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
     <% end %>
   <% end %>
 

@@ -40,13 +40,7 @@ RSpec.describe PublishingPagePresenter do
 
     context 'submission warning presenters in production' do
       let(:deployment_environment) { 'production' }
-      let(:presenters) do
-        [
-          submission_pages_presenter,
-          autocomplete_warning,
-          from_address_warning
-        ]
-      end
+
       let(:submission_pages_presenter) { double }
       let(:autocomplete_warning) { double }
       let(:from_address_warning) { double }
@@ -55,10 +49,35 @@ RSpec.describe PublishingPagePresenter do
         allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
         allow(subject).to receive(:autocomplete_warning).and_return(autocomplete_warning)
         allow(subject).to receive(:from_address_warning).and_return(from_address_warning)
+        allow(subject).to receive(:service_output_warning).and_return(service_output_warning)
       end
 
-      it 'returns the expected presenters' do
-        expect(subject.submission_warnings.presenters).to match_array(presenters)
+      context 'service output warning present' do
+        let(:service_output_warning) { double(blank?: false) }
+        let(:presenters) do
+          [
+            submission_pages_presenter,
+            autocomplete_warning
+          ]
+        end
+        it 'returns the expected presenters' do
+          expect(subject.submission_warnings.presenters).to match_array(presenters)
+        end
+      end
+
+      context 'service output warning not present' do
+        let(:service_output_warning) { double(blank?: true) }
+        let(:presenters) do
+          [
+            submission_pages_presenter,
+            autocomplete_warning,
+            from_address_warning
+          ]
+        end
+
+        it 'returns the expected presenters' do
+          expect(subject.submission_warnings.presenters).to match_array(presenters)
+        end
       end
     end
 
