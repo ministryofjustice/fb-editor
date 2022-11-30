@@ -85,7 +85,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
           let(:default_value) do
             I18n.t(
-              'default_values.reference_number.confirmation_email_subject',
+              'default_values.confirmation_email_subject',
               service_name: service.service_name
             )
           end
@@ -133,7 +133,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
           let(:default_value) do
             I18n.t(
-              'default_values.reference_number.confirmation_email_body',
+              'default_values.confirmation_email_body',
               service_name: service.service_name
             )
           end
@@ -181,7 +181,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
           let(:default_value) do
             I18n.t(
-              'default_values.reference_number.service_email_subject',
+              'default_values.service_email_subject',
               service_name: service.service_name
             )
           end
@@ -229,7 +229,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
           let(:default_value) do
             I18n.t(
-              'default_values.reference_number.service_email_body',
+              'default_values.service_email_body',
               service_name: service.service_name
             )
           end
@@ -277,7 +277,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
           let(:default_value) do
             I18n.t(
-              'default_values.reference_number.service_email_pdf_heading',
+              'default_values.service_email_pdf_heading',
               service_name: service.service_name
             )
           end

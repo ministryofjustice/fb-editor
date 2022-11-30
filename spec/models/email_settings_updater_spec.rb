@@ -11,6 +11,9 @@ RSpec.describe EmailSettingsUpdater do
     )
   end
   let(:params) { {} }
+  let(:default_email_subject) { I18n.t('default_values.service_email_subject', service_name: service.service_name) }
+  let(:default_email_body) { I18n.t('default_values.service_email_body', service_name: service.service_name) }
+  let(:default_email_pdf_heading) { I18n.t('default_values.service_email_pdf_heading', service_name: service.service_name) }
 
   describe '#create_or_update' do
     context 'email output' do
@@ -305,7 +308,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission from #{service.service_name}")
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -349,7 +352,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission from #{service.service_name}")
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -394,7 +397,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -438,7 +441,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -483,7 +486,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -527,7 +530,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -574,7 +577,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -616,11 +619,11 @@ RSpec.describe EmailSettingsUpdater do
           end
           before { email_settings_updater.create_or_update! }
 
-          it 'shows the default subject' do
+          it 'shows the default body' do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -667,7 +670,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -713,7 +716,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end

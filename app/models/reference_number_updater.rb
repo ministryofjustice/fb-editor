@@ -28,12 +28,11 @@ class ReferenceNumberUpdater
       if reference_number_settings.enabled?
         create_or_update_the_service_configuration(config, 'dev')
         create_or_update_the_service_configuration(config, 'production')
-        save_config_with_reference_number_defaults
       else
         remove_the_service_configuration(config, 'dev')
         remove_the_service_configuration(config, 'production')
-        save_config_with_defaults
       end
+      save_config_with_defaults
     end
   end
 
@@ -73,21 +72,6 @@ class ReferenceNumberUpdater
         config,
         'production',
         I18n.t("default_values.#{config.downcase}", service_name: service_name)
-      )
-    end
-  end
-
-  def save_config_with_reference_number_defaults
-    CONFIG_WITH_DEFAULTS.each do |config|
-      create_or_update_the_service_configuration_adding_default_value(
-        config,
-        'dev',
-        I18n.t("default_values.reference_number.#{config.downcase}", service_name: service_name)
-      )
-      create_or_update_the_service_configuration_adding_default_value(
-        config,
-        'production',
-        I18n.t("default_values.reference_number.#{config.downcase}", service_name: service_name)
       )
     end
   end
