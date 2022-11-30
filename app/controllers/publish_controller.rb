@@ -69,6 +69,8 @@ class PublishController < FormController
   end
 
   def update_form_objects
+    @published_dev = PublishServicePresenter.new(publishes_dev, service)
+    @published_production = PublishServicePresenter.new(publishes_production, service)
     if @publish_service_creation.deployment_environment == 'dev'
       @publish_page_presenter_dev.publish_creation = @publish_service_creation
     else
