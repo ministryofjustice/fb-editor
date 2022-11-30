@@ -82,30 +82,6 @@ class ReferenceNumberUpdater
     )
   end
 
-  def reference_number_enabled?
-    ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      deployment_environment: deployment_environment,
-      name: 'REFERENCE_NUMBER'
-    ).present?
-  end
-
-  def insert_placeholder_sentence(setting, placeholder, content)
-    setting.gsub(placeholder, content)
-  end
-
-  def remove_placeholder_sentence(setting, placeholder)
-    setting.gsub(placeholder, '')
-  end
-
-  def substitute_placeholder(setting:, placeholder:, content:)
-    if reference_number_enabled?
-      insert_placeholder_sentence(setting, placeholder, content)
-    else
-      remove_placeholder_sentence(setting, placeholder)
-    end
-  end
-
   def reference_number
     @reference_number ||= reference_number_settings.reference_number
   end
@@ -124,10 +100,7 @@ class ReferenceNumberUpdater
   def assign_email_settings(deployment_environment)
     EmailSettings.new(
       deployment_environment: deployment_environment,
-      service_email_subject: bob(I18n.t(
-        'default_values.service_email_subject',
-        service_name: service.service_name
-      )),
+      service_email_subject: content_substitutor.service_email_subject,
       service_email_body: I18n.t(
         'default_values.service_email_body',
         service_name: service.service_name
@@ -152,4 +125,20 @@ class ReferenceNumberUpdater
       )
     )
   end
+
+  def content_substitutor
+    @content_subsitutor ||= ContentSubstitutor.new(
+      service_name: service.service_name,
+      reference_number_enabled: reference_number_enabled?
+    )
+  end
+
+  def reference_number_enabled?
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment,
+      name: 'REFERENCE_NUMBER'
+    ).present?
+  end
+
 end

@@ -11,7 +11,7 @@ RSpec.describe ContentSubstitutor do
   describe '#confirmation_email_subject' do
     context 'when reference number is enabled' do
       let(:content) do
-        I18n.t('default_values.reference_number_sentence')
+        I18n.t('default_values.reference_number_subject')
       end
 
       it 'returns the correct content' do
@@ -25,6 +25,90 @@ RSpec.describe ContentSubstitutor do
 
       it 'returns the correct content' do
         expect(content_substitutor.confirmation_email_subject).to_not include(content)
+      end
+    end
+  end
+
+  describe '#confirmation_email_body' do
+    context 'when reference number is enabled' do
+      let(:content) do
+        I18n.t('default_values.reference_number_sentence')
+      end
+
+      it 'returns the correct content' do
+        expect(content_substitutor.confirmation_email_body).to include(content)
+      end
+    end
+
+    context 'when reference number is disabled' do
+      let(:reference_number_enabled) { false }
+      let(:content) { '{{reference_number_sentence}}' }
+
+      it 'returns the correct content' do
+        expect(content_substitutor.confirmation_email_body).to_not include(content)
+      end
+    end
+  end
+
+  describe '#service_email_subject' do
+    context 'when reference number is enabled' do
+      let(:content) do
+        I18n.t('default_values.reference_number_subject')
+      end
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_subject).to include(content)
+      end
+    end
+
+    context 'when reference number is disabled' do
+      let(:reference_number_enabled) { false }
+      let(:content) { '{{reference_number_sentence}}' }
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_subject).to_not include(content)
+      end
+    end
+  end
+
+  describe '#service_email_body' do
+    context 'when reference number is enabled' do
+      let(:content) do
+        I18n.t('default_values.reference_number_sentence')
+      end
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_body).to include(content)
+      end
+    end
+
+    context 'when reference number is disabled' do
+      let(:reference_number_enabled) { false }
+      let(:content) { '{{reference_number_sentence}}' }
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_body).to_not include(content)
+      end
+    end
+  end
+
+  describe '#service_email_pdf_heading' do
+    context 'when reference number is enabled' do
+      let(:content) do
+        I18n.t('default_values.reference_number_subject')
+      end
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_pdf_heading).to include(content)
+      end
+    end
+
+    context 'when reference number is disabled' do
+      let(:reference_number_enabled) { false }
+      let(:content) { '{{reference_number_sentence}}' }
+
+      it 'returns the correct content' do
+        expect(content_substitutor.service_email_pdf_heading).to_not include(content)
       end
     end
   end
