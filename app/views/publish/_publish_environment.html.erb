@@ -2,12 +2,12 @@
   <h2 class="govuk-heading-l"><%= t("publish.#{environment}.heading") %></h2>
   <p class="description"><%= t("publish.#{environment}.description") %></p>
 
-  <% if published_service %>
-    <% if published_service[:first] %>
+  <% if published_service.published? %>
+    <% if published_service.first_publish? %>
       <%= render 'first_publish_message', environment: environment, service_id: service.service_id %>
     <% end %>
 
-    <p><%= govuk_link_to published_service[:url], published_service[:url], target: '_blank', rel: 'noopener noreferrer' %></p>
+    <p><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
   <% end %>
 
   <% if presenter.service_output_warning.present? %>

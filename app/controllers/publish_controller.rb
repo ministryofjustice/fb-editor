@@ -2,8 +2,8 @@ class PublishController < FormController
   before_action :assign_form_objects
 
   def index
-    @published_dev = published_dev
-    @published_production = published_production
+    @published_dev = PublishServicePresenter.new(publishes_dev, service)
+    @published_production = PublishServicePresenter.new(publishes_production, service)
   end
 
   def create
@@ -56,60 +56,16 @@ class PublishController < FormController
     @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 
-  def published_dev
-    if published_dev?
-      {
-        url: PublishServicePresenter.new(latest_publish_dev, service).url,
-        first: is_first_publish_dev?
-      }
-    end
-  end
-
-  def published_production
-    if published_production?
-      {
-        url: PublishServicePresenter.new(latest_publish_production, service).url,
-        first: is_first_publish_production?
-      }
-    end
-  end
-
   def publishes_dev
     @publishes_dev ||= PublishService.where(
-      service_id: service.service_id,
-      deployment_environment: 'dev'
-    )
+      service_id: service.service_id
+    ).published.dev
   end
 
   def publishes_production
     @publishes_production ||= PublishService.where(
-      service_id: service.service_id,
-      deployment_environment: 'production'
-    )
-  end
-
-  def latest_publish_dev
-    publishes_dev&.last
-  end
-
-  def latest_publish_production
-    publishes_production&.last
-  end
-
-  def published_dev?
-    latest_publish_dev&.published?
-  end
-
-  def published_production?
-    latest_publish_production&.published?
-  end
-
-  def is_first_publish_dev?
-    publishes_dev.count == 1
-  end
-
-  def is_first_publish_production?
-    publishes_production.count == 1
+      service_id: service.service_id
+    ).published.production
   end
 
   def update_form_objects

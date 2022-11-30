@@ -2,12 +2,12 @@ module Api
   class FirstPublishController < ApiController
     def show
       environment = params[:environment]
-      latest_publish = PublishService.where(
+      publishes = PublishService.where(
         service_id: service.service_id,
         deployment_environment: environment
-      )&.last
+      ).published
 
-      url = PublishServicePresenter.new(latest_publish, service).url
+      url = PublishServicePresenter.new(publishes, service).url
       if url
         uri = URI(url)
         Net::HTTP.get(uri)
