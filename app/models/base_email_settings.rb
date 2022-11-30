@@ -30,22 +30,26 @@ class BaseEmailSettings
   end
 
   def reference_number_enabled?
-    ServiceConfiguration.find_by(service_id: service.service_id, deployment_environment: deployment_environment, name: 'REFERENCE_NUMBER').present?
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment,
+      name: 'REFERENCE_NUMBER'
+    ).present?
   end
 
-  def insert_reference_number_sentence(setting, placeholder)
-    setting.gsub(REFERENCE_NUMBER_PLACEHOLDER, placeholder)
+  def insert_placeholder_sentence(setting, placeholder, content)
+    setting.gsub(placeholder, content)
   end
 
-  def remove_reference_number_sentence(setting)
-    setting.gsub(REFERENCE_NUMBER_PLACEHOLDER, '')
+  def remove_placeholder_sentence(setting, placeholder)
+    setting.gsub(placeholder, '')
   end
 
-  def substitute_placeholder(setting, placeholder)
+  def substitute_placeholder(setting:, placeholder:, content:)
     if reference_number_enabled?
-      insert_reference_number_sentence(setting, placeholder)
+      insert_placeholder_sentence(setting, placeholder, content)
     else
-      remove_reference_number_sentence(setting)
+      remove_placeholder_sentence(setting, placeholder)
     end
   end
 end
