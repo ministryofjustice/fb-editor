@@ -21,8 +21,6 @@ class EmailSettings < BaseEmailSettings
 
   validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
-  REFERENCE_NUMBER_PLACEHOLDER = '{{reference_number_sentence}}'.freeze
-
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(
       service_id: service.service_id,
@@ -39,21 +37,24 @@ class EmailSettings < BaseEmailSettings
   end
 
   def service_email_subject
-    email_subject = settings_for(:service_email_subject)
-
-    reference_number_enabled? ? use_reference_number_default(email_subject) : use_default_value(email_subject)
+    substitute_placeholder(
+      settings_for(:service_email_subject),
+      I18n.t('default_values.reference_number_subject')
+    )
   end
 
   def service_email_body
-    email_body = settings_for(:service_email_body)
-
-    reference_number_enabled? ? use_reference_number_default(email_body) : use_default_value(email_body)
+    substitute_placeholder(
+      settings_for(:service_email_body),
+      I18n.t('default_values.reference_number_sentence')
+    )
   end
 
   def service_email_pdf_heading
-    pdf_heading = settings_for(:service_email_pdf_heading)
-
-    reference_number_enabled? ? use_reference_number_default(pdf_heading) : use_default_value(pdf_heading)
+    substitute_placeholder(
+      settings_for(:service_email_pdf_heading),
+      I18n.t('default_values.reference_number_subject')
+    )
   end
 
   def service_email_pdf_subheading
@@ -69,20 +70,5 @@ class EmailSettings < BaseEmailSettings
       service_id: service.service_id,
       deployment_environment: deployment_environment
     ).try(:service_csv_output?)
-  end
-
-  private
-
-  def reference_number_enabled?
-    ServiceConfiguration.find_by(service_id: service.service_id, deployment_environment: deployment_environment, name: 'REFERENCE_NUMBER').present?
-  end
-
-  def use_reference_number_default(content)
-    reference_number_sentence = I18n.t('default_values.reference_number_sentence')
-    content.gsub(REFERENCE_NUMBER_PLACEHOLDER, reference_number_sentence)
-  end
-
-  def use_default_value(content)
-    content.gsub(REFERENCE_NUMBER_PLACEHOLDER, '')
   end
 end

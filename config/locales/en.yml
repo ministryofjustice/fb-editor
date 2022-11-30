@@ -35,6 +35,7 @@ en:
     confirmation_email_subject: "Your submission to ‘%{service_name}’ {{reference_number_sentence}}"
     confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_number_sentence}}\n\r\nA copy of the information you provided is attached to this email."
     reference_number_sentence: "Your reference number is {{reference_number}}."
+    reference_number_subject: "Reference number: {{reference_number}}."
     reference_number: '123-ABCD-456'
   notification_banners:
     important: Important

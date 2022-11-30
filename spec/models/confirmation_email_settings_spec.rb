@@ -99,7 +99,7 @@ RSpec.describe ConfirmationEmailSettings do
           it 'contains the reference number sentence' do
             expect(
               confirmation_email_settings.confirmation_email_subject
-            ).to include(I18n.t('default_values.reference_number_sentence'))
+            ).to include(I18n.t('default_values.reference_number_subject'))
           end
         end
 
@@ -107,7 +107,7 @@ RSpec.describe ConfirmationEmailSettings do
           it 'doesn\'t contain the reference number sentence' do
             expect(
               confirmation_email_settings.confirmation_email_subject
-            ).to_not include(I18n.t('default_values.reference_number_sentence'))
+            ).to_not include(I18n.t('default_values.reference_number_subject'))
           end
         end
       end

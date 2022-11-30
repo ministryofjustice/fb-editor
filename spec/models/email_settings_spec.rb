@@ -172,7 +172,7 @@ RSpec.describe EmailSettings do
           it 'contains the reference number sentence' do
             expect(
               email_settings.service_email_subject
-            ).to include(I18n.t('default_values.reference_number_sentence'))
+            ).to include(I18n.t('default_values.reference_number_subject'))
           end
         end
 
@@ -180,7 +180,7 @@ RSpec.describe EmailSettings do
           it 'doesn\'t contain the reference number sentence' do
             expect(
               email_settings.service_email_subject
-            ).to_not include(I18n.t('default_values.reference_number_sentence'))
+            ).to_not include(I18n.t('default_values.reference_number_subject'))
           end
         end
       end

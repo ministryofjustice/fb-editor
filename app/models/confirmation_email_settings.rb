@@ -16,8 +16,6 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   validates :confirmation_email_component_id, presence: true, if: :send_by_confirmation_email?
 
-  REFERENCE_NUMBER_PLACEHOLDER = '{{reference_number_sentence}}'.freeze
-
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
       service_id: service.service_id,
@@ -34,15 +32,17 @@ class ConfirmationEmailSettings < BaseEmailSettings
   end
 
   def confirmation_email_subject
-    email_subject = settings_for(:confirmation_email_subject)
-
-    reference_number_enabled? ? use_reference_number_default(email_subject) : use_default_value(email_subject)
+    substitute_placeholder(
+      settings_for(:confirmation_email_subject),
+      I18n.t('default_values.reference_number_subject')
+    )
   end
 
   def confirmation_email_body
-    email_body = settings_for(:confirmation_email_body)
-
-    reference_number_enabled? ? use_reference_number_default(email_body) : use_default_value(email_body)
+    substitute_placeholder(
+      settings_for(:confirmation_email_body),
+      I18n.t('default_values.reference_number_sentence')
+    )
   end
 
   def email_component_ids
@@ -60,18 +60,5 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   def components
     @components ||= service.pages.map(&:components).flatten
-  end
-
-  def reference_number_enabled?
-    ServiceConfiguration.find_by(service_id: service.service_id, deployment_environment: deployment_environment, name: 'REFERENCE_NUMBER').present?
-  end
-
-  def use_reference_number_default(content)
-    reference_number_sentence = I18n.t('default_values.reference_number_sentence')
-    content.gsub(REFERENCE_NUMBER_PLACEHOLDER, reference_number_sentence)
-  end
-
-  def use_default_value(content)
-    content.gsub(REFERENCE_NUMBER_PLACEHOLDER, '')
   end
 end
