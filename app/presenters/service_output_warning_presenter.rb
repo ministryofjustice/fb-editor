@@ -14,10 +14,7 @@ class ServiceOutputWarningPresenter
   delegate :no_service_output?, to: :publish_creation
 
   delegate :present?, to: :message
-
-  def blank?
-    !present?
-  end
+  delegate :blank?, to: :message
 
   def message
     key = send_confirmation_email? ? :confirmation_email : :default
