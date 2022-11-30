@@ -16,11 +16,16 @@ class PublishServicePresenter
   end
 
   def published?
-    latest.present?
+    latest&.published?
   end
 
   def first_publish?
-    @publishes.count == 1
+    last_unpublish = @publishes.unpublished.last
+    if last_unpublish
+      @publishes.published.since(last_unpublish.created_at)
+    else
+      @publishes.published.count == 1
+    end
   end
 
   def url

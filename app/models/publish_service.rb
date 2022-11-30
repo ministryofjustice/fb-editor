@@ -23,6 +23,8 @@ class PublishService < ApplicationRecord
   scope :production, -> { where(deployment_environment: 'production') }
   scope :dev, -> { where(deployment_environment: 'dev') }
   scope :published, -> { where.not(status: %w[unpublished unpublishing]) }
+  scope :unpublished, -> { where(status: %w[unpublished unpublishing]) }
+  scope :since, ->(datetime) { where('created_at > ?', datetime) }
 
   def completed?
     status == 'completed'

@@ -392,7 +392,7 @@ en:
   publish:
     name: 'Publishing'
     heading: 'Publishing'
-    first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away'
+    first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away.'
     first_publish_success: 'Your form has been published.'
     autocomplete_items:
       dev:

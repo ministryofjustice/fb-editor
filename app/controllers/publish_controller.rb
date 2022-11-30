@@ -59,13 +59,13 @@ class PublishController < FormController
   def publishes_dev
     @publishes_dev ||= PublishService.where(
       service_id: service.service_id
-    ).published.dev
+    ).dev
   end
 
   def publishes_production
     @publishes_production ||= PublishService.where(
       service_id: service.service_id
-    ).published.production
+    ).production
   end
 
   def update_form_objects
