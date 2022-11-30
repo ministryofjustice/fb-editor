@@ -32,19 +32,11 @@ class ConfirmationEmailSettings < BaseEmailSettings
   end
 
   def confirmation_email_subject
-    substitute_placeholder(
-      setting: settings_for(:confirmation_email_subject),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_subject')
-    )
+    settings_for(:confirmation_email_subject)
   end
 
   def confirmation_email_body
-    substitute_placeholder(
-      setting: settings_for(:confirmation_email_body),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_sentence')
-    )
+    settings_for(:confirmation_email_body)
   end
 
   def email_component_ids

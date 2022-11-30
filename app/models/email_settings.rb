@@ -37,27 +37,16 @@ class EmailSettings < BaseEmailSettings
   end
 
   def service_email_subject
-    substitute_placeholder(
-      setting: settings_for(:service_email_subject),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_subject')
-    )
+    settings_for(:service_email_subject)
+
   end
 
   def service_email_body
-    substitute_placeholder(
-      setting: settings_for(:service_email_body),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_sentence')
-    )
+    settings_for(:service_email_body)
   end
 
   def service_email_pdf_heading
-    substitute_placeholder(
-      setting: settings_for(:service_email_pdf_heading),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_subject')
-    )
+    settings_for(:service_email_pdf_heading)
   end
 
   def service_email_pdf_subheading
