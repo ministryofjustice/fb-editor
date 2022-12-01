@@ -11,7 +11,11 @@
     </div>
 
       <div>
-        <p><%= t('.body').html_safe %></p>
+        <p><%= t('.body',
+                 product_site_link: govuk_link_to( t('.product_site_link_text'), 'https://moj-forms.service.justice.gov.uk/'),
+                 user_guide_link: govuk_link_to( t('.user_guide_link_text'), 'https://moj-forms.service.justice.gov.uk/user-guide'),
+                 contact_us_link: govuk_link_to( t('.contact_us_link_text'), 'https://moj-forms.service.justice.gov.uk/contact/')
+                ).html_safe %></p>
       </div>
 
       <div class="govuk-inset-text">
