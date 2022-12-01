@@ -27,12 +27,6 @@ RSpec.describe PublishServicePresenter do
       end
     end
 
-    describe '#first_publish?' do
-      it 'returns falsey' do
-        expect(subject.first_publish?).to be_falsey
-      end
-    end
-
     describe '#url' do
       it 'returns falsey' do
         expect(subject.url).to be_falsey
@@ -61,12 +55,6 @@ RSpec.describe PublishServicePresenter do
     describe '#published?' do
       it 'returns truthy' do
         expect(subject.published?).to be_truthy
-      end
-    end
-
-    describe '#first_publish?' do
-      it 'returns truthy' do
-        expect(subject.first_publish?).to be_truthy
       end
     end
 
@@ -104,12 +92,6 @@ RSpec.describe PublishServicePresenter do
       end
     end
 
-    describe '#first_publish?' do
-      it 'returns falsey' do
-        expect(subject.first_publish?).to be_falsey
-      end
-    end
-
     describe '#url' do
       it 'returns the url' do
         expect(subject.url).to eql published_url
@@ -138,12 +120,6 @@ RSpec.describe PublishServicePresenter do
     describe '#published?' do
       it 'returns falsey' do
         expect(subject.published?).to be_falsey
-      end
-    end
-
-    describe '#first_publish?' do
-      it 'returns falsey' do
-        expect(subject.first_publish?).to be_falsey
       end
     end
 
@@ -178,12 +154,6 @@ RSpec.describe PublishServicePresenter do
     describe '#published?' do
       it 'returns truthy' do
         expect(subject.published?).to be_truthy
-      end
-    end
-
-    describe '#first_publish?' do
-      it 'returns truthy' do
-        expect(subject.first_publish?).to be_truthy
       end
     end
 
