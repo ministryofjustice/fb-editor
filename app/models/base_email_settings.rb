@@ -1,5 +1,6 @@
 class BaseEmailSettings
   include ActiveModel::Model
+  include ContentSubstitutorHelper
 
   def settings_for(setting_name)
     params(setting_name).presence ||
@@ -16,6 +17,10 @@ class BaseEmailSettings
   end
 
   def default_value(setting_name)
+    initial_value = content_substitutor.assign(setting_name)
+
+    return initial_value if initial_value.present?
+
     I18n.t("default_values.#{setting_name}", service_name: service.service_name)
   end
 

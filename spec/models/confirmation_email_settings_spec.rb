@@ -6,8 +6,8 @@ RSpec.describe ConfirmationEmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
-  let(:confirmation_email_subject) { I18n.t('default_values.confirmation_email_subject', service_name: service.service_name) }
-  let(:confirmation_email_body) { I18n.t('default_values.confirmation_email_body', service_name: service.service_name) }
+  let(:confirmation_email_subject) { confirmation_email_settings.default_value('confirmation_email_subject') }
+  let(:confirmation_email_body) { confirmation_email_settings.default_value('confirmation_email_body') }
 
   describe '#valid?' do
     context 'when send by confirmation email is ticked' do

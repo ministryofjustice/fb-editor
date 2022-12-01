@@ -112,4 +112,29 @@ RSpec.describe ContentSubstitutor do
       end
     end
   end
+
+  describe '#assign' do
+    context 'when setting exists' do
+      let(:content) { I18n.t('default_values.reference_number_subject') }
+      context 'when reference number is enabled' do
+        it 'returns the correct content' do
+          expect(content_substitutor.assign('confirmation_email_subject')).to include(content)
+        end
+      end
+
+      context 'when reference number is disabled' do
+        let(:reference_number_enabled) { false }
+
+        it 'returns the correct content' do
+          expect(content_substitutor.assign('confirmation_email_subject')).to_not include(content)
+        end
+      end
+    end
+
+    context 'when setting does not exist' do
+      it 'returns nil' do
+        expect(content_substitutor.assign('blah_blah')).to be_nil
+      end
+    end
+  end
 end

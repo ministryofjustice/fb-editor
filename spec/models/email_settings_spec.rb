@@ -6,9 +6,9 @@ RSpec.describe EmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
-  let(:default_subject) { I18n.t('default_values.service_email_subject', service_name: service.service_name) }
-  let(:default_body) { I18n.t('default_values.service_email_body', service_name: service.service_name) }
-  let(:default_pdf_heading) { I18n.t('default_values.service_email_pdf_heading', service_name: service.service_name) }
+  let(:default_subject) { email_settings.default_value('service_email_subject') }
+  let(:default_body) { email_settings.default_value('service_email_body') }
+  let(:default_pdf_heading) { email_settings.default_value('service_email_pdf_heading') }
 
   describe '#valid?' do
     context 'when send by email is ticked' do

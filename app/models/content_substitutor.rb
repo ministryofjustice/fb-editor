@@ -73,14 +73,20 @@ class ContentSubstitutor
     )
   end
 
+  def assign(setting)
+    public_send(setting)
+  rescue NoMethodError
+    nil
+  end
+
   private
 
   def subject_content
-    I18n.t('default_values.reference_number_subject')
+    @subject_content ||= I18n.t('default_values.reference_number_subject')
   end
 
   def body_content
-    I18n.t('default_values.reference_number_sentence')
+    @body_content ||= I18n.t('default_values.reference_number_sentence')
   end
 
   def insert_placeholder_sentence(setting, placeholder, content)

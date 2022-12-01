@@ -11,9 +11,15 @@ RSpec.describe EmailSettingsUpdater do
     )
   end
   let(:params) { {} }
-  let(:default_email_subject) { I18n.t('default_values.service_email_subject', service_name: service.service_name) }
-  let(:default_email_body) { I18n.t('default_values.service_email_body', service_name: service.service_name) }
-  let(:default_email_pdf_heading) { I18n.t('default_values.service_email_pdf_heading', service_name: service.service_name) }
+  let(:default_email_subject) do
+    email_settings_updater.email_settings.default_value('service_email_subject')
+  end
+  let(:default_email_body) do
+    email_settings_updater.email_settings.default_value('service_email_body')
+  end
+  let(:default_email_pdf_heading) do
+    email_settings_updater.email_settings.default_value('service_email_pdf_heading')
+  end
 
   describe '#create_or_update' do
     context 'email output' do

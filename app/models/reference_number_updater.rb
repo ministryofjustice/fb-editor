@@ -1,4 +1,6 @@
 class ReferenceNumberUpdater
+  include ContentSubstitutorHelper
+
   attr_reader :service, :reference_number_settings
 
   CONFIGS = %w[REFERENCE_NUMBER].freeze
@@ -82,32 +84,17 @@ class ReferenceNumberUpdater
   def assign_email_settings(deployment_environment)
     EmailSettings.new(
       deployment_environment: deployment_environment,
-      service_email_subject: content_substitutor(deployment_environment).service_email_subject,
-      service_email_body: content_substitutor(deployment_environment).service_email_body,
-      service_email_pdf_heading: content_substitutor(deployment_environment).service_email_pdf_heading
+      service_email_subject: content_substitutor.service_email_subject,
+      service_email_body: content_substitutor.service_email_body,
+      service_email_pdf_heading: content_substitutor.service_email_pdf_heading
     )
   end
 
   def assign_confirmation_email_settings(deployment_environment)
     ConfirmationEmailSettings.new(
       deployment_environment: deployment_environment,
-      confirmation_email_subject: content_substitutor(deployment_environment).confirmation_email_subject,
-      confirmation_email_body: content_substitutor(deployment_environment).confirmation_email_body
+      confirmation_email_subject: content_substitutor.confirmation_email_subject,
+      confirmation_email_body: content_substitutor.confirmation_email_body
     )
-  end
-
-  def content_substitutor(deployment_environment)
-    @content_substitutor ||= ContentSubstitutor.new(
-      service_name: service.service_name,
-      reference_number_enabled: reference_number_enabled(deployment_environment)
-    )
-  end
-
-  def reference_number_enabled(deployment_environment)
-    ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      deployment_environment: deployment_environment,
-      name: 'REFERENCE_NUMBER'
-    ).present?
   end
 end
