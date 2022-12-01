@@ -6,6 +6,8 @@ RSpec.describe ConfirmationEmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
+  let(:confirmation_email_subject) { I18n.t('default_values.confirmation_email_subject', service_name: service.service_name) }
+  let(:confirmation_email_body) { I18n.t('default_values.confirmation_email_body', service_name: service.service_name) }
 
   describe '#valid?' do
     context 'when send by confirmation email is ticked' do
@@ -45,7 +47,7 @@ RSpec.describe ConfirmationEmailSettings do
 
       context 'when subject is empty' do
         it 'shows the default value' do
-          expect(confirmation_email_settings.confirmation_email_subject).to_not include(I18n.t('default_values.reference_number_sentence'))
+          expect(confirmation_email_settings.confirmation_email_subject).to eq(confirmation_email_subject)
         end
       end
 
@@ -81,36 +83,6 @@ RSpec.describe ConfirmationEmailSettings do
           ).to eq(service_configuration.decrypt_value)
         end
       end
-
-      context 'replacing reference number sentence' do
-        let(:params) { { deployment_environment: deployment_environment } }
-        let(:deployment_environment) { 'dev' }
-
-        context 'reference number is enabled' do
-          before do
-            create(
-              :service_configuration,
-              :reference_number,
-              service_id: service.service_id,
-              deployment_environment: deployment_environment
-            )
-          end
-
-          it 'contains the reference number sentence' do
-            expect(
-              confirmation_email_settings.confirmation_email_subject
-            ).to include(I18n.t('default_values.reference_number_subject'))
-          end
-        end
-
-        context 'reference number is disabled' do
-          it 'doesn\'t contain the reference number sentence' do
-            expect(
-              confirmation_email_settings.confirmation_email_subject
-            ).to_not include(I18n.t('default_values.reference_number_subject'))
-          end
-        end
-      end
     end
 
     context 'in production environment' do
@@ -125,7 +97,7 @@ RSpec.describe ConfirmationEmailSettings do
 
       context 'when body is empty' do
         it 'shows the default value' do
-          expect(confirmation_email_settings.confirmation_email_body).to_not include(I18n.t('default_values.reference_number_sentence'))
+          expect(confirmation_email_settings.confirmation_email_body).to eq(confirmation_email_body)
         end
       end
 
@@ -159,36 +131,6 @@ RSpec.describe ConfirmationEmailSettings do
           expect(
             confirmation_email_settings.confirmation_email_body
           ).to eq(service_configuration.decrypt_value)
-        end
-      end
-
-      context 'replacing reference number sentence' do
-        let(:params) { { deployment_environment: deployment_environment } }
-        let(:deployment_environment) { 'dev' }
-
-        context 'reference number is enabled' do
-          before do
-            create(
-              :service_configuration,
-              :reference_number,
-              service_id: service.service_id,
-              deployment_environment: deployment_environment
-            )
-          end
-
-          it 'contains the reference number sentence' do
-            expect(
-              confirmation_email_settings.confirmation_email_body
-            ).to include(I18n.t('default_values.reference_number_sentence'))
-          end
-        end
-
-        context 'reference number is disabled' do
-          it 'doesn\'t contain the reference number sentence' do
-            expect(
-              confirmation_email_settings.confirmation_email_body
-            ).to_not include(I18n.t('default_values.reference_number_sentence'))
-          end
         end
       end
     end

@@ -38,7 +38,6 @@ class EmailSettings < BaseEmailSettings
 
   def service_email_subject
     settings_for(:service_email_subject)
-
   end
 
   def service_email_body

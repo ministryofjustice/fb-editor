@@ -6,9 +6,9 @@ RSpec.describe EmailSettings do
   end
   let(:params) { {} }
   let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
-  let(:default_subject) { "Submission from #{service.service_name} " }
-  let(:default_body) { "Please find attached a submission sent from #{service.service_name}. " }
-  let(:default_pdf_heading) { "Submission for #{service.service_name} " }
+  let(:default_subject) { I18n.t('default_values.service_email_subject', service_name: service.service_name) }
+  let(:default_body) { I18n.t('default_values.service_email_body', service_name: service.service_name) }
+  let(:default_pdf_heading) { I18n.t('default_values.service_email_pdf_heading', service_name: service.service_name) }
 
   describe '#valid?' do
     context 'when send by email is ticked' do
@@ -118,7 +118,6 @@ RSpec.describe EmailSettings do
       context 'when subject is empty' do
         it 'shows the default value' do
           expect(email_settings.service_email_subject).to eq(default_subject)
-          expect(email_settings.service_email_subject).to_not include(I18n.t('default_values.reference_number_sentence'))
         end
       end
 
@@ -155,35 +154,6 @@ RSpec.describe EmailSettings do
           ).to eq(service_configuration.decrypt_value)
         end
       end
-
-      context 'replacing reference number sentence' do
-        let(:params) { { deployment_environment: deployment_environment } }
-
-        context 'reference number is enabled' do
-          before do
-            create(
-              :service_configuration,
-              :reference_number,
-              service_id: service.service_id,
-              deployment_environment: deployment_environment
-            )
-          end
-
-          it 'contains the reference number sentence' do
-            expect(
-              email_settings.service_email_subject
-            ).to include(I18n.t('default_values.reference_number_subject'))
-          end
-        end
-
-        context 'reference number is disabled' do
-          it 'doesn\'t contain the reference number sentence' do
-            expect(
-              email_settings.service_email_subject
-            ).to_not include(I18n.t('default_values.reference_number_subject'))
-          end
-        end
-      end
     end
 
     context 'in production environment' do
@@ -199,7 +169,6 @@ RSpec.describe EmailSettings do
       context 'when body is empty' do
         it 'shows the default value' do
           expect(email_settings.service_email_body).to eq(default_body)
-          expect(email_settings.service_email_body).to_not include(I18n.t('default_values.reference_number_sentence'))
         end
       end
 
@@ -235,35 +204,6 @@ RSpec.describe EmailSettings do
           ).to eq(service_configuration.decrypt_value)
         end
       end
-
-      context 'replacing reference number sentence' do
-        let(:params) { { deployment_environment: deployment_environment } }
-
-        context 'reference number is enabled' do
-          before do
-            create(
-              :service_configuration,
-              :reference_number,
-              service_id: service.service_id,
-              deployment_environment: deployment_environment
-            )
-          end
-
-          it 'contains the reference number sentence' do
-            expect(
-              email_settings.service_email_body
-            ).to include(I18n.t('default_values.reference_number_sentence'))
-          end
-        end
-
-        context 'reference number is disabled' do
-          it 'doesn\'t contain the reference number sentence' do
-            expect(
-              email_settings.service_email_body
-            ).to_not include(I18n.t('default_values.reference_number_sentence'))
-          end
-        end
-      end
     end
 
     context 'in production environment' do
@@ -279,7 +219,6 @@ RSpec.describe EmailSettings do
       context 'when body is empty' do
         it 'shows the default value' do
           expect(email_settings.service_email_pdf_heading).to eq(default_pdf_heading)
-          expect(email_settings.service_email_pdf_heading).to_not include(I18n.t('default_values.reference_number_sentence'))
         end
       end
 
