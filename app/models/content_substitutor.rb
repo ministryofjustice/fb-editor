@@ -13,15 +13,13 @@ class ContentSubstitutor
       'default_values.confirmation_email_subject',
       service_name: service_name
     )
-    if reference_number_enabled
-      insert_placeholder_sentence(
-        setting,
-        REFERENCE_NUMBER_PLACEHOLDER,
-        I18n.t('default_values.reference_number_subject')
-      )
-    else
-      remove_placeholder_sentence(setting, REFERENCE_NUMBER_PLACEHOLDER)
-    end
+    content = I18n.t('default_values.reference_number_subject')
+
+    substitute_placeholder(
+      setting: setting,
+      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      content: content
+    )
   end
 
   def confirmation_email_body
@@ -29,15 +27,13 @@ class ContentSubstitutor
       'default_values.confirmation_email_body',
       service_name: service_name
     )
-    if reference_number_enabled
-      insert_placeholder_sentence(
-        setting,
-        REFERENCE_NUMBER_PLACEHOLDER,
-        I18n.t('default_values.reference_number_sentence')
-      )
-    else
-      remove_placeholder_sentence(setting, REFERENCE_NUMBER_PLACEHOLDER)
-    end
+    content = I18n.t('default_values.reference_number_sentence')
+
+    substitute_placeholder(
+      setting: setting,
+      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      content: content
+    )
   end
 
   def service_email_subject
@@ -45,15 +41,13 @@ class ContentSubstitutor
       'default_values.service_email_subject',
       service_name: service_name
     )
-    if reference_number_enabled
-      insert_placeholder_sentence(
-        setting,
-        REFERENCE_NUMBER_PLACEHOLDER,
-        I18n.t('default_values.reference_number_subject')
-      )
-    else
-      remove_placeholder_sentence(setting, REFERENCE_NUMBER_PLACEHOLDER)
-    end
+    content = I18n.t('default_values.reference_number_subject')
+
+    substitute_placeholder(
+      setting: setting,
+      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      content: content
+    )
   end
 
   def service_email_body
@@ -61,15 +55,13 @@ class ContentSubstitutor
       'default_values.service_email_body',
       service_name: service_name
     )
-    if reference_number_enabled
-      insert_placeholder_sentence(
-        setting,
-        REFERENCE_NUMBER_PLACEHOLDER,
-        I18n.t('default_values.reference_number_sentence')
-      )
-    else
-      remove_placeholder_sentence(setting, REFERENCE_NUMBER_PLACEHOLDER)
-    end
+    content = I18n.t('default_values.reference_number_sentence')
+
+    substitute_placeholder(
+      setting: setting,
+      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      content: content
+    )
   end
 
   def service_email_pdf_heading
@@ -77,15 +69,13 @@ class ContentSubstitutor
       'default_values.service_email_pdf_heading',
       service_name: service_name
     )
-    if reference_number_enabled
-      insert_placeholder_sentence(
-        setting,
-        REFERENCE_NUMBER_PLACEHOLDER,
-        I18n.t('default_values.reference_number_subject')
-      )
-    else
-      remove_placeholder_sentence(setting, REFERENCE_NUMBER_PLACEHOLDER)
-    end
+    content = I18n.t('default_values.reference_number_subject')
+
+    substitute_placeholder(
+      setting: setting,
+      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      content: content
+    )
   end
 
   private
@@ -96,5 +86,13 @@ class ContentSubstitutor
 
   def remove_placeholder_sentence(setting, placeholder)
     setting.gsub(placeholder, '')
+  end
+
+  def substitute_placeholder(setting:, placeholder:, content:)
+    if reference_number_enabled
+      insert_placeholder_sentence(setting, placeholder, content)
+    else
+      remove_placeholder_sentence(setting, placeholder)
+    end
   end
 end

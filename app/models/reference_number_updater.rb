@@ -74,14 +74,6 @@ class ReferenceNumberUpdater
 
   private
 
-  def bob
-    substitute_placeholder(
-      setting: settings_for(:confirmation_email_subject),
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: I18n.t('default_values.reference_number_subject')
-    )
-  end
-
   def reference_number
     @reference_number ||= reference_number_settings.reference_number
   end
@@ -101,28 +93,16 @@ class ReferenceNumberUpdater
     EmailSettings.new(
       deployment_environment: deployment_environment,
       service_email_subject: content_substitutor.service_email_subject,
-      service_email_body: I18n.t(
-        'default_values.service_email_body',
-        service_name: service.service_name
-      ),
-      service_email_pdf_heading: I18n.t(
-        'default_values.service_email_pdf_heading',
-        service_name: service.service_name
-      )
+      service_email_body: content_substitutor.service_email_body,
+      service_email_pdf_heading: content_substitutor.service_email_pdf_heading
     )
   end
 
   def assign_confirmation_email_settings(deployment_environment)
     ConfirmationEmailSettings.new(
       deployment_environment: deployment_environment,
-      confirmation_email_subject: I18n.t(
-        'default_values.confirmation_email_subject',
-        service_name: service.service_name
-      ),
-      confirmation_email_body: I18n.t(
-        'default_values.confirmation_email_body',
-        service_name: service.service_name
-      )
+      confirmation_email_subject: content_substitutor.confirmation_email_subject,
+      confirmation_email_body: content_substitutor.confirmation_email_body
     )
   end
 
@@ -140,5 +120,4 @@ class ReferenceNumberUpdater
       name: 'REFERENCE_NUMBER'
     ).present?
   end
-
 end

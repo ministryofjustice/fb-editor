@@ -20,19 +20,7 @@ RSpec.describe ReferenceNumberUpdater do
         let(:params) { { reference_number: '0' } }
 
         before do
-          create(
-            :service_configuration,
-            :reference_number,
-            service_id: service.service_id,
-            deployment_environment: 'production'
-          )
-          create(
-            :service_configuration,
-            :reference_number,
-            service_id: service.service_id,
-            deployment_environment: 'dev'
-          )
-
+          allow(reference_number_updater).to receive(:reference_number_enabled?).and_return(true)
           reference_number_updater.create_or_update!
         end
 
@@ -49,12 +37,15 @@ RSpec.describe ReferenceNumberUpdater do
       end
 
       context 'when reference_number doesn\'t exist in the db' do
+        before do
+          allow(reference_number_updater).to receive(:reference_number_enabled?).and_return(false)
+          reference_number_updater.create_or_update!
+        end
+
         context 'when a user ticks the box' do
           let(:params) { { reference_number: '1' } }
 
           it 'creates the submission settings' do
-            reference_number_updater.create_or_update!
-
             expect(
               ServiceConfiguration.find_by(
                 service_id: service.service_id,
@@ -77,8 +68,6 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '0' } }
 
           it 'creates the submission settings' do
-            reference_number_updater.create_or_update!
-
             expect(
               ServiceConfiguration.where(
                 service_id: service.service_id,
@@ -92,20 +81,23 @@ RSpec.describe ReferenceNumberUpdater do
 
     context 'configs with defaults' do
       before do
+        allow(reference_number_updater).to receive(:reference_number_enabled?).and_return(true)
         reference_number_updater.create_or_update!
       end
 
       %w[
-          CONFIRMATION_EMAIL_SUBJECT
-          CONFIRMATION_EMAIL_BODY
-          SERVICE_EMAIL_SUBJECT
-          SERVICE_EMAIL_BODY
-          SERVICE_EMAIL_PDF_HEADING
+        CONFIRMATION_EMAIL_SUBJECT
+        CONFIRMATION_EMAIL_BODY
+        SERVICE_EMAIL_SUBJECT
+        SERVICE_EMAIL_BODY
+        SERVICE_EMAIL_PDF_HEADING
       ].each do |config|
-
         context 'when reference number is enabled' do
           let(:params) { { reference_number: '1' } }
-          let(:content) { I18n.t("default_values.#{config.downcase}", service_name: service.service_name) }
+          let(:content) do
+            I18n.t("default_values.#{config.downcase}", service_name: service.service_name)
+          end
+          let(:reference_number) { '{{reference_number}}' }
 
           it 'updates the service configuration with reference number default value' do
             expect(
@@ -114,7 +106,7 @@ RSpec.describe ReferenceNumberUpdater do
                 name: config,
                 deployment_environment: 'dev'
               ).decrypt_value
-            ).to eq(content)
+            ).to include(reference_number)
 
             expect(
               ServiceConfiguration.find_by(
@@ -122,13 +114,13 @@ RSpec.describe ReferenceNumberUpdater do
                 name: config,
                 deployment_environment: 'production'
               ).decrypt_value
-            ).to eq(content)
+            ).to include(reference_number)
           end
         end
 
         context 'when reference number is disabled' do
           let(:params) { { reference_number: '0' } }
-          let(:placeholder) { BaseEmailSettings::REFERENCE_NUMBER_PLACEHOLDER }
+          let(:placeholder) { ContentSubstitutor::REFERENCE_NUMBER_PLACEHOLDER }
 
           it 'updates the service configuration with reference number default value' do
             expect(
@@ -147,216 +139,6 @@ RSpec.describe ReferenceNumberUpdater do
               ).decrypt_value
             ).to_not include(placeholder)
           end
-        end
-      end
-
-      context 'when reference number is disabled' do
-        let(:default_value) do
-          I18n.t(
-            'default_values.confirmation_email_subject',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-    end
-
-    context 'confirmation email body' do
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :confirmation_email_body,
-          service_id: service.service_id,
-          deployment_environment: deployment_environment
-        )
-      end
-
-      context 'when reference number is enabled' do
-        let(:params) { { reference_number: '1' } }
-        let(:default_value) do
-          I18n.t(
-            'default_values.confirmation_email_body',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with reference number default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-
-      context 'when reference number is disabled' do
-        let(:default_value) do
-          I18n.t(
-            'default_values.confirmation_email_body',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-    end
-
-    context 'service email subject' do
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :service_email_subject,
-          service_id: service.service_id,
-          deployment_environment: deployment_environment
-        )
-      end
-
-      context 'when reference number is enabled' do
-        let(:params) { { reference_number: '1' } }
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_subject',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with reference number default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-
-      context 'when reference number is disabled' do
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_subject',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-    end
-
-    context 'service email body' do
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :service_email_body,
-          service_id: service.service_id,
-          deployment_environment: deployment_environment
-        )
-      end
-
-      context 'when reference number is enabled' do
-        let(:params) { { reference_number: '1' } }
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_body',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with reference number default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-
-      context 'when reference number is disabled' do
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_body',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-    end
-
-    context 'service email pdf heading' do
-      let!(:service_configuration) do
-        create(
-          :service_configuration,
-          :service_email_pdf_heading,
-          service_id: service.service_id,
-          deployment_environment: deployment_environment
-        )
-      end
-
-      context 'when reference number is enabled' do
-        let(:params) { { reference_number: '1' } }
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_pdf_heading',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with reference number default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
-        end
-      end
-
-      context 'when reference number is disabled' do
-        let(:default_value) do
-          I18n.t(
-            'default_values.service_email_pdf_heading',
-            service_name: service.service_name
-          )
-        end
-
-        it 'updates the service configuration with default value' do
-          reference_number_updater.create_or_update!
-          service_configuration.reload
-
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(default_value)
         end
       end
     end
