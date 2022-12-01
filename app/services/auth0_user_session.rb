@@ -6,7 +6,8 @@ class Auth0UserSession
   VALID_EMAIL_DOMAINS = [
     'justice.gov.uk',
     'cps.gov.uk',
-    'cica.gov.uk'
+    'cica.gov.uk',
+    'judicialappointments.gov.uk'
   ].freeze
 
   attr_accessor :user_info, :user_id, :created_at, :new_user
