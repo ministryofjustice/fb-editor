@@ -137,7 +137,7 @@ feature 'Publishing' do
       then_I_should_see_from_address_warning('pending')
     end
 
-      end
+  end
 
   context 'when dev environment' do
     let(:environment) { 'dev' }
