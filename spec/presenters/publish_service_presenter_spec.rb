@@ -1,65 +1,218 @@
 RSpec.describe PublishServicePresenter do
-  let(:view) do
-    PublishController.new.view_context
+  subject(:publish_service_presenter) do
+    described_class.new(
+      query, service
+    )
   end
+  let(:published_url) { 'https://version-fixture.dev.test.form.service.justice.gov.uk' }
 
-  describe '.hostname_for' do
-    subject(:hostname) do
-      described_class.hostname_for(
-        deployment_environment: deployment_environment,
-        view: view
+  context 'when there is no published service' do
+    let(:deployment_environment) { 'dev' }
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
       )
     end
 
-    let(:params) { { id: service.service_id } }
-    let(:expected_hostname) do
-      %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://version-fixture.dev.test.form.service.justice.gov.uk\">https://version-fixture.dev.test.form.service.justice.gov.uk</a>)
-    end
-
-    before do
-      allow(view).to receive(:service).and_return(service)
-    end
-
-    context 'when there is a published service' do
-      context 'when same deployment_environment' do
-        let(:deployment_environment) { 'dev' }
-        let!(:publish_service) do
-          create(:publish_service, :dev, :completed, service_id: service.service_id)
-        end
-
-        it 'returns hostname link' do
-          expect(hostname).to eq(expected_hostname)
-        end
-      end
-
-      context 'when not the same deployment_environment' do
-        let(:deployment_environment) { 'production' }
-        let!(:publish_service) do
-          create(:publish_service, :dev, :completed, service_id: service.service_id)
-        end
-
-        it 'returns nil' do
-          expect(hostname).to be_nil
-        end
-      end
-    end
-
-    context 'when is not completed' do
-      let(:deployment_environment) { 'dev' }
-      let!(:publish_service) do
-        create(:publish_service, :dev, :queued, service_id: service.service_id)
-      end
-
-      it 'always shows the hostname' do
-        expect(hostname).to eq(expected_hostname)
-      end
-    end
-
-    context 'when there is not a published service' do
-      let(:deployment_environment) { 'dev' }
-
+    describe '#latest' do
       it 'returns nil' do
-        expect(hostname).to be_nil
+        expect(subject.latest).to be_nil
+      end
+    end
+
+    describe '#published?' do
+      it 'returns falsey' do
+        expect(subject.published?).to be_falsey
+      end
+    end
+
+    describe '#url' do
+      it 'returns falsey' do
+        expect(subject.url).to be_falsey
+      end
+    end
+  end
+
+  context 'when there is a single published service' do
+    let(:deployment_environment) { 'dev' }
+    let!(:published_service) do
+      create(:publish_service, :dev, :completed, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns the publish service' do
+        expect(subject.latest).to eql published_service
+      end
+    end
+
+    describe '#published?' do
+      it 'returns truthy' do
+        expect(subject.published?).to be_truthy
+      end
+    end
+
+    describe '#url' do
+      it 'returns the url' do
+        expect(subject.url).to eql published_url
+      end
+    end
+  end
+
+  context 'when there are multiple published services' do
+    let(:deployment_environment) { 'dev' }
+    let!(:prev_published_service) do
+      create(:publish_service, :dev, :completed, service_id: service.service_id)
+    end
+    let!(:published_service) do
+      create(:publish_service, :dev, :completed, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns the publish service' do
+        expect(subject.latest).to eql published_service
+      end
+    end
+
+    describe '#published?' do
+      it 'returns truthy' do
+        expect(subject.published?).to be_truthy
+      end
+    end
+
+    describe '#url' do
+      it 'returns the url' do
+        expect(subject.url).to eql published_url
+      end
+    end
+  end
+
+  context 'when the service is unpublished' do
+    let(:deployment_environment) { 'dev' }
+    let!(:unpublished_service) do
+      create(:publish_service, :dev, :unpublished, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns publish_service' do
+        expect(subject.latest).to eql unpublished_service
+      end
+    end
+
+    describe '#published?' do
+      it 'returns falsey' do
+        expect(subject.published?).to be_falsey
+      end
+    end
+
+    describe '#url' do
+      it 'returns falsey' do
+        expect(subject.url).to be_falsey
+      end
+    end
+  end
+
+  context 'when the service has been republished' do
+    let(:deployment_environment) { 'dev' }
+    let!(:prev_unpublished_service) do
+      create(:publish_service, :dev, :unpublished, service_id: service.service_id)
+    end
+    let!(:published_service) do
+      create(:publish_service, :dev, :completed, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns the publish service' do
+        expect(subject.latest).to eql published_service
+      end
+    end
+
+    describe '#published?' do
+      it 'returns truthy' do
+        expect(subject.published?).to be_truthy
+      end
+    end
+
+    describe '#url' do
+      it 'returns the url' do
+        expect(subject.url).to eql published_url
+      end
+    end
+  end
+
+  context 'when there are publishes in different environments' do
+    let(:deployment_environment) { 'dev' }
+    let!(:published_service) do
+      create(:publish_service, :dev, :completed, service_id: service.service_id)
+    end
+    let!(:prod_published_service) do
+      create(:publish_service, :production, :completed, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns the publish service' do
+        expect(subject.latest).to eql published_service
+      end
+    end
+  end
+
+  context 'when the publish is in progress' do
+    let(:deployment_environment) { 'dev' }
+    let!(:published_service) do
+      create(:publish_service, :dev, :queued, service_id: service.service_id)
+    end
+    let(:query) do
+      PublishService.where(
+        service_id: service.service_id,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    describe '#latest' do
+      it 'returns the publish service' do
+        expect(subject.latest).to eql published_service
+      end
+    end
+
+    describe '#published?' do
+      it 'returns truthy' do
+        expect(subject.published?).to be_truthy
+      end
+    end
+
+    describe '#url' do
+      it 'returns the url' do
+        expect(subject.url).to eql published_url
       end
     end
   end

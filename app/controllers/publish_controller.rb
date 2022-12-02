@@ -2,8 +2,8 @@ class PublishController < FormController
   before_action :assign_form_objects
 
   def index
-    @published_dev = published?(service.service_id, 'dev')
-    @published_production = published?(service.service_id, 'production')
+    @published_dev = PublishServicePresenter.new(publishes_dev, service)
+    @published_production = PublishServicePresenter.new(publishes_production, service)
   end
 
   def create
@@ -56,14 +56,21 @@ class PublishController < FormController
     @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 
-  def published?(service_id, environment)
-    PublishService.where(
-      service_id: service_id,
-      deployment_environment: environment
-    ).last&.published?
+  def publishes_dev
+    @publishes_dev ||= PublishService.where(
+      service_id: service.service_id
+    ).dev
+  end
+
+  def publishes_production
+    @publishes_production ||= PublishService.where(
+      service_id: service.service_id
+    ).production
   end
 
   def update_form_objects
+    @published_dev = PublishServicePresenter.new(publishes_dev, service)
+    @published_production = PublishServicePresenter.new(publishes_production, service)
     if @publish_service_creation.deployment_environment == 'dev'
       @publish_page_presenter_dev.publish_creation = @publish_service_creation
     else

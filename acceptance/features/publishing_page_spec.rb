@@ -136,6 +136,7 @@ feature 'Publishing' do
       when_I_visit_the_publishing_page
       then_I_should_see_from_address_warning('pending')
     end
+
   end
 
   context 'when dev environment' do
@@ -173,6 +174,17 @@ feature 'Publishing' do
     then_I_should_see_an_error_message('dev', 'Test')
 
     and_I_cancel
+  end
+
+  scenario 'publishing for the first time' do
+    when_I_visit_the_publishing_page
+    and_I_want_to_publish('Test')
+    then_I_should_see_publish_to_test_modal
+
+    then_username_and_password_should_be_the_default('dev')
+    when_I_enter_valid_username_and_password('dev', 'Test')
+
+    then_I_should_see_the_first_publish_message
   end
 
   def then_I_should_see_the_default_no_service_output_warning_message
@@ -278,6 +290,12 @@ feature 'Publishing' do
     editor.find('.ui-dialog').find(:button, text: "Publish to #{button_environment.capitalize}").click
   end
 
+  def when_I_enter_valid_username_and_password(environment, button_environment)
+    editor.find("#username_#{environment}").set('longusername')
+    editor.find("#password_#{environment}").set('longpassword')
+    editor.find('.ui-dialog').find(:button, text: "Publish to #{button_environment.capitalize}").click
+  end
+
   def then_I_should_see_an_error_message(environment, button_environment)
     page.find(:css, '#main-content', visible: true)
     errors = editor.all("form#publish-form-#{environment} .govuk-error-message").map(&:text)
@@ -335,5 +353,15 @@ feature 'Publishing' do
 
   def then_I_should_not_see_autocomplete_warnings
     expect(environment_section.text).to_not include(autocomplete_warning_message)
+  end
+
+  def then_I_should_see_the_first_publish_message
+    page.find('#main-content')
+    sleep(2)
+    expect(editor.text).to include(I18n.t("publish.first_publish_warning"))
+  end
+
+  def then_I_should_see_the_first_publish_success_message
+    expect(editor.text).to include(I18n.t("publish.first_publish_success"))
   end
 end

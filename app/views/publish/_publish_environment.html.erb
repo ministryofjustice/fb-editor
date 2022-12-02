@@ -2,8 +2,10 @@
   <h2 class="govuk-heading-l"><%= t("publish.#{environment}.heading") %></h2>
   <p class="description"><%= t("publish.#{environment}.description") %></p>
 
-  <% if published %>
-    <p><%= PublishServicePresenter.hostname_for(deployment_environment: environment, view: self) %></p>
+  <% if published_service.published? %>
+    <%= render 'first_publish_message', environment: environment, service_id: service.service_id %>
+
+    <p><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
   <% end %>
 
   <% if presenter.service_output_warning.present? %>
@@ -33,20 +35,20 @@
       <%= t("publish.#{environment}.button") %>
   </button>
 
-    <%= form_for(presenter.publish_creation,
-        url: publish_index_path(service.service_id),
-        html: { id: "publish-form-#{environment}", class: 'publish-form', data: { first_publish: false } }) do |f| %>
+  <%= form_for(presenter.publish_creation,
+      url: publish_index_path(service.service_id),
+      html: { id: "publish-form-#{environment}", class: 'publish-form', data: { first_publish: false } }) do |f| %>
 
-      <%= render 'form', f: f, deployment_environment: environment %>
+    <%= render 'form', f: f, deployment_environment: environment %>
 
-      <div class="govuk-button-group govuk-!-margin-bottom-0">
-        <button class="govuk-button fb-govuk-button" type="submit">
-          <%= t("publish.#{environment}.button") %>
-        </button>
+    <div class="govuk-button-group govuk-!-margin-bottom-0">
+      <button class="govuk-button fb-govuk-button" type="submit">
+        <%= t("publish.#{environment}.button") %>
+      </button>
 
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
-          <%= t('actions.cancel') %>
-        </button>
-      </div>
-    <% end %>
+      <button class="govuk-button govuk-button--secondary" data-module="govuk-button" type="button">
+        <%= t('actions.cancel') %>
+      </button>
+    </div>
+  <% end %>
 </section>
