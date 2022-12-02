@@ -7,8 +7,9 @@ feature 'Confirmation email' do
   let(:question) { 'New Email Component' }
   # Capybara strips out the carriage return `\r`
   let(:message_body) {
-    "Thank you for your submission to ‘#{service_name}’.\n\nA copy of the information you provided is attached to this email."
+    "Thank you for your submission to ‘#{service_name}’. \n\nA copy of the information you provided is attached to this email."
   }
+  let(:message_subject) { "Your submission to ‘#{service_name}’ " }
   let(:multiple_question_page) { 'Title' }
   let(:email_question) { 'Email address question' }
   let(:text_component_question) { 'Question' }
@@ -145,13 +146,7 @@ feature 'Confirmation email' do
     expect(page).to have_content(I18n.t('default_values.service_email_from'))
     expect(page).to have_content(I18n.t('warnings.email_settings.default'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.from_address.link'))
-    expect(page).to have_field(
-      'Subject',
-      with: I18n.t(
-        'default_values.confirmation_email_subject',
-        service_name: service_name
-      )
-    )
+    expect(page.find(:css, "input#confirmation-email-settings-confirmation-email-subject-#{environment}-field").value).to have_content(message_subject)
     expect(page).to have_content(message_body)
   end
 

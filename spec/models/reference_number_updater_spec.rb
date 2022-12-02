@@ -2,7 +2,7 @@ RSpec.describe ReferenceNumberUpdater do
   subject(:reference_number_updater) do
     described_class.new(
       reference_number_settings: reference_number_settings,
-      service_id: service.service_id
+      service: service
     )
   end
   let(:reference_number_settings) do
@@ -13,48 +13,63 @@ RSpec.describe ReferenceNumberUpdater do
     )
   end
   let(:params) { {} }
-  let(:deployment_environment) { 'dev' }
 
   describe '#create_or_update' do
     context 'reference number' do
       context 'when reference_number exists in the db' do
-        let!(:service_configuration) do
-          create(
-            :service_configuration,
-            :dev,
-            :reference_number,
-            service_id: service.service_id
-          )
-        end
-
         let(:params) { { reference_number: '0' } }
 
         before do
-          service_configuration
-          allow(reference_number_updater).to receive(:remove_the_service_configuration)
+          create(
+            :service_configuration,
+            :reference_number,
+            service_id: service.service_id,
+            deployment_environment: 'dev'
+          )
+          create(
+            :service_configuration,
+            :reference_number,
+            service_id: service.service_id,
+            deployment_environment: 'production'
+          )
+
+          reference_number_updater.create_or_update!
         end
 
         context 'when a user unticked the box' do
-          it 'updates the submission settings' do
-            reference_number_updater.create_or_update!
-
-            expect(reference_number_updater).to have_received(:remove_the_service_configuration).twice
+          it 'removes the records from the database' do
+            expect(
+              ServiceConfiguration.where(
+                service_id: service.service_id,
+                name: 'REFERENCE_NUMBER'
+              )
+            ).to be_empty
           end
         end
       end
 
       context 'when reference_number doesn\'t exist in the db' do
-        before do
-          allow(reference_number_updater).to receive(:create_or_update_the_service_configuration)
-        end
-
         context 'when a user ticks the box' do
           let(:params) { { reference_number: '1' } }
 
           it 'creates the submission settings' do
             reference_number_updater.create_or_update!
 
-            expect(reference_number_updater).to have_received(:create_or_update_the_service_configuration).twice
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: 'REFERENCE_NUMBER',
+                deployment_environment: 'dev'
+              )
+            ).to be_present
+
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: 'REFERENCE_NUMBER',
+                deployment_environment: 'production'
+              )
+            ).to be_present
           end
         end
 
@@ -64,7 +79,75 @@ RSpec.describe ReferenceNumberUpdater do
           it 'creates the submission settings' do
             reference_number_updater.create_or_update!
 
-            expect(reference_number_updater).to_not have_received(:create_or_update_the_service_configuration)
+            expect(
+              ServiceConfiguration.where(
+                service_id: service.service_id,
+                name: 'REFERENCE_NUMBER'
+              )
+            ).to be_empty
+          end
+        end
+      end
+    end
+
+    context 'configs with defaults' do
+      before do
+        reference_number_updater.create_or_update!
+      end
+
+      %w[
+        CONFIRMATION_EMAIL_SUBJECT
+        CONFIRMATION_EMAIL_BODY
+        SERVICE_EMAIL_SUBJECT
+        SERVICE_EMAIL_BODY
+        SERVICE_EMAIL_PDF_HEADING
+      ].each do |config|
+        context 'when reference number is enabled' do
+          let(:params) { { reference_number: '1' } }
+          let(:content) do
+            I18n.t("default_values.#{config.downcase}", service_name: service.service_name)
+          end
+          let(:reference_number) { '{{reference_number}}' }
+
+          it 'updates the service configuration with reference number default value' do
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: config,
+                deployment_environment: 'dev'
+              ).decrypt_value
+            ).to include(reference_number)
+
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: config,
+                deployment_environment: 'production'
+              ).decrypt_value
+            ).to include(reference_number)
+          end
+        end
+
+        context 'when reference number is disabled' do
+          let(:params) { { reference_number: '0' } }
+          let(:placeholder) { ContentSubstitutor::REFERENCE_NUMBER_PLACEHOLDER }
+
+          it 'updates the service configuration with reference number default value' do
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: config,
+                deployment_environment: 'dev'
+              ).decrypt_value
+            ).to_not include(placeholder)
+
+            expect(
+              ServiceConfiguration.find_by(
+                service_id: service.service_id,
+                name: config,
+                deployment_environment: 'production'
+              ).decrypt_value
+            ).to_not include(placeholder)
           end
         end
       end

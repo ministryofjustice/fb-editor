@@ -11,6 +11,15 @@ RSpec.describe EmailSettingsUpdater do
     )
   end
   let(:params) { {} }
+  let(:default_email_subject) do
+    email_settings_updater.email_settings.default_value('service_email_subject')
+  end
+  let(:default_email_body) do
+    email_settings_updater.email_settings.default_value('service_email_body')
+  end
+  let(:default_email_pdf_heading) do
+    email_settings_updater.email_settings.default_value('service_email_pdf_heading')
+  end
 
   describe '#create_or_update' do
     context 'email output' do
@@ -305,7 +314,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission from #{service.service_name}")
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -349,7 +358,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission from #{service.service_name}")
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -394,7 +403,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -438,7 +447,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -483,7 +492,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -527,7 +536,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -574,7 +583,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -616,11 +625,11 @@ RSpec.describe EmailSettingsUpdater do
           end
           before { email_settings_updater.create_or_update! }
 
-          it 'shows the default subject' do
+          it 'shows the default body' do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Please find attached a submission sent from #{service.service_name}")
+            ).to eq(default_email_body)
           end
         end
       end
@@ -667,7 +676,7 @@ RSpec.describe EmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end
@@ -713,7 +722,7 @@ RSpec.describe EmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq("Submission for #{service.service_name}")
+            ).to eq(default_email_pdf_heading)
           end
         end
       end

@@ -11,17 +11,11 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
     )
   end
   let(:params) { {} }
-  let(:default_body) do
-    I18n.t(
-      'default_values.confirmation_email_body',
-      service_name: service.service_name
-    )
+  let(:default_email_subject) do
+    confirmation_email_settings_updater.confirmation_email_settings.default_value('confirmation_email_subject')
   end
-  let(:default_subject) do
-    I18n.t(
-      'default_values.confirmation_email_subject',
-      service_name: service.service_name
-    )
+  let(:default_email_body) do
+    confirmation_email_settings_updater.confirmation_email_settings.default_value('confirmation_email_body')
   end
 
   describe '#create_or_update' do
@@ -118,7 +112,7 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq(default_subject)
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -162,7 +156,7 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq(default_subject)
+            ).to eq(default_email_subject)
           end
         end
       end
@@ -207,7 +201,7 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
             service_configuration.reload
             expect(
               service_configuration.decrypt_value
-            ).to eq(default_body)
+            ).to eq(default_email_body)
           end
         end
       end
@@ -251,7 +245,7 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
-            ).to eq(default_body)
+            ).to eq(default_email_body)
           end
         end
       end
