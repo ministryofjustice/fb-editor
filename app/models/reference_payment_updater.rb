@@ -1,13 +1,13 @@
-class ReferenceNumberUpdater
+class ReferencePaymentUpdater
   include ContentSubstitutorHelper
 
-  attr_reader :service, :reference_number_settings
+  attr_reader :service, :reference_payment_settings
 
   CONFIGS = %w[REFERENCE_NUMBER].freeze
 
-  def initialize(service:, reference_number_settings:)
+  def initialize(service:, reference_payment_settings:)
     @service = service
-    @reference_number_settings = reference_number_settings
+    @reference_payment_settings = reference_payment_settings
   end
 
   def create_or_update!
@@ -18,7 +18,7 @@ class ReferenceNumberUpdater
 
   def save_config
     CONFIGS.each do |config|
-      if reference_number_settings.enabled?
+      if reference_payment_settings.enabled?
         create_or_update_service_configuration(config: config, deployment_environment: 'dev')
         create_or_update_service_configuration(config: config, deployment_environment: 'production')
       else
@@ -67,7 +67,7 @@ class ReferenceNumberUpdater
   private
 
   def reference_number
-    @reference_number ||= reference_number_settings.reference_number
+    @reference_number ||= reference_payment_settings.reference_number
   end
 
   def confirmation_emails_settings
