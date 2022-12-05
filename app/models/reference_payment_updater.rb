@@ -28,7 +28,7 @@ class ReferencePaymentUpdater
 
   def save_config
     CONFIGS.each do |config|
-      if reference_payment_settings.enabled?
+      if reference_payment_settings.reference_number_enabled?
         create_or_update_service_configuration(config: config, deployment_environment: 'dev')
         create_or_update_service_configuration(config: config, deployment_environment: 'production')
       else
