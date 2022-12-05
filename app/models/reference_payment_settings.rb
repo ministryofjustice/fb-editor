@@ -8,8 +8,7 @@ class ReferencePaymentSettings
                 :deployment_environment
 
   validates :service_id, presence: true
-  validates :payment_link_url, presence: true, if: proc { |obj| obj.payment_link == '1' }
-  validates :payment_link, presence: true, if: proc { |obj| obj.reference_number == '1' }
+  validates_with ReferencePaymentValidator
 
   def reference_number_checked?
     reference_number_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER')
@@ -19,11 +18,13 @@ class ReferencePaymentSettings
     reference_number == '1'
   end
 
-  def payment_link_checked?
-    payment_link_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
+  def payment_link_url_enabled?
+    payment_link_url_present? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
   end
 
-  def payment_link_enabled?
-    payment_link_url.present?
+  delegate :present?, to: :payment_link_url, prefix: true
+
+  def payment_link_checked?
+    payment_link == '1'
   end
 end
