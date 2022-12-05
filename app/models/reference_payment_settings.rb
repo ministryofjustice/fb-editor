@@ -3,6 +3,8 @@ class ReferencePaymentSettings
 
   attr_accessor :service_id,
                 :reference_number,
+                :payment_link,
+                :payment_link_url,
                 :deployment_environment
 
   validates :service_id, presence: true
