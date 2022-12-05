@@ -1,5 +1,5 @@
 class Settings::ReferencePaymentController < FormController
-  before_action :assign_form_objects
+  before_action :assign_form_objects, only: :index
 
   def index; end
 
