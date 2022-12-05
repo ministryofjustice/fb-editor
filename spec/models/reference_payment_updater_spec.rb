@@ -152,5 +152,106 @@ RSpec.describe ReferencePaymentUpdater do
         end
       end
     end
+
+    %w[dev production].each do |environment|
+      context 'configs without defaults' do
+        context 'service email output' do
+          let(:email) { 'maarva@ferrix.com' }
+
+          before do
+            create(
+              :service_configuration,
+              :service_email_output,
+              value: email,
+              service_id: service.service_id,
+              deployment_environment: environment
+            )
+            reference_payment_updater.create_or_update!
+          end
+
+          it 'does not change the service email output' do
+            config = ServiceConfiguration.find_by(
+              service_id: service.service_id,
+              deployment_environment: environment,
+              name: 'SERVICE_EMAIL_OUTPUT'
+            )
+            expect(config.decrypt_value).to eq(email)
+          end
+        end
+
+        context 'service email pdf sub heading' do
+          let(:content) { 'It was the day my grandmother exploded' }
+          before do
+            create(
+              :service_configuration,
+              :service_email_pdf_subheading,
+              value: content,
+              service_id: service.service_id,
+              deployment_environment: environment
+            )
+            reference_payment_updater.create_or_update!
+          end
+
+          it 'does not change the pdf sub heading' do
+            config = ServiceConfiguration.find_by(
+              service_id: service.service_id,
+              deployment_environment: environment,
+              name: 'SERVICE_EMAIL_PDF_SUBHEADING'
+            )
+            expect(config.decrypt_value).to eq(content)
+          end
+        end
+      end
+
+      context "submission settings for #{environment}" do
+        context 'send by email' do
+          before do
+            create(:submission_setting, :send_email, service_id: service.service_id, deployment_environment: environment)
+            reference_payment_updater.create_or_update!
+          end
+
+          it 'does not change the send by email setting' do
+            setting = SubmissionSetting.find_by(
+              service_id: service.service_id,
+              deployment_environment: environment
+            ).try(:send_email?)
+
+            expect(setting).to be_truthy
+          end
+        end
+
+        context 'service csv output' do
+          before do
+            create(:submission_setting, :service_csv_output, service_id: service.service_id, deployment_environment: environment)
+            reference_payment_updater.create_or_update!
+          end
+
+          it 'does not change the send by email setting' do
+            setting = SubmissionSetting.find_by(
+              service_id: service.service_id,
+              deployment_environment: environment
+            ).try(:service_csv_output?)
+
+            expect(setting).to be_truthy
+          end
+        end
+
+        context 'send confirmation email' do
+          before do
+            create(:submission_setting, :send_confirmation_email, service_id: service.service_id, deployment_environment: environment)
+            reference_payment_updater.create_or_update!
+          end
+
+          it 'does not change the send by email setting' do
+            setting = SubmissionSetting.find_by(
+              service_id: service.service_id,
+              deployment_environment: environment
+            ).try(:send_confirmation_email?)
+
+            expect(setting).to be_truthy
+          end
+        end
+      end
+    end
   end
 end
