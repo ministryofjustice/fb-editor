@@ -33,9 +33,10 @@ as well as a link to its edit page.
 </header>
 
 <section class="main-content__body">
+
   <dl>
     <% page.attributes.each do |attribute| %>
-      <dt class="attribute-label" id="<%= attribute.name %>">
+      <dt class="attribute-label" id="<%= attribute.name %>" style="margin-top: 0;">
       <%= t(
         "helpers.label.#{resource_name}.#{attribute.name}",
         default: page.resource.class.human_attribute_name(attribute.name),
@@ -43,7 +44,26 @@ as well as a link to its edit page.
       </dt>
 
       <dd class="attribute-data attribute-data--<%=attribute.html_class%>"
-          ><%= render_field attribute, page: page %></dd>
+          > <%= render_field attribute, page: page %></dd>
     <% end %>
+
   </dl>
+
+<% if @user_services.present? %>
+
+  <div style="clear: both;">
+    <h2>Forms</h2>
+      <ul class="fb-editor-list fb-editor-form-list">
+          <% @user_services.each do |service| %>
+            <li id="service-<%= service.name.parameterize %>">
+
+              <%= link_to(service.name, admin_service_path(service.id), class: "govuk-link edit") %>
+
+            </li>
+          <% end %>
+        </ul>
+    </div>
+  <% end %>
 </section>
+
+
