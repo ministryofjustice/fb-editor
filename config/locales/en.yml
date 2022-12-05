@@ -327,6 +327,10 @@ en:
       legend: Reference numbers
       hint: This inserts a reference number in the confirmation page, confirmation email, submission email and submission attachments
       label: Enable reference numbers
+      confirmation_email_warning:
+        title: Do you also want to send a confirmation email?
+        text: These features work best with a confirmation email, which sends the people completing your form an email with their reference number and payment link.
+        link_text: Send a confirmation email
     payment_link:
       legend: GOV.UK Pay payment links
       hint: This inserts a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href})
