@@ -14,3 +14,4 @@ data:
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}
   AV_HOST: fb-av-svc-{{ .Values.environmentName }}
   REFERENCE_NUMBER: {{ .Values.reference_number }}
+  PAYMENT_LINK: {{ .Values.payment_link }}

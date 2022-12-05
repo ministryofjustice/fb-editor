@@ -14,4 +14,12 @@ class ReferencePaymentSettings
   def enabled?
     reference_number == '1'
   end
+
+  def payment_link_checked?
+    payment_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
+  end
+
+  def payment_enabled?
+    false
+  end
 end

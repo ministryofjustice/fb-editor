@@ -12,3 +12,21 @@
           }
       %>
 <% end %>
+
+
+<% if ENV['PAYMENT_LINK'] == 'enabled' %>
+  <%= f.govuk_check_boxes_fieldset :"payment_link",
+      multiple: false,
+      legend: { text: t('settings.payment_link.legend'), size: 'l'} do %>
+      <div class="govuk-hint" id="payment_link_hint"><%= t('settings.payment_link.hint', href: t('settings.payment_link.href', url: t('settings.payment_link.url'))).html_safe %></div>
+      <%= f.govuk_check_box :"payment_link", 1, 0,
+        multiple: false,
+        link_errors: true,
+        label: { text: t('settings.payment_link.label') },
+        checked: f.object.payment_link_checked?,
+        aria: {
+            describedby: 'payment_link_hint payment_link_warning'
+          }
+      %>
+  <% end %>
+<% end %>

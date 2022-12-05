@@ -6,7 +6,7 @@ RSpec.describe ReferencePaymentSettings do
   end
   let(:params) { {} }
 
-  describe '#reference_number_enabled?' do
+  describe '#reference_number_checked?' do
     context 'when reference number is ticked' do
       let(:params) { { reference_number: '1' } }
 
@@ -21,6 +21,12 @@ RSpec.describe ReferencePaymentSettings do
           expect(reference_payment_settings.reference_number_checked?).to be_falsey
         end
       end
+    end
+  end
+
+  describe '#payment_link_checked?' do
+    it 'returns false' do
+      expect(reference_payment_settings.payment_link_checked?).to be_falsey
     end
   end
 end
