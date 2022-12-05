@@ -327,6 +327,12 @@ en:
       legend: Reference numbers
       hint: This inserts a reference number in the confirmation page, confirmation email, submission email and submission attachments
       label: Enable reference numbers
+    payment_link:
+      legend: GOV.UK Pay payment links
+      hint: This inserts a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href})
+      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account</a>
+      url: 'https://www.payments.service.gov.uk/'
+      label: Add payment links with reference numbers
     submission:
       heading: 'Submission settings'
       lede: 'Set what happens when a user submits their data.'
