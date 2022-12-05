@@ -1,9 +1,7 @@
 class Settings::ReferencePaymentController < FormController
   before_action :assign_form_objects
 
-  def index
-    @reference_payment = ReferencePaymentSettings.new(service_id: service.service_id)
-  end
+  def index; end
 
   def create
     @reference_payment = ReferencePaymentSettings.new(
@@ -26,6 +24,14 @@ class Settings::ReferencePaymentController < FormController
 
   def assign_form_objects
     @reference_payment = ReferencePaymentSettings.new(service_id: service.service_id)
+    @confirmation_email_enabled = confirmation_email_setting('dev').try(:send_confirmation_email?) && confirmation_email_setting('production').try(:send_confirmation_email?)
+  end
+
+  def confirmation_email_setting(environment)
+    SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment: environment
+    )
   end
 
   def reference_payment_params
