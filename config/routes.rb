@@ -48,7 +48,7 @@ Rails.application.routes.draw do
       namespace :settings do
         resources :form_information, only: [:index, :create]
         resources :form_analytics, only: [:index, :create]
-        resources :reference_number, only: [:index, :create]
+        resources :reference_payment, only: [:index, :create]
         resources :submission, only: [:index] do
           collection do
             resources :from_address, only: [:index, :create]

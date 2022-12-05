@@ -11,8 +11,8 @@
 
   <%= govuk_warning_text(text: t('settings.reference_number.warning'), html_attributes: { id: 'reference_number_warning' }) %>
 
-    <%= form_for @reference_number, url: settings_reference_number_index_path(service.service_id),
-    html: { id: 'reference-number-settings' },
+    <%= form_for @reference_payment, url: settings_reference_payment_index_path(service.service_id),
+    html: { id: 'reference-payment-settings' },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
     <%= render partial: 'form', locals: { f: f } %>

@@ -1,12 +1,12 @@
-RSpec.describe ReferenceNumberUpdater do
-  subject(:reference_number_updater) do
+RSpec.describe ReferencePaymentUpdater do
+  subject(:reference_payment_updater) do
     described_class.new(
-      reference_number_settings: reference_number_settings,
+      reference_payment_settings: reference_payment_settings,
       service: service
     )
   end
-  let(:reference_number_settings) do
-    ReferenceNumberSettings.new(
+  let(:reference_payment_settings) do
+    ReferencePaymentSettings.new(
       params.merge(
         service_id: service.service_id
       )
@@ -33,7 +33,7 @@ RSpec.describe ReferenceNumberUpdater do
             deployment_environment: 'production'
           )
 
-          reference_number_updater.create_or_update!
+          reference_payment_updater.create_or_update!
         end
 
         context 'when a user unticked the box' do
@@ -53,7 +53,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '1' } }
 
           it 'creates the submission settings' do
-            reference_number_updater.create_or_update!
+            reference_payment_updater.create_or_update!
 
             expect(
               ServiceConfiguration.find_by(
@@ -77,7 +77,7 @@ RSpec.describe ReferenceNumberUpdater do
           let(:params) { { reference_number: '0' } }
 
           it 'creates the submission settings' do
-            reference_number_updater.create_or_update!
+            reference_payment_updater.create_or_update!
 
             expect(
               ServiceConfiguration.where(
@@ -92,7 +92,7 @@ RSpec.describe ReferenceNumberUpdater do
 
     context 'configs with defaults' do
       before do
-        reference_number_updater.create_or_update!
+        reference_payment_updater.create_or_update!
       end
 
       %w[

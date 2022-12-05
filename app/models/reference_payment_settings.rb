@@ -1,4 +1,4 @@
-class ReferenceNumberSettings
+class ReferencePaymentSettings
   include ActiveModel::Model
 
   attr_accessor :service_id,
