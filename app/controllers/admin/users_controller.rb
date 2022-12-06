@@ -1,11 +1,18 @@
 module Admin
+  # rubocop:disable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
   class UsersController < Admin::ApplicationController
+    before_action :assign_user_services, only: :show
+
     def valid_action?(name, resource = resource_class)
       %w[destroy edit new].exclude?(name.to_s) && super
     end
 
     def default_sorting_attribute
       :name
+    end
+
+    def assign_user_services
+      @user_services ||= MetadataApiClient::Service.all(user_id: params[:id])
     end
 
     # Overwrite any of the RESTful controller actions to implement custom behavior
@@ -51,4 +58,5 @@ module Admin
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
   end
+  # rubocop:enable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
 end
