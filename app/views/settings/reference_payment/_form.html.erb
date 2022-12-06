@@ -1,7 +1,19 @@
 <%= f.govuk_check_boxes_fieldset :"reference_number",
       multiple: false,
       legend: { text: t('settings.reference_number.legend'), size: 'l'} do %>
-      <div class="govuk-hint" id="reference_number_hint"><%= t('settings.reference_number.hint') %></div>
+  <div class="govuk-hint" id="reference_number_hint"><%= t('settings.reference_number.hint') %></div>
+
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+      <% if f.object.errors.present? %>
+        <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+          <% if error_message.include?('reference number') %>
+            <p id="reference_payment_settings-field-error_<%= index %>" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+            </p>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <%= f.govuk_check_box :"reference_number", 1, 0,
         multiple: false,
         link_errors: true,
@@ -12,7 +24,6 @@
           }
       %>
 <% end %>
-
 
 <% if ENV['PAYMENT_LINK'] == 'enabled' %>
   <%= f.govuk_check_boxes_fieldset :"payment_link",
@@ -29,9 +40,21 @@
           }
       %>
 
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+      <% if f.object.errors.present? %>
+        <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+          <% if !error_message.include?('reference number') %>
+            <p id="reference_payment_settings-field-error_<%=index %>" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+            </p>
+          <% end %>
+        <% end %>
+      <% end %>
+
       <%= f.text_field :"payment_link_url",
         label: 'GovUK Pay',
         class: "govuk-input width-responsive-two-thirds govuk-input--error",
         value: '' %>
+    </div>
   <% end %>
 <% end %>

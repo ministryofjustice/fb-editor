@@ -22,7 +22,11 @@ class ReferencePaymentSettings
     payment_link_url_present? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
   end
 
-  delegate :present?, to: :payment_link_url, prefix: true
+  # rubocop:disable Rails/Delegate
+  def payment_link_url_present?
+    payment_link_url.present?
+  end
+  # rubocop:enable Rails/Delegate
 
   def payment_link_checked?
     payment_link == '1'

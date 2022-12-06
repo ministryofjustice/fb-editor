@@ -73,7 +73,12 @@ RSpec.describe  ReferencePaymentValidator do
         end
 
         it 'returns an error message' do
-          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.reference_payment_settings.invalid_payment_url'))
+          expect(subject.errors.full_messages).to include(
+            I18n.t(
+              'activemodel.errors.models.reference_payment_settings.invalid_payment_url',
+              link_start_with: I18n.t('activemodel.errors.models.reference_payment_settings.link_start_with')
+            )
+          )
         end
       end
 
