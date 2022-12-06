@@ -3,7 +3,7 @@ class ReferencePaymentUpdater
 
   attr_reader :service, :reference_payment_settings
 
-  CONFIGS = %w[REFERENCE_NUMBER].freeze
+  CONFIGS = %w[REFERENCE_NUMBER PAYMENT_LINK].freeze
   CONFIG_WITH_DEFAULTS = %w[
     CONFIRMATION_EMAIL_SUBJECT
     CONFIRMATION_EMAIL_BODY
@@ -28,10 +28,22 @@ class ReferencePaymentUpdater
 
   def save_config
     CONFIGS.each do |config|
-      if reference_payment_settings.reference_number_enabled?
+      if reference_payment_settings.reference_number_enabled? && config == 'REFERENCE_NUMBER'
         create_or_update_service_configuration(config: config, deployment_environment: 'dev')
         create_or_update_service_configuration(config: config, deployment_environment: 'production')
-      else
+      end
+
+      if !reference_payment_settings.reference_number_enabled? && config == 'REFERENCE_NUMBER'
+        remove_service_configuration(config, 'dev')
+        remove_service_configuration(config, 'production')
+      end
+
+      if reference_payment_settings.payment_link_url_present? && config == 'PAYMENT_LINK'
+        create_or_update_service_configuration(config: config, deployment_environment: 'dev', value: reference_payment_settings.payment_link_url)
+        create_or_update_service_configuration(config: config, deployment_environment: 'production', value: reference_payment_settings.payment_link_url)
+      end
+
+      if !reference_payment_settings.payment_link_url_present? && config == 'PAYMENT_LINK'
         remove_service_configuration(config, 'dev')
         remove_service_configuration(config, 'production')
       end
