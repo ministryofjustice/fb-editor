@@ -1,4 +1,6 @@
 module Api
+  require 'resolv'
+
   class FirstPublishController < ApiController
     def show
       environment = params[:environment]
@@ -9,11 +11,11 @@ module Api
 
       url = PublishServicePresenter.new(publishes, service).url
       if url
-        dns = ::Resolv::DNS.new(nameserver: '1.1.1.1')
+        dns = Resolv::DNS.new(nameserver: '1.1.1.1')
         dns.getaddress(url)
         head :ok
       end
-    rescue ::Resolv::ResolvError
+    rescue Resolv::ResolvError
       head :not_found
     end
   end
