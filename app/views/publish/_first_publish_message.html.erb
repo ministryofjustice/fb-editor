@@ -31,10 +31,13 @@
             var status = setInterval( function() {
               $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
                 successCount++;
+                console.log(successCount);
                 if(successCount >= 5) {
                   $alert.removeClass().addClass(successClass).text(successMessage);
                   clearInterval(status);
                 }
+              }).fail(function(){
+                successCount = 0;
               })
             }, 10000);
           <% end %>
