@@ -9,11 +9,11 @@ module Api
 
       url = PublishServicePresenter.new(publishes, service).url
       if url
-        uri = URI(url)
-        Net::HTTP.get(uri)
+        dns = Resolv::DNS.new(nameserver: '1.1.1.1')
+        dns.getaddress(url)
         head :ok
       end
-    rescue SocketError
+    rescue Resolv::ResolvError
       head :not_found
     end
   end
