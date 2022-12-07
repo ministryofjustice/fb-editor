@@ -31,4 +31,8 @@ class ReferencePaymentSettings
   def payment_link_checked?
     payment_link == '1'
   end
+
+  def saved_payment_link_url
+    @saved_payment_link_url ||= (ServiceConfiguration.find_by(service_id: service_id, name: 'PAYMENT_LINK').decrypt_value if ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK'))
+  end
 end

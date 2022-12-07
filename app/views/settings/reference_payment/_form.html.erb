@@ -34,7 +34,7 @@
         multiple: false,
         link_errors: true,
         label: { text: t('settings.payment_link.label') },
-        checked: f.object.payment_link_checked?,
+        checked: f.object.payment_link_url_enabled?,
         aria: {
             describedby: 'payment_link_hint payment_link_warning'
           }
@@ -54,7 +54,7 @@
       <%= f.text_field :"payment_link_url",
         label: 'GovUK Pay',
         class: "govuk-input width-responsive-two-thirds govuk-input--error",
-        value: '' %>
+        value: f.object.saved_payment_link_url %>
     </div>
   <% end %>
 <% end %>
