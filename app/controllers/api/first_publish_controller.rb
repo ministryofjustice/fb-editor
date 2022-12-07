@@ -1,4 +1,6 @@
 module Api
+  require 'resolv'
+
   class FirstPublishController < ApiController
     def show
       environment = params[:environment]
@@ -7,13 +9,13 @@ module Api
         deployment_environment: environment
       ).published
 
-      url = PublishServicePresenter.new(publishes, service).url
-      if url
-        uri = URI(url)
-        Net::HTTP.get(uri)
+      hostname = PublishServicePresenter.new(publishes, service).hostname
+      if hostname
+        dns = Resolv::DNS.new(nameserver: ['8.8.8.8', '8.8.4.4'])
+        dns.getaddress(hostname)
         head :ok
       end
-    rescue SocketError
+    rescue Resolv::ResolvError
       head :not_found
     end
   end
