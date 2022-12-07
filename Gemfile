@@ -55,7 +55,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'listen', '~> 3.7'
-  gem 'rubocop', '~> 1.37.1'
+  gem 'rubocop', '~> 1.39.0'
   gem 'rubocop-govuk'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
