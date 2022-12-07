@@ -9,10 +9,10 @@ module Api
         deployment_environment: environment
       ).published
 
-      url = PublishServicePresenter.new(publishes, service).url
-      if url
-        dns = Resolv::DNS.new(nameserver: '1.1.1.1')
-        dns.getaddress(url)
+      hostname = PublishServicePresenter.new(publishes, service).hostname
+      if hostname
+        dns = Resolv::DNS.new(nameserver: ['8.8.8.8', '8.8.4.4'])
+        dns.getaddress(hostname)
         head :ok
       end
     rescue Resolv::ResolvError
