@@ -17,6 +17,7 @@
       var successClass = $alert.data('success-class');
       var successMessage = $alert.data('success-message');
       var defaultMessage =  $alert.data('default-message');
+      var successCount = 0;
 
         // Check if the service is live
         $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
@@ -29,8 +30,11 @@
             // Start polling for when service is live
             var status = setInterval( function() {
               $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
-                $alert.removeClass().addClass(successClass).text(successMessage);
-                clearInterval(status);
+                successCount++;
+                if(successCount >= 5) {
+                  $alert.removeClass().addClass(successClass).text(successMessage);
+                  clearInterval(status);
+                }
               })
             }, 10000);
           <% end %>
