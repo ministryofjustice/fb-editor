@@ -24,9 +24,21 @@ RSpec.describe ReferencePaymentSettings do
     end
   end
 
-  describe '#payment_link_checked?' do
-    it 'returns false' do
-      expect(reference_payment_settings.payment_link_checked?).to be_falsey
+  describe '#payment_link_url_enabled?' do
+    context 'when payment link url is present' do
+      let(:params) { { payment_link_url: 'www.payment_link.gov' } }
+
+      it 'returns true' do
+        expect(reference_payment_settings.payment_link_url_enabled?).to be_truthy
+      end
+    end
+
+    context 'when payment link url is not present' do
+      let(:params) { { payment_link_url: '' } }
+
+      it 'returns false' do
+        expect(reference_payment_settings.payment_link_url_enabled?).to be_falsey
+      end
     end
   end
 end

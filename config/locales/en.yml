@@ -577,6 +577,11 @@ en:
           scan_error:  There was a problem with the file upload - try again later
           empty_value_cell: "The selected file cannot contain blank fields"
           invalid_headings: "The selected file's header fields must be labelled correctly"
+        reference_payment_settings:
+          reference_number_disabled: 'You must enable reference numbers before you can add reference numbers to a payment link'
+          missing_payment_link: 'Enter your GOV.UK Pay Payment link URL (You get this from your GOV.UK Pay account)'
+          invalid_payment_url: "Enter a valid GOV.UK payment link URL starting with %{link_start_with}"
+          link_start_with: 'https://www.gov.uk/payments/'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

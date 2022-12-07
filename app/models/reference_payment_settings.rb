@@ -8,20 +8,27 @@ class ReferencePaymentSettings
                 :deployment_environment
 
   validates :service_id, presence: true
+  validates_with ReferencePaymentValidator
 
   def reference_number_checked?
-    enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER')
+    reference_number_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER')
   end
 
-  def enabled?
+  def reference_number_enabled?
     reference_number == '1'
   end
 
-  def payment_link_checked?
-    payment_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
+  def payment_link_url_enabled?
+    payment_link_url_present? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
   end
 
-  def payment_enabled?
-    false
+  # rubocop:disable Rails/Delegate
+  def payment_link_url_present?
+    payment_link_url.present?
+  end
+  # rubocop:enable Rails/Delegate
+
+  def payment_link_checked?
+    payment_link == '1'
   end
 end
