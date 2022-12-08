@@ -8,39 +8,56 @@
 
 <script>
   $(function() {
-    /* setTimeout is used here as if the default message is in the aria-live container
-     * on page load then it won't be announced.  Adding a delay before inserting the message
-     * allows it to be picked up and announced
-     */
-    setTimeout(function() {
       var $alert = $("#first-publish-alert-<%=environment%>");
       var successClass = $alert.data('success-class');
       var successMessage = $alert.data('success-message');
       var defaultMessage =  $alert.data('default-message');
-      var successCount = 0;
+      var alreadyLive;
+      var livenessChecks = 0;
 
-        // Check if the service is live
+      // Check if the service is live
+      // Due to the fickleness of the DNS checks.  We do a couple of checks to see
+      // if the service is already live.  If we get at least one 200, we say it is live.
+      var livenessCheck = setInterval( function() {
         $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
-          // Already published
-        }).fail(function() {
-          // Show default message
-          $alert.text(defaultMessage);
+          console.log('live');
+          livenessChecks++;
+          alreadyLive = true;
+        }).fail(function(){
+          livenessChecks++;
+          console.log('not live yet');
+        });
 
-          <% if Rails.env.production? %>
-            // Start polling for when service is live
-            var status = setInterval( function() {
+        console.log(livenessChecks);
+
+        if( livenessChecks >= 3) {
+          clearInterval(livenessCheck);
+          console.log(alreadyLive);
+        if(alreadyLive != undefined && alreadyLive != true) {
+        console.log('definitely not live');
+        var successCount = 0;
+
+        // Show default message
+        $alert.text(defaultMessage);
+
+          // Start polling for when service is live
+          // Again, due to the slight fickleness of DNS propagation / resolution
+          // we require several consecutive success before we consider the service live
+          var publishedCheck = setInterval( function() {
               $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
                 successCount++;
                 if(successCount >= 10) {
                   $alert.removeClass().addClass(successClass).text(successMessage);
-                  clearInterval(status);
+                  clearInterval(publishedCheck);
                 }
               }).fail(function(){
                 successCount = 0;
-              })
+              });
             }, 10000);
-          <% end %>
-        });
-    }, 400);
-  })
+      }
+        }
+      }, 250);
+
+
+  });
 </script>
