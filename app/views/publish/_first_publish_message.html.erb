@@ -2,62 +2,54 @@
                             class="text-error"
                             data-default-message="<%= t('publish.first_publish_warning') %>"
                             data-success-message="<%= t('publish.first_publish_success') %>"
-                            data-success-class="text-success">
+                            data-success-class="text-success"
+                            data-error-class="text-error">
 
 </p>
 
-<script>
-  $(function() {
-      var $alert = $("#first-publish-alert-<%=environment%>");
-      var successClass = $alert.data('success-class');
-      var successMessage = $alert.data('success-message');
-      var defaultMessage =  $alert.data('default-message');
-      var alreadyLive;
-      var livenessChecks = 0;
+<script type="module">
+  const alert = document.querySelector("#first-publish-alert-<%=environment%>");
+  const successClass = alert.dataset.successClass;
+  const errorClass = alert.dataset.errorClass;
+  const defaultMessage = alert.dataset.defaultMessage;
+  const successMessage = alert.dataset.successMessage;
+  const endpoint = '<%= api_service_first_publish_path(service_id, environment) %>';
 
-      // Check if the service is live
-      // Due to the fickleness of the DNS checks.  We do a couple of checks to see
-      // if the service is already live.  If we get at least one 200, we say it is live.
-      var livenessCheck = setInterval( function() {
-        $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
-          console.log('live');
-          livenessChecks++;
-          alreadyLive = true;
-        }).fail(function(){
-          livenessChecks++;
-          console.log('not live yet');
-        });
+  const livenessChecksRequired = 3
+  const publishedCheckSuccessesRequired = 10
 
-        console.log(livenessChecks);
+  async function checkLiveness() {
+    return fetch(endpoint).then((response) => {
+      console.log('checking liveness');
+      return response.ok ? true : false;
+    }).catch((error) => {
+      console.log('error');
+    });
+  }
 
-        if( livenessChecks >= 3) {
-          clearInterval(livenessCheck);
-          console.log(alreadyLive);
-        if(alreadyLive != undefined && alreadyLive != true) {
-        console.log('definitely not live');
-        var successCount = 0;
+  let results = [];
+  for(let i=0;i<livenessChecksRequired;i++) {
+    const result = await checkLiveness();
+    results.push(result);
+  }
 
-        // Show default message
-        $alert.text(defaultMessage);
-
-          // Start polling for when service is live
-          // Again, due to the slight fickleness of DNS propagation / resolution
-          // we require several consecutive success before we consider the service live
-          var publishedCheck = setInterval( function() {
-              $.get('<%= api_service_first_publish_path(service_id, environment) %>', function() {
-                successCount++;
-                if(successCount >= 10) {
-                  $alert.removeClass().addClass(successClass).text(successMessage);
-                  clearInterval(publishedCheck);
-                }
-              }).fail(function(){
-                successCount = 0;
-              });
-            }, 10000);
+  const alreadyLive = results.reduce((value, result) => value && result);
+  console.log(alreadyLive)
+  if(!alreadyLive) {
+    console.log('not already live');
+    alert.textContent = defaultMessage;
+    let successCount = 0;
+    let publishedCheck = setInterval( async function() {
+      const success = await checkLiveness();
+      console.log({success});
+      successCount = success ? successCount+1 : 0;
+      console.log({successCount});
+      if(successCount >= publishedCheckSuccessesRequired) {
+        console.log('successful enough to be considered live');
+        alert.classList.replace(errorClass,successClass);
+        alert.textContent = successMessage;
+        clearInterval(publishedCheck);
       }
-        }
-      }, 250);
-
-
-  });
+    }, 10000);
+  }
 </script>
