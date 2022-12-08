@@ -3,7 +3,6 @@ class ReferencePaymentUpdater
 
   attr_reader :service, :reference_payment_settings
 
-  CONFIGS = %w[REFERENCE_NUMBER PAYMENT_LINK].freeze
   CONFIG_WITH_DEFAULTS = %w[
     CONFIRMATION_EMAIL_SUBJECT
     CONFIRMATION_EMAIL_BODY
@@ -19,38 +18,37 @@ class ReferencePaymentUpdater
 
   def create_or_update!
     ActiveRecord::Base.transaction do
-      save_config
+      save_config_reference_number
+      save_config_payment_link
       save_config_with_defaults
     end
   end
 
   private
 
-  def save_config
-    CONFIGS.each do |config|
-      if reference_payment_settings.reference_number_enabled? && config == 'REFERENCE_NUMBER'
-        create_or_update_service_configuration(config: config, deployment_environment: 'dev')
-        create_or_update_service_configuration(config: config, deployment_environment: 'production')
-      end
+  def save_config_reference_number
+    if reference_payment_settings.reference_number_enabled?
+      create_or_update_service_configuration(config: 'REFERENCE_NUMBER', deployment_environment: 'dev')
+      create_or_update_service_configuration(config: 'REFERENCE_NUMBER', deployment_environment: 'production')
+    end
 
-      if !reference_payment_settings.reference_number_enabled? && config == 'REFERENCE_NUMBER'
-        remove_service_configuration(config, 'dev')
-        remove_service_configuration(config, 'production')
-      end
+    unless reference_payment_settings.reference_number_enabled?
+      remove_service_configuration('REFERENCE_NUMBER', 'dev')
+      remove_service_configuration('REFERENCE_NUMBER', 'production')
+    end
+  end
 
-      if reference_payment_settings.payment_link_url_present? &&
-          reference_payment_settings.payment_link_checked? &&
-          config == 'PAYMENT_LINK'
-        create_or_update_service_configuration(config: config, deployment_environment: 'dev', value: payment_link_url)
-        create_or_update_service_configuration(config: config, deployment_environment: 'production', value: payment_link_url)
-      end
+  def save_config_payment_link
+    if reference_payment_settings.payment_link_url_present? &&
+        reference_payment_settings.payment_link_checked?
+      create_or_update_service_configuration(config: 'PAYMENT_LINK', deployment_environment: 'dev', value: payment_link_url)
+      create_or_update_service_configuration(config: 'PAYMENT_LINK', deployment_environment: 'production', value: payment_link_url)
+    end
 
-      next unless (!reference_payment_settings.payment_link_url_present? ||
-          !reference_payment_settings.payment_link_checked?) &&
-        config == 'PAYMENT_LINK'
-
-      remove_service_configuration(config, 'dev')
-      remove_service_configuration(config, 'production')
+    unless reference_payment_settings.payment_link_url_present? ||
+        reference_payment_settings.payment_link_checked?
+      remove_service_configuration('PAYMENT_LINK', 'dev')
+      remove_service_configuration('PAYMENT_LINK', 'production')
     end
   end
 

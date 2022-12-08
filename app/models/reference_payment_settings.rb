@@ -11,7 +11,9 @@ class ReferencePaymentSettings
   validates_with ReferencePaymentValidator
 
   def reference_number_checked?
-    reference_number_enabled? || ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER')
+    return ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER') if reference_number.blank?
+
+    reference_number_enabled?
   end
 
   def reference_number_enabled?
@@ -33,6 +35,14 @@ class ReferencePaymentSettings
   end
 
   def saved_payment_link_url
-    @saved_payment_link_url ||= (ServiceConfiguration.find_by(service_id: service_id, name: 'PAYMENT_LINK').decrypt_value if ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK'))
+    return ServiceConfiguration.find_by(service_id: service_id, name: 'PAYMENT_LINK')&.decrypt_value if payment_link_url.nil?
+
+    payment_link_url
+  end
+
+  def payment_link_has_been_checked
+    return ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK') if payment_link.blank?
+
+    payment_link_checked?
   end
 end

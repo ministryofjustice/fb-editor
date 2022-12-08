@@ -313,8 +313,9 @@ RSpec.describe ReferencePaymentUpdater do
               ).to eq(url)
             end
           end
+
           context 'when the url is missing' do
-            let(:parans) { { payment_link: '1', payment_link_url: '' } }
+            let(:params) { { payment_link: '1', payment_link_url: '' } }
 
             it 'doesn\'t create the submission setting' do
               reference_payment_updater.create_or_update!

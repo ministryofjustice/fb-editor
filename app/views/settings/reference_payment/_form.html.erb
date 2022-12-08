@@ -2,8 +2,7 @@
       multiple: false,
       legend: { text: t('settings.reference_number.legend'), size: 'l'} do %>
   <div class="govuk-hint" id="reference_number_hint"><%= t('settings.reference_number.hint') %></div>
-
-    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.full_messages.any? { |s| s.include?('reference number')} ? 'govuk-form-group--error' :'' %>">
       <% if f.object.errors.present? %>
         <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
           <% if error_message.include?('reference number') %>
@@ -34,7 +33,7 @@
           multiple: false,
           link_errors: true,
           label: { text: t('settings.payment_link.label') },
-          checked: f.object.payment_link_url_enabled?,
+          checked: f.object.payment_link_has_been_checked,
           aria: {
               describedby: 'payment_link_hint payment_link_warning'
             }
