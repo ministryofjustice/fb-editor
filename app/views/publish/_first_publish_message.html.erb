@@ -8,44 +8,66 @@
 </p>
 
 <script type="module">
+  /*
+  * This script is reponsible for checking if the published service is live and
+  * updating the first publish message accordingly.
+  * The liveness check is done by the backend using a DNS resolution check to see
+  * if the service url resolves to an IP address.
+  * Due to DNS propagation taking time, we cannot rely on the first successful response.
+  * We need to wait for several responses before we can be sure.
+  * We do 2 sets of checks:
+  *   1) An initial async liveness check to determine if the service is already
+  *      live when we load the page. This needs to be quick,but we cannot rely on 1 response.
+  *   2) A longer polling check to wait for consistent success responses. We want to be as
+  *      sure as we can that if the user clicks the link it will work.
+  */
   const alert = document.querySelector("#first-publish-alert-<%=environment%>");
   const successClass = alert.dataset.successClass;
   const errorClass = alert.dataset.errorClass;
   const defaultMessage = alert.dataset.defaultMessage;
   const successMessage = alert.dataset.successMessage;
   const endpoint = '<%= api_service_first_publish_path(service_id, environment) %>';
-
   const livenessChecksRequired = 3
   const publishedCheckSuccessesRequired = 10
 
+  /*
+  * Issues a fetch request to the backend API endpoint where it will receive
+  * either a 200 or 404 response. 200 = response.ok
+  */
   async function checkLiveness() {
     return fetch(endpoint).then((response) => {
-      console.log('checking liveness');
       return response.ok ? true : false;
     }).catch((error) => {
-      console.log('error');
     });
   }
 
+  // Do the configured amount of livenessChecks to determine if the service is already live
   let results = [];
   for(let i=0;i<livenessChecksRequired;i++) {
     const result = await checkLiveness();
     results.push(result);
   }
-
+  // If any of the livenessChecks return true we consider the service live
   const alreadyLive = results.reduce((value, result) => value && result);
-  console.log(alreadyLive)
+
+  /*
+  * If the service is not already live, then show the warning message letting
+  * the user know they need to wait. Start polling for liveness and wait for a
+  * configured number of consecutive success results to ensure high confidence
+  * that the service is live.
+  */
   if(!alreadyLive) {
-    console.log('not already live');
+    // Show the wait message
     alert.textContent = defaultMessage;
+
+    // Start polling
     let successCount = 0;
     let publishedCheck = setInterval( async function() {
       const success = await checkLiveness();
-      console.log({success});
-      successCount = success ? successCount+1 : 0;
-      console.log({successCount});
+      successCount = success ? successCount+1 : 0; // reset successCount on 404 response
+
+      // Once we have enough consecutive success responses update the message and stop polling
       if(successCount >= publishedCheckSuccessesRequired) {
-        console.log('successful enough to be considered live');
         alert.classList.replace(errorClass,successClass);
         alert.textContent = successMessage;
         clearInterval(publishedCheck);
