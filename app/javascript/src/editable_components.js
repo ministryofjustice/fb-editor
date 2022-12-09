@@ -91,7 +91,7 @@ class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
-    var defaultContent = $node.data(config.attributeDefaultText);
+    var defaultContent = config.attributeDefaultText ? $node.data(config.attributeDefaultText) : undefined ;
     var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));

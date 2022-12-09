@@ -6,6 +6,7 @@ describe("EditableBase", function() {
   const EDITABLE_INPUT_ID = 'editable-input-id';
   const EDITABLE_TEXT = 'editable content';
   const EDITABLE_CLASSNAME = 'editable-classname';
+  const EDITABLE_UUID = '1234567890'
 
   var $node, $form, component;
 
@@ -25,7 +26,7 @@ describe("EditableBase", function() {
       id: EDITABLE_INPUT_ID,
       type: 'editable-type',
       data: {
-        _uuid: '1234567890'
+        _uuid: EDITABLE_UUID
       }
     });
   });
@@ -87,6 +88,7 @@ describe("EditableBase", function() {
 
         $hiddenInput = $form.find('input[name="delete_components[]"]');
         expect($hiddenInput.length).to.equal(1);
+        expect($hiddenInput.val()).to.equal(EDITABLE_UUID);
       });
 
       it('should remove input from the form', function() {
