@@ -2,10 +2,12 @@ RSpec.describe ContentSubstitutor do
   subject(:content_substitutor) do
     described_class.new(
       reference_number_enabled: reference_number_enabled,
+      payment_link_enabled: payment_link_enabled,
       service_name: service_name
     )
   end
   let(:reference_number_enabled) { true }
+  let(:payment_link_enabled) { true }
   let(:service_name) { 'The Substitutor!' }
 
   describe '#confirmation_email_subject' do
@@ -34,9 +36,24 @@ RSpec.describe ContentSubstitutor do
       let(:content) do
         I18n.t('default_values.reference_number_sentence')
       end
+      let(:reference_payment_content) do
+        I18n.t('default_values.reference_payment_sentence')
+      end
 
-      it 'returns the correct content' do
-        expect(content_substitutor.confirmation_email_body).to include(content)
+      context 'payment link is not enabled' do
+        let(:payment_link_enabled) { false }
+
+        it 'returns the correct content' do
+          expect(content_substitutor.confirmation_email_body).to include(content)
+          expect(content_substitutor.confirmation_email_body).to_not include(reference_payment_content)
+        end
+      end
+
+      context 'payment link is enabled' do
+        it 'returns the correct content' do
+          expect(content_substitutor.confirmation_email_body).to include(content)
+          expect(content_substitutor.confirmation_email_body).to include(reference_payment_content)
+        end
       end
     end
 
