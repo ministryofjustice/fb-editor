@@ -56,7 +56,7 @@ class EditableBase {
   }
 
   get content() {
-    return $node.text();
+    return this.$node.text();
   }
 
   remove() {
@@ -959,6 +959,7 @@ function editableComponent($node, config) {
 // Make available for importing.
 module.exports =  {
   editableComponent: editableComponent,
+  EditableBase: EditableBase,
   EditableElement: EditableElement,
   EditableContent: EditableContent,
   EditableTextFieldComponent: EditableTextFieldComponent,
