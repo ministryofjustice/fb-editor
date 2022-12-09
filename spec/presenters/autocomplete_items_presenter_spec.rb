@@ -1,5 +1,6 @@
 RSpec.describe AutocompleteItemsPresenter do
-  subject(:autocomplete_items_presenter) { described_class.new(service, autocomplete_items, environment) }
+  subject(:autocomplete_items_presenter) { described_class.new(grid, autocomplete_items, environment) }
+  let(:grid) { MetadataPresenter::Grid.new(service) }
   let(:page) { service.find_page_by_url('countries') }
   let(:component_uuid) { page.components.first.uuid }
   let(:component_title) { page.components.first.humanised_title }

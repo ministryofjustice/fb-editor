@@ -27,7 +27,11 @@ class PublishingPagePresenter
   end
 
   def autocomplete_warning
-    @autocomplete_warning ||= AutocompleteItemsPresenter.new(service, service_autocomplete_items, deployment_environment)
+    @autocomplete_warning ||= AutocompleteItemsPresenter.new(
+      MetadataPresenter::Grid.new(service),
+      service_autocomplete_items,
+      deployment_environment
+    )
   end
 
   def service_output_warning

@@ -1,10 +1,10 @@
 class AutocompleteItemsPresenter
   include ActionView::Helpers
   include GovukLinkHelper
-  attr_reader :autocomplete_items, :service, :deployment_environment
+  attr_reader :autocomplete_items, :grid, :deployment_environment
 
-  def initialize(service, autocomplete_items, deployment_environment)
-    @service = service
+  def initialize(grid, autocomplete_items, deployment_environment)
+    @grid = grid
     @autocomplete_items = autocomplete_items
     @deployment_environment = deployment_environment
   end
@@ -20,9 +20,8 @@ class AutocompleteItemsPresenter
   end
 
   def pages_with_autocomplete_component
-    service.pages.select do |page|
-      page.components.any?(&:autocomplete?)
-    end
+    @pages_with_autocomplete_component ||=
+      pages_in_main_flow.select { |page| page.components.any?(&:autocomplete?) }
   end
 
   def messages
@@ -42,6 +41,17 @@ class AutocompleteItemsPresenter
   private
 
   def link(component, page)
-    govuk_link_to(component.humanised_title, Rails.application.routes.url_helpers.edit_page_path(service.service_id, page.uuid))
+    govuk_link_to(
+      component.humanised_title,
+      Rails.application.routes.url_helpers.edit_page_path(
+        grid.service.service_id,
+        page.uuid
+      )
+    )
+  end
+
+  def pages_in_main_flow
+    main_flow_uuids = grid.page_uuids
+    grid.service.pages.select { |page| page.uuid.in?(main_flow_uuids) }
   end
 end

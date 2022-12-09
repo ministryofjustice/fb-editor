@@ -4,8 +4,9 @@ require_relative '../spec_helper'
 feature 'Publishing' do
   background do
     given_I_am_logged_in
-    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
+    given_I_have_a_service_fixture(fixture: fixture_name)
   end
+  let(:fixture_name) { 'default_new_service_fixture' }
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'palpatine' }
@@ -174,6 +175,29 @@ feature 'Publishing' do
     then_I_should_see_an_error_message('dev', 'Test')
 
     and_I_cancel
+  end
+
+  context 'autocomplete warning in Live' do
+    let(:fixture_name) { 'autocomplete_page_fixture' }
+    let(:environment) { 'production' }
+    let(:button_disabled) { 'true' }
+    let(:autocomplete_warning_message) do
+      I18n.t("publish.autocomplete_items.#{environment}.message", title: 'Countries Question' )
+    end
+
+    scenario 'unconnected autocomplete page does not block Live publishing' do
+      when_I_visit_the_publishing_page
+      then_I_should_see_autocomplete_warnings
+      then_I_should_see_the_publish_button
+
+      and_I_return_to_flow_page
+      given_I_want_to_change_destination_of_a_page('Service name goes here')
+      when_I_change_destination_to_page('Check your answers')
+
+      when_I_visit_the_publishing_page
+      then_I_should_not_see_autocomplete_warnings
+      then_the_publish_button_should_be_enabled
+    end
   end
 
   def then_I_should_see_the_default_no_service_output_warning_message
