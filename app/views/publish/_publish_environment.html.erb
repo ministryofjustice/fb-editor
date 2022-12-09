@@ -3,7 +3,7 @@
   <p class="description"><%= t("publish.#{environment}.description") %></p>
 
   <% if published_service.published? %>
-    <%= render 'first_publish_message', environment: environment, service_id: service.service_id %>
+    <%= render('first_publish_message', environment: environment, service_id: service.service_id) if published_service.first_publish? %>
 
     <p><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
   <% end %>
