@@ -583,6 +583,7 @@ en:
           missing_payment_link: 'Enter your GOV.UK Pay Payment link URL (You get this from your GOV.UK Pay account)'
           invalid_payment_url: "Enter a valid GOV.UK payment link URL starting with %{link_start_with}"
           link_start_with: 'https://www.gov.uk/payments/'
+          payment_link_disabled: 'You must enable payment link before you can add a payment link url'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

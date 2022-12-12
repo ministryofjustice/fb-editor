@@ -98,5 +98,43 @@ RSpec.describe  ReferencePaymentValidator do
         end
       end
     end
+
+    context 'when payment link is disabled' do
+      context 'when payment url is present' do
+        let(:params) do
+          {
+            reference_number: '1',
+            payment_link: '0',
+            payment_link_url: correct_url
+          }
+        end
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns an error message' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.reference_payment_settings.payment_link_disabled'))
+        end
+      end
+
+      context 'when payment url is invalid' do
+        let(:params) do
+          {
+            reference_number: '1',
+            payment_link: '0',
+            payment_link_url: 'url'
+          }
+        end
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'include some error messages' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.reference_payment_settings.payment_link_disabled'))
+        end
+      end
+    end
   end
 end

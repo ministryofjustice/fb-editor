@@ -104,5 +104,10 @@ FactoryBot.define do
       name { 'REFERENCE_NUMBER' }
       value { '1' }
     end
+
+    trait :payment_link_url do
+      name { 'PAYMENT_LINK' }
+      value { 'https://www.gov.uk/payments/123' }
+    end
   end
 end

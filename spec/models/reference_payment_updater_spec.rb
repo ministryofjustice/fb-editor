@@ -253,5 +253,115 @@ RSpec.describe ReferencePaymentUpdater do
         end
       end
     end
+
+    context 'payment link' do
+      let(:url) { 'https://www.gov.uk/payments/123' }
+      context 'when payment link exists in the db' do
+        let(:params) { { payment_link_url: '', payment_link: '0' } }
+
+        before do
+          create(
+            :service_configuration,
+            :payment_link_url,
+            service_id: service.service_id,
+            deployment_environment: 'dev'
+          )
+          create(
+            :service_configuration,
+            :payment_link_url,
+            service_id: service.service_id,
+            deployment_environment: 'production'
+          )
+
+          reference_payment_updater.create_or_update!
+        end
+
+        context 'when a user unticked the box and payment url is empty' do
+          it 'removes the records from the database' do
+            expect(
+              ServiceConfiguration.where(
+                service_id: service.service_id,
+                name: 'PAYMENT_LINK'
+              )
+            ).to be_empty
+          end
+        end
+      end
+
+      context 'when payment link doesn\'t exist in the db' do
+        context 'when a user ticks the box' do
+          context 'when the url is present' do
+            let(:params) { { payment_link: '1', payment_link_url: url } }
+
+            it 'creates the submission settings' do
+              reference_payment_updater.create_or_update!
+
+              expect(
+                ServiceConfiguration.find_by(
+                  service_id: service.service_id,
+                  name: 'PAYMENT_LINK',
+                  deployment_environment: 'dev'
+                ).decrypt_value
+              ).to eq(url)
+
+              expect(
+                ServiceConfiguration.find_by(
+                  service_id: service.service_id,
+                  name: 'PAYMENT_LINK',
+                  deployment_environment: 'production'
+                ).decrypt_value
+              ).to eq(url)
+            end
+          end
+
+          context 'when the url is missing' do
+            let(:params) { { payment_link: '1', payment_link_url: '' } }
+
+            it 'doesn\'t create the submission setting' do
+              reference_payment_updater.create_or_update!
+
+              expect(
+                ServiceConfiguration.where(
+                  service_id: service.service_id,
+                  name: 'PAYMENT_LINK'
+                )
+              ).to be_empty
+            end
+          end
+        end
+
+        context 'when a user does not tick the box' do
+          context 'the payment link url is empty' do
+            let(:params) { { payment_link: '0', payment_link_url: '' } }
+
+            it 'doesn\'t create the submission settings' do
+              reference_payment_updater.create_or_update!
+
+              expect(
+                ServiceConfiguration.where(
+                  service_id: service.service_id,
+                  name: 'PAYMENT_LINK'
+                )
+              ).to be_empty
+            end
+          end
+
+          context 'the payment link url is present' do
+            let(:params) { { payment_link: '0', payment_link_url: url } }
+
+            it 'doesn\'t create the submission settings' do
+              reference_payment_updater.create_or_update!
+
+              expect(
+                ServiceConfiguration.where(
+                  service_id: service.service_id,
+                  name: 'PAYMENT_LINK'
+                )
+              ).to be_empty
+            end
+          end
+        end
+      end
+    end
   end
 end

@@ -8,6 +8,7 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const FromAddressController = require('./controller_from_address');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
+const ReferencePaymentController = require('./controller_reference_payment');
 
 const {
   snakeToPascalCase,
@@ -85,6 +86,11 @@ switch(controllerAndAction()) {
   case "ConfirmationEmailController#index":
   case "ConfirmationEmailController#create":
     Controller = ConfirmationEmailController;
+    break;
+
+  case "ReferencePaymentController#index":
+  case "ReferencePaymentController#create":
+    Controller = ReferencePaymentController;
     break;
 
   default:
