@@ -85,4 +85,13 @@ class ApplicationController < ActionController::Base
   def reference_number_config
     @reference_number_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'REFERENCE_NUMBER')
   end
+
+  def payment_link_enabled?
+    payment_link_config.present?
+  end
+  helper_method :payment_link_enabled?
+
+  def payment_link_config
+    @payment_link_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'PAYMENT_LINK')
+  end
 end
