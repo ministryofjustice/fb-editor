@@ -24,30 +24,28 @@
       %>
 <% end %>
 <div class='fb-payment-field'>
-  <% if ENV['PAYMENT_LINK'] == 'enabled' %>
-    <%= f.govuk_check_boxes_fieldset :"payment_link",
+  <%= f.govuk_check_boxes_fieldset :"payment_link",
+      multiple: false,
+      legend: { text: t('settings.payment_link.legend'), size: 'l'} do %>
+      <div class="govuk-hint" id="payment_link_hint"><%= t('settings.payment_link.hint', href: t('settings.payment_link.href', url: t('settings.payment_link.url'))).html_safe %></div>
+      <%= f.govuk_check_box :"payment_link", 1, 0,
         multiple: false,
-        legend: { text: t('settings.payment_link.legend'), size: 'l'} do %>
-        <div class="govuk-hint" id="payment_link_hint"><%= t('settings.payment_link.hint', href: t('settings.payment_link.href', url: t('settings.payment_link.url'))).html_safe %></div>
-        <%= f.govuk_check_box :"payment_link", 1, 0,
-          multiple: false,
-          link_errors: true,
-          label: { text: t('settings.payment_link.label') },
-          checked: f.object.payment_link_has_been_checked?,
-          aria: {
-              describedby: 'payment_link_hint payment_link_warning'
-            }
+        link_errors: true,
+        label: { text: t('settings.payment_link.checkbox_label') },
+        checked: f.object.payment_link_has_been_checked?,
+        aria: {
+            describedby: 'payment_link_hint payment_link_warning'
+          }
         %>
 
-    <div data-component="Expander">
-      <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : 'govuk-details__text' %>">
-        <% if f.object.errors.present? %>
-          <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
-            <% if !error_message.include?('reference number') %>
-              <p id="reference_payment_settings-field-error_<%=index %>" class="govuk-error-message">
-                <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
-              </p>
-            <% end %>
+  <div data-component="Expander">
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : 'govuk-details__text' %>">
+      <% if f.object.errors.present? %>
+        <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+          <% if !error_message.include?('reference number') %>
+            <p id="reference_payment_settings-field-error_<%=index %>" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+            </p>
           <% end %>
         <% end %>
       <% end %>
@@ -56,6 +54,6 @@
         class: "govuk-input width-responsive-two-thirds",
         value: f.object.saved_payment_link_url %>
     </div>
-    <% end %>
+  </div>
   <% end %>
 <div>
