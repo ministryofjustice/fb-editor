@@ -1,11 +1,13 @@
 class ContentSubstitutor
-  attr_accessor :service_name, :reference_number_enabled
+  attr_accessor :service_name, :reference_number_enabled, :payment_link_enabled
 
   REFERENCE_NUMBER_PLACEHOLDER = '{{reference_number_placeholder}}'.freeze
+  REFERENCE_PAYMENT_PLACEHOLDER = '{{reference_payment_placeholder}}'.freeze
 
-  def initialize(service_name:, reference_number_enabled:)
+  def initialize(service_name:, reference_number_enabled:, payment_link_enabled:)
     @service_name = service_name
     @reference_number_enabled = reference_number_enabled
+    @payment_link_enabled = payment_link_enabled
   end
 
   def confirmation_email_subject
@@ -29,8 +31,8 @@ class ContentSubstitutor
 
     substitute_placeholder(
       setting: setting,
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
-      content: body_content
+      placeholder: REFERENCE_PAYMENT_PLACEHOLDER,
+      content: reference_payment_body_content
     )
   end
 
@@ -87,6 +89,14 @@ class ContentSubstitutor
 
   def body_content
     @body_content ||= I18n.t('default_values.reference_number_sentence')
+  end
+
+  def reference_payment_body_content
+    if payment_link_enabled
+      I18n.t('default_values.reference_payment_sentence')
+    else
+      body_content
+    end
   end
 
   def insert_placeholder_sentence(setting, placeholder, content)

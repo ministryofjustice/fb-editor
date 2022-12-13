@@ -33,10 +33,11 @@ en:
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
     confirmation_email_subject: "Your submission to ‘%{service_name}’ {{reference_number_placeholder}}"
-    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_number_placeholder}}\n\r\nA copy of the information you provided is attached to this email."
+    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_payment_placeholder}}\n\r\nA copy of the information you provided is attached to this email."
     reference_number_sentence: "Your reference number is: {{reference_number}}."
     reference_number_subject: ", reference number: {{reference_number}}"
     reference_number: '123-ABCD-456'
+    reference_payment_sentence: "Your reference number is: {{reference_number}}.\n\r\nTo complete your submission, you now need to make the required payment at {{payment_link}}."
   notification_banners:
     important: Important
     success: Success
