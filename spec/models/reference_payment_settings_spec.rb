@@ -225,6 +225,24 @@ RSpec.describe ReferencePaymentSettings do
           expect(ServiceConfiguration).to_not receive(:exists?)
         end
       end
+
+      context 'when payment link url has whitespace' do
+        let(:params) do
+          {
+            payment_link: '1',
+            payment_link_url: 'https://www.gov.uk/payments/123   '
+          }
+        end
+
+        it 'will remove the white space and save to the DB' do
+          expect(
+            ServiceConfiguration.find_by(
+              service_id: service.service_id,
+              name: 'PAYMENT_LINK'
+            ).decrypt_value
+          ).to eq('https://www.gov.uk/payments/123')
+        end
+      end
     end
   end
 end

@@ -293,7 +293,7 @@ RSpec.describe ReferencePaymentUpdater do
           context 'when the url is present' do
             let(:params) { { payment_link: '1', payment_link_url: url } }
 
-            it 'creates the submission settings' do
+            it 'creates the service configuration' do
               reference_payment_updater.create_or_update!
 
               expect(
@@ -317,7 +317,7 @@ RSpec.describe ReferencePaymentUpdater do
           context 'when the url is missing' do
             let(:params) { { payment_link: '1', payment_link_url: '' } }
 
-            it 'doesn\'t create the submission setting' do
+            it 'doesn\'t create the service configuration' do
               reference_payment_updater.create_or_update!
 
               expect(
