@@ -11,66 +11,37 @@ class ContentSubstitutor
   end
 
   def confirmation_email_subject
-    setting = I18n.t(
-      'default_values.confirmation_email_subject',
-      service_name: service_name
-    )
-
     substitute_placeholder(
-      setting: setting,
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      setting: setting_content('confirmation_email_subject'),
       content: subject_content
     )
   end
 
   def confirmation_email_body
-    setting = I18n.t(
-      'default_values.confirmation_email_body',
-      service_name: service_name
-    )
-
     substitute_placeholder(
-      setting: setting,
-      placeholder: REFERENCE_PAYMENT_PLACEHOLDER,
-      content: reference_payment_body_content
+      setting: setting_content('confirmation_email_body'),
+      content: reference_payment_body_content,
+      placeholder: REFERENCE_PAYMENT_PLACEHOLDER
     )
   end
 
   def service_email_subject
-    setting = I18n.t(
-      'default_values.service_email_subject',
-      service_name: service_name
-    )
-
     substitute_placeholder(
-      setting: setting,
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      setting: setting_content('service_email_subject'),
       content: subject_content
     )
   end
 
   def service_email_body
-    setting = I18n.t(
-      'default_values.service_email_body',
-      service_name: service_name
-    )
-
     substitute_placeholder(
-      setting: setting,
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      setting: setting_content('service_email_body'),
       content: body_content
     )
   end
 
   def service_email_pdf_heading
-    setting = I18n.t(
-      'default_values.service_email_pdf_heading',
-      service_name: service_name
-    )
-
     substitute_placeholder(
-      setting: setting,
-      placeholder: REFERENCE_NUMBER_PLACEHOLDER,
+      setting: setting_content('service_email_pdf_heading'),
       content: subject_content
     )
   end
@@ -83,12 +54,16 @@ class ContentSubstitutor
 
   private
 
+  def setting_content(property)
+    I18n.t("default_values.#{property}", service_name: service_name)
+  end
+
   def subject_content
-    @subject_content ||= I18n.t('default_values.reference_number_subject')
+    @subject_content ||= setting_content('reference_number_subject')
   end
 
   def body_content
-    @body_content ||= I18n.t('default_values.reference_number_sentence')
+    @body_content ||= setting_content('reference_number_sentence')
   end
 
   def reference_payment_body_content
@@ -107,7 +82,7 @@ class ContentSubstitutor
     setting.gsub(placeholder, '')
   end
 
-  def substitute_placeholder(setting:, placeholder:, content:)
+  def substitute_placeholder(setting:, content:, placeholder: REFERENCE_NUMBER_PLACEHOLDER)
     if reference_number_enabled
       insert_placeholder_sentence(setting, placeholder, content)
     else
