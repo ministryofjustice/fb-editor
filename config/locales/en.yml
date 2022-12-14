@@ -32,8 +32,8 @@ en:
     service_email_pdf_heading: 'Submission for %{service_name} {{reference_number_placeholder}}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
-    confirmation_email_subject: "Your submission to ‘%{service_name}’ {{reference_number_placeholder}}"
-    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_payment_placeholder}}\n\r\nA copy of the information you provided is attached to this email."
+    confirmation_email_subject: "Your submission to '%{service_name}' {{reference_number_placeholder}}"
+    confirmation_email_body: "Thank you for your submission to '%{service_name}'. {{reference_payment_placeholder}}\n\r\nA copy of the information you provided is attached to this email."
     reference_number_sentence: "Your reference number is: {{reference_number}}."
     reference_number_subject: ", reference number: {{reference_number}}"
     reference_number: '123-ABCD-456'
@@ -298,9 +298,9 @@ en:
       form_name:
         label: 'Form name'
         hint: 'The visible name of your form'
-        warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
+        warning_message: "We are making some changes in this area. In the meantime, <a class=\"govuk-link\" href=\"https://moj-forms.service.justice.gov.uk/contact/\">contact&nbsp;us</a> to change your form's name."
     from_address:
-      heading: "‘From’ address"
+      heading: "'From' address"
       lede: Emails sent by your form will come from this address.
       description: Emails sent by your form, either to you or to people filling it in, will come from this address
       resend_link_text: Resend validation link
@@ -359,7 +359,7 @@ en:
       description: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
     from_address:
-      link_text: ‘from’ address
+      link_text: "'from' address"
       send_by_email:
         verified: 'Your from address has been validated'
         pending: 'You need to validate your %{link}'
@@ -368,13 +368,13 @@ en:
         default: You need to change the default no-reply-moj-forms address before your form can go live
         pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
         verified: This email address has been validated.
-        contact_us: <strong>Contact us to approve your ‘from’ address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
+        contact_us: <strong>Contact us to approve your 'from' address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
       publishing:
         dev:
           pending: 'Before you can publish to live, you will need to validate your %{link} for emails'
           default: 'Before you can publish to live, you will need to set a %{link} for emails'
         production:
-          link: ‘from’ address
+          link: "'from' address"
           pending: 'validate your %{link} for emails'
           default: 'set a %{link} for emails'
     confirmation_email:
@@ -395,9 +395,9 @@ en:
         cya_page: 'check answers page'
         confirmation_page: 'confirmation page'
     pages_flow:
-      both_pages: 'You won’t receive any user data without a check answers page and a confirmation page'
-      cya_page: 'You won’t receive any user data without a check answers page'
-      confirmation_page: 'You won’t receive any user data without a confirmation page'
+      both_pages: "You won't receive any user data without a check answers page and a confirmation page"
+      cya_page: "You won't receive any user data without a check answers page"
+      confirmation_page: "You won't receive any user data without a confirmation page"
     publish:
       dev:
         icon_fallback: 'Warning'
@@ -481,7 +481,7 @@ en:
         ga4_test: *ga4
         ga4_live: *ga4
       from_address:
-        email: "‘From’ address"
+        email: "'From' address"
         from_address_hint: This should generally be a shared team account
       email_settings:
         send_by_email_dev: Send by email on Test
@@ -503,7 +503,7 @@ en:
         csv_checkbox: Send a separate email with answers in a CSV
         from_address:
           pending_link: Get validation link
-          link: Change ’from’ address
+          link: Change 'from' address
       confirmation_email_settings:
         confirmation_email_component_id: To the email address captured by
         confirmation_email_subject: Subject
@@ -512,7 +512,7 @@ en:
         send_by_confirmation_email_production: Enable confirmation email on Live
       page_creation:
         page_url: "Give your page a short name"
-        page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"
+        page_url_hint: "This will form the page's URL so should be in lower case with no spaces"
       publish_service_creation:
         allow_anonymous: 'Allow anyone with the link to view'
         require_authentication: 'Set a username and password'
@@ -586,11 +586,11 @@ en:
           link_start_with: 'https://www.gov.uk/payments/'
           payment_link_disabled: 'You must enable payment link before you can add a payment link url'
       messages:
-        blank: "Your answer for ‘%{attribute}’ cannot be blank."
-        too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
-        too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
-        invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
-        taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
+        blank: "Your answer for '%{attribute}' cannot be blank."
+        too_short: "Your answer for '%{attribute}' is too short (%{count} characters at least)"
+        too_long: "Your answer for '%{attribute}' is too long (%{count} characters at most)"
+        invalid: "Your answer for '%{attribute}' contains characters that are not allowed."
+        taken: "Your answer for '%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
         unsupported: This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.
         unsupported_component: "This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question for Branch "
