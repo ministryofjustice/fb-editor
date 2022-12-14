@@ -259,5 +259,32 @@ RSpec.describe ServiceConfiguration, type: :model do
         end
       end
     end
+
+    describe '#config_map_value' do
+      let(:payment_link) { 'some-payment-link' }
+      let(:service_configuration) do
+        create(:service_configuration, :dev, :payment_link_url, value: payment_link)
+      end
+
+      context 'when name is PAYMENT_LINK' do
+        let(:expected_payment_link) do
+          "#{payment_link}#{ServiceConfiguration::REFERENCE_PARAM}"
+        end
+
+        it 'should return the decrypted value with the reference param' do
+          expect(service_configuration.config_map_value).to eq(expected_payment_link)
+        end
+      end
+
+      context 'when name is not PAYMENT_LINK' do
+        let(:service_configuration) do
+          create(:service_configuration, :dev, :confirmation_email_subject, value: 'subject')
+        end
+
+        it 'should return just the decrypted value' do
+          expect(service_configuration.config_map_value).to eq('subject')
+        end
+      end
+    end
   end
 end
