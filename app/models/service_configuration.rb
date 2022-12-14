@@ -80,13 +80,20 @@ class ServiceConfiguration < ApplicationRecord
   end
 
   def config_map_value
-    name == 'PAYMENT_LINK' ? payment_reference : decrypt_value
+    send(name.downcase)
+  rescue NoMethodError
+    decrypt_value
   end
 
   private
 
-  def payment_reference
+  def payment_link
     decrypt_value + REFERENCE_PARAM
+  end
+
+  def confirmation_email_body
+    a_tag = '<a href="{{payment_link}}">{{payment_link}}</a>'
+    decrypt_value.gsub('{{payment_link}}', a_tag)
   end
 
   def encrypt_value
