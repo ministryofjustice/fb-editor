@@ -26,6 +26,7 @@ class ServiceConfiguration < ApplicationRecord
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
   REFERENCE_PARAM = '?reference='.freeze
+  A_TAG = '<a href="{{payment_link}}">{{payment_link}}</a>'.freeze
 
   before_save :encrypt_value
 
@@ -80,13 +81,19 @@ class ServiceConfiguration < ApplicationRecord
   end
 
   def config_map_value
-    name == 'PAYMENT_LINK' ? payment_reference : decrypt_value
+    send(name.downcase)
+  rescue NoMethodError
+    decrypt_value
   end
 
   private
 
-  def payment_reference
+  def payment_link
     decrypt_value + REFERENCE_PARAM
+  end
+
+  def confirmation_email_body
+    decrypt_value.gsub('{{payment_link}}', A_TAG)
   end
 
   def encrypt_value
