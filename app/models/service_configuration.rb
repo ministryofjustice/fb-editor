@@ -25,6 +25,7 @@ class ServiceConfiguration < ApplicationRecord
   ]
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
+  REFERENCE_PARAM = '?reference='.freeze
 
   before_save :encrypt_value
 
@@ -78,7 +79,15 @@ class ServiceConfiguration < ApplicationRecord
     Base64.strict_encode64(decrypt_value) if decrypt_value.present?
   end
 
+  def config_map_value
+    name == 'PAYMENT_LINK' ? payment_reference : decrypt_value
+  end
+
   private
+
+  def payment_reference
+    decrypt_value + REFERENCE_PARAM
+  end
 
   def encrypt_value
     self.value = EncryptionService.new.encrypt(value)
