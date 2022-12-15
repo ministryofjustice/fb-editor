@@ -953,9 +953,13 @@ html {
 
 #flow-overview {
   background-color: govuk-colour("white");
-  margin-bottom: 100px;
   min-height: 200px; // Temporary workaround of intermittent height calculation issues
   position: relative;
+}
+
+#flow-overview,
+.flow-detached-group {
+  margin-bottom: 100px;
 }
 
 #flow-standalone-pages {
