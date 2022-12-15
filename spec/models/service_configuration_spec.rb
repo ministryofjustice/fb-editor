@@ -277,14 +277,37 @@ RSpec.describe ServiceConfiguration, type: :model do
 
       context 'when CONFIRMATION_EMAIL_BODY' do
         let(:service_configuration) do
-          create(:service_configuration, :dev, :confirmation_email_body, value: 'Pay at {{payment_link}}. At some point')
+          create(
+            :service_configuration,
+            :dev,
+            :confirmation_email_body,
+            value: "You need to pay\n\r\nPay at {{payment_link}}.\nAt some point"
+          )
         end
         let(:expected_confirmation_email_body) do
-          'Pay at <a href="{{payment_link}}">{{payment_link}}</a>. At some point'
+          'You need to pay<br /><br /><br />Pay at <a href="{{payment_link}}">{{payment_link}}</a>.<br />At some point'
         end
 
         it 'should insert the a tag with the payment link placeholder' do
           expect(service_configuration.config_map_value).to eq(expected_confirmation_email_body)
+        end
+      end
+
+      context 'when SERVICE_EMAIL_BODY' do
+        let(:service_configuration) do
+          create(
+            :service_configuration,
+            :dev,
+            :service_email_body,
+            value: "Some email\n\r\nbody saying some\nthings"
+          )
+        end
+        let(:expected_service_email_body) do
+          'Some email<br /><br /><br />body saying some<br />things'
+        end
+
+        it 'should insert the a tag with the payment link placeholder' do
+          expect(service_configuration.config_map_value).to eq(expected_service_email_body)
         end
       end
 

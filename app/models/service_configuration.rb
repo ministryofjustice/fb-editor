@@ -93,7 +93,15 @@ class ServiceConfiguration < ApplicationRecord
   end
 
   def confirmation_email_body
-    decrypt_value.gsub('{{payment_link}}', A_TAG)
+    inject_line_breaks(decrypt_value).gsub('{{payment_link}}', A_TAG)
+  end
+
+  def service_email_body
+    inject_line_breaks(decrypt_value)
+  end
+
+  def inject_line_breaks(text)
+    text.gsub(/\n|\r/, '<br />')
   end
 
   def encrypt_value
