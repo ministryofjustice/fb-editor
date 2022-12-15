@@ -632,7 +632,6 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           };
 
       if(backward || sameColumn) {
-
         // If on the same row but destination behind the current condition
         if(firstConditionItem) {
           new ConnectorPath.ForwardDownBackwardUpPath({
@@ -657,10 +656,8 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       }
       else {
         // FORWARD
-
         if(firstConditionItem) {
           // FIRST CONDITION ITEM
-
           if(sameRow) {
             // Create straight path to go from right corner of the branch
             // to the x/y coordinates of the related 'next' destination.
@@ -672,10 +669,18 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             }, config);
           }
           else {
-            // FORWARD (SO WE ALWAYS GO UP??)
-
             if(up) {
               new ConnectorPath.ForwardUpForwardDownPath({
+                from_x: branchX,
+                from_y: branchY - (rowHeight / 4),
+                to_x: destinationX,
+                to_y: destinationY,
+                via_x: conditionX,
+                via_y: conditionY
+              }, config);
+            }
+            else {
+              new ConnectorPath.ForwardDownForwardPath({
                 from_x: branchX,
                 from_y: branchY - (rowHeight / 4),
                 to_x: destinationX,
@@ -688,9 +693,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
         }
         else {
           // NOT FIRST CONDITION ITEM
-
           if(sameRow) {
-
             // All other 'standard' BranchConditions expected to be Down and Forward
             // with the starting point from bottom and centre of the Branch item.
             new ConnectorPath.DownForwardPath({
@@ -702,10 +705,8 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           }
           else {
             // NOT SAME ROW
-
             if(up) {
               if(nextColumn) {
-
                 new ConnectorPath.DownForwardUpPath({
                   from_x: branchX - (branchWidth / 2),
                   from_y: branchY,
@@ -717,7 +718,6 @@ function applyBranchFlowConnectorPaths(view, $overview) {
               }
               else {
                 // NOT NEXT COLUMN
-
                 new ConnectorPath.DownForwardUpForwardDownPath({
                   from_x: branchX - (branchWidth / 2),
                   from_y: branchY,
@@ -730,7 +730,6 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             }
             else {
               // DOWN
-
               new ConnectorPath.DownForwardDownForwardPath({
                 from_x: branchX - (branchWidth / 2),
                 from_y: branchY,
@@ -743,10 +742,10 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           }
         }
       }
-
     });
   });
 }
+
 function applyRouteEndFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next="trailing-route"]');
   var rowHeight = view.page.flowItemsRowHeight;
