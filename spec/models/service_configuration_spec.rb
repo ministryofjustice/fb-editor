@@ -261,12 +261,11 @@ RSpec.describe ServiceConfiguration, type: :model do
     end
 
     describe '#config_map_value' do
-      let(:payment_link) { 'some-payment-link' }
-      let(:service_configuration) do
-        create(:service_configuration, :dev, :payment_link_url, value: payment_link)
-      end
-
       context 'when name is PAYMENT_LINK' do
+        let(:payment_link) { 'some-payment-link' }
+        let(:service_configuration) do
+          create(:service_configuration, :dev, :payment_link_url, value: payment_link)
+        end
         let(:expected_payment_link) do
           "#{payment_link}#{ServiceConfiguration::REFERENCE_PARAM}"
         end
@@ -276,7 +275,20 @@ RSpec.describe ServiceConfiguration, type: :model do
         end
       end
 
-      context 'when name is not PAYMENT_LINK' do
+      context 'when CONFIRMATION_EMAIL_BODY' do
+        let(:service_configuration) do
+          create(:service_configuration, :dev, :confirmation_email_body, value: 'Pay at {{payment_link}}. At some point')
+        end
+        let(:expected_confirmation_email_body) do
+          'Pay at <a href="{{payment_link}}">{{payment_link}}</a>. At some point'
+        end
+
+        it 'should insert the a tag with the payment link placeholder' do
+          expect(service_configuration.config_map_value).to eq(expected_confirmation_email_body)
+        end
+      end
+
+      context 'when name is not PAYMENT_LINK or CONFIRMATION_EMAIL_BODY' do
         let(:service_configuration) do
           create(:service_configuration, :dev, :confirmation_email_subject, value: 'subject')
         end
