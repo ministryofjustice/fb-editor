@@ -56,7 +56,7 @@ class EditableBase {
   }
 
   get content() {
-    return $node.text();
+    return this.$node.text();
   }
 
   remove() {
@@ -91,7 +91,7 @@ class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
-    var defaultContent = $node.data(config.attributeDefaultText);
+    var defaultContent = config.attributeDefaultText ? $node.data(config.attributeDefaultText) : undefined ;
     var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));
@@ -959,6 +959,7 @@ function editableComponent($node, config) {
 // Make available for importing.
 module.exports =  {
   editableComponent: editableComponent,
+  EditableBase: EditableBase,
   EditableElement: EditableElement,
   EditableContent: EditableContent,
   EditableTextFieldComponent: EditableTextFieldComponent,
