@@ -731,14 +731,26 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             }
             else {
               // DOWN
-              new ConnectorPath.DownForwardDownForwardPath({
-                from_x: branchX - (branchWidth / 2),
-                from_y: branchY,
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX + halfBranchNodeWidth,
-                via_y: conditionY
-              }, config);
+              if(nextColumn) {
+                new ConnectorPath.DownForwardDownForwardPath({
+                  from_x: branchX - (branchWidth / 2),
+                  from_y: branchY,
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX + halfBranchNodeWidth,
+                  via_y: conditionY
+                }, config);
+              }
+              else {
+                new ConnectorPath.DownForwardUpForwardDownPath({
+                  from_x: branchX - (branchWidth / 2),
+                  from_y: branchY,
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX + halfBranchNodeWidth,
+                  via_y: conditionY
+                }, config);
+              }
             }
           }
         }
