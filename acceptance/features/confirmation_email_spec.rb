@@ -7,9 +7,9 @@ feature 'Confirmation email' do
   let(:question) { 'New Email Component' }
   # Capybara strips out the carriage return `\r`
   let(:message_body) {
-    "Thank you for your submission to ‘#{service_name}’. \n\nA copy of the information you provided is attached to this email."
+    "Thank you for your submission to '#{service_name}'. \n\nA copy of the information you provided is attached to this email."
   }
-  let(:message_subject) { "Your submission to ‘#{service_name}’ " }
+  let(:message_subject) { "Your submission to '#{service_name}' " }
   let(:multiple_question_page) { 'Title' }
   let(:email_question) { 'Email address question' }
   let(:text_component_question) { 'Question' }
