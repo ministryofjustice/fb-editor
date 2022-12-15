@@ -1,5 +1,5 @@
 module TestHelpers
   def generate_service_name
-    "Acceptance-test-Stormtrooper-FN-#{SecureRandom.uuid}"
+    "Acceptance-Test-#{SecureRandom.alphanumeric}"
   end
 end

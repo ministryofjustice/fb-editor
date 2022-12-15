@@ -96,13 +96,13 @@ feature 'Update settings form information' do
 
   def then_I_should_see_a_validation_message_for_min_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_short', attribute: 'Form name', count: '3')
+      I18n.t('activemodel.errors.messages.too_short', count: '3')
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_long', attribute: 'Form name', count: '128')
+      I18n.t('activemodel.errors.messages.too_long', count: '57')
     )
   end
 
