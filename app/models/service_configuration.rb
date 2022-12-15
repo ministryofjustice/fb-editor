@@ -26,7 +26,7 @@ class ServiceConfiguration < ApplicationRecord
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
   REFERENCE_PARAM = '?reference='.freeze
-  A_TAG = '<a href="{{payment_link}}">{{payment_link}}</a>'.freeze
+  A_TAG = '<a href=\"{{payment_link}}\">{{payment_link}}</a>'.freeze
 
   before_save :encrypt_value
 
