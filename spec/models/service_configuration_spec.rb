@@ -285,7 +285,7 @@ RSpec.describe ServiceConfiguration, type: :model do
           )
         end
         let(:expected_confirmation_email_body) do
-          'You need to pay<br /><br /><br />Pay at <a href="{{payment_link}}">{{payment_link}}</a>.<br />At some point'
+          'You need to pay<br /><br /><br />Pay at <a href=\"{{payment_link}}\">{{payment_link}}</a>.<br />At some point'
         end
 
         it 'should insert the a tag with the payment link placeholder' do
