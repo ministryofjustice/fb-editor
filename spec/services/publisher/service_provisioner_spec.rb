@@ -227,7 +227,8 @@ RSpec.describe Publisher::ServiceProvisioner do
           build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id: service_id),
           build(:service_configuration, :username, deployment_environment: 'dev', service_id: service_id),
           build(:service_configuration, :service_email_from, deployment_environment: 'dev', service_id: service_id),
-          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev', service_id: service_id)
+          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev', service_id: service_id),
+          build(:service_configuration, :payment_link_url, deployment_environment: 'dev', service_id: service_id)
         ]
       }
     end
@@ -275,6 +276,24 @@ RSpec.describe Publisher::ServiceProvisioner do
       context 'when not in maintenance mode' do
         it 'should not include the maintenance config' do
           expect(service_provisioner.config_map.map(&:name)).to_not include('MAINTENANCE_PAGE_HEADING')
+        end
+      end
+    end
+
+    context 'do_not_inject_payment_link' do
+      context 'when payment_link is present' do
+        before do
+          create(:submission_setting, :payment_link, service_id: service_id, deployment_environment: 'dev')
+        end
+
+        it 'should include submission configuration' do
+          expect(service_provisioner.config_map.map(&:name)).to include('PAYMENT_LINK')
+        end
+      end
+
+      context 'when payment link is not present' do
+        it 'should include submission configuration' do
+          expect(service_provisioner.config_map.map(&:name)).to_not include('PAYMENT_LINK')
         end
       end
     end

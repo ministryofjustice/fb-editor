@@ -44,6 +44,14 @@ class ServiceConfiguration < ApplicationRecord
     name.in?(SECRETS)
   end
 
+  def do_not_inject_payment_link?
+    name == 'PAYMENT_LINK' &&
+      SubmissionSetting.find_by(
+        service_id: service_id,
+        deployment_environment: deployment_environment
+      ).try(:payment_link?).blank?
+  end
+
   def do_not_send_submission?
     name.in?(SUBMISSION) &&
       SubmissionSetting.find_by(
