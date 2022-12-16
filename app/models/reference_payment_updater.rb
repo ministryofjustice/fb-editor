@@ -60,12 +60,6 @@ class ReferencePaymentUpdater
       create_or_update_service_configuration(config: 'PAYMENT_LINK', deployment_environment: 'dev', value: payment_link_url)
       create_or_update_service_configuration(config: 'PAYMENT_LINK', deployment_environment: 'production', value: payment_link_url)
     end
-
-    unless reference_payment_settings.payment_link_url_present? ||
-        reference_payment_settings.payment_link_checked?
-      remove_service_configuration('PAYMENT_LINK', 'dev')
-      remove_service_configuration('PAYMENT_LINK', 'production')
-    end
   end
 
   def create_or_update_service_configuration(config:, deployment_environment:, value: reference_number)

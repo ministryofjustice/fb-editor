@@ -41,9 +41,11 @@ class ReferencePaymentSettings
   end
 
   def payment_link_has_been_checked?
-    return SubmissionSetting.find_by(
-      service_id: service_id
-    ).try(:payment_link?) if payment_link.nil?
+    if payment_link.nil?
+      return SubmissionSetting.find_by(
+        service_id: service_id
+      ).try(:payment_link?)
+    end
 
     payment_link_checked?
   end

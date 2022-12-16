@@ -2,7 +2,7 @@ class ReferencePaymentValidator < ActiveModel::Validator
   def validate(record)
     return unless record.payment_link_checked?
 
-    if !record.reference_number_enabled?
+    unless record.reference_number_enabled?
       record.errors.add(:base, I18n.t('activemodel.errors.models.reference_payment_settings.reference_number_disabled'))
     end
 

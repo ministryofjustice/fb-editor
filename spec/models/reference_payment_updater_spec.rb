@@ -273,6 +273,12 @@ RSpec.describe ReferencePaymentUpdater do
           context 'when payment link is disabled' do
             let(:params) { { payment_link: '0' } }
 
+            before do
+              create(:service_configuration, :payment_link_url, service_id: service.service_id, deployment_environment: environment)
+
+              reference_payment_updater.create_or_update!
+            end
+
             it 'updates the payment link' do
               setting = SubmissionSetting.find_by(
                 service_id: service.service_id,
@@ -306,17 +312,6 @@ RSpec.describe ReferencePaymentUpdater do
           )
 
           reference_payment_updater.create_or_update!
-        end
-
-        context 'when a user unticked the box and payment url is empty' do
-          it 'removes the records from the database' do
-            expect(
-              ServiceConfiguration.where(
-                service_id: service.service_id,
-                name: 'PAYMENT_LINK'
-              )
-            ).to be_empty
-          end
         end
       end
 
