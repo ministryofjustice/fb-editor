@@ -357,6 +357,13 @@ function snakeToPascalCase( str ){
     return str.join('');
 }
 
+function intersects(a, b) {
+	if (a.x1 >= b.x2 || b.x1 >= a.x2) return false; // no horizontal overlap
+	if (a.y1 >= b.y2 || b.y1 >= a.y2) return false; // no vertical overlap
+
+	return true;
+}
+
 
 
 
@@ -384,4 +391,5 @@ module.exports  = {
   highestNumber: highestNumber,
   filterObject: filterObject,
   snakeToPascalCase: snakeToPascalCase,
+  intersects: intersects
 }

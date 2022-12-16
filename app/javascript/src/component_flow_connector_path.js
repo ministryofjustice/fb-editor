@@ -91,6 +91,20 @@ class FlowConnectorPath {
     return this.#points;
   }
 
+  // Gets the bounding box of the path
+  // This is used to check path intersections for the adjustment/nudging routine
+  // Theoretically this should include the via points, but including them
+  // results in massively more intersections, and thus a much longer processing
+  // time. But doesn't actually change the end result. So we leave them out.
+  get bounds() {
+    return {
+      x1: Math.min(this.points.from_x, this.points.to_x),
+      y1: Math.min(this.points.from_y, this.points.to_y),
+      x2: Math.max(this.points.from_x, this.points.to_x),
+      y2: Math.max(this.points.from_y, this.points.to_y)
+    };
+  }
+
   // Makeing these readonly access properties because they shouldn't be changed.
   prop(name) {
     var p = this.#prop;

@@ -72,6 +72,11 @@ ServicesController.edit = function() {
 
   addServicesContentScrollContainer(view);
   view.ready();
+
+  const flowLayoutTime = performance.measure('flow-layout-time', 'flow-layout-start', 'flow-layout-end');
+  const flowItemPositionTime = performance.measure('flow-item-position-time', 'flow-layout-start', 'flow-items-positioned');
+  const flowConnectorsTime = performance.measure('flow-connectors-time', 'flow-connectors-start', 'flow-connectors-end');
+  const flowConnectorAdjustmentsTime = performance.measure('flow-connector-adjust-time', 'flow-connector-adjustments-start', 'flow-connector-adjustments-end');
 }
 
 
@@ -155,15 +160,22 @@ function createConnectionMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
+  performance.mark('flow-layout-start');
   createAndPositionFlowItems(view, $container);
+  performance.mark('flow-items-positioned');
   adjustOverviewHeight($container);
+  performance.mark('flow-connectors-start');
   applyPageFlowConnectorPaths(view, $container);
   applyBranchFlowConnectorPaths(view, $container);
   applyRouteEndFlowConnectorPaths(view, $container);
+  performance.mark('flow-connectors-end');
+  performance.mark('flow-connector-adjustments-start');
   adjustOverlappingFlowConnectorPaths($container);
+  performance.mark('flow-connector-adjustments-end');
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
+  performance.mark('flow-layout-end')
 }
 
 
@@ -802,7 +814,7 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
  * straight line between Page A ---> Page B.
  **/
 function adjustOverlappingFlowConnectorPaths($overview) {
-  const recursionLimit = 50; // This is a safety feature for the while loop.
+  const recursionLimit = 150; // This is a safety feature for the while loop.
   var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
   var somethingMoved;
   var numberOfPaths = $paths.length;
@@ -820,12 +832,16 @@ function adjustOverlappingFlowConnectorPaths($overview) {
         var $current = $(this);
         var current = $current.data("instance");
         if(path.prop('id') != current.prop('id')) {
-
+          // If the paths intersect / overlap
           // Call the overlap avoidance functionality and register
           // if anything was moved (reported by its return value).
-          if(path.avoidOverlap(current)) {
-            somethingMoved = true;
-            return false;
+          if(utilities.intersects(path.bounds,current.bounds)){
+            // avoidOverlap is super expensive and if anything moves we start
+            // again so we only call it if the paths bounding boxes actually intersect.
+            if(path.avoidOverlap(current)) {
+              somethingMoved = true;
+              return false;
+            }
           }
         }
       });
