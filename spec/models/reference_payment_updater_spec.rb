@@ -251,6 +251,38 @@ RSpec.describe ReferencePaymentUpdater do
             expect(setting).to be_truthy
           end
         end
+
+        context 'payment link' do
+          before do
+            reference_payment_updater.create_or_update!
+          end
+
+          context 'when payment link is enabled' do
+            let(:params) { { payment_link: '1' } }
+
+            it 'updates the payment link' do
+              setting = SubmissionSetting.find_by(
+                service_id: service.service_id,
+                deployment_environment: environment
+              ).try(:payment_link?)
+
+              expect(setting).to be_truthy
+            end
+          end
+
+          context 'when payment link is disabled' do
+            let(:params) { { payment_link: '0' } }
+
+            it 'updates the payment link' do
+              setting = SubmissionSetting.find_by(
+                service_id: service.service_id,
+                deployment_environment: environment
+              ).try(:payment_link?)
+
+              expect(setting).to be_falsey
+            end
+          end
+        end
       end
     end
 

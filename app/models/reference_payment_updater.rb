@@ -18,6 +18,7 @@ class ReferencePaymentUpdater
 
   def create_or_update!
     ActiveRecord::Base.transaction do
+      save_submission_settings
       save_config_reference_number
       save_config_payment_link
       save_config_with_defaults
@@ -25,6 +26,21 @@ class ReferencePaymentUpdater
   end
 
   private
+
+  def save_submission_settings
+    create_or_update_submission_setting('dev')
+    create_or_update_submission_setting('production')
+  end
+
+  def create_or_update_submission_setting(deployment_environment)
+    submission_setting = SubmissionSetting.find_or_initialize_by(
+      service_id: service.service_id,
+      deployment_environment: deployment_environment
+    )
+
+    submission_setting.payment_link = reference_payment_settings.payment_link_checked?
+    submission_setting.save!
+  end
 
   def save_config_reference_number
     if reference_payment_settings.reference_number_enabled?
