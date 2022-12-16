@@ -286,6 +286,19 @@ RSpec.describe ReferencePaymentUpdater do
             ).to be_empty
           end
         end
+
+        context 'when a user unticked the box and payment url is present' do
+          let(:params) { { payment_link_url: 'payment-link.com', payment_link: '0' } }
+
+          it 'removes the records from the database' do
+            expect(
+              ServiceConfiguration.where(
+                service_id: service.service_id,
+                name: 'PAYMENT_LINK'
+              )
+            ).to be_empty
+          end
+        end
       end
 
       context 'when payment link doesn\'t exist in the db' do
