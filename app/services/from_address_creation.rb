@@ -32,11 +32,19 @@ class FromAddressCreation
         "Updated from address status for service #{from_address.service_id} to verified"
       )
       :verified
+
+    elsif email_service.get_email_identity(from_address.email).present? && !email_identity.sending_enabled
+      resend_validation
+
+      Rails.logger.info(
+        "From address for #{from_address.service_id} present in AWS and unverified. Resend validation and change status to pending."
+      )
+      :pending
     end
   end
 
   def resend_validation
-    response = email_service.delete_email_identity(@from_address.decrypt_email)
+    response = email_service.delete_email_identity(email_address)
 
     # A blank response means the email address was not found. This is
     # because the email identity was not created in the first place as
@@ -45,7 +53,7 @@ class FromAddressCreation
     if response.blank? || response.successful?
       Rails.logger.info("Creating email identity for service #{from_address.service_id}")
 
-      email_service.create_email_identity(@from_address.decrypt_email)
+      email_service.create_email_identity(email_address)
     else
       Rails.logger.info("Delete email identity unsuccessful for service #{from_address.service_id}")
 
@@ -70,5 +78,11 @@ class FromAddressCreation
   def use_default_email?
     from_address.email.blank? ||
       from_address.email == FromAddress::DEFAULT_EMAIL_FROM
+  end
+
+  def email_address
+    @from_address.decrypt_email
+  rescue ActiveSupport::MessageEncryptor::InvalidMessage
+    @from_address.email
   end
 end
