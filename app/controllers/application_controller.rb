@@ -77,6 +77,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :show_reference_number
 
+  def payment_link_url
+    payment_link_config.decrypt_value
+  end
+  helper_method :payment_link_url
+
   def reference_number_enabled?
     reference_number_config.present?
   end
