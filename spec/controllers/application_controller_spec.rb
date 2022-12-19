@@ -191,4 +191,42 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#payment_link_enabled?' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(SubmissionSetting).to receive(:find_by).and_return(submission_setting)
+    end
+
+    context 'when payment link is enabled' do
+      let!(:submission_setting) do
+        create(
+          :submission_setting,
+          :dev,
+          :payment_link,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns true' do
+        expect(controller.payment_link_enabled?).to be_truthy
+      end
+    end
+
+    context 'when payment link is disabled and payment_link_url is present' do
+      let!(:submission_setting) { nil }
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :payment_link_url,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns false' do
+        expect(controller.reference_number_enabled?).to be_falsey
+      end
+    end
+  end
 end
