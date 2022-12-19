@@ -92,7 +92,10 @@ class ApplicationController < ActionController::Base
   end
 
   def payment_link_enabled?
-    payment_link_config.present?
+    SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment: 'dev'
+    ).try(:payment_link?)
   end
   helper_method :payment_link_enabled?
 
