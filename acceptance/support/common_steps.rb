@@ -548,4 +548,24 @@ module CommonSteps
     expect(page).to have_content(I18n.t('settings.confirmation_email.heading'))
     editor.click_link(I18n.t('settings.confirmation_email.heading'))
   end
+
+  def when_I_enable_confirmation_email(environment)
+    page.find(:css, "input#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(true)
+  end
+
+  def then_I_add_a_page_with_email_component
+    and_I_return_to_flow_page
+    when_I_add_a_single_question_page_with_email_after_start(url: 'new-email')
+    when_I_update_the_question_name
+    and_I_return_to_flow_page
+  end
+
+  def when_I_add_a_single_question_page_with_email_after_start(url:)
+    editor.connection_menu(start_page).click
+    editor.add_single_question.hover
+    editor.add_component(I18n.t('components.list.email')).click
+    editor.page_url_field.set(url)
+    when_I_add_the_page
+  end
+
 end

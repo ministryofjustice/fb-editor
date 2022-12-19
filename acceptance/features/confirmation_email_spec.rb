@@ -116,10 +116,6 @@ feature 'Confirmation email' do
     expect(page).to have_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
-  def when_I_enable_confirmation_email(environment)
-    page.find(:css, "input#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(true)
-  end
-
   def when_I_disable_confirmation_email(environment)
     page.find(:css, "input#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(false)
   end
@@ -167,14 +163,6 @@ feature 'Confirmation email' do
     editor.connection_menu(start_page).click
     editor.add_multiple_question.click
     and_I_add_a_page_url(question)
-    when_I_add_the_page
-  end
-
-  def when_I_add_a_single_question_page_with_email_after_start(url:)
-    editor.connection_menu(start_page).click
-    editor.add_single_question.hover
-    editor.add_component(I18n.t('components.list.email')).click
-    editor.page_url_field.set(url)
     when_I_add_the_page
   end
 
