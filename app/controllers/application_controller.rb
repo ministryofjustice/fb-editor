@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
   helper_method :show_reference_number
 
   def payment_link_url
-    payment_link_config.decrypt_value
+    '#' # We don't have a real reference number so we can't link anywhere.
   end
   helper_method :payment_link_url
 
