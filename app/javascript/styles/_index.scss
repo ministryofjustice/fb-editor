@@ -40,6 +40,10 @@ html {
   display: none;
 }
 
+a[disabled] {
+  pointer-events: none;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;

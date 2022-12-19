@@ -109,6 +109,7 @@ PagesController.edit = function() {
 
     case "page.confirmation":
          // No customisations required for this view.
+         editPageConfirmationViewCustomisations(view);
          break;
 
     case "page.checkanswers":
@@ -695,6 +696,16 @@ function editPageCheckAnswersViewCustomisations() {
   $target2.before($button2);
   $button2.attr("data-fb-field-name", "page[add_extra_component]");
 }
+
+function editPageConfirmationViewCustomisations() {
+  var $payButton = $('[data-component="pay-button"]');
+  var $addContentButton = $('[data-component="add-content"]');
+  if($payButton && $addContentButton) {
+    $addContentButton.after($payButton);
+    $payButton.attr('disabled', 'disabled');
+    $payButton.attr('tabindex', '-1');
+  }
+};
 
 
 function editPageMultipleQuestionsViewCustomisations() {
