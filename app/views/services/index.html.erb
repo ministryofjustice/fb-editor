@@ -31,7 +31,7 @@
             <% f.object.errors.each do |error|  %>
               <p class="govuk-error-message"><%= error.message %></p>
             <% end %>
-            <div class="govuk-hint" id="service-name-hint"> <%= t('services.form_name_hint')%></div>
+            <div class="govuk-hint" id="service-name-hint"> <%= t('services.form_name_hint', max_length: Editor::Service::MAXIMUM)%></div>
             <%= f.text_field :service_name, class: "govuk-input", 'aria-describedby': 'service-name-hint'%>
           </div>
           <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>

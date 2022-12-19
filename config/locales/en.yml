@@ -452,7 +452,7 @@ en:
   services:
     heading: 'Your forms'
     edit: 'Edit'
-    form_name_hint: "It cannot start with a number or include special characters except ' - ( )"
+    form_name_hint: "Maximum %{max_length} characters, including spaces. It cannot start with a number or include special characters except ' - ( )"
     preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
@@ -586,8 +586,8 @@ en:
           link_start_with: 'https://www.gov.uk/payments/'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
-        too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
-        too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
+        too_short: Form names must be %{count} characters or more
+        too_long: Form names must be %{count} characters or fewer
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
