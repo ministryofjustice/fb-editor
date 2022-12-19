@@ -139,19 +139,11 @@ RSpec.describe ReferencePaymentSettings do
         it 'returns true' do
           expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
         end
-
-        it 'does retrieve the record from the database' do
-          expect(subject).to_not receive(:payment_link_checked?)
-        end
       end
 
       context 'when there is no DB record' do
         it 'returns false' do
           expect(reference_payment_settings.payment_link_has_been_checked?).to be_falsey
-        end
-
-        it 'does retrieve the record from the database' do
-          expect(subject).to_not receive(:payment_link_checked?)
         end
       end
     end
@@ -162,14 +154,14 @@ RSpec.describe ReferencePaymentSettings do
       context 'when there is a record in DB' do
         before do
           create(
-            :service_configuration,
-            :payment_link_url,
+            :submission_setting,
+            :payment_link,
             service_id: service.service_id,
             deployment_environment: 'dev'
           )
           create(
-            :service_configuration,
-            :payment_link_url,
+            :submission_setting,
+            :payment_link,
             service_id: service.service_id,
             deployment_environment: 'production'
           )
@@ -178,19 +170,11 @@ RSpec.describe ReferencePaymentSettings do
         it 'returns true' do
           expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
         end
-
-        it 'does not retrieve the record from the database' do
-          expect(ServiceConfiguration).to_not receive(:exists?)
-        end
       end
 
       context 'when there is no DB record' do
-        it 'returns false' do
+        it 'returns true' do
           expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
-        end
-
-        it 'does not retrieve the record from the database' do
-          expect(ServiceConfiguration).to_not receive(:exists?)
         end
       end
     end
