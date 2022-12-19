@@ -452,7 +452,7 @@ en:
   services:
     heading: 'Your forms'
     edit: 'Edit'
-    form_name_hint: "Maximum 57 characters, including spaces. It cannot start with a number or include special characters except ' - ( )"
+    form_name_hint: "Maximum %{max_length} characters, including spaces. It cannot start with a number or include special characters except ' - ( )"
     preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
