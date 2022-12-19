@@ -118,26 +118,26 @@ RSpec.describe ReferencePaymentSettings do
     end
   end
 
-  describe '#payment_link_has_been_checked' do
+  describe '#payment_link_has_been_checked?' do
     context 'payment_link is blank' do
       context 'when there is a DB record' do
         before do
           create(
-            :service_configuration,
-            :payment_link_url,
+            :submission_setting,
+            :payment_link,
             service_id: service.service_id,
             deployment_environment: 'dev'
           )
           create(
-            :service_configuration,
-            :payment_link_url,
+            :submission_setting,
+            :payment_link,
             service_id: service.service_id,
             deployment_environment: 'production'
           )
         end
 
         it 'returns true' do
-          expect(reference_payment_settings.payment_link_has_been_checked).to be_truthy
+          expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
         end
 
         it 'does retrieve the record from the database' do
@@ -147,7 +147,7 @@ RSpec.describe ReferencePaymentSettings do
 
       context 'when there is no DB record' do
         it 'returns false' do
-          expect(reference_payment_settings.payment_link_has_been_checked).to be_falsey
+          expect(reference_payment_settings.payment_link_has_been_checked?).to be_falsey
         end
 
         it 'does retrieve the record from the database' do
@@ -176,7 +176,7 @@ RSpec.describe ReferencePaymentSettings do
         end
 
         it 'returns true' do
-          expect(reference_payment_settings.payment_link_has_been_checked).to be_truthy
+          expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
         end
 
         it 'does not retrieve the record from the database' do
@@ -186,7 +186,7 @@ RSpec.describe ReferencePaymentSettings do
 
       context 'when there is no DB record' do
         it 'returns false' do
-          expect(reference_payment_settings.payment_link_has_been_checked).to be_truthy
+          expect(reference_payment_settings.payment_link_has_been_checked?).to be_truthy
         end
 
         it 'does not retrieve the record from the database' do

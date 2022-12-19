@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_19_162209) do
+ActiveRecord::Schema.define(version: 2022_12_16_160440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2022_10_19_162209) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "service_csv_output", default: false
     t.boolean "send_confirmation_email", default: false
+    t.boolean "payment_link", default: false
     t.index ["service_id", "deployment_environment"], name: "submission_settings_id_and_environment"
     t.index ["service_id"], name: "index_submission_settings_on_service_id"
   end

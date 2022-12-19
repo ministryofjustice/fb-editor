@@ -33,7 +33,7 @@
           multiple: false,
           link_errors: true,
           label: { text: t('settings.payment_link.label') },
-          checked: f.object.payment_link_has_been_checked,
+          checked: f.object.payment_link_has_been_checked?,
           aria: {
               describedby: 'payment_link_hint payment_link_warning'
             }

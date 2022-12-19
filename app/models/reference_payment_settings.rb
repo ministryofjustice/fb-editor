@@ -40,8 +40,12 @@ class ReferencePaymentSettings
     valid_payment_link_url
   end
 
-  def payment_link_has_been_checked
-    return ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK') if payment_link.blank?
+  def payment_link_has_been_checked?
+    if payment_link.nil?
+      return SubmissionSetting.find_by(
+        service_id: service_id
+      ).try(:payment_link?)
+    end
 
     payment_link_checked?
   end

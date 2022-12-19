@@ -25,5 +25,9 @@ FactoryBot.define do
     trait :send_confirmation_email do
       send_confirmation_email { true }
     end
+
+    trait :payment_link do
+      payment_link { true }
+    end
   end
 end
