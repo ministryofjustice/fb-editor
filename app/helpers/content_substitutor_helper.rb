@@ -15,9 +15,9 @@ module ContentSubstitutorHelper
   end
 
   def payment_link_enabled?
-    ServiceConfiguration.where(
+    SubmissionSetting.find_by(
       service_id: service.service_id,
-      name: 'PAYMENT_LINK'
-    ).present?
+      deployment_environment: 'dev'
+    ).try(:payment_link?)
   end
 end
