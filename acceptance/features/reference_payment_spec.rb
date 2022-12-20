@@ -7,7 +7,7 @@ feature 'Reference Payment Page' do
   let(:payment_link_checkbox) { 'input#reference-payment-settings-payment-link-1-field' }
   let(:payment_link_field) { 'input#reference-payment-settings-payment-link-url-field' }
   let(:reference_number_checkbox) { 'input#reference-payment-settings-reference-number-1-field' }
-  let(:payment_link_label) { I18n.t('settings.payment_link.label') }
+  let(:payment_link_label) { I18n.t('settings.payment_link.checkbox_label') }
   let(:valid_url) { I18n.t('activemodel.errors.models.reference_payment_settings.link_start_with') }
   let(:confirmation_page_payment_text) { "You still need to pay\nYour reference number is:" }
   let(:confirmation_warning_title) { I18n.t('settings.reference_number.confirmation_email_warning.title') }
@@ -133,13 +133,13 @@ feature 'Reference Payment Page' do
   def when_I_visit_the_reference_payment_page
     page.find(:css, '#main-content', visible: true)
     editor.click_link(I18n.t('settings.name'))
-    expect(page).to have_content(I18n.t('settings.reference_number.lede'))
-    editor.click_link(I18n.t('settings.reference_number.heading'))
+    expect(page).to have_content(I18n.t('settings.reference_payment.lede'))
+    editor.click_link(I18n.t('settings.reference_payment.heading'))
   end
 
   def then_I_should_see_the_payment_link_settings_configuration
-    expect(page).to have_content(I18n.t('settings.reference_number.heading'))
-    expect(page).to have_content(I18n.t('settings.reference_number.description', href:'user guide' ))
+    expect(page).to have_content(I18n.t('settings.reference_payment.heading'))
+    expect(page).to have_content(I18n.t('settings.reference_payment.description', href:'user guide' ))
     expect(page).to have_content(I18n.t('settings.reference_number.hint'))
     expect(page).to have_content(I18n.t('settings.payment_link.legend'))
     expect(page).to have_content(I18n.t('settings.payment_link.hint', href:'GOV.UK Pay account'))
