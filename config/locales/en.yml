@@ -319,15 +319,16 @@ en:
         description: Where the public can access and use your form.
       details: Configure
       details_hint: 'You can use tracking IDs for any of the following Google products:'
-    reference_number:
-      link: Reference numbers
-      heading: Reference numbers
-      lede: Generate a unique reference number for each submission.
-      description: Generate and provide your users with a unique reference number with each submission. (For details, see the %{href}.)
+    reference_payment:
+      link: Reference numbers and GOV.UK Pay
+      heading: Reference numbers and GOV.UK Pay
+      description: Generate and provide your users with a unique reference number for each submission. You can combine a reference number with a GOV.UK Pay payment link to easily match MoJ Forms submissions when taking payments. (For details, see the %{href}.)
       href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">user guide</a>
+      lede: Generate a unique reference number for each submission and link users to your GOV.UK Pay payment page.
+    reference_number:
       warning: Updating these settings will reset the confirmation and submission emails and any changes you have made to the subjects and messages will be lost.
       legend: Reference numbers
-      hint: This inserts a reference number in the confirmation page, confirmation email, submission email and submission attachments
+      hint: This inserts a reference number in the confirmation page, confirmation email, submission email and submission attachments.
       label: Enable reference numbers
       confirmation_email_warning:
         title: Do you also want to send a confirmation email?
@@ -335,10 +336,11 @@ en:
         link_text: Send a confirmation email
     payment_link:
       legend: GOV.UK Pay payment links
-      hint: This inserts a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href})
+      hint: This adds a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href}.)
       href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account</a>
       url: 'https://www.payments.service.gov.uk/'
-      label: Add payment links with reference numbers
+      checkbox_label: Add payment links with reference numbers
+      url_label: Your GOV.UK Pay payment link URL
     submission:
       heading: 'Submission settings'
       lede: 'Set what happens when a user submits their data.'
@@ -580,9 +582,9 @@ en:
           empty_value_cell: "The selected file cannot contain blank fields"
           invalid_headings: "The selected file's header fields must be labelled correctly"
         reference_payment_settings:
-          reference_number_disabled: 'You must enable reference numbers before you can add reference numbers to a payment link'
-          missing_payment_link: 'Enter your GOV.UK Pay Payment link URL (You get this from your GOV.UK Pay account)'
-          invalid_payment_url: "Enter a valid GOV.UK payment link URL starting with %{link_start_with}"
+          reference_number_disabled: 'You must enable reference numbers before you can add a payment link'
+          missing_payment_link: 'Enter your GOV.UK Pay payment link URL (you get this from your GOV.UK Pay account)'
+          invalid_payment_url: "Enter a valid GOV.UK Pay payment link URL starting with \"%{link_start_with}\""
           link_start_with: 'https://www.gov.uk/payments/'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."

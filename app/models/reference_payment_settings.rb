@@ -37,7 +37,7 @@ class ReferencePaymentSettings
   def saved_payment_link_url
     return ServiceConfiguration.find_by(service_id: service_id, name: 'PAYMENT_LINK')&.decrypt_value if payment_link_url.nil?
 
-    valid_payment_link_url
+    payment_link_url
   end
 
   def payment_link_has_been_checked?
@@ -45,9 +45,5 @@ class ReferencePaymentSettings
       service_id: service_id,
       deployment_environment: 'dev'
     ).try(:payment_link?)
-  end
-
-  def valid_payment_link_url
-    payment_link_url.strip
   end
 end
