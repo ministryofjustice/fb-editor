@@ -143,7 +143,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: aws_ses_access_key_id
-
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -256,36 +255,36 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
-          - name: AWS_S3_ACCESS_KEY_ID_{{ .Values.environmentName | upper }}_DEV
+          - name: AWS_S3_ACCESS_KEY_ID_DEV
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_access_key_id_{{ .Values.environmentName }}_dev
-          - name: AWS_S3_SECRET_ACCESS_KEY_{{ .Values.environmentName | upper }}_DEV
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_access_key_id_dev
+          - name: AWS_S3_SECRET_ACCESS_KEY_DEV
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_secret_access_key_{{ .Values.environmentName }}_dev
-          - name: AWS_S3_BUCKET_{{ .Values.environmentName | upper }}_DEV
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_secret_access_key_dev
+          - name: AWS_S3_BUCKET_DEV
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_bucket_{{ .Values.environmentName }}_dev
-          - name: AWS_S3_ACCESS_KEY_ID_{{ .Values.environmentName | upper }}_PRODUCTION
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_bucket_dev
+          - name: AWS_S3_ACCESS_KEY_ID_PRODUCTION
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_access_key_id_{{ .Values.environmentName }}_production
-          - name: AWS_S3_SECRET_ACCESS_KEY_{{ .Values.environmentName | upper }}_PRODUCTION
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_access_key_id_production
+          - name: AWS_S3_SECRET_ACCESS_KEY_PRODUCTION
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_secret_access_key_{{ .Values.environmentName }}_production
-          - name: AWS_S3_BUCKET_{{ .Values.environmentName | upper }}_PRODUCTION
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_secret_access_key_production
+          - name: AWS_S3_BUCKET_PRODUCTION
             valueFrom:
               secretKeyRef:
-                name: s3-service-metadata-{{ .Values.environmentName }}
-                key: aws_s3_bucket_{{ .Values.environmentName }}_production
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: aws_s3_bucket_production
       volumes:
         - name: tmp-files
           emptyDir: {}
