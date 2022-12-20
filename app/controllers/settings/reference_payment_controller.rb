@@ -35,6 +35,10 @@ class Settings::ReferencePaymentController < FormController
   end
 
   def reference_payment_params
-    params.require(:reference_payment_settings).permit(:reference_number, :payment_link, :payment_link_url)
+    params.require(:reference_payment_settings).permit(:reference_number, :payment_link, :payment_link_url).merge(payment_link_url)
+  end
+
+  def payment_link_url
+    { payment_link_url: params[:reference_payment_settings][:payment_link_url].strip }
   end
 end
