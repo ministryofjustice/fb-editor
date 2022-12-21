@@ -57,6 +57,8 @@ ServicesController.edit = function() {
   view.$flowStandalone = $("#flow-standalone-pages");
   view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
 
+  view.paths = [];
+
   createPageAdditionDialog(view);
   createPageMenus(view);
   createConnectionMenus(view);
@@ -69,6 +71,12 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOverview(view);
   }
+
+  performance.mark('flow-connector-adjustments-start');
+  adjustOverlappingFlowConnectorPaths(view);
+  performance.mark('flow-connector-adjustments-end');
+
+  view.paths.forEach((path) => { path.build(); });
 
   addServicesContentScrollContainer(view);
   view.ready();
@@ -169,9 +177,9 @@ function layoutFormFlowOverview(view) {
   applyBranchFlowConnectorPaths(view, $container);
   applyRouteEndFlowConnectorPaths(view, $container);
   performance.mark('flow-connectors-end');
-  performance.mark('flow-connector-adjustments-start');
-  adjustOverlappingFlowConnectorPaths($container);
-  performance.mark('flow-connector-adjustments-end');
+  // performance.mark('flow-connector-adjustments-start');
+  // adjustOverlappingFlowConnectorPaths($container);
+  // performance.mark('flow-connector-adjustments-end');
   adjustBranchConditionPositions($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
@@ -214,7 +222,7 @@ function layoutDetachedItemsOverview(view) {
     adjustOverviewHeight($group);
     applyPageFlowConnectorPaths(view, $group);
     applyBranchFlowConnectorPaths(view, $group);
-    adjustOverlappingFlowConnectorPaths($group);
+    // adjustOverlappingFlowConnectorPaths($group);
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
     adjustOverviewWidth($group);
@@ -571,19 +579,21 @@ function applyPageFlowConnectorPaths(view, $overview) {
     }
 
     if( fromX && fromY && toX && toY) {
-      calculateAndCreatePageFlowConnectorPath({
-        from_x: fromX,
-        from_y: fromY,
-        to_x: toX,
-        to_y: toY,
-        via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
-      }, {
-        from: $item.data("instance"),
-        to: $next.data("instance"),
-        container: $overview,
-        top: 0,                     // TODO: Is this and the height below the best way to position
-        bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-      });
+      view.paths.push(
+        calculateAndCreatePageFlowConnectorPath({
+          from_x: fromX,
+          from_y: fromY,
+          to_x: toX,
+          to_y: toY,
+          via_x: COLUMN_SPACING - 20 // 20 because we don't want lines to start at edge of column space
+        }, {
+          from: $item.data("instance"),
+          to: $next.data("instance"),
+          container: $overview,
+          top: 0,                     // TODO: Is this and the height below the best way to position
+          bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
+        })
+      );
     }
   });
 }
@@ -647,24 +657,28 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       if(backward || sameColumn) {
         // If on the same row but destination behind the current condition
         if(firstConditionItem) {
-          new ConnectorPath.ForwardDownBackwardUpPath({
-            from_x: branchX,
-            from_y: branchY - (rowHeight / 4),
-            to_x: destinationX,
-            to_y: destinationY,
-            via_x: conditionX,
-            via_y: conditionY
-          }, config);
+          view.paths.push(
+            new ConnectorPath.ForwardDownBackwardUpPath({
+              from_x: branchX,
+              from_y: branchY - (rowHeight / 4),
+              to_x: destinationX,
+              to_y: destinationY,
+              via_x: conditionX,
+              via_y: conditionY
+            }, config)
+          );
         }
         else {
-          new ConnectorPath.DownForwardDownBackwardUpPath({
-            from_x: branchX - (branchWidth / 2),
-            from_y: branchY,
-            to_x: destinationX,
-            to_y: destinationY,
-            via_x: conditionX + halfBranchNodeWidth,
-            via_y: conditionY
-          }, config);
+          view.paths.push(
+            new ConnectorPath.DownForwardDownBackwardUpPath({
+              from_x: branchX - (branchWidth / 2),
+              from_y: branchY,
+              to_x: destinationX,
+              to_y: destinationY,
+              via_x: conditionX + halfBranchNodeWidth,
+              via_y: conditionY
+            }, config)
+          );
         }
       }
       else {
@@ -674,33 +688,39 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           if(sameRow) {
             // Create straight path to go from right corner of the branch
             // to the x/y coordinates of the related 'next' destination.
-            new ConnectorPath.ForwardPath({
-              from_x: branchX,
-              from_y: branchY - (rowHeight / 4),
-              to_x: destinationX,
-              to_y: destinationY
-            }, config);
+            view.paths.push(
+              new ConnectorPath.ForwardPath({
+                from_x: branchX,
+                from_y: branchY - (rowHeight / 4),
+                to_x: destinationX,
+                to_y: destinationY
+              }, config)
+            );
           }
           else {
             if(up) {
-              new ConnectorPath.ForwardUpForwardDownPath({
-                from_x: branchX,
-                from_y: branchY - (rowHeight / 4),
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX,
-                via_y: conditionY
-              }, config);
+              view.paths.push(
+                new ConnectorPath.ForwardUpForwardDownPath({
+                  from_x: branchX,
+                  from_y: branchY - (rowHeight / 4),
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX,
+                  via_y: conditionY
+                }, config)
+              );
             }
             else {
-              new ConnectorPath.ForwardDownForwardPath({
-                from_x: branchX,
-                from_y: branchY - (rowHeight / 4),
-                to_x: destinationX,
-                to_y: destinationY,
-                via_x: conditionX,
-                via_y: conditionY
-              }, config);
+              view.paths.push(
+                new ConnectorPath.ForwardDownForwardPath({
+                  from_x: branchX,
+                  from_y: branchY - (rowHeight / 4),
+                  to_x: destinationX,
+                  to_y: destinationY,
+                  via_x: conditionX,
+                  via_y: conditionY
+                }, config)
+              );
             }
           }
         }
@@ -709,59 +729,69 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           if(sameRow) {
             // All other 'standard' BranchConditions expected to be Down and Forward
             // with the starting point from bottom and centre of the Branch item.
-            new ConnectorPath.DownForwardPath({
-              from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
-              from_y: branchY,
-              to_x: destinationX,
-              to_y: destinationY
-            }, config);
+            view.paths.push(
+              new ConnectorPath.DownForwardPath({
+                from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
+                from_y: branchY,
+                to_x: destinationX,
+                to_y: destinationY
+              }, config)
+            );
           }
           else {
             // NOT SAME ROW
             if(up) {
               if(nextColumn) {
-                new ConnectorPath.DownForwardUpPath({
-                  from_x: branchX - (branchWidth / 2),
-                  from_y: branchY,
-                  to_x: destinationX,
-                  to_y: destinationY,
-                  via_x: conditionX + halfBranchNodeWidth,
-                  via_y: conditionY
-                }, config);
+                view.paths.push(
+                  new ConnectorPath.DownForwardUpPath({
+                    from_x: branchX - (branchWidth / 2),
+                    from_y: branchY,
+                    to_x: destinationX,
+                    to_y: destinationY,
+                    via_x: conditionX + halfBranchNodeWidth,
+                    via_y: conditionY
+                  }, config)
+                );
               }
               else {
                 // NOT NEXT COLUMN
-                new ConnectorPath.DownForwardUpForwardDownPath({
-                  from_x: branchX - (branchWidth / 2),
-                  from_y: branchY,
-                  to_x: destinationX,
-                  to_y: destinationY,
-                  via_x: conditionX + halfBranchNodeWidth,
-                  via_y: conditionY
-                }, config);
+                view.paths.push(
+                  new ConnectorPath.DownForwardUpForwardDownPath({
+                    from_x: branchX - (branchWidth / 2),
+                    from_y: branchY,
+                    to_x: destinationX,
+                    to_y: destinationY,
+                    via_x: conditionX + halfBranchNodeWidth,
+                    via_y: conditionY
+                  }, config)
+                );
               }
             }
             else {
               // DOWN
               if(nextColumn) {
-                new ConnectorPath.DownForwardDownForwardPath({
-                  from_x: branchX - (branchWidth / 2),
-                  from_y: branchY,
-                  to_x: destinationX,
-                  to_y: destinationY,
-                  via_x: conditionX + halfBranchNodeWidth,
-                  via_y: conditionY
-                }, config);
+                view.paths.push(
+                  new ConnectorPath.DownForwardDownForwardPath({
+                    from_x: branchX - (branchWidth / 2),
+                    from_y: branchY,
+                    to_x: destinationX,
+                    to_y: destinationY,
+                    via_x: conditionX + halfBranchNodeWidth,
+                    via_y: conditionY
+                  }, config)
+                );
               }
               else {
-                new ConnectorPath.DownForwardUpForwardDownPath({
-                  from_x: branchX - (branchWidth / 2),
-                  from_y: branchY,
-                  to_x: destinationX,
-                  to_y: destinationY,
-                  via_x: conditionX + halfBranchNodeWidth,
-                  via_y: conditionY
-                }, config);
+                view.paths.push(
+                  new ConnectorPath.DownForwardUpForwardDownPath({
+                    from_x: branchX - (branchWidth / 2),
+                    from_y: branchY,
+                    to_x: destinationX,
+                    to_y: destinationY,
+                    via_x: conditionX + halfBranchNodeWidth,
+                    via_y: conditionY
+                  }, config)
+                );
               }
             }
           }
@@ -782,7 +812,8 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
     var toX = fromX + 100; // - 1 for design spacing
     var toY = fromY;
 
-    new ConnectorPath.ForwardPath({
+    view.paths.push(
+      new ConnectorPath.ForwardPath({
         from_x: fromX,
         from_y: fromY,
         to_x: toX,
@@ -794,7 +825,8 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
         container: $overview,
         top: 0,                     // TODO: Is this and the height below the best way to position
         bottom: $overview.height()  //       backward and skip forward lines to the boundaries?
-      });
+      })
+    );
 
 
   });
@@ -813,24 +845,22 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
  * should not have any issues with overlapping. They are the ones that go in a
  * straight line between Page A ---> Page B.
  **/
-function adjustOverlappingFlowConnectorPaths($overview) {
+function adjustOverlappingFlowConnectorPaths(view) {
   const recursionLimit = 150; // This is a safety feature for the while loop.
-  var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
+  // var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
+  var paths = view.paths.filter( (path) => !['ForwardPath', 'DownForwardPath'].includes(path.type) )
+  console.log(paths);
   var somethingMoved;
-  var numberOfPaths = $paths.length;
-  var keepChecking = $paths.length > 1;
+  var numberOfPaths = paths.length;
+  var keepChecking = paths.length > 1;
   var loopCount = 1;
 
   do {
     somethingMoved = false;
-    $paths.each(function(count) {
+    paths.forEach(( path, count) => {
       var numberChecked = (count + 1); // zero index workaround
-      var $path = $(this);
-      var path = $path.data("instance");
 
-      $paths.each(function() { // or $paths.not($path).each
-        var $current = $(this);
-        var current = $current.data("instance");
+      paths.forEach((current) => { // or $paths.not($path).each
         if(path.prop('id') != current.prop('id')) {
           // If the paths intersect / overlap
           // Call the overlap avoidance functionality and register
@@ -885,33 +915,35 @@ function calculateAndCreatePageFlowConnectorPath(points, config) {
   var sameRow = (rowItem == rowNext);
   var up = rowItem > rowNext;
   var destinationInNextColumn = utilities.difference(columnItem, columnNext) == 1;
+  var path;
 
   if(sameRow) {
     if(forward) {
-      new ConnectorPath.ForwardPath(points, config);
+      path = new ConnectorPath.ForwardPath(points, config);
     }
     else {
-      new ConnectorPath.ForwardDownBackwardUpPath(points, config);
+      path = new ConnectorPath.ForwardDownBackwardUpPath(points, config);
     }
   }
   else {
     if(forward) {
       if(up) {
         if(destinationInNextColumn) {
-          new ConnectorPath.ForwardUpForwardPath(points, config);
+          path = new ConnectorPath.ForwardUpForwardPath(points, config);
         }
         else {
-          new ConnectorPath.ForwardUpForwardDownPath(points, config);
+          path = new ConnectorPath.ForwardUpForwardDownPath(points, config);
         }
       }
       else {
-        new ConnectorPath.ForwardDownForwardPath(points, config);
+        path = new ConnectorPath.ForwardDownForwardPath(points, config);
       }
     }
     else {
-      new ConnectorPath.ForwardDownBackwardUpPath(points, config);
+      path = new ConnectorPath.ForwardDownBackwardUpPath(points, config);
     }
   }
+  return path;
 }
 
 /* Standard search and convert for any elements that have an expander

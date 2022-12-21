@@ -314,7 +314,7 @@ class ForwardPath extends FlowConnectorPath {
     this.#calculatePath(dimensions);
 
     this.type = "ForwardPath";
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -368,7 +368,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set #calculatePath()
     this.type = "ForwardUpForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -391,7 +391,6 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -466,7 +465,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -501,7 +500,6 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -597,7 +595,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -630,7 +628,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -722,7 +719,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -745,7 +742,6 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -818,7 +814,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -852,7 +848,6 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -959,7 +954,7 @@ class DownForwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -983,7 +978,6 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1070,7 +1064,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -1105,7 +1099,6 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1213,7 +1206,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
@@ -1237,7 +1230,6 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1321,7 +1313,7 @@ class DownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
+    // this.build();
   }
 
   get path() {
