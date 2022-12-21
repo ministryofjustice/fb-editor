@@ -25,6 +25,9 @@ const ConnectionMenu = require('./components/menus/connection_menu');
 const Expander = require('./component_expander');
 
 const COLUMN_SPACING = 100;
+const FLOW_GRID_ROW_HEIGHT = 250;
+const FLOW_ITEM_WIDTH = 200;
+const FLOW_CONDITION_WIDTH = 350;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
@@ -237,8 +240,10 @@ function layoutDetachedItemsOverview(view) {
 **/
 function createAndPositionFlowItems(view, $overview) {
   var $columns = $(".column", $overview);
-  var rowHeight = view.page.flowItemsRowHeight;
+  var rowHeight = FLOW_GRID_ROW_HEIGHT;
   var left = 0;
+
+  var $allItems = $();
 
   // Loop over found columns created from the flow
   $columns.each(function(column) {
@@ -247,23 +252,22 @@ function createAndPositionFlowItems(view, $overview) {
     var conditionsLeft = 0;
     var top = 0; // TODO: Where should this come from? (see also COLUMN_SPACING)
 
+    $allItems = $allItems.add($items);
+    $items.detach();
+
     $items.each(function(row) {
       var $item = $(this);
-      var itemWidth = $item.outerWidth();
-      var conditionTop = (rowHeight / 4);
+      var itemWidth = FLOW_ITEM_WIDTH;
+      var conditionTop = (FLOW_GRID_ROW_HEIGHT / 4);
       var $conditions = $(SELECTOR_FLOW_CONDITION, this);
-
-      // First, bring it out of the column because we don't need it.
-      // We will remove the columns later.
-      $column.before($item);
 
       // Creates FlowItem instances (boxes and diamonds) with positions data.
       new FlowItem($item, {
         id: $item.attr("data-fb-id"),
         next: $item.attr("data-next"),
         x_in: left,
-        x_out: left + $item.outerWidth(),
-        y: top + (rowHeight / 4),
+        x_out: left + FLOW_ITEM_WIDTH,
+        y: top + (FLOW_GRID_ROW_HEIGHT / 4),
         column: column,
         row: row
       });
@@ -276,30 +280,30 @@ function createAndPositionFlowItems(view, $overview) {
       });
 
       if($conditions.length) {
-        conditionsLeft = itemWidth + utilities.maxWidth($conditions);
+        conditionsLeft = FLOW_ITEM_WIDTH + FLOW_CONDITION_WIDTH;
       }
 
       // Positions any conditions nodes (bubbles) with this loop
       $conditions.each(function(index) {
         var $condition = $(this);
         $condition.css({
-          left: itemWidth,
+          left: FLOW_ITEM_WIDTH,
           position: "absolute",
           top: conditionTop
         });
 
         // Creates FlowConditionItem instances (speach bubbles) with simple data.
         new FlowConditionItem($condition, {
-          $fromm: $condition.attr("data-from"),
+          $from: $condition.attr("data-from"),
           $next: $condition.attr("data-next"),
           column: column,
           row: row + index
         });
 
-        conditionTop += rowHeight;
+        conditionTop += FLOW_GRID_ROW_HEIGHT;
       });
 
-      top += rowHeight;
+      top += FLOW_GRID_ROW_HEIGHT;
     });
 
     if(conditionsLeft) {
@@ -308,7 +312,7 @@ function createAndPositionFlowItems(view, $overview) {
     }
     else {
       // Adjust distance based just on column width
-      left += utilities.maxWidth($items);
+      left += FLOW_ITEM_WIDTH;
     }
 
     left += COLUMN_SPACING; // Use same spacing regardless of condition found, or not.
@@ -316,6 +320,7 @@ function createAndPositionFlowItems(view, $overview) {
 
   // Ditch the columns.
   $columns.remove();
+  $overview.append($allItems);
 }
 
 
@@ -849,7 +854,6 @@ function adjustOverlappingFlowConnectorPaths(view) {
   const recursionLimit = 150; // This is a safety feature for the while loop.
   // var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
   var paths = view.paths.filter( (path) => !['ForwardPath', 'DownForwardPath'].includes(path.type) )
-  console.log(paths);
   var somethingMoved;
   var numberOfPaths = paths.length;
   var keepChecking = paths.length > 1;
