@@ -835,13 +835,9 @@ function adjustOverlappingFlowConnectorPaths($overview) {
           // If the paths intersect / overlap
           // Call the overlap avoidance functionality and register
           // if anything was moved (reported by its return value).
-          if(utilities.intersects(path.bounds,current.bounds)){
-            // avoidOverlap is super expensive and if anything moves we start
-            // again so we only call it if the paths bounding boxes actually intersect.
-            if(path.avoidOverlap(current)) {
-              somethingMoved = true;
-              return false;
-            }
+          if(path.avoidOverlap(current)) {
+            somethingMoved = true;
+            return false;
           }
         }
       });
