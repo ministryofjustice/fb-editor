@@ -364,6 +364,19 @@ function intersects(a, b) {
 	return true;
 }
 
+function overlaps(a, b, minimumOverlap) {
+  if( a.end - b.start >= 0 && b.end - a.start >=0 ) {
+    const range = overlapRange(a,b);
+    return (range.end - range.start) >= minimumOverlap;
+  }
+}
+
+function overlapRange(a,b) {
+  return {
+    start: Math.max(a.start, b.start),
+    end: Math.min(a.end, b.end)
+  }
+}
 
 
 
@@ -391,5 +404,6 @@ module.exports  = {
   highestNumber: highestNumber,
   filterObject: filterObject,
   snakeToPascalCase: snakeToPascalCase,
-  intersects: intersects
+  intersects: intersects,
+  overlaps: overlaps
 }
