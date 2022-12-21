@@ -143,19 +143,15 @@ class Publisher
     end
 
     def aws_s3_access_key_id
-      ENV["AWS_S3_ACCESS_KEY_ID_#{platform_deployment_underscore}"]
+      ENV["AWS_S3_ACCESS_KEY_ID_#{deployment_environment_upcase}"]
     end
 
     def aws_s3_secret_access_key
-      ENV["AWS_S3_SECRET_ACCESS_KEY_#{platform_deployment_underscore}"]
+      ENV["AWS_S3_SECRET_ACCESS_KEY_#{deployment_environment_upcase}"]
     end
 
     def aws_s3_bucket_name
-      ENV["AWS_S3_BUCKET_#{platform_deployment_underscore}"]
-    end
-
-    def platform_deployment_underscore
-      @platform_deployment_underscore ||= platform_deployment.underscore.upcase
+      ENV["AWS_S3_BUCKET_#{deployment_environment_upcase}"]
     end
 
     private
@@ -193,6 +189,10 @@ class Publisher
 
         response.respond_to?(:metadata) ? response.metadata : {}
       end
+    end
+
+    def deployment_environment_upcase
+      @deployment_environment_upcase ||= deployment_environment.upcase
     end
   end
 end

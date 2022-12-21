@@ -3,8 +3,10 @@ require 'aws-sdk-s3'
 class Publisher
   module Adapters
     class AwsS3Client
-      def initialize(platform_deployment)
-        @platform_deployment = platform_deployment
+      def initialize(bucket:, access_key_id:, secret_access_key:)
+        @bucket = bucket
+        @access_key_id = access_key_id
+        @secret_access_key = secret_access_key
       end
 
       REGION = 'eu-west-2'.freeze
@@ -13,24 +15,21 @@ class Publisher
         Rails.logger.info("Uploading #{object_key} to S3")
         s3.put_object(
           body: body,
-          bucket: ENV["AWS_S3_BUCKET_#{platform_deployment}"],
+          bucket: bucket,
           key: object_key
         )
       end
 
       private
 
-      attr_reader :platform_deployment
+      attr_reader :bucket, :access_key_id, :secret_access_key
 
       def s3
         @s3 ||= Aws::S3::Client.new(region: REGION, credentials: credentials)
       end
 
       def credentials
-        Aws::Credentials.new(
-          ENV["AWS_S3_ACCESS_KEY_ID_#{platform_deployment}"],
-          ENV["AWS_S3_SECRET_ACCESS_KEY_#{platform_deployment}"]
-        )
+        Aws::Credentials.new(access_key_id, secret_access_key)
       end
     end
   end
