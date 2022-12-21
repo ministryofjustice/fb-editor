@@ -75,6 +75,7 @@ class FlowConnectorPath {
       from: conf.from,
       to: conf.to
     }
+
   }
 
   // Because JS doesn't allow inheritance of private variables,
@@ -93,17 +94,20 @@ class FlowConnectorPath {
 
   // Gets the bounding box of the path
   // This is used to check path intersections for the adjustment/nudging routine
-  // Theoretically this should include the via points, but including them
-  // results in massively more intersections, and thus a much longer processing
-  // time. But doesn't actually change the end result. So we leave them out.
   get bounds() {
-    return {
-      x1: Math.min(this.points.from_x, this.points.to_x),
-      y1: Math.min(this.points.from_y, this.points.to_y),
-      x2: Math.max(this.points.from_x, this.points.to_x),
-      y2: Math.max(this.points.from_y, this.points.to_y)
-    };
+      return {
+        x1: Math.min(this.points.from_x, this.points.to_x, this.points.via_x),
+        y1: Math.min(this.points.from_y, this.points.to_y, this.points.via_y),
+        x2: Math.max(this.points.from_x, this.points.to_x, this.points.via_x),
+        y2: Math.max(this.points.from_y, this.points.to_y, this.points.via_y)
+      }
   }
+
+  // Determines if the bounds of 2 paths intersect
+  intersects(path) {
+    return utilities.intersects(this.bounds, path.bounds);
+  }
+
 
   // Makeing these readonly access properties because they shouldn't be changed.
   prop(name) {
@@ -221,6 +225,9 @@ class FlowConnectorPath {
   }
 
   avoidOverlap(path) {
+    // Don't do anything unles the paths overlap
+    if(!this.intersects(path)) return false;
+
     // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
     // functionality of the passed path is called to shift the line that matches (overlaps).
     // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
@@ -258,23 +265,19 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
 
   // Loop over each line in current FlowConnectorPath
   for(var a=0; a < lines.length; ++a) {
-    let aRange = lines[a].range;
-
+    const lineA = lines[a];
     // Compare with each line in the passed FlowConnectorPath
     for(var b=0; b < comparisonLines.length; ++b) {
-      let bRange = comparisonLines[b].range;
-      let lineXY = lines[a].prop(direction == "vertical" ? "x" : "y");
-      let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
-      let overlapCount = 0;
+      const lineB = comparisonLines[b];
+      let lineXY = lineA.prop(direction == "vertical" ? "x" : "y");
+      let comparisonLineXY = lineB.prop(direction == "vertical" ? "x" : "y");
 
       // First check if they occupy the same horizontal point/position.
       if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
 
-        // Check each point in the comparison line range to find matches in the current line range.
-        if(utilities.overlaps(aRange, bRange, PATH_OVERLAP_MINIMUM)) {
-          if(path.type == 'DownForwardDownBackwardUpPath') {
-            console.log("Overlap found between '%s.%s' and '%s.%s'", path.type, lines[a].name, comparisonPath.type, comparisonLines[b].name);
-          }
+        // Check if the lines are overlapping
+        if(lineA.overlaps(lineB)) {
+          // console.log("Overlap found between '%s.%s - %s' and '%s.%s - %s'", path.type, lineA.name, path.prop('id'), comparisonPath.type, lineB.name, path.prop('id'));
 
           // Call the nudge function (may or may not actual need to move the line).
           // If the line is moved we set a variable to report back that action.
@@ -282,7 +285,7 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
           // the comparisons can start again. This will be useful if the movement
           // simply caused the line to be moved from one overlap to cause an
           // overlap with another line.
-          if(comparisonPath.nudge(comparisonLines[b].name)) {
+          if(comparisonPath.nudge(lineB.name)) {
             lineWasNudged = true;
           }
         }
@@ -823,14 +826,12 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    console.log(`nudging ${linename} for ${this.type}`)
     var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "down2":
            d.forward1 -= NUDGE_SPACING;
            d.backward -= NUDGE_SPACING;
-           console.log('forward1 and backward1 nudged')
            nudged = true;
            break;
 
@@ -838,21 +839,18 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
            d.backward += NUDGE_SPACING;
            d.forward2 += NUDGE_SPACING;
            nudged = true;
-           console.log('backward and forward2 nudged')
            break;
 
       case "backward":
            d.down2 += NUDGE_SPACING;
            d.up += NUDGE_SPACING;
            nudged = true;
-           console.log('down2 and up nudged')
            break;
 
       case "down1":
       case "forward1":
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
-    console.log(d)
     this.#calculatePath(d);
     this.$node.find("path:first").attr("d", this.#path);
     return nudged;
@@ -1437,6 +1435,10 @@ class FlowConnectorLine {
 
   get range() {
     return this.#range;
+  }
+
+  overlaps(line) {
+    return utilities.overlaps(this.range, line.range, PATH_OVERLAP_MINIMUM);
   }
 
   // Returns a particular configuration property
