@@ -225,7 +225,6 @@ function layoutDetachedItemsOverview(view) {
     adjustOverviewHeight($group);
     applyPageFlowConnectorPaths(view, $group);
     applyBranchFlowConnectorPaths(view, $group);
-    // adjustOverlappingFlowConnectorPaths($group);
     adjustBranchConditionPositions($group);
     adjustOverviewHeight($group);
     adjustOverviewWidth($group);
@@ -267,7 +266,8 @@ function createAndPositionFlowItems(view, $overview) {
         next: $item.attr("data-next"),
         x_in: left,
         x_out: left + FLOW_ITEM_WIDTH,
-        y: top + (FLOW_GRID_ROW_HEIGHT / 4),
+        y_in: top,
+        y_out: top + FLOW_GRID_ROW_HEIGHT,
         column: column,
         row: row
       });
@@ -297,7 +297,11 @@ function createAndPositionFlowItems(view, $overview) {
           $from: $condition.attr("data-from"),
           $next: $condition.attr("data-next"),
           column: column,
-          row: row + index
+          row: row + index,
+          x_in: FLOW_ITEM_WIDTH,
+          x_out: FLOW_ITEM_WIDTH + FLOW_CONDITION_WIDTH,
+          y_in: conditionTop,
+          y_out: conditionTop + FLOW_GRID_ROW_HEIGHT,
         });
 
         conditionTop += FLOW_GRID_ROW_HEIGHT;
@@ -333,7 +337,8 @@ function createAndPositionFlowItems(view, $overview) {
 function adjustBranchConditionPositions($overview) {
   var strokeWidth = $(".FlowConnectorPath path").eq(0).css("stroke-width") || "";
   var lineHeight = Number(strokeWidth.replace("px", "")) || 0;
-  $overview.find(".flow-expressions").each(function() {
+  var $expressions = $overview.find('.flow-expressions');
+  $expressions.each(function() {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
     $this.css({
@@ -396,19 +401,10 @@ function adjustOverviewHeight($overview) {
  **/
 function adjustOverviewWidth($overview) {
   var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
-  var leftNumbers = [];
-  var rightNumbers = [];
   var left, right;
 
-  $items.each(function() {
-    var $item = $(this);
-    var offsetLeft = Math.ceil($item.offset().left);
-    leftNumbers.push(offsetLeft);
-    rightNumbers.push(offsetLeft + $item.width());
-  });
-
-  left = utilities.lowestNumber(leftNumbers);
-  right = utilities.highestNumber(rightNumbers);
+  left = $items.last().offset().left;
+  right = $items.first().offset().left + FLOW_ITEM_WIDTH + COLUMN_SPACING;
   $overview.width((right - left) + "px");
 }
 
