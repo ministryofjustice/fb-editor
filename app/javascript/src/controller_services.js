@@ -31,7 +31,8 @@ const FLOW_CONDITION_WIDTH = 350;
 const SELECTOR_FLOW_BRANCH = ".flow-branch";
 const SELECTOR_FLOW_CONDITION = ".flow-condition";
 const SELECTOR_FLOW_ITEM = ".flow-item";
-const SELECTOR_FLOW_LINE_PATH = ".FlowConnectorPath path:first-child";
+const SELECTOR_FLOW_PATH = ".FlowConnectorPath";
+const SELECTOR_FLOW_LINE = ".FlowConnectorPath path:first-child";
 const SELECTOR_FLOW_DETACHED_GROUP = ".flow-detached-group";
 
 
@@ -60,8 +61,6 @@ ServicesController.edit = function() {
   view.$flowStandalone = $("#flow-standalone-pages");
   view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
 
-  view.paths = [];
-
   createPageAdditionDialog(view);
   createPageMenus(view);
   createConnectionMenus(view);
@@ -74,12 +73,6 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOverview(view);
   }
-
-  performance.mark('flow-connector-adjustments-start');
-  adjustOverlappingFlowConnectorPaths(view);
-  performance.mark('flow-connector-adjustments-end');
-
-  view.paths.forEach((path) => { path.build(); });
 
   addServicesContentScrollContainer(view);
   view.ready();
@@ -171,6 +164,8 @@ function createConnectionMenus(view) {
 **/
 function layoutFormFlowOverview(view) {
   var $container = view.$flowOverview;
+  $container.data('paths', []);
+
   performance.mark('flow-layout-start');
   createAndPositionFlowItems(view, $container);
   performance.mark('flow-items-positioned');
@@ -180,10 +175,11 @@ function layoutFormFlowOverview(view) {
   applyBranchFlowConnectorPaths(view, $container);
   applyRouteEndFlowConnectorPaths(view, $container);
   performance.mark('flow-connectors-end');
-  // performance.mark('flow-connector-adjustments-start');
-  // adjustOverlappingFlowConnectorPaths($container);
-  // performance.mark('flow-connector-adjustments-end');
+  performance.mark('flow-connector-adjustments-start');
+  adjustOverlappingFlowConnectorPaths($container);
+  performance.mark('flow-connector-adjustments-end');
   adjustBranchConditionPositions($container);
+  renderFlowConnectorPaths($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
   performance.mark('flow-layout-end')
@@ -221,11 +217,15 @@ function layoutDetachedItemsOverview(view) {
   // Add required scrolling to layout groups.
   $(SELECTOR_FLOW_DETACHED_GROUP, $container).each(function() {
     var $group = $(this);
+    $group.data('paths', []);
+
     createAndPositionFlowItems(view, $group);
     adjustOverviewHeight($group);
     applyPageFlowConnectorPaths(view, $group);
     applyBranchFlowConnectorPaths(view, $group);
     adjustBranchConditionPositions($group);
+    adjustOverlappingFlowConnectorPaths($group);
+    renderFlowConnectorPaths($group);
     adjustOverviewHeight($group);
     adjustOverviewWidth($group);
   });
@@ -357,38 +357,42 @@ function adjustBranchConditionPositions($overview) {
  * apply dimensional adjustments.
  **/
 function adjustOverviewHeight($overview) {
-  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION].join(', '), $overview);
+  var $paths = $(SELECTOR_FLOW_PATH, $overview);
+
   var bottomNumbers = [];
   var topNumbers = [];
-  var top, bottom, topOverlap, height;
+  var top, bottom, height;
 
   $items.each(function() {
     var $item = $(this);
-    // jquery.offset() always returns 0,0 in Safari for scg elements
-    // so we use native getBoundingClientRect instead which returns correct values
-    var top = $item[0].getBoundingClientRect().y + window.scrollY;
-    bottomNumbers.push(top + $item.height());
+    var top = $item.data('instance').bounds.y1;
+    bottomNumbers.push(top + FLOW_GRID_ROW_HEIGHT);
     topNumbers.push(top);
   });
 
+  $paths.each(function() {
+    var path = $(this).data('instance');
+    var vLines = path.lines('vertical');
+    var top = vLines.reduce( (min, line) => { return line.range.start < min ? line.range.start : min }, 0);
+    var bottom = vLines.reduce( (max, line) => { return line.range.end > max ? line.range.end : max}, 0);
+    bottomNumbers.push(bottom);
+    topNumbers.push(top);
+  })
+
   top = utilities.lowestNumber(topNumbers);
   bottom = utilities.highestNumber(bottomNumbers);
-  topOverlap = $overview.offset().top - top;
   height = bottom - top;
 
-  // If the paths expand outside the top of the top of the overview area
-  // then the topOverlap will have capture the measurement of by how much.
-  // Move the overview area down to avoid paths overlapping content above.
-  if(topOverlap > 0) {
-    $overview.css("margin-top", topOverlap + "px");
-    $overview.css("top", topOverlap + "px");
+  // If top is less than zero it means arrows have been nudged off the view
+  // use the top value to position the flow overview.
+  if(top < 0) {
+    $overview.css("top", Math.abs(top) + "px");
   }
 
   // Adjustment to make the height over overview area contain the height
   // of all flow items and paths within it.
-  if(height > $overview.height()) {
-    $overview.css("height", height + "px");
-  }
+  $overview.css("height", height + "px");
 }
 
 
@@ -400,7 +404,7 @@ function adjustOverviewHeight($overview) {
  * based on calculations of content positions.
  **/
 function adjustOverviewWidth($overview) {
-  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE_PATH].join(", "), $overview);
+  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION, SELECTOR_FLOW_LINE].join(", "), $overview);
   var left, right;
 
   left = $items.last().offset().left;
@@ -580,7 +584,7 @@ function applyPageFlowConnectorPaths(view, $overview) {
     }
 
     if( fromX && fromY && toX && toY) {
-      view.paths.push(
+      $overview.data('paths').push(
         calculateAndCreatePageFlowConnectorPath({
           from_x: fromX,
           from_y: fromY,
@@ -658,7 +662,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       if(backward || sameColumn) {
         // If on the same row but destination behind the current condition
         if(firstConditionItem) {
-          view.paths.push(
+          $overview.data('paths').push(
             new ConnectorPath.ForwardDownBackwardUpPath({
               from_x: branchX,
               from_y: branchY - (rowHeight / 4),
@@ -670,7 +674,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           );
         }
         else {
-          view.paths.push(
+          $overview.data('paths').push(
             new ConnectorPath.DownForwardDownBackwardUpPath({
               from_x: branchX - (branchWidth / 2),
               from_y: branchY,
@@ -689,7 +693,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           if(sameRow) {
             // Create straight path to go from right corner of the branch
             // to the x/y coordinates of the related 'next' destination.
-            view.paths.push(
+            $overview.data('paths').push(
               new ConnectorPath.ForwardPath({
                 from_x: branchX,
                 from_y: branchY - (rowHeight / 4),
@@ -700,7 +704,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           }
           else {
             if(up) {
-              view.paths.push(
+              $overview.data('paths').push(
                 new ConnectorPath.ForwardUpForwardDownPath({
                   from_x: branchX,
                   from_y: branchY - (rowHeight / 4),
@@ -712,7 +716,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
               );
             }
             else {
-              view.paths.push(
+              $overview.data('paths').push(
                 new ConnectorPath.ForwardDownForwardPath({
                   from_x: branchX,
                   from_y: branchY - (rowHeight / 4),
@@ -730,7 +734,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
           if(sameRow) {
             // All other 'standard' BranchConditions expected to be Down and Forward
             // with the starting point from bottom and centre of the Branch item.
-            view.paths.push(
+            $overview.data('paths').push(
               new ConnectorPath.DownForwardPath({
                 from_x: branchX - (branchWidth / 2), // Half width because down lines go from centre
                 from_y: branchY,
@@ -743,7 +747,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             // NOT SAME ROW
             if(up) {
               if(nextColumn) {
-                view.paths.push(
+                $overview.data('paths').push(
                   new ConnectorPath.DownForwardUpPath({
                     from_x: branchX - (branchWidth / 2),
                     from_y: branchY,
@@ -756,7 +760,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
               }
               else {
                 // NOT NEXT COLUMN
-                view.paths.push(
+                $overview.data('paths').push(
                   new ConnectorPath.DownForwardUpForwardDownPath({
                     from_x: branchX - (branchWidth / 2),
                     from_y: branchY,
@@ -771,7 +775,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
             else {
               // DOWN
               if(nextColumn) {
-                view.paths.push(
+                $overview.data('paths').push(
                   new ConnectorPath.DownForwardDownForwardPath({
                     from_x: branchX - (branchWidth / 2),
                     from_y: branchY,
@@ -783,7 +787,7 @@ function applyBranchFlowConnectorPaths(view, $overview) {
                 );
               }
               else {
-                view.paths.push(
+                $overview.data('paths').push(
                   new ConnectorPath.DownForwardUpForwardDownPath({
                     from_x: branchX - (branchWidth / 2),
                     from_y: branchY,
@@ -813,7 +817,7 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
     var toX = fromX + 100; // - 1 for design spacing
     var toY = fromY;
 
-    view.paths.push(
+    $overview.data('paths').push(
       new ConnectorPath.ForwardPath({
         from_x: fromX,
         from_y: fromY,
@@ -833,6 +837,11 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
   });
 }
 
+
+function renderFlowConnectorPaths($container) {
+  $container.data('paths').forEach( (path) => { path.render() });
+}
+
 /* VIEW HELPER FUNCTION:
  * ---------------------
  * Finds and loops over each FlowConnectorPaths calling the avoidOverlap function.
@@ -846,10 +855,10 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
  * should not have any issues with overlapping. They are the ones that go in a
  * straight line between Page A ---> Page B.
  **/
-function adjustOverlappingFlowConnectorPaths(view) {
+function adjustOverlappingFlowConnectorPaths($container) {
   const recursionLimit = 150; // This is a safety feature for the while loop.
   // var $paths = $overview.find(".FlowConnectorPath").not(".ForwardPath, .DownForwardPath"); // Filter out Paths we can ignore to save some processing time
-  var paths = view.paths.filter( (path) => !['ForwardPath', 'DownForwardPath'].includes(path.type) )
+  var paths = $container.data('paths').filter( (path) => !['ForwardPath', 'DownForwardPath'].includes(path.type) )
   var somethingMoved;
   var numberOfPaths = paths.length;
   var keepChecking = paths.length > 1;
