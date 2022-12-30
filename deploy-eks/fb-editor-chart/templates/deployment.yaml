@@ -26,6 +26,12 @@ spec:
       containers:
       - name: "{{ .Values.app_name }}-web-{{ .Values.environmentName }}"
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-web:{{ .Values.circleSha1 }}"
+        {{- if ((.Values.resources).requests) }}
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+        {{- end }}
         volumeMounts:
         - mountPath: /tmp
           name: tmp-files
