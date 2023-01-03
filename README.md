@@ -5,7 +5,7 @@ New editor from the MoJ online.
 ## Prerequisites
 * Docker
 * Node (version 14.19.0 LTS)
-* Ruby v2.7.5
+* Ruby v2.7.7
 * Postgresql
 * Yarn
 
