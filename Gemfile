@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.5'
+ruby '2.7.7'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -15,7 +15,7 @@ gem 'delayed_job_active_record'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'maintenance-page'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.17.31'
+gem 'metadata_presenter', '2.17.32'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
