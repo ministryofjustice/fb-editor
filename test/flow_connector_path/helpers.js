@@ -58,10 +58,13 @@ function createFlowConnectorPath(type, id, points, config) {
     }
   }
 
+  var path = new ConnectorPaths[type](points, conf);
+  path.render();
+
   return {
     points: points,
     config: conf,
-    connector: new ConnectorPaths[type](points, conf)
+    connector: path
   }
 }
 

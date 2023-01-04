@@ -26,7 +26,7 @@ describe("FlowConnectorPath", function() {
       });
 
       // Base class FlowConnectorPath does not call build() function from constructor.
-      created.connector.build();
+      created.connector.render();
     });
 
     after(function() {
