@@ -11,7 +11,8 @@ MOJ_FORMS_DEVS = [
   'matt.tei@digital.justice.gov.uk',
   'natalie.seeto@digital.justice.gov.uk',
   'chris.pymm@digital.justice.gov.uk',
-  'hellema.ibrahim@digital.justice.gov.uk'
+  'hellema.ibrahim@digital.justice.gov.uk',
+  'steven.leighton@digital.justice.gov.uk'
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS + [
