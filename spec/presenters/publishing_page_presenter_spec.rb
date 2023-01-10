@@ -100,8 +100,7 @@ RSpec.describe PublishingPagePresenter do
       before do
         allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(true)
       end
-
-      xit 'returns falsey' do
+      it 'returns falsey' do
         expect(subject.publish_button_disabled?).to be_falsey
       end
     end
@@ -119,7 +118,7 @@ RSpec.describe PublishingPagePresenter do
             allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return(['Some messages'])
           end
 
-          xit 'returns falsey' do
+          it 'returns falsey' do
             expect(subject.publish_button_disabled?).to be_falsey
           end
         end
@@ -130,7 +129,7 @@ RSpec.describe PublishingPagePresenter do
             allow_any_instance_of(AutocompleteItemsPresenter).to receive(:component_uuids_without_items).and_return(['Some components uuids'])
           end
 
-          xit 'returns falsey' do
+          it 'returns falsey' do
             expect(subject.publish_button_disabled?).to be_falsey
           end
         end
@@ -141,7 +140,7 @@ RSpec.describe PublishingPagePresenter do
             allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
           end
 
-          xit 'returns falsey' do
+          it 'returns falsey' do
             expect(subject.publish_button_disabled?).to be_falsey
           end
         end
@@ -183,7 +182,7 @@ RSpec.describe PublishingPagePresenter do
             allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
           end
 
-          xit 'returns falsey' do
+          it 'returns falsey' do
             expect(subject.publish_button_disabled?).to be_falsey
           end
         end
