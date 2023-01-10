@@ -43,9 +43,11 @@ class PublishingPagePresenter
   end
 
   def publish_button_disabled?
-    return if deployment_environment == 'dev'
+    true
 
-    submission_warnings.messages.any? || autocomplete_warning.messages.any?
+    # return if deployment_environment == 'dev'
+
+    # submission_warnings.messages.any? || autocomplete_warning.messages.any?
   end
 
   private
