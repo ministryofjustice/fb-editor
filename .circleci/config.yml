@@ -154,12 +154,12 @@ jobs:
       - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
-            - 0f:d3:b5:c2:a1:7e:0a:a3:d3:2a:84:41:ef:cc:94:f5
+            - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
       - run: &base_environment_variables
           name: Setup base environment variable
           command: |
             echo 'export BUILD_SHA=$CIRCLE_SHA1' >> $BASH_ENV
-            echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_0fd3b5c2a17e0aa3d32a8441efcc94f5' >> $BASH_ENV
+            echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_339c9dd086ca45a8262af090e5e8e82a' >> $BASH_ENV
             source $BASH_ENV
       - run: *deploy_scripts
       - run:
@@ -361,6 +361,8 @@ workflows:
           requires:
             - build
       - build_web_image:
+          context: &context
+            - moj-forms
           requires:
             - lint
             - security
@@ -371,6 +373,7 @@ workflows:
               only:
                 - main
       - build_workers_image:
+          context: *context
           requires:
             - lint
             - security
@@ -381,13 +384,16 @@ workflows:
               only:
                 - main
       - deploy_to_test_eks:
+          context: *context
           requires:
             - build_web_image
             - build_workers_image
       - acceptance_tests_eks:
+          context: *context
           requires:
             - deploy_to_test_eks
       - deploy_to_live_eks:
+          context: *context
           requires:
             - acceptance_tests_eks
   deploy_testable_branch:
@@ -410,6 +416,7 @@ workflows:
           requires:
             - build
       - build_web_testable_branch:
+          context: *context
           requires:
             - lint
             - security
@@ -420,6 +427,7 @@ workflows:
               only:
                 - /testable-.*/
       - build_workers_testable_branch:
+          context: *context
           requires:
             - lint
             - security
@@ -430,10 +438,12 @@ workflows:
               only:
                 - /testable-.*/
       - deploy_testable_branch:
+          context: *context
           requires:
             - build_web_testable_branch
             - build_workers_testable_branch
       - testable_branch_acceptance_tests:
+          context: *context
           requires:
             - deploy_testable_branch
       - slack/approval-notification:
