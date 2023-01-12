@@ -8,10 +8,11 @@ updates:
     timezone: Europe/London
   open-pull-requests-limit: 10
   reviewers:
-  - brenetic
   - mattempty
   - njseeto
   - chrispymm
+  - H3ll3m4
+  - StevenLeighton21
 - package-ecosystem: npm
   directory: "/"
   schedule:
@@ -22,9 +23,10 @@ updates:
   reviewers:
   - mattempty
   - form-builder-developers
-  - brenetic
   - njseeto
   - chrispymm
+  - H3ll3m4
+  - StevenLeighton21
 - package-ecosystem: docker
   directory: "/docker/web"
   schedule:
@@ -33,10 +35,11 @@ updates:
     timezone: Europe/London
   open-pull-requests-limit: 10
   reviewers:
-  - brenetic
   - mattempty
   - njseeto
   - chrispymm
+  - H3ll3m4
+  - StevenLeighton21
 - package-ecosystem: docker
   directory: "/docker/workers"
   schedule:
@@ -45,10 +48,11 @@ updates:
     timezone: Europe/London
   open-pull-requests-limit: 10
   reviewers:
-  - brenetic
   - mattempty
   - njseeto
   - chrispymm
+  - H3ll3m4
+  - StevenLeighton21
 - package-ecosystem: docker
   directory: "/acceptance"
   schedule:
@@ -57,7 +61,8 @@ updates:
     timezone: Europe/London
   open-pull-requests-limit: 10
   reviewers:
-  - brenetic
   - mattempty
   - njseeto
   - chrispymm
+  - H3ll3m4
+  - StevenLeighton21
