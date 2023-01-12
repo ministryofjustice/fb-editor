@@ -337,6 +337,8 @@ workflows:
   tear_down_testable_editors:
     jobs:
       - remove_testable_editors:
+          context: &context
+            - moj-forms
           filters:
             branches:
               only:
@@ -361,8 +363,7 @@ workflows:
           requires:
             - build
       - build_web_image:
-          context: &context
-            - moj-forms
+          context: *context
           requires:
             - lint
             - security
