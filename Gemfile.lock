@@ -213,7 +213,7 @@ GEM
     kaminari-core (1.2.2)
     kramdown (2.4.0)
       rexml
-    listen (3.7.1)
+    listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.19.1)
@@ -461,7 +461,7 @@ DEPENDENCIES
   govuk-components
   govuk_design_system_formbuilder
   hashie
-  listen (~> 3.7)
+  listen (~> 3.8)
   metadata_presenter (= 2.17.32)
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
