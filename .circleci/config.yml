@@ -120,7 +120,7 @@ jobs:
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone -b top-level-file-warning git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build testable editor web docker images
           environment:
@@ -384,6 +384,7 @@ workflows:
             branches:
               only:
                 - main
+                - test-deploy-scripts
       - deploy_to_test_eks:
           context: *context
           requires:
