@@ -7,7 +7,6 @@ MOJ_FORMS_ADMIN = [
 ].freeze
 
 MOJ_FORMS_DEVS = [
-  'brendan.butler@digital.justice.gov.uk',
   'matt.tei@digital.justice.gov.uk',
   'natalie.seeto@digital.justice.gov.uk',
   'chris.pymm@digital.justice.gov.uk',
