@@ -365,10 +365,9 @@ function adjustOverviewHeight($overview) {
   var top, bottom, height;
 
   $items.each(function() {
-    var $item = $(this);
-    var top = $item.data('instance').bounds.y1;
-    bottomNumbers.push(top + FLOW_GRID_ROW_HEIGHT);
+    var top = $(this).data('instance').bounds.y1;
     topNumbers.push(top);
+    bottomNumbers.push(top + FLOW_GRID_ROW_HEIGHT);
   });
 
   $paths.each(function() {
@@ -636,7 +635,8 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       // --------------------------------------------------------------------------------------------
 
       var destinationX = $destination.position().left;
-      var destinationY = $destination.position().top + (rowHeight / 4);
+      // var destinationY = $destination.position().top + (rowHeight / 4);
+      var destinationY = destination.row * rowHeight + (rowHeight / 4);
       var conditionX = $condition.outerWidth(true) - 25; // 25 because we don't want lines to start at edge of column space
       var conditionY = $branch.position().top + $condition.position().top;
       var halfBranchNodeWidth = (branchWidth / 2);
