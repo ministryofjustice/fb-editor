@@ -92,6 +92,10 @@ class FlowConnectorPath {
     return this.#points;
   }
 
+  get dimensions() {
+    return this.config.dimensions;
+  }
+
   // Gets the bounding box of the path
   // This is used to check path intersections for the adjustment/nudging routine
   get bounds() {
@@ -796,9 +800,9 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   constructor(points, config) {
     super(points, config);
 
-    var down1 = Math.round(utilities.difference(points.from_y, this.points.via_y));
-    var down2 = Math.round(utilities.difference(config.bottom, this.points.via_y));
-    var up = Math.round(this.points.from_y - this.points.to_y) + down1 + down2;
+    var down1 = Math.round(utilities.difference(points.from_y, this.points.via_y)); // from start to condition y
+    var down2 = Math.round(utilities.difference(config.bottom, this.points.via_y)); // from condition y to bottom
+    var up = Math.round(this.points.from_y - this.points.to_y) + down1 + down2; // down1 + down2 + difference between from_y and to_y (could be negative)
 
     var dimensions = {
       down1: down1 - CURVE_SPACING,
