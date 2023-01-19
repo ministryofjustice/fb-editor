@@ -239,24 +239,21 @@ function layoutDetachedItemsOverview(view) {
 **/
 function createAndPositionFlowItems(view, $overview) {
   var $columns = $(".column", $overview);
-  var rowHeight = FLOW_GRID_ROW_HEIGHT;
   var left = 0;
 
-  var $allItems = $();
+  var allItems = [];
 
   // Loop over found columns created from the flow
   $columns.each(function(column) {
-    var $column = $(this);
     var $items = $(SELECTOR_FLOW_ITEM, this);
     var conditionsLeft = 0;
     var top = 0; // TODO: Where should this come from? (see also COLUMN_SPACING)
 
-    $allItems = $allItems.add($items);
+    allItems.push( ...$items.get() );
     $items.detach();
 
     $items.each(function(row) {
       var $item = $(this);
-      var itemWidth = FLOW_ITEM_WIDTH;
       var conditionTop = (FLOW_GRID_ROW_HEIGHT / 4);
       var $conditions = $(SELECTOR_FLOW_CONDITION, this);
 
@@ -324,7 +321,8 @@ function createAndPositionFlowItems(view, $overview) {
 
   // Ditch the columns.
   $columns.remove();
-  $overview.append($allItems);
+  // reinsert all the items
+  $overview.append(allItems);
 }
 
 
