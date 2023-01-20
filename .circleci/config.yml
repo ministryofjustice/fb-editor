@@ -384,6 +384,7 @@ workflows:
             branches:
               only:
                 - main
+                - payment-link-heading-exit-page
       - deploy_to_test_eks:
           context: *context
           requires:
@@ -393,62 +394,62 @@ workflows:
           context: *context
           requires:
             - deploy_to_test_eks
-      - deploy_to_live_eks:
-          context: *context
-          requires:
-            - acceptance_tests_eks
-  deploy_testable_branch:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - /testable-.*/
-      - lint:
-          requires:
-            - build
-      - security:
-          requires:
-            - build
-      - rspec_test:
-          requires:
-            - build
-      - js_test:
-          requires:
-            - build
-      - build_web_testable_branch:
-          context: *context
-          requires:
-            - lint
-            - security
-            - rspec_test
-            - js_test
-          filters:
-            branches:
-              only:
-                - /testable-.*/
-      - build_workers_testable_branch:
-          context: *context
-          requires:
-            - lint
-            - security
-            - rspec_test
-            - js_test
-          filters:
-            branches:
-              only:
-                - /testable-.*/
-      - deploy_testable_branch:
-          context: *context
-          requires:
-            - build_web_testable_branch
-            - build_workers_testable_branch
-      - testable_branch_acceptance_tests:
-          context: *context
-          requires:
-            - deploy_testable_branch
-      - slack/approval-notification:
-          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
-          include_job_number_field: false
-          requires:
-            - testable_branch_acceptance_tests
+  #     - deploy_to_live_eks:
+  #         context: *context
+  #         requires:
+  #           - acceptance_tests_eks
+  # deploy_testable_branch:
+  #   jobs:
+  #     - build:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - /testable-.*/
+  #     - lint:
+  #         requires:
+  #           - build
+  #     - security:
+  #         requires:
+  #           - build
+  #     - rspec_test:
+  #         requires:
+  #           - build
+  #     - js_test:
+  #         requires:
+  #           - build
+  #     - build_web_testable_branch:
+  #         context: *context
+  #         requires:
+  #           - lint
+  #           - security
+  #           - rspec_test
+  #           - js_test
+  #         filters:
+  #           branches:
+  #             only:
+  #               - /testable-.*/
+  #     - build_workers_testable_branch:
+  #         context: *context
+  #         requires:
+  #           - lint
+  #           - security
+  #           - rspec_test
+  #           - js_test
+  #         filters:
+  #           branches:
+  #             only:
+  #               - /testable-.*/
+  #     - deploy_testable_branch:
+  #         context: *context
+  #         requires:
+  #           - build_web_testable_branch
+  #           - build_workers_testable_branch
+  #     - testable_branch_acceptance_tests:
+  #         context: *context
+  #         requires:
+  #           - deploy_testable_branch
+  #     - slack/approval-notification:
+  #         message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+  #         include_job_number_field: false
+  #         requires:
+  #           - testable_branch_acceptance_tests
