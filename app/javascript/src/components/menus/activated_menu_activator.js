@@ -45,21 +45,11 @@ class ActivatedMenuActivator {
 
     this.#addAttributes();
     this.#bindEventHandlers();
+
   }
 
   render() {
     this.menu.$parent.append(this.$node);
-  }
-
-   /**
-    * Inserts the activator button into the DOM before the menu
-    * if $node is not provided it will be created
-    * @param {jQuery|undefined} $node jquery node for the button
-    * @return {jQuery} button node
-    */
-  #insertNode($node) {
-
-    return $node;
   }
 
    /**

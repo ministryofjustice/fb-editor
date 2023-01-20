@@ -85,6 +85,7 @@ class ActivatedMenu {
     this.#addAttributes();
     this.activator = new ActivatedMenuActivator(this, config);
     this.container = new ActivatedMenuContainer(this, config);
+    this.container.$node.hide();
 
     // Default position settings (can be set on instantiation or overide
     // on-the-fly by passing to component.open() function. Passing in a
@@ -140,8 +141,8 @@ class ActivatedMenu {
   }
 
   render() {
-    this.activator.render();
     this.container.render();
+    this.activator.render();
   }
 
   isOpen() {

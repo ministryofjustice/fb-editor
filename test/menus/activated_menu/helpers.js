@@ -33,7 +33,8 @@ function createActivatedMenu(id, config) {
     activator_text: constants.TEXT_ACTIVATOR,
     id: id,
     preventDefault: true,
-    selection_event: constants.EVENT_SELECTION_NAME
+    selection_event: constants.EVENT_SELECTION_NAME,
+    render: true,
   }, config);
 
   return {
