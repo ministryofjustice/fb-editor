@@ -60,6 +60,7 @@ ServicesController.edit = function() {
   view.$flowDetached = $("#flow-detached");
   view.$flowStandalone = $("#flow-standalone-pages");
   view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
+  view.menus = [];
 
   createPageAdditionDialog(view);
   createPageMenus(view);
@@ -73,6 +74,8 @@ ServicesController.edit = function() {
   if(view.$flowDetached.length) {
     layoutDetachedItemsOverview(view);
   }
+
+  view.menus.forEach( (menu) => menu.render() );
 
   addServicesContentScrollContainer(view);
   view.ready();
@@ -114,16 +117,19 @@ function createPageAdditionDialog(view) {
  **/
 function createPageMenus(view) {
   $("[data-component='ItemActionMenu']").each((_, el) => {
-    new PageMenu($(el), {
-      view: view,
-      preventDefault: true, // Stops the default action of triggering element.
-      menu: {
-        position: {
-          my: "left top",
-          at: "left top",
-        }
-      }
-    });
+    view.menus.push(
+      new PageMenu($(el), {
+        view: view,
+        preventDefault: true, // Stops the default action of triggering element.
+        menu: {
+          position: {
+            my: "left top",
+            at: "left top",
+          }
+        },
+        render: false,
+      })
+    );
   });
 }
 /* VIEW SETUP FUNCTION:
@@ -132,16 +138,19 @@ function createPageMenus(view) {
  **/
 function createConnectionMenus(view) {
   $("[data-component='ConnectionMenu']").each((_, el) => {
-    new ConnectionMenu($(el), {
-      view: view,
-      preventDefault: true, // Stops the default action of triggering element.
-      menu: {
-        position: {
-          my: "left top",
-          at: "left top",
-        }
-      }
-    });
+    view.menus.push(
+      new ConnectionMenu($(el), {
+        view: view,
+        preventDefault: true, // Stops the default action of triggering element.
+        menu: {
+          position: {
+            my: "left top",
+            at: "left top",
+          }
+        },
+        render: false,
+      })
+    );
   });
 }
 

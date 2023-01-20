@@ -68,11 +68,17 @@ class ActivatedMenu {
   #currentFocusIndex
 
   constructor($menu, config) {
-    if(!config.container_id) {
-      config.container_id = uniqueString("menu");
+    let defaults = {
+      container_id: uniqueString("menu"),
+      render: true,
     }
 
+    config = mergeObjects(defaults, config);
+
     this.$node = $menu;
+    this.$parent = $menu.parent();
+    this.$node.detach();
+
     this.#config = config;
     this.#className = "ActivatedMenu";
 
@@ -106,7 +112,11 @@ class ActivatedMenu {
     this.$node.data("instance", this); // Add reference for instance from original node.
     this.$items = this.$node.find(ITEMS_SELECTOR);
     this.#currentFocusIndex = 0;
-    this.close();
+
+    if(config.render) {
+      this.close();
+      this.render();
+    }
   }
 
   get config() {
@@ -127,6 +137,11 @@ class ActivatedMenu {
 
   set currentActivator(element) {
     this.#state.activator = element;
+  }
+
+  render() {
+    this.activator.render();
+    this.container.render();
   }
 
   isOpen() {
@@ -213,7 +228,7 @@ class ActivatedMenu {
 
   #initializeMenuItems() {
     const menu = this;
-    this.$node.find('li').each( function() {
+    menu.$node.find('li').each( function() {
       new ActivatedMenuItem($(this), menu);
     });
   }
