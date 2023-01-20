@@ -112,9 +112,12 @@ feature 'Reference Payment Page' do
     expect(page).to have_css('div.govuk-panel--confirmation-payment', text: confirmation_page_payment_text)
 
     editor.question_heading.first.set('You have to pay now')
-    click_button(I18n.t('actions.save'))
+    when_I_save_my_changes
     then_I_should_not_see_text('You still need to pay')
     then_I_should_see_text('You have to pay now')
+
+    editor.question_heading.first.set('Application complete')
+    when_I_save_my_changes
 
     when_I_visit_the_reference_payment_page
     with_setting(payment_link_checkbox, false)
