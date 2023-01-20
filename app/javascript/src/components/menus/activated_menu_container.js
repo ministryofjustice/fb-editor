@@ -33,12 +33,7 @@ class ActivatedMenuContainer {
     this.$node.data("instance", this);
 
     this.#addAttributes();
-    // this.#insertNode();
     this.#bindEventHandlers();
-
-    if(config.render) {
-      this.render();
-    }
   }
 
   #addAttributes() {

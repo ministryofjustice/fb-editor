@@ -36,6 +36,11 @@ class FlowItem {
       y2: config.y_out
     };
 
+    this.position = {
+      left: this.bounds.x1,
+      top: this.bounds.y1,
+    }
+
     $node.data("instance", this);
     $node.addClass("FlowItem");
     $node.attr('data-row', this.row);

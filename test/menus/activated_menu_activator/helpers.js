@@ -29,6 +29,7 @@ function createActivatedMenuActivator(id, config) {
   var $container = $("#" + id + constants.ID_CONTAINER_SUFFIX);
   var fakeMenu = {
     $node: $("#" + id + constants.ID_MENU_SUFFIX),
+    $parent: $container,
     state: {
       open: false,
       focus: false,
@@ -47,13 +48,14 @@ function createActivatedMenuActivator(id, config) {
 
   // Construct basic config that could be passed to ActivatedMenuActivator creation.
   var conf = GlobalHelpers.mergeConfig({
-    id: id
+    id: id,
   }, config);
 
   var activeMenuActivator = new ActivatedMenuActivator(fakeMenu, conf);
+  activeMenuActivator.render();
 
   // ActivatedMenuActivator $node gets placed to just before the menu $node.
-  var $component = fakeMenu.$node.prev();
+  var $component = $("#" + id + constants.ID_CONTAINER_SUFFIX).children().last();
   $component.attr("id", id + constants.ID_COMPONENT_SUFFIX);
 
   return {

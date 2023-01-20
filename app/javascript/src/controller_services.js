@@ -59,7 +59,7 @@ ServicesController.edit = function() {
   view.$flowOverview = $("#flow-overview");
   view.$flowDetached = $("#flow-detached");
   view.$flowStandalone = $("#flow-standalone-pages");
-  view.page.flowItemsRowHeight = utilities.maxHeight($(SELECTOR_FLOW_ITEM).eq(0)); // There is always a Start page.
+  view.page.flowItemsRowHeight = FLOW_GRID_ROW_HEIGHT;
   view.menus = [];
 
   createPageAdditionDialog(view);
@@ -75,7 +75,7 @@ ServicesController.edit = function() {
     layoutDetachedItemsOverview(view);
   }
 
-  view.menus.forEach( (menu) => menu.render() );
+  renderActivatedMenus(view);
 
   addServicesContentScrollContainer(view);
   view.ready();
@@ -432,7 +432,7 @@ function adjustOverviewWidth($overview) {
 
 /* VIEW HELPER FUNCTION:
  * ---------------------
- * To try and fix scrolling issues for the ServicresEdit page
+ * To try and fix scrolling issues for the ServicesEdit page
  * when flow overview areas extend beyond the restricted width
  * of the main content area.
  * @view (Object) Reference to the overall view instance of Services#edit action.
@@ -583,19 +583,18 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
  **/
 function applyPageFlowConnectorPaths(view, $overview) {
   var $items = $overview.find('.flow-page[data-next]:not([data-next="trailing-route"])');
-  var rowHeight = view.page.flowItemsRowHeight;
 
   $items.each(function() {
     var $item = $(this);
     var next = $item.data("next");
-    var fromX = $item.position().left + $item.outerWidth() + 1; // + 1 for design spacing
-    var fromY = $item.position().top + (rowHeight / 4);
+    var fromX = $item.data('instance').position.left + FLOW_ITEM_WIDTH + 1; // + 1 for design spacing
+    var fromY = $item.data('instance').position.top + (FLOW_GRID_ROW_HEIGHT / 4);
     var $next = $("[data-fb-id=" + next + "]", $overview);
 
 
     try {
-      var toX = $next.position().left - 1; // - 1 for design spacing
-      var toY = $next.position().top + (rowHeight / 4);
+      var toX = $next.data('instance').position.left - 1; // - 1 for design spacing
+      var toY = $next.data('instance').position.top + (FLOW_GRID_ROW_HEIGHT / 4);
     } catch(err) {
       view.sentry.send(err);
     }
@@ -630,14 +629,14 @@ function applyPageFlowConnectorPaths(view, $overview) {
  * dealing with them separately from other page arrows.
  **/
 function applyBranchFlowConnectorPaths(view, $overview) {
-  var rowHeight = view.page.flowItemsRowHeight;
+  var rowHeight = FLOW_GRID_ROW_HEIGHT;
   var $flowItemElements = $overview.find(SELECTOR_FLOW_ITEM);
 
   $flowItemElements.filter(SELECTOR_FLOW_BRANCH).each(function() {
     var $branch = $(this);
-    var branchX = $branch.position().left + $branch.outerWidth() + 1; // + 1 for design gap
-    var branchY = $branch.position().top + (rowHeight / 2);
-    var branchWidth = $branch.outerWidth();
+    var branchX = $branch.data('instance').position.left + FLOW_ITEM_WIDTH + 1; // + 1 for design gap
+    var branchY = $branch.data('instance').position.top + (FLOW_GRID_ROW_HEIGHT / 2);
+    var branchWidth = FLOW_ITEM_WIDTH;
     var $conditions = $branch.find(SELECTOR_FLOW_CONDITION);
 
     $conditions.each(function(index) {
@@ -652,11 +651,10 @@ function applyBranchFlowConnectorPaths(view, $overview) {
       if($destination.length < 1) return true;
       // --------------------------------------------------------------------------------------------
 
-      var destinationX = $destination.position().left;
-      // var destinationY = $destination.position().top + (rowHeight / 4);
+      var destinationX = destination.position.left;
       var destinationY = destination.row * rowHeight + (rowHeight / 4);
       var conditionX = $condition.outerWidth(true) - 25; // 25 because we don't want lines to start at edge of column space
-      var conditionY = $branch.position().top + $condition.position().top;
+      var conditionY = $condition.data('row') * FLOW_GRID_ROW_HEIGHT + (FLOW_GRID_ROW_HEIGHT / 4);
       var halfBranchNodeWidth = (branchWidth / 2);
       var conditionColumn = condition.column;
       var conditionRow = condition.row;
@@ -858,6 +856,10 @@ function applyRouteEndFlowConnectorPaths(view, $overview) {
 
 function renderFlowConnectorPaths($container) {
   $container.data('paths').forEach( (path) => { path.render() });
+}
+
+function renderActivatedMenus(view) {
+  view.menus.forEach( (menu) => menu.render() );
 }
 
 /* VIEW HELPER FUNCTION:
