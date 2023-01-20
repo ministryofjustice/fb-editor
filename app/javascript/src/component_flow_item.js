@@ -24,9 +24,6 @@
  **/
 class FlowItem {
   constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowItem");
-
     this.$node = $node;
     this.id = config.id;
     this.next = config.next;
@@ -39,6 +36,9 @@ class FlowItem {
       y2: config.y_out
     };
 
+    $node.data("instance", this);
+    $node.addClass("FlowItem");
+    $node.attr('data-row', this.row);
   }
 }
 

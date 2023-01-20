@@ -28,9 +28,6 @@
  **/
 class FlowConditionItem {
   constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowConditionItem");
-
     this.$node = $node;
     this.$from = config.$from;
     this.$next = config.$next;
@@ -42,6 +39,10 @@ class FlowConditionItem {
       x2: config.x_out,
       y2: config.y_out
     };
+
+    $node.data("instance", this);
+    $node.addClass("FlowConditionItem");
+    $node.attr('data-row', this.row);
   }
 }
 
