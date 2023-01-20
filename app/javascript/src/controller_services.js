@@ -355,7 +355,8 @@ function adjustBranchConditionPositions($overview) {
  * apply dimensional adjustments.
  **/
 function adjustOverviewHeight($overview) {
-  var $items = $([SELECTOR_FLOW_ITEM, SELECTOR_FLOW_CONDITION].join(', '), $overview);
+  var $items = $(SELECTOR_FLOW_ITEM, $overview);
+  var $firstRowConditions = $(SELECTOR_FLOW_CONDITION+'[data-row="0"]', $overview);
   var $paths = $(SELECTOR_FLOW_PATH, $overview);
 
   var bottomNumbers = [];
@@ -368,10 +369,20 @@ function adjustOverviewHeight($overview) {
     bottomNumbers.push(top + FLOW_GRID_ROW_HEIGHT);
   });
 
+  // Conditions on the first row can get very tall. The expression within is
+  // pulled up using a negative offset of its height, so we use that to adjust
+  // the top numbers.
+  $firstRowConditions.each(function() {
+    var top = (FLOW_GRID_ROW_HEIGHT / 4) - $(this).find('.flow-expressions').height();
+    topNumbers.push(top);
+  });
+
   $paths.each(function() {
     var path = $(this).data('instance');
     var vLines = path.lines('vertical');
+    // Add the lowest starting point of a line to the top numbers array
     var top = vLines.reduce( (min, line) => { return line.range.start < min ? line.range.start : min }, 0);
+    // Add the highest ending point of a line to the bottom numbers array
     var bottom = vLines.reduce( (max, line) => { return line.range.end > max ? line.range.end : max}, 0);
     bottomNumbers.push(bottom);
     topNumbers.push(top);
@@ -381,8 +392,8 @@ function adjustOverviewHeight($overview) {
   bottom = utilities.highestNumber(bottomNumbers);
   height = bottom - top;
 
-  // If top is less than zero it means arrows have been nudged off the view
-  // use the top value to position the flow overview.
+  // If top is less than zero it means *something* has gone off the top of the
+  // overview. Use the top value to position the flow overview.
   if(top < 0) {
     $overview.css("top", Math.abs(top) + "px");
   }
