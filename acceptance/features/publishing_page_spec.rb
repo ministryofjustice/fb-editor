@@ -274,7 +274,7 @@ feature 'Publishing' do
     and_I_save_my_email_settings
   end
 
-  def and_I_set_the_email_field(value = 'paul@atreides.com')
+  def and_I_set_the_email_field(value = 'paul@justice.gov.uk')
     editor.find(:css, "#email-settings-service-email-output-#{environment}-field").set(value)
   end
 
