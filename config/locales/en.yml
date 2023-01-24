@@ -586,6 +586,8 @@ en:
           missing_payment_link: 'Enter your GOV.UK Pay payment link URL (you get this from your GOV.UK Pay account)'
           invalid_payment_url: "Enter a valid GOV.UK Pay payment link URL starting with \"%{link_start_with}\""
           link_start_with: 'https://www.gov.uk/payments/'
+        email_settings:
+          domain_invalid: 'The address you want to send the email to must be a MOJ email address or other approved address'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: Form names must be %{count} characters or more

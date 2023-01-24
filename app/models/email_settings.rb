@@ -21,6 +21,8 @@ class EmailSettings < BaseEmailSettings
 
   validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
 
+  validates_with DomainValidator
+
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(
       service_id: service.service_id,
