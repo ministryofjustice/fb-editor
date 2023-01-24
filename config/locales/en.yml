@@ -488,7 +488,8 @@ en:
       email_settings:
         send_by_email_dev: Send by email on Test
         send_by_email_production: Send by email on Live
-        service_email_output: Send email to
+        service_email_output: To
+        service_email_output_hint: This must be a MoJ email address or other approved address
         service_email_from: 'From:'
         service_email_subject: Email subject
         service_email_body: Email text

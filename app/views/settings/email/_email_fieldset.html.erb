@@ -18,13 +18,25 @@
       <% end %>
     </div>
 
-  <%= f.govuk_email_field :service_email_output,
-    label: {
-      text: f.object.class.human_attribute_name(:service_email_output),
-      for: settings_field_id(f, :service_email_output, deployment_environment)
-    },
-    width: 'two-thirds',
-    id: settings_field_id(f, :service_email_output, deployment_environment) %>
+<div data-component="Expander">
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+      <% if f.object.errors.present? %>
+        <% f.object.errors.full_messages.each do |error_message| %>
+            <p id="email-settings-base-<%= deployment_environment %>-field-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+            </p>
+        <% end %>
+      <% end %>
+      <%= f.govuk_email_field :service_email_output,
+        label: {
+          text: f.object.class.human_attribute_name(:service_email_output),
+          for: settings_field_id(f, :service_email_output, deployment_environment)
+        },
+        hint:{ text: t('activemodel.attributes.email_settings.service_email_output_hint') },
+        width: 'two-thirds',
+        id: settings_field_id(f, :service_email_output, deployment_environment) %>
+    </div>
+</div>
 
   <%= f.govuk_text_field :service_email_subject,
     label: {
