@@ -8,7 +8,7 @@ class UserSessionsController < ApplicationController
   end
 
   def signup_not_allowed
-    @valid_emails = Auth0UserSession::VALID_EMAIL_DOMAINS
+    @valid_emails = Rails.application.config.allowed_domains
   end
 
   def signup_error
