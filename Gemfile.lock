@@ -369,7 +369,7 @@ GEM
       sprockets-rails
       tilt
     selectize-rails (0.12.6)
-    selenium-webdriver (4.7.1)
+    selenium-webdriver (4.8.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -473,7 +473,7 @@ DEPENDENCIES
   rubocop (~> 1.37.1)
   rubocop-govuk
   sass-rails (>= 6)
-  selenium-webdriver (= 4.7.1)
+  selenium-webdriver (= 4.8.0)
   sentry-delayed_job (~> 5.7.0)
   sentry-rails (~> 5.7.0)
   sentry-ruby (~> 5.7.0)
