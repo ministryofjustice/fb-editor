@@ -50,7 +50,6 @@
       text: f.object.class.human_attribute_name(:service_email_body),
       for: settings_field_id(f, :service_email_body, deployment_environment)
     },
-    hint: { text: f.object.class.human_attribute_name(:service_email_body_hint) },
     id:  "service-email-body-#{deployment_environment}-field",
     rows: 5 %>
 <% end %>
