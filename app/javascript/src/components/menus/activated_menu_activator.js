@@ -28,43 +28,38 @@ class ActivatedMenuActivator {
 
   /**
    * @param {ActivatedMenu} the menu instance to be activated
-   * @param {object} ActivatedMenu configuration object 
+   * @param {object} ActivatedMenu configuration object
    */
   constructor(menu, config) {
     let $node = config.activator;
     this.#config = config;
     this.#className = "ActivatedMenuActivator";
     this.menu = menu;
-    this.$node = this.#insertNode($node);
+
+    if(!$node || $node.length < 1) {
+      this.$node = this.#createNode();
+    } else {
+      this.$node = $node;
+    }
     this.$node.data("instance", this);
-    
+
     this.#addAttributes();
     this.#bindEventHandlers();
+
   }
 
-   /**
-    * Inserts the activator button into the DOM before the menu
-    * if $node is not provided it will be created
-    * @param {jQuery|undefined} $node jquery node for the button
-    * @return {jQuery} button node 
-    */
-  #insertNode($node) {
-    if(!$node || $node.length < 1) {
-      $node = this.#createNode();
-    }
-    this.menu.$node.before($node);
-
-    return $node;
+  render() {
+    this.menu.$parent.append(this.$node);
   }
 
    /**
     * Creates a button element using config
-    * @return {jQuery} 
+    * @return {jQuery}
     */
   #createNode() {
       const $node = $(
-        createElement("button", 
-                      this.#config.activator_text, 
+        createElement("button",
+                      this.#config.activator_text,
                       this.#config.activator_classname
         )
       );
@@ -98,7 +93,7 @@ class ActivatedMenuActivator {
 
     this.$node.on("keydown", (event) => {
       let key = event.originalEvent.code;
-      
+
       switch(key) {
         case 'Enter':
         case 'Space':
@@ -113,7 +108,7 @@ class ActivatedMenuActivator {
           event.preventDefault();
 
           this.menu.currentActivator = event.currentTarget;
-          this.menu.open(); 
+          this.menu.open();
           this.menu.focusLast();
           break;
       }

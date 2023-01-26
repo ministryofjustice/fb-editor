@@ -58,13 +58,7 @@ describe("DownForwardDownForwardPath", function() {
      *
      * Same method as FlowConnectorPath but with sub-class specific differences.
      **/
-    it("should build the $node", function() {
-      expect(created.connector.build).to.exist;
-      expect(created.connector.$node).to.exist;
-
-      // Now call the build() function and see what happens.
-      created.connector.build();
-
+    it("should render the $node", function() {
       expect(created.connector.$node).to.exist;
       expect(created.connector.$node.length).to.equal(1);
 

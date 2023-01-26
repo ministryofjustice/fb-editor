@@ -15,7 +15,6 @@
 
 
 
-
 /* FlowItem component
  * ------------------------
  * Positionable item expected within a Flow Layout.
@@ -25,20 +24,26 @@
  **/
 class FlowItem {
   constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowItem");
-
     this.$node = $node;
     this.id = config.id;
     this.next = config.next;
     this.row = config.row;
     this.column = config.column;
-    this.coords = {
-      x_in: config.x_in,
-      x_out: config.x_out,
-      y: config.y,
+    this.bounds = {
+      x1: config.x_in,
+      y1: config.y_in,
+      x2: config.x_out,
+      y2: config.y_out
     };
 
+    this.position = {
+      left: this.bounds.x1,
+      top: this.bounds.y1,
+    }
+
+    $node.data("instance", this);
+    $node.addClass("FlowItem");
+    $node.attr('data-row', this.row);
   }
 }
 

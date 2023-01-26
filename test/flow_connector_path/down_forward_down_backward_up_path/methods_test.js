@@ -57,13 +57,7 @@ describe("DownForwardDownBackwardUpPath", function() {
      *
      * Same method as FlowConnectorPath but with sub-class specific differences.
      **/
-    it("should build the $node", function() {
-      expect(created.connector.build).to.exist;
-      expect(created.connector.$node).to.exist;
-
-      // Now call the build() function and see what happens.
-      created.connector.build();
-
+    it("should render the $node", function() {
       expect(created.connector.$node).to.exist;
       expect(created.connector.$node.length).to.equal(1);
 
@@ -180,6 +174,7 @@ describe("DownForwardDownBackwardUpPath", function() {
         top: 5,
         bottom: 10
       });
+      clashingPath.connector.render();
 
       var originalPath = clashingPath.connector.path;
       expect(clashingPath.connector.config.dimensions).to.eql(created.connector.config.dimensions);
@@ -207,6 +202,7 @@ describe("DownForwardDownBackwardUpPath", function() {
         top: 5,
         bottom: 10
       });
+      nonClashingPath.connector.render();
 
       var originalPath = nonClashingPath.connector.path;
       expect(created.connector.avoidOverlap(nonClashingPath.connector)).to.be.false;

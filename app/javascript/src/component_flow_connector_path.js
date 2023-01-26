@@ -75,6 +75,7 @@ class FlowConnectorPath {
       from: conf.from,
       to: conf.to
     }
+
   }
 
   // Because JS doesn't allow inheritance of private variables,
@@ -90,6 +91,27 @@ class FlowConnectorPath {
   get points() {
     return this.#points;
   }
+
+  get dimensions() {
+    return this.config.dimensions;
+  }
+
+  // Gets the bounding box of the path
+  // This is used to check path intersections for the adjustment/nudging routine
+  get bounds() {
+      return {
+        x1: Math.min(this.points.from_x, this.points.to_x, this.points.via_x),
+        y1: Math.min(this.points.from_y, this.points.to_y, this.points.via_y),
+        x2: Math.max(this.points.from_x, this.points.to_x, this.points.via_x),
+        y2: Math.max(this.points.from_y, this.points.to_y, this.points.via_y)
+      }
+  }
+
+  // Determines if the bounds of 2 paths intersect
+  intersects(path) {
+    return utilities.intersects(this.bounds, path.bounds);
+  }
+
 
   // Makeing these readonly access properties because they shouldn't be changed.
   prop(name) {
@@ -112,7 +134,7 @@ class FlowConnectorPath {
 
   // Main function to created the connector view and add functionality.
   // Includes commented out, dev only function useful in development.
-  build() {
+  render() {
     var flowConnectorPath = this;
 
     this.$node = createSvg(createPath(this.path) + createArrowPath(this.points));
@@ -207,6 +229,9 @@ class FlowConnectorPath {
   }
 
   avoidOverlap(path) {
+    // Don't do anything unles the paths overlap
+    if(!this.intersects(path)) return false;
+
     // If an overlap is found with the Lines of the passed path, the FlowConnectorPath.nudge()
     // functionality of the passed path is called to shift the line that matches (overlaps).
     // The minimum amount of overlap is controlled by PATH_OVERLAP_MINIMUM.
@@ -244,28 +269,19 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
 
   // Loop over each line in current FlowConnectorPath
   for(var a=0; a < lines.length; ++a) {
-    let ar = lines[a].range;
-
+    const lineA = lines[a];
     // Compare with each line in the passed FlowConnectorPath
     for(var b=0; b < comparisonLines.length; ++b) {
-      let br = comparisonLines[b].range;
-      let lineXY = lines[a].prop(direction == "vertical" ? "x" : "y");
-      let comparisonLineXY = comparisonLines[b].prop(direction == "vertical" ? "x" : "y");
-      let overlapCount = 0;
+      const lineB = comparisonLines[b];
+      let lineXY = lineA.prop(direction == "vertical" ? "x" : "y");
+      let comparisonLineXY = lineB.prop(direction == "vertical" ? "x" : "y");
 
-      // For vertical lines, we need to first check if they occupy the same horizontal point/position.
+      // First check if they occupy the same horizontal point/position.
       if(comparisonLineXY >= (lineXY - LINE_PIXEL_TOLERANCE) && comparisonLineXY <= (lineXY + LINE_PIXEL_TOLERANCE)) {
 
-        // Check each point in the comparison line range to find matches in the current line range.
-        for(var i=0; i < br.length; ++i) {
-          if(ar.indexOf(br[i]) >= 0) {
-            overlapCount++;
-          }
-        }
-
-        // If there were enough overlaps (matched points in each) then we need to nudge a line.
-        if(overlapCount >= PATH_OVERLAP_MINIMUM) {
-          //console.log("Overlap found between '%s.%s' and '%s.%s'", path.type, lines[a].name, comparisonPath.type, comparisonLines[b].name);
+        // Check if the lines are overlapping
+        if(lineA.overlaps(lineB)) {
+          // console.log("Overlap found between '%s.%s - %s' and '%s.%s - %s'", path.type, lineA.name, path.prop('id'), comparisonPath.type, lineB.name, path.prop('id'));
 
           // Call the nudge function (may or may not actual need to move the line).
           // If the line is moved we set a variable to report back that action.
@@ -273,7 +289,7 @@ FlowConnectorPath.compareLines = function(path, comparisonPath, direction) {
           // the comparisons can start again. This will be useful if the movement
           // simply caused the line to be moved from one overlap to cause an
           // overlap with another line.
-          if(comparisonPath.nudge(comparisonLines[b].name)) {
+          if(comparisonPath.nudge(lineB.name)) {
             lineWasNudged = true;
           }
         }
@@ -302,7 +318,6 @@ class ForwardPath extends FlowConnectorPath {
     this.#calculatePath(dimensions);
 
     this.type = "ForwardPath";
-    this.build();
   }
 
   get path() {
@@ -326,7 +341,7 @@ class ForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ forward ];
       this.#path = pathD(
                      xy(this.points.from_x, this.points.from_y),
@@ -356,7 +371,6 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions }; // dimensions.current will be added in set #calculatePath()
     this.type = "ForwardUpForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -364,7 +378,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "up":
@@ -379,7 +393,6 @@ class ForwardUpForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -416,7 +429,7 @@ class ForwardUpForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({},dimensions);
       this.#config.dimensions.lines = [ forward1, up, forward2 ];
 
       this.#path = pathD(
@@ -454,7 +467,6 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardUpForwardDownPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -462,7 +474,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "forward2":
@@ -489,7 +501,6 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -542,7 +553,7 @@ class ForwardUpForwardDownPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ forward1, up, forward2, down, forward3 ];
 
       this.#path = pathD(
@@ -585,7 +596,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownBackwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -593,7 +603,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "down":
@@ -618,7 +628,6 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -672,7 +681,7 @@ class ForwardDownBackwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ forward1, down, backward, up, forward2 ];
 
       this.#path = pathD(
@@ -710,7 +719,6 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "ForwardDownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -718,7 +726,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "down":
@@ -733,7 +741,6 @@ class ForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -769,7 +776,7 @@ class ForwardDownForwardPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ forward1, down, forward2 ];
 
       this.#path = pathD(
@@ -792,12 +799,17 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
 
   constructor(points, config) {
     super(points, config);
+
+    var down1 = Math.round(utilities.difference(points.from_y, this.points.via_y)); // from start to condition y
+    var down2 = Math.round(utilities.difference(config.bottom, this.points.via_y)); // from condition y to bottom
+    var up = Math.round(this.points.from_y - this.points.to_y) + down1 + down2; // down1 + down2 + difference between from_y and to_y (could be negative)
+
     var dimensions = {
-      down1: Math.round(utilities.difference(points.from_y, this.points.via_y) - CURVE_SPACING),
+      down1: down1 - CURVE_SPACING,
       forward1: Math.round(this.points.via_x - (CURVE_SPACING * 2)),
-      down2: Math.round(utilities.difference(config.bottom, this.points.via_y) - CURVE_SPACING * 2),
+      down2: down2 - CURVE_SPACING*2,
       backward: Math.round(this.points.via_x + utilities.difference(this.points.from_x, this.points.to_x)),
-      up: Math.round((utilities.difference(config.bottom, config.top) - this.points.to_y) - CURVE_SPACING * 2),
+      up: up - CURVE_SPACING * 2,
       forward2: 0
     }
 
@@ -806,7 +818,6 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownBackwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -814,7 +825,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "down2":
@@ -839,9 +850,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
       case "forward1":
            // These lines can be ignored because overlaps are tolerated or not relevant.
     }
-
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -905,7 +914,7 @@ class DownForwardDownBackwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ down1, forward1, down2, backward, up, forward2 ];
 
       this.#path = pathD(
@@ -948,7 +957,6 @@ class DownForwardUpPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -956,7 +964,7 @@ class DownForwardUpPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "up":
@@ -972,7 +980,6 @@ class DownForwardUpPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1018,7 +1025,7 @@ class DownForwardUpPath extends FlowConnectorPath {
                        prefix: "h"
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ down, forward1, up, forward2 ];
 
       this.#path = pathD(
@@ -1059,7 +1066,6 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardUpForwardDownPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -1067,7 +1073,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "up":
@@ -1094,7 +1100,6 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1159,7 +1164,7 @@ class DownForwardUpForwardDownPath extends FlowConnectorPath {
                        overlapAllowed: true
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ down1, forward1, up, forward2, down2, forward3 ];
 
       this.#path = pathD(
@@ -1202,7 +1207,6 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardDownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -1210,7 +1214,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
   }
 
   nudge(linename) {
-    var d = this.#config.dimensions.current;
+    var d = Object.assign({}, this.#config.dimensions.current);
     var nudged = false;
     switch(linename) {
       case "down2":
@@ -1226,7 +1230,6 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
     }
 
     this.#calculatePath(d);
-    this.$node.find("path:first").attr("d", this.#path);
     return nudged;
   }
 
@@ -1273,7 +1276,7 @@ class DownForwardDownForwardPath extends FlowConnectorPath {
                        overlapAllowed: true
                      });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ down1, forward1, down2, forward2 ];
 
       this.#path = pathD(
@@ -1310,7 +1313,6 @@ class DownForwardPath extends FlowConnectorPath {
     this.#config.dimensions = { original: dimensions };
     this.type = "DownForwardPath";
     this.#calculatePath(dimensions);
-    this.build();
   }
 
   get path() {
@@ -1355,7 +1357,7 @@ class DownForwardPath extends FlowConnectorPath {
                       overlapAllowed: true
                     });
 
-      this.#config.dimensions.current = dimensions;
+      this.#config.dimensions.current = Object.assign({}, dimensions);
       this.#config.dimensions.lines = [ down, forward ];
 
       this.#path = pathD(
@@ -1426,6 +1428,10 @@ class FlowConnectorLine {
     return this.#range;
   }
 
+  overlaps(line) {
+    return utilities.overlaps(this.range, line.range, PATH_OVERLAP_MINIMUM);
+  }
+
   // Returns a particular configuration property
   prop(p) {
     var value;
@@ -1463,23 +1469,22 @@ class FlowConnectorLine {
   // PRIVATE METHODS
 
   #calculateRange(points /* [x, y] */) {
-    var r = [];
     var start = (this.#type == HORIZONTAL) ? points[0] : points[1]; // start from x or y?
     var length = this.#config.length;
+    var end;
 
     // Decide if count goes forward or backward based on line prefix containing minus, or not.
     if(this.#config.prefix.search("-") >= 0) {
-      for(var i=start; i > (start - length); --i) {
-        r.push(i);
-      }
+        end = start - length;
     }
     else {
-      for(var i=start; i < (start + length); ++i) {
-        r.push(i);
-      }
+      end = start + length;
     }
 
-    return r;
+    return {
+      start: Math.min(start,end),
+      end: Math.max(start, end)
+    }
   }
 
 }
