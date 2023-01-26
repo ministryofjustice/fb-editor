@@ -642,24 +642,30 @@ function applyBranchFlowConnectorPaths(view, $overview) {
     $conditions.each(function(index) {
       var $condition = $(this);
       var condition = $condition.data("instance"); // FlowConditionItem
-      var $destination = $("[data-fb-id=" + $condition.data("next") + "]", $overview);
+      var $destination = $('[data-fb-id="'+ $condition.data("next")+'"]', $overview);
       var destination = $destination.data("instance"); // FlowItem
 
       // --------------------------------------------------------------------------------------------
-      // TODO: Temporary hack to prevent missing destination item bug  breaking the layout
-      // https://trello.com/c/iCDLMDgo/1836-bug-branchcondition-destination-page-is-in-detached-items
-      if($destination.length < 1) return true;
+      // Ensure we have a destination
+      // Prevent missing destination item bug breaking the layout - this
+      // shouldn't happen, so we need to fix it!
+      // TODO: https://trello.com/c/iCDLMDgo/1836-bug-branchcondition-destination-page-is-in-detached-items
       // --------------------------------------------------------------------------------------------
+      try {
+        var destinationX = destination.position.left;
+        var destinationY = destination.row * rowHeight + (rowHeight / 4);
+        var destinationColumn = destination.column;
+        var destinationRow = destination.row;
+      } catch(err) {
+        view.sentry.send(err);
+      }
+      if(destinationX == undefined || destinationY == undefined) return true;
 
-      var destinationX = destination.position.left;
-      var destinationY = destination.row * rowHeight + (rowHeight / 4);
       var conditionX = $condition.outerWidth(true) - 25; // 25 because we don't want lines to start at edge of column space
       var conditionY = $condition.data('row') * FLOW_GRID_ROW_HEIGHT + (FLOW_GRID_ROW_HEIGHT / 4);
       var halfBranchNodeWidth = (branchWidth / 2);
       var conditionColumn = condition.column;
       var conditionRow = condition.row;
-      var destinationColumn = destination.column;
-      var destinationRow = destination.row;
       var backward = conditionColumn > destinationColumn;
       var sameColumn = (conditionColumn == destinationColumn);
       var sameRow = (conditionRow == destinationRow);
