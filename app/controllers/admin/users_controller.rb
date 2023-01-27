@@ -18,6 +18,33 @@ module Admin
     # Overwrite any of the RESTful controller actions to implement custom behavior
     # For example, you may want to send an email after a foo is updated.
     #
+    def index
+      authorize_resource(resource_class)
+      search_term = params[:search].to_s.strip
+      # Because our data is encryopted in the db we can't search using where
+      # LIKE - so we have to force Administrate to not search.
+      resources = filter_resources(scoped_resource, search_term: '')
+      resources = apply_collection_includes(resources)
+      resources = order.apply(resources)
+
+      # If there's a search term we need to filter the returned data using
+      # select. Otherwise we apply DB pagination
+      resources = if search_term.present?
+                    resources.select { |resource| resource.name.downcase.include?(search_term) || resource.email.downcase.include?(search_term) }
+                  else
+                    paginate_resources(resources)
+                  end
+
+      page = Administrate::Page::Collection.new(dashboard, order: order)
+
+      render locals: {
+        resources: resources,
+        search_term: search_term,
+        page: page,
+        show_search_bar: show_search_bar?
+      }
+    end
+    #
     # def update
     #   super
     #   send_foo_updated_email(requested_resource)

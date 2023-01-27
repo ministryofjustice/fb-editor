@@ -8,10 +8,10 @@ class UserDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::String,
+    id: Field::String.with_options(searchable: false),
     email: Field::String,
     name: Field::String,
-    timezone: Field::String,
+    timezone: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
