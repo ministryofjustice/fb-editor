@@ -112,6 +112,35 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def republish
+      if queued?
+        flash[:notice] = "Already queued for republishing from #{params[:deployment_environment]}"
+      else
+        publish_service = PublishService.find(params[:publish_service_id])
+        version_metadata = get_version_metadata(publish_service)
+        publish_service_creation = PublishServiceCreation.new(
+          service_id: publish_service.service_id,
+          version_id: version_metadata['version_id'],
+          user_id: current_user.id,
+          deployment_environment: params[:deployment_environment],
+          require_authentication: require_authentication,
+          username: username,
+          password: password
+        )
+        if publish_service_creation.save
+          PublishServiceJob.perform_later(
+            publish_service_id: publish_service_creation.publish_service_id
+          )
+          flash[:success] = "Service queued for re-publishing to #{params[:deployment_environment]}. Re-publishing version: #{version_metadata['version_id']}. Refresh in a minute"
+        else
+          flash[:error] = @publish_service_creation.errors.full_messages.join("\n")
+        end
+      end
+
+      service_id = publish_service&.service_id || params[:service_id]
+      redirect_to admin_service_path(service_id)
+    end
+
     def search_term
       params[:search] || ''
     end
@@ -199,6 +228,26 @@ module Admin
         :maintenance_page_heading,
         :maintenance_page_content
       )
+    end
+
+    def username
+      @username ||= ServiceConfiguration.find_by(
+        service_id: params[:service_id],
+        deployment_environment: params[:deployment_environment],
+        name: 'BASIC_AUTH_USER'
+      )&.decrypt_value
+    end
+
+    def password
+      @password ||= ServiceConfiguration.find_by(
+        service_id: params[:service_id],
+        deployment_environment: params[:deployment_environment],
+        name: 'BASIC_AUTH_PASS'
+      )&.decrypt_value
+    end
+
+    def require_authentication
+      password.present? && username.present? ? '1' : '0'
     end
   end
 end

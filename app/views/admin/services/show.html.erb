@@ -76,6 +76,12 @@
         class: "govuk-button fb-govuk-button",
         disable_with: 'Unpublishing. . .'
     %>
+    <%= link_to 'Re-publish Live', admin_service_republish_path(
+      @service.service_id, @published_to_live[:id], 'production'),
+      method: :post,
+      class: "govuk-button fb-govuk-button",
+      disable_with: 'Re-publishing. . .'
+    %>
     <% end %>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
@@ -119,6 +125,12 @@
         method: :post,
         class: "govuk-button fb-govuk-button",
         disable_with: 'Unpublishing. . .'
+    %>
+    <%= link_to 'Re-publish Test', admin_service_republish_path(
+      @service.service_id, @published_to_test[:id], 'dev'),
+      method: :post,
+      class: "govuk-button fb-govuk-button",
+      disable_with: 'Re-publishing. . .'
     %>
     <% end %>
 
