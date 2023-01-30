@@ -128,12 +128,18 @@ en:
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
   home:
     show:
+      phase: beta
+      phase_banner: This is a new service - your %{feedback_link} will help us to improve it.
       title: MoJ Forms
       lede: Prototype, test and publish online forms quickly and easily
-      body: To find out more about MoJ Forms, visit our %{product_site_link}, check out the %{user_guide_link} or %{contact_us_link}</a>.
+      body: MoJ Forms is available to employees of MoJ and its agencies and public bodies. To request access, %{contact_us_link}. As we are still in development, you will need to consent to some research activities.
+      more_info: To find out more about MoJ Forms, visit our %{product_site_link}, email us at %{email_link}, or %{slack_link}</a>.
       product_site_link_text: product site
       user_guide_link_text: user guide
-      contact_us_link_text: contact us with a question
+      contact_us_link_text: contact us
+      email_link_text: moj-forms@digital.justice.gov.uk
+      slack_link_text: ask a question on slack
+      feedback_link_text: feedback
       callout: You will need an @digital.justice.gov.uk, @justice.gov.uk or @cica.org.uk email address to use MoJ Forms.
       sign_in: Sign in
   auth:
