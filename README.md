@@ -20,10 +20,15 @@ Install gems:
 Create and migrate the test database:
 `bundle exec rails db:create db:migrate`
 
+You might need to install postgres 
+`brew install postgres`
+and start the database daemon
+`brew services start postgres`
+
 Copy the environment variables into your own .env file:
 `cp .env.development .env`
 
-Compile the necessary assets and run webpack:
+Compile the necessary assets and run webpack (requires yarn):
 `make assets`
 
 Start the Rails server:
