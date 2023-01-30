@@ -493,7 +493,7 @@ function addServicesContentScrollContainer(view) {
 
       // Finished so reveal updated content
       $main.addClass(view.constants.JS_ENHANCEMENT_DONE);
-    }, 750);
+    }, 100);
   });
 }
 
