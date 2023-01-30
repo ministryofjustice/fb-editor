@@ -2,24 +2,31 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      <div class="govuk-phase-banner govuk-!-margin-bottom-6">
+        <p class="govuk-phase-banner__content">
+          <strong class="govuk-tag govuk-phase-banner__content__tag">
+            <%= t('.phase') %>
+          </strong>
+          <span class="govuk-phase-banner__text">
+            <%= t('.phase_banner',
+              feedback_link: govuk_link_to( t('.feedback_link_text'), 'mailto:moj-forms@digital.justice.gov.uk')
+                 ).html_safe %>
+          </span>
+        </p>
+      </div>
+
       <h1 class="govuk-panel__title govuk-heading-xl" data-block-id="title" data-block-property="heading">
         <%= t('.title') %>
       </h1>
 
-    <div class="govuk-panel__body">
-      <p><%= t('.lede')%></p>
-    </div>
+      <div class="govuk-panel__body">
+        <p><%= t('.lede')%></p>
+      </div>
 
       <div>
         <p><%= t('.body',
-                 product_site_link: govuk_link_to( t('.product_site_link_text'), 'https://moj-forms.service.justice.gov.uk/'),
-                 user_guide_link: govuk_link_to( t('.user_guide_link_text'), 'https://moj-forms.service.justice.gov.uk/user-guide'),
                  contact_us_link: govuk_link_to( t('.contact_us_link_text'), 'https://moj-forms.service.justice.gov.uk/contact/')
                 ).html_safe %></p>
-      </div>
-
-      <div class="govuk-inset-text">
-        <p><%= t('.callout') %></p>
       </div>
 
       <%= button_to @sign_in_url, method: :post, class: 'govuk-button fb-govuk-button  govuk-button--start govuk-!-margin-top-2' do %>
@@ -28,6 +35,14 @@
           <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
         </svg>
       <% end %>
+
+      <p>
+        <%= t('.more_info',
+                 product_site_link: govuk_link_to( t('.product_site_link_text'), 'https://moj-forms.service.justice.gov.uk/'),
+                 email_link: govuk_link_to( t('.contact_us_link_text'), 'https://moj-forms.service.justice.gov.uk/contact/'),
+                 slack_link: govuk_link_to( t('.slack_link_text'), 'https://mojdt.slack.com/archives/CE26QEL1Z')
+             ).html_safe %>
+      </p>
     </div>
   </div>
 </div>
