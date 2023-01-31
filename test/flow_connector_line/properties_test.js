@@ -40,9 +40,10 @@ describe("FlowConnectorLine", function() {
     });
 
     it("should return the range", function() {
-      expect(created.lines[0].range.length).to.equal(70);
-      expect(created.lines[0].range[0]).to.equal(1451);
-      expect(created.lines[1].range[0]).to.equal(303);
+      expect(created.lines[0].range.start).to.equal(1451);
+      expect(created.lines[0].range.end).to.equal(1521);
+      expect(created.lines[1].range.start).to.equal(73);
+      expect(created.lines[1].range.end).to.equal(303);
     });
 
   });

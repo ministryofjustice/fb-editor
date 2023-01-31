@@ -1,11 +1,4 @@
 class FromAddress < ApplicationRecord
-  ALLOWED_DOMAINS = [
-    'justice.gov.uk',
-    'digital.justice.gov.uk',
-    'cica.gov.uk',
-    'judicialappointments.gov.uk'
-  ].freeze
-
   before_save :encrypt_email
 
   validates :email, format: {
@@ -40,7 +33,7 @@ class FromAddress < ApplicationRecord
 
   def allowed_domain?
     domain = email_address.split('@').last
-    domain.in?(ALLOWED_DOMAINS)
+    domain.in?(Rails.application.config.allowed_domains)
   end
 
   # If the email is already encrypted then it won't be a

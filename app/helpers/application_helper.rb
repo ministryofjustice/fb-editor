@@ -9,7 +9,7 @@ module ApplicationHelper
   def flow_thumbnail_link(args)
     link_to edit_page_path(
       service.service_id, args[:uuid]
-    ), class: "flow-thumbnail #{args[:thumbnail]}", 'aria-hidden': true, tabindex: -1 do
+    ), class: "flow-thumbnail #{args[:thumbnail]} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
       concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
       concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
       concat tag.span(args[:title], class: 'text')

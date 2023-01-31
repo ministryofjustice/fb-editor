@@ -128,12 +128,18 @@ en:
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
   home:
     show:
+      phase: beta
+      phase_banner: This is a new service - your %{feedback_link} will help us to improve it.
       title: MoJ Forms
       lede: Prototype, test and publish online forms quickly and easily
-      body: To find out more about MoJ Forms, visit our %{product_site_link}, check out the %{user_guide_link} or %{contact_us_link}</a>.
+      body: MoJ Forms is available to employees of MoJ and its agencies and public bodies. To request access, %{contact_us_link}. As we are still in development, you will need to consent to some research activities.
+      more_info: To find out more about MoJ Forms, visit our %{product_site_link}, email us at %{email_link}, or %{slack_link}</a>.
       product_site_link_text: product site
       user_guide_link_text: user guide
-      contact_us_link_text: contact us with a question
+      contact_us_link_text: contact us
+      email_link_text: moj-forms@digital.justice.gov.uk
+      slack_link_text: ask a question on slack
+      feedback_link_text: feedback
       callout: You will need an @digital.justice.gov.uk, @justice.gov.uk or @cica.org.uk email address to use MoJ Forms.
       sign_in: Sign in
   auth:
@@ -486,17 +492,17 @@ en:
         email: "‘From’ address"
         from_address_hint: This should generally be a shared team account
       email_settings:
-        send_by_email_dev: Send by email on Test
-        send_by_email_production: Send by email on Live
-        service_email_output: Send email to
+        send_by_email_dev: Enable email on Test
+        send_by_email_production: Enable email on Live
+        service_email_output: To
+        service_email_output_hint: This must be an MoJ email address or other approved address
         service_email_from: 'From:'
-        service_email_subject: Email subject
-        service_email_body: Email text
+        service_email_subject: Subject
+        service_email_body: Message
         service_email_pdf_heading: PDF heading
         service_email_pdf_subheading: PDF subheading (optional)
         email_fieldset: Email
         pdf_fieldset: PDF attachment
-        service_email_body_hint: The email text that will be sent
         pdf_sample: See sample PDF
         pdf_hint: All answers will be written in a pdf attached to the email
         csv_attachment: CSV attachment
@@ -586,6 +592,8 @@ en:
           missing_payment_link: 'Enter your GOV.UK Pay payment link URL (you get this from your GOV.UK Pay account)'
           invalid_payment_url: "Enter a valid GOV.UK Pay payment link URL starting with \"%{link_start_with}\""
           link_start_with: 'https://www.gov.uk/payments/'
+        email_settings:
+          domain_invalid: 'The address you want to send the email to must be an MoJ email address or other approved address.'
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: Form names must be %{count} characters or more

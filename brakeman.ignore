@@ -74,7 +74,7 @@
       "cwe_id": [
         1104
       ],
-      "note": ""
+      "note": "We have prioritised upgrading to Ruby 3. In the meantime, ignore so we unblock the pipeline."
     },
     {
       "warning_type": "Mass Assignment",

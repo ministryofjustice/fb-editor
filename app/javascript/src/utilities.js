@@ -357,6 +357,38 @@ function snakeToPascalCase( str ){
     return str.join('');
 }
 
+// Determines if two rectangles have an intersection area
+// a and b are objects with top,left, bottom, right coordinates
+// @param {{x1: number y1: number, x2: number, y2: number}} a
+// @param  {{x1: number y1: number, x2: number, y2: number}} b
+// @return boolean
+function intersects(a, b) {
+	if (a.x1 > b.x2 || b.x1 > a.x2) return false; // no horizontal overlap
+	if (a.y1 > b.y2 || b.y1 > a.y2) return false; // no vertical overlap
+
+	return true;
+}
+
+// Determines if two ranges have an overlapping section
+// ranges provided must be supplied ordered such that start < end
+// @param {{start: number, end: number}} a
+// @param {{start: number, end: number}} b
+// @param {number} minimumOverlap
+// @return boolean
+function overlaps(a, b, minimumOverlap=0) {
+  if( a.end - b.start >= 0 && b.end - a.start >=0 ) {
+    const intersection = rangeIntersection(a,b);
+    return (intersection.end - intersection.start) >= minimumOverlap;
+  }
+  return false;
+}
+
+function rangeIntersection(a,b) {
+  return {
+    start: Math.max(a.start, b.start),
+    end: Math.min(a.end, b.end)
+  }
+}
 
 
 
@@ -384,4 +416,6 @@ module.exports  = {
   highestNumber: highestNumber,
   filterObject: filterObject,
   snakeToPascalCase: snakeToPascalCase,
+  intersects: intersects,
+  overlaps: overlaps,
 }

@@ -28,14 +28,26 @@
  **/
 class FlowConditionItem {
   constructor($node, config) {
-    $node.data("instance", this);
-    $node.addClass("FlowConditionItem");
-
     this.$node = $node;
     this.$from = config.$from;
     this.$next = config.$next;
     this.row = config.row;
     this.column = config.column;
+    this.bounds = {
+      x1: config.x_in,
+      y1: config.y_in,
+      x2: config.x_out,
+      y2: config.y_out
+    };
+
+    this.position = {
+      left: this.bounds.x1,
+      top: this.bounds.y1,
+    }
+
+    $node.data("instance", this);
+    $node.addClass("FlowConditionItem");
+    $node.attr('data-row', this.row);
   }
 }
 

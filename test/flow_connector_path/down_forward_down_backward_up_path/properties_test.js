@@ -35,7 +35,16 @@ describe("DownForwardDownBackwardUpPath", function() {
 
     it("should return path set in constructor", function() {
       expect(created.connector.path).to.exist;
-      expect(created.connector.path).to.equal("M 1951,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 1 10,10 v283 a10,10 0 0 1 -10,10 h-626 a10,10 0 0 1 -10,-10 v--578 a10,10 0 0 1 10,-10 h0");
+      expect(created.connector.path).to.equal("M 1951,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 1 10,10 v283 a10,10 0 0 1 -10,10 h-626 a10,10 0 0 1 -10,-10 v-33 a10,10 0 0 1 10,-10 h0");
+    });
+
+    it('should calculate the correct dimensions', function() {
+        var dimensions = created.connector.dimensions.current;
+        expect(dimensions.down1).to.equal(178);
+        expect(dimensions.forward1).to.equal(505);
+        expect(dimensions.down2).to.equal(283);
+        expect(dimensions.backward).to.equal(626);
+        expect(dimensions.up).to.equal(33);
     });
 
     it("should return points set in constructor", function() {

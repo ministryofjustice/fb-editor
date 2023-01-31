@@ -40,14 +40,16 @@ describe("FlowItem", function() {
       expect(created.item.column).to.equal(c.FAKE_FLOW_ITEM_CONFIG.column);
     });
 
-    it("should return the coords", function() {
-      expect(created.item.coords.x_in).to.equal(c.FAKE_FLOW_ITEM_CONFIG.x_in);
-      expect(created.item.coords.x_out).to.equal(c.FAKE_FLOW_ITEM_CONFIG.x_out);
-      expect(created.item.coords.x_y).to.equal(c.FAKE_FLOW_ITEM_CONFIG.x_y);
-      expect(created.item.coords).to.eql({
-                                           x_in: c.FAKE_FLOW_ITEM_CONFIG.x_in,
-                                           x_out: c.FAKE_FLOW_ITEM_CONFIG.x_out,
-                                           y: c.FAKE_FLOW_ITEM_CONFIG.y
+    it("should return the bounds", function() {
+      expect(created.item.bounds.x1).to.equal(c.FAKE_FLOW_ITEM_CONFIG.x_in);
+      expect(created.item.bounds.x2).to.equal(c.FAKE_FLOW_ITEM_CONFIG.x_out);
+      expect(created.item.bounds.y1).to.equal(c.FAKE_FLOW_ITEM_CONFIG.y_in);
+      expect(created.item.bounds.y2).to.equal(c.FAKE_FLOW_ITEM_CONFIG.y_out);
+      expect(created.item.bounds).to.eql({
+                                           x1: c.FAKE_FLOW_ITEM_CONFIG.x_in,
+                                           x2: c.FAKE_FLOW_ITEM_CONFIG.x_out,
+                                           y1: c.FAKE_FLOW_ITEM_CONFIG.y_in,
+                                           y2: c.FAKE_FLOW_ITEM_CONFIG.y_out
                                          });
     });
 
