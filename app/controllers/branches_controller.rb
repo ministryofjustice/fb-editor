@@ -59,6 +59,17 @@ class BranchesController < FormController
     redirect_to edit_service_path(service.service_id)
   end
 
+  def branch_destinations
+    @branch_destinations ||= @branch.main_destinations
+  end
+
+  def branch_detached_destinations
+    @branch_detached_destinations ||= @branch.detached_destinations
+  end
+
+  helper_method :branch_destinations
+  helper_method :branch_detached_destinations
+
   private
 
   def branch_metadata

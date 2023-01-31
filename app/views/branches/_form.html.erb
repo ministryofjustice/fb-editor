@@ -23,15 +23,15 @@
       <select class="govuk-select" name="branch[default_next]" id="branch_default_next">
         <%= render partial: "destinations_list",
                   locals: {
-                    destinations: @branch.main_destinations,
+                    destinations: branch_destinations,
                     selected: @branch.previous_flow_default_next
                   }
         %>
-        <% if @branch.detached_destinations.present? %>
+        <% if branch_detached_destinations.present? %>
           <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
             <%= render partial: "destinations_list",
                       locals: {
-                        destinations: @branch.detached_destinations,
+                        destinations: branch_detached_destinations,
                         selected: @branch.previous_flow_default_next
                       }
             %>
