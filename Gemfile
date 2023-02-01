@@ -36,6 +36,12 @@ gem 'sentry-rails', '~> 5.7.0'
 gem 'sentry-ruby', '~> 5.7.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
+gem 'byebug'
+gem 'rack-mini-profiler'
+# For memory profiling
+gem 'memory_profiler'
+gem 'flamegraph'
+gem 'stackprof'
 
 group :development, :test do
   gem 'brakeman'

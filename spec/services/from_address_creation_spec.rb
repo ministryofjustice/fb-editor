@@ -59,6 +59,30 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
+    context 'email is already verified' do
+      let(:email) { 'peanut@justice.gov.uk' }
+
+      context 'Writing on the database' do
+        let(:email_service) { double(get_email_identity: nil, create_email_identity: true) }
+        before do
+          from_address.verified!
+          from_address_creation.save
+        end
+
+        it 'saves sucessfully' do
+          expect(from_address.reload.email_address).to eq(email)
+        end
+
+        it 'does not change status' do
+          expect(from_address.reload.status).to eq('verified')
+        end
+        it 'does not make AWS call' do
+          expect_any_instance_of(Aws::SESV2::Client).to_not receive(:create_email_identity)
+          from_address_creation.save
+        end
+      end
+    end
+
     context 'with email not on allow list' do
       let(:email) { 'galadriel@valinor.me' }
 

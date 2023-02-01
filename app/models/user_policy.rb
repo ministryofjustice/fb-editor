@@ -2,6 +2,8 @@ class UserPolicy
   def self.process!(userinfo, session)
     auth0_user_session = build_user_session(userinfo)
 
+    puts 'hello >>>>>'
+    puts auth0_user_session
     if auth0_user_session.new_user? && auth0_user_session.valid?
       create_user!(auth0_user_session)
     end

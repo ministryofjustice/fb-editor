@@ -6,8 +6,7 @@ class FromAddressCreation
 
   def save
     return if from_address.invalid?
-
-    from_address.status = verify_email
+    from_address.status = verify_email unless from_address.status == 'verified'
     from_address.save!
   rescue ActiveRecord::RecordInvalid
     false
