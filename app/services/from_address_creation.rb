@@ -6,7 +6,11 @@ class FromAddressCreation
 
   def save
     return if from_address.invalid?
-    return if FromAddress.find_by(service_id: from_address.service_id).email_address == from_address.email_address
+   def saved_from_address 
+     @saved_from_address ||= FromAddress.find_by(
+        service_id: from_address.service_id
+      ).email_address
+    end
 
     from_address.status = verify_email
     from_address.save!
