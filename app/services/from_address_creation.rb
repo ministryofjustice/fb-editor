@@ -6,6 +6,7 @@ class FromAddressCreation
 
   def save
     return if from_address.invalid?
+    return if FromAddress.find_by(service_id: from_address.service_id).email_address == from_address.email_address
 
     from_address.status = verify_email
     from_address.save!
@@ -19,7 +20,9 @@ class FromAddressCreation
   def verify_email
     return :default if use_default_email?
 
-    if email_service.get_email_identity(from_address.email).blank?
+    identity = email_service.get_email_identity(from_address.email)
+
+    if identity.blank?
       # Although we save all email addresses with the status as 'pending',
       # we only want to call AWS if the domain is on the allow list
       email_service.create_email_identity(from_address.email) if allowed_domain?
@@ -33,7 +36,7 @@ class FromAddressCreation
       )
       :verified
 
-    elsif email_service.get_email_identity(from_address.email).present? && !email_identity.sending_enabled
+    elsif identity.present? && !email_identity.sending_enabled
       resend_validation
 
       Rails.logger.info(
