@@ -71,6 +71,7 @@ feature 'Submission email' do
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_pdf_subheading'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_hint'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.csv_attachment'))
+    expect(page).to have_content(service_name)
   end
 
   def then_I_should_see_the_confirmation_email_defaults
