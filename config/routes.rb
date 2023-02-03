@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     resources :services, only: [:index, :show, :edit, :update, :create] do
       post '/unpublish/:publish_service_id/:deployment_environment',
         to: 'services#unpublish', as: :unpublish
+      post '/republish/:publish_service_id/:deployment_environment',
+        to: 'services#republish', as: :republish
 
       resources :versions, only: [:update, :edit, :show]
     end
