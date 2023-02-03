@@ -6,11 +6,6 @@ class FromAddressCreation
 
   def save
     return if from_address.invalid?
-   def saved_from_address 
-     @saved_from_address ||= FromAddress.find_by(
-        service_id: from_address.service_id
-      ).email_address
-    end
 
     from_address.status = verify_email
     from_address.save!
@@ -23,6 +18,7 @@ class FromAddressCreation
 
   def verify_email
     return :default if use_default_email?
+    return if saved_from_address == from_address.email
 
     identity = email_service.get_email_identity(from_address.email)
 
@@ -81,6 +77,12 @@ class FromAddressCreation
   end
 
   private
+
+  def saved_from_address
+    @saved_from_address ||= FromAddress.find_by(
+      service_id: from_address.service_id
+    ).email_address
+  end
 
   def use_default_email?
     from_address.email.blank? ||

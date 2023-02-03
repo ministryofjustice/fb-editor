@@ -14,10 +14,11 @@ RSpec.describe FromAddressCreation, type: :model do
   let(:from_address) { FromAddress.find_or_initialize_by(from_address_params.merge(service_id: service_id)) }
   let(:from_address_params) { { email: email } }
   let(:email_service) { double }
-  let(:old_email) { FromAddress.find_or_initialize_by({ email: 'old@email.com', service_id: service_id }) }
+  let(:old_email) { FromAddress.find_or_initialize_by({ email: 'old@email.com', service_id: service_id, status: 'verified' }) }
 
   describe '#save' do
     before do
+      old_email.save!
       allow(FromAddress).to receive(:find_by).and_return(old_email)
     end
 
@@ -65,27 +66,23 @@ RSpec.describe FromAddressCreation, type: :model do
     end
 
     context 'email is already saved' do
-      let(:email) { 'peanut@justice.gov.uk' }
-      before do
-        allow(FromAddress).to receive(:find_by).and_return(FromAddress.find_or_initialize_by({ email: email, service_id: service_id }))
-      end
+      let(:email) { 'old@email.com' }
 
       context 'Writing on the database' do
         let(:email_service) { double(get_email_identity: nil, create_email_identity: true) }
         before do
-          # verify and save the from address to match the mocked equality check
-          from_address.verified!
-          from_address.save!
           from_address_creation.save
         end
 
-        it 'does not change email address' do
+        it 'does not change either email address' do
           expect(from_address.reload.email_address).to eq(email)
+          expect(old_email.reload.email_address).to eq(email)
         end
 
-        it 'does not change status' do
-          expect(from_address.reload.status).to eq('verified')
+        it 'does not change status of the existing email' do
+          expect(old_email.reload.status).to eq('verified')
         end
+
         it 'does not make AWS call' do
           expect_any_instance_of(Aws::SESV2::Client).to_not receive(:create_email_identity)
           from_address_creation.save
