@@ -15,7 +15,7 @@ gem 'delayed_job_active_record'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'payment-link-heading-exit-page'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.17.33'
+gem 'metadata_presenter', '2.17.34'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
