@@ -38,6 +38,15 @@ describe("DownForwardUpForwardDownPath", function() {
       expect(created.connector.path).to.equal("M 701,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 0 10,-10 v-308 a10,10 0 0 1 10,-10 h284 a10,10 0 0 1 10,10 v63 a10,10 0 0 0 10,10 h0");
     });
 
+    it('should calculate the correct dimensions', function() {
+        var dimensions = created.connector.dimensions.current;
+        expect(dimensions.down1).to.equal(178);
+        expect(dimensions.forward1).to.equal(505);
+        expect(dimensions.up).to.equal(308);
+        expect(dimensions.forward2).to.equal(284);
+        expect(dimensions.down2).to.equal(63);
+    });
+
     it("should return points set in constructor", function() {
       expect(created.connector.points).to.exist;
       expect(created.connector.points.from_x).to.equal(POINTS.from_x);
