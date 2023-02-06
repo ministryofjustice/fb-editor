@@ -65,6 +65,24 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
+    context 'no saved email could be found' do
+      let(:email) { 'another@justice.gov.uk' }
+      let(:email_service) { double(get_email_identity: nil, create_email_identity: true) }
+
+      before do
+        allow(FromAddress).to receive(:find_by).and_return(nil)
+        from_address_creation.save
+      end
+
+      it 'saves sucessfully' do
+        expect(from_address.reload.email_address).to eq(email)
+      end
+
+      it 'updates status to pending' do
+        expect(from_address.reload.status).to eq('pending')
+      end
+    end
+
     context 'email is already saved' do
       let(:email) { 'old@email.com' }
 
@@ -75,12 +93,15 @@ RSpec.describe FromAddressCreation, type: :model do
         end
 
         it 'does not change either email address' do
-          expect(from_address.reload.email_address).to eq(email)
           expect(old_email.reload.email_address).to eq(email)
         end
 
         it 'does not change status of the existing email' do
           expect(old_email.reload.status).to eq('verified')
+        end
+
+        it 'does not store the supplied changed address' do
+          expect { from_address.reload }.to raise_exception(ActiveRecord::RecordNotFound)
         end
 
         it 'does not make AWS call' do
