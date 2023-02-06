@@ -39,6 +39,14 @@ describe("DownForwardDownForwardPath", function() {
       expect(created.connector.path).to.equal("M 701,125 v178 a10,10 0 0 0 10,10 h505 a10,10 0 0 1 10,10 v331 a10,10 0 0 0 10,10 h304");
     });
 
+    it('should calculate the correct dimensions', function() {
+        var dimensions = created.connector.dimensions.current;
+        expect(dimensions.down1).to.equal(178);
+        expect(dimensions.forward1).to.equal(505);
+        expect(dimensions.down2).to.equal(331);
+        expect(dimensions.forward2).to.equal(304);
+    });
+
     it("should return points set in constructor", function() {
       expect(created.connector.points).to.exist;
       expect(created.connector.points.from_x).to.equal(POINTS.from_x);
