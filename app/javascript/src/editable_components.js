@@ -959,6 +959,7 @@ function editableComponent($node, config) {
 // Make available for importing.
 module.exports =  {
   editableComponent: editableComponent,
+  EditableComponentBase: EditableComponentBase,
   EditableBase: EditableBase,
   EditableElement: EditableElement,
   EditableContent: EditableContent,
