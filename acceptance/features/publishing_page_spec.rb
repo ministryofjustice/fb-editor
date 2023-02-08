@@ -318,7 +318,7 @@ feature 'Publishing' do
   end
 
   def then_I_should_not_see_warning_cya_text
-    expect(environment_section).to_not have_content(exact_text: warning_cya)
+    expect(environment_section).to_not have_content({exact_text: warning_cya})
   end
 
   def then_I_should_not_see_warning_confirmation_text

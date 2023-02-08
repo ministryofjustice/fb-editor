@@ -1,5 +1,5 @@
 RSpec.describe Uptime do
-  subject(:uptime) { described_class.new(attributes) }
+  subject(:uptime) { described_class.new(**attributes) }
   let(:service_id) { SecureRandom.uuid }
   let(:service_name) { 'Apply To Use An Apply For Service' }
   let(:host) { 'apply-to-use-an-apply-for-service' }
