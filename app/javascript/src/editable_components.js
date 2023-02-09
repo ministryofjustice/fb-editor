@@ -16,21 +16,16 @@ const {
   uniqueString,
   safelyActivateFunction,
   addHiddenInpuElementToForm,
-  updateHiddenInputOnForm
+  updateHiddenInputOnForm,
 } = require('./utilities');
-const showdown  = require('showdown');
-const converter = new showdown.Converter({
-                    noHeaderId: true,
-                    strikethrough: true,
-                    omitExtraWLInCodeBlocks: true,
-                    simplifiedAutoLink: false,
-                    tables: true,
-                    disableForced4SpacesIndentedSublists: true
-                  });
-const sanitizeHtml = require('sanitize-html');
-const EditableCollectionItemMenu = require('./components/menus/editable_collection_item_menu');
 
-showdown.setFlavor('github');
+const {
+  convertToMarkdown,
+  convertToHtml,
+  cleanInput,
+} = require('./utilities_content');
+
+const EditableCollectionItemMenu = require('./components/menus/editable_collection_item_menu');
 
 /* Editable Base:
  * Shared code across the editable component types.
@@ -176,6 +171,8 @@ class EditableElement extends EditableBase {
  *                  }
  **/
 class EditableContent extends EditableElement {
+  #markdown;
+
   constructor($node, config) {
     super($node, config);
     var $input = $("<textarea class=\"input\"></textarea>");
@@ -233,7 +230,7 @@ class EditableContent extends EditableElement {
 
   // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = this._content;
+    var content = this.#markdown;
     var contentWithoutWhitespace = content.replace(/\s/mig, "");
     var defaultWithoutWhitespace = this._defaultContent.replace(/\s/mig, "");
 
@@ -256,13 +253,17 @@ class EditableContent extends EditableElement {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
 
-    this._content = markdown;
+    this.#markdown = markdown;
     this.emitSaveRequired();
+  }
+
+  get markdown() {
+    return this.#markdown;
   }
 
   edit() {
     this.$node.addClass(this._config.editClassname);
-    this.$input.val(this._content); // Adds latest stored content to input area
+    this.$input.val(this.#markdown); // Adds latest stored content to input area
     this.$input.focus();
     this.$input.select();
   }
@@ -278,7 +279,7 @@ class EditableContent extends EditableElement {
 
     // Figure out what content to show in output area.
     let defaultContent = this._defaultContent || this._originalContent;
-    let content = (this._content == "" ? defaultContent : this._content);
+    let content = (this.#markdown == "" ? defaultContent : this.#markdown);
 
     this.#output(convertToHtml(content));
   }
@@ -695,12 +696,14 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
 
   // Dynamically removes an item to the components collection
   removeItem(item) {
-    var index = this.items.indexOf(item);
-    safelyActivateFunction(this._config.onItemRemove, item);
-    this.items.splice(index, 1);
-    item.$node.remove();
-    this.#updateItems();
-    this.emitSaveRequired();
+    if(this.canHaveItemsRemoved()) {
+      var index = this.items.indexOf(item);
+      safelyActivateFunction(this._config.onItemRemove, item);
+      this.items.splice(index, 1);
+      item.$node.remove();
+      this.#updateItems();
+      this.emitSaveRequired();
+    }
   }
 
   save() {
@@ -812,76 +815,7 @@ function createEditableCollectionItemMenu(item, config) {
 }
 
 
-/* Convert HTML to Markdown by tapping into third-party code.
- * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
- **/
-function convertToMarkdown(html) {
-  var markdown = converter.makeMarkdown(html);
-  return cleanInput(markdown);
-}
 
-
-/* Convert Markdown to HTML by tapping into third-party code.
- * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
- **/
-function convertToHtml(markdown) {
-  var html = converter.makeHtml(markdown);
-  return cleanInput(html);
-}
-
-
-/* Opportunity safely strip out anything that we don't want here.
- *
- * 1. Something in makeMarkdown is adding <!-- --> markup to the result
- *    so we're trying to get rid of it.
- *
- * 2. sanitize-html is altering automatic link syntax by removing
- *    everything in (including) angle brackets added by showdown.
- *
- *    e.g. [link text](<http://some.url/here>)
- *
- *         results in this incorrect markdown (and output):
- *         [link text]()
- *
- *         so we're stripping out the angle brackets to leave this:
- *         [link text](http://some.url/here)
- *
- *         which give us the correct link element (url+text).
- *
- * 3. sanitize-html is removing <some@email.com> formatted markup that
- *    is the recommended syntax in some documentation. This bit will
- *    filter for that syntax and convert to $mailtosome@email.com$mailto
- *    which will help to bypass sanitize-html (see step 5).
- *
- * 4. Converts unwanted HTML from input (when passed HTML or Markdown).
- *    Note: Because we're converting from Markup, we need to be careful
- *          about what is converted into entity or escaped form for
- *          that reason, we are trying to be minimalistic in approach.
- *
- * 5. To follow step 3 (and this must happen after step 4), we now filter
- *    for $mailtosome@email.com$mailto and replace with the original
- *    angle brackets to reset to <some@email.com> markdown. It's worth
- *    noting that, after saving, the markdown of <some@email.com> gets
- *    converted to [some@email.com](mailto:some@email.com) anyway.
- *
- * 6. Fix markdown to blockquote element conversion (broken by the
- *    sanitize-html) script converting bracket > into &gt; entity.
- **/
-function cleanInput(input) {
-  // 1.
-  input = input.replace(/\n<!--.*?-->/mig, "");
-  // 2.
-  input = input.replace(/\]\(\<(.*?)\>\)/mig, "]($1)");
-  // 3.
-  input = input.replace(/\<([\w\-\.]+@{1}[\w\-\.]+)>/mig, "$mailto$1$mailto");
-  // 4.
-  input = sanitizeHtml(input);
-  // 5.
-  input = input.replace(/\$mailto([\w\-\.]+@{1}[\w\-\.]+)\$mailto/mig, "<$1>");
-  // 6.
-  input = input.replace(/\n&gt;(\s{1}.*?\n)/mig, "\n>$1");
-  return input;
-}
 
 
 /* Single Line Input Restrictions
