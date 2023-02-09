@@ -53,6 +53,19 @@ describe("EditableBase", function() {
       expect(component.$node.length).to.equal(1);
       expect(component.$node.get(0)).to.equal(component.$node.get(0));
     });
+
+    it('should have a config getter', function() {
+      expect(component.config).to.exist;
+      expect(component.config).to.eql({
+        editClassname: EDITABLE_CLASSNAME,
+        form: $form,
+        id: EDITABLE_INPUT_ID,
+        type: 'editable-type',
+        data: {
+          _uuid: EDITABLE_UUID
+        }
+      })
+    })
   })
 
   describe('Methods', function(){
