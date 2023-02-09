@@ -55,6 +55,10 @@ class EditableBase {
     });
   }
 
+  get config() {
+    return this._config;
+  }
+
   get content() {
     return this.$node.text();
   }
@@ -556,6 +560,8 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     }, config));
 
     this.items = [];
+    // TODO: this should be refactored - preservedItemCount should just be a
+    // config key not dependent on type
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
 
     this.#createCollectionItemTemplate(config);
@@ -966,5 +972,6 @@ module.exports =  {
   EditableTextFieldComponent: EditableTextFieldComponent,
   EditableTextareaFieldComponent: EditableTextareaFieldComponent,
   EditableGroupFieldComponent: EditableGroupFieldComponent,
-  EditableCollectionFieldComponent: EditableCollectionFieldComponent
+  EditableCollectionFieldComponent: EditableCollectionFieldComponent,
+  EditableComponentCollectionItem: EditableComponentCollectionItem,
 }
