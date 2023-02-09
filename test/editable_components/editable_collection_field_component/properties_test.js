@@ -1,4 +1,3 @@
-const { createEditableCollectionFieldComponent } = require('./helpers');
 const { EditableComponentCollectionItem } = require('../../../app/javascript/src/editable_components');
 
 require('../../setup');
@@ -29,7 +28,7 @@ describe('EditableCollectionFieldComponent', function() {
 
       it('should contain the correct number of items', function() {
         helpers.teardownView(COMPONENT_ID);
-        created = createEditableCollectionFieldComponent(COMPONENT_ID, {}, 2);
+        created = helpers.createEditableCollectionFieldComponent(COMPONENT_ID, {}, 2);
 
         expect(created.instance.items.length).to.equal(2);
       });
@@ -83,10 +82,10 @@ describe('EditableCollectionFieldComponent', function() {
       });
 
       it('should have config data', function() {
-          expect(created.instance.$itemTemplate.data('config')).to.exist;
+        expect(created.instance.$itemTemplate.data('config')).to.exist;
         var templateConfig = created.instance.$itemTemplate.data('config');
-          expect(templateConfig).to.not.have.any.keys([ 'items' ]);
-          expect(templateConfig.data).to.not.have.any.keys([ '_uuid' ]);
+        expect(templateConfig).to.not.have.any.keys([ 'items' ]);
+        expect(templateConfig.data).to.not.have.any.keys([ '_uuid' ]);
       });
     });
   });
