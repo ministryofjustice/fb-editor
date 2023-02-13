@@ -1,5 +1,6 @@
     <div class="govuk-form-group">
       <%= t('activemodel.attributes.email_settings.service_email_from')%>
+      <strong> "<%=f.object.service.service_name %>" </strong>
       <strong><%= f.object.service_email_from %></strong>
 
       <% unless @from_address.verified? %>
