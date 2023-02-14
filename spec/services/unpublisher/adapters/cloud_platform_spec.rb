@@ -4,9 +4,9 @@ RSpec.describe Unpublisher::Adapters::CloudPlatform do
   end
   let(:attributes) do
     {
-      publish_service: publish_service,
+      publish_service:,
       platform_environment: 'dev',
-      service_slug: service_slug
+      service_slug:
     }
   end
   let(:publish_service) do

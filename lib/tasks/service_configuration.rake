@@ -21,7 +21,7 @@ class ServiceConfigurationGenerator
   end
 
   def apply
-    if ServiceConfiguration.where(service_id: service_id).count.zero?
+    if ServiceConfiguration.where(service_id:).count.zero?
       puts(
         "#{'=' * 80}\n Service id #{service_id} does not exist \n#{'=' * 80}\n"
       )
@@ -30,7 +30,7 @@ class ServiceConfigurationGenerator
 
     Rails.application.config.deployment_environments.each do |deployment_environment|
       generate_service_secret(
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
   end
@@ -38,8 +38,8 @@ class ServiceConfigurationGenerator
   def generate_service_secret(deployment_environment:)
     service_configuration = ServiceConfiguration.find_or_initialize_by(
       name: 'SERVICE_SECRET',
-      deployment_environment: deployment_environment,
-      service_id: service_id
+      deployment_environment:,
+      service_id:
     )
 
     unless service_configuration.persisted?

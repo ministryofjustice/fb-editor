@@ -56,7 +56,7 @@ RSpec.describe UnpublishDevServices do
           create(
             :publish_service,
             :dev,
-            service_id: service_id,
+            service_id:,
             status: 'completed'
           )
         end

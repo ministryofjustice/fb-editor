@@ -64,15 +64,15 @@ class FormAnalyticsSettings
 
   def service_configurations(deployment_environment)
     ServiceConfiguration.where(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     )
   end
 
   def database(setting_name, deployment_environment)
     ServiceConfiguration.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      deployment_environment:,
       name: setting_name.upcase
     ).try(:decrypt_value)
   end

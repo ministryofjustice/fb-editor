@@ -3,7 +3,7 @@ RSpec.describe Settings do
     described_class.new(
       attributes.merge(
         service_id: '123456',
-        latest_metadata: latest_metadata
+        latest_metadata:
       )
     )
   end
@@ -17,7 +17,7 @@ RSpec.describe Settings do
   describe '#update' do
     context 'when valid' do
       let(:attributes) do
-        { service_name: 'Moff Gideon', current_user: current_user }
+        { service_name: 'Moff Gideon', current_user: }
       end
       let(:service) do
         double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)

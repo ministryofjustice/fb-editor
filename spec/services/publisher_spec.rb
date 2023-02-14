@@ -3,8 +3,8 @@ RSpec.describe Publisher do
   let(:service_provisioner) { double(autocomplete_ids: expected_ids) }
   let(:attributes) do
     {
-      publish_service: publish_service,
-      service_provisioner: service_provisioner,
+      publish_service:,
+      service_provisioner:,
       adapter: fake_adapter
     }
   end

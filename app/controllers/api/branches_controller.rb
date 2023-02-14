@@ -8,7 +8,7 @@ class Api::BranchesController < BranchesController
 
   def destroy_message
     @branch = BranchDestroyer.new(
-      service: service,
+      service:,
       branch_uuid: params[:branch_previous_flow_uuid]
     )
 

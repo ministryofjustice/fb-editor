@@ -11,7 +11,7 @@ class PageDestroyer
 
   def destroy
     version = MetadataApiClient::Version.create(
-      service_id: service_id,
+      service_id:,
       payload: metadata
     )
 

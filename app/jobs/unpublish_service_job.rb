@@ -4,10 +4,10 @@ class UnpublishServiceJob < ApplicationJob
   def perform(publish_service_id:, service_slug:)
     publish_service = PublishService.find(publish_service_id)
     Unpublisher.new(
-      publish_service: publish_service,
+      publish_service:,
       platform_environment: ENV['PLATFORM_ENV'],
-      service_slug: service_slug,
-      adapter: adapter
+      service_slug:,
+      adapter:
     ).call
   end
 

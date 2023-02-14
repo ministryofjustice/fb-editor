@@ -73,7 +73,7 @@ module Admin
 
     def currently_published?(service_id, environment)
       PublishService.where(
-        service_id: service_id,
+        service_id:,
         deployment_environment: environment
       ).last&.published?
     end

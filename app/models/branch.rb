@@ -15,7 +15,7 @@ class Branch
 
   def initialize(attributes)
     @service = attributes.delete(:service)
-    @traversable = Traversable.new(service: service, flow_uuid: previous_flow_uuid)
+    @traversable = Traversable.new(service:, flow_uuid: previous_flow_uuid)
     @branch_uuid = attributes.delete(:branch_uuid)
     @previous_flow_uuid = attributes.delete(:previous_flow_uuid)
     super
@@ -68,7 +68,7 @@ class Branch
 
   def conditionals_attributes=(hash)
     hash.each do |_index, conditional_hash|
-      conditionals.push(Conditional.new(conditional_hash.merge(service: service)))
+      conditionals.push(Conditional.new(conditional_hash.merge(service:)))
     end
   end
 
@@ -148,7 +148,7 @@ class Branch
 
   def detached
     Detached.new(
-      service: service,
+      service:,
       main_flow_uuids: grid.page_uuids,
       exclude_branches: true
     )

@@ -13,7 +13,7 @@ class PublishingPagePresenter
 
   def from_address_warning
     @from_address_warning ||= FromAddressPresenter.new(
-      from_address: from_address,
+      from_address:,
       messages: I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
       service_id: service.service_id
     )
@@ -37,7 +37,7 @@ class PublishingPagePresenter
   def service_output_warning
     @service_output_warning ||= ServiceOutputWarningPresenter.new(
       service_id: service.service_id,
-      deployment_environment: deployment_environment,
+      deployment_environment:,
       messages: I18n.t('publish.service_output')
     )
   end
@@ -53,7 +53,7 @@ class PublishingPagePresenter
   def set_publish_creation
     PublishServiceCreation.new(
       service_id: service.service_id,
-      deployment_environment: deployment_environment
+      deployment_environment:
     )
   end
 

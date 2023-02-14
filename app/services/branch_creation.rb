@@ -9,8 +9,8 @@ class BranchCreation < FlowBranch
 
   def flow_branch
     @flow_branch ||= NewFlowBranchGenerator.new(
-      default_next: default_next,
-      conditionals: conditionals
+      default_next:,
+      conditionals:
     )
   end
 end

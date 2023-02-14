@@ -4,9 +4,9 @@ module MetadataApiClient
       response = connection.get(
         '/services',
         {
-          page: page,
-          per_page: per_page,
-          name_query: name_query
+          page:,
+          per_page:,
+          name_query:
         }
       ).body
 

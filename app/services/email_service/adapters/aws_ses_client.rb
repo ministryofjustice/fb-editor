@@ -35,7 +35,7 @@ module EmailService
       attr_reader :access_key, :secret_access_key
 
       def ses
-        @ses ||= Aws::SESV2::Client.new(region: REGION, credentials: credentials)
+        @ses ||= Aws::SESV2::Client.new(region: REGION, credentials:)
       end
 
       def credentials

@@ -41,7 +41,7 @@ class Destination
 
   def detached_objects
     Detached.new(
-      service: service,
+      service:,
       main_flow_uuids: grid.flow_uuids
     )
   end

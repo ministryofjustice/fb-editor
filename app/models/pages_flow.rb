@@ -15,7 +15,7 @@ class PagesFlow
   end
 
   def detached_flows
-    detached = Detached.new(service: service, main_flow_uuids: grid.flow_uuids)
+    detached = Detached.new(service:, main_flow_uuids: grid.flow_uuids)
     detached.detached_flows.map do |detached_flow|
       detached_flow.map do |column|
         column.map { |flow| convert_flow_object(flow) }

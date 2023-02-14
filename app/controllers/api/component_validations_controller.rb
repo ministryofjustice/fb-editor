@@ -29,7 +29,7 @@ module Api
     def base_params
       @base_params ||=
         {
-          service: service,
+          service:,
           page_uuid: params[:page_id],
           component_uuid: params[:component_id],
           validator: params[:validator]

@@ -59,13 +59,13 @@ RSpec.describe 'Autocomplete spec', type: :request do
 
   describe 'POST /api/services/:service_id/components/:component_id/autocomplete' do
     let(:request) do
-      post "/api/services/#{service_id}/components/#{component_id}/autocomplete", params: params
+      post "/api/services/#{service_id}/components/#{component_id}/autocomplete", params:
     end
     let(:service_id) { SecureRandom.uuid }
     let(:component_id) { SecureRandom.uuid }
     let(:path_to_file) { Rails.root.join('spec', 'fixtures', 'autocomplete', 'valid.csv') }
     let(:file) { Rack::Test::UploadedFile.new path_to_file, 'text/csv' }
-    let(:params) { { autocomplete_items: { file: file } } }
+    let(:params) { { autocomplete_items: { file: } } }
 
     context 'when there is a file uploaded' do
       before do

@@ -166,7 +166,7 @@ RSpec.describe Expression do
           expression.name_attr(
             conditional_index: 1,
             expression_index: 0,
-            attribute: attribute
+            attribute:
           )
         ).to eq("branch[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
       end
@@ -182,7 +182,7 @@ RSpec.describe Expression do
           expression.id_attr(
             conditional_index: 0,
             expression_index: 1,
-            attribute: attribute
+            attribute:
           )
         ).to eq("branch_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
       end

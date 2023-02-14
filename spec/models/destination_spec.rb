@@ -1,9 +1,9 @@
 RSpec.describe Destination do
   subject(:destination) do
     described_class.new(
-      service: service,
-      flow_uuid: flow_uuid,
-      destination_uuid: destination_uuid
+      service:,
+      flow_uuid:,
+      destination_uuid:
     )
   end
   let(:latest_metadata) { metadata_fixture('branching') }
@@ -199,7 +199,7 @@ RSpec.describe Destination do
 
     it 'does not allow duplicate list items' do
       expect(
-        destination.destinations_list(flow_objects: flow_objects)
+        destination.destinations_list(flow_objects:)
       ).to eq(expected_destination_list)
     end
   end
@@ -221,7 +221,7 @@ RSpec.describe Destination do
 
     it 'will list both pages' do
       expect(
-        destination.destinations_list(flow_objects: flow_objects)
+        destination.destinations_list(flow_objects:)
       ).to eq(expected_destination_list)
     end
   end

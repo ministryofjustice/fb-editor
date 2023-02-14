@@ -2,9 +2,9 @@ RSpec.describe Unpublisher do
   subject(:unpublisher) { described_class.new(attributes) }
   let(:attributes) do
     {
-      publish_service: publish_service,
-      platform_environment: platform_environment,
-      service_slug: service_slug,
+      publish_service:,
+      platform_environment:,
+      service_slug:,
       adapter: fake_adapter
     }
   end

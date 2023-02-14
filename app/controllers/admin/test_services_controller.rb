@@ -9,7 +9,7 @@ module Admin
     def create
       service_creation = ServiceCreation.new(
         service_name: test_service_name,
-        current_user: current_user
+        current_user:
       )
 
       if service_creation.create

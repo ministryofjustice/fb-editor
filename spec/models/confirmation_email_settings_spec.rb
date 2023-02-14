@@ -1,7 +1,7 @@
 RSpec.describe ConfirmationEmailSettings do
   subject(:confirmation_email_settings) do
     described_class.new(
-      params.merge(service: service, from_address: from_address)
+      params.merge(service:, from_address:)
     )
   end
   let(:params) { {} }
@@ -54,7 +54,7 @@ RSpec.describe ConfirmationEmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             confirmation_email_subject: 'Never tell me the odds.'
           }
         end
@@ -67,7 +67,7 @@ RSpec.describe ConfirmationEmailSettings do
       end
 
       context 'when a value already exists in the db' do
-        let(:params) { { deployment_environment: deployment_environment } }
+        let(:params) { { deployment_environment: } }
         let!(:service_configuration) do
           create(
             :service_configuration,
@@ -104,7 +104,7 @@ RSpec.describe ConfirmationEmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             confirmation_email_body: 'Ogres are like onions.'
           }
         end
@@ -117,7 +117,7 @@ RSpec.describe ConfirmationEmailSettings do
       end
 
       context 'when a value already exists in the db' do
-        let(:params) { { deployment_environment: deployment_environment } }
+        let(:params) { { deployment_environment: } }
         let!(:service_configuration) do
           create(
             :service_configuration,

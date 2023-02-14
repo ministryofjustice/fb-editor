@@ -4,12 +4,12 @@ RSpec.describe 'MaximumValidation' do
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:validation_params) do
     {
-      service: service,
-      page_uuid: page_uuid,
-      component_uuid: component_uuid,
-      validator: validator,
-      status: status,
-      value: value
+      service:,
+      page_uuid:,
+      component_uuid:,
+      validator:,
+      status:,
+      value:
     }
   end
   let(:page_uuid) { '54ccc6cd-60c0-4749-947b-a97af1bc0aa2' } # your age

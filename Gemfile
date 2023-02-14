@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.7'
+ruby '3.1.3'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -15,13 +15,13 @@ gem 'delayed_job_active_record'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'payment-link-heading-exit-page'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.17.35'
+gem 'metadata_presenter', '2.17.36'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'fb-jwt-auth', '0.8.0'
+gem 'fb-jwt-auth', '0.10.0'
 gem 'govuk-components'
 gem 'govuk_design_system_formbuilder'
 gem 'hashie'

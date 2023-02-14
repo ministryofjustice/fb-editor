@@ -10,7 +10,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
   let(:expected_payload) do
     {
       name: "Form Builder - #{service_name}",
-      host: host,
+      host:,
       type: 'http',
       encryption: true,
       integrationids: [alert_integration_id],
@@ -144,7 +144,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
     let(:expected_payload) do
       {
         name: "Form Builder - #{service_name}",
-        host: host
+        host:
       }
     end
 

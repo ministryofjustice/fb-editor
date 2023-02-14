@@ -8,7 +8,7 @@ class Publisher
       # run the given binary with the given arguments,
       # discarding the output
       def self.exec(binary, *args)
-        cmd_line = build_cmd(executable: binary, args: args)
+        cmd_line = build_cmd(executable: binary, args:)
         # TODO: maybe use Open3.popen2e instead, so that we
         # can get streaming output as well as exit code?
 

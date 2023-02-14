@@ -6,7 +6,7 @@ module Api
       @option = @question.find_item_by_uuid(params[:option_id])
 
       render DestroyQuestionModal.new(
-        service: service,
+        service:,
         page: @page,
         question: @question
       )

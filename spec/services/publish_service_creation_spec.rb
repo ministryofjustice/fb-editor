@@ -2,9 +2,9 @@ RSpec.describe PublishServiceCreation, type: :model do
   subject(:publish_service_creation) do
     described_class.new(
       attributes.merge(
-        service_id: service_id,
-        version_id: version_id,
-        user_id: user_id
+        service_id:,
+        version_id:,
+        user_id:
       )
     )
   end
@@ -22,7 +22,7 @@ RSpec.describe PublishServiceCreation, type: :model do
           :dev,
           :username,
           value: 'x-wing',
-          service_id: service_id
+          service_id:
         )
       end
 
@@ -53,7 +53,7 @@ RSpec.describe PublishServiceCreation, type: :model do
 
     context 'when configuration exists' do
       let!(:username_config) do
-        create(:service_configuration, :dev, :username, service_id: service_id)
+        create(:service_configuration, :dev, :username, service_id:)
       end
 
       it 'returns true' do
@@ -68,7 +68,7 @@ RSpec.describe PublishServiceCreation, type: :model do
     context 'when configuration does not exist' do
       context 'when there is a publish service' do
         let!(:publish_service) do
-          create(:publish_service, :dev, :completed, service_id: service_id)
+          create(:publish_service, :dev, :completed, service_id:)
         end
 
         it 'returns false' do
@@ -161,7 +161,7 @@ RSpec.describe PublishServiceCreation, type: :model do
             :dev,
             :username,
             value: 'executor',
-            service_id: service_id
+            service_id:
           )
         end
         let!(:password_config) do
@@ -170,7 +170,7 @@ RSpec.describe PublishServiceCreation, type: :model do
             :dev,
             :password,
             value: 'vader-ship',
-            service_id: service_id
+            service_id:
           )
         end
         let(:attributes) do
@@ -207,14 +207,14 @@ RSpec.describe PublishServiceCreation, type: :model do
         end
         let(:username_config) do
           ServiceConfiguration.where(
-            service_id: service_id,
+            service_id:,
             deployment_environment: attributes.fetch(:deployment_environment),
             name: 'BASIC_AUTH_USER'
           ).first
         end
         let(:password_config) do
           ServiceConfiguration.where(
-            service_id: service_id,
+            service_id:,
             deployment_environment: attributes.fetch(:deployment_environment),
             name: 'BASIC_AUTH_PASS'
           ).first
@@ -240,10 +240,10 @@ RSpec.describe PublishServiceCreation, type: :model do
 
       context 'when existing username and password' do
         let!(:username_config) do
-          create(:service_configuration, :production, :username, service_id: service_id)
+          create(:service_configuration, :production, :username, service_id:)
         end
         let!(:password_config) do
-          create(:service_configuration, :production, :password, service_id: service_id)
+          create(:service_configuration, :production, :password, service_id:)
         end
         let(:attributes) do
           {
@@ -273,12 +273,12 @@ RSpec.describe PublishServiceCreation, type: :model do
 
         context 'when send by email is enabled' do
           before do
-            create(:submission_setting, environment.to_sym, :send_email, service_id: service_id)
+            create(:submission_setting, environment.to_sym, :send_email, service_id:)
           end
 
           context 'when service email output exists' do
             before do
-              create(:service_configuration, environment.to_sym, :service_email_output, service_id: service_id)
+              create(:service_configuration, environment.to_sym, :service_email_output, service_id:)
             end
 
             it 'should return falsey' do
@@ -311,12 +311,12 @@ RSpec.describe PublishServiceCreation, type: :model do
         context 'when service configuration email from does not exist' do
           context 'and the from address email has been changed' do
             before do
-              create(:from_address, service_id: service_id, email: email)
+              create(:from_address, service_id:, email:)
               publish_service_creation.save
             end
 
             it 'saves the email to the database' do
-              service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+              service_config = ServiceConfiguration.find_by(service_id:, name: 'SERVICE_EMAIL_FROM')
               expect(service_config.decrypt_value).to eq(email)
             end
           end
@@ -327,7 +327,7 @@ RSpec.describe PublishServiceCreation, type: :model do
             end
 
             it 'saves the email to the database' do
-              service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+              service_config = ServiceConfiguration.find_by(service_id:, name: 'SERVICE_EMAIL_FROM')
               expect(service_config.decrypt_value).to eq(FromAddress::DEFAULT_EMAIL_FROM)
             end
           end
@@ -335,14 +335,14 @@ RSpec.describe PublishServiceCreation, type: :model do
 
         context 'when service configuration email from exists' do
           before do
-            create(:from_address, service_id: service_id, email: email)
-            create(:service_configuration, environment.to_sym, :service_email_from, service_id: service_id, value: 'darth.baker@justice.gov.uk')
+            create(:from_address, service_id:, email:)
+            create(:service_configuration, environment.to_sym, :service_email_from, service_id:, value: 'darth.baker@justice.gov.uk')
 
             publish_service_creation.save
           end
 
           it 'overwrites the previous service configuration email' do
-            service_config = ServiceConfiguration.find_by(service_id: service_id, name: 'SERVICE_EMAIL_FROM')
+            service_config = ServiceConfiguration.find_by(service_id:, name: 'SERVICE_EMAIL_FROM')
             expect(service_config.decrypt_value).to eq(email)
           end
         end

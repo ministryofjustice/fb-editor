@@ -5,7 +5,7 @@ class Settings < Editor::Service
     return false if invalid? || latest_metadata.blank?
 
     version = MetadataApiClient::Version.create(
-      service_id: service_id,
+      service_id:,
       payload: metadata
     )
 
@@ -16,7 +16,7 @@ class Settings < Editor::Service
 
   def metadata
     latest_metadata.merge(
-      service_name: service_name,
+      service_name:,
       created_by: current_user.id
     )
   end

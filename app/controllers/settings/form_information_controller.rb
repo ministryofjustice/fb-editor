@@ -19,7 +19,7 @@ class Settings::FormInformationController < FormController
     params.require(:service).permit(:service_name).merge(
       service_id: service.service_id,
       latest_metadata: service.to_h,
-      current_user: current_user
+      current_user:
     )
   end
 end

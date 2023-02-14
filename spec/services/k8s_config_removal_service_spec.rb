@@ -1,6 +1,6 @@
 RSpec.describe K8sConfigRemovalService do
   subject(:removal_service) do
-    described_class.new(namespace: namespace, targets: targets)
+    described_class.new(namespace:, targets:)
   end
 
   context 'removing target kubernetes configurations' do
@@ -56,7 +56,7 @@ RSpec.describe K8sConfigRemovalService do
     context 'kubectl commands' do
       let(:config) { 'some-config' }
       let(:name) { 'some-name' }
-      let(:targets) { [{ config: config, name: name }] }
+      let(:targets) { [{ config:, name: }] }
 
       before do
         allow(Publisher::Utils::Shell).to receive(:capture_with_stdin).and_return('success')

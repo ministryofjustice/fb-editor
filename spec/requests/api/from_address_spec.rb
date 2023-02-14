@@ -15,7 +15,7 @@ RSpec.describe 'From Address spec', type: :request do
       FromAddressCreation
     ).to receive(:email_service).and_return(email_service)
 
-    create(:from_address, :pending, service_id: service_id, email: email)
+    create(:from_address, :pending, service_id:, email:)
   end
 
   describe 'POST /api/services/:service_id/settings/from_address/resend' do

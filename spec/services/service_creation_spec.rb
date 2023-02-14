@@ -32,7 +32,7 @@ RSpec.describe ServiceCreation do
 
       context 'when name is in the legacy' do
         let(:service_name) { 'So you want to become an avenger' }
-        let(:attributes) { { service_name: service_name } }
+        let(:attributes) { { service_name: } }
         let!(:legacy_service_name) do
           create(:legacy_service_name, name: service_name)
         end
@@ -44,11 +44,11 @@ RSpec.describe ServiceCreation do
 
       context 'when user inputs name with trailing whitespace' do
         let(:current_user) { double(id: '1') }
-        let(:attributes) { { service_name: '  Form Name  ', current_user: current_user } }
+        let(:attributes) { { service_name: '  Form Name  ', current_user: } }
 
         it 'strips whitespace' do
           expect(NewServiceGenerator).to receive(:new)
-            .with(service_name: 'Form Name', current_user: current_user)
+            .with(service_name: 'Form Name', current_user:)
             .and_return(double(to_metadata: 'metadata'))
           subject.metadata
         end

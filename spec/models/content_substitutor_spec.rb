@@ -1,9 +1,9 @@
 RSpec.describe ContentSubstitutor do
   subject(:content_substitutor) do
     described_class.new(
-      reference_number_enabled: reference_number_enabled,
-      payment_link_enabled: payment_link_enabled,
-      service_name: service_name
+      reference_number_enabled:,
+      payment_link_enabled:,
+      service_name:
     )
   end
   let(:reference_number_enabled) { true }

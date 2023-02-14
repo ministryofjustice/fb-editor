@@ -6,8 +6,8 @@ RSpec.describe NewServiceGenerator do
       let(:current_user) { double(id: '1234') }
       let(:service_metadata) do
         NewServiceGenerator.new(
-          service_name: service_name,
-          current_user: current_user
+          service_name:,
+          current_user:
         ).to_metadata
       end
       let(:start_page_uuid) { service_metadata['pages'][0]['_uuid'] }

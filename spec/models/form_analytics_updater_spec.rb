@@ -1,6 +1,6 @@
 RSpec.describe FormAnalyticsUpdater do
   subject(:form_analytics_updater) do
-    described_class.new(settings: settings, service_id: service.service_id)
+    described_class.new(settings:, service_id: service.service_id)
   end
   let(:settings) do
     FormAnalyticsSettings.new(params.merge(service_id: service.service_id))

@@ -3,11 +3,11 @@ RSpec.describe ConfirmationEmailSettingsUpdater do
     described_class.new(
       confirmation_email_settings: ConfirmationEmailSettings.new(
         params.merge(
-          service: service,
+          service:,
           deployment_environment: 'dev'
         )
       ),
-      service: service
+      service:
     )
   end
   let(:params) { {} }

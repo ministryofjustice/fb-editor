@@ -47,32 +47,32 @@ class ServiceConfiguration < ApplicationRecord
   def do_not_inject_payment_link?
     name == 'PAYMENT_LINK' &&
       SubmissionSetting.find_by(
-        service_id: service_id,
-        deployment_environment: deployment_environment
+        service_id:,
+        deployment_environment:
       ).try(:payment_link?).blank?
   end
 
   def do_not_send_submission?
     name.in?(SUBMISSION) &&
       SubmissionSetting.find_by(
-        service_id: service_id,
-        deployment_environment: deployment_environment
+        service_id:,
+        deployment_environment:
       ).try(:send_email?).blank?
   end
 
   def do_not_send_confirmation_email?
     name.in?(CONFIRMATION_EMAIL) &&
       SubmissionSetting.find_by(
-        service_id: service_id,
-        deployment_environment: deployment_environment
+        service_id:,
+        deployment_environment:
       ).try(:send_confirmation_email?).blank?
   end
 
   def not_in_maintenance_mode?
     name.in?(MAINTENANCE) &&
       ServiceConfiguration.find_by(
-        service_id: service_id,
-        deployment_environment: deployment_environment,
+        service_id:,
+        deployment_environment:,
         name: 'MAINTENANCE_MODE'
       ).blank?
   end

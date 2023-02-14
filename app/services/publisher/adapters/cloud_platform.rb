@@ -35,7 +35,7 @@ class Publisher
       def publishing
         if config_dir? && config_files?
           Utils::KubeControl.execute(
-            "apply -f #{config_dir}", namespace: namespace
+            "apply -f #{config_dir}", namespace:
           )
         else
           raise ConfigFilesNotFound, "Config files not found in #{config_dir}"
@@ -45,11 +45,11 @@ class Publisher
       def post_publishing
         Utils::KubeControl.execute(
           "rollout restart deployment #{service_slug}",
-          namespace: namespace
+          namespace:
         )
         Utils::KubeControl.execute(
           "rollout status deployment #{service_slug}",
-          namespace: namespace
+          namespace:
         )
       end
 
@@ -64,8 +64,8 @@ class Publisher
       def first_published?
         PublishService.completed
         .where(
-          service_id: service_id,
-          deployment_environment: deployment_environment
+          service_id:,
+          deployment_environment:
         ).count == 1
       end
 

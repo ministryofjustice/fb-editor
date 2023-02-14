@@ -11,7 +11,7 @@ RSpec.describe MetadataApiClient::Version do
 
     context 'when is created' do
       let(:expected_body) do
-        { service_name: 'Asohka Tano', service_id: service_id }
+        { service_name: 'Asohka Tano', service_id: }
       end
 
       before do
@@ -22,7 +22,7 @@ RSpec.describe MetadataApiClient::Version do
       it 'returns a version' do
         expect(
           described_class.create(
-            service_id: service_id, payload: expected_body
+            service_id:, payload: expected_body
           )
         ).to eq(described_class.new(expected_body.stringify_keys))
       end
@@ -40,7 +40,7 @@ RSpec.describe MetadataApiClient::Version do
 
       it 'assigns an error message' do
         expect(
-          described_class.create(service_id: service_id, payload: {})
+          described_class.create(service_id:, payload: {})
         ).to eq(
           MetadataApiClient::ErrorMessages.new(['Name has already been taken'])
         )
@@ -48,7 +48,7 @@ RSpec.describe MetadataApiClient::Version do
 
       it 'returns errors' do
         expect(
-          described_class.create(service_id: service_id, payload: {}).errors?
+          described_class.create(service_id:, payload: {}).errors?
         ).to be_truthy
       end
     end
@@ -68,7 +68,7 @@ RSpec.describe MetadataApiClient::Version do
     let(:expected_body) do
       {
         service_name: 'Asohka Tano',
-        service_id: service_id,
+        service_id:,
         versions: [version]
       }
     end
@@ -89,7 +89,7 @@ RSpec.describe MetadataApiClient::Version do
     let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions/#{version_id}" }
     let(:version_attributes) do
       {
-        version_id: version_id,
+        version_id:,
         created_at: '10:00am'
       }
     end
@@ -103,14 +103,14 @@ RSpec.describe MetadataApiClient::Version do
     end
 
     it 'returns the requested version of a service' do
-      result = described_class.find(service_id: service_id, version_id: version_id)
+      result = described_class.find(service_id:, version_id:)
       expect(result).to eq(version)
     end
   end
 
   describe '#version_id' do
     let(:version_id) { SecureRandom.uuid }
-    let(:version_attributes) { { version_id: version_id } }
+    let(:version_attributes) { { version_id: } }
 
     it 'returns the version id' do
       expect(described_class.new(version_attributes.stringify_keys).version_id).to eq(version_id)

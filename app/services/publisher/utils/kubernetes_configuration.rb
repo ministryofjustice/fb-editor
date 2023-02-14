@@ -33,7 +33,7 @@ class Publisher
 
           write_config_file(
             file: File.expand_path(File.join(destination, "#{template}.yaml")),
-            content: content
+            content:
           )
         end
       end

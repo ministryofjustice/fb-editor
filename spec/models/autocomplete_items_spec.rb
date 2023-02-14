@@ -1,9 +1,9 @@
 RSpec.describe AutocompleteItems do
   subject(:autocomplete_items) do
     described_class.new(
-      service_id: service_id,
-      component_id: component_id,
-      file: file
+      service_id:,
+      component_id:,
+      file:
     )
   end
   let(:service_id) { SecureRandom.uuid }

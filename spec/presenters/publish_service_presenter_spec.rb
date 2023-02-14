@@ -11,7 +11,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -48,7 +48,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -88,7 +88,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -125,7 +125,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -165,7 +165,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -205,7 +205,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 
@@ -224,7 +224,7 @@ RSpec.describe PublishServicePresenter do
     let(:query) do
       PublishService.where(
         service_id: service.service_id,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
 

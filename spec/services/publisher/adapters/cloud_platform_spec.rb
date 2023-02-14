@@ -5,7 +5,7 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
   let(:service_id) { '0da69306-cafd-4d32-bbee-fff98cac74ce' }
   let(:service_provisioner) do
     ::Publisher::ServiceProvisioner.new(
-      service_id: service_id,
+      service_id:,
       platform_environment: 'test',
       deployment_environment: 'dev'
     )
@@ -106,9 +106,9 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
     let(:service_id) { '0da69306-cafd-4d32-bbee-fff98cac74ce' }
     let(:service_provisioner) do
       ::Publisher::ServiceProvisioner.new(
-        service_id: service_id,
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
+        service_id:,
+        platform_environment:,
+        deployment_environment:
       )
     end
 
@@ -123,12 +123,12 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
 
       context 'when first published' do
         let!(:publish_service_production) do
-          create(:publish_service, :completed, :production, service_id: service_id)
+          create(:publish_service, :completed, :production, service_id:)
         end
 
         context 'when there is a published for development' do
           let!(:publish_service) do
-            create(:publish_service, :completed, :dev, service_id: service_id)
+            create(:publish_service, :completed, :dev, service_id:)
           end
 
           it 'sends a notification to the slack channel' do
@@ -147,10 +147,10 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
 
       context 'when not on first publish' do
         let!(:publish_service) do
-          create(:publish_service, :completed, :production, service_id: service_id)
+          create(:publish_service, :completed, :production, service_id:)
         end
         let!(:publish_service_two) do
-          create(:publish_service, :completed, :production, service_id: service_id)
+          create(:publish_service, :completed, :production, service_id:)
         end
 
         it 'does not send a notification to the slack channel' do

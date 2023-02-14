@@ -19,8 +19,8 @@ module Api
 
     def base_params
       {
-        service: service,
-        grid: grid,
+        service:,
+        grid:,
         previous_flow_uuid: params[:previous_flow_uuid],
         previous_conditional_uuid: params[:previous_conditional_uuid],
         to_move_uuid: params[:flow_uuid]

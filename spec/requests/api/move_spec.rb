@@ -7,9 +7,9 @@ RSpec.describe 'Move GET routes', type: :routing do
       {
         controller: 'api/move',
         action: 'targets',
-        service_id: service_id,
-        flow_uuid: flow_uuid,
-        previous_flow_uuid: previous_flow_uuid
+        service_id:,
+        flow_uuid:,
+        previous_flow_uuid:
       }
     end
 
@@ -30,7 +30,7 @@ RSpec.describe 'Move GET routes', type: :routing do
       end
       let(:previous_conditional_uuid) { 'some-previous-conditional-uuid' }
       let(:expected_route) do
-        move_route.merge(previous_conditional_uuid: previous_conditional_uuid)
+        move_route.merge(previous_conditional_uuid:)
       end
 
       it 'correctly routes the request' do
@@ -210,11 +210,11 @@ RSpec.describe 'Move spec', type: :request do
 
   describe 'POST /api/services/:service_id/flow/:flow_uuid/move' do
     let(:request) do
-      post "/api/services/#{service.service_id}/flow/#{flow_uuid}/move", params: params
+      post "/api/services/#{service.service_id}/flow/#{flow_uuid}/move", params:
     end
     let(:service) { MetadataPresenter::Service.new(metadata) }
     let(:metadata) { metadata_fixture(:branching_11) }
-    let(:version) { double(errors?: false, metadata: metadata) }
+    let(:version) { double(errors?: false, metadata:) }
     let(:flow_uuid) { '2ffc17b7-b14a-417f-baff-07adebd4f259' } # Page B
     let(:params) do
       {

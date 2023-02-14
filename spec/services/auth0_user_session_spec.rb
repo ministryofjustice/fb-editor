@@ -41,7 +41,7 @@ describe Auth0UserSession do
       }
     end
     subject do
-      described_class.new(user_id: 1234, user_info: user_info)
+      described_class.new(user_id: 1234, user_info:)
     end
     context 'given a hash' do
       let(:session) { {} }
@@ -69,7 +69,7 @@ describe Auth0UserSession do
       }
     end
     subject do
-      described_class.new(user_id: 1234, user_info: user_info)
+      described_class.new(user_id: 1234, user_info:)
     end
 
     it 'returns the name in the userinfo packet' do

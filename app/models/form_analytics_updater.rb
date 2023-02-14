@@ -41,8 +41,8 @@ class FormAnalyticsUpdater
 
   def find_or_initialize_setting(config, deployment_environment)
     ServiceConfiguration.find_or_initialize_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      deployment_environment:,
       name: config
     )
   end

@@ -7,7 +7,7 @@ RSpec.describe FormAnalyticsSettings do
   let(:base_params) do
     {
       service_id: service.service_id,
-      enabled_test: enabled_test
+      enabled_test:
     }
   end
   let(:analytics_params) { {} }

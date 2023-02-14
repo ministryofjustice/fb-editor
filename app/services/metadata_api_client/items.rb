@@ -4,10 +4,10 @@ module MetadataApiClient
       response = connection.post(
         "/services/#{service_id}/components/#{component_id}/items/all",
         {
-          service_id: service_id,
-          component_id: component_id,
-          created_by: created_by,
-          data: data
+          service_id:,
+          component_id:,
+          created_by:,
+          data:
         }
       )
       new(response.body)

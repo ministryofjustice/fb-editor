@@ -1,9 +1,9 @@
 RSpec.describe PublishingPagePresenter do
   subject(:publishing_page_presenter) do
     described_class.new(
-      service: service,
-      deployment_environment: deployment_environment,
-      service_autocomplete_items: service_autocomplete_items
+      service:,
+      deployment_environment:,
+      service_autocomplete_items:
     )
   end
   let(:deployment_environment) { 'dev' }

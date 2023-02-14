@@ -88,7 +88,7 @@ module ApplicationHelper
   end
 
   def items_present?(component_id)
-    response = MetadataApiClient::Items.find(service_id: service.service_id, component_id: component_id)
+    response = MetadataApiClient::Items.find(service_id: service.service_id, component_id:)
 
     return if response.errors?
 

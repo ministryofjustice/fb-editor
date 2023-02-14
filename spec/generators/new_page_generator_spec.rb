@@ -1,13 +1,13 @@
 RSpec.describe NewPageGenerator do
   subject(:generator) do
     described_class.new(
-      page_type: page_type,
-      page_url: page_url,
-      component_type: component_type,
-      latest_metadata: latest_metadata,
-      add_page_after: add_page_after,
-      page_uuid: page_uuid,
-      conditional_uuid: conditional_uuid
+      page_type:,
+      page_url:,
+      component_type:,
+      latest_metadata:,
+      add_page_after:,
+      page_uuid:,
+      conditional_uuid:
     )
   end
   let(:service_metadata) { latest_metadata }
@@ -153,7 +153,7 @@ RSpec.describe NewPageGenerator do
       subject(:generator) do
         described_class.new(
           page_type: 'standalone',
-          page_url: page_url
+          page_url:
         )
       end
 
@@ -271,8 +271,8 @@ RSpec.describe NewPageGenerator do
       subject(:generator) do
         described_class.new(
           page_type: 'standalone',
-          latest_metadata: latest_metadata,
-          page_url: page_url
+          latest_metadata:,
+          page_url:
         )
       end
       let(:latest_metadata) { metadata_fixture(:service) }

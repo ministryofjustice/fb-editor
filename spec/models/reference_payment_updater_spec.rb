@@ -1,8 +1,8 @@
 RSpec.describe ReferencePaymentUpdater do
   subject(:reference_payment_updater) do
     described_class.new(
-      reference_payment_settings: reference_payment_settings,
-      service: service
+      reference_payment_settings:,
+      service:
     )
   end
   let(:reference_payment_settings) do

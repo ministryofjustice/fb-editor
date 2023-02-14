@@ -63,7 +63,7 @@ class PagesController < FormController
     if params[:page] && additional_component
       update_params[:actions] = {
         add_component: additional_component,
-        component_collection: component_collection
+        component_collection:
       }
     end
 
@@ -94,7 +94,7 @@ class PagesController < FormController
   def common_params
     {
       latest_metadata: service_metadata,
-      service_id: service_id
+      service_id:
     }
   end
 

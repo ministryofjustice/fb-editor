@@ -54,8 +54,8 @@ class PublishServiceCreation
 
   def service_configuration(name:, deployment_environment:)
     configuration = ServiceConfiguration.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      deployment_environment:,
       name: name.to_s.upcase
     )
 
@@ -64,11 +64,11 @@ class PublishServiceCreation
 
   def existing_authentication?(deployment_environment:)
     PublishService.completed.where(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     ).count.zero? || service_configuration(
       name: ServiceConfiguration::BASIC_AUTH_USER,
-      deployment_environment: deployment_environment
+      deployment_environment:
     ).present?
   end
 
@@ -101,19 +101,19 @@ class PublishServiceCreation
 
   def publish_service
     @publish_service ||= PublishService.new(
-      service_id: service_id,
-      user_id: user_id,
-      version_id: version_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      user_id:,
+      version_id:,
+      deployment_environment:,
       status: :queued
     )
   end
 
   def create_or_update_configuration(name:, value:)
     service_configuration = ServiceConfiguration.find_or_initialize_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
-      name: name
+      service_id:,
+      deployment_environment:,
+      name:
     )
     service_configuration.value = value
     service_configuration.save!
@@ -121,17 +121,17 @@ class PublishServiceCreation
 
   def delete_service_configuration(name:)
     ServiceConfiguration.destroy_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
-      name: name
+      service_id:,
+      deployment_environment:,
+      name:
     )
   end
 
   def create_or_update_configuration(name:, value:)
     service_configuration = ServiceConfiguration.find_or_initialize_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
-      name: name
+      service_id:,
+      deployment_environment:,
+      name:
     )
     service_configuration.value = value
     service_configuration.save!
@@ -147,23 +147,23 @@ class PublishServiceCreation
 
   def send_by_email
     @send_by_email ||= SubmissionSetting.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     ).try(:send_email?)
   end
 
   def service_email_output
     ServiceConfiguration.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      deployment_environment:,
       name: 'SERVICE_EMAIL_OUTPUT'
     )
   end
 
   def service_csv_output
     SubmissionSetting.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     ).try(:service_csv_output?)
   end
 
@@ -178,6 +178,6 @@ class PublishServiceCreation
   end
 
   def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id: service_id)
+    @from_address ||= FromAddress.find_or_initialize_by(service_id:)
   end
 end

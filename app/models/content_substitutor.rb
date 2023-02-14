@@ -55,7 +55,7 @@ class ContentSubstitutor
   private
 
   def setting_content(property)
-    I18n.t("default_values.#{property}", service_name: service_name)
+    I18n.t("default_values.#{property}", service_name:)
   end
 
   def subject_content

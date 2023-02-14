@@ -1,6 +1,6 @@
 RSpec.describe BranchCreation, type: :model do
   subject(:branch_creation) do
-    described_class.new(branch: branch, latest_metadata: metadata)
+    described_class.new(branch:, latest_metadata: metadata)
   end
   let(:metadata) { metadata_fixture(:branching) }
   let(:service) do
@@ -10,11 +10,11 @@ RSpec.describe BranchCreation, type: :model do
 
   describe '#branch_uuid' do
     let(:uuid) { SecureRandom.uuid }
-    let(:new_flow_branch_generator) { double(uuid: uuid) }
+    let(:new_flow_branch_generator) { double(uuid:) }
     before do
       allow(NewFlowBranchGenerator).to receive(:new).and_return(new_flow_branch_generator)
     end
-    let(:attributes) { { service: service } }
+    let(:attributes) { { service: } }
 
     it 'should return the uuid of the new flow branch object' do
       expect(branch_creation.branch_uuid).to eq(uuid)
@@ -46,16 +46,16 @@ RSpec.describe BranchCreation, type: :model do
       {
         branch: {
           flow_uuid: previous_flow_uuid,
-          conditionals_attributes: conditionals_attributes
+          conditionals_attributes:
         }
       }
     end
     let(:attributes) do
       {
-        service: service,
-        previous_flow_uuid: previous_flow_uuid,
-        conditionals_attributes: conditionals_attributes,
-        default_next: default_next
+        service:,
+        previous_flow_uuid:,
+        conditionals_attributes:,
+        default_next:
       }
     end
     let(:component_uuid) { 'some-component-uuid' }
@@ -125,9 +125,9 @@ RSpec.describe BranchCreation, type: :model do
   describe '#save' do
     let(:attributes) do
       {
-        service: service,
-        conditionals_attributes: conditionals_attributes,
-        default_next: default_next
+        service:,
+        conditionals_attributes:,
+        default_next:
       }
     end
     let(:conditionals_attributes) do

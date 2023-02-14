@@ -1,5 +1,5 @@
 module Admin
-  # rubocop:disable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
+  # rubocop:disable Rails/LexicallyScopedActionFilter, Naming/MemoizedInstanceVariableName
   class UsersController < Admin::ApplicationController
     before_action :assign_user_services, only: :show
 
@@ -35,12 +35,12 @@ module Admin
                     paginate_resources(resources)
                   end
 
-      page = Administrate::Page::Collection.new(dashboard, order: order)
+      page = Administrate::Page::Collection.new(dashboard, order:)
 
       render locals: {
-        resources: resources,
-        search_term: search_term,
-        page: page,
+        resources:,
+        search_term:,
+        page:,
         show_search_bar: show_search_bar?
       }
     end
@@ -85,5 +85,5 @@ module Admin
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
   end
-  # rubocop:enable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
+  # rubocop:enable Rails/LexicallyScopedActionFilter, Naming/MemoizedInstanceVariableName
 end

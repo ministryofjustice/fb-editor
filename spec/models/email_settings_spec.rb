@@ -1,7 +1,7 @@
 RSpec.describe EmailSettings do
   subject(:email_settings) do
     described_class.new(
-      params.merge(service: service, from_address: from_address)
+      params.merge(service:, from_address:)
     )
   end
   let(:params) { {} }
@@ -124,7 +124,7 @@ RSpec.describe EmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_email_subject: 'Never tell me the odds.'
           }
         end
@@ -143,7 +143,7 @@ RSpec.describe EmailSettings do
           create(
             :service_configuration,
             :service_email_subject,
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_id: service.service_id
           )
         end
@@ -175,7 +175,7 @@ RSpec.describe EmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_email_body: 'Please find attached the Death star plans'
           }
         end
@@ -193,7 +193,7 @@ RSpec.describe EmailSettings do
           create(
             :service_configuration,
             :service_email_body,
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_id: service.service_id
           )
         end
@@ -225,7 +225,7 @@ RSpec.describe EmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_email_pdf_heading: 'Death star plans'
           }
         end
@@ -238,12 +238,12 @@ RSpec.describe EmailSettings do
       end
 
       context 'when a value already exists in the db' do
-        let(:params) { { deployment_environment: deployment_environment } }
+        let(:params) { { deployment_environment: } }
         let!(:service_configuration) do
           create(
             :service_configuration,
             :service_email_pdf_heading,
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_id: service.service_id
           )
         end
@@ -275,7 +275,7 @@ RSpec.describe EmailSettings do
       context 'when user submits a value' do
         let(:params) do
           {
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_email_pdf_subheading: 'Rebellion ships'
           }
         end
@@ -288,13 +288,13 @@ RSpec.describe EmailSettings do
       end
 
       context 'when a value already exists in the db' do
-        let(:params) { { deployment_environment: deployment_environment } }
+        let(:params) { { deployment_environment: } }
         let!(:service_configuration) do
           create(
             :service_configuration,
             :dev,
             :service_email_pdf_subheading,
-            deployment_environment: deployment_environment,
+            deployment_environment:,
             service_id: service.service_id
           )
         end

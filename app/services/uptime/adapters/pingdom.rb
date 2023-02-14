@@ -74,7 +74,7 @@ class Uptime
       def creation_payload(service_name, host, service_id)
         {
           name: "#{FORM_BUILDER} - #{service_name}",
-          host: host,
+          host:,
           type: 'http',
           encryption: true,
           integrationids: [ENV['PINGDOM_ALERT_INTEGRATION_ID']], # integrates with slack
@@ -90,7 +90,7 @@ class Uptime
       def updating_payload(service_name, host)
         {
           name: "#{FORM_BUILDER} - #{service_name}",
-          host: host
+          host:
         }
       end
     end

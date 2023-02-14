@@ -23,7 +23,7 @@ RSpec.describe TestServicesConfigsRemover do
       allow(test_services_configs_remover).to receive(:user_ids).and_return(team_user_ids)
       team_services.merge(non_team_services).each do |user_id, _services|
         allow(MetadataApiClient::Service).to receive(:all)
-          .with(user_id: user_id)
+          .with(user_id:)
           .and_return(team_user_services)
       end
       (team_user_services + non_team_user_services).each do |service|

@@ -14,8 +14,8 @@ class Publisher
       def upload(object_key, body)
         Rails.logger.info("Uploading #{object_key} to S3")
         s3.put_object(
-          body: body,
-          bucket: bucket,
+          body:,
+          bucket:,
           key: object_key
         )
       end
@@ -25,7 +25,7 @@ class Publisher
       attr_reader :bucket, :access_key_id, :secret_access_key
 
       def s3
-        @s3 ||= Aws::S3::Client.new(region: REGION, credentials: credentials)
+        @s3 ||= Aws::S3::Client.new(region: REGION, credentials:)
       end
 
       def credentials

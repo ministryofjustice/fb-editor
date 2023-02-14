@@ -4,17 +4,17 @@ RSpec.describe FromAddressCreation, type: :model do
   end
   let(:params) do
     {
-      from_address: from_address,
-      email_service: email_service
+      from_address:,
+      email_service:
     }
   end
 
   let(:email) { FromAddress::DEFAULT_EMAIL_FROM }
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.find_or_initialize_by(from_address_params.merge(service_id: service_id)) }
-  let(:from_address_params) { { email: email } }
+  let(:from_address) { FromAddress.find_or_initialize_by(from_address_params.merge(service_id:)) }
+  let(:from_address_params) { { email: } }
   let(:email_service) { double }
-  let(:old_email) { FromAddress.find_or_initialize_by({ email: 'old@email.com', service_id: service_id, status: 'verified' }) }
+  let(:old_email) { FromAddress.find_or_initialize_by({ email: 'old@email.com', service_id:, status: 'verified' }) }
 
   describe '#save' do
     before do
@@ -149,7 +149,7 @@ RSpec.describe FromAddressCreation, type: :model do
       let(:email) { 'atreyu@justice.gov.uk' }
 
       before do
-        create(:from_address, :pending, service_id: service_id, email: 'mothertheresa@justice.gov.uk')
+        create(:from_address, :pending, service_id:, email: 'mothertheresa@justice.gov.uk')
         allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
         allow(email_service).to receive(:get_email_identity).and_return(double)
         from_address_creation.save
@@ -170,7 +170,7 @@ RSpec.describe FromAddressCreation, type: :model do
       let(:email) { 'atreyu@justice.gov.uk' }
 
       before do
-        create(:from_address, :pending, service_id: service_id, email: 'atreyu@justice.gov.uk')
+        create(:from_address, :pending, service_id:, email: 'atreyu@justice.gov.uk')
         allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
         allow(email_service).to receive(:get_email_identity).and_return(double)
         expect(email_service).to receive(:delete_email_identity).with(email).and_return(double(successful?: true))

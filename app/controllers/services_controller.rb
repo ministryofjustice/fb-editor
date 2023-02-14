@@ -36,6 +36,6 @@ class ServicesController < PermissionsController
   def service_creation_params
     params.require(
       :service_creation
-    ).permit(:service_name).merge(current_user: current_user)
+    ).permit(:service_name).merge(current_user:)
   end
 end

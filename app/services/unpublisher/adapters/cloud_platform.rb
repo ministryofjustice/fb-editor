@@ -22,8 +22,8 @@ class Unpublisher
         CONFIGURATIONS.each do |config|
           ActiveSupport::Notifications.instrument("unpublisher.#{config}") do
             config_name = send(config)
-            if config_present?(config: config, name: config_name)
-              removal_service.delete(config: config, name: config_name)
+            if config_present?(config:, name: config_name)
+              removal_service.delete(config:, name: config_name)
             end
           end
         end
@@ -57,7 +57,7 @@ class Unpublisher
       end
 
       def removal_service
-        @removal_service ||= K8sConfigRemovalService.new(namespace: namespace)
+        @removal_service ||= K8sConfigRemovalService.new(namespace:)
       end
 
       def message
