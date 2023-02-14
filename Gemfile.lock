@@ -166,7 +166,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    fb-jwt-auth (0.8.0)
+    fb-jwt-auth (0.10.0)
       activesupport
       json
       jwt
@@ -196,7 +196,7 @@ GEM
     json (2.6.3)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jwt (2.6.0)
+    jwt (2.7.0)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -446,7 +446,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.6)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   ruby
@@ -468,7 +468,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   faraday_middleware
-  fb-jwt-auth (= 0.8.0)
+  fb-jwt-auth (= 0.10.0)
   govuk-components
   govuk_design_system_formbuilder
   hashie
