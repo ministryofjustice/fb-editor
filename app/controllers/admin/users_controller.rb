@@ -1,5 +1,5 @@
 module Admin
-  # rubocop:disable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
+  # rubocop:disable Rails/LexicallyScopedActionFilter, Naming/MemoizedInstanceVariableName
   class UsersController < Admin::ApplicationController
     before_action :assign_user_services, only: :show
 
@@ -85,5 +85,5 @@ module Admin
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
   end
-  # rubocop:enable Lint/LexicallyScopedActionFilter, Lint/MemoizedInstanceVariableName
+  # rubocop:enable Rails/LexicallyScopedActionFilter, Naming/MemoizedInstanceVariableName
 end
