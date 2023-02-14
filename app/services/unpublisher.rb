@@ -10,9 +10,9 @@ class Unpublisher
       steps.each do |action_name|
         ActiveSupport::Notifications.instrument("unpublisher.#{action_name}") do
           adapter.new(
-            publish_service: publish_service,
-            platform_environment: platform_environment,
-            service_slug: service_slug
+            publish_service:,
+            platform_environment:,
+            service_slug:
           ).method(action_name).call
         end
       end

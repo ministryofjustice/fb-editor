@@ -11,7 +11,7 @@ module Api
     def destroy_message
       @page = service.find_page_by_uuid(params[:page_id])
 
-      render DestroyPageModal.new(service: service, page: @page)
+      render DestroyPageModal.new(service:, page: @page)
     end
   end
 end

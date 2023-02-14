@@ -1,13 +1,13 @@
 RSpec.describe FromAddressPresenter do
   subject(:from_address_presenter) do
     described_class.new(
-      from_address: from_address,
-      messages: messages,
-      service_id: service_id
+      from_address:,
+      messages:,
+      service_id:
     )
   end
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.find_by(service_id: service_id) }
+  let(:from_address) { FromAddress.find_by(service_id:) }
   let(:link) do
     "<a class=\"govuk-link\" href=\"/services/#{service_id}/settings/submission/from_address\">‘from’ address</a>"
   end
@@ -20,7 +20,7 @@ RSpec.describe FromAddressPresenter do
         let(:expected_message) { I18n.t('warnings.from_address.settings.verified') }
 
         before do
-          create(:from_address, :verified, service_id: service_id)
+          create(:from_address, :verified, service_id:)
         end
 
         it 'returns the verified message' do
@@ -32,7 +32,7 @@ RSpec.describe FromAddressPresenter do
         let(:expected_message) { I18n.t('warnings.from_address.settings.pending') }
 
         before do
-          create(:from_address, :pending, service_id: service_id)
+          create(:from_address, :pending, service_id:)
         end
 
         it 'returns the pending message' do
@@ -44,7 +44,7 @@ RSpec.describe FromAddressPresenter do
         let(:expected_message) { I18n.t('warnings.from_address.settings.default') }
 
         before do
-          create(:from_address, :default, service_id: service_id)
+          create(:from_address, :default, service_id:)
         end
 
         it 'returns the default message' do
@@ -69,7 +69,7 @@ RSpec.describe FromAddressPresenter do
         let(:expected_message) { I18n.t('warnings.from_address.send_by_email.verified') }
 
         before do
-          create(:from_address, :verified, service_id: service_id)
+          create(:from_address, :verified, service_id:)
         end
 
         it 'returns the verified message' do
@@ -78,10 +78,10 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.pending', link: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.pending', link:) }
 
         before do
-          create(:from_address, :pending, service_id: service_id)
+          create(:from_address, :pending, service_id:)
         end
 
         it 'returns the pending message' do
@@ -90,10 +90,10 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default', link: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.send_by_email.default', link:) }
 
         before do
-          create(:from_address, :default, service_id: service_id)
+          create(:from_address, :default, service_id:)
           allow_any_instance_of(FromAddressPresenter).to receive(:link).and_return(link)
         end
 
@@ -107,10 +107,10 @@ RSpec.describe FromAddressPresenter do
       let(:messages) { I18n.t('warnings.from_address.publishing.dev') }
 
       context 'when from address is pending' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending', link: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.pending', link:) }
 
         before do
-          create(:from_address, :pending, service_id: service_id)
+          create(:from_address, :pending, service_id:)
           allow_any_instance_of(FromAddressPresenter).to receive(:link).and_return(link)
         end
 
@@ -120,10 +120,10 @@ RSpec.describe FromAddressPresenter do
       end
 
       context 'when from address is default' do
-        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default', link: link) }
+        let(:expected_message) { I18n.t('warnings.from_address.publishing.dev.default', link:) }
 
         before do
-          create(:from_address, :default, service_id: service_id)
+          create(:from_address, :default, service_id:)
         end
 
         it 'returns the default message' do

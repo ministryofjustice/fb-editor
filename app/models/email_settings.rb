@@ -26,7 +26,7 @@ class EmailSettings < BaseEmailSettings
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment
+      deployment_environment:
     ).try(:send_email?)
   end
 
@@ -61,7 +61,7 @@ class EmailSettings < BaseEmailSettings
   def service_csv_output_checked?
     service_csv_output? || SubmissionSetting.find_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment
+      deployment_environment:
     ).try(:service_csv_output?)
   end
 end

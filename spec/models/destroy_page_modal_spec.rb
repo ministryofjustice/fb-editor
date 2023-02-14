@@ -1,8 +1,8 @@
 RSpec.describe DestroyPageModal do
   subject(:destroy_page_modal) do
     described_class.new(
-      service: service,
-      page: page
+      service:,
+      page:
     )
   end
   let(:service_metadata) { metadata_fixture(:branching_2) }
@@ -60,7 +60,7 @@ RSpec.describe DestroyPageModal do
         create(
           :service_configuration,
           name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
-          value: value,
+          value:,
           deployment_environment: environment
         ).decrypt_value
       end

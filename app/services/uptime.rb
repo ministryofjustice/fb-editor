@@ -16,7 +16,7 @@ class Uptime
       ActiveSupport::Notifications.instrument('uptime.create') do
         new_check_id = adapter.create(service_name, host, service_id)
         UptimeCheck.new(
-          service_id: service_id,
+          service_id:,
           check_id: new_check_id
         ).save
       end
@@ -50,8 +50,8 @@ class Uptime
 
   def attributes
     {
-      service_id: service_id,
-      check_id: check_id
+      service_id:,
+      check_id:
     }.compact
   end
 end

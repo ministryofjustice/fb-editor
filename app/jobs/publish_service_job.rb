@@ -13,13 +13,13 @@ class PublishServiceJob < ApplicationJob
       version_id: publish_service.version_id,
       deployment_environment: publish_service.deployment_environment,
       platform_environment: ENV['PLATFORM_ENV'],
-      service_configuration: service_configuration
+      service_configuration:
     )
 
     if service_provisioner.valid?
       Publisher.new(
-        publish_service: publish_service,
-        service_provisioner: service_provisioner,
+        publish_service:,
+        service_provisioner:,
         adapter: Publisher::Adapters::CloudPlatform
       ).call
     else

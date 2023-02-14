@@ -9,7 +9,7 @@ module MojForms
 
       @header_classes = @description ? 'with-description' : ''
 
-      super(classes: classes, html_attributes: html_attributes)
+      super(classes:, html_attributes:)
     end
 
     private

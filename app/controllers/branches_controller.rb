@@ -20,7 +20,7 @@ class BranchesController < FormController
 
   def edit
     @branch = Branch.new(
-      branch_metadata.merge(service: service, branch_uuid: params[:branch_uuid])
+      branch_metadata.merge(service:, branch_uuid: params[:branch_uuid])
     )
   end
 
@@ -49,9 +49,9 @@ class BranchesController < FormController
       .permit(:destination_uuid)[:destination_uuid]
 
     @branch_destroyer = BranchDestroyer.new(
-      service: service,
+      service:,
       branch_uuid: params[:branch_uuid],
-      destination_uuid: destination_uuid,
+      destination_uuid:,
       latest_metadata: service_metadata
     )
     @branch_destroyer.destroy
@@ -84,8 +84,8 @@ class BranchesController < FormController
 
   def branch_attributes
     {
-      service: service,
-      previous_flow_uuid: previous_flow_uuid,
+      service:,
+      previous_flow_uuid:,
       branch_uuid: params[:branch_uuid]
     }
   end

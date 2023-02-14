@@ -16,14 +16,14 @@ module Admin
         service_id: service.service_id,
         service_name: service.service_name,
         host: "#{service.service_slug}.#{url_root}",
-        adapter: adapter
+        adapter:
       ).create
 
       redirect_to admin_uptime_checks_path
     end
 
     def destroy
-      Uptime.new(check_id: params[:id], adapter: adapter).destroy
+      Uptime.new(check_id: params[:id], adapter:).destroy
 
       redirect_to admin_uptime_checks_path
     end

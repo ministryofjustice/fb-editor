@@ -11,7 +11,7 @@ class BaseEmailSettings
   def database(setting_name)
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment,
+      deployment_environment:,
       name: setting_name.upcase
     ).try(:decrypt_value)
   end

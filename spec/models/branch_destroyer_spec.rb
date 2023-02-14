@@ -1,9 +1,9 @@
 RSpec.describe BranchDestroyer do
   subject(:branch_destroyer) do
     described_class.new(
-      service: service,
-      branch_uuid: branch_uuid,
-      destination_uuid: destination_uuid,
+      service:,
+      branch_uuid:,
+      destination_uuid:,
       latest_metadata: service_metadata
     )
   end

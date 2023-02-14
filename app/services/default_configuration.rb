@@ -21,7 +21,7 @@ class DefaultConfiguration
       create_configuration(
         name: 'SERVICE_SECRET',
         value: SecureRandom.hex(16),
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
   end
@@ -33,22 +33,22 @@ class DefaultConfiguration
       create_configuration(
         name: 'ENCODED_PRIVATE_KEY',
         value: key.private_key,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
 
       create_configuration(
         name: 'ENCODED_PUBLIC_KEY',
         value: key.public_key,
-        deployment_environment: deployment_environment
+        deployment_environment:
       )
     end
   end
 
   def create_configuration(name:, value:, deployment_environment:)
     ServiceConfiguration.create!(
-      deployment_environment: deployment_environment,
-      name: name,
-      value: value,
+      deployment_environment:,
+      name:,
+      value:,
       service_id: service.service_id
     )
   end

@@ -7,8 +7,8 @@ RSpec.describe PageDestroyer do
   end
   let(:attributes) do
     {
-      uuid: uuid,
-      service_id: service_id,
+      uuid:,
+      service_id:,
       latest_metadata: fixture
     }
   end
@@ -17,7 +17,7 @@ RSpec.describe PageDestroyer do
     expect(
       MetadataApiClient::Version
     ).to receive(:create).with(
-      service_id: service_id,
+      service_id:,
       payload: updated_metadata
     ).and_return(version)
   end

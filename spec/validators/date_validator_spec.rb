@@ -4,14 +4,14 @@ RSpec.describe NumberValidator do
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:validation_params) do
     {
-      service: service,
-      page_uuid: page_uuid,
-      component_uuid: component_uuid,
-      validator: validator,
-      status: status,
-      day: day,
-      month: month,
-      year: year
+      service:,
+      page_uuid:,
+      component_uuid:,
+      validator:,
+      status:,
+      day:,
+      month:,
+      year:
     }
   end
   let(:page_uuid) { '7806cd64-0c05-450e-ba6f-2325c8b22d46' } # holiday

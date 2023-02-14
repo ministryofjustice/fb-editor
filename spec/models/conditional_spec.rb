@@ -15,7 +15,7 @@ RSpec.describe Conditional do
           }
         )
       ]
-    }.merge(service: service)
+    }.merge(service:)
   end
   let(:expected_conditional) do
     {
@@ -64,7 +64,7 @@ RSpec.describe Conditional do
       {
         'next' => '12345',
         'expressions' => [expression]
-      }.merge(service: service)
+      }.merge(service:)
     end
     let(:expression) do
       Expression.new(

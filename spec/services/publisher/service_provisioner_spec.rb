@@ -219,16 +219,16 @@ RSpec.describe Publisher::ServiceProvisioner do
     let(:version_id) { SecureRandom.uuid }
     let(:attributes) do
       {
-        service_id: service_id,
-        version_id: version_id,
+        service_id:,
+        version_id:,
         platform_environment: 'test',
         deployment_environment: 'dev',
         service_configuration: [
-          build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id: service_id),
-          build(:service_configuration, :username, deployment_environment: 'dev', service_id: service_id),
-          build(:service_configuration, :service_email_from, deployment_environment: 'dev', service_id: service_id),
-          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev', service_id: service_id),
-          build(:service_configuration, :payment_link_url, deployment_environment: 'dev', service_id: service_id)
+          build(:service_configuration, :encoded_public_key, deployment_environment: 'dev', service_id:),
+          build(:service_configuration, :username, deployment_environment: 'dev', service_id:),
+          build(:service_configuration, :service_email_from, deployment_environment: 'dev', service_id:),
+          build(:service_configuration, :maintenance_page_heading, deployment_environment: 'dev', service_id:),
+          build(:service_configuration, :payment_link_url, deployment_environment: 'dev', service_id:)
         ]
       }
     end
@@ -243,7 +243,7 @@ RSpec.describe Publisher::ServiceProvisioner do
     context 'do_not_send_submission' do
       context 'when send_email is present' do
         before do
-          create(:submission_setting, :send_email, service_id: service_id, deployment_environment: 'dev')
+          create(:submission_setting, :send_email, service_id:, deployment_environment: 'dev')
         end
 
         it 'should include submission configuration' do
@@ -265,7 +265,7 @@ RSpec.describe Publisher::ServiceProvisioner do
     context 'not_in_maintenance_mode' do
       context 'when in maintenance mode' do
         before do
-          create(:service_configuration, :maintenance_mode, service_id: service_id, deployment_environment: 'dev')
+          create(:service_configuration, :maintenance_mode, service_id:, deployment_environment: 'dev')
         end
 
         it 'should include the maintenance config' do
@@ -283,7 +283,7 @@ RSpec.describe Publisher::ServiceProvisioner do
     context 'do_not_inject_payment_link' do
       context 'when payment_link is present' do
         before do
-          create(:submission_setting, :payment_link, service_id: service_id, deployment_environment: 'dev')
+          create(:submission_setting, :payment_link, service_id:, deployment_environment: 'dev')
         end
 
         it 'should include submission configuration' do

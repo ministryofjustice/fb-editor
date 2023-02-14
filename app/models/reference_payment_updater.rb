@@ -35,7 +35,7 @@ class ReferencePaymentUpdater
   def create_or_update_submission_setting(deployment_environment)
     submission_setting = SubmissionSetting.find_or_initialize_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment
+      deployment_environment:
     )
 
     submission_setting.payment_link = reference_payment_settings.payment_link_checked?
@@ -71,7 +71,7 @@ class ReferencePaymentUpdater
   def find_or_initialize_setting(config, deployment_environment)
     ServiceConfiguration.find_or_initialize_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment,
+      deployment_environment:,
       name: config
     )
   end
@@ -85,7 +85,7 @@ class ReferencePaymentUpdater
     %w[dev production].each do |environment|
       CONFIG_WITH_DEFAULTS.each do |config|
         create_or_update_service_configuration(
-          config: config,
+          config:,
           deployment_environment: environment,
           value: content_substitutor.public_send(config.downcase)
         )

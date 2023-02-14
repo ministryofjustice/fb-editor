@@ -5,10 +5,10 @@ RSpec.describe Uptime do
   let(:host) { 'apply-to-use-an-apply-for-service' }
   let(:attributes) do
     {
-      service_id: service_id,
-      check_id: check_id,
-      service_name: service_name,
-      host: host,
+      service_id:,
+      check_id:,
+      service_name:,
+      host:,
       adapter: fake_uptime_adapter
     }
   end
@@ -41,7 +41,7 @@ RSpec.describe Uptime do
         allow_any_instance_of(fake_uptime_adapter).to receive(:create).and_return(check_id)
         uptime.create
 
-        expect(UptimeCheck.find_by(service_id: service_id).check_id).to eq(check_id)
+        expect(UptimeCheck.find_by(service_id:).check_id).to eq(check_id)
       end
 
       it 'instruments active support notification' do
@@ -52,7 +52,7 @@ RSpec.describe Uptime do
 
     context 'when uptime check exists for service' do
       before do
-        create(:uptime_check, service_id: service_id, check_id: check_id)
+        create(:uptime_check, service_id:, check_id:)
       end
 
       it 'calls update' do
@@ -69,7 +69,7 @@ RSpec.describe Uptime do
 
   describe '#update' do
     before do
-      create(:uptime_check, service_id: service_id, check_id: check_id)
+      create(:uptime_check, service_id:, check_id:)
     end
 
     it 'calls update on the adapter' do
@@ -87,7 +87,7 @@ RSpec.describe Uptime do
     let(:attributes) do
       {
         service_id: nil,
-        check_id: check_id,
+        check_id:,
         service_name: nil,
         host: nil,
         adapter: fake_uptime_adapter
@@ -95,7 +95,7 @@ RSpec.describe Uptime do
     end
 
     before do
-      create(:uptime_check, service_id: service_id, check_id: check_id)
+      create(:uptime_check, service_id:, check_id:)
     end
 
     it 'calls destroy on the adapter' do
@@ -105,7 +105,7 @@ RSpec.describe Uptime do
 
     it 'destroys the uptime check in the database' do
       uptime.destroy
-      expect(UptimeCheck.find_by(service_id: service_id)).to be_nil
+      expect(UptimeCheck.find_by(service_id:)).to be_nil
     end
 
     it 'instruments active support notification' do

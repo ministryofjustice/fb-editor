@@ -35,12 +35,12 @@ module Admin
                     paginate_resources(resources)
                   end
 
-      page = Administrate::Page::Collection.new(dashboard, order: order)
+      page = Administrate::Page::Collection.new(dashboard, order:)
 
       render locals: {
-        resources: resources,
-        search_term: search_term,
-        page: page,
+        resources:,
+        search_term:,
+        page:,
         show_search_bar: show_search_bar?
       }
     end

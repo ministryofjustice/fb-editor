@@ -5,7 +5,7 @@ RSpec.describe Settings::EmailController do
         authenticity_token: 'some-token',
         email_settings: {
           "send_by_email_#{deployment_environment}": '1',
-          deployment_environment: deployment_environment,
+          deployment_environment:,
           service_email_output: '',
           service_email_subject: 'Submission from Version Fixture',
           service_email_body: 'Please find attached a submission sent from Version Fixture',

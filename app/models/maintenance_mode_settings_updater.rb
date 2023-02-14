@@ -56,7 +56,7 @@ class MaintenanceModeSettingsUpdater
 
   def find_or_initialize_setting(config)
     ServiceConfiguration.find_or_initialize_by(
-      service_id: service_id,
+      service_id:,
       deployment_environment: settings.deployment_environment,
       name: config
     )

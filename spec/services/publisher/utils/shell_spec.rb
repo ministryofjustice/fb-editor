@@ -18,8 +18,8 @@ describe Publisher::Utils::Shell do
     let(:pipe) { nil }
 
     let(:result) do
-      described_class.build_cmd(executable: executable,
-                                args: args,
+      described_class.build_cmd(executable:,
+                                args:,
                                 redirect_to: redirect,
                                 pipe_to: pipe)
     end
@@ -91,14 +91,14 @@ describe Publisher::Utils::Shell do
     it 'builds the command, passing the first arg as the executable' do
       expect(described_class).to receive(:build_cmd)
         .with(executable: 'myexe', args: %w[arg1 arg2])
-      described_class.capture_with_stdin(cmd: cmd, stdin: stdin)
+      described_class.capture_with_stdin(cmd:, stdin:)
     end
 
     it 'executes the built command line with Open3.capture3, passing the given stdin: as stdin_data:' do
       expect(Open3).to receive(:capture3)
         .with('myexe arg1 arg2', stdin_data: stdin)
         .and_return [output, stderr_str, exit_status]
-      described_class.capture_with_stdin(cmd: cmd, stdin: stdin)
+      described_class.capture_with_stdin(cmd:, stdin:)
     end
 
     context 'when the cmd is a success' do
@@ -107,8 +107,8 @@ describe Publisher::Utils::Shell do
       it 'returns the stdout_str from the command' do
         expect(
           described_class.capture_with_stdin(
-            cmd: cmd,
-            stdin: stdin
+            cmd:,
+            stdin:
           )
         ).to eq(output)
       end
@@ -118,8 +118,8 @@ describe Publisher::Utils::Shell do
       it 'raises a CmdFailedError' do
         expect {
           described_class.capture_with_stdin(
-            cmd: cmd,
-            stdin: stdin
+            cmd:,
+            stdin:
           )
         }.to raise_error(
           Publisher::Utils::Shell::CmdFailedError

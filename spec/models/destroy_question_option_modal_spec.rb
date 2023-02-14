@@ -1,10 +1,10 @@
 RSpec.describe DestroyQuestionOptionModal do
   subject(:destroy_question_option_modal) do
     described_class.new(
-      service: service,
-      page: page,
-      question: question,
-      option: option,
+      service:,
+      page:,
+      question:,
+      option:,
       label: 'option label'
     )
   end

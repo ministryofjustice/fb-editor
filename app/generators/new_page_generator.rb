@@ -57,8 +57,8 @@ class NewPageGenerator
   def new_flow_page_metadata(default_next)
     NewFlowPageGenerator.new(
       page_uuid: page_metadata['_uuid'],
-      default_next: default_next,
-      latest_metadata: latest_metadata
+      default_next:,
+      latest_metadata:
     ).to_metadata
   end
 
@@ -92,8 +92,8 @@ class NewPageGenerator
 
   def component
     NewComponentGenerator.new(
-      component_type: component_type,
-      page_url: page_url
+      component_type:,
+      page_url:
     ).to_metadata
   end
 

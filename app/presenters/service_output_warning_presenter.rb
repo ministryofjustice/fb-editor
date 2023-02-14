@@ -37,15 +37,15 @@ class ServiceOutputWarningPresenter
 
   def send_confirmation_email?
     @send_confirmation_email ||= SubmissionSetting.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     ).try(:send_confirmation_email?)
   end
 
   def set_publish_creation
     PublishServiceCreation.new(
-      service_id: service_id,
-      deployment_environment: deployment_environment
+      service_id:,
+      deployment_environment:
     )
   end
 end

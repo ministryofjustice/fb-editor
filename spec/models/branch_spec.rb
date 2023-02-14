@@ -5,8 +5,8 @@ RSpec.describe Branch do
   let(:attributes) { {} }
   let(:branch_attributes) do
     {
-      previous_flow_uuid: previous_flow_uuid,
-      service: service
+      previous_flow_uuid:,
+      service:
     }.merge(attributes)
   end
   let(:previous_page) do
@@ -17,7 +17,7 @@ RSpec.describe Branch do
   end
 
   describe '#title' do
-    subject(:branch) { described_class.new(service: service) }
+    subject(:branch) { described_class.new(service:) }
     let(:service) do
       MetadataPresenter::Service.new(metadata_fixture(:branching))
     end
@@ -330,8 +330,8 @@ RSpec.describe Branch do
   describe '#previous_page_title' do
     let(:branch_attributes) do
       {
-        branch_uuid: branch_uuid,
-        service: service
+        branch_uuid:,
+        service:
       }.merge(attributes)
     end
     let(:latest_metadata) { metadata_fixture(:branching) }
@@ -363,8 +363,8 @@ RSpec.describe Branch do
     context 'when the branch is unconnected' do
       let(:branch_attributes) do
         {
-          branch_uuid: branch_uuid,
-          service: service
+          branch_uuid:,
+          service:
         }.merge(attributes)
       end
       let(:metadata) { metadata_fixture(:branching) }

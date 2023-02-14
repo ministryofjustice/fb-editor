@@ -1,9 +1,9 @@
 RSpec.describe NewComponentGenerator do
   subject(:generator) do
     described_class.new(
-      component_type: component_type,
-      page_url: page_url,
-      components: components
+      component_type:,
+      page_url:,
+      components:
     )
   end
   input_components = %w[text textarea email number radios checkboxes upload autocomplete]

@@ -3,11 +3,11 @@ RSpec.describe EmailSettingsUpdater do
     described_class.new(
       email_settings: EmailSettings.new(
         params.merge(
-          service: service,
+          service:,
           deployment_environment: 'dev'
         )
       ),
-      service: service
+      service:
     )
   end
   let(:params) { {} }

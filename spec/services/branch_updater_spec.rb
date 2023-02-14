@@ -1,8 +1,8 @@
 RSpec.describe BranchUpdater, type: :model do
   subject(:branch_updater) do
     described_class.new(
-      branch: branch,
-      latest_metadata: latest_metadata
+      branch:,
+      latest_metadata:
     )
   end
   let(:latest_metadata) do
@@ -37,10 +37,10 @@ RSpec.describe BranchUpdater, type: :model do
     end
     let(:attributes) do
       {
-        service: service,
-        branch_uuid: branch_uuid,
-        conditionals_attributes: conditionals_attributes,
-        default_next: default_next
+        service:,
+        branch_uuid:,
+        conditionals_attributes:,
+        default_next:
       }
     end
 

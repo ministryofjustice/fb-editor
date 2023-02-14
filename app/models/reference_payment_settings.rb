@@ -11,7 +11,7 @@ class ReferencePaymentSettings
   validates_with ReferencePaymentValidator
 
   def reference_number_checked?
-    return ServiceConfiguration.exists?(service_id: service_id, name: 'REFERENCE_NUMBER') if reference_number.blank?
+    return ServiceConfiguration.exists?(service_id:, name: 'REFERENCE_NUMBER') if reference_number.blank?
 
     reference_number_enabled?
   end
@@ -21,7 +21,7 @@ class ReferencePaymentSettings
   end
 
   def payment_link_url_enabled?
-    payment_link_url_present? || ServiceConfiguration.exists?(service_id: service_id, name: 'PAYMENT_LINK')
+    payment_link_url_present? || ServiceConfiguration.exists?(service_id:, name: 'PAYMENT_LINK')
   end
 
   # rubocop:disable Rails/Delegate
@@ -35,14 +35,14 @@ class ReferencePaymentSettings
   end
 
   def saved_payment_link_url
-    return ServiceConfiguration.find_by(service_id: service_id, name: 'PAYMENT_LINK')&.decrypt_value if payment_link_url.nil?
+    return ServiceConfiguration.find_by(service_id:, name: 'PAYMENT_LINK')&.decrypt_value if payment_link_url.nil?
 
     payment_link_url
   end
 
   def payment_link_has_been_checked?
     payment_link_checked? || SubmissionSetting.find_by(
-      service_id: service_id,
+      service_id:,
       deployment_environment: 'dev'
     ).try(:payment_link?)
   end

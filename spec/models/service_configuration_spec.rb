@@ -72,7 +72,7 @@ RSpec.describe ServiceConfiguration, type: :model do
           :submission_setting,
           :dev,
           service_id: service.service_id,
-          send_email: send_email
+          send_email:
         )
       end
 
@@ -158,7 +158,7 @@ RSpec.describe ServiceConfiguration, type: :model do
           :submission_setting,
           :dev,
           service_id: service.service_id,
-          send_confirmation_email: send_confirmation_email
+          send_confirmation_email:
         )
       end
 

@@ -25,7 +25,7 @@ class Traversable
   def following_pages_uuids
     @following_pages_uuids ||= begin
       @routes.push(
-        MetadataPresenter::Route.new(service: service, traverse_from: flow_uuid)
+        MetadataPresenter::Route.new(service:, traverse_from: flow_uuid)
       )
       until @routes.empty?
         route = @routes.shift

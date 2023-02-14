@@ -30,7 +30,7 @@ RSpec.describe 'Component validations spec', type: :request do
     context 'when setting the component validation' do
       let(:request) do
         post "/api/services/#{service.service_id}/pages/#{page_uuid}/component-validations/#{component_uuid}/minimum",
-             params: params
+             params:
       end
       let(:params) do
         {

@@ -19,7 +19,7 @@ class ConfirmationEmailSettings < BaseEmailSettings
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
       service_id: service.service_id,
-      deployment_environment: deployment_environment
+      deployment_environment:
     ).try(:send_confirmation_email?)
   end
 

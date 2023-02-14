@@ -17,7 +17,7 @@ RSpec.describe PageUpdater do
     expect(
       MetadataApiClient::Version
     ).to receive(:create).with(
-      service_id: service_id,
+      service_id:,
       payload: updated_metadata
     ).and_return(version)
 

@@ -4,13 +4,13 @@ RSpec.describe 'MinStringLengthValidation' do
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:validation_params) do
     {
-      service: service,
-      page_uuid: page_uuid,
-      component_uuid: component_uuid,
-      validator: validator,
-      status: status,
-      value: value,
-      string_length: string_length
+      service:,
+      page_uuid:,
+      component_uuid:,
+      validator:,
+      status:,
+      value:,
+      string_length:
     }
   end
   let(:page_uuid) { 'e8708909-922e-4eaf-87a5-096f7a713fcb' } # how well do you know star wars?

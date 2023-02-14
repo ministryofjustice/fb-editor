@@ -18,7 +18,7 @@ module Api
     # rubocop:disable Naming/MemoizedInstanceVariableName
     def destination
       @_destination ||= Destination.new(
-        service: service,
+        service:,
         flow_uuid: params[:flow_uuid],
         destination_uuid: params[:destination_uuid]
       )

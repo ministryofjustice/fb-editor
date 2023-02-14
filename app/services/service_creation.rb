@@ -24,7 +24,7 @@ class ServiceCreation < Editor::Service
     {
       metadata: NewServiceGenerator.new(
         service_name: service_name.strip,
-        current_user: current_user
+        current_user:
       ).to_metadata
     }
   end

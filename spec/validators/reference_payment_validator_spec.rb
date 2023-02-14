@@ -29,7 +29,7 @@ RSpec.describe  ReferencePaymentValidator do
       context 'when reference number is enabled' do
         let(:params) do
           {
-            service_id: service_id,
+            service_id:,
             reference_number: '1',
             payment_link: '1',
             payment_link_url: correct_url
@@ -85,7 +85,7 @@ RSpec.describe  ReferencePaymentValidator do
       context 'when reference number is disabled and payment link is missing' do
         let(:params) do
           {
-            service_id: service_id,
+            service_id:,
             reference_number: '0',
             payment_link: '1',
             payment_link_url: ''
@@ -103,7 +103,7 @@ RSpec.describe  ReferencePaymentValidator do
       context 'when payment url is present' do
         let(:params) do
           {
-            service_id: service_id,
+            service_id:,
             reference_number: '1',
             payment_link: '0',
             payment_link_url: correct_url

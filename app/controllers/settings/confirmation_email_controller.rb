@@ -5,13 +5,13 @@ class Settings::ConfirmationEmailController < FormController
 
   def create
     @confirmation_email = ConfirmationEmailSettings.new(
-      confirmation_email_settings_params.merge(service: service, from_address: from_address)
+      confirmation_email_settings_params.merge(service:, from_address:)
     )
 
     if @confirmation_email.valid?
       ConfirmationEmailSettingsUpdater.new(
         confirmation_email_settings: @confirmation_email,
-        service: service
+        service:
       ).create_or_update!
 
       redirect_to settings_confirmation_email_index_path(service_id: service.service_id)
@@ -39,14 +39,14 @@ class Settings::ConfirmationEmailController < FormController
 
   def assign_form_objects
     @confirmation_email_settings_dev = ConfirmationEmailSettings.new(
-      service: service,
+      service:,
       deployment_environment: 'dev',
-      from_address: from_address
+      from_address:
     )
     @confirmation_email_settings_production = ConfirmationEmailSettings.new(
-      service: service,
+      service:,
       deployment_environment: 'production',
-      from_address: from_address
+      from_address:
     )
     @email_components = email_components
   end
@@ -63,7 +63,7 @@ class Settings::ConfirmationEmailController < FormController
 
   def assign_from_address_presenter
     @from_address_presenter = FromAddressPresenter.new(
-      from_address: from_address,
+      from_address:,
       messages: I18n.t('warnings.email_settings'),
       service_id: service.service_id
     )

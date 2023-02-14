@@ -7,7 +7,7 @@ module Api
       @label = @option.present? ? @option.name : params[:label]
 
       render DestroyQuestionOptionModal.new(
-        service: service,
+        service:,
         page: @page,
         question: @question,
         option: @option,

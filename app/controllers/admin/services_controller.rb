@@ -4,8 +4,8 @@ module Admin
 
     def index
       response = MetadataApiClient::Service.all_services(
-        page: page,
-        per_page: per_page,
+        page:,
+        per_page:,
         name_query: params[:search] || ''
       )
 
@@ -30,7 +30,7 @@ module Admin
       duplicate_name =  "#{original_metadata['service_name']} - COPY"
       service_creation = ServiceCreation.new(
         service_name: duplicate_name,
-        current_user: current_user
+        current_user:
       )
 
       if service_creation.create
@@ -123,9 +123,9 @@ module Admin
           version_id: version_metadata['version_id'],
           user_id: current_user.id,
           deployment_environment: params[:deployment_environment],
-          require_authentication: require_authentication,
-          username: username,
-          password: password
+          require_authentication:,
+          username:,
+          password:
         )
         if publish_service_creation.save
           PublishServiceJob.perform_later(

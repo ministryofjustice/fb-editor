@@ -1,13 +1,13 @@
 RSpec.describe Move do
   subject(:move) do
     described_class.new(
-      service: service,
-      grid: grid,
-      previous_flow_uuid: previous_flow_uuid,
-      previous_conditional_uuid: previous_conditional_uuid,
-      to_move_uuid: to_move_uuid,
-      target_uuid: target_uuid,
-      target_conditional_uuid: target_conditional_uuid
+      service:,
+      grid:,
+      previous_flow_uuid:,
+      previous_conditional_uuid:,
+      to_move_uuid:,
+      target_uuid:,
+      target_conditional_uuid:
     )
   end
   let(:latest_metadata) { metadata_fixture(:branching_11) }

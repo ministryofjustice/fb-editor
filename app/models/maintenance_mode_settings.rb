@@ -33,8 +33,8 @@ class MaintenanceModeSettings
 
   def database(setting_name)
     ServiceConfiguration.find_by(
-      service_id: service_id,
-      deployment_environment: deployment_environment,
+      service_id:,
+      deployment_environment:,
       name: setting_name.upcase
     ).try(:decrypt_value)
   end

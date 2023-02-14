@@ -10,7 +10,7 @@ RSpec.describe FromAddressSync do
   let(:enabled_email) { 'paddington.bear@justice.gov.uk' }
   let(:disabled_email) { 'yogi.bear@justice.gov.uk' }
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.find_or_initialize_by(service_id: service_id) }
+  let(:from_address) { FromAddress.find_or_initialize_by(service_id:) }
 
   describe '#call' do
     context 'when records are pending' do
@@ -22,7 +22,7 @@ RSpec.describe FromAddressSync do
 
       context 'when status is enable in AWS' do
         before do
-          create(:from_address, :pending, service_id: service_id, email: enabled_email)
+          create(:from_address, :pending, service_id:, email: enabled_email)
         end
         it 'updates record to verified' do
           from_address_sync.call
@@ -32,7 +32,7 @@ RSpec.describe FromAddressSync do
 
       context 'when status is disable in AWS' do
         before do
-          create(:from_address, :pending, service_id: service_id, email: disabled_email)
+          create(:from_address, :pending, service_id:, email: disabled_email)
         end
 
         it 'does not update record' do

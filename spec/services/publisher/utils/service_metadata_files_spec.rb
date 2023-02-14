@@ -7,9 +7,9 @@ RSpec.describe Publisher::Utils::ServiceMetadataFiles do
   let(:autocomplete_items) { '{}' }
   let(:service_provisioner) do
     double(
-      service_id: service_id,
-      service_metadata: service_metadata,
-      autocomplete_items: autocomplete_items
+      service_id:,
+      service_metadata:,
+      autocomplete_items:
     )
   end
   let(:adapter) { double }

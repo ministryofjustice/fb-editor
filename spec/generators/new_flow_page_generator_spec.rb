@@ -1,9 +1,9 @@
 RSpec.describe NewFlowPageGenerator do
   subject(:generator) do
     described_class.new(
-      page_uuid: page_uuid,
-      default_next: default_next,
-      latest_metadata: latest_metadata
+      page_uuid:,
+      default_next:,
+      latest_metadata:
     )
   end
   let(:page_uuid) { SecureRandom.uuid }

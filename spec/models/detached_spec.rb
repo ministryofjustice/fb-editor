@@ -1,9 +1,9 @@
 RSpec.describe Detached do
   subject(:detached) do
     described_class.new(
-      service: service,
-      main_flow_uuids: main_flow_uuids,
-      exclude_branches: exclude_branches
+      service:,
+      main_flow_uuids:,
+      exclude_branches:
     )
   end
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }

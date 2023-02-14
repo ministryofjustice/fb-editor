@@ -1,6 +1,6 @@
 RSpec.describe Traversable do
   subject(:traversable) do
-    described_class.new(service: service, flow_uuid: flow_uuid)
+    described_class.new(service:, flow_uuid:)
   end
 
   def traversable_urls

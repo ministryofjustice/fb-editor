@@ -11,7 +11,7 @@ class Settings::ReferencePaymentController < FormController
     if @reference_payment.valid?
       ReferencePaymentUpdater.new(
         reference_payment_settings: @reference_payment,
-        service: service
+        service:
       ).create_or_update!
 
       redirect_to settings_reference_payment_index_path(service_id: service.service_id)

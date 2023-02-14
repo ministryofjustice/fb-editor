@@ -2,7 +2,7 @@ module FromAddressObjects
   def from_address_creation
     @from_address_creation ||= FromAddressCreation.new(
       from_address: @from_address,
-      email_service: email_service
+      email_service:
     )
   end
 

@@ -159,8 +159,8 @@ class Publisher
     def service
       @service ||= MetadataPresenter::Service.new(
         MetadataApiClient::Version.find(
-          service_id: service_id,
-          version_id: version_id
+          service_id:,
+          version_id:
         ).metadata
       )
     end
@@ -168,8 +168,8 @@ class Publisher
     def platform_app_url(app_name)
       sprintf(
         Rails.application.config.platform_environments[:common][app_name],
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
+        platform_environment:,
+        deployment_environment:
       )
     end
 
@@ -184,7 +184,7 @@ class Publisher
 
     def autocomplete_response
       @autocomplete_response ||= begin
-        response = MetadataApiClient::Items.all(service_id: service_id)
+        response = MetadataApiClient::Items.all(service_id:)
         Rails.logger.info(response.errors) if response.errors?
 
         response.respond_to?(:metadata) ? response.metadata : {}

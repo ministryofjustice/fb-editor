@@ -12,7 +12,7 @@ RSpec.describe FromAddress, type: :model do
   let(:params) do
     {
       service_id: SecureRandom.uuid,
-      email: email
+      email:
     }
   end
   let(:email) { 'buck.rogers@digital.justice.gov.uk' }
@@ -90,10 +90,10 @@ RSpec.describe FromAddress, type: :model do
 
   context 'encrypting and decrypting emails' do
     before do
-      create(:from_address, service_id: service_id, email: email)
+      create(:from_address, service_id:, email:)
     end
     let(:service_id) { SecureRandom.uuid }
-    let(:created_from_address) { FromAddress.find_by(service_id: service_id) }
+    let(:created_from_address) { FromAddress.find_by(service_id:) }
 
     describe '#before_save' do
       context 'encrypting email' do

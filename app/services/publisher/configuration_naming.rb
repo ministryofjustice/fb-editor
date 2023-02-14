@@ -23,8 +23,8 @@ class Publisher
     def namespace
       sprintf(
         Rails.application.config.platform_environments[:common][:namespace],
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
+        platform_environment:,
+        deployment_environment:
       )
     end
 

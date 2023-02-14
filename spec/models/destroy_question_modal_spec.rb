@@ -1,9 +1,9 @@
 RSpec.describe DestroyQuestionModal do
   subject(:destroy_question_modal) do
     described_class.new(
-      service: service,
-      page: page,
-      question: question
+      service:,
+      page:,
+      question:
     )
   end
   let(:service_metadata) { metadata_fixture(:branching_2) }
@@ -43,7 +43,7 @@ RSpec.describe DestroyQuestionModal do
         create(
           :service_configuration,
           name: 'CONFIRMATION_EMAIL_COMPONENT_ID',
-          value: value,
+          value:,
           deployment_environment: 'dev'
         ).decrypt_value
       end

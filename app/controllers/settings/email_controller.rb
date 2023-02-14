@@ -3,13 +3,13 @@ class Settings::EmailController < FormController
 
   def create
     @email_settings = EmailSettings.new(
-      email_settings_params.merge(service: service, from_address: from_address)
+      email_settings_params.merge(service:, from_address:)
     )
 
     if @email_settings.valid?
       EmailSettingsUpdater.new(
         email_settings: @email_settings,
-        service: service
+        service:
       ).create_or_update!
 
       redirect_to settings_email_index_path(service_id: service.service_id)
@@ -50,20 +50,20 @@ class Settings::EmailController < FormController
 
   def assign_form_objects
     @email_settings_dev = EmailSettings.new(
-      service: service,
+      service:,
       deployment_environment: 'dev',
-      from_address: from_address
+      from_address:
     )
     @email_settings_production = EmailSettings.new(
-      service: service,
+      service:,
       deployment_environment: 'production',
-      from_address: from_address
+      from_address:
     )
   end
 
   def assign_from_address_presenter
     @from_address_presenter = FromAddressPresenter.new(
-      from_address: from_address,
+      from_address:,
       messages: I18n.t('warnings.email_settings'),
       service_id: service.service_id
     )
