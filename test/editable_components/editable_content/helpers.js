@@ -1,16 +1,17 @@
 const { EditableContent } = require('../../../app/javascript/src/editable_components');
 
 const constants = {
-  EDITABLE_DEFAULT_CONTENT: '[Optional content]',
+  DEFAULT_CONTENT: '[Optional content]',
   HTML_CONTENT: '<h1>Heading</h1><p>This is a paragraph</p><ul><li>Item 1</li><li>Item 2</li></ul>',
-  MARKDOWN_CONTENT: '# Heading\r\n\r\nThis is a paragraph\r\n\r\n* Item 1\r\n* Item 2\r\n',
+  MARKDOWN_CONTENT: '# Heading\n\nThis is a paragraph\n\n- Item 1\n- Item 2\n\n\n',
+  UUID: '1234567890',
+  EDIT_CLASSNAME: 'active',
 }
 
 function createEditableContent(id, config, content) {
-    var text = content ? content : constants.EDITABLE_RAW_CONTENT;
     var html = `<form id="${id}-form">
       </form>
-      <div id="${id}">${HTML_CONTENT}</div>`;
+      <div id="${id}">${constants.HTML_CONTENT}</div>`;
 
   $(document.body).append(html);
 
@@ -23,10 +24,10 @@ function createEditableContent(id, config, content) {
       id: id,
       type: 'content',
       data: {
-        _uuid: '1234567890'
+        _uuid: constants.UUID,
       },
       text: {
-        default_content: ''
+        default_content: constants.DEFAULT_CONTENT
       }
   }
   // include any passed config items.
