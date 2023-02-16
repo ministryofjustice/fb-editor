@@ -8,10 +8,9 @@ describe('EditableContent', function() {
   const COMPONENT_CLASSNAME = 'EditableContent';
 
   describe('Component', function() {
-    var created;
 
     beforeEach(function() {
-      created = helpers.createEditableContent(COMPONENT_ID);
+      helpers.createEditableContent(COMPONENT_ID);
     });
 
     afterEach(function() {

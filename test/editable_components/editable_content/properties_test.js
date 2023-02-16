@@ -2,9 +2,7 @@ require('../../setup');
 
 describe('EditableContent', function() {
   const helpers = require('./helpers');
-  const c = helpers.constants;
   const COMPONENT_ID = 'editable-content-properties-test';
-  const COMPONENT_CLASSNAME = 'EditableContent';
 
   describe('Properties', function() {
     var created;

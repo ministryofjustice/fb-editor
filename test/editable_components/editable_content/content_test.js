@@ -2,9 +2,7 @@ require('../../setup');
 
 describe('EditableContent', function() {
   const helpers = require('./helpers');
-  const c = helpers.constants;
   const COMPONENT_ID = 'editable-content-content-test';
-  const COMPONENT_CLASSNAME = 'EditableContent';
 
   const DIRTY_MARKDOWN = `
 # My content
@@ -78,10 +76,6 @@ And one final paragraph.`
 </ol>
 <p>And one final paragraph.</p>`
 
-  const getHtml = () => {
-    return $(document).find('.EditableContent .output').html();
-  }
-
   describe('Content', function() {
     var created;
 
@@ -97,7 +91,6 @@ And one final paragraph.`
     it('should remove <!-- --> from content', function() {
       created.instance.$input.val(DIRTY_MARKDOWN);
       created.instance.update();
-      let html = getHtml();
       expect(created.instance.markdown).to.not.include('<!-- -->');
     });
 
@@ -133,7 +126,7 @@ And one final paragraph.`
     it('should output correct html', function() {
       created.instance.$input.val(DIRTY_MARKDOWN);
       created.instance.update();
-      let html = getHtml();
+      let html = $(document).find('.EditableContent .output').html();
       expect(html).to.equal(CLEAN_HTML);
     });
 

@@ -8,7 +8,7 @@ const constants = {
   EDIT_CLASSNAME: 'active',
 }
 
-function createEditableContent(id, config, content) {
+function createEditableContent(id, config) {
     var html = `<form id="${id}-form">
       </form>
       <div id="${id}">${constants.HTML_CONTENT}</div>`;

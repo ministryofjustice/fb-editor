@@ -3,18 +3,15 @@ const { EditableContent } = require('../../../app/javascript/src/editable_compon
 
 describe('EditableContent', function() {
   const helpers = require('./helpers');
-  const c = helpers.constants;
   const COMPONENT_ID = 'editable-content-events-test';
-  const COMPONENT_CLASSNAME = 'EditableContent';
 
   describe('Events', function() {
-    var created;
     var spy;
 
     beforeEach(function() {
       sinon.createSandbox();
       spy = sinon.spy(EditableContent.prototype);
-      created = helpers.createEditableContent(COMPONENT_ID);
+      helpers.createEditableContent(COMPONENT_ID);
     });
 
     afterEach(function() {
