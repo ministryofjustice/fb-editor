@@ -3,10 +3,10 @@ require('../../setup');
 describe('EditableContent', function() {
   const helpers = require('./helpers');
   const c = helpers.constants;
-  const COMPONENT_ID = 'editable-content-properties-test';
+  const COMPONENT_ID = 'editable-content-methods-test';
   const COMPONENT_CLASSNAME = 'EditableContent';
 
-  describe('Properties', function() {
+  describe('Methods', function() {
     var created;
 
     beforeEach(function() {
