@@ -280,15 +280,19 @@ class EditableContent extends EditableElement {
   }
 
   update() {
-    var markdown = this.$input.val().trim(); // Get the latest markdown.
-    this.content = this.#cleanInput(markdown); // Set what will be saved.
-    this.$node.removeClass(this._config.editClassname);
-
     // Figure out what content to show in output area.
-    let defaultContent = this._defaultContent || this._originalContent;
-    let content = (this.#markdown == "" ? defaultContent : this.#markdown);
+    const currentInput = this.$input.val().trim();
+    const defaultContent = this._defaultContent || this._originalContent;
+    const markdown = (currentInput == "" ? defaultContent : currentInput);
+    const html = this.#convertToHtml(markdown);
 
-    this.#output( this.#convertToHtml(content) );
+    // Assign the cleaned markup to be saved
+    this.content = this.#cleanInput(markdown);
+
+    // Add latest content to output area
+    this.$output.html(html);
+
+    this.$node.removeClass(this._config.editClassname);
   }
 
   // Adds the passed content to output area.
@@ -342,9 +346,9 @@ class EditableContent extends EditableElement {
    *    which will help to bypass sanitize-html (see step 5).
    *
    * 4. Converts unwanted HTML from input (when passed HTML or Markdown).
-   *    Note: Because we're converting from Markup, we need to be careful
-   *          about what is converted into entity or escaped form for
-   *          that reason, we are trying to be minimalistic in approach.
+   *     - we call this with HTML to strip out unwanted elements.
+   *     - we call this with markdown, as any HTML is valid markdown, but
+   *       we don't want to allow it, so this strips html from the markdown.
    *
    * 5. To follow step 3 (and this must happen after step 4), we now filter
    *    for $mailtosome@email.com$mailto and replace with the original
@@ -371,6 +375,7 @@ class EditableContent extends EditableElement {
 
     return input;
   }
+
 }
 
 /* Experimental effort to auto-resize input area.
