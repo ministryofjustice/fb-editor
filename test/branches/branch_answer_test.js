@@ -1,6 +1,5 @@
 require("../setup");
 
-
 describe("BranchAnswer", function() {
 
   const helpers = require("./branch_helpers.js");
@@ -17,11 +16,17 @@ describe("BranchAnswer", function() {
     // Hijack $.get to fake a response
     get = $.get;
     $.get = function(urlNotNeeded, response) {
-      response(`<div class="answer">
+        response(`<div class="answer">
                   <select><option>is</option></select>
                   <select><option>This answer value</option></select>
                 </div>`);
-    }
+
+        return({
+          fail: function(callback) {
+            callback({ status: 401 });
+          }
+        });
+      }
 
     // Remove any Answer that is hardcoded.
     $answer = $(c.SELECTOR_PRE_BRANCH_ANSWER, created.$node).remove();

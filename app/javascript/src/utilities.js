@@ -237,6 +237,12 @@ function updateDomByApiRequest(url, placement) {
     }
 
     safelyActivateFunction(placement.done, $node);
+  })
+  .fail(function(xhr) {
+    // If session has expired, redirect to login
+    if(xhr.status === 401) {
+      window.location.href='/';
+    }
   });
 }
 

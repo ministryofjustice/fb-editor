@@ -80,6 +80,12 @@ describe("BranchCondition", function() {
           <select><option>is</option></select>
           <select><option>This answer value</option></select>
         </div>`);
+
+        return({
+          fail: function(callback) {
+            callback({ status: 'error' });
+          }
+        });
       }
     });
 

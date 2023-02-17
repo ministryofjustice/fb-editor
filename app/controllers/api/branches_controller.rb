@@ -14,4 +14,10 @@ class Api::BranchesController < BranchesController
 
     render layout: false
   end
+
+  def require_user!
+    unless user_signed_in?
+      render json: { message: 'Unauthorised' }, status: :unauthorized
+    end
+  end
 end

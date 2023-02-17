@@ -12,6 +12,12 @@ describe('utilities.updateDomByApiRequest', function() {
     $(document.body).append("<p id=\"" + TARGET_ID + "\"></p>");
     $.get = function(urlNotNeeded, response) {
       response("<span id=\"" + INSERT_ID + "\">Luke</span>");
+
+      return({
+          fail: function(callback) {
+            callback({ status: 'error' });
+          }
+        });
     }
   });
 
