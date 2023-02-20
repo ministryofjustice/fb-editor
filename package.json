@@ -18,7 +18,7 @@
     "jquery": "^3.6.3",
     "jquery-ui-dist": "^1.13.2",
     "resolve-url-loader": "^5.0.0",
-    "sanitize-html": "^2.8.1",
+    "sanitize-html": "^2.10.0",
     "showdown": "^2.1.0",
     "sinon": "^15.0.1",
     "tabbable": "^6.0.1"
