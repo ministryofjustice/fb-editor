@@ -281,7 +281,7 @@ class EditableContent extends EditableElement {
 
   update() {
     // Figure out what content to show in output area.
-    const currentInput = this.$input.val().trim();
+    const currentInput = this.$input.val();
     const defaultContent = this._defaultContent || this._originalContent;
     const markdown = (currentInput == "" ? defaultContent : currentInput);
     const html = this.#convertToHtml(markdown);
