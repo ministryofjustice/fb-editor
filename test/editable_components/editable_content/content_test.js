@@ -25,7 +25,8 @@ Followed by another paragraph
 - Item 3
 
 1. First
-  1.1 One point oneth
+  1. One point oneth
+  2. One point twoeth
 2. Second
 3. Third
 
@@ -53,7 +54,8 @@ Followed by another paragraph
 - Item 3
 
 1. First
-  1.1 One point oneth
+  1. One point oneth
+  2. One point twoeth
 2. Second
 3. Third
 
@@ -75,8 +77,9 @@ And one final paragraph.`
 <li>Item 3</li>
 </ul>
 <ol>
-<li>First<br>
-1.1 One point oneth</li>
+<li>First<ol>
+<li>One point oneth</li>
+<li>One point twoeth</li></ol></li>
 <li>Second</li>
 <li>Third</li>
 </ol>
