@@ -20,10 +20,12 @@ Followed by another paragraph
 ## What about a list or two?
 
 - Item 1
+  - Item 1.1
 - Item 2
 - Item 3
 
 1. First
+  1.1 One point oneth
 2. Second
 3. Third
 
@@ -46,10 +48,12 @@ Followed by another paragraph
 ## What about a list or two?
 
 - Item 1
+  - Item 1.1
 - Item 2
 - Item 3
 
 1. First
+  1.1 One point oneth
 2. Second
 3. Third
 
@@ -65,12 +69,14 @@ And one final paragraph.`
 <p>Followed by another paragraph</p>
 <h2>What about a list or two?</h2>
 <ul>
-<li>Item 1</li>
+<li>Item 1<ul>
+<li>Item 1.1</li></ul></li>
 <li>Item 2</li>
 <li>Item 3</li>
 </ul>
 <ol>
-<li>First</li>
+<li>First<br>
+1.1 One point oneth</li>
 <li>Second</li>
 <li>Third</li>
 </ol>
