@@ -176,7 +176,7 @@ class EditableContent extends EditableElement {
     var $input = $("<textarea class=\"input\"></textarea>");
     var $output = $("<div class=\"output\"></div>");
     var $span = $("<span>measure</span>");
-    var html = $node.html().trim(); // Stored Markdown is originally converted at template level
+    var html = $node.html(); // Stored Markdown is originally converted at template level
     var lineHeight;
 
     // Use temporary hidden <span> for obtaining lineHeight measurement
