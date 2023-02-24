@@ -4,8 +4,10 @@ class Settings::ConfirmationEmailController < FormController
   def index; end
 
   def create
+    update_from_address
+
     @confirmation_email = ConfirmationEmailSettings.new(
-      confirmation_email_settings_params.merge(service:, from_address:)
+      confirmation_email_settings_params.merge(service:, from_address:).except(:reply_to)
     )
 
     if @confirmation_email.valid?
@@ -27,6 +29,7 @@ class Settings::ConfirmationEmailController < FormController
 
   def confirmation_email_settings_params
     confirmation_email_params.permit(
+      :reply_to,
       :deployment_environment,
       :send_by_confirmation_email,
       :confirmation_email_component_id,
@@ -36,6 +39,19 @@ class Settings::ConfirmationEmailController < FormController
   end
 
   private
+
+  def update_from_address
+    return if (confirmation_email_settings_params[:reply_to].empty?) 
+  
+    from_address.update(email: confirmation_email_settings_params[:reply_to])
+
+    if (from_address.allowed_domain? && from_address.valid?)
+      from_address.verified!
+      from_address.save!
+      return
+    end
+    render :index, status: :unprocessable_entity and return
+  end
 
   def assign_form_objects
     @confirmation_email_settings_dev = ConfirmationEmailSettings.new(

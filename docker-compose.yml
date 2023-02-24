@@ -27,6 +27,9 @@ services:
       METADATA_API_URL: "http://editor-metadata-app:3000/"
       PLATFORM_ENV: "local"
       SECRET_KEY_BASE: "2de1e1ddc4dc9eebb238d35d6b131cd76c481adb6371ded658fa259411379431391e9431e6257d1ea9dccb80df5d693904b6a4ed3bec7984647fd79c86bf4db5"
+      ENCRYPTION_KEY: 'b*\xA9g,\x0FS\xD4\x7F_\xFA\xF0\xBD\x19\xA3\xEB\x1E\xA5(E)@\xA3\xC5\xB2\xD4\xF0\x92\x10\x1F\xBB\xA5'
+      ENCRYPTION_SALT: '~\xE7\xD2\xA3\x15\xC3\xCFzQ:\xDC\x94\xC4\x18|\xF3\x99\x12\xEFt\xFBk*\xA9\x03I\xFB\xA2\x87\xE9\x82v'
+
     depends_on:
       - editor-db
       - editor-metadata-app
@@ -42,6 +45,9 @@ services:
   editor-metadata-app:
     build:
       context: https://github.com/ministryofjustice/fb-metadata-api.git#main
+    # build:
+    #   context: ../fb-metadata-api
+    #   dockerfile: $PWD/Dockerfile
       args:
         BUNDLE_ARGS: ''
     tty: true
@@ -62,6 +68,9 @@ services:
     container_name: editor-service-token-cache-app
     build:
       context: https://github.com/ministryofjustice/fb-service-token-cache.git
+    # build:
+    #   context: ../fb-service-token-cache
+    #   dockerfile: $PWD/Dockerfile
     environment:
       SENTRY_DSN: sentry-dsn
       RAILS_ENV: test

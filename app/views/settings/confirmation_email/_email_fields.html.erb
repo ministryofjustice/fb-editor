@@ -3,18 +3,28 @@
       <strong> "<%=f.object.service.service_name %>" </strong>
       <strong><%= f.object.service_email_from %></strong>
 
-      <% unless @from_address.verified? %>
-        <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
-      <% end %>
-
-      <% if @from_address.pending? %>
-        <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
-          settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
+      <% if ENV['REPLY_TO'] == "enabled" %>
+        <%= f.govuk_text_field :reply_to,
+        label: {
+          text: 'Reply to',
+          for: settings_field_id(f, :reply_to, deployment_environment)
+        },
+        value: f.object.service_email_from,
+        id: settings_field_id(f, :reply_to, deployment_environment) %>
       <% else %>
-        <p class="govuk-!-margin-top-2">
-          <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
-            settings_from_address_index_path(service.service_id))%>
-        </p>
+        <% unless @from_address.verified? %>
+          <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
+        <% end %>
+
+        <% if @from_address.pending? %>
+          <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
+            settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
+        <% else %>
+          <p class="govuk-!-margin-top-2">
+            <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
+              settings_from_address_index_path(service.service_id))%>
+          </p>
+        <% end %>
       <% end %>
     </div>
 
