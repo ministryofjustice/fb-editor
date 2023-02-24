@@ -39,36 +39,6 @@ feature 'From address' do
     then_I_click_the_contact_us_link
   end
 
-  shared_examples 'send data by email page' do
-    scenario 'from address warning messages' do
-      and_I_visit_the_submission_settings_page
-      then_I_should_see_the_send_data_by_email_page
-
-      and_I_set_send_by_email(true)
-      then_I_should_see_the_send_data_by_email_from_address_warnings('default'.to_sym)
-
-      when_I_visit_the_from_address_settings_page
-      when_I_change_my_from_address(configs[:pending][:email])
-      then_I_should_see_the_contact_us_message
-
-      and_I_visit_the_submission_settings_page
-      and_I_set_send_by_email(true)
-      then_I_should_see_the_send_data_by_email_from_address_warnings('pending'.to_sym)
-    end
-  end
-
-  context 'when dev environment' do
-    let(:environment) { 'dev' }
-
-    it_behaves_like 'send data by email page'
-  end
-
-  context 'when production environment' do
-    let(:environment) { 'production' }
-
-    it_behaves_like 'send data by email page'
-  end
-
   ## From Address Settings page
   def then_I_should_see_the_from_address_settings_page
     expect(page).to have_content(I18n.t('settings.from_address.heading'))

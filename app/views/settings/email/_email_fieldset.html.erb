@@ -1,4 +1,11 @@
 <%= f.govuk_fieldset(legend: { text: f.object.class.human_attribute_name(:email_fieldset) }) do %>
+
+  <% if ENV['REPLY_TO'] == 'enabled' %>
+    <div class="govuk-form-group">
+      <%= f.object.class.human_attribute_name :service_email_from %>
+      <%=f.object.service.service_name %>
+    </div>
+  <% else %>
     <div class="govuk-form-group">
       <%= f.object.class.human_attribute_name :service_email_from %>
       <strong> "<%=f.object.service.service_name %>" </strong>
@@ -18,6 +25,7 @@
         </p>
       <% end %>
     </div>
+  <% end %>
 
     <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
       <% if f.object.errors.present? %>
