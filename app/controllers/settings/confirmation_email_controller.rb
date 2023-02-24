@@ -41,16 +41,12 @@ class Settings::ConfirmationEmailController < FormController
   private
 
   def update_from_address
-    return if (confirmation_email_settings_params[:reply_to].empty?) 
-  
     from_address.update(email: confirmation_email_settings_params[:reply_to])
 
-    if (from_address.allowed_domain? && from_address.valid?)
+    if from_address.valid?
       from_address.verified!
       from_address.save!
-      return
     end
-    render :index, status: :unprocessable_entity and return
   end
 
   def assign_form_objects

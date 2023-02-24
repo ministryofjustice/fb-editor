@@ -594,6 +594,9 @@ en:
           link_start_with: 'https://www.gov.uk/payments/'
         email_settings:
           domain_invalid: 'The address you want to send the email to must be an MoJ email address or other approved address.'
+        reply_to:
+          domain_invalid: The reply address must be an MoJ email address or other approved address
+          blank: Enter a reply email address
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: Form names must be %{count} characters or more
