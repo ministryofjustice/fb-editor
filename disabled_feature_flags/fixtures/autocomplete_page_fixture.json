@@ -1,0 +1,165 @@
+{
+  "_id": "service.base",
+  "flow": {
+    "6faed0c4-2dc3-4df7-9bcb-8081793848aa": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    },
+    "709ca6bc-6cb3-446d-a8c1-1d1a96f9dbbc": {
+      "next": {
+        "default": "8783d5b1-c5f5-40ac-8062-091945eec6fc"
+      },
+      "_type": "flow.page"
+    },
+    "8783d5b1-c5f5-40ac-8062-091945eec6fc": {
+      "next": {
+        "default": "ee163cdb-e5ec-4dd2-9aba-5cd43146d3f4"
+      },
+      "_type": "flow.page"
+    },
+    "ee163cdb-e5ec-4dd2-9aba-5cd43146d3f4": {
+      "next": {
+        "default": "6faed0c4-2dc3-4df7-9bcb-8081793848aa"
+      },
+      "_type": "flow.page"
+    }
+  },
+  "_type": "service.base",
+  "pages": [
+    {
+      "_id": "page.start",
+      "url": "/",
+      "body": "Use this service to:\r\n\r\n* do something\r\n* update your name, address or other details\r\n* do something else\r\n\r\nRegistering takes around 5 minutes.",
+      "_type": "page.start",
+      "_uuid": "709ca6bc-6cb3-446d-a8c1-1d1a96f9dbbc",
+      "heading": "Service name goes here",
+      "before_you_start": "###Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
+    },
+    {
+      "_id": "page.countries",
+      "url": "countries",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "8783d5b1-c5f5-40ac-8062-091945eec6fc",
+      "heading": "",
+      "components": [
+        {
+          "_id": "countries_autocomplete_1",
+          "hint": "",
+          "name": "countries_autocomplete_1",
+          "_type": "autocomplete",
+          "_uuid": "a74e728b-e60e-4dd2-ace1-66eb1755c318",
+          "label": "Countries Question",
+          "errors": {
+          },
+          "legend": "Question",
+          "collection": "components",
+          "validation": {
+            "required": true,
+            "autocomplete": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.checkanswers",
+      "url": "check-answers",
+      "_type": "page.checkanswers",
+      "_uuid": "ee163cdb-e5ec-4dd2-9aba-5cd43146d3f4",
+      "heading": "Check your answers",
+      "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
+      "components": [
+
+      ],
+      "send_heading": "Now send your application",
+      "extra_components": [
+
+      ]
+    },
+    {
+      "_id": "page.confirmation",
+      "url": "form-sent",
+      "_type": "page.confirmation",
+      "_uuid": "6faed0c4-2dc3-4df7-9bcb-8081793848aa",
+      "heading": "Application complete",
+      "components": [
+
+      ]
+    }
+  ],
+  "locale": "en",
+  "created_at": "2022-08-23T08:35:59Z",
+  "created_by": "c2df7129-db18-4df6-9fad-0a1f6e0cafd9",
+  "service_id": "c4805211-2ba3-4ace-ba22-bc4faa999a61",
+  "version_id": "b7669cc1-ab0e-4020-b129-9c63faef80c2",
+  "service_name": "Acceptance-Test-O8QfGX3WoFRRlmv4",
+  "configuration": {
+    "meta": {
+      "_id": "config.meta",
+      "_type": "config.meta",
+      "items": [
+        {
+          "_id": "config.meta--link",
+          "href": "/cookies",
+          "text": "Cookies",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--2",
+          "href": "/privacy",
+          "text": "Privacy",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--3",
+          "href": "/accessibility",
+          "text": "Accessibility",
+          "_type": "link"
+        }
+      ]
+    },
+    "service": {
+      "_id": "config.service",
+      "_type": "config.service"
+    }
+  },
+  "standalone_pages": [
+    {
+      "_id": "page.cookies",
+      "url": "cookies",
+      "body": "Cookies body",
+      "_type": "page.standalone",
+      "_uuid": "ef5fd7dd-71d8-480b-9cce-ae8f9f80bfeb",
+      "heading": "Cookies",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.privacy",
+      "url": "privacy",
+      "body": "Privacy body",
+      "_type": "page.standalone",
+      "_uuid": "ead38900-5eb1-44f5-a9bd-6e65fdd21a48",
+      "heading": "Privacy notice",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.accessibility",
+      "url": "accessibility",
+      "body": "Accessibilty body",
+      "_type": "page.standalone",
+      "_uuid": "5464d8f3-c137-4bca-8daf-c0a424a63b93",
+      "heading": "Accessibility statement",
+      "components": [
+
+      ]
+    }
+  ]
+}

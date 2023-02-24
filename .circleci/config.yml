@@ -328,7 +328,7 @@ jobs:
       - run: *wait_for_db
       - run: *db_setup
       - run:
-          name: Run acceptance tests
+          name: Run disabled feature flags acceptance tests
           command: |
             EDITOR_APP=https://fb-editor-test.apps.live.cloud-platform.service.justice.gov.uk
             echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
@@ -338,7 +338,7 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            TESTFILES=$(circleci tests glob "acceptance/disabled_feature_flags/*_spec.rb")
+            TESTFILES=$(circleci tests glob "/disabled_feature_flags/**/*_spec.rb")
             echo '***********'
             echo $TESTFILES
             echo '***********'

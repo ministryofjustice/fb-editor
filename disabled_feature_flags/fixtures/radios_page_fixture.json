@@ -1,0 +1,180 @@
+{
+  "_id": "service.base",
+  "flow": {
+    "349c97e1-40a7-4be4-a90d-1edd1273f53b": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    },
+    "6bf197b1-32c4-4e4c-88a0-5f99ce8755f9": {
+      "next": {
+        "default": "349c97e1-40a7-4be4-a90d-1edd1273f53b"
+      },
+      "_type": "flow.page"
+    },
+    "8e508063-671e-4f87-804c-70eff4c40b72": {
+      "next": {
+        "default": "6bf197b1-32c4-4e4c-88a0-5f99ce8755f9"
+      },
+      "_type": "flow.page"
+    },
+    "aeb6d3d7-c796-4355-b3e2-67c57bab78f9": {
+      "next": {
+        "default": "8e508063-671e-4f87-804c-70eff4c40b72"
+      },
+      "_type": "flow.page"
+    }
+  },
+  "_type": "service.base",
+  "pages": [
+    {
+      "_id": "page.start",
+      "url": "/",
+      "body": "Use this service to:\r\n\r\n* do something\r\n* update your name, address or other details\r\n* do something else\r\n\r\nRegistering takes around 5 minutes.",
+      "_type": "page.start",
+      "_uuid": "aeb6d3d7-c796-4355-b3e2-67c57bab78f9",
+      "heading": "Service name goes here",
+      "before_you_start": "###Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
+    },
+    {
+      "_id": "page.star-wars-question",
+      "url": "star-wars-question",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "8e508063-671e-4f87-804c-70eff4c40b72",
+      "heading": "",
+      "components": [
+        {
+          "_id": "star-wars-question_radios_1",
+          "hint": "",
+          "name": "star-wars-question_radios_1",
+          "_type": "radios",
+          "_uuid": "ccade4c5-73d3-4d90-bde6-29d8e63ef61d",
+          "items": [
+            {
+              "_id": "star-wars-question_radios_1_item_1",
+              "hint": "",
+              "_type": "radio",
+              "_uuid": "8717fa10-e234-4e21-a25f-abd30e86eef8",
+              "label": "Option",
+              "value": "value-1"
+            },
+            {
+              "_id": "star-wars-question_radios_1_item_2",
+              "hint": "",
+              "_type": "radio",
+              "_uuid": "2994727a-e34b-4327-bcf9-120d33430349",
+              "label": "Option",
+              "value": "value-2"
+            }
+          ],
+          "errors": {
+          },
+          "legend": "Star Wars Question",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.checkanswers",
+      "url": "check-answers",
+      "_type": "page.checkanswers",
+      "_uuid": "6bf197b1-32c4-4e4c-88a0-5f99ce8755f9",
+      "heading": "Check your answers",
+      "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
+      "components": [
+
+      ],
+      "send_heading": "Now send your application",
+      "extra_components": [
+
+      ]
+    },
+    {
+      "_id": "page.confirmation",
+      "url": "form-sent",
+      "_type": "page.confirmation",
+      "_uuid": "349c97e1-40a7-4be4-a90d-1edd1273f53b",
+      "heading": "Application complete",
+      "components": [
+
+      ]
+    }
+  ],
+  "locale": "en",
+  "created_at": "2022-04-25T13:44:30Z",
+  "created_by": "47a4e5d7-92ad-464c-b01a-e3bd0a1ee454",
+  "service_id": "6a61ef72-c86c-4767-8bd9-8bc67a5b251e",
+  "version_id": "2cd3a5b1-e595-4057-a8a0-a73e73c579b0",
+  "service_name": "Acceptance-Test-vyLnKlILQpIyDn6D",
+  "configuration": {
+    "meta": {
+      "_id": "config.meta",
+      "_type": "config.meta",
+      "items": [
+        {
+          "_id": "config.meta--link",
+          "href": "/cookies",
+          "text": "Cookies",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--2",
+          "href": "/privacy",
+          "text": "Privacy",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--3",
+          "href": "/accessibility",
+          "text": "Accessibility",
+          "_type": "link"
+        }
+      ]
+    },
+    "service": {
+      "_id": "config.service",
+      "_type": "config.service"
+    }
+  },
+  "standalone_pages": [
+    {
+      "_id": "page.cookies",
+      "url": "cookies",
+      "body": "Cookies body",
+      "_type": "page.standalone",
+      "_uuid": "8974e6b9-b53e-452d-b4d4-2b5bbfb9f383",
+      "heading": "Cookies",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.privacy",
+      "url": "privacy",
+      "body": "Privacy body",
+      "_type": "page.standalone",
+      "_uuid": "950f83e2-fec9-4251-ad29-1220e68250d1",
+      "heading": "Privacy notice",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.accessibility",
+      "url": "accessibility",
+      "body": "Acessibility body",
+      "_type": "page.standalone",
+      "_uuid": "2d5fca2b-b790-488b-b34d-6366cfd1aebc",
+      "heading": "Accessibility statement",
+      "components": [
+
+      ]
+    }
+  ]
+}
