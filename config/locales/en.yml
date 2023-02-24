@@ -492,6 +492,7 @@ en:
         email: "‘From’ address"
         from_address_hint: This should generally be a shared team account
       email_settings:
+        reply_to: Reply to
         send_by_email_dev: Enable email on Test
         send_by_email_production: Enable email on Live
         service_email_output: To
