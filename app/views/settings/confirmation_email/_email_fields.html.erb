@@ -1,9 +1,8 @@
     <div class="govuk-form-group">
       <%= t('activemodel.attributes.email_settings.service_email_from')%>
-      <strong> "<%=f.object.service.service_name %>" </strong>
-      <strong><%= f.object.service_email_from %></strong>
 
       <% if ENV['REPLY_TO'] == "enabled" %>
+        <%=f.object.service.service_name %>
         <%= f.govuk_text_field :reply_to,
         label: {
           text: t('activemodel.attributes.email_settings.reply_to'),
@@ -12,6 +11,9 @@
         value: f.object.service_email_from,
         id: settings_field_id(f, :reply_to, deployment_environment) %>
       <% else %>
+        <strong> "<%=f.object.service.service_name %>" </strong>
+        <strong><%= f.object.service_email_from %></strong>
+
         <% unless @from_address.verified? %>
           <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
         <% end %>
