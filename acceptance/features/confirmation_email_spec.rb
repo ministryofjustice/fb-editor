@@ -159,8 +159,7 @@ feature 'Confirmation email' do
   end
 
   def then_I_should_see_the_confirmation_email_defaults
-    expect(page).to have_content(I18n.t('default_values.service_email_from'))
-    expect(page).to have_content(I18n.t('default_values.service_email_from'))
+    expect(page).to have_content(service_name)
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.reply_to'))
     expect(page.find(:css, "input#confirmation-email-settings-confirmation-email-subject-#{environment}-field").value).to have_content(message_subject)
     expect(page).to have_content(message_body)
