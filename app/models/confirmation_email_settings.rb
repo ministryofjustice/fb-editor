@@ -16,6 +16,8 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   validates :confirmation_email_component_id, presence: true, if: :send_by_confirmation_email?
 
+  validates_with FromAddressValidator
+
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
       service_id: service.service_id,

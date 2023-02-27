@@ -553,6 +553,10 @@ module CommonSteps
     page.find(:css, "input#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(true)
   end
 
+  def when_I_disable_confirmation_email(environment)
+    page.find(:css, "input#confirmation-email-settings-send-by-confirmation-email-#{environment}-1-field", visible: false).set(false)
+  end
+
   def then_I_add_a_page_with_email_component
     and_I_return_to_flow_page
     when_I_add_a_single_question_page_with_email_after_start(url: 'new-email')

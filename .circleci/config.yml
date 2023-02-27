@@ -298,7 +298,47 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
+            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | sed '/acceptance\/disabled_feature_flag/d' | circleci tests split --split-by=timings --timings-type=filename)
+            echo '***********'
+            echo $TESTFILES
+            echo '***********'
+
+            bundle exec rspec --format progress \
+              --format RspecJunitFormatter \
+              --out ~/acceptance/acceptance.xml \
+              $TESTFILES
+      - store_test_results:
+          path: ~/acceptance
+      - slack/status: *testable_slack_status
+  disabled_feature_flags_acceptance_tests:
+    docker: *test_image
+    resource_class: large
+    environment: *test_environment
+    parallelism: 7
+    steps:
+      - checkout
+      - ruby/install-deps
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check browser tools install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run: *wait_for_db
+      - run: *db_setup
+      - run:
+          name: Run acceptance tests
+          command: |
+            EDITOR_APP=https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk
+            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
+            echo 'export REPLY_TO=disabled' >> $BASH_ENV
+            echo 'export CI_MODE=true' >> $BASH_ENV
+            source $BASH_ENV
+
+            TESTFILES=$(circleci tests glob "acceptance/disabled_feature_flags/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
             echo '***********'
             echo $TESTFILES
             echo '***********'
@@ -447,6 +487,11 @@ workflows:
           context: *context
           requires:
             - deploy_testable_branch
+      - disabled_feature_flags_acceptance_tests:
+          context: *context
+          requires:
+            - deploy_testable_branch
+            - testable_branch_acceptance_tests
       - slack/approval-notification:
           message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
           include_job_number_field: false

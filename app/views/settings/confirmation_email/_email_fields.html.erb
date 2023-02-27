@@ -6,7 +6,7 @@
       <% if ENV['REPLY_TO'] == "enabled" %>
         <%= f.govuk_text_field :reply_to,
         label: {
-          text: 'Reply to',
+          text: t('activemodel.attributes.email_settings.reply_to'),
           for: settings_field_id(f, :reply_to, deployment_environment)
         },
         value: f.object.service_email_from,
