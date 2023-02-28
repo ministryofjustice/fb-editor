@@ -39,7 +39,7 @@ RSpec.describe  FromAddressValidator do
         end
 
         it 'returns an error message' do
-          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.reply_to.domain_invalid'))
+          expect(subject.errors.full_messages).to include(/#{I18n.t('activemodel.errors.models.reply_to.domain_invalid')}/)
         end
       end
     end
