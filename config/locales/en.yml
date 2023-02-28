@@ -514,6 +514,7 @@ en:
           pending_link: Get validation link
           link: Change ’from’ address
       confirmation_email_settings:
+        reply_to_hint: The email adderss that replies will go to - this must be an MoJ email address or other approved email address
         confirmation_email_component_id: To the email address captured by
         confirmation_email_subject: Subject
         confirmation_email_body: Message

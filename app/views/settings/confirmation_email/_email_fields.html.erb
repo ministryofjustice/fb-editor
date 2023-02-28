@@ -1,16 +1,25 @@
     <div class="govuk-form-group">
-      <%= t('activemodel.attributes.email_settings.service_email_from')%>
-
       <% if ENV['REPLY_TO'] == "enabled" %>
-        <%=f.object.service.service_name %>
+        <div class="govuk-form-group">
+          <%= t('activemodel.attributes.email_settings.service_email_from')%>
+          <%=f.object.service.service_name %>
+        </div>
         <%= f.govuk_text_field :reply_to,
         label: {
           text: t('activemodel.attributes.email_settings.reply_to'),
           for: settings_field_id(f, :reply_to, deployment_environment)
         },
+        width: 'two-thirds',
         value: f.object.service_email_from,
-        id: settings_field_id(f, :reply_to, deployment_environment) %>
+        id: settings_field_id(f, :reply_to, deployment_environment),
+        hint: -> do %>
+        <div class="govuk-hint"
+          id="confirmation-email-settings-reply-to-<%=deployment_environment%>-hint">
+          <%= t('activemodel.attributes.confirmation_email_settings.reply_to_hint') %>
+        </div>
+        <% end %>
       <% else %>
+        <%= t('activemodel.attributes.email_settings.service_email_from')%>
         <strong> "<%=f.object.service.service_name %>" </strong>
         <strong><%= f.object.service_email_from %></strong>
 
