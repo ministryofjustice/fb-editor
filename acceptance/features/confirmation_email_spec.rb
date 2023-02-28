@@ -98,13 +98,13 @@ feature 'Confirmation email' do
 
       when_I_disable_confirmation_email(environment)
       when_I_enable_confirmation_email(environment)
-      then_I_add_a_reply_to_email('iorek.byrnison@outlook.com')
+      then_I_add_a_reply_to_email('iorek.byrnison@outlook.com', "-error")
       click_button(I18n.t("settings.submission.#{environment}.save_button"))
       then_I_should_see_the_error(invalid_domain)
 
       when_I_disable_confirmation_email(environment)
       when_I_enable_confirmation_email(environment)
-      then_I_add_a_reply_to_email('iorek.byrnison@digital.justice.gov.uk')
+      then_I_add_a_reply_to_email('iorek.byrnison@digital.justice.gov.uk', "-error")
       click_button(I18n.t("settings.submission.#{environment}.save_button"))
       then_I_should_see_no_error_message
     end
@@ -165,8 +165,8 @@ feature 'Confirmation email' do
     expect(page).to have_content(message_body)
   end
 
-  def then_I_add_a_reply_to_email(email)
-    editor.find(:css, "input#confirmation-email-settings-reply-to-#{environment}-field").set(email)
+  def then_I_add_a_reply_to_email(email, error="")
+    editor.find(:css, "input#confirmation-email-settings-reply-to-#{environment}-field#{error}").set(email)
     click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
