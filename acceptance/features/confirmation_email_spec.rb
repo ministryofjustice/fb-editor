@@ -30,6 +30,7 @@ feature 'Confirmation email' do
     then_I_add_a_page_with_email_component
     when_I_visit_the_confirmation_email_settings_page
     when_I_enable_confirmation_email('dev')
+    then_I_fill_in_reply_to_email('valid_email@justice.gov.uk', 'dev')
     click_button(I18n.t('settings.submission.dev.save_button'))
 
     and_I_return_to_flow_page
@@ -51,6 +52,7 @@ feature 'Confirmation email' do
 
     when_I_visit_the_confirmation_email_settings_page
     when_I_enable_confirmation_email('dev')
+    then_I_fill_in_reply_to_email('valid_email@justice.gov.uk', 'dev')
     click_button(I18n.t('settings.submission.dev.save_button'))
 
     and_I_return_to_flow_page
@@ -92,7 +94,7 @@ feature 'Confirmation email' do
       then_I_should_see_confirmation_email_fields
       then_I_should_see_the_confirmation_email_defaults
       then_I_should_see_email_component_question_selected
-      then_I_add_a_reply_to_email('email no formatty')
+      then_I_fill_in_reply_to_email('email no formatty', 'dev')
       click_button(I18n.t("settings.submission.#{environment}.save_button"))
       then_I_should_see_the_error(invalid_format)
 
@@ -166,7 +168,7 @@ feature 'Confirmation email' do
   end
 
   def then_I_add_a_reply_to_email(email, error="")
-    editor.find(:css, "input#confirmation-email-settings-reply-to-#{environment}-field#{error}").set(email)
+    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field#{error}").set(email)
     click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 

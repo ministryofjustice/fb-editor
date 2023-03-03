@@ -572,4 +572,7 @@ module CommonSteps
     when_I_add_the_page
   end
 
+  def then_I_fill_in_reply_to_email(email, environment)
+    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
+  end
 end
