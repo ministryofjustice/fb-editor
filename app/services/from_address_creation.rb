@@ -9,11 +9,7 @@ class FromAddressCreation
 
     return if saved_email_address.present? && saved_email_address == from_address.email
 
-    if ENV['REPLY_TO'] == 'enabled'
-      from_address.verified!
-    else
-      from_address.status = verify_email
-    end
+    from_address.status = verify_email
     from_address.save!
   rescue ActiveRecord::RecordInvalid
     false
