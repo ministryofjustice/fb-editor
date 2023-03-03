@@ -29,8 +29,10 @@ feature 'Reference Payment Page' do
     then_I_add_a_page_with_email_component
     when_I_visit_the_confirmation_email_settings_page
     when_I_enable_confirmation_email('dev')
+    then_I_add_a_reply_to_email('iorek.byrnison@digital.justice.gov.uk', 'dev')
     click_button(I18n.t('settings.submission.dev.save_button'))
     when_I_enable_confirmation_email('production')
+    then_I_add_a_reply_to_email('iorek.byrnison@digital.justice.gov.uk', 'production')
     click_button(I18n.t('settings.submission.production.save_button'))
     when_I_visit_the_reference_payment_page
     expect(page).to_not have_css('.govuk-notification-banner__content', text: confirmation_warning_title)
@@ -170,5 +172,10 @@ feature 'Reference Payment Page' do
   def when_I_update_the_question_name
     and_I_edit_the_question
     when_I_save_my_changes
+  end
+
+  ## Confirmation Email Settings Page
+  def then_I_add_a_reply_to_email(email, environment)
+    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
   end
 end
