@@ -1,5 +1,6 @@
 class ConfirmationEmailSettings < BaseEmailSettings
   attr_accessor :deployment_environment,
+                :confirmation_email_reply_to,
                 :service,
                 :from_address,
                 :send_by_confirmation_email,
@@ -16,7 +17,7 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   validates :confirmation_email_component_id, presence: true, if: :send_by_confirmation_email?
 
-  validates_with FromAddressValidator
+  validates_with ReplyToAddressValidator
 
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
@@ -39,6 +40,10 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   def confirmation_email_body
     settings_for(:confirmation_email_body)
+  end
+
+  def confirmation_email_reply_to
+    settings_for(:confirmation_email_reply_to)
   end
 
   def email_component_ids

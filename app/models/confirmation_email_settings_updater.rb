@@ -3,6 +3,7 @@ class ConfirmationEmailSettingsUpdater
 
   CONFIG_WITHOUT_DEFAULTS = %w[
     CONFIRMATION_EMAIL_COMPONENT_ID
+    CONFIRMATION_EMAIL_REPLY_TO
   ].freeze
 
   CONFIG_WITH_DEFAULTS = %w[

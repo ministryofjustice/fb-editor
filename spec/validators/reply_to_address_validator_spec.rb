@@ -1,7 +1,7 @@
-RSpec.describe  FromAddressValidator do
+RSpec.describe  ReplyToAddressValidator do
   let(:subject) { ConfirmationEmailSettings.new(params) }
   let(:service_id) { SecureRandom.uuid }
-  let(:from_address) { FromAddress.new({ email: }) }
+  let(:confirmation_email_reply_to) { email }
 
   describe '#validate' do
     before do
@@ -14,7 +14,7 @@ RSpec.describe  FromAddressValidator do
           let(:email) { "hello@#{domain}" }
           let(:params) do
             {
-              from_address:,
+              confirmation_email_reply_to:,
               deployment_environment: environment
             }
           end
@@ -29,7 +29,7 @@ RSpec.describe  FromAddressValidator do
         let(:email) { 'hello@notvalid.gov.uk' }
         let(:params) do
           {
-            from_address:,
+            confirmation_email_reply_to:,
             deployment_environment: environment
           }
         end
@@ -49,7 +49,7 @@ RSpec.describe  FromAddressValidator do
         let(:email) { 'hello@digital.justice.gov.uk' }
         let(:params) do
           {
-            from_address:,
+            confirmation_email_reply_to:,
             deployment_environment: environment
           }
         end
@@ -63,7 +63,7 @@ RSpec.describe  FromAddressValidator do
         let(:email) { 'I am not a valid email' }
         let(:params) do
           {
-            from_address:,
+            confirmation_email_reply_to:,
             deployment_environment: environment
           }
         end

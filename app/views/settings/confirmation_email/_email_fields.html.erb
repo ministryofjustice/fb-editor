@@ -4,19 +4,18 @@
           <%= t('activemodel.attributes.email_settings.service_email_from')%>
           <%=f.object.service.service_name %>
         </div>
-        <%= f.govuk_text_field :reply_to,
+        <%= f.govuk_text_field :confirmation_email_reply_to,
         label: {
           text: t('activemodel.attributes.email_settings.reply_to'),
-          for: settings_field_id(f, :reply_to, deployment_environment)
+          for: settings_field_id(f, :confirmation_email_reply_to, deployment_environment)
         },
         width: 'two-thirds',
-        value: f.object.service_email_from,
-        id: settings_field_id(f, :reply_to, deployment_environment),
+        id: settings_field_id(f, :confirmation_email_reply_to, deployment_environment),
         hint: -> do %>
-        <div class="govuk-hint"
-          id="confirmation-email-settings-reply-to-<%=deployment_environment%>-hint">
-          <%= t('activemodel.attributes.confirmation_email_settings.reply_to_hint') %>
-        </div>
+          <div class="govuk-hint"
+            id="confirmation-email-settings-reply-to-<%=deployment_environment%>-hint">
+            <%= t('activemodel.attributes.confirmation_email_settings.reply_to_hint') %>
+          </div>
         <% end %>
       <% else %>
         <%= t('activemodel.attributes.email_settings.service_email_from')%>

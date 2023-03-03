@@ -32,6 +32,7 @@ en:
     service_email_pdf_heading: 'Submission for %{service_name} {{reference_number_placeholder}}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
+    confirmation_email_reply_to: ''
     confirmation_email_subject: "Your submission to ‘%{service_name}’{{reference_number_placeholder}}"
     confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_payment_placeholder}}\n\r\nA copy of the information you provided is attached to this email."
     reference_number_sentence: "Your reference number is: {{reference_number}}."
@@ -514,7 +515,7 @@ en:
           pending_link: Get validation link
           link: Change ’from’ address
       confirmation_email_settings:
-        reply_to_hint: The email adderss that replies will go to - this must be an MoJ email address or other approved email address
+        reply_to_hint: The email address that replies will go to - this must be an MoJ email address or other approved email address
         confirmation_email_component_id: To the email address captured by
         confirmation_email_subject: Subject
         confirmation_email_body: Message
