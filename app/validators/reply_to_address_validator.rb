@@ -1,6 +1,7 @@
 class ReplyToAddressValidator < ActiveModel::Validator
   def validate(record)
     return if ENV['REPLY_TO'] != 'enabled'
+
     user_email = record.confirmation_email_reply_to
     domain = user_email.split('@').last
 
