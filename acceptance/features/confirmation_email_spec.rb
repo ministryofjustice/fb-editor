@@ -94,7 +94,7 @@ feature 'Confirmation email' do
       then_I_should_see_confirmation_email_fields
       then_I_should_see_the_confirmation_email_defaults
       then_I_should_see_email_component_question_selected
-      then_I_fill_in_reply_to_email('email no formatty', 'dev')
+      then_I_add_a_reply_to_email('email no formatty')
       click_button(I18n.t("settings.submission.#{environment}.save_button"))
       then_I_should_see_the_error(invalid_format)
 
