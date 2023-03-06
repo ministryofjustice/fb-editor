@@ -225,6 +225,7 @@ class EditableContent extends EditableElement {
     this._lineHeight = lineHeight;
     this.$input = $input;
     this.$output = $output;
+    console.log(html);
     this.content = this.#convertToMarkdown(html);
 
     if(config.text.default_content) {
@@ -310,6 +311,13 @@ class EditableContent extends EditableElement {
    **/
   #convertToMarkdown(html) {
     var markdown = this.#converter.makeMarkdown(html);
+    // For some reason <br> tags are not being converted correctly into 2 psaces
+    // and a newline.  This fixes that problem, nut it feels like a bad fix, and
+    // like we shouldn't have to do this!
+    console.log(markdown);
+    markdown = markdown.replace(/<br>\n\n/mig, "  \n");
+    console.log(markdown)
+    return markdown;
     return this.#cleanInput(markdown);
   }
 
