@@ -70,8 +70,7 @@ RSpec.describe PublishingPagePresenter do
         let(:presenters) do
           [
             submission_pages_presenter,
-            autocomplete_warning,
-            from_address_warning
+            autocomplete_warning
           ]
         end
 

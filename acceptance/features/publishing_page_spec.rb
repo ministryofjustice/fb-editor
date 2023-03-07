@@ -123,21 +123,8 @@ feature 'Publishing' do
 
       when_I_visit_the_publishing_page
       then_I_should_not_see_autocomplete_warnings
-      then_I_should_see_the_publish_button
+      then_the_publish_button_should_be_enabled
     end
-
-    scenario 'when from address is not validated' do
-      when_I_enable_the_submission_settings
-      when_I_visit_the_publishing_page
-      then_I_should_see_from_address_warning('default')
-
-      when_I_visit_the_from_address_settings_page
-      when_I_change_my_from_address('miriel@numenor.me')
-
-      when_I_visit_the_publishing_page
-      then_I_should_see_from_address_warning('pending')
-    end
-
   end
 
   context 'when dev environment' do
@@ -343,15 +330,6 @@ feature 'Publishing' do
 
   def then_I_should_see_the_submission_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
-  end
-
-
-  def then_I_should_see_the_submission_confiramtion_email_warning_message
-    expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
-  end
-
-  def then_I_should_see_from_address_warning(status)
-    expect(editor.text).to include(I18n.t("warnings.from_address.publishing.#{environment}.#{status}", link: I18n.t("warnings.from_address.link_text")))
   end
 
   def then_I_should_see_autocomplete_warnings
