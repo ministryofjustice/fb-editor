@@ -142,7 +142,7 @@ feature 'Publishing' do
   context 'when production environment' do
     let(:environment) { 'production' }
     let(:publish_button) { I18n.t('publish.production.button') }
-    let(:button_disabled) { 'true' }
+    let(:button_disabled) { '' } # we no longer disable publishing based on presence of from address
     let(:warning_both){ 'add a check answers page and confirmation page' }
     let(:warning_cya){ 'add a check answers page' }
     let(:warning_confirmation){ 'add a confirmation page'}
