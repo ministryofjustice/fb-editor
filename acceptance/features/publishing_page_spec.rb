@@ -124,7 +124,7 @@ feature 'Publishing' do
 
       when_I_visit_the_publishing_page
       then_I_should_not_see_autocomplete_warnings
-      then_I_should_see_the_publish_button
+      then_the_publish_button_should_be_enabled
     end
   end
 
@@ -142,7 +142,7 @@ feature 'Publishing' do
   context 'when production environment' do
     let(:environment) { 'production' }
     let(:publish_button) { I18n.t('publish.production.button') }
-    let(:button_disabled) { '' } # we no longer disable publishing based on presence of from address
+    let(:button_disabled) { 'true' }
     let(:warning_both){ 'add a check answers page and confirmation page' }
     let(:warning_cya){ 'add a check answers page' }
     let(:warning_confirmation){ 'add a confirmation page'}
@@ -334,6 +334,7 @@ feature 'Publishing' do
   def then_I_should_see_the_submission_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
   end
+
 
   def then_I_should_see_the_submission_confiramtion_email_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
