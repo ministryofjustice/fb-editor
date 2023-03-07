@@ -298,7 +298,7 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | sed '/acceptance\/disabled_feature_flag/d' | circleci tests split --split-by=timings --timings-type=filename)
+            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" circleci tests split --split-by=timings --timings-type=filename)
             echo '***********'
             echo $TESTFILES
             echo '***********'
