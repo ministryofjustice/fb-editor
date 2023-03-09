@@ -11,12 +11,9 @@
         },
         width: 'two-thirds',
         id: settings_field_id(f, :confirmation_email_reply_to, deployment_environment),
-        hint: -> do %>
-          <div class="govuk-hint"
-            id="confirmation-email-settings-reply-to-<%=deployment_environment%>-hint">
-            <%= t('activemodel.attributes.confirmation_email_settings.reply_to_hint') %>
-          </div>
-        <% end %>
+        hint: {
+          text: t('activemodel.attributes.confirmation_email_settings.reply_to_hint')
+          } %>
       <% else %>
         <%= t('activemodel.attributes.email_settings.service_email_from')%>
         <strong> "<%=f.object.service.service_name %>" </strong>
