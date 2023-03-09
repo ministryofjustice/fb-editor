@@ -15,20 +15,13 @@ class PagesFlow
   end
 
   def detached_flows
+    puts '***************'
     detached = Detached.new(service:, main_flow_uuids: grid.flow_uuids)
     detached.detached_flows.map do |detached_flow|
       detached_flow.map do |column|
         column.map do |flow|
-          # byebug
-          # todo : we should not add :
-          # convert_flow_object(flow) = {:type=>"pointer", :uuid=>"e184ce91-0b0e-4fb0-b05b-f2113281ea94", :title=>"Application complete"}
-          converted_flow_object = convert_flow_object(flow)
-          next if converted_flow_object[:title] == 'Application complete'
-          next if converted_flow_object[:title] == 'Check your answers'
-          converted_flow_object
-          # convert_flow_object(flow)
+          convert_flow_object(flow)
         end
-          #column.map do { |flow| convert_flow_object(flow) }
       end
     end
   end
