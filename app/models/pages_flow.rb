@@ -14,13 +14,20 @@ class PagesFlow
     grid.build.map { |column| convert_flow_objects(column).compact }
   end
 
+  def is_pointer_and_final_pages(flow)
+    return ( flow[:title] == 'Check your answers' || flow[:title] == 'Application complete' ) && flow[:type] == 'pointer'
+  end
+
+
   def detached_flows
-    puts '***************'
     detached = Detached.new(service:, main_flow_uuids: grid.flow_uuids)
     detached.detached_flows.map do |detached_flow|
       detached_flow.map do |column|
         column.map do |flow|
-          convert_flow_object(flow)
+          converted_flow_object = convert_flow_object(flow)
+          next if is_pointer_and_final_pages(converted_flow_object)
+
+          converted_flow_object
         end
       end
     end
