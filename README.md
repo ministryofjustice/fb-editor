@@ -4,15 +4,15 @@ New editor from the MoJ online.
 
 ## Prerequisites
 * Docker
-* Node (version 14.19.0 LTS)
+* Node (version 16.19.1 LTS)
 * Ruby v2.7.7
 * Postgresql
 * Yarn
 
 ## Setup
-Ensure you are running Node version 14.19.0 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
-`nvm install 14.19.0`
-`nvm use 14.19.0`
+Ensure you are running Node version 16.19.1 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
+`nvm install 16.19.1`
+`nvm use 16.19.1`
 
 Install gems:
 `bundle`
@@ -20,7 +20,7 @@ Install gems:
 Create and migrate the test database:
 `bundle exec rails db:create db:migrate`
 
-You might need to install postgres 
+You might need to install postgres
 `brew install postgres`
 and start the database daemon
 `brew services start postgres`
