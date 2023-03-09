@@ -4,12 +4,14 @@
 <% else %>
 
   <% if item[:type]== 'pointer' %>
-    <article class="flow-item flow-pointer" data-fb-id="<%= item[:uuid] %>">
-      <span><%= item[:title] %></span>
-    </article>
-
+    <% unless item[:title] == 'Application complete' || item[:title] == "Check your answers" %>
+      <article class="flow-item flow-pointer" data-fb-id="<%= item[:uuid] %>">
+        <span><%= item[:title] %></span>
+      </article>
+    <% end %>
   <% elsif item[:type] == 'warning' %>
-      <article class="flow-item flow-warning" aria-hidden="true">
+
+    <article class="flow-item flow-warning" aria-hidden="true">
         <div class="govuk-warning-text">
           <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
           <strong class="govuk-warning-text__text">
