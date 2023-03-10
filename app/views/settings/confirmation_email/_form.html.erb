@@ -15,7 +15,7 @@
     <%= f.govuk_check_boxes_fieldset :"send_by_confirmation_email_#{deployment_environment}",
       multiple: false,
       legend: { text: t("publish.#{deployment_environment}.heading"), size: 'l'} do %>
-      <div class="govuk-hint" id="send_by_confirmation_email_#{deployment_environment}_hint"><%= t("publish.#{deployment_environment}.description") %></div>
+      <div class="govuk-hint" id=<%= "send_by_confirmation_email_#{deployment_environment}_hint" %>><%= t("publish.#{deployment_environment}.description") %></div>
       <%= f.govuk_check_box :"send_by_confirmation_email_#{deployment_environment}", 1, 0,
         multiple: false,
         link_errors: true,
