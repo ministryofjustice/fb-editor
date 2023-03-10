@@ -27,6 +27,7 @@ class Settings::ConfirmationEmailController < FormController
 
   def confirmation_email_settings_params
     confirmation_email_params.permit(
+      :confirmation_email_reply_to,
       :deployment_environment,
       :send_by_confirmation_email,
       :confirmation_email_component_id,

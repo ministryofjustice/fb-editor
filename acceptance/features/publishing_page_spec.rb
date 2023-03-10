@@ -19,6 +19,7 @@ feature 'Publishing' do
       I18n.t('activemodel.errors.models.publish_service_creation.password_too_short'),
     ]
   end
+  let(:valid_email) { 'station-master-tama@justice.gov.uk' }
 
   shared_examples 'a publishing page environment' do
     let(:exit_url) { 'exit' }
@@ -220,6 +221,8 @@ feature 'Publishing' do
 
     and_I_set_confirmation_email(true)
     within("form#confirmation-email-submission-#{environment}") do
+      editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(valid_email)
+
       find('button[type="submit"]').click
     end
   end
@@ -261,7 +264,7 @@ feature 'Publishing' do
     and_I_save_my_email_settings
   end
 
-  def and_I_set_the_email_field(value = 'paul@justice.gov.uk')
+  def and_I_set_the_email_field(value = valid_email)
     editor.find(:css, "#email-settings-service-email-output-#{environment}-field").set(value)
   end
 
@@ -329,6 +332,11 @@ feature 'Publishing' do
   end
 
   def then_I_should_see_the_submission_warning_message
+    expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
+  end
+
+
+  def then_I_should_see_the_submission_confiramtion_email_warning_message
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
   end
 

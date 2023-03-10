@@ -3,6 +3,8 @@ class BaseEmailSettings
   include ContentSubstitutorHelper
 
   def settings_for(setting_name)
+    return '' if setting_name == :confirmation_email_reply_to && !params(setting_name).nil? && params(setting_name).empty?
+
     params(setting_name).presence ||
       database(setting_name) ||
       default_value(setting_name)

@@ -13,6 +13,8 @@ feature 'Confirmation email' do
   let(:multiple_question_page) { 'Title' }
   let(:email_question) { 'Email address question' }
   let(:text_component_question) { 'Question' }
+  let(:invalid_format) { I18n.t('activemodel.errors.models.from_address.invalid') }
+  let(:invalid_domain) { I18n.t('activemodel.errors.models.reply_to.domain_invalid') }
 
   background do
     given_I_am_logged_in
@@ -28,6 +30,7 @@ feature 'Confirmation email' do
     then_I_add_a_page_with_email_component
     when_I_visit_the_confirmation_email_settings_page
     when_I_enable_confirmation_email('dev')
+    then_I_fill_in_reply_to_email('valid_email@justice.gov.uk', 'dev')
     click_button(I18n.t('settings.submission.dev.save_button'))
 
     and_I_return_to_flow_page
@@ -49,6 +52,7 @@ feature 'Confirmation email' do
 
     when_I_visit_the_confirmation_email_settings_page
     when_I_enable_confirmation_email('dev')
+    then_I_fill_in_reply_to_email('valid_email@justice.gov.uk', 'dev')
     click_button(I18n.t('settings.submission.dev.save_button'))
 
     and_I_return_to_flow_page
@@ -82,7 +86,7 @@ feature 'Confirmation email' do
   end
 
   shared_examples 'confirmation email settings page' do
-    scenario 'with email components' do
+    scenario 'with email validations' do
       then_I_add_a_page_with_email_component
       when_I_visit_the_confirmation_email_settings_page
       then_I_should_see_the_confirmation_email_settings_page(environment)
@@ -90,6 +94,19 @@ feature 'Confirmation email' do
       then_I_should_see_confirmation_email_fields
       then_I_should_see_the_confirmation_email_defaults
       then_I_should_see_email_component_question_selected
+      then_I_add_a_reply_to_email('email no formatty')
+      click_button(I18n.t("settings.submission.#{environment}.save_button"))
+      then_I_should_see_the_error(invalid_format)
+
+      when_I_disable_confirmation_email(environment)
+      when_I_enable_confirmation_email(environment)
+      then_I_add_a_reply_to_email('iorek.byrnison@outlook.com', "-error")
+      click_button(I18n.t("settings.submission.#{environment}.save_button"))
+      then_I_should_see_the_error(invalid_domain)
+
+      when_I_disable_confirmation_email(environment)
+      when_I_enable_confirmation_email(environment)
+      then_I_add_a_reply_to_email('iorek.byrnison@digital.justice.gov.uk', "-error")
       click_button(I18n.t("settings.submission.#{environment}.save_button"))
       then_I_should_see_no_error_message
     end
@@ -128,6 +145,10 @@ feature 'Confirmation email' do
     )
   end
 
+  def then_I_should_see_the_error(error)
+    expect(page).to have_content(error)
+  end
+
   def then_I_should_see_confirmation_email_fields
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.confirmation_email_component_id'))
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.confirmation_email_subject'))
@@ -140,11 +161,15 @@ feature 'Confirmation email' do
   end
 
   def then_I_should_see_the_confirmation_email_defaults
-    expect(page).to have_content(I18n.t('default_values.service_email_from'))
-    expect(page).to have_content(I18n.t('warnings.email_settings.default'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.from_address.link'))
+    expect(page).to have_content(service_name)
+    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.reply_to'))
     expect(page.find(:css, "input#confirmation-email-settings-confirmation-email-subject-#{environment}-field").value).to have_content(message_subject)
     expect(page).to have_content(message_body)
+  end
+
+  def then_I_add_a_reply_to_email(email, error="")
+    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field#{error}").set(email)
+    click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
   def then_I_should_see_email_component_question_selected
