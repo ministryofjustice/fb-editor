@@ -33,22 +33,11 @@ class PagesFlow
       detached_flow.map do |column|
         column.map do |flow|
           converted_flow_object = convert_flow_object(flow)
-          Rails.logger.debug '************ DETACHED FLOWS *********************'
-          Rails.logger.debug 'current flow is '
-          Rails.logger.debug flow.uuid
-          current_title = flow_title(service.flow_object(flow.uuid))
-          Rails.logger.debug current_title
           if grid.flow_uuids.include? flow.uuid
-            Rails.logger.debug 'flow id is in main flow, we get the previous flow id:'
             previous_uuid = base_props(flow)[:previous_uuid]
-            Rails.logger.debug previous_uuid
             previous_flow_object = service.flow_object(previous_uuid)
-            Rails.logger.debug '=== > previous flow object is:'
-            Rails.logger.debug previous_flow_object.uuid
             if grid.flow_uuids.include? previous_flow_object.uuid
-              Rails.logger.debug '    this previous object is also in grid flow main flow'
               if find_uuid_in_detached_flow(detached_flow, previous_uuid)
-                Rails.logger.debug '    I think we have already displayed it - we should remove this one'
                 next
               end
             end
