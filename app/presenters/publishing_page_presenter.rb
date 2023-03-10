@@ -73,7 +73,6 @@ class PublishingPagePresenter
 
     return presenters if deployment_environment == 'dev'
 
-    presenters.push(from_address_warning) if service_output_warning.blank? && !ENV['REPLY_TO'] == 'enabled'
     presenters.push(autocomplete_warning)
   end
 end

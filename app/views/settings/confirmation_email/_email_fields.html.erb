@@ -1,38 +1,18 @@
     <div class="govuk-form-group">
-      <% if ENV['REPLY_TO'] == "enabled" %>
-        <div class="govuk-form-group">
-          <%= t('activemodel.attributes.email_settings.service_email_from')%>
-          <%=f.object.service.service_name %>
-        </div>
-        <%= f.govuk_text_field :confirmation_email_reply_to,
-        label: {
-          text: t('activemodel.attributes.email_settings.reply_to'),
-          for: settings_field_id(f, :confirmation_email_reply_to, deployment_environment)
-        },
-        width: 'two-thirds',
-        id: settings_field_id(f, :confirmation_email_reply_to, deployment_environment),
-        hint: {
-          text: t('activemodel.attributes.confirmation_email_settings.reply_to_hint')
-          } %>
-      <% else %>
+      <div class="govuk-form-group">
         <%= t('activemodel.attributes.email_settings.service_email_from')%>
-        <strong> "<%=f.object.service.service_name %>" </strong>
-        <strong><%= f.object.service_email_from %></strong>
-
-        <% unless @from_address.verified? %>
-          <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
-        <% end %>
-
-        <% if @from_address.pending? %>
-          <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
-            settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
-        <% else %>
-          <p class="govuk-!-margin-top-2">
-            <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
-              settings_from_address_index_path(service.service_id))%>
-          </p>
-        <% end %>
-      <% end %>
+        <%=f.object.service.service_name %>
+      </div>
+      <%= f.govuk_text_field :confirmation_email_reply_to,
+      label: {
+        text: t('activemodel.attributes.email_settings.reply_to'),
+        for: settings_field_id(f, :confirmation_email_reply_to, deployment_environment)
+      },
+      width: 'two-thirds',
+      id: settings_field_id(f, :confirmation_email_reply_to, deployment_environment),
+      hint: {
+        text: t('activemodel.attributes.confirmation_email_settings.reply_to_hint')
+        } %>
     </div>
 
     <%= f.govuk_collection_select :confirmation_email_component_id, f.object.email_components, :id, :label,

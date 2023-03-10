@@ -1,53 +1,30 @@
 <%= f.govuk_fieldset(legend: { text: f.object.class.human_attribute_name(:email_fieldset) }) do %>
+  <div class="govuk-form-group">
+    <%= f.object.class.human_attribute_name :service_email_from %>
+    <%=f.object.service.service_name %>
+  </div>
 
-  <% if ENV['REPLY_TO'] == 'enabled' %>
-    <div class="govuk-form-group">
-      <%= f.object.class.human_attribute_name :service_email_from %>
-      <%=f.object.service.service_name %>
-    </div>
-  <% else %>
-    <div class="govuk-form-group">
-      <%= f.object.class.human_attribute_name :service_email_from %>
-      <strong> "<%=f.object.service.service_name %>" </strong>
-      <strong><%= f.object.service_email_from %></strong>
-
-      <% unless @from_address.verified? %>
-        <%= govuk_warning_text(text: @from_address_presenter.message, classes: 'govuk-!-margin-bottom-0') %>
+  <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+    <% if f.object.errors.present? %>
+      <% f.object.errors.full_messages.each do |error_message| %>
+          <p id="email-settings-base-<%= deployment_environment %>-field-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+          </p>
       <% end %>
-
-      <% if @from_address.pending? %>
-        <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.pending_link'),
-          settings_from_address_index_path(service.service_id), class: 'govuk-!-margin-left-8')%>
-      <% else %>
-        <p class="govuk-!-margin-top-2">
-          <%= govuk_link_to(t('activemodel.attributes.email_settings.from_address.link'),
-            settings_from_address_index_path(service.service_id))%>
-        </p>
-      <% end %>
-    </div>
-  <% end %>
-
-    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
-      <% if f.object.errors.present? %>
-        <% f.object.errors.full_messages.each do |error_message| %>
-            <p id="email-settings-base-<%= deployment_environment %>-field-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
-            </p>
-        <% end %>
-      <% end %>
-      <%= f.govuk_email_field :service_email_output,
-        label: {
-          text: f.object.class.human_attribute_name(:service_email_output),
-          for: settings_field_id(f, :service_email_output, deployment_environment)
-        },
-        width: 'two-thirds',
-        id: settings_field_id(f, :service_email_output, deployment_environment),
-        hint: -> do %>
-        <div class="govuk-hint"
-          id="email-settings-service-email-output-<%=deployment_environment%>-hint">
-          <%=t('activemodel.attributes.email_settings.service_email_output_hint') %>
-        </div>
-      <% end %>
+    <% end %>
+    <%= f.govuk_email_field :service_email_output,
+      label: {
+        text: f.object.class.human_attribute_name(:service_email_output),
+        for: settings_field_id(f, :service_email_output, deployment_environment)
+      },
+      width: 'two-thirds',
+      id: settings_field_id(f, :service_email_output, deployment_environment),
+      hint: -> do %>
+      <div class="govuk-hint"
+        id="email-settings-service-email-output-<%=deployment_environment%>-hint">
+        <%=t('activemodel.attributes.email_settings.service_email_output_hint') %>
+      </div>
+    <% end %>
 
   <%= f.govuk_text_field :service_email_subject,
     label: {
