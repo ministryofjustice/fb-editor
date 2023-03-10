@@ -15,16 +15,16 @@ class PagesFlow
   end
 
   def is_pointer_and_final_pages(flow)
-    return ( flow[:title] == 'Check your answers' || flow[:title] == 'Application complete' ) && flow[:type] == 'pointer'
+    (flow[:title] == 'Check your answers' || flow[:title] == 'Application complete') && flow[:type] == 'pointer'
   end
 
   def find_uuid_in_detached_flow(detached_flow, uuid)
-    for flow in detached_flow
+    detached_flow.each do |flow|
       if flow[0].uuid == uuid
         return true
       end
     end
-    return false
+    false
   end
 
   def detached_flows
@@ -33,30 +33,24 @@ class PagesFlow
       detached_flow.map do |column|
         column.map do |flow|
           converted_flow_object = convert_flow_object(flow)
-          puts '************ DETACHED FLOWS *********************'
-          puts 'current flow is '
-          puts flow.uuid
+          Rails.logger.debug '************ DETACHED FLOWS *********************'
+          Rails.logger.debug 'current flow is '
+          Rails.logger.debug flow.uuid
           current_title = flow_title(service.flow_object(flow.uuid))
-          puts current_title
+          Rails.logger.debug current_title
           if grid.flow_uuids.include? flow.uuid
-            puts 'flow id is in main flow, we get the previous flow id:'
+            Rails.logger.debug 'flow id is in main flow, we get the previous flow id:'
             previous_uuid = base_props(flow)[:previous_uuid]
-            puts previous_uuid
-            begin
-              previous_flow_object = service.flow_object(previous_uuid)
-              unless previous_flow_object.nil?
-                puts '=== > previous flow object is:'
-                puts previous_flow_object.uuid
-                  if grid.flow_uuids.include? previous_flow_object.uuid
-                    puts '    this previous object is also in grid flow main flow'
-                    if find_uuid_in_detached_flow(detached_flow, previous_uuid)
-                      puts '    I think we have already displayed it - we should remove this one'
-                      next
-                    end
-                  end
+            Rails.logger.debug previous_uuid
+            previous_flow_object = service.flow_object(previous_uuid)
+            Rails.logger.debug '=== > previous flow object is:'
+            Rails.logger.debug previous_flow_object.uuid
+            if grid.flow_uuids.include? previous_flow_object.uuid
+              Rails.logger.debug '    this previous object is also in grid flow main flow'
+              if find_uuid_in_detached_flow(detached_flow, previous_uuid)
+                Rails.logger.debug '    I think we have already displayed it - we should remove this one'
+                next
               end
-            rescue NoMethodError
-              puts '=== > No get_flow_object methods for this flow'
             end
           end
           converted_flow_object
