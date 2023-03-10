@@ -15,9 +15,6 @@
   <% if environment == 'dev' %>
     <% if presenter.service_output_warning.blank? %>
       <%= render 'publish/warnings/submission', warning: presenter.submission_warnings, environment: environment %>
-      <% if ENV['REPLY_TO'] == 'disabled' %>
-        <%= render 'publish/warnings/from_address', warning: presenter.from_address_warning, environment: environment %>
-      <% end %>
     <% end %>
     <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
   <% end %>
