@@ -14,15 +14,6 @@ class PagesFlow
     grid.build.map { |column| convert_flow_objects(column).compact }
   end
 
-  def find_uuid_in_detached_flow(detached_flow, uuid)
-    detached_flow.each do |flow|
-      if flow[0].uuid == uuid
-        return true
-      end
-    end
-    false
-  end
-
   def detached_flows
     detached = Detached.new(service:, main_flow_uuids: grid.flow_uuids)
     detached.detached_flows.map do |detached_flow|
@@ -31,8 +22,7 @@ class PagesFlow
           if grid.flow_uuids.include? flow.uuid
             previous_uuid = base_props(flow)[:previous_uuid]
             previous_flow_object = service.flow_object(previous_uuid)
-            if find_uuid_in_detached_flow(detached_flow, previous_uuid) &&
-              (grid.flow_uuids.include? previous_flow_object.uuid)
+            if in_detached_and_main_flow(detached_flow, previous_flow_object, previous_uuid)
               next
             end
           end
@@ -193,5 +183,19 @@ class PagesFlow
     )
     Sentry.capture_exception(error)
     raise error
+  end
+
+  def in_detached_and_main_flow(detached_flow, previous_flow_object, previous_uuid)
+    find_uuid_in_detached_flow(detached_flow, previous_uuid) &&
+      (grid.flow_uuids.include? previous_flow_object.uuid)
+  end
+
+  def find_uuid_in_detached_flow(detached_flow, uuid)
+    detached_flow.each do |flow|
+      if flow[0].uuid == uuid
+        return true
+      end
+    end
+    false
   end
 end
