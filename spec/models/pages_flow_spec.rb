@@ -2454,73 +2454,73 @@ RSpec.describe PagesFlow do
     end
 
     context 'for unconnected branches - multiple cya fixture' do
-      let(:metadata) {metadata_fixture(:multiple_cya_confirmation) }
+      let(:metadata) { metadata_fixture(:multiple_cya_confirmation) }
 
       let(:expected_detached_flows) do
         [
           [
             [{
-               :type => "page.singlequestion",
-               :title => "paint",
-               :uuid => "f2fa08e2-6a97-4db5-9278-60174a437f3f",
-               :thumbnail => "text",
-               :url => "paint",
-               :next => "b942bb3b-c39c-4fcc-b466-0b3cdb497b3e"
-             }],
+              type: 'page.singlequestion',
+              title: 'paint',
+              uuid: 'f2fa08e2-6a97-4db5-9278-60174a437f3f',
+              thumbnail: 'text',
+              url: 'paint',
+              next: 'b942bb3b-c39c-4fcc-b466-0b3cdb497b3e'
+            }],
             [{
-               :type => "page.singlequestion",
-               :title => "it",
-               :uuid => "b942bb3b-c39c-4fcc-b466-0b3cdb497b3e",
-               :thumbnail => "text",
-               :url => "it",
-               :next => "085263f8-0722-47bb-a853-3664a27e52eb"
-             }],
+              type: 'page.singlequestion',
+              title: 'it',
+              uuid: 'b942bb3b-c39c-4fcc-b466-0b3cdb497b3e',
+              thumbnail: 'text',
+              url: 'it',
+              next: '085263f8-0722-47bb-a853-3664a27e52eb'
+            }],
             [{
-               :type => "page.singlequestion",
-               :title => "black",
-               :uuid => "085263f8-0722-47bb-a853-3664a27e52eb",
-               :thumbnail => "text",
-               :url => "black",
-               :next => "74a38f1e-f408-4787-a988-8e5bcf4498e5"
-             }],
+              type: 'page.singlequestion',
+              title: 'black',
+              uuid: '085263f8-0722-47bb-a853-3664a27e52eb',
+              thumbnail: 'text',
+              url: 'black',
+              next: '74a38f1e-f408-4787-a988-8e5bcf4498e5'
+            }],
             [{
-               :type => "pointer",
-               :uuid => "74a38f1e-f408-4787-a988-8e5bcf4498e5",
-               :title => "Question"
-             }],
+              type: 'pointer',
+              uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
+              title: 'Question'
+            }],
             [nil],
             [nil]
           ],
           [
             [{
-               :type => "page.singlequestion",
-               :title => "pump",
-               :uuid => "bc368e2f-a311-426c-9ea8-5f53aa30215e",
-               :thumbnail => "text",
-               :url => "pump",
-               :next => "e1cf7bf5-5a8a-43fc-b02d-96f2e799c9c0"
-             }],
+              type: 'page.singlequestion',
+              title: 'pump',
+              uuid: 'bc368e2f-a311-426c-9ea8-5f53aa30215e',
+              thumbnail: 'text',
+              url: 'pump',
+              next: 'e1cf7bf5-5a8a-43fc-b02d-96f2e799c9c0'
+            }],
             [{
-               :type => "page.singlequestion",
-               :title => "the",
-               :uuid => "e1cf7bf5-5a8a-43fc-b02d-96f2e799c9c0",
-               :thumbnail => "text",
-               :url => "the",
-               :next => "e227bea4-93c4-492e-9c96-80b0dc7b0ab3"
-             }],
+              type: 'page.singlequestion',
+              title: 'the',
+              uuid: 'e1cf7bf5-5a8a-43fc-b02d-96f2e799c9c0',
+              thumbnail: 'text',
+              url: 'the',
+              next: 'e227bea4-93c4-492e-9c96-80b0dc7b0ab3'
+            }],
             [{
-               :type => "page.singlequestion",
-               :title => "brakes",
-               :uuid => "e227bea4-93c4-492e-9c96-80b0dc7b0ab3",
-               :thumbnail => "text",
-               :url => "brakes",
-               :next => "74a38f1e-f408-4787-a988-8e5bcf4498e5"
-             }],
+              type: 'page.singlequestion',
+              title: 'brakes',
+              uuid: 'e227bea4-93c4-492e-9c96-80b0dc7b0ab3',
+              thumbnail: 'text',
+              url: 'brakes',
+              next: '74a38f1e-f408-4787-a988-8e5bcf4498e5'
+            }],
             [{
-               :type => "pointer",
-               :uuid => "74a38f1e-f408-4787-a988-8e5bcf4498e5",
-               :title => "Question"
-             }],
+              type: 'pointer',
+              uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
+              title: 'Question'
+            }],
             [nil],
             [nil]
           ]
