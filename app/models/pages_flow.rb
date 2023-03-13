@@ -31,10 +31,8 @@ class PagesFlow
           if grid.flow_uuids.include? flow.uuid
             previous_uuid = base_props(flow)[:previous_uuid]
             previous_flow_object = service.flow_object(previous_uuid)
-            if grid.flow_uuids.include? previous_flow_object.uuid
-              if find_uuid_in_detached_flow(detached_flow, previous_uuid)
+            if find_uuid_in_detached_flow(detached_flow, previous_uuid) && (grid.flow_uuids.include? previous_flow_object.uuid)
                 next
-              end
             end
           end
           convert_flow_object(flow)
