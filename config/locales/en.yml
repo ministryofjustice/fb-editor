@@ -306,14 +306,6 @@ en:
         label: 'Form name'
         hint: 'The visible name of your form'
         warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
-    from_address:
-      heading: "‘From’ address"
-      lede: Emails sent by your form will come from this address.
-      description: Emails sent by your form, either to you or to people filling it in, will come from this address
-      resend_link_text: Resend validation link
-      link_resent_success: Link resent - now check your email
-      link_contact_us: Contact us
-      contact_url: https://moj-forms.service.justice.gov.uk/contact/
     form_analytics:
       heading: Google Analytics
       lede:  Monitor your form's performance (requires a Google Analytics account).
