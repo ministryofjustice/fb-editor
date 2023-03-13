@@ -28,7 +28,6 @@ class PagesFlow
     detached.detached_flows.map do |detached_flow|
       detached_flow.map do |column|
         column.map do |flow|
-          converted_flow_object = convert_flow_object(flow)
           if grid.flow_uuids.include? flow.uuid
             previous_uuid = base_props(flow)[:previous_uuid]
             previous_flow_object = service.flow_object(previous_uuid)
@@ -38,7 +37,7 @@ class PagesFlow
               end
             end
           end
-          converted_flow_object
+          convert_flow_object(flow)
         end
       end
     end
