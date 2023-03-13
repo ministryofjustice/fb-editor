@@ -14,10 +14,6 @@ class PagesFlow
     grid.build.map { |column| convert_flow_objects(column).compact }
   end
 
-  def is_pointer_and_final_pages(flow)
-    (flow[:title] == 'Check your answers' || flow[:title] == 'Application complete') && flow[:type] == 'pointer'
-  end
-
   def find_uuid_in_detached_flow(detached_flow, uuid)
     detached_flow.each do |flow|
       if flow[0].uuid == uuid
