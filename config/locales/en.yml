@@ -359,25 +359,6 @@ en:
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
-    from_address:
-      link_text: ‘from’ address
-      send_by_email:
-        verified: 'Your from address has been validated'
-        pending: 'You need to validate your %{link}'
-        default: 'You need to set a %{link}'
-      settings:
-        default: You need to change the default no-reply-moj-forms address before your form can go live
-        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
-        verified: This email address has been validated.
-        contact_us: <strong>Contact us to approve your ‘from’ address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
-      publishing:
-        dev:
-          pending: 'Before you can publish to live, you will need to validate your %{link} for emails'
-          default: 'Before you can publish to live, you will need to set a %{link} for emails'
-        production:
-          link: ‘from’ address
-          pending: 'validate your %{link} for emails'
-          default: 'set a %{link} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
       link_text: confirmation email
