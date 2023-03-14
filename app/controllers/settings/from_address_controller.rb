@@ -1,7 +1,7 @@
 class Settings::FromAddressController < FormController
   include FromAddressObjects
 
-  before_action :assign_from_address, :assign_from_address_presenter
+  before_action :assign_from_address
 
   def index; end
 
@@ -15,15 +15,5 @@ class Settings::FromAddressController < FormController
 
   def from_address_params
     params.require(:from_address).permit(:email)
-  end
-
-  private
-
-  def assign_from_address_presenter
-    @presenter = FromAddressPresenter.new(
-      from_address: @from_address,
-      messages: I18n.t('warnings.from_address.settings'),
-      service_id: service.service_id
-    )
   end
 end

@@ -1,5 +1,5 @@
 class Settings::EmailController < FormController
-  before_action :assign_form_objects, :assign_from_address_presenter
+  before_action :assign_form_objects
 
   def create
     @email_settings = EmailSettings.new(
@@ -58,14 +58,6 @@ class Settings::EmailController < FormController
       service:,
       deployment_environment: 'production',
       from_address:
-    )
-  end
-
-  def assign_from_address_presenter
-    @from_address_presenter = FromAddressPresenter.new(
-      from_address:,
-      messages: I18n.t('warnings.email_settings'),
-      service_id: service.service_id
     )
   end
 

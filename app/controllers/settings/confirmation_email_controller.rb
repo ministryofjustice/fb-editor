@@ -1,5 +1,5 @@
 class Settings::ConfirmationEmailController < FormController
-  before_action :assign_form_objects, :assign_from_address_presenter
+  before_action :assign_form_objects
 
   def index; end
 
@@ -60,14 +60,6 @@ class Settings::ConfirmationEmailController < FormController
 
   def send_by_confirmation_email(settings)
     "send_by_confirmation_email_#{settings[:deployment_environment]}"
-  end
-
-  def assign_from_address_presenter
-    @from_address_presenter = FromAddressPresenter.new(
-      from_address:,
-      messages: I18n.t('warnings.email_settings'),
-      service_id: service.service_id
-    )
   end
 
   def from_address
