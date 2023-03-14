@@ -53,7 +53,6 @@ Rails.application.routes.draw do
         resources :reference_payment, only: [:index, :create]
         resources :submission, only: [:index] do
           collection do
-            resources :from_address, only: [:index, :create]
             resources :email, only: [:index, :create]
             resources :confirmation_email, only: [:index, :create]
           end
