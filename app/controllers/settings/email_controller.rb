@@ -3,7 +3,7 @@ class Settings::EmailController < FormController
 
   def create
     @email_settings = EmailSettings.new(
-      email_settings_params.merge(service:, from_address:)
+      email_settings_params.merge(service:)
     )
 
     if @email_settings.valid?
@@ -51,17 +51,11 @@ class Settings::EmailController < FormController
   def assign_form_objects
     @email_settings_dev = EmailSettings.new(
       service:,
-      deployment_environment: 'dev',
-      from_address:
+      deployment_environment: 'dev'
     )
     @email_settings_production = EmailSettings.new(
       service:,
-      deployment_environment: 'production',
-      from_address:
+      deployment_environment: 'production'
     )
-  end
-
-  def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 end

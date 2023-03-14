@@ -1,11 +1,10 @@
 RSpec.describe EmailSettings do
   subject(:email_settings) do
     described_class.new(
-      params.merge(service:, from_address:)
+      params.merge(service:)
     )
   end
   let(:params) { {} }
-  let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
   let(:default_subject) { email_settings.default_value('service_email_subject') }
   let(:default_body) { email_settings.default_value('service_email_body') }
   let(:default_pdf_heading) { email_settings.default_value('service_email_pdf_heading') }
@@ -102,12 +101,6 @@ RSpec.describe EmailSettings do
           email_settings.service_email_output
         ).to eq(service_configuration.decrypt_value)
       end
-    end
-  end
-
-  describe '#service_email_from' do
-    it 'returns the from address value' do
-      expect(email_settings.service_email_from).to eq(from_address.email_address)
     end
   end
 

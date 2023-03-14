@@ -1,7 +1,6 @@
 class EmailSettings < BaseEmailSettings
   attr_accessor :deployment_environment,
                 :service,
-                :from_address,
                 :send_by_email,
                 :service_email_output,
                 :service_email_subject,

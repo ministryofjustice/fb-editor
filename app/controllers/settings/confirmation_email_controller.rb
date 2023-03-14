@@ -5,7 +5,7 @@ class Settings::ConfirmationEmailController < FormController
 
   def create
     @confirmation_email = ConfirmationEmailSettings.new(
-      confirmation_email_settings_params.merge(service:, from_address:)
+      confirmation_email_settings_params.merge(service:)
     )
 
     if @confirmation_email.valid?
@@ -41,13 +41,11 @@ class Settings::ConfirmationEmailController < FormController
   def assign_form_objects
     @confirmation_email_settings_dev = ConfirmationEmailSettings.new(
       service:,
-      deployment_environment: 'dev',
-      from_address:
+      deployment_environment: 'dev'
     )
     @confirmation_email_settings_production = ConfirmationEmailSettings.new(
       service:,
-      deployment_environment: 'production',
-      from_address:
+      deployment_environment: 'production'
     )
     @email_components = email_components
   end
@@ -60,10 +58,6 @@ class Settings::ConfirmationEmailController < FormController
 
   def send_by_confirmation_email(settings)
     "send_by_confirmation_email_#{settings[:deployment_environment]}"
-  end
-
-  def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 
   def email_components

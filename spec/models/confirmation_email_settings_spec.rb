@@ -1,11 +1,10 @@
 RSpec.describe ConfirmationEmailSettings do
   subject(:confirmation_email_settings) do
     described_class.new(
-      params.merge(service:, from_address:)
+      params.merge(service:)
     )
   end
   let(:params) { {} }
-  let(:from_address) { create(:from_address, :default, service_id: service.service_id) }
   let(:confirmation_email_subject) { confirmation_email_settings.default_value('confirmation_email_subject') }
   let(:confirmation_email_body) { confirmation_email_settings.default_value('confirmation_email_body') }
 
@@ -32,12 +31,6 @@ RSpec.describe ConfirmationEmailSettings do
           nil, '', 'something-else', 'staging', 'live', 'test'
         ).for(:deployment_environment)
       end
-    end
-  end
-
-  describe '#confirmation_email_from' do
-    it 'returns the from address value' do
-      expect(confirmation_email_settings.service_email_from).to eq(from_address.email_address)
     end
   end
 
