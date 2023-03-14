@@ -462,9 +462,6 @@ en:
         ga4_hint: For example, G-0000004
         ga4_test: *ga4
         ga4_live: *ga4
-      from_address:
-        email: "‘From’ address"
-        from_address_hint: This should generally be a shared team account
       email_settings:
         reply_to: Reply to
         send_by_email_dev: Enable email on Test
@@ -484,9 +481,6 @@ en:
         csv_hint: A comma-separated values (CSV) lists all the answers in plain text, separated by commas. It can be imported into spreadsheets and other applications.
         csv_sample: See sample CSV
         csv_checkbox: Send a separate email with answers in a CSV
-        from_address:
-          pending_link: Get validation link
-          link: Change ’from’ address
       confirmation_email_settings:
         reply_to_hint: The email address that replies will go to - this must be an MoJ email address or other approved email address
         confirmation_email_component_id: To the email address captured by
@@ -514,8 +508,6 @@ en:
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
-          email_service_error: We were unable to save your email address. Please try again.
-          format: "%{message}"
         publish_service_creation:
           blank_username: 'Enter a username'
           blank_password: 'Enter a password'
