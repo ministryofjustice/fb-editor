@@ -22,7 +22,7 @@ class PagesFlow
           if grid.flow_uuids.include? flow.uuid
             previous_uuid = base_props(flow)[:previous_uuid]
             previous_flow_object = service.flow_object(previous_uuid)
-            if in_detached_and_main_flow(detached_flow, previous_flow_object, previous_uuid)
+            if in_detached_and_main_flow(column, previous_flow_object, previous_uuid)
               next
             end
           end
@@ -192,7 +192,7 @@ class PagesFlow
 
   def find_uuid_in_detached_flow(detached_flow, uuid)
     detached_flow.each do |flow|
-      if flow[0].uuid == uuid
+      if flow.uuid == uuid
         return true
       end
     end
