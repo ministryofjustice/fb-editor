@@ -98,8 +98,6 @@ Rails.application.routes.draw do
 
       get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
 
-      post 'settings/from_address/resend', to: 'from_address#resend_validation'
-
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
     end
   end

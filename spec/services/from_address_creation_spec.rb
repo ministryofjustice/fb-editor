@@ -164,25 +164,6 @@ RSpec.describe FromAddressCreation, type: :model do
       end
     end
 
-    context 'when sending enabled is false in aws' do
-      # this happens when the email verification link expires and the identity status changes to 'unverified' in AWS
-      let(:email_identity) { double(get_email_identity: true, sending_enabled: false) }
-      let(:email) { 'atreyu@justice.gov.uk' }
-
-      before do
-        create(:from_address, :pending, service_id:, email: 'atreyu@justice.gov.uk')
-        allow(from_address_creation).to receive(:email_identity).and_return(email_identity)
-        allow(email_service).to receive(:get_email_identity).and_return(double)
-        expect(email_service).to receive(:delete_email_identity).with(email).and_return(double(successful?: true))
-        expect(email_service).to receive(:create_email_identity).with(email).and_return(double(successful?: true))
-        from_address_creation.save
-      end
-
-      it 'sets the from address status to pending' do
-        expect(from_address.reload.status).to eq('pending')
-      end
-    end
-
     context 'when the email is blank' do
       let(:email) { '' }
       it 'saves the default email address to the DB' do
