@@ -1,82 +1,86 @@
-<% if item[:type] == 'spacer' %>
-  <article class="flow-item flow-spacer" aria-hidden="true">
-  </article>
-<% else %>
+<% unless item.nil? %>
 
-  <% if item[:type]== 'pointer' %>
-    <article class="flow-item flow-pointer" data-fb-id="<%= item[:uuid] %>">
-      <span><%= item[:title] %></span>
+  <% if item[:type] == 'spacer' %>
+    <article class="flow-item flow-spacer" aria-hidden="true">
     </article>
-
-  <% elsif item[:type] == 'warning' %>
-      <article class="flow-item flow-warning" aria-hidden="true">
-        <div class="govuk-warning-text">
-          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-          <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">Warning</span>
-            <%= item[:content] %>
-          </strong>
-        </div>
-      </article>
   <% else %>
 
-    <% if item[:type] == 'flow.branch' %>
-      <article class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
-        <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{item[:uuid]}", alt: "", role: "presentation" %>
-        <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
-          <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>" tabindex="-1">
-        </map>
-        <%= flow_branch_link(item) %>
-        <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
-        <ul class="flow-conditions">
-          <% item[:conditionals].each_with_index do |condition, index| %>
-            <li class="flow-condition" data-from="<%= "#{item[:uuid]}-#{index}" %>" data-next="<%= condition[:next] %>">
-             <div class="flow-expressions">
-                <% condition[:expressions].each_with_index do |expression, index| %>
-                  <% if expression[:operator].empty? && expression[:answer].empty? %>
-                    <span class="flow-expression" data-otherwise="true">
-                      <span class="question"><%= expression[:question] %></span>
-                    </span>
-                  <% else %>
-                    <span class="flow-expression" data-otherwise="false">
-                      <span class="question"><%= expression[:question] %></span>
-                      <span class="operator"><%= expression[:operator] %></span>
-                      <span class="answer"><%= expression[:answer] %></span>
-                    </span>
-                  <% end %>
-                  <% if index + 1 < condition[:expressions].size %>
-                    <span class="condition-operator"><%= t("branches.expression.and") -%></span>
-                  <% end %>
-                <% end %>
-              </div>
-              <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
-            </li>
-          <% end %>
-        </ul>
+    <% if item[:type]== 'pointer' %>
+      <article class="flow-item flow-pointer" data-fb-id="<%= item[:uuid] %>">
+        <span><%= item[:title] %></span>
       </article>
+    <% elsif item[:type] == 'warning' %>
+
+      <article class="flow-item flow-warning" aria-hidden="true">
+          <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+              <span class="govuk-warning-text__assistive">Warning</span>
+              <%= item[:content] %>
+            </strong>
+          </div>
+        </article>
     <% else %>
 
-      <% if item[:next].empty? %>
-        <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
-        <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
-          <%= flow_thumbnail_link(item) %>
-          <%= flow_text_link(item) %>
-          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
-          <% unless (item[:type] =~ /page.(confirmation|exit)/) %>
-            <%= render partial: 'services/connection_menu', locals: { item: item } %>
-          <% end %>
+      <% if item[:type] == 'flow.branch' %>
+        <article class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
+          <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{item[:uuid]}", alt: "", role: "presentation" %>
+          <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
+            <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>" tabindex="-1">
+          </map>
+          <%= flow_branch_link(item) %>
+          <%= render partial: 'services/flow_branch_menu', locals: { item: item } %>
+          <ul class="flow-conditions">
+            <% item[:conditionals].each_with_index do |condition, index| %>
+              <li class="flow-condition" data-from="<%= "#{item[:uuid]}-#{index}" %>" data-next="<%= condition[:next] %>">
+               <div class="flow-expressions">
+                  <% condition[:expressions].each_with_index do |expression, index| %>
+                    <% if expression[:operator].empty? && expression[:answer].empty? %>
+                      <span class="flow-expression" data-otherwise="true">
+                        <span class="question"><%= expression[:question] %></span>
+                      </span>
+                    <% else %>
+                      <span class="flow-expression" data-otherwise="false">
+                        <span class="question"><%= expression[:question] %></span>
+                        <span class="operator"><%= expression[:operator] %></span>
+                        <span class="answer"><%= expression[:answer] %></span>
+                      </span>
+                    <% end %>
+                    <% if index + 1 < condition[:expressions].size %>
+                      <span class="condition-operator"><%= t("branches.expression.and") -%></span>
+                    <% end %>
+                  <% end %>
+                </div>
+                <%= render partial: 'services/connection_menu', locals: { item: item, condition: condition } %>
+              </li>
+            <% end %>
+          </ul>
         </article>
       <% else %>
-        <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
-          <%= flow_thumbnail_link(item) %>
-          <%= flow_text_link(item) %>
-          <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
-          <% unless (item[:type] =~ /page.(confirmation|exit)/) || (item[:type] == 'page.checkanswers' && service.confirmation_page.present?) %>
+
+        <% if item[:next].empty? %>
+          <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
+          <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
+            <%= flow_thumbnail_link(item) %>
+            <%= flow_text_link(item) %>
+            <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
+            <% unless (item[:type] =~ /page.(confirmation|exit)/) %>
               <%= render partial: 'services/connection_menu', locals: { item: item } %>
             <% end %>
-        </article>
+          </article>
+        <% else %>
+          <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
+            <%= flow_thumbnail_link(item) %>
+            <%= flow_text_link(item) %>
+            <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
+            <% unless (item[:type] =~ /page.(confirmation|exit)/) || (item[:type] == 'page.checkanswers' && service.confirmation_page.present?) %>
+                <%= render partial: 'services/connection_menu', locals: { item: item } %>
+              <% end %>
+          </article>
+        <% end %>
       <% end %>
-    <% end %>
 
+    <% end %>
   <% end %>
+
 <% end %>

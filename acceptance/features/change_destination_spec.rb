@@ -37,15 +37,6 @@ feature 'Deleting page' do
     expect(editor).to have_selector('.destination-optgroup')
   end
 
-  def then_cya_and_confirmation_pages_should_be_unconnected
-    expect(editor.unconnected_flow).to eq(
-      [
-        'Check your answers',
-        'Application complete'
-      ]
-    )
-  end
-
   def then_page_j_should_be_after_page_b
     expect(editor.page_flow_items).to eq(
       [
