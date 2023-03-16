@@ -11,14 +11,6 @@ class PublishingPagePresenter
 
   delegate :no_service_output?, to: :publish_creation
 
-  def from_address_warning
-    @from_address_warning ||= FromAddressPresenter.new(
-      from_address:,
-      messages: I18n.t("warnings.from_address.publishing.#{deployment_environment}"),
-      service_id: service.service_id
-    )
-  end
-
   def submission_warnings
     @submission_warnings ||= SubmissionWarningsPresenter.new(
       submission_warning_presenters,
@@ -55,10 +47,6 @@ class PublishingPagePresenter
       service_id: service.service_id,
       deployment_environment:
     )
-  end
-
-  def from_address
-    FromAddress.find_or_initialize_by(service_id: service.service_id)
   end
 
   def submission_pages_presenter

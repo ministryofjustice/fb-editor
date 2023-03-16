@@ -9,12 +9,6 @@ RSpec.describe PublishingPagePresenter do
   let(:deployment_environment) { 'dev' }
   let(:service_autocomplete_items) { double(messages: []) }
 
-  describe '#from_address_presenter' do
-    it 'returns an instance of a from address presenter' do
-      expect(subject.from_address_warning).to be_a FromAddressPresenter
-    end
-  end
-
   describe '#publish_creation' do
     it 'returns an instance of a publish creation' do
       expect(subject.publish_creation).to be_a PublishServiceCreation
@@ -43,12 +37,10 @@ RSpec.describe PublishingPagePresenter do
 
       let(:submission_pages_presenter) { double }
       let(:autocomplete_warning) { double }
-      let(:from_address_warning) { double }
 
       before do
         allow(subject).to receive(:submission_pages_presenter).and_return(submission_pages_presenter)
         allow(subject).to receive(:autocomplete_warning).and_return(autocomplete_warning)
-        allow(subject).to receive(:from_address_warning).and_return(from_address_warning)
         allow(subject).to receive(:service_output_warning).and_return(service_output_warning)
       end
 

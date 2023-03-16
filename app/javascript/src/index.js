@@ -5,7 +5,6 @@ const FormListPage = require('./page_form_list');
 const PublishController = require('./controller_publish');
 const BranchesController = require('./controller_branches');
 const FormAnalyticsController = require('./controller_form_analytics');
-const FromAddressController = require('./controller_from_address');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
 const ReferencePaymentController = require('./controller_reference_payment');
@@ -71,11 +70,6 @@ switch(controllerAndAction()) {
   case "FormAnalyticsController#create":
   case "FormAnalyticsController#index":
        Controller = FormAnalyticsController;
-  break;
-
-  case "FromAddressController#index":
-  case "FromAddressController#create":
-      Controller = FromAddressController;
   break;
 
   case "EmailController#index":

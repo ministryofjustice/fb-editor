@@ -40,7 +40,6 @@ RSpec.describe TestServicesConfigsRemover do
           status: 'completed'
         )
         create(:submission_setting, service_id: service.id, deployment_environment: 'dev')
-        create(:from_address, service_id: service.id)
       end
 
       test_services_configs_remover.call
@@ -51,7 +50,6 @@ RSpec.describe TestServicesConfigsRemover do
         expect(ServiceConfiguration.where(service_id: service.id)).to be_empty
         expect(SubmissionSetting.where(service_id: service.id)).to be_empty
         expect(PublishService.where(service_id: service.id)).to be_empty
-        expect(FromAddress.where(service_id: service.id)).to be_empty
       end
     end
 
@@ -60,7 +58,6 @@ RSpec.describe TestServicesConfigsRemover do
         expect(ServiceConfiguration.where(service_id: service.id)).to_not be_empty
         expect(SubmissionSetting.where(service_id: service.id)).to_not be_empty
         expect(PublishService.where(service_id: service.id)).to_not be_empty
-        expect(FromAddress.where(service_id: service.id)).to_not be_empty
       end
     end
   end

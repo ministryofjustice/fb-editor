@@ -53,7 +53,6 @@ Rails.application.routes.draw do
         resources :reference_payment, only: [:index, :create]
         resources :submission, only: [:index] do
           collection do
-            resources :from_address, only: [:index, :create]
             resources :email, only: [:index, :create]
             resources :confirmation_email, only: [:index, :create]
           end
@@ -97,8 +96,6 @@ Rails.application.routes.draw do
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
       get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
-
-      post 'settings/from_address/resend', to: 'from_address#resend_validation'
 
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
     end

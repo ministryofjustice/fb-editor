@@ -30,6 +30,6 @@ class TestServicesConfigsRemover
   end
 
   def models
-    [ServiceConfiguration, SubmissionSetting, PublishService, FromAddress]
+    [ServiceConfiguration, SubmissionSetting, PublishService]
   end
 end

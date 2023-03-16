@@ -2,7 +2,6 @@ class ConfirmationEmailSettings < BaseEmailSettings
   attr_accessor :deployment_environment,
                 :confirmation_email_reply_to,
                 :service,
-                :from_address,
                 :send_by_confirmation_email,
                 :confirmation_email_component_id,
                 :confirmation_email_subject,

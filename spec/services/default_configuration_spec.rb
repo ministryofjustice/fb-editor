@@ -80,19 +80,5 @@ RSpec.describe DefaultConfiguration do
         )
       end
     end
-
-    context 'creates from address email' do
-      let(:from_address) do
-        FromAddress.find_by(service_id: service.service_id)
-      end
-
-      it 'generates from address email' do
-        expect(from_address.decrypt_email).to eq(FromAddress::DEFAULT_EMAIL_FROM)
-      end
-
-      it 'has a default status' do
-        expect(from_address.status).to eq('default')
-      end
-    end
   end
 end

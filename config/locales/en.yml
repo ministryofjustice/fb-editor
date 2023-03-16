@@ -306,14 +306,6 @@ en:
         label: 'Form name'
         hint: 'The visible name of your form'
         warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
-    from_address:
-      heading: "‘From’ address"
-      lede: Emails sent by your form will come from this address.
-      description: Emails sent by your form, either to you or to people filling it in, will come from this address
-      resend_link_text: Resend validation link
-      link_resent_success: Link resent - now check your email
-      link_contact_us: Contact us
-      contact_url: https://moj-forms.service.justice.gov.uk/contact/
     form_analytics:
       heading: Google Analytics
       lede:  Monitor your form's performance (requires a Google Analytics account).
@@ -367,25 +359,6 @@ en:
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with their information attached in a PDF.
   warnings:
-    from_address:
-      link_text: ‘from’ address
-      send_by_email:
-        verified: 'Your from address has been validated'
-        pending: 'You need to validate your %{link}'
-        default: 'You need to set a %{link}'
-      settings:
-        default: You need to change the default no-reply-moj-forms address before your form can go live
-        pending: <strong>Now check the email you set for a validation link</strong><br /><br />The email will come from <b>Amazon Web Services</b>. The link is valid for 24 hours.
-        verified: This email address has been validated.
-        contact_us: <strong>Contact us to approve your ‘from’ address</strong><br /><br />To ensure the security of user data, forms will only send emails from MoJ and other approved addresses</b>.
-      publishing:
-        dev:
-          pending: 'Before you can publish to live, you will need to validate your %{link} for emails'
-          default: 'Before you can publish to live, you will need to set a %{link} for emails'
-        production:
-          link: ‘from’ address
-          pending: 'validate your %{link} for emails'
-          default: 'set a %{link} for emails'
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}.'
       link_text: confirmation email
@@ -489,9 +462,6 @@ en:
         ga4_hint: For example, G-0000004
         ga4_test: *ga4
         ga4_live: *ga4
-      from_address:
-        email: "‘From’ address"
-        from_address_hint: This should generally be a shared team account
       email_settings:
         reply_to: Reply to
         send_by_email_dev: Enable email on Test
@@ -511,9 +481,6 @@ en:
         csv_hint: A comma-separated values (CSV) lists all the answers in plain text, separated by commas. It can be imported into spreadsheets and other applications.
         csv_sample: See sample CSV
         csv_checkbox: Send a separate email with answers in a CSV
-        from_address:
-          pending_link: Get validation link
-          link: Change ’from’ address
       confirmation_email_settings:
         reply_to_hint: The email address that replies will go to - this must be an MoJ email address or other approved email address
         confirmation_email_component_id: To the email address captured by
@@ -541,8 +508,6 @@ en:
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
-          email_service_error: We were unable to save your email address. Please try again.
-          format: "%{message}"
         publish_service_creation:
           blank_username: 'Enter a username'
           blank_password: 'Enter a password'

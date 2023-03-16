@@ -74,15 +74,6 @@ feature 'Submission email' do
     expect(page).to have_content(service_name)
   end
 
-  def then_I_should_see_the_confirmation_email_defaults
-    expect(page).to have_content(I18n.t('default_values.service_email_from'))
-    expect(page).to have_content(I18n.t('warnings.email_settings.default'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.from_address.link'))
-    expect(page).to have_content(message_subject)
-    expect(page).to have_content(message_body)
-    expect(page).to have_content(pdf_heading)
-  end
-
   def then_I_add_a_send_to_email(email)
     editor.find(:css, "input#email-settings-service-email-output-#{environment}-field").set(email)
     click_button(I18n.t("settings.submission.#{environment}.save_button"))

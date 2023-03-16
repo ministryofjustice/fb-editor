@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_16_160440) do
+ActiveRecord::Schema.define(version: 2023_03_14_164512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2022_12_16_160440) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "from_addresses", force: :cascade do |t|
+  create_table "from_addresses", comment: "DEPRECATED: We have kept the table to ensure backwards compatibility.", force: :cascade do |t|
     t.uuid "service_id", null: false
     t.string "email", null: false
     t.integer "status", default: 0

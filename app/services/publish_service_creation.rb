@@ -40,7 +40,6 @@ class PublishServiceCreation
 
     ActiveRecord::Base.transaction do
       create_publish_service
-      assign_service_email_from
 
       if require_authentication?
         create_service_configurations
@@ -75,8 +74,6 @@ class PublishServiceCreation
   def no_service_output?
     send_by_email.blank? || (send_by_email.present? && service_email_output.blank?)
   end
-
-  delegate :verified?, to: :from_address, prefix: true
 
   private
 
@@ -165,19 +162,5 @@ class PublishServiceCreation
       service_id:,
       deployment_environment:
     ).try(:service_csv_output?)
-  end
-
-  def assign_service_email_from
-    create_or_update_configuration(
-      name: 'SERVICE_EMAIL_FROM', value: from_address_email
-    )
-  end
-
-  def from_address_email
-    from_address.email_address
-  end
-
-  def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id:)
   end
 end

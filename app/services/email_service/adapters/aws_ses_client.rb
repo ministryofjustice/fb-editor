@@ -3,6 +3,8 @@ require 'aws-sdk-sesv2'
 module EmailService
   module Adapters
     class AwsSesClient
+      # DEPRECATED: Since the release of Reply-To feature we have no use for this adapter.
+      # We have decided to deprecate as we may need this client in future for validation purposes.
       def initialize
         @access_key = ENV['AWS_SES_ACCESS_KEY_ID']
         @secret_access_key = ENV['AWS_SES_SECRET_ACCESS_KEY']

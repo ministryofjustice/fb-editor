@@ -29,8 +29,4 @@ class BaseEmailSettings
   def params(setting_name)
     instance_variable_get(:"@#{setting_name}")
   end
-
-  def service_email_from
-    from_address.email_address
-  end
 end

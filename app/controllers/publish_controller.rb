@@ -52,10 +52,6 @@ class PublishController < FormController
     )
   end
 
-  def from_address
-    @from_address ||= FromAddress.find_or_initialize_by(service_id: service.service_id)
-  end
-
   def publishes_dev
     @publishes_dev ||= PublishService.where(
       service_id: service.service_id
