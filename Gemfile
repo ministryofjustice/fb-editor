@@ -11,11 +11,11 @@ gem 'delayed_job_active_record'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'remove-multiple-cya'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+branch: 'rails-7'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '2.17.39'
+# gem 'metadata_presenter', '2.17.39'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
@@ -29,17 +29,19 @@ gem 'omniauth-auth0', '~> 3.1.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.1'
-gem 'rails', '~> 6.1.7'
+gem 'rails', '~> 7.0.4'
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.8.0'
 gem 'sentry-rails', '~> 5.8.0'
 gem 'sentry-ruby', '~> 5.8.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
+gem 'byebug'
+
 
 group :development, :test do
   gem 'brakeman'
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
