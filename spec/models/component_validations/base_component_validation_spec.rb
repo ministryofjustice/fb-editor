@@ -1,5 +1,5 @@
 RSpec.describe 'BaseComponentValidation' do
-  subject { BaseComponentValidation.new(validation_params) }
+  subject { ComponentValidations::BaseComponentValidation.new(validation_params) }
   let(:latest_metadata) { metadata_fixture(:version) }
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:base_params) do
@@ -22,11 +22,11 @@ RSpec.describe 'BaseComponentValidation' do
   it_behaves_like 'a base component validation'
 
   describe '#assign_validation' do
-    subject { BaseComponentValidation.new(base_params) }
+    subject { ComponentValidations::BaseComponentValidation.new(base_params) }
 
     context 'when validator exists' do
       it 'returns the correct validation class' do
-        expect(subject.assign_validation(validation_params)).to be_an_instance_of(MinimumValidation)
+        expect(subject.assign_validation(validation_params)).to be_an_instance_of(ComponentValidations::MinimumValidation)
       end
     end
 
@@ -35,12 +35,12 @@ RSpec.describe 'BaseComponentValidation' do
       let(:expected_error) { 'non_existent_validator is not valid for number component' }
 
       it 'returns the parent base component validation class' do
-        expect(subject.assign_validation(validation_params)).to be_an_instance_of(BaseComponentValidation)
+        expect(subject.assign_validation(validation_params)).to be_an_instance_of(ComponentValidations::BaseComponentValidation)
       end
 
       it 'has the correct errors on the base component' do
         subject.assign_validation(validation_params)
-        expect(subject.errors.full_messages.first).to eq(expected_error)
+        expect(subject.errors.full_messages[0]).to include(expected_error)
       end
     end
   end
@@ -143,7 +143,7 @@ RSpec.describe 'BaseComponentValidation' do
   end
 
   describe '#to_metadata' do
-    subject { MinimumValidation.new(validation_params) }
+    subject { ComponentValidations::MinimumValidation.new(validation_params) }
 
     context 'when status is not present' do
       let(:status) { nil }

@@ -1,5 +1,5 @@
 RSpec.describe NumberValidator do
-  let(:subject) { MinimumValidation.new(validation_params) }
+  let(:subject) { ComponentValidations::MinimumValidation.new(validation_params) }
   let(:latest_metadata) { metadata_fixture(:version) }
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
   let(:validation_params) do

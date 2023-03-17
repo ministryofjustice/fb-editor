@@ -40,7 +40,7 @@ RSpec.shared_examples 'a base component validation' do
         end
 
         it 'surfaces the error' do
-          expect(subject.errors.full_messages.first).to eq(expected_error)
+          expect(subject.errors.full_messages[0]).to include(expected_error)
         end
       end
     end

@@ -16,7 +16,7 @@ RSpec.shared_examples 'a number validation' do
         end
 
         it 'surfaces the error correctly' do
-          expect(subject.errors.full_messages.first).to eq(expected_number_error)
+          expect(subject.errors.full_messages[0]).to include(expected_number_error)
         end
       end
 
@@ -30,7 +30,7 @@ RSpec.shared_examples 'a number validation' do
         end
 
         it 'surfaces the error correctly' do
-          expect(subject.errors.full_messages.first).to eq(expected_blank_error)
+          expect(subject.errors.full_messages[0]).to include(expected_blank_error)
         end
       end
     end

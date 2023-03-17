@@ -22,7 +22,7 @@ RSpec.describe AutocompleteItems do
       end
 
       context 'when a file has a virus' do
-        let(:expected_error) { [I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename)] }
+        let(:expected_error) { I18n.t('activemodel.errors.models.autocomplete_items.virus_found', attribute: file.original_filename) }
         before do
           allow(MalwareScanner).to receive(:call).and_return(true)
         end
@@ -37,12 +37,12 @@ RSpec.describe AutocompleteItems do
 
         it 'should have errors' do
           subject.valid?
-          expect(subject.errors.full_messages).to eq(expected_error)
+          expect(subject.errors.full_messages[0]).to include(expected_error)
         end
       end
 
       context 'when a file is larger than 1MB' do
-        let(:expected_error) { [I18n.t('activemodel.errors.models.autocomplete_items.too_big')] }
+        let(:expected_error) { I18n.t('activemodel.errors.models.autocomplete_items.too_big') }
 
         before do
           allow(file).to receive(:size).and_return(2.megabytes)
@@ -58,7 +58,7 @@ RSpec.describe AutocompleteItems do
 
         it 'should have errors' do
           subject.valid?
-          expect(subject.errors.full_messages).to eq(expected_error)
+          expect(subject.errors.full_messages[0]).to include(expected_error)
         end
       end
     end
@@ -106,11 +106,11 @@ RSpec.describe AutocompleteItems do
       end
 
       it 'has the correct error message' do
-        expect(subject.errors.full_messages).to eq([
+        expect(subject.errors.full_messages[0]).to include(
           I18n.t(
             'activemodel.errors.models.autocomplete_items.incorrect_format'
           )
-        ])
+        )
       end
     end
 

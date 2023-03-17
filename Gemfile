@@ -5,7 +5,7 @@ ruby '3.1.3'
 
 gem 'activerecord-session_store'
 gem 'administrate'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', '>= 1.4.4', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
 
@@ -19,6 +19,7 @@ gem 'metadata_presenter',
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
+gem 'byebug'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.10.0'
@@ -36,8 +37,6 @@ gem 'sentry-rails', '~> 5.8.0'
 gem 'sentry-ruby', '~> 5.8.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
-gem 'byebug'
-
 
 group :development, :test do
   gem 'brakeman'

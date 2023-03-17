@@ -4,6 +4,8 @@ module ComponentValidations
 
     include ActiveModel::Model
 
+    DEFAULT_METADATA_KEY = ''.freeze
+
     validates :validator, inclusion: {
       in: proc { |obj| obj.supported_validations },
       message: lambda do |object, _|
@@ -42,7 +44,7 @@ module ComponentValidations
     end
 
     def assign_validation(validation_params)
-      "#{validator.camelize}Validation".constantize.new(validation_params)
+      "ComponentValidations::#{validator.camelize}Validation".constantize.new(validation_params)
     rescue NameError
       validate
       self
