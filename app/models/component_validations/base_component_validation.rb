@@ -19,11 +19,11 @@ module ComponentValidations
     with_options presence: {
       if: proc { |obj| obj.enabled? },
       message: lambda do |object, _|
-                I18n.t(
-                  'activemodel.errors.models.base_component_validation.blank',
-                  label: object.label
-                )
-              end
+                 I18n.t(
+                   'activemodel.errors.models.base_component_validation.blank',
+                   label: object.label
+                 )
+               end
     } do
       validates :value, unless: proc { |obj| obj.component_type == 'date' }
     end
