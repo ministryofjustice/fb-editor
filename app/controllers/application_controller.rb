@@ -104,7 +104,7 @@ class ApplicationController < ActionController::Base
   end
 
   def in_progress?
-    false
+    true
   end
   helper_method :in_progress?
 
