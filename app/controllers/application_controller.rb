@@ -102,4 +102,14 @@ class ApplicationController < ActionController::Base
   def payment_link_config
     @payment_link_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'PAYMENT_LINK')
   end
+
+  def in_progress?
+    false
+  end
+  helper_method :in_progress?
+
+  def session_expiry_time
+    session[:expires_at]
+  end
+  helper_method :session_expiry_time
 end
