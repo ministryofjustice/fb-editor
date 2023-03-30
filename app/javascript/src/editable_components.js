@@ -217,15 +217,15 @@ class EditableContent extends EditableElement {
                     omitExtraWLInCodeBlocks: true,
                     simplifiedAutoLink: false,
                     tables: true,
-                    disableForced4SpacesIndentedSublists: true
+                    disableForced4SpacesIndentedSublists: true,
                   });
     this.#converter.setFlavor('github');
+
 
     this._editing = false;
     this._lineHeight = lineHeight;
     this.$input = $input;
     this.$output = $output;
-    console.log(html);
     this.content = this.#convertToMarkdown(html);
 
     if(config.text.default_content) {
@@ -261,6 +261,8 @@ class EditableContent extends EditableElement {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
 
+    markdown = this.#stripLeadingSpaces(markdown); 
+
     this.#markdown = markdown;
     this.emitSaveRequired();
   }
@@ -285,11 +287,12 @@ class EditableContent extends EditableElement {
     const currentInput = this.$input.val().trim();
     const defaultContent = this._defaultContent || this._originalContent;
     const markdown = (currentInput == "" ? defaultContent : currentInput);
+    
+
     const html = this.#convertToHtml(markdown);
 
     // Assign the cleaned markup to be saved
     this.content = this.#cleanInput(markdown);
-
     // Add latest content to output area
     this.$output.html(html);
 
@@ -311,14 +314,16 @@ class EditableContent extends EditableElement {
    **/
   #convertToMarkdown(html) {
     var markdown = this.#converter.makeMarkdown(html);
-    // For some reason <br> tags are not being converted correctly into 2 psaces
-    // and a newline.  This fixes that problem, nut it feels like a bad fix, and
-    // like we shouldn't have to do this!
-    console.log(markdown);
+
+    // As of 30-03-23 the currently published version of showdown does not parse <br> tags
+    // into 2 spaces and a newline. See this issue: https://github.com/showdownjs/showdown/issues/974
+    // A partial fix exists in develop and master branch of the project.
+    // Use a simple regex to fix the problem.
     markdown = markdown.replace(/<br>\n\n/mig, "  \n");
-    console.log(markdown)
+
+
+    markdown = this.#cleanInput(markdown);
     return markdown;
-    return this.#cleanInput(markdown);
   }
 
 
@@ -327,7 +332,26 @@ class EditableContent extends EditableElement {
    **/
   #convertToHtml(markdown) {
     var html = this.#converter.makeHtml(markdown);
-    return this.#cleanInput(html);
+    html = this.#cleanInput(html);
+    return html
+  }
+
+  /*
+   * Due to the way showdown converts HTML to markdown lines after a soft
+   * linebreak end up with a single leading space, which needs to be removed.
+   */
+  #stripLeadingSpaces(markdown) {
+    return markdown.split(/\n/).map(function (line) {
+      // matches a single whitespace character [\s{1}] at the start or a line [^] followed by any number of non-whitespace characters [\S+]
+      if( line.match(/^\s{1}\S+/) ) {
+        // safely trim all leading whitespace as we know there's only 1
+        const newLine = line.trimStart();
+        return newLine;
+      }
+      return line;
+    }).join('\n');
+
+
   }
 
   /* Opportunity safely strip out anything that we don't want here.
@@ -380,7 +404,7 @@ class EditableContent extends EditableElement {
     input = input.replace(/\$mailto([\w\-\.]+@{1}[\w\-\.]+)\$mailto/mig, "<$1>");
     // 6.
     input = input.replace(/\n&gt;(\s{1}.*?\n)/mig, "\n>$1");
-
+    
     return input;
   }
 
