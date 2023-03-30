@@ -6,7 +6,7 @@ RUN apk update
 RUN apk add git yarn build-base postgresql-contrib postgresql-dev \
       bash libcurl curl
 
-RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs npm
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/main/ nodejs=16.20.0-r0 npm
 RUN apk add clamav-daemon
 RUN apk add --no-cache gcompat
 
