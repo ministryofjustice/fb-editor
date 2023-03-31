@@ -8,10 +8,10 @@ const constants = {
   EDIT_CLASSNAME: 'active',
 }
 
-function createEditableContent(id, config) {
+function createEditableContent(id, config, htmlContent=null) {
     var html = `<form id="${id}-form">
       </form>
-      <div id="${id}">${constants.HTML_CONTENT}</div>`;
+      <div id="${id}">${htmlContent ?? constants.HTML_CONTENT}</div>`;
 
   $(document.body).append(html);
 

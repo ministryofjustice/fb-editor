@@ -125,7 +125,6 @@ And one final paragraph.`
 
     });
 
-
     it('should output correct markdown', function() {
       created.instance.$input.val(DIRTY_MARKDOWN);
       created.instance.update();
@@ -138,6 +137,32 @@ And one final paragraph.`
       let html = $(document).find('.EditableContent .output').html();
       expect(html).to.equal(CLEAN_HTML);
     });
+
+  });
+
+  describe('Special Cases', function() {
+    var created;
+
+    beforeEach(function() {
+    });
+
+    afterEach(function() {
+      helpers.teardownView(COMPONENT_ID);
+      created = undefined;
+    });
+
+    it('should handle soft linebreaks', function() {
+      var html = `<p>This is a paragraph</p>
+      <p>Address line 1<br>
+      Address line 2<br>
+      Town<br>
+      Postcode</p>
+      `;
+      created = helpers.createEditableContent(COMPONENT_ID,{}, html );
+
+      expect(created.instance.markdown).to.eql('This is a paragraph\n\nAddress line 1  \nAddress line 2  \nTown  \nPostcode\n\n');
+    });
+  
 
   });
 });
