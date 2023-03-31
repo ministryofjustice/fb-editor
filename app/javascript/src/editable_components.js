@@ -311,14 +311,17 @@ class EditableContent extends EditableElement {
    **/
   #convertToMarkdown(html) {
     var markdown = this.#converter.makeMarkdown(html);
-    // For some reason <br> tags are not being converted correctly into 2 psaces
-    // and a newline.  This fixes that problem, nut it feels like a bad fix, and
-    // like we shouldn't have to do this!
-    console.log(markdown);
-    markdown = markdown.replace(/<br>\n\n/mig, "  \n");
-    console.log(markdown)
+
+    // As of 30-03-23 the currently published version of showdown does not parse <br> tags
+    // into 2 spaces and a newline. See this issue: https://github.com/showdownjs/showdown/issues/974
+    // A partial fix exists in develop and master branch of the project.
+    // Use a simple regex to fix the problem. N.B. Trailing space is included in
+    // regex because showdown inserts a space between each node before conversion,
+    // meaning the text nodes after a <br> have a leading space
+    markdown = markdown.replace(/<br\s?\/?>\n\n /mig, "  \n");
+
+    markdown = this.#cleanInput(markdown);
     return markdown;
-    return this.#cleanInput(markdown);
   }
 
 
