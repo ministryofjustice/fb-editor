@@ -319,7 +319,7 @@ class EditableContent extends EditableElement {
     // Use a simple regex to fix the problem. N.B. Trailing space is included in
     // regex because showdown inserts a space between each node before conversion,
     // meaning the text nodes after a <br> have a leading space
-    markdown = markdown.replace(/<br>\n\n /mig, "  \n");
+    markdown = markdown.replace(/<br\s?\/?>\n\n /mig, "  \n");
 
     markdown = this.#cleanInput(markdown);
     return markdown;
