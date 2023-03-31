@@ -48,7 +48,9 @@ function supportGovUKTableCSS(html) {
  * ---------------------------------------------------------------------------
  *
  * 1. If we're passing HTML then we expect
- *       <p>$cta something like this $cta </p>
+ *       <p>$cta something like this $cta </p> or
+ *       <p><br>$cta something like this $cta <br></p> or
+ *
  *
  *    and want to turn it into
  *       <div class=\"call-to-action\"><p>something like this</p></div>
@@ -75,7 +77,12 @@ function supportGovUKTableCSS(html) {
  **/
 function supportGovSpeakCtaMarkup(content) {
   console.log(content)
-  // 1.
+  // 1.  \$cta            - match fixed string $cta
+  //      (?:<br\s?\/>)?  - optionally match <br> | <br/> | <br /> without capturing group
+  //      \n?             - optional newline
+  //      (.*)?           - optional capture all characters
+  //      \n?             - optional newline
+  //      \$cta           - match fixed $cta string
   content = content.replace(/<p>\$cta(?:<br\s?\/?>)?\n?(.*)?\n?\$cta<\/p>/migs, "<div class=\"call-to-action\"><p>$1</p></div>");
   // 2.
   content = content.replace(/\$cta (.*)\$cta/migs, "$cta\n$1\n$cta");
