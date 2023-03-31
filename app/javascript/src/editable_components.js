@@ -261,8 +261,6 @@ class EditableContent extends EditableElement {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
 
-    markdown = this.#stripLeadingSpaces(markdown); 
-
     this.#markdown = markdown;
     this.emitSaveRequired();
   }
@@ -318,9 +316,10 @@ class EditableContent extends EditableElement {
     // As of 30-03-23 the currently published version of showdown does not parse <br> tags
     // into 2 spaces and a newline. See this issue: https://github.com/showdownjs/showdown/issues/974
     // A partial fix exists in develop and master branch of the project.
-    // Use a simple regex to fix the problem.
-    markdown = markdown.replace(/<br>\n\n/mig, "  \n");
-
+    // Use a simple regex to fix the problem. N.B. Trailing space is included in
+    // regex because showdown inserts a space between each node before conversion,
+    // meaning the text nodes after a <br> have a leading space
+    markdown = markdown.replace(/<br>\n\n /mig, "  \n");
 
     markdown = this.#cleanInput(markdown);
     return markdown;
@@ -334,24 +333,6 @@ class EditableContent extends EditableElement {
     var html = this.#converter.makeHtml(markdown);
     html = this.#cleanInput(html);
     return html
-  }
-
-  /*
-   * Due to the way showdown converts HTML to markdown lines after a soft
-   * linebreak end up with a single leading space, which needs to be removed.
-   */
-  #stripLeadingSpaces(markdown) {
-    return markdown.split(/\n/).map(function (line) {
-      // matches a single whitespace character [\s{1}] at the start or a line [^] followed by any number of non-whitespace characters [\S+]
-      if( line.match(/^\s{1}\S+/) ) {
-        // safely trim all leading whitespace as we know there's only 1
-        const newLine = line.trimStart();
-        return newLine;
-      }
-      return line;
-    }).join('\n');
-
-
   }
 
   /* Opportunity safely strip out anything that we don't want here.
