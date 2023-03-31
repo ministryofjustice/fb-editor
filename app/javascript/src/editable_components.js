@@ -257,10 +257,11 @@ class EditableContent extends EditableElement {
 
   set content(markdown) {
     // Check if configuration requires external adjustment to markdown
+    console.log(markdown)
     if(this._config.markdownAdjustment) {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
-
+    console.log(markdown)
     this.#markdown = markdown;
     this.emitSaveRequired();
   }
@@ -291,7 +292,7 @@ class EditableContent extends EditableElement {
     this.content = this.#cleanInput(markdown);
 
     // Add latest content to output area
-    this.$output.html(html);
+    this.#output(html);
 
     this.$node.removeClass(this._config.editClassname);
   }
@@ -300,6 +301,7 @@ class EditableContent extends EditableElement {
   #output(content) {
     // Check if configuration requires external adjustment to html
     if(this._config.htmlAdjustment) {
+      console.log('adjusting html')
       content = safelyActivateFunction(this._config.htmlAdjustment, content);
     }
 

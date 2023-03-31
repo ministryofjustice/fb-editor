@@ -74,10 +74,13 @@ function supportGovUKTableCSS(html) {
  *
  **/
 function supportGovSpeakCtaMarkup(content) {
+  console.log(content)
   // 1.
-  content = content.replace(/<p>\$cta\n?(.*)?\n?\$cta<\/p>/mig, "<div class=\"call-to-action\"><p>$1</p></div>");
+  content = content.replace(/<p>\$cta(?:<br\s?\/?>)?\n?([^<]*)(?:<br\s?\/?>)?\n?\$cta<\/p>/mig, "<div class=\"call-to-action\"><p>$1</p></div>");
   // 2.
-  content = content.replace(/\$cta It looks like this. \$cta/, "$cta\nIt looks like this.\n$cta");
+  content = content.replace(/\$cta (.*)\$cta/migs, "$cta\n$1\n$cta");
+
+  console.log(content)
   return content;
 }
 
