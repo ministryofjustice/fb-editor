@@ -5669,9 +5669,9 @@ symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
 
-tabbable@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/tabbable/-/tabbable-6.0.1.tgz"
+tabbable@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-6.1.1.tgz#40cfead5ed11be49043f04436ef924c8890186a0"
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
