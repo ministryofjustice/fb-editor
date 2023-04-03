@@ -93,6 +93,7 @@ module Admin
         version_metadata = get_version_metadata(publish_service)
         publish_service_creation = PublishServiceCreation.new(
           service_id: publish_service.service_id,
+          service_name: publish_service.service_name,
           version_id: version_metadata['version_id'],
           deployment_environment: params[:deployment_environment],
           user_id: current_user.id
@@ -120,6 +121,7 @@ module Admin
         version_metadata = get_version_metadata(publish_service)
         publish_service_creation = PublishServiceCreation.new(
           service_id: publish_service.service_id,
+          service_name: publish_service.service_name,
           version_id: version_metadata['version_id'],
           user_id: current_user.id,
           deployment_environment: params[:deployment_environment],

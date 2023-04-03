@@ -3,12 +3,14 @@ RSpec.describe PublishServiceCreation, type: :model do
     described_class.new(
       attributes.merge(
         service_id:,
+        service_name:,
         version_id:,
         user_id:
       )
     )
   end
   let(:service_id) { service.service_id }
+  let(:service_name) { service.service_name }
   let(:version_id) { SecureRandom.uuid }
   let!(:user_id) { create(:user).id }
 
