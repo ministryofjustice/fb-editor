@@ -1,7 +1,8 @@
 module MetadataApiClient
   class Connection
     SUBSCRIPTION = 'metadata_api.client'
-    TIMEOUT = 10
+    OPEN_TIMEOUT = 10
+    TIMEOUT = 15
 
     attr_reader :connection
 
@@ -13,7 +14,7 @@ module MetadataApiClient
         conn.response :json
         conn.response :raise_error
         conn.use :instrumentation, name: SUBSCRIPTION
-        conn.options[:open_timeout] = TIMEOUT
+        conn.options[:open_timeout] = OPEN_TIMEOUT
         conn.options[:timeout] = TIMEOUT
 
         conn.request :authorization, 'Bearer', service_access_token
