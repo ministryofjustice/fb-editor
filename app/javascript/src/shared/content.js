@@ -76,18 +76,25 @@ function supportGovUKTableCSS(html) {
  *
  **/
 function supportGovSpeakCtaMarkup(content) {
-  console.log(content)
-  // 1.  \$cta            - match fixed string $cta
-  //      (?:<br\s?\/>)?  - optionally match <br> | <br/> | <br /> without capturing group
-  //      \n?             - optional newline
-  //      (.*)?           - optional capture all characters
-  //      \n?             - optional newline
-  //      \$cta           - match fixed $cta string
-  content = content.replace(/<p>\$cta(?:<br\s?\/?>)?\n?(.*)?\n?\$cta<\/p>/migs, "<div class=\"call-to-action\"><p>$1</p></div>");
-  // 2.
-  content = content.replace(/\$cta (.*)\$cta/migs, "$cta\n$1\n$cta");
+  // 1.   \$cta             - match fixed string $cta
+  //      (?:<br\s?\/>)?    - optionally match <br> | <br/> | <br /> without capturing group
+  //      \n?               - optional newline
+  //      (.+?(?=\$cta))?   - optional capture all characters until the next fixed $cta string (this allows us to match multiple $cta blocks)
+  //      \n?               - optional newline
+  //      \$cta             - match fixed $cta string
+  //      flags 
+  //      (i) case-insensitive, 
+  //      (g) global - allows multiple matches, 
+  //      (s) single line - allows . to include newline characters.
+  content = content.replace(/<p>\$cta(?:<br\s?\/?>)?\n?(.+?(?=\$cta))?\n?\$cta<\/p>/igs, "<div class=\"call-to-action\"><p>$1</p></div>");
+  
+  // 2.   \$cta                    - match fixed string $cta
+  //      (?:\s)?                  - optional space (non-capturing)
+  //      (.+?(?=[\n\r]?\$cta))    - capture everything upto the next fixed $cta string  [\n\r]? allows the $cta to optionally be on a newline, without capturing the newline)
+  //      (?:\s)?                  - optional space (non-capturing)
+  //      \$cta                    - match fixed string $cta
+  content = content.replace(/\$cta(?:\s)?(.+?(?=[\n\r]?\$cta))(?:\s)?\$cta/migs, "\$cta\n$1\n\$cta");
 
-  console.log(content)
   return content;
 }
 

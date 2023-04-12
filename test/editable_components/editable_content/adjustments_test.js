@@ -16,40 +16,157 @@ describe('EditableContent', function() {
       markdownAdjustment: markdownAdjustment
     }
 
-    beforeEach(function() {
-      // created = helpers.createEditableContent(COMPONENT_ID);
-    });
-
     afterEach(function() {
       helpers.teardownView(COMPONENT_ID);
       created = undefined;
     });
 
     describe('GovSpeak CTA Markup support', function() {
-      it('works without <br> tags', function(){      
-        const html = `<p>This is a paragraph</p>
+      describe('HTML to markdown', function() {
+
+        it('allows single line $cta block', function(){      
+          const html = `<p>This is a paragraph</p>
           <p>$cta This is a call to action $cta</p>`;
 
-        created = helpers.createEditableContent(COMPONENT_ID, config, html );
+          const markdown = 'This is a paragraph\n\n$cta\nThis is a call to action \n$cta\n\n';
 
-        expect(created.instance.markdown).to.eql('This is a paragraph\n\n$cta\nThis is a call to action \n$cta\n\n');
+          created = helpers.createEditableContent(COMPONENT_ID, config, html );
+
+          expect(created.instance.markdown).to.eql(markdown);
+        });
+
+        it('allows linebreaks around before/after $cta tags', function(){      
+          const html = `<p>This is a paragraph</p>
+          <p>$cta
+          This is a call to action
+          $cta</p>`;
+
+          const markdown = 'This is a paragraph\n\n$cta\nThis is a call to action \n$cta\n\n';
+
+          created = helpers.createEditableContent(COMPONENT_ID, config, html );
+
+          expect(created.instance.markdown).to.eql(markdown);
+        });
+
+        it('allows soft linebreaks within $cta contents', function(){      
+          const html = `<p>This is a paragraph</p>
+          <p>$cta
+            This is my call to action<br>
+            with a new line
+            $cta</p>`;
+
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my call to action  \nwith a new line \n$cta\n\n';
+
+          created = helpers.createEditableContent(COMPONENT_ID, config, html );
+
+          expect(created.instance.markdown).to.eql(markdown);
+        });
+
+        it('allows multiple paragraphs within $cta block', function() {
+          const html = `<p>This is a paragraph</p>
+          <p>$cta
+          This is my call to action.</p>
+
+          <p>It contains two paragraphs.
+          $cta</p>`;
+
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my call to action.\n\nIt contains two paragraphs. \n$cta\n\n';
+
+          created = helpers.createEditableContent(COMPONENT_ID, config, html );
+
+          expect(created.instance.markdown).to.eql(markdown);
+        });
+
+        it('allows multiple $cta blocks within a content area', function(){
+          const html = `<p>This is a paragraph</p>
+          <p>$cta
+          This is my first call to action.</p>
+
+          <p>It contains two paragraphs.
+          $cta</p>
+
+          <p>$cta
+          This is the second call to action.
+          $cta</p>`;
+
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my first call to action.\n\nIt contains two paragraphs. \n$cta\n\n$cta\nThis is the second call to action. \n$cta\n\n';
+
+          created = helpers.createEditableContent(COMPONENT_ID, config, html );
+
+          expect(created.instance.markdown).to.eql(markdown);
+        });
       });
+      
+      describe('Markdown to HTML', function() {
+        beforeEach(function() {
+          created = helpers.createEditableContent(COMPONENT_ID, config, '' );
+        })
 
-      it('works with soft linebreaks', function(){      
-        const html = `<p>This is a paragraph</p>
-          <p>$cta 
-          This is a call to action  <br> with a soft linebreak 
-        $cta</p>`;
+        it('allows single line $cta block', function(){      
+          const markdown = 'This is a paragraph\n\n$cta\nThis is a call to action \n$cta\n\n';
+          const html = `<p>This is a paragraph</p>
+<div class="call-to-action"><p>This is a call to action <br>
+</p></div>`;
 
-        created = helpers.createEditableContent(COMPONENT_ID, config, html );
+          created.instance.$input.val(markdown);
+          created.instance.update()
 
-        expect(created.instance.markdown).to.eql('This is a paragraph\n\n$cta\nThis is a call to action  \nwith a soft linebreak $cta\n\n');
+          expect(created.instance.$output.html()).to.eql(html);
+        });
+
+        it('allows linebreaks around before/after $cta tags', function(){      
+          const markdown = 'This is a paragraph\n\n$cta\nThis is a call to action \n$cta\n\n';
+          const html = `<p>This is a paragraph</p>
+<div class="call-to-action"><p>This is a call to action <br>
+</p></div>`;
+
+          created.instance.$input.val(markdown);
+          created.instance.update()
+
+          expect(created.instance.$output.html()).to.eql(html);
+        });
+
+        it('allows soft linebreaks within $cta contents', function(){      
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my call to action  \nwith a new line \n$cta\n\n';
+          const html = `<p>This is a paragraph</p>
+<div class="call-to-action"><p>This is my call to action  <br>
+with a new line <br>
+</p></div>`;
+
+          created.instance.$input.val(markdown);
+          created.instance.update()
+
+          expect(created.instance.$output.html()).to.eql(html);
+        });
+
+        it('allows multiple paragraphs within $cta block', function() {
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my call to action.\n\nIt contains two paragraphs. \n$cta\n\n';
+          const html = `<p>This is a paragraph</p>
+<div class="call-to-action"><p>This is my call to action.</p>
+<p>It contains two paragraphs. <br>
+</p></div>`;
+
+          created.instance.$input.val(markdown);
+          created.instance.update()
+
+          expect(created.instance.$output.html()).to.eql(html);
+        });
+
+        it('allows multiple $cta blocks within a content area', function(){
+          const markdown = 'This is a paragraph\n\n$cta\nThis is my first call to action.\n\nIt contains two paragraphs. $cta\n\n$cta This is the second call to action. \n$cta\n\n';
+          const html = `<p>This is a paragraph</p>
+<div class="call-to-action"><p>This is my first call to action.</p>
+<p>It contains two paragraphs. </p></div>
+<div class="call-to-action"><p> This is the second call to action. <br>
+</p></div>`;
+
+          created.instance.$input.val(markdown);
+          created.instance.update()
+
+          expect(created.instance.$output.html()).to.eql(html);
+        });
       });
     });
-
   });
-
-  
-
 });
 

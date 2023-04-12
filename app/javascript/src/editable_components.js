@@ -225,7 +225,6 @@ class EditableContent extends EditableElement {
     this._lineHeight = lineHeight;
     this.$input = $input;
     this.$output = $output;
-    console.log(html);
     this.content = this.#convertToMarkdown(html);
 
     if(config.text.default_content) {
@@ -257,11 +256,9 @@ class EditableContent extends EditableElement {
 
   set content(markdown) {
     // Check if configuration requires external adjustment to markdown
-    console.log(markdown)
     if(this._config.markdownAdjustment) {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
-    console.log(markdown)
     this.#markdown = markdown;
     this.emitSaveRequired();
   }
@@ -301,7 +298,6 @@ class EditableContent extends EditableElement {
   #output(content) {
     // Check if configuration requires external adjustment to html
     if(this._config.htmlAdjustment) {
-      console.log('adjusting html')
       content = safelyActivateFunction(this._config.htmlAdjustment, content);
     }
 
