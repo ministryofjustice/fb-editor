@@ -225,7 +225,6 @@ class EditableContent extends EditableElement {
     this._lineHeight = lineHeight;
     this.$input = $input;
     this.$output = $output;
-    console.log(html);
     this.content = this.#convertToMarkdown(html);
 
     if(config.text.default_content) {
@@ -260,7 +259,6 @@ class EditableContent extends EditableElement {
     if(this._config.markdownAdjustment) {
       markdown = safelyActivateFunction(this._config.markdownAdjustment, markdown);
     }
-
     this.#markdown = markdown;
     this.emitSaveRequired();
   }
@@ -291,7 +289,7 @@ class EditableContent extends EditableElement {
     this.content = this.#cleanInput(markdown);
 
     // Add latest content to output area
-    this.$output.html(html);
+    this.#output(html);
 
     this.$node.removeClass(this._config.editClassname);
   }
