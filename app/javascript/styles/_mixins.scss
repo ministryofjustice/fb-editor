@@ -46,6 +46,13 @@
     background-color: govuk-colour("blue");
     color: govuk-colour("white");
   }
+
+  &[disabled] {
+    background-color: govuk-colour("white");
+    border: govuk-colour("blue") solid 2px;
+    color: govuk-colour("blue");
+    opacity: 0.5;
+  }
 }
 
 @mixin focus {

@@ -66,6 +66,7 @@ ServicesController.edit = function() {
   createPageMenus(view);
   createConnectionMenus(view);
   createExpanderComponents();
+  setupUndoRedoButton(view);
 
   if(view.$flowOverview.length) {
     layoutFormFlowOverview(view);
@@ -151,6 +152,32 @@ function createConnectionMenus(view) {
         render: false,
       })
     );
+  });
+}
+
+function setupUndoRedoButton(view) {
+  const button = document.querySelector('[data-element="undo-redo-button"]');
+  if(!button) return;
+  const form = button.closest('form');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const url = form.getAttribute('action');
+
+    button.setAttribute('disabled', '');
+    $.get(url)
+      .done( (response) => {
+        if(response.redirect) {
+          window.location = response.redirect;
+        }
+      })
+      .fail((response) => {
+        button.removeAttribute('disabled');
+        const action = response.responseJSON?.action;
+        view.dialog.open({
+          heading: view.text.dialogs.undo_redo_error.heading,
+          content: action ? view.text.dialogs.undo_redo_error[action]?.content : view.text.dialogs.undo_redo_error.content,
+        }); 
+      });
   });
 }
 
