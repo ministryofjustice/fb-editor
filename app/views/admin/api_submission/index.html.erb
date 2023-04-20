@@ -1,0 +1,26 @@
+<h1>API Submission config</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>url</th>
+      <th>key</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @api_submission.each do |config| %>
+      <tr>
+        <td><%= config.url %></td>
+        <td><%= config.key %></td>
+        <td><%= link_to "Show", api_submission %></td>
+        <td><%= link_to "Edit", edit_admin_service_api_submission_path(config) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to "New config", new_admin_service_api_submission %>
