@@ -14,7 +14,7 @@
     "@rails/webpacker": "^5.4.4",
     "@sentry/browser": "^7.28.1",
     "accessible-autocomplete": "^2.0.4",
-    "govuk-frontend": "4.4.1",
+    "govuk-frontend": "4.6.0",
     "jquery": "^3.6.4",
     "jquery-ui-dist": "^1.13.2",
     "resolve-url-loader": "^5.0.0",
