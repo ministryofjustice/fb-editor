@@ -1,8 +1,24 @@
 <% if ENV['API_SUBMISSION'] == 'enabled' %>
-      <%= form_with(
-        url: admin_service_api_submission_settings_path(params[:id]),
-        method: :put,
-        local: true) do |f| %>
+
+      <%# <%= form_with(
+        url: admin_service_api_submission_index_path(params[:id]),
+        method: :post,
+        local: true, object:object) do |f| %> %>
+
+<%# <% form_for :person, @person, :url => { :action => "create" } do |person_form| %> %>
+
+<%# <%= form_for @article, url: {action: "create"}, html: {class: "nifty_form"} do |f| %> %>
+
+<%# <%= form_for(@maintenance_mode_settings,
+               url: admin_service_path(@service.service_id),
+               method: :put,
+               builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %> %>
+
+    <%= form_for(@api_submission,
+     url: admin_service_api_submission_index_path(@service.service_id),
+     method: :post,
+     builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       API Submission
     </h2>
@@ -13,8 +29,11 @@
         <%# <%= f.label :api_submission.api_json_endpoint_url, "SERVICE_OUTPUT_JSON_ENDPOINT?" %> %>
         <%# <% @api_submission.api_json_endpoint_url%> %>
         <% @service.anewmessage%>
+        <%= object.service_id%>
+
         </dt>
         <dd class="govuk-summary-list__value govuk-input">
+
           <%= f.text_field :api_json_endpoint_url %>
         </dd>
       </div>
@@ -28,6 +47,10 @@
       </div>
     </dl>
 
-      <%= f.submit 'Save API Submission Settings', class: 'govuk-button fb-govuk-button', id: 'version-save' %>
+    <%= f.hidden_field(:service, value: @service) %>
+
+      <%# <%= f.submit 'Save API Submission Settings', class: 'govuk-button fb-govuk-button', id: 'api-submission-save' %> %>
+
+    <%= submit_tag "Edit values" %>
       <% end %>
   <% end %>

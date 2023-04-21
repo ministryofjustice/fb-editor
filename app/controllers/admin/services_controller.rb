@@ -10,8 +10,11 @@ module Admin
     end
 
     def api_json_endpoint_url
-      byebug
       'api_json_endpoint_url'
+    end
+
+    def api_json_endpoint_key
+      'api_json_endpoint_key'
     end
 
     def index
@@ -35,7 +38,8 @@ module Admin
       @published_to_live = published('production')
       @published_to_test = published('dev')
       @versions = MetadataApiClient::Version.all(@service.service_id)
-      @api_json_endpoint_url = 'api_json_endpoint_url'
+      @api_json_endpoint_url = api_json_endpoint_url
+      @api_json_endpoint_key = api_json_endpoint_key
     end
 
     def create

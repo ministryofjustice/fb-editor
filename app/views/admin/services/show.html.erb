@@ -15,18 +15,84 @@
       Visit service in app
     </a>
 <div>
+Using service controller
+<br>
+
+<section class="main-content__body">
+  <dl class="govuk-summary-list">
+
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        url
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <%= @api_json_endpoint_url %>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+          key
+        </dt>
+      <dd class="govuk-summary-list__value">s
+        <%= @api_json_endpoint_key %>
+    </div>
+
+  </dl>
+    <a href="<%= admin_service_api_submission_index_path(@service.service_id) %>" class="govuk-button fb-govuk-button">Edit API Submission from Service Controller</a>
+
+</div>
+
+
+<div>
+Using Partial
+<%# <%= render "admin/api_submission/show", object: @service %> %>
+
+</div>
+
+
   <% if ENV['API_SUBMISSION'] == 'enabled' %>
+
+    <h2 class="govuk-heading-m govuk-!-margin-top-5">
+      API Submission
+    </h2>
+
+
+<section class="main-content__body">
+  <dl class="govuk-summary-list">
+
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        url
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <%= @api_json_endpoint_url %>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+          key
+        </dt>
+      <dd class="govuk-summary-list__value">
+
+        <%= @api_json_endpoint_key %>
+    </div>
+
+  </dl>
+</section>
 
     This is the last value for url:
     <%@api_json_endpoint_url%>
 <br>
 <br>
-    <a href="<%= admin_service_api_submission_index_path(@service.service_id) %>" class="govuk-button fb-govuk-button">Edit API Submission</a>
 
-  <%= link_to "Get API Submission Setting",
-    :controller => "services/api_submission",
+    <a href="<%= admin_service_api_submission_index_path(@service.service_id, 0) %>" class="govuk-button fb-govuk-button">Edit API Submission</a>
+
+  <%# <%= link_to "Get API Submission Setting",
+    :controller => "api_submission",
     :action => "update",
-    :id => @service.service_id %>
+    :id => @service.service_id %> %>
 
   <% end %>
 </div>
