@@ -16,6 +16,7 @@
         <td><%= config.key %></td>
         <td><%= link_to "Show", api_submission %></td>
         <td><%= link_to "Edit", edit_admin_service_api_submission_path(config) %></td>
+        <td><%= link_to "Destroy", config, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %></td>
       </tr>
     <% end %>
   </tbody>

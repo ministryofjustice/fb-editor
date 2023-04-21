@@ -2,6 +2,18 @@ module Admin
   class ServicesController < Admin::ApplicationController
     include MetadataVersionHelper
 
+    def api_submission_settings
+      @api_json_endpoint_url= 'api_json_endpoint_url from the sercvice controller'
+      # @api_json_endpoint_url = Admin::ApiSubmissionController.api_json_endpoint_url
+      render 'admin/api_submission/show'
+      # 'test_message'
+    end
+
+    def api_json_endpoint_url
+      byebug
+      'api_json_endpoint_url'
+    end
+
     def index
       response = MetadataApiClient::Service.all_services(
         page:,
@@ -23,6 +35,7 @@ module Admin
       @published_to_live = published('production')
       @published_to_test = published('dev')
       @versions = MetadataApiClient::Version.all(@service.service_id)
+      @api_json_endpoint_url = 'api_json_endpoint_url'
     end
 
     def create

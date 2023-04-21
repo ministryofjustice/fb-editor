@@ -1,0 +1,43 @@
+<% content_for(:title) do %>
+  <%= display_resource_name('Service') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= 'API Submission Settings' %>
+  </h1>
+</header>
+
+<section class="main-content__body">
+  <dl class="govuk-summary-list">
+
+  <%= form_with(
+    url: admin_service_api_submission_path(params[:service_id]),
+    method: :put,
+    local: true) do |f| %>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        url
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <%= 'and one value please' %>
+        <br>
+      <%= f.text_field :api_json_endpoint_url, value: @api_json_endpoint_url  %>
+
+        <%= @api_json_endpoint_url %>
+      </dd>
+    </div>
+
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          key
+        </dt>
+        <dd class="govuk-summary-list__value">
+        <%= f.text_field :api_json_endpoint_key, value: @api_json_endpoint_key  %>
+        <%= @api_json_endpoint_key %>
+    </div>
+    <%= f.submit 'Save', class: 'govuk-button fb-govuk-button', id: 'api-submission-save' %>
+  <% end %>
+
+  </dl>
+</section>
