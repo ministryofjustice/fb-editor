@@ -171,8 +171,8 @@ function setupUndoRedoButton(view) {
         }
       })
       .fail((response) => {
-        button.removeAttribute('disabled');
         const action = response.responseJSON?.action;
+        button.parentNode.removeChild(button);
         view.dialog.open({
           heading: view.text.dialogs.undo_redo_error.heading,
           content: action ? view.text.dialogs.undo_redo_error[action]?.content : view.text.dialogs.undo_redo_error.content,

@@ -50,7 +50,7 @@ en:
     button_delete_option: 'Delete option'
     button_delete_component: 'Delete component'
     button_delete_page: 'Delete page'
-    button_ok: 'Ok'
+    button_ok: 'OK'
     button_understood: 'Understood'
     button_update: 'Update'
     heading: General heading here
@@ -78,11 +78,11 @@ en:
       branch_destination_no_default_next_message: 'You cannot leave a branch without any pages. Either edit the branching point or add another page to the branch first.'
     undo_redo_error:
       heading: There was a problem
-      content: We were unable to complete your last action. Please try again. 
+      content: We were unable to complete your last action.
       undo:
-        content: We were unable to undo your last action. Please try again. 
+        content: We were unable to undo your last action.
       redo:
-        content: We were unable to redo your last action. Please try again. 
+        content: We were unable to redo your last action.
     component_validations:
       date:
         day: Day
@@ -190,7 +190,7 @@ en:
     add_check_answers: 'Add check answers page'
     add_confirmation: 'Add confirmation page'
     reconnect_confirmation: 'Reconnect confirmation page'
-    ok: 'Ok'
+    ok: 'OK'
     submit: 'Submit'
     upload_options: Upload options
     open_in_new_window: '(opens in a new window)'
