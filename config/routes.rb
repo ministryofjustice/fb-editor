@@ -9,12 +9,7 @@ Rails.application.routes.draw do
       post '/republish/:publish_service_id/:deployment_environment',
         to: 'services#republish', as: :republish
 
-      # route I want to create:
-      # /admin/services/[:id]/api_submission/url/id
-      # post 'api_submission_settings', to: 'api_submission#edit'
-      # get '/api_submission_settings', to: 'services#api_submission_settings'
-      # put '/api_submission_settings', to: 'api_submission#update'
-      resources :api_submission, only: [:create, :index, :show :delete]
+      resources :api_submission, only: [:create, :index, :show, :delete]
       resources :versions, only: [:update, :edit, :show]
     end
     resources :users

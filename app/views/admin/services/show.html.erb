@@ -34,7 +34,7 @@ Using service controller
       <dt class="govuk-summary-list__key">
           key
         </dt>
-      <dd class="govuk-summary-list__value">s
+      <dd class="govuk-summary-list__value">
         <%= @api_json_endpoint_key %>
     </div>
 
@@ -82,10 +82,7 @@ Using Partial
   </dl>
 </section>
 
-    This is the last value for url:
-    <%@api_json_endpoint_url%>
-<br>
-<br>
+Pointing to submission controller:
 
     <a href="<%= admin_service_api_submission_index_path(@service.service_id, 0) %>" class="govuk-button fb-govuk-button">Edit API Submission</a>
 

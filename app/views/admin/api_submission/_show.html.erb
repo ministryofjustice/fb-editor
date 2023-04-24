@@ -1,4 +1,17 @@
-<% if ENV['API_SUBMISSION'] == 'enabled' %>
+<% content_for(:title) do %>
+  <%= display_resource_name('Service') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= 'API Submission Settings' %>
+  </h1>
+</header>
+
+<section class="main-content__body">
+  <dl class="govuk-summary-list">
+
+  <% if ENV['API_SUBMISSION'] == 'enabled' %>
 
       <%# <%= form_with(
         url: admin_service_api_submission_index_path(params[:id]),
@@ -54,3 +67,6 @@
     <%= submit_tag "Edit values" %>
       <% end %>
   <% end %>
+
+    </div>
+</section>

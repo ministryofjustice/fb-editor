@@ -1,32 +1,23 @@
-<h1>API Submission config</h1>
+<% content_for(:title) do %>
+  <%= display_resource_name('Service') %>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>url</th>
-      <th>key</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= 'API Submission Settings' %>
+  </h1>
+</header>
+
+<section class="main-content__body main-content__body--flush">
 
     <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
-      Back the service
+      Back to the service
     </a>
 
-
-  <tbody>
-      <tr>
-        <td><%= @api_submission.endpoint_url %></td>
-        <td><%= @api_submission.endpoint_key %></td>
-        <%# <td><%= link_to "Edit", edit_admin_service_api_submission_path(@api_submission) %></td>
-      </tr>
-  </tbody>
-</table>
-
-   <%= form_for(@api_submission,
-     url: admin_service_api_submission_index_path(params[:service_id]),
-     method: :post,
-     builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+    <%= form_for(@api_submission,
+      url: admin_service_api_submission_index_path(params[:service_id]),
+      method: :post,
+      builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       API Submission
@@ -52,10 +43,8 @@
 
     <%= f.hidden_field(:service, value: @service) %>
 
-      <%# <%= f.submit 'Save API Submission Settings', class: 'govuk-button fb-govuk-button', id: 'api-submission-save' %> %>
-
     <%= submit_tag "Edit values" %>
       <% end %>
 
-<br>
-
+  </div>
+</section>

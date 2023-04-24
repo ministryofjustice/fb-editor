@@ -3,10 +3,7 @@ module Admin
     include MetadataVersionHelper
 
     def api_submission_settings
-      @api_json_endpoint_url= 'api_json_endpoint_url from the sercvice controller'
-      # @api_json_endpoint_url = Admin::ApiSubmissionController.api_json_endpoint_url
       render 'admin/api_submission/show'
-      # 'test_message'
     end
 
     def api_json_endpoint_url
