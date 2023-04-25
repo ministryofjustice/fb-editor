@@ -10,18 +10,18 @@ module Admin
 
     def set_api_submission_configuration
       @api_submission.service_id(params[:service_id])
-      @api_submission.endpoint_url(params[:admin_api_submission][:endpoint_url])
-      @api_submission.endpoint_key(params[:admin_api_submission][:endpoint_key])
+      @api_submission.endpoint_url(params[:admin_api_submission][:saved_endpoint_url])
+      @api_submission.endpoint_key(params[:admin_api_submission][:saved_endpoint_key])
     end
 
     def index
-      Rails.logger.debug 'We index'
+      # we save the service field to be send as hidden field
+      @service_id = params[:service_id]
       @api_submission.service_id(params[:service_id])
       render 'index'
     end
 
     def create
-      Rails.logger.debug 'We create'
       set_api_submission_configuration
       # render 'admin/services/show', object: @service
       @api_submission.create_service_configurations

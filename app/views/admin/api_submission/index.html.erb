@@ -37,12 +37,12 @@
             SERVICE_OUTPUT_JSON_KEY
           </dt>
           <dd class="govuk-summary-list__value">
-            <%= f.text_field :endpoint_key %>
+            <%= f.text_field :saved_endpoint_key %>
           </dd>
         </div>
       </dl>
-        <%= f.hidden_field(:service, value: @service) %>
-        <%= submit_tag "Edit values" %>
+        <%= f.hidden_field(:service_id, value: @service_id) %>
+        <%= submit_tag "Save values" %>
       <% end %>
     </div>
   </div>
