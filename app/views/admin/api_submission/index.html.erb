@@ -10,42 +10,40 @@
 
 <section class="main-content__body main-content__body--flush">
 
-    <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
-      Back to the service
-    </a>
+  <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
+    Back to the service
+  </a>
 
-
+  <div class="govuk-!-margin-left-5">
     <%= form_for(@api_submission,
       url: admin_service_api_submission_index_path(params[:service_id]),
       method: :create,
       builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-5">
-      API Submission
-    </h2>
+      <h2 class="govuk-heading-m govuk-!-margin-top-5">
+        API Submission
+      </h2>
       <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          SERVICE_OUTPUT_JSON_ENDPOINT
-        </dt>
-        <dd class="govuk-summary-list__value govuk-input">
-          <%= f.text_field :endpoint_url %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          SERVICE_OUTPUT_JSON_KEY
-        <dd class="govuk-summary-list__value">
-        </dt>
-          <%= f.text_field :endpoint_key %>
-        </dd>
-      </div>
-    </dl>
-
-    <%= f.hidden_field(:service, value: @service) %>
-
-    <%= submit_tag "Edit values" %>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            SERVICE_OUTPUT_JSON_ENDPOINT
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <%= f.text_field :endpoint_url %>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            SERVICE_OUTPUT_JSON_KEY
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <%= f.text_field :endpoint_key %>
+          </dd>
+        </div>
+      </dl>
+        <%= f.hidden_field(:service, value: @service) %>
+        <%= submit_tag "Edit values" %>
       <% end %>
-
+    </div>
   </div>
 </section>
