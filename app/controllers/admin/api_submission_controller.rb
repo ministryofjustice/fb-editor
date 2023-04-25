@@ -24,6 +24,7 @@ module Admin
       set_api_submission_configuration
       # render 'admin/services/show', object: @service
       @api_submission.create_service_configurations
+      flash[:success] = "API submission settings successfully updated"
       render 'index'
     end
 

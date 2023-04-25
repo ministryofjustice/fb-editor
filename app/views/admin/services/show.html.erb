@@ -16,9 +16,7 @@
     </a>
 
 <% if ENV['API_SUBMISSION'] == 'enabled' %>
-  </dl>
-
-        <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
+    <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
 
 <% end %>
 </div>

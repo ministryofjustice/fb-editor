@@ -42,19 +42,11 @@ module Admin
     end
 
     def create_service_configurations
-      return if @service_id.blank?
-
-      create_or_update_configuration(
-        name: SERVICE_OUTPUT_JSON_ENDPOINT, value: @endpoint_url
-      )
-      create_or_update_configuration(
-        name: SERVICE_OUTPUT_JSON_KEY, value: @endpoint_key
-      )
+      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_ENDPOINT, value: @endpoint_url)
+      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_KEY, value: @endpoint_key)
     end
 
     def delete_service_configurations
-      return if @service_id.blank?
-
       delete_service_configuration(name: SERVICE_OUTPUT_JSON_ENDPOINT)
       delete_service_configuration(name: SERVICE_OUTPUT_JSON_KEY)
     end
@@ -62,10 +54,9 @@ module Admin
     private
 
     def service_config(name:)
-      return if @service_id.blank?
-
       @service_config ||= ServiceConfiguration.find_by(
         service_id: @service_id,
+        deployment_environment: @deployment_environment,
         name:
       )
     end
