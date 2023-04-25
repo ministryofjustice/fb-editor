@@ -18,16 +18,13 @@ module Admin
       @endpoint_key = endpoint_key
     end
 
-    def initialize(settings)
-      @endpoint_url = saved_endpoint_url
-      @endpoint_key = saved_endpoint_key
-      @service_id = settings[:service_id]
+    def initialize
       # TODO: set in dev here like reference number
       @deployment_environment = 'dev'
     end
 
     def saved_endpoint_url
-      @saved_endpoint_url ||=
+      @saved_endpoint_url =
         begin
           return service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).present?
 
@@ -36,7 +33,7 @@ module Admin
     end
 
     def saved_endpoint_key
-      @saved_endpoint_key ||=
+      @saved_endpoint_key =
         begin
           return service_config(name: SERVICE_OUTPUT_JSON_KEY).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_KEY).present?
 

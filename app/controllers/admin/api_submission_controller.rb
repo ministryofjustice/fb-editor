@@ -3,8 +3,7 @@ module Admin
     attr_reader :endpoint_url, :endpoint_key, :service_id, :deployment_environment
 
     def initialize
-      settings = { service_id:, deployment_environment: }
-      @api_submission = Admin::ApiSubmission.new(settings)
+      @api_submission = Admin::ApiSubmission.new
       super
     end
 
@@ -27,21 +26,6 @@ module Admin
       @api_submission.create_service_configurations
       render 'index'
     end
-
-    # def show
-    #   Rails.logger.debug 'We show'
-    #   set_api_submission_configuration
-    #   @endpoint_url = 'saved value 1'
-    #   @endpoint_key = 'saved value 2'
-    # end
-
-    # def update
-    #   Rails.logger.debug 'We update'
-    #   @endpoint_url = params[:endpoint_url]
-    #   @endpoint_key = params[:endpoint_key]
-    #   # render 'admin/services/show', id: params[:service_id]
-    #   render 'admin/services/show'
-    # end
 
     def delete
       Rails.logger.debug 'We have to delete'
