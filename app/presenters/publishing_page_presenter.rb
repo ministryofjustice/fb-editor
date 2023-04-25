@@ -29,6 +29,7 @@ class PublishingPagePresenter
   def service_output_warning
     @service_output_warning ||= ServiceOutputWarningPresenter.new(
       service_id: service.service_id,
+      service_name: service.service_name,
       deployment_environment:,
       messages: I18n.t('publish.service_output')
     )
@@ -45,6 +46,7 @@ class PublishingPagePresenter
   def set_publish_creation
     PublishServiceCreation.new(
       service_id: service.service_id,
+      service_name: service.service_name,
       deployment_environment:
     )
   end

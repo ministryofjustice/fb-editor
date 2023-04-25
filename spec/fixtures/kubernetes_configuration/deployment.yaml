@@ -42,6 +42,8 @@ spec:
             value: http://fb-user-filestore-api-svc-test-dev.formbuilder-platform-test-dev/
           - name: SUBMISSION_ENCRYPTION_KEY
             value: 65a27a35-c475-48b9-9a20-30142f14
+          - name: SAVED_FORMS_KEY
+            value: 1231312-c475-48b9-9a20-30142f14
           - name: SERVICE_SLUG
             value: acceptance-tests-date
           - name: SERVICE_ID

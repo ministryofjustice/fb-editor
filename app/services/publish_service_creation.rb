@@ -3,6 +3,7 @@ class PublishServiceCreation
   REQUIRE_AUTHENTICATION = '1'.freeze
 
   attr_accessor :service_id,
+                :service_name,
                 :version_id,
                 :user_id,
                 :deployment_environment,
@@ -11,7 +12,7 @@ class PublishServiceCreation
                 :password,
                 :publish_service_id
 
-  validates :service_id, :version_id, :user_id, presence: true
+  validates :service_id, :service_name, :version_id, :user_id, presence: true
   with_options if: :require_authentication? do |record|
     record.validates :username, presence: { message: I18n.t(
       'activemodel.errors.models.publish_service_creation.blank_username'
@@ -88,6 +89,13 @@ class PublishServiceCreation
     )
     create_or_update_configuration(
       name: ServiceConfiguration::BASIC_AUTH_PASS, value: password
+    )
+    create_or_update_configuration(
+      name: 'SAVE_AND_RETURN', value: 'enabled'
+    )
+    create_or_update_configuration(
+      name: 'SAVE_AND_RETURN_EMAIL',
+      value: I18n.t('default_values.save_and_return_email', service_name:)
     )
   end
 

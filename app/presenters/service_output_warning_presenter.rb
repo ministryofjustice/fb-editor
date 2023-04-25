@@ -2,11 +2,12 @@ class ServiceOutputWarningPresenter
   include ActionView::Helpers
   include GovukLinkHelper
 
-  def initialize(service_id:, deployment_environment:, messages:)
+  def initialize(service_id:, deployment_environment:, messages:, service_name:)
     @deployment_environment = deployment_environment
     @service_id = service_id
     @publish_creation = set_publish_creation
     @messages = messages
+    @service_name = service_name
   end
 
   attr_accessor :publish_creation

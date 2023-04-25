@@ -246,6 +246,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: submission_encryption_key
+          - name: SAVED_FORMS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: saved_forms_key
           - name: SERVICE_SENTRY_DSN_TEST
             valueFrom:
               secretKeyRef:

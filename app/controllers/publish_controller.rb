@@ -34,6 +34,7 @@ class PublishController < FormController
       :deployment_environment
     ).merge(
       service_id: service.service_id,
+      service_name: service.service_name,
       user_id: current_user.id,
       version_id: service.version_id
     )

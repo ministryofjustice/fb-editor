@@ -88,6 +88,10 @@ class Publisher
       ENV['SUBMISSION_ENCRYPTION_KEY']
     end
 
+    def saved_forms_key
+      ENV['SAVED_FORMS_KEY']
+    end
+
     def resource_limits_cpu
       '150m'
     end
