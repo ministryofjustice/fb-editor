@@ -14,6 +14,11 @@ RSpec.describe PublishServiceCreation, type: :model do
   let(:version_id) { SecureRandom.uuid }
   let!(:user_id) { create(:user).id }
 
+  before do
+    allow(ENV).to receive(:[])
+    allow(ENV).to receive(:[]).with('SAVED_FORMS_KEY').and_return('qweuyqediuyqdiuhqiudhqiudhqiuhdiuqhdiuqh')
+  end
+
   describe '#service_configuration' do
     let(:attributes) { {} }
 

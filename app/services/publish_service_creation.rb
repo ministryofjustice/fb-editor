@@ -94,6 +94,9 @@ class PublishServiceCreation
       name: 'SAVE_AND_RETURN', value: 'enabled'
     )
     create_or_update_configuration(
+      name: 'SAVED_FORMS_KEY', value: ENV['SAVED_FORMS_KEY']
+    )
+    create_or_update_configuration(
       name: 'SAVE_AND_RETURN_EMAIL',
       value: I18n.t('default_values.save_and_return_email', service_name:)
     )
