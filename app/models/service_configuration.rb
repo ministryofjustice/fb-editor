@@ -4,6 +4,7 @@ class ServiceConfiguration < ApplicationRecord
     BASIC_AUTH_PASS
     ENCODED_PRIVATE_KEY
     SERVICE_SECRET
+    SAVED_FORMS_KEY
   ].freeze
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
