@@ -29,7 +29,7 @@
             SERVICE_OUTPUT_JSON_ENDPOINT
           </dt>
           <dd class="govuk-summary-list__value">
-            <%= f.text_field :saved_endpoint_url %>
+            <%= f.text_field :endpoint_url %>
           </dd>
         </div>
         <div class="govuk-summary-list__row">
@@ -37,7 +37,7 @@
             SERVICE_OUTPUT_JSON_KEY
           </dt>
           <dd class="govuk-summary-list__value">
-            <%= f.text_field :saved_endpoint_key %>
+            <%= f.text_field :endpoint_key %>
           </dd>
         </div>
       </dl>
@@ -45,5 +45,9 @@
         <%= submit_tag "Save values" %>
       <% end %>
     </div>
+
+    Last values saved are
+    <%= @api_submission.endpoint_url %>
+    <%= @api_submission.endpoint_key %>
   </div>
 </section>

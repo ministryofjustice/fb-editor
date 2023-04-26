@@ -10,40 +10,31 @@ module Admin
       @service_id = service_id
     end
 
-    def endpoint_url(endpoint_url)
-      @endpoint_url = endpoint_url
-    end
-
-    def endpoint_key(endpoint_key)
-      @endpoint_key = endpoint_key
-    end
-
     def initialize
       # TODO: set in dev here like reference number
+      if endpoint_key.blank?
+        @endpoint_url = 'Not filled in'
+        @endpoint_key = 'Not filled in yet either'
+      else
+        endpoint_key
+        endpoint_url
+      end
       @deployment_environment = 'dev'
     end
 
-    def saved_endpoint_url
-      @saved_endpoint_url =
-        begin
-          return service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).present?
-
-          'Not filled in'
-        end
+    def endpoint_url
+      @endpoint_url = service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).present?
     end
 
-    def saved_endpoint_key
-      @saved_endpoint_key =
-        begin
-          return service_config(name: SERVICE_OUTPUT_JSON_KEY).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_KEY).present?
-
-          'Not filled in yet either'
-        end
+    def endpoint_key
+      @endpoint_key = service_config(name: SERVICE_OUTPUT_JSON_KEY).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_KEY).present?
     end
 
-    def create_service_configurations
-      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_ENDPOINT, value: @endpoint_url)
-      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_KEY, value: @endpoint_key)
+    def create_servx§ice_configurations(url, key)
+      @endpoint_url = url
+      @endpoint_key = key
+      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_ENDPOINT, value: url)
+      create_or_update_configuration(name: SERVICE_OUTPUT_JSON_KEY, value: key)
     end
 
     def delete_service_configurations
@@ -54,11 +45,7 @@ module Admin
     private
 
     def service_config(name:)
-      @service_config ||= ServiceConfiguration.find_by(
-        service_id: @service_id,
-        deployment_environment: @deployment_environment,
-        name:
-      )
+      @service_config ||= ServiceConfiguration.find_by(service_id: @service_id, deployment_environment: @deployment_environment, name:)
     end
 
     def create_or_update_configuration(name:, value:)
