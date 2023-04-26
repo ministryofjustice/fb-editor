@@ -15,11 +15,6 @@ module Api
     end
 
     def call_previous_version
-      ## FOR TESTING ONLY - DO NOT DEPLOY
-      if params[:action] == 'redo'
-        render json: { action: params[:action] }, status: :bad_request and return
-      end
-
       response = MetadataApiClient::Version.previous(service.service_id)
       if response.errors?
         render json: { action: params[:action] }, status: :bad_request and return
