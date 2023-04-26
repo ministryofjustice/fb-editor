@@ -21,7 +21,7 @@ module Admin
       if url.blank? || key.blank?
         flash[:error] = 'Please use the delete button to delete API settings'
       else
-        @api_submission.create_service_configurations(url,key)
+        @api_submission.create_service_configurations(url, key)
         flash[:success] = 'API submission settings successfully updated'
       end
       # render 'admin/services/show', object: @service
