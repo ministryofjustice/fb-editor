@@ -30,7 +30,8 @@ module Admin
 
     def delete
       Rails.logger.debug 'We have to delete'
-      # @api_submission.delete_service_configurations
+      @api_submission.delete_service_configurations
+      render 'index'
     end
   end
 end

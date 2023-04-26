@@ -30,7 +30,7 @@ module Admin
       @endpoint_key = service_config(name: SERVICE_OUTPUT_JSON_KEY).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_KEY).present?
     end
 
-    def create_servx§ice_configurations(url, key)
+    def create_service_configurations(url, key)
       @endpoint_url = url
       @endpoint_key = key
       create_or_update_configuration(name: SERVICE_OUTPUT_JSON_ENDPOINT, value: url)
