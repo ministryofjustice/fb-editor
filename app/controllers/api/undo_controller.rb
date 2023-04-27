@@ -16,14 +16,21 @@ module Api
 
     def call_previous_version
       response = MetadataApiClient::Version.previous(service.service_id)
-      return head :bad_request if response.errors?
+      if response.errors?
+        render json: { action: params[:action] }, status: :bad_request and return
+      end
 
       new_version = MetadataApiClient::Version.create(service_id: service.service_id, payload: response.metadata)
-      return head :bad_request if new_version.errors?
+      if new_version.errors?
+        render json: { action: params[:action] }, status: :bad_request and return
+      end
 
       session[:undo] = UndoPresenter.toggle(session[:undo][:action], session[:undo][:undoable_action]) if session[:undo]
-
-      redirect_to edit_service_path(service.service_id)
+      if request.xhr?
+        render json: { redirect: edit_service_path(service.service_id).to_s }
+      else
+        redirect_to edit_service_path(service.service_id)
+      end
     end
   end
 end

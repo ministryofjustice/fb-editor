@@ -50,8 +50,10 @@ feature 'Undo redo page' do
     and_I_click_the_move_button
     then_page_1_should_be_after_page_2
     and_I_click_button('undo_move')
+    sleep(2)
     then_page_2_should_be_after_page_1
     and_I_click_button('redo_move')
+    sleep(2)
     then_page_1_should_be_after_page_2
   end
 
@@ -60,8 +62,10 @@ feature 'Undo redo page' do
     when_I_change_destination_to_page('page 1')
     then_next_to_page_2_is_page_1
     and_I_click_button('undo_change_next_page')
+    sleep(2)
     then_page_2_should_be_after_page_1
     and_I_click_button('redo_change_next_page')
+    sleep(2)
     then_next_to_page_2_is_page_1
   end
 
@@ -79,7 +83,7 @@ feature 'Undo redo page' do
 
   def and_I_click_button(name)
     page.find(:css, '#main-content', visible: true)
-    find('.fb-govuk-button', text: I18n.t("actions.undo_redo.#{name}")).click
+    page.find('.fb-govuk-button', text: I18n.t("actions.undo_redo.#{name}")).click
   end
 
 end
