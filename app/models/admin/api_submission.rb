@@ -4,7 +4,7 @@ module Admin
     SERVICE_OUTPUT_JSON_KEY = 'SERVICE_OUTPUT_JSON_KEY'.freeze
     include ActiveModel::Model
 
-    validates :service_id, presence: true
+    validates :service_id, :deployment_environment, presence: true
 
     def service_id(service_id)
       @service_id = service_id
@@ -15,7 +15,6 @@ module Admin
     end
 
     def initialize
-      # TODO: set in dev here like reference number
       if endpoint_key.blank?
         @endpoint_url = 'Not filled in'
         @endpoint_key = 'Not filled in yet either'
