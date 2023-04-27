@@ -21,7 +21,7 @@
       builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
 
       <h2 class="govuk-heading-m govuk-!-margin-top-5">
-        API Submission
+        API Submission in Test Environment
       </h2>
       <dl class="govuk-summary-list">
         <div class="govuk-summary-list__row">
@@ -41,7 +41,9 @@
           </dd>
         </div>
       </dl>
-        <%= f.hidden_field(:service_id, value: @service_id) %>
+        <%= f.hidden_field(:service_id, value: @service_id)%>
+        <%= f.hidden_field(:deployment_environment, value: 'dev')%>
+
         <%= submit_tag "Save values" %>
       <% end %>
     </div>
@@ -50,5 +52,39 @@
         method: :delete do |form| %>
         <%# <%= form.submit('Delete', class: 'govuk-button govuk-button--warning') %> %>
     <%# <% end %> %> %>
+  </div>
+
+    <div class="govuk-!-margin-left-5">
+    <%= form_for(@api_submission,
+      url: admin_service_api_submission_index_path(params[:service_id]),
+      method: :create,
+      builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+
+      <h2 class="govuk-heading-m govuk-!-margin-top-5">
+        API Submission in Production
+      </h2>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            SERVICE_OUTPUT_JSON_ENDPOINT
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <%= f.text_field :endpoint_url %>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            SERVICE_OUTPUT_JSON_KEY
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <%= f.text_field :endpoint_key %>
+          </dd>
+        </div>
+      </dl>
+        <%= f.hidden_field(:service_id, value: @service_id)%>
+        <%= f.hidden_field(:deployment_environment, value: 'production')%>
+
+        <%= submit_tag "Save values" %>
+      <% end %>
   </div>
 </section>

@@ -10,6 +10,10 @@ module Admin
       @service_id = service_id
     end
 
+    def deployment_environment(deployment_environment)
+      @deployment_environment = deployment_environment
+    end
+
     def initialize
       # TODO: set in dev here like reference number
       if endpoint_key.blank?
@@ -19,7 +23,6 @@ module Admin
         endpoint_key
         endpoint_url
       end
-      @deployment_environment = 'dev'
     end
 
     def endpoint_url

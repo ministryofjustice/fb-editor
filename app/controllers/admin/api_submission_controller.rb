@@ -18,6 +18,7 @@ module Admin
       url = params[:admin_api_submission][:endpoint_url]
       key = params[:admin_api_submission][:endpoint_key]
       @api_submission.service_id(params[:service_id])
+      @api_submission.deployment_environment(params[:admin_api_submission][:deployment_environment])
       if url.blank? || key.blank?
         flash[:error] = 'Please use the delete button to delete API settings'
       else
