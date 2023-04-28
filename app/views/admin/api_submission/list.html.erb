@@ -1,0 +1,12 @@
+<% if @api_submissions.blank? %>
+<p>No submissions</p>
+<% else %>
+<p>Submissions are: </p>
+
+  <% @api_submissions.each do |s| %>
+    <li><%= link_to s.value, {:action => 'show', :id => s.id} -%></li>
+  <% end %>
+</ul>
+
+<% end %>
+<p><%= link_to "Add new api", {:action => 'new' }%></p>

@@ -3,6 +3,7 @@ module Admin
     SERVICE_OUTPUT_JSON_ENDPOINT = 'SERVICE_OUTPUT_JSON_ENDPOINT'.freeze
     SERVICE_OUTPUT_JSON_KEY = 'SERVICE_OUTPUT_JSON_KEY'.freeze
     include ActiveModel::Model
+    attr_accessor :name, :value
 
     validates :service_id, :deployment_environment, presence: true
 
@@ -14,15 +15,15 @@ module Admin
       @deployment_environment = deployment_environment
     end
 
-    def initialize
-      if endpoint_key.blank?
-        @endpoint_url = 'Not filled in'
-        @endpoint_key = 'Not filled in yet either'
-      else
-        endpoint_key
-        endpoint_url
-      end
-    end
+    # def initialize
+    #   if endpoint_key.blank?
+    #     @endpoint_url = 'Not filled in'
+    #     @endpoint_key = 'Not filled in yet either'
+    #   else
+    #     endpoint_key
+    #     endpoint_url
+    #   end
+    # end
 
     def endpoint_url
       @endpoint_url = service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).decrypt_value if service_config(name: SERVICE_OUTPUT_JSON_ENDPOINT).present?
@@ -44,8 +45,6 @@ module Admin
       delete_service_configuration(name: SERVICE_OUTPUT_JSON_KEY)
     end
 
-    private
-
     def service_config(name:)
       @service_config ||= ServiceConfiguration.find_by(service_id: @service_id, deployment_environment: @deployment_environment, name:)
     end
@@ -66,6 +65,42 @@ module Admin
         deployment_environment: @deployment_environment,
         name:
       )
+    end
+
+    def find_urls(deployment_environment:)
+      ServiceConfiguration.find_by(service_id: @service_id, deployment_environment:, name: SERVICE_OUTPUT_JSON_ENDPOINT)
+    end
+
+    def find_keys(deployment_environment:)
+      ServiceConfiguration.find_by(service_id: @service_id, deployment_environment:, name: SERVICE_OUTPUT_JSON_KEY)
+    end
+
+    def all
+      find_urls('dev').merge(find_keys('dev')).merge(find_urls('production')).find_keys('production')
+    end
+
+    def find(id:)
+      ServiceConfiguration.find(id:)
+    end
+
+    def save
+      service_configuration = ServiceConfiguration.find_or_initialize_by(
+        service_id: @service_id,
+        deployment_environment: @deployment_environment,
+        name: @name
+      )
+      service_configuration.value = @value
+      service_configuration.save!
+    end
+
+    def update(new_settings)
+      @value = new_settings[:value]
+      save
+    end
+
+    def destroy
+      # TODO
+      puts 'We will destroy'
     end
   end
 end

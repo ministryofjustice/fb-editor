@@ -32,6 +32,17 @@
             <%= f.text_field :endpoint_url %>
           </dd>
         </div>
+        <%= f.hidden_field(:service_id, value: @service_id)%>
+        <%= f.hidden_field(:deployment_environment, value: 'dev')%>
+        <%= f.hidden_field(:url_or_key, value: 'url')%>
+        <%= submit_tag "Save values for url for dev" %>
+      <% end %>
+
+    <%= form_for(@api_submission,
+      url: admin_service_api_submission_index_path(params[:service_id]),
+      method: :create,
+      builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             SERVICE_OUTPUT_JSON_KEY
@@ -43,8 +54,9 @@
       </dl>
         <%= f.hidden_field(:service_id, value: @service_id)%>
         <%= f.hidden_field(:deployment_environment, value: 'dev')%>
+        <%= f.hidden_field(:url_or_key, value: 'key')%>
 
-        <%= submit_tag "Save values" %>
+        <%= submit_tag "Save values for key for dev" %>
       <% end %>
     </div>
 
@@ -57,7 +69,7 @@
     <%= @key_dev %>
 
 
-    <%# <%= form_with url: admin_service_api_submission_path(params[:service_id], ),
+    <%# <%= form_with url: admin_service_api_submission_path(params[:service_id],0),
         method: :delete do |form| %>
         <%# <%= form.submit('Delete', class: 'govuk-button govuk-button--warning') %> %>
     <%# <% end %> %> %>
