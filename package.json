@@ -25,7 +25,7 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@sentry/webpack-plugin": "^1.20.0",
+    "@sentry/webpack-plugin": "^1.20.1",
     "chai": "^4.3.7",
     "form-data": "^4.0.0",
     "jquery-ui": "^1.13.2",
