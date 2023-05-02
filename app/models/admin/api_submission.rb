@@ -100,7 +100,7 @@ module Admin
 
     def destroy
       # TODO
-      puts 'We will destroy'
+      Rails.logger.debug 'We will destroy'
     end
   end
 end
