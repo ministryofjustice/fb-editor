@@ -6,11 +6,11 @@ module Admin
     SERVICE_OUTPUT_JSON_KEY = 'SERVICE_OUTPUT_JSON_KEY'.freeze
 
     def assign_form_objects
-      @api_submission_settings_dev = Admin::ApiSubmissionSettings.new(
+      @api_submission_settings_dev = ApiSubmissionSettings.new(
         service:,
         deployment_environment: 'dev'
       )
-      @api_submission_settings_production = Admin::ApiSubmissionSettings.new(
+      @api_submission_settings_production = ApiSubmissionSettings.new(
         service:,
         deployment_environment: 'production'
       )
@@ -23,14 +23,14 @@ module Admin
         api_submission_settings_params.merge(service:)
       )
       if @api_submission.valid?
-        # ApiSubmissionSettingsUpdater.new(
-        #   api_submission_settings: @api_submission,
-        #   service:
-        # ).create_or_update!
+        Admin::ApiSubmissionSettingsUpdater.new(
+          api_submission_settings: @api_submission,
+          service:
+        ).create_or_update!
+
         redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
       else
-        flash[:error]='api submission is not valid'
-        redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
+        flash[:error] = 'api submission is not valid'
       end
     end
 
