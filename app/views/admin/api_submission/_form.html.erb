@@ -3,64 +3,37 @@
       method: :create,
       builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %> %>
 
+<%= form_for object,
+  url: admin_service_api_submission_index_path(service.service_id),
+  html: {
+    id: "api-submission-#{deployment_environment}",
+    class: 'govuk-!-margin-top-8'
+  },
+  builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
+  <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
-  <%= form_for object,
-    url: admin_service_api_submission_index_path(service.service_id),
-    html: {
-      id: "api-submission-#{deployment_environment}",
-      class: 'collect-info-environment-config govuk-!-margin-top-8'
-    },
-    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
-
-
-    <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
-
-        <div class="govuk-form-group">
-      <div class="govuk-form-group">
-        <%= 'Service Name' %>
-        <%=f.object.service.service_name %>
-      </div>
-      <%= f.govuk_text_field :value,
-      label: {
-        text: 'Value',
-        for: settings_field_id(f, :value, deployment_environment)
-      },
-      width: 'two-thirds',
-      id: settings_field_id(f, :value, deployment_environment),
-      hint: {
-        text: 'A value here'
-        } %>
+  <div class="govuk-form-group">
+    <div class="govuk-form-group">
+      <%= 'Service Name' %>
+      <%=f.object.service.service_name %>
+      <%= 'Service ID' %>
+      <%=f.object.service.service_id %>
     </div>
-
-
-
-
-    <h2 class="govuk-heading-m govuk-!-margin-top-5">
-      API Submission
-    </h2>
-      <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          SERVICE_OUTPUT_JSON_ENDPOINT
-        </dt>
-        <dd class="govuk-summary-list__value govuk-input">
-          <%= f.text_field :endpoint_url %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          SERVICE_OUTPUT_JSON_KEY
-        <dd class="govuk-summary-list__value">
-        </dt>
-          <%= f.text_field :endpoint_key %>
-        </dd>
-      </div>
-    </dl>
-
-    <%= f.hidden_field(:service, value: @service) %>
-
-    <%= submit_tag "Edit values" %>
-      <% end %>
-
+    <%= f.govuk_text_field :value,
+    label: {
+      text: 'Value',
+      for: settings_field_id(f, :value, deployment_environment)
+    },
+    width: 'two-thirds',
+    id: settings_field_id(f, :value, deployment_environment),
+    hint: {
+      text: 'A value here'
+      } %>
   </div>
+
+  <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+    <%= "Save settings for #{deployment_environment}" %>
+  </button>
+
+<% end %>

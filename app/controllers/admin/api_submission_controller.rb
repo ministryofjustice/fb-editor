@@ -1,5 +1,4 @@
 module Admin
-  # class ApiSubmissionController < Admin::ApplicationController
   class ApiSubmissionController < FormController
     before_action :assign_form_objects
 
@@ -23,20 +22,20 @@ module Admin
       @api_submission = ApiSubmissionSettings.new(
         api_submission_settings_params.merge(service:)
       )
-
       if @api_submission.valid?
-        byebug
-        # ConfirmationEmailSettingsUpdater.new(
+        # ApiSubmissionSettingsUpdater.new(
         #   api_submission_settings: @api_submission,
         #   service:
         # ).create_or_update!
-
+        redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
+      else
+        flash[:error]='api submission is not valid'
         redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
       end
     end
 
     def api_submission_settings_params
-      api_submission_params.permit(
+      params[:admin_api_submission_settings].permit(
         :deployment_environment,
         :service,
         :name,

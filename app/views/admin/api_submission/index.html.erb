@@ -1,6 +1,7 @@
-<% content_for(:title) do %>
-  <%= display_resource_name('Service') %>
-<% end %>
+<%# 'This needs administrate' %>
+<%# <% content_for(:title) do %> %>
+  <%# <%= display_resource_name('Service') %> %>
+<%# <% end %> %>
 
 <header class="main-content__header" role="banner">
   <h1 class="main-content__page-title" id="page-title">
@@ -9,12 +10,13 @@
 </header>
 
 <section class="main-content__body main-content__body--flush">
-
   <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
     Back to the service
   </a>
 
-  <%= render 'form', object: @api_submission_settings_dev,deployment_environment: 'dev' %>
-  <%= render 'form', object: @api_submission_settings_production,deployment_environment: 'production' %>
-
+  <% content_for :forms do %>
+    <%= render 'form', object: @api_submission_settings_dev, deployment_environment: 'dev'%>
+    <%= render 'form', object: @api_submission_settings_production,deployment_environment: 'production' %>
+  <% end %>
+  <%= yield :forms %>
 </section>
