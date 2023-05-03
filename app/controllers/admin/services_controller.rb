@@ -141,6 +141,23 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def destroy
+      if any_publishes_to_live?
+        flash[:notice] = 'You cannot delete this service as it has been previously published to Live'
+      else
+        metadata = latest_version(params[:id])
+        @service_destroyer = ServiceDestroyer.new({ service_id: params[:id] })
+
+        if @service_destroyer.destroy
+          flash[:success] = "Service: #{metadata['service_name']} has been deleted"
+        else
+          flash[:error] = "Could not delete service: #{metadata['service_name']}"
+        end
+
+        redirect_to admin_services_path
+      end
+    end
+
     def search_term
       params[:search] || ''
     end
@@ -249,5 +266,15 @@ module Admin
     def require_authentication
       password.present? && username.present? ? '1' : '0'
     end
+
+    def any_publishes_to_live?
+      live_publish_service = PublishService.where(
+        service_id: params[:id],
+        deployment_environment: 'production'
+      )
+
+      live_publish_service.present?
+    end
+    helper_method :any_publishes_to_live?
   end
 end

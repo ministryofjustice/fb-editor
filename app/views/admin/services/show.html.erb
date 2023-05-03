@@ -194,5 +194,13 @@
         <% end %>
       </tbody>
     </table>
+    
+    <% unless any_publishes_to_live? %>
+      <%= link_to 'Delete Service', admin_service_path(@service.service_id),
+          method: :delete,
+          class: "govuk-button govuk-button--warning",
+          disable_with: 'Deleting. . .'
+      %>
+    <% end %>
   </div>
 </section>
