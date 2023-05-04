@@ -1,7 +1,8 @@
 <%# 'This needs administrate' %>
-<%# <% content_for(:title) do %> %>
+<% content_for(:title) do %>
+  <%= service.service_name %>
   <%# <%= display_resource_name('Service') %> %>
-<%# <% end %> %>
+<% end %>
 
 <header class="main-content__header" role="banner">
   <h1 class="main-content__page-title" id="page-title">
@@ -11,7 +12,7 @@
 
 <section class="main-content__body main-content__body--flush">
   <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
-    Back to the service
+    Back to the service administration page
   </a>
 
   <% content_for :forms do %>

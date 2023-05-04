@@ -1,8 +1,3 @@
-  <%# <%= form_for(object,
-          url: admin_service_api_submission_index_path(params[:service_id]),
-      method: :create,
-      builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %> %>
-
 <%= form_for object,
   url: admin_service_api_submission_index_path(service.service_id),
   html: {
@@ -15,10 +10,10 @@
 
   <div class="govuk-form-group">
     <div class="govuk-form-group">
-      <%= 'Service Name' %>
+      <%= 'Settings for ' %>
+      <%= deployment_environment %>
+      <%= ' environment for ' %>
       <%=f.object.service.service_name %>
-      <%= 'Service ID' %>
-      <%=f.object.service.service_id %>
     </div>
     <%= f.govuk_text_field :service_output_json_endpoint,
     label: {
@@ -28,20 +23,20 @@
     width: 'two-thirds',
     id: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
     hint: {
-      text: 'Endpoint url hint'
+      text: 'This is the json output endpoint URL'
       } %>
   </div>
 
   </div>
     <%= f.govuk_text_field :service_output_json_key,
     label: {
-      text: 'endpoint key',
+      text: 'Endpoint key',
       for: settings_field_id(f, :service_output_json_key, deployment_environment)
     },
     width: 'two-thirds',
     id: settings_field_id(f, :service_output_json_key, deployment_environment),
     hint: {
-      text: 'A value here'
+      text: 'This is the 16 characters key'
       } %>
   </div>
 

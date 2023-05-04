@@ -17,15 +17,6 @@
 
 <% if ENV['API_SUBMISSION'] == 'enabled' %>
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
-
-
-<br>
-Like version - NOK need id here set to 0
-<br>
-
-    <a href="<%= admin_service_api_submission_path(@service.service_id, 0) %>" class="govuk-button fb-govuk-button">Edit</a>
-
-
 <% end %>
 </div>
     <dl class="govuk-summary-list">
