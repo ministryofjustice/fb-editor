@@ -1,67 +1,93 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Something went wrong - MoJ Forms</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-  .rails-default-error-page {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+  <head>
+    <title>Page not found - MoJ Forms</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+      /* CSS generated using the UseCSS browser extension: https://chrome.google.com/webstore/detail/css-used/cdopjfddjlonogibjahpnmjpoangjfff/related?hl=en */
+      /* Generated from a live MoJ forms 404 page */
+      .govuk-body-m{color:#0b0c0c;font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:16px;font-size:1rem;line-height:1.25;margin-top:0;margin-bottom:15px;}
+      .govuk-main-wrapper{display:block;padding-top:20px;padding-bottom:20px;}
+      .govuk-main-wrapper--auto-spacing:first-child{padding-top:30px;}
+      .govuk-template__body{margin:0;background-color:#fff;}
+      .govuk-width-container{max-width:960px;margin-right:15px;margin-left:15px;}
+      .govuk-header{font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:14px;font-size:.875rem;line-height:1.1428571429;border-bottom:10px solid #fff;color:#fff;background:#0b0c0c;}
+      .govuk-header__container{position:relative;margin-bottom:-10px;padding-top:10px;border-bottom:10px solid #1d70b8;}
+      .govuk-header__container:after{content:"";display:block;clear:both;}
+      .govuk-header__logotype{display:inline-block;margin-right:5px;}
+      .govuk-header__logotype:last-child{margin-right:0;}
+      .govuk-header__logotype-crown{position:relative;top:-1px;margin-right:1px;fill:currentcolor;vertical-align:top;}
+      .govuk-header__logotype-crown-fallback-image{width:36px;height:32px;border:0;vertical-align:bottom;}
+      #header-logo-link{display:inline-block;margin-right:10px;position:relative;top:-2px;vertical-align:middle;}
+      .govuk-header__link{font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-decoration:none;}
+      .govuk-header__link:link,.govuk-header__link:visited{color:#fff;}
+      .govuk-header__link:active,.govuk-header__link:hover{color:hsla(0,0%,100%,.99);}
+      .govuk-header__link:hover{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:.1em;}
+      .govuk-header__link:focus{outline:3px solid transparent;color:#0b0c0c;background-color:#fd0;box-shadow:0 -2px #fd0,0 4px #0b0c0c;text-decoration:none;}
+      .govuk-header__link--homepage{font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:700;display:inline-block;margin-right:10px;font-size:30px;line-height:1;}
+      .govuk-header__link--homepage:link,.govuk-header__link--homepage:visited{text-decoration:none;}
+      .govuk-header__link--homepage:active,.govuk-header__link--homepage:hover{margin-bottom:-3px;border-bottom:3px solid;}
+      .govuk-header__link--homepage:focus{margin-bottom:0;border-bottom:0;}
+      .govuk-header__service-name{display:inline-block;margin-bottom:10px;font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:700;font-size:18px;font-size:1.125rem;line-height:1.1111111111;}
+      .govuk-header__content,.govuk-header__logo{box-sizing:border-box;}
+      .govuk-header__logo{margin-bottom:10px;padding-right:50px;}
+      .govuk-skip-link{position:absolute!important;width:1px!important;height:1px!important;margin:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;-webkit-clip-path:inset(50%)!important;clip-path:inset(50%)!important;white-space:nowrap!important;font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-decoration:underline;font-size:14px;font-size:.875rem;line-height:1.1428571429;display:block;padding:10px 15px;}
+      .govuk-skip-link:active,.govuk-skip-link:focus{position:static!important;width:auto!important;height:auto!important;margin:inherit!important;overflow:visible!important;clip:auto!important;-webkit-clip-path:none!important;clip-path:none!important;white-space:inherit!important;}
+      .govuk-skip-link:link,.govuk-skip-link:visited{color:#0b0c0c;}
+      .govuk-skip-link:hover{color:rgba(11,12,12,.99);}
+      .govuk-skip-link:active,.govuk-skip-link:focus{color:#0b0c0c;}
+      .govuk-skip-link:focus{outline:3px solid #fd0;outline-offset:0;background-color:#fd0;}
+      .govuk-visually-hidden{padding:0!important;border:0!important;}
+      .govuk-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;margin:0!important;overflow:hidden!important;clip:rect(0 0 0 0)!important;-webkit-clip-path:inset(50%)!important;clip-path:inset(50%)!important;white-space:nowrap!important;}
+      #main-content{min-height:55vh;}
+      .govuk-link{font-family:GDS Transport,arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-decoration:underline;}
+      .govuk-link:focus{outline:3px solid transparent;background-color:#fd0;box-shadow:0 -2px #fd0,0 4px #0b0c0c;text-decoration:none;}
+      .govuk-link:link{color:#1d70b8;}
+      .govuk-link:visited{color:#4c2c92;}
+      .govuk-link:hover{color:#003078;}
+      .govuk-link:active,.govuk-link:focus{color:#0b0c0c;}
+      @media (min-width:40.0625em){
+        .govuk-body-m{font-size:19px;font-size:1.1875rem;line-height:1.3157894737;}
+        .govuk-body-m{margin-bottom:20px;}
+        .govuk-main-wrapper{padding-top:40px;padding-bottom:40px;}
+        .govuk-main-wrapper--auto-spacing:first-child{padding-top:50px;}
+        .govuk-width-container{margin-right:30px;margin-left:30px;}
+        .govuk-header{font-size:16px;font-size:1rem;line-height:1.25;}
+        .govuk-header__link--homepage{display:inline;}
+        .govuk-header__link--homepage:focus{box-shadow:0 0 #fd0;}
+        .govuk-header__service-name{font-size:24px;font-size:1.5rem;line-height:1.25;}
+        .govuk-header__logo{width:33.33%;padding-right:15px;float:left;vertical-align:top;}
+        .govuk-header__content{width:66.66%;padding-left:15px;float:left;}
+        .govuk-skip-link{font-size:16px;font-size:1rem;line-height:1.25;}
+      }
+      @media (min-width:1020px){
+        .govuk-width-container{margin-right:auto;margin-left:auto;}
+      }
+      @media (forced-colors:active){
+        .govuk-header__logotype{forced-color-adjust:none;color:linktext;}
+      }
+    </style>
+  </head>
 
-  .rails-default-error-page div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
+  <body class="govuk-template__body">
+    <header class="govuk-header" role="banner" data-module="govuk-header">
+      <div class="govuk-header__container govuk-width-container">
+        <a href="/" aria-label="<%= t('header.home_link_text') %>" id="header-logo-link" class="page-header__logo" tabindex="-1" aria-hidden="true">
+          <img src="/error-page-logo-white.svg", alt="Ministry of Justice" />
+        </a>
 
-  .rails-default-error-page div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+        <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
+          MoJ Forms
+        </a>
+      </div>
+    </header>
 
-  .rails-default-error-page h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
-
-  .rails-default-error-page div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-  </style>
-</head>
-
-<body class="rails-default-error-page">
-  <!-- This file lives in public/422.html -->
-  <div class="dialog">
-    <div>
+    <div class="govuk-width-container govuk-body-m">
+      <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+        <!-- This file lives in public/404.html -->
       <h1>Something went wrong</h1>
       <p>We were unable to complete your request. This may be because you were inactive for 30 minutes or more and need to <a href="/">sign in</a> again.</p>
+      <p>If the problem persists, <a href="https://moj-forms.service.justice.gov.uk/contact/">contact the MoJ Forms team</a></p>
+      </main>
     </div>
-    <p>If the problem persists, email <a href="mailto: moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a></p>
-  </div>
-</body>
+  </body>
 </html>
