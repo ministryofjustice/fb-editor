@@ -229,4 +229,34 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#save_and_return_enabled?' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when SAVE_AND_RETURN is enabled' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :save_and_return,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns true' do
+        expect(controller.save_and_return_enabled?).to be_truthy
+      end
+    end
+
+    context 'when SAVE_AND_RETURN is disabled' do
+      let!(:service_configuration) { nil }
+
+      it 'returns false' do
+        expect(controller.save_and_return_enabled?).to be_falsey
+      end
+    end
+  end
 end

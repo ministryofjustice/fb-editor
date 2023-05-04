@@ -112,4 +112,13 @@ class ApplicationController < ActionController::Base
     session[:expires_at]
   end
   helper_method :session_expiry_time
+
+  def save_and_return_enabled?
+    save_and_return_config.present?
+  end
+  helper_method :save_and_return_enabled?
+
+  def save_and_return_config
+    @save_and_return_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'SAVE_AND_RETURN')
+  end
 end
