@@ -13,10 +13,12 @@
         <dt><%= link_to t('settings.form_analytics.heading'), settings_form_analytics_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint" ><%= t('settings.form_analytics.lede') %></dd>
       </div>
-      <div>
-        <dt><%= link_to t('settings.save_and_return.heading'), settings_save_and_return_index_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.save_and_return.lede') %></dd>
-      </div>
+      <% if ENV['SAVE_AND_RETURN'] == 'enabled' %>
+        <div>
+          <dt><%= link_to t('settings.save_and_return.heading'), settings_save_and_return_index_path(service.service_id), class: 'govuk-link' %></dt>
+          <dd class="govuk-hint" ><%= t('settings.save_and_return.lede') %></dd>
+        </div>
+      <% end %>
       <div>
         <dt><%= link_to t('settings.submission.heading'), settings_submission_index_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint" ><%= t('settings.submission.lede') %></dd>
