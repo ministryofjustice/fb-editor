@@ -18,6 +18,8 @@ module Admin
       end
     end
 
+    private
+
     def save_config
       CONFIG.each do |config|
         if params(config).present?
@@ -28,7 +30,6 @@ module Admin
       end
     end
 
-    # TODO: to DRY it up, in reference number/confirmation email
     def params(config)
       api_submission_settings.params(config.downcase.to_sym)
     end

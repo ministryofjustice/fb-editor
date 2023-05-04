@@ -34,6 +34,8 @@ module Admin
       end
     end
 
+    private
+
     def api_submission_settings_params
       params[:admin_api_submission_settings].permit(
         :deployment_environment,
