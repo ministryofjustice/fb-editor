@@ -1,18 +1,20 @@
 <%= mojf_settings_screen(
-  heading:t('settings.save_and_return.page_heading'),
+  heading:t('settings.save_and_return.heading'),
   description: t('settings.save_and_return.description')
   ) do |c| %>
 
   <% c.with_back_link(href: settings_path) %>
 
-  <div class="govuk-hint" id="save_and_return_hint"><%= t('settings.save_and_return.page_lede', href: t('settings.save_and_return.href', url: t('settings.save_and_return.url'))).html_safe %></div>
+<p><%= t('settings.save_and_return.page_lede', href: t('settings.save_and_return.href')).html_safe %></p>
 
   <%= form_for @save_and_return, url: settings_save_and_return_index_path(service.service_id),
   html: { id: 'save-and-return-settings' },
   builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
   <div class="save-and-return-field">
-    <%= f.govuk_check_boxes_fieldset :"", multiple: false do %>
+    <%= f.govuk_check_boxes_fieldset :"save_and_return_checkbox",
+    multiple: false,
+    legend: { text: 'Save and return checkbox', hidden: true } do %>
       <%= f.govuk_check_box :"save_and_return", 1, 0,
       multiple: false,
       link_errors: true,

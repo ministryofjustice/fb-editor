@@ -32,7 +32,7 @@ feature 'Save and Return page' do
   end
 
   def then_I_should_see_the_save_and_return_settings_page
-    expect(page).to have_content(I18n.t('settings.save_and_return.page_heading'))
+    expect(page).to have_content(I18n.t('settings.save_and_return.heading'))
     expect(page).to have_content(I18n.t('settings.save_and_return.description'))
   end
 
