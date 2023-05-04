@@ -2,7 +2,6 @@ module Admin
   class ApiSubmissionSettings < BaseEmailSettings
     attr_accessor :deployment_environment,
                   :service,
-                  :name,
                   :service_output_json_endpoint,
                   :service_output_json_key
 
@@ -10,6 +9,7 @@ module Admin
       in: Rails.application.config.deployment_environments
     }
 
+    # rubocop:disable Lint/DuplicateMethods
     def service_output_json_endpoint
       settings_for(:service_output_json_endpoint)
     end
@@ -17,5 +17,6 @@ module Admin
     def service_output_json_key
       settings_for(:service_output_json_key)
     end
+    # rubocop:enable Lint/DuplicateMethods
   end
 end
