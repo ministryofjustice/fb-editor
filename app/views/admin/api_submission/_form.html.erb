@@ -20,13 +20,26 @@
       <%= 'Service ID' %>
       <%=f.object.service.service_id %>
     </div>
-    <%= f.govuk_text_field :value,
+    <%= f.govuk_text_field :service_output_json_endpoint,
     label: {
-      text: 'Value',
-      for: settings_field_id(f, :value, deployment_environment)
+      text: 'Endpoint url',
+      for: settings_field_id(f, :service_output_json_endpoint, deployment_environment)
     },
     width: 'two-thirds',
-    id: settings_field_id(f, :value, deployment_environment),
+    id: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
+    hint: {
+      text: 'Endpoint url hint'
+      } %>
+  </div>
+
+  </div>
+    <%= f.govuk_text_field :service_output_json_key,
+    label: {
+      text: 'endpoint key',
+      for: settings_field_id(f, :service_output_json_key, deployment_environment)
+    },
+    width: 'two-thirds',
+    id: settings_field_id(f, :service_output_json_key, deployment_environment),
     hint: {
       text: 'A value here'
       } %>

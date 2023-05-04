@@ -3,14 +3,19 @@ module Admin
     attr_accessor :deployment_environment,
                   :service,
                   :name,
-                  :value
+                  :service_output_json_endpoint,
+                  :service_output_json_key
 
     validates :deployment_environment, inclusion: {
       in: Rails.application.config.deployment_environments
     }
 
-    def api_submission_setting_value
-      settings_for(:api_submission_setting_value)
+    def service_output_json_endpoint
+      settings_for(:service_output_json_endpoint)
+    end
+
+    def service_output_json_key
+      settings_for(:service_output_json_key)
     end
   end
 end

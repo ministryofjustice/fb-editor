@@ -39,7 +39,9 @@ module Admin
         :deployment_environment,
         :service,
         :name,
-        :value
+        :value,
+        :service_output_json_endpoint,
+        :service_output_json_key
       )
     end
   end
