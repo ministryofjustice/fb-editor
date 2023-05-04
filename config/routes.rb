@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       post '/republish/:publish_service_id/:deployment_environment',
         to: 'services#republish', as: :republish
 
-      resources :api_submission, only: [:create, :list, :new, :update, :index, :show, :destroy]
+      resources :api_submission, only: [:create, :index]
       resources :versions, only: [:update, :edit, :show]
     end
     resources :users

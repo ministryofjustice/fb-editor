@@ -31,6 +31,7 @@ module Admin
         redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
       else
         flash[:error] = 'api submission is not valid'
+        render :index, status: :unprocessable_entity
       end
     end
 
@@ -40,8 +41,6 @@ module Admin
       params[:admin_api_submission_settings].permit(
         :deployment_environment,
         :service,
-        :name,
-        :value,
         :service_output_json_endpoint,
         :service_output_json_key
       )
