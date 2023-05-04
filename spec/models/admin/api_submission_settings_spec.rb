@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe ApiSubmissionSettings, type: :model do
   describe 'validations' do
     context 'deployment environment' do
