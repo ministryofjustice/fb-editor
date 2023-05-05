@@ -9,4 +9,27 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         should_not allow_values(nil, '', 'staging', 'live', 'test').for(:deployment_environment)
       end
     end
+
+    context 'service_output_json_key' do
+      subject(:api_submission_settings) do
+        described_class.new(
+          params.merge(service:)
+        )
+      end
+      let(:params) { {} }
+      let(:service_output_json_key) { api_submission_settings.default_value('service_output_json_key') }
+
+      it 'has to be 16 characters long' do
+        should allow_values(
+          'f89ea3f29cbdece2', '98957af1a0424376'
+        ).for(:service_output_json_key)
+      end
+
+      it 'do not allow anything else' do
+        should_not allow_values(
+          nil, '', 'abc', 'jdsiojd89ofi', 'c8c6f4710e6ebf28f89ea3f29cbdece2'
+        ).for(:service_output_json_key)
+      end
+    end
+  end
 end
