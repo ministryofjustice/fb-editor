@@ -13,7 +13,23 @@ feature 'Save and Return page' do
     then_I_should_see_the_save_and_return_settings_page
   end
 
-  scenario 'when I enable and disable save and return' do
+  scenario 'when I enable save and return' do
+    with_setting(save_and_return_checkbox, true)
+    click_button(I18n.t('actions.save'))
+    then_checkbox_should_remain_checked(save_and_return_checkbox, true)
+
+    # when editing a page
+    and_I_return_to_flow_page
+    and_I_edit_the_page(url: 'Page b')
+    save_and_return_button_should_be_disabled
+
+    # in preview
+    and_I_return_to_flow_page
+    preview_page = when_I_preview_the_page('Page b')
+    save_and_return_button_should_be_disabled_in_preview(preview_page)
+  end
+
+  scenario 'when I disable save and return' do
     with_setting(save_and_return_checkbox, true)
     click_button(I18n.t('actions.save'))
     then_checkbox_should_remain_checked(save_and_return_checkbox, true)
@@ -21,6 +37,16 @@ feature 'Save and Return page' do
     with_setting(save_and_return_checkbox, false)
     click_button(I18n.t('actions.save'))
     then_checkbox_should_remain_checked(save_and_return_checkbox, false)
+
+    # when editing a page
+    and_I_return_to_flow_page
+    and_I_edit_the_page(url: 'Page b')
+    then_I_should_not_see_save_and_return_button
+
+    # in preview
+    and_I_return_to_flow_page
+    preview_page = when_I_preview_the_page('Page b')
+    then_I_should_not_see_save_and_return_button_in_preview(preview_page)
   end
 
   ## Save and Return Settings Page
@@ -43,5 +69,32 @@ feature 'Save and Return page' do
 
   def with_setting(setting, value)
     page.find(:css, setting, visible: false).set(value)
+  end
+
+  def save_and_return_button_should_be_disabled
+    expect(page).to have_button('Save for later', disabled: true)
+  end
+
+  def save_and_return_button_should_be_disabled_in_preview(preview_page)
+    within_window(preview_page) do
+      expect(
+        page.find('button', text: 'Continue')
+      ).to_not be_disabled
+      save_and_return_button_should_be_disabled
+    end
+  end
+
+  def then_I_should_not_see_save_and_return_button
+    expect(page).to_not have_button('Save for later')
+  end
+
+  def then_I_should_not_see_save_and_return_button_in_preview(preview_page)
+    within_window(preview_page) do
+      expect(
+        page.find('button', text: 'Continue')
+      ).to_not be_disabled
+
+      then_I_should_not_see_save_and_return_button
+    end
   end
 end
