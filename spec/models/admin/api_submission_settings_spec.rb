@@ -16,7 +16,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
           params.merge(service:)
         )
       end
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let(:service_output_json_key) { api_submission_settings.default_value('service_output_json_key') }
 
       it 'has to be 16 characters long' do
