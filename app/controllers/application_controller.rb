@@ -121,4 +121,9 @@ class ApplicationController < ActionController::Base
   def save_and_return_config
     @save_and_return_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'SAVE_AND_RETURN')
   end
+
+  def editor_preview?
+    request.script_name.include?('preview')
+  end
+  helper_method :editor_preview?
 end
