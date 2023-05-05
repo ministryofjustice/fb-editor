@@ -1,7 +1,5 @@
 module Admin
   class ApiSubmissionSettings < BaseEmailSettings
-    # include ActiveModel::Validations
-
     attr_accessor :deployment_environment,
                   :service,
                   # required for settings creation in controller:
@@ -13,7 +11,6 @@ module Admin
     }
     validates :service, presence: true
     validate :is_key_valid_lenght
-    # , on: :create
 
     # rubocop:disable Lint/DuplicateMethods. This is required to display in view
     def service_output_json_endpoint
@@ -25,11 +22,11 @@ module Admin
     end
     # rubocop:enable Lint/DuplicateMethods
 
-    # private
+    private
 
     def is_key_valid_lenght
-      if :service_output_json_key.to_s.length == 16
-        errors.add(:base, 'Key length must be 16')
+      if :service_output_json_key.to_s.length != 16
+        errors.add(:base, 'Key length must be 16.')
       end
     end
   end
