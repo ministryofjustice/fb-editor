@@ -30,7 +30,12 @@ module Admin
 
         redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
       else
-        flash[:error] = "Api submission settings are not valid and were not saved. #{@api_submission.errors.first.type}"
+        message = 'Api submission settings are not valid and were not saved. '
+        @api_submission.errors.each do |error|
+          message << error.type
+          Rails.logger.debug error.type
+        end
+        flash[:error] = message
         render :index, status: :unprocessable_entity
       end
     end

@@ -10,7 +10,7 @@ module Admin
       in: Rails.application.config.deployment_environments
     }
     validates :service, presence: true
-    validate :is_key_valid_lenght
+    validate :is_key_valid_lenght, :is_url_valid
 
     # rubocop:disable Lint/DuplicateMethods. This is required to display in view
     def service_output_json_endpoint
@@ -25,8 +25,14 @@ module Admin
     private
 
     def is_key_valid_lenght
-      if :service_output_json_key.to_s.length != 16
-        errors.add(:base, 'Key length must be 16.')
+      if @service_output_json_key.length != 16
+        errors.add(:base, 'Key length must be 16. ')
+      end
+    end
+
+    def is_url_valid
+      unless @service_output_json_endpoint =~ URI::DEFAULT_PARSER.make_regexp
+        errors.add(:base, 'Endpoint field should be a valid URL. ')
       end
     end
   end

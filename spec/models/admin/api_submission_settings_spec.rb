@@ -12,11 +12,10 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
 
     context 'service_output_json_key' do
       subject(:api_submission_settings) do
-        described_class.new(
-          params.merge(service:)
-        )
+        described_class.new(params.merge(service:))
       end
       let(:params) { { deployment_environment: 'dev' } }
+
       let(:service_output_json_key) { api_submission_settings.default_value('service_output_json_key') }
 
       it 'has to be 16 characters long' do
@@ -43,6 +42,26 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
           subject.valid?
           expect(subject.errors.first.type).to eq(expected_error)
         end
+      end
+    end
+
+    context 'service_output_json_endpoint' do
+      subject(:api_submission_settings) do
+        described_class.new(params.merge(service:))
+      end
+      let(:params) { { deployment_environment: 'dev' } }
+      let(:service_output_json_endpoint) { api_submission_settings.default_value('service_output_json_endpoint') }
+
+      it 'has to be a url' do
+        should allow_values(
+          'http://this-valid-url.com', 'valid.gov.uk'
+        ).for(:service_output_json_endpoint)
+      end
+
+      it 'do not allow anything else' do
+        should_not allow_values(
+          nil, 'abc', 'not a valid url'
+        ).for(:service_output_json_endpoint)
       end
     end
   end
