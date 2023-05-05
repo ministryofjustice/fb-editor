@@ -1,5 +1,7 @@
 module Admin
   class ApiSubmissionSettings < BaseEmailSettings
+    # include ActiveModel::Validations
+
     attr_accessor :deployment_environment,
                   :service,
                   # required for settings creation in controller:
