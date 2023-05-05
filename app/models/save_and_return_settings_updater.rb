@@ -17,8 +17,8 @@ class SaveAndReturnSettingsUpdater
 
   def save_config_save_and_return
     if save_and_return_settings.save_and_return_enabled?
-      create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'dev', value: 'enabled')
-      create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'production', value: 'enabled')
+      create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'dev')
+      create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'production')
       create_or_update_service_configuration(config: 'SAVE_AND_RETURN_EMAIL', deployment_environment: 'dev', value: I18n.t('default_values.save_and_return_email', service_name:))
       create_or_update_service_configuration(config: 'SAVE_AND_RETURN_EMAIL', deployment_environment: 'production', value: I18n.t('default_values.save_and_return_email', service_name:))
     end
@@ -31,7 +31,7 @@ class SaveAndReturnSettingsUpdater
     end
   end
 
-  def create_or_update_service_configuration(config:, deployment_environment:, value:)
+  def create_or_update_service_configuration(config:, deployment_environment:, value: save_and_return)
     setting = find_or_initialize_setting(config, deployment_environment)
     setting.value = value
     setting.save!
