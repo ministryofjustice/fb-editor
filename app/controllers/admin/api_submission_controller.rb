@@ -33,7 +33,6 @@ module Admin
         message = 'Api submission settings are not valid and were not saved. '
         @api_submission.errors.each do |error|
           message << error.type
-          Rails.logger.debug error.type
         end
         flash[:error] = message
         render :index, status: :unprocessable_entity

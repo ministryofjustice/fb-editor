@@ -25,7 +25,7 @@ module Admin
     private
 
     def is_key_valid_lenght
-      if @service_output_json_key.length != 16
+      if @service_output_json_key.nil? || @service_output_json_key.length != 16
         errors.add(:base, 'Key length must be 16. ')
       end
     end
