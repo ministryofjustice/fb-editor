@@ -33,6 +33,14 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         end
       end
 
+      context 'is empty to reset configuration' do
+        let(:service_output_json_key) { '' }
+
+        it 'is valid' do
+          expect(subject).to be_valid
+        end
+      end
+
       context 'key lenght is too short' do
         let(:service_output_json_key) { 'abc' }
 
@@ -70,6 +78,14 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         let(:service_output_json_endpoint) { 'http://this-valid-url.com' }
 
         it 'setting should be valid' do
+          expect(subject).to be_valid
+        end
+      end
+
+      context 'is empty to reset configuration' do
+        let(:service_output_json_endpoint) { '' }
+
+        it 'is valid' do
           expect(subject).to be_valid
         end
       end

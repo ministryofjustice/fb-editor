@@ -28,12 +28,16 @@ module Admin
     private
 
     def is_key_valid_lenght
+      return if @service_output_json_key == ''
+
       if @service_output_json_key.nil? || @service_output_json_key.length != 16
         errors.add(:base, KEY_LENGTH_ERROR)
       end
     end
 
     def is_url_valid
+      return if @service_output_json_endpoint == ''
+
       unless @service_output_json_endpoint =~ URI::DEFAULT_PARSER.make_regexp
         errors.add(:base, URL_ERROR)
       end
