@@ -12,6 +12,9 @@ module Admin
     validates :service, presence: true
     validate :is_key_valid_lenght, :is_url_valid
 
+    KEY_LENGTH_ERROR = 'Key length must be 16. '.freeze
+    URL_ERROR = 'Endpoint field should be a valid URL. '.freeze
+
     # rubocop:disable Lint/DuplicateMethods. This is required to display in view
     def service_output_json_endpoint
       settings_for(:service_output_json_endpoint)
@@ -26,13 +29,13 @@ module Admin
 
     def is_key_valid_lenght
       if @service_output_json_key.nil? || @service_output_json_key.length != 16
-        errors.add(:base, 'Key length must be 16. ')
+        errors.add(:base, KEY_LENGTH_ERROR)
       end
     end
 
     def is_url_valid
       unless @service_output_json_endpoint =~ URI::DEFAULT_PARSER.make_regexp
-        errors.add(:base, 'Endpoint field should be a valid URL. ')
+        errors.add(:base, URL_ERROR)
       end
     end
   end
