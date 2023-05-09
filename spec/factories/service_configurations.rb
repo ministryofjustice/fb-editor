@@ -110,6 +110,16 @@ FactoryBot.define do
       value { 'https://www.gov.uk/payments/123' }
     end
 
+    trait :service_output_json_endpoint do
+      name { 'SERVICE_OUTPUT_JSON_ENDPOINT' }
+      value { 'https://www.api-endpoint.uk' }
+    end
+
+    trait :service_output_json_key do
+      name { 'SERVICE_OUTPUT_JSON_KEY' }
+      value { 'I-am-encoded-key' }
+    end
+
     trait :save_and_return do
       name { 'SAVE_AND_RETURN' }
       value { '1' }
