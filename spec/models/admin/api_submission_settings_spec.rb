@@ -48,7 +48,6 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
 
       context 'key lenght is too long' do
         let(:service_output_json_key) { 'c8c6f4710e6ebf28f89ea3f29cbdece2' }
-        let(:expected_error) { described_class::KEY_LENGTH_ERROR }
 
         it 'setting should be invalid' do
           expect(subject).to_not be_valid
@@ -65,6 +64,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
       let(:deployment_environment) { 'production' }
       let(:service_output_json_key) { 'f89ea3f29cbdece2' }
       let(:params) { { deployment_environment:, service_output_json_endpoint:, service_output_json_key: } }
+      let(:expected_error) { described_class::URL_ERROR }
 
       context 'it is a correct url' do
         let(:service_output_json_endpoint) { 'http://this-valid-url.com' }
@@ -75,11 +75,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
       end
 
       context 'url field doesn\'t have a scheme prefix' do
-        let(:deployment_environment) { 'dev' }
-        let(:service_output_json_key) { 'f89ea3f29cbdece2' }
         let(:service_output_json_endpoint) { 'valid.gov.uk' }
-        let(:params) { { deployment_environment:, service_output_json_endpoint:, service_output_json_key: } }
-        let(:expected_error) { described_class::URL_ERROR }
 
         it 'setting should be invalid' do
           expect(subject).to_not be_valid
