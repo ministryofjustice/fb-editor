@@ -11,12 +11,7 @@ RSpec.describe Admin::ApiSubmissionSettingsUpdater do
     )
   end
   let(:params) { {} }
-  let(:default_json_endpoint) do
-    api_submission_settings_updater.api_submission_settings.default_value('service_output_json_endpoint')
-  end
-  let(:default_json_key) do
-    api_submission_settings_updater.api_submission_settings.default_value('service_output_json_key')
-  end
+  let(:default_json_endpoint) { 'https://www.api-endpoint.uk' }
 
   describe '#create_or_update' do
     context 'service_output_json_endpoint' do
@@ -41,6 +36,26 @@ RSpec.describe Admin::ApiSubmissionSettingsUpdater do
             ).to eq(params[:service_output_json_endpoint])
           end
         end
+
+        context 'when a user removes the value' do
+          let(:params) { { service_output_json_endpoint: '' } }
+
+          before do
+            api_submission_settings_updater.create_or_update!
+          end
+
+          it 'delete the record' do
+            assert_raises(ActiveRecord::RecordNotFound) do
+              service_configuration.reload
+            end
+          end
+
+          it 'shows the default subject' do
+            expect(
+              service_configuration.decrypt_value
+            ).to eq(default_json_endpoint)
+          end
+        end
       end
 
       context 'when service_output_json_endpoint does not exist in db' do
@@ -58,7 +73,7 @@ RSpec.describe Admin::ApiSubmissionSettingsUpdater do
             api_submission_settings_updater.create_or_update!
           end
 
-          it 'creates the service configuration json endpoint' do
+          it 'creates the service configuration for json endpoint' do
             expect(service_configuration).to be_persisted
             expect(
               service_configuration.decrypt_value
