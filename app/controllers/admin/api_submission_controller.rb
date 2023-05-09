@@ -27,6 +27,7 @@ module Admin
           api_submission_settings: @api_submission,
           service:
         ).create_or_update!
+        flash[:notice] = 'API submission settings correctly set'
 
         redirect_to admin_service_api_submission_index_path(service_id: service.service_id)
       else
