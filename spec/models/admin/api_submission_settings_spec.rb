@@ -41,7 +41,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         end
       end
 
-      context 'key lenght is too short' do
+      context 'key length is too short' do
         let(:service_output_json_key) { 'abc' }
 
         it 'setting should be invalid' do
@@ -54,7 +54,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         end
       end
 
-      context 'key lenght is too long' do
+      context 'key length is too long' do
         let(:service_output_json_key) { 'c8c6f4710e6ebf28f89ea3f29cbdece2' }
 
         it 'setting should be invalid' do
