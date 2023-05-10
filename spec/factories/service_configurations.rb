@@ -109,5 +109,10 @@ FactoryBot.define do
       name { 'PAYMENT_LINK' }
       value { 'https://www.gov.uk/payments/123' }
     end
+
+    trait :save_and_return do
+      name { 'SAVE_AND_RETURN' }
+      value { '1' }
+    end
   end
 end

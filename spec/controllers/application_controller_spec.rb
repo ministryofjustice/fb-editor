@@ -229,4 +229,58 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#save_and_return_enabled?' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when SAVE_AND_RETURN is enabled' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :save_and_return,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns true' do
+        expect(controller.save_and_return_enabled?).to be_truthy
+      end
+    end
+
+    context 'when SAVE_AND_RETURN is disabled' do
+      let!(:service_configuration) { nil }
+
+      it 'returns false' do
+        expect(controller.save_and_return_enabled?).to be_falsey
+      end
+    end
+  end
+
+  describe '#editor_preview?' do
+    before do
+      allow(
+        controller.request
+      ).to receive(:script_name).and_return(script_name)
+    end
+
+    context 'when editing a page' do
+      let(:script_name) { 'services/1/pages/2/edit' }
+
+      it 'returns false' do
+        expect(controller.editor_preview?).to be_falsey
+      end
+    end
+
+    context 'when previewing a page' do
+      let(:script_name) { 'services/1/preview' }
+
+      it 'returns true' do
+        expect(controller.editor_preview?).to be_truthy
+      end
+    end
+  end
 end
