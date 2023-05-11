@@ -1,0 +1,36 @@
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= 'Index API Submission Settings' %>
+  </h1>
+</header>
+
+<section class="main-content__body main-content__body--flush">
+  <% unless flash.empty? %>
+    <div class="govuk-notification-banner" role="region"
+      aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">
+          <%= flash[:notice] %>
+          <%= flash[:success] %>
+          <%= flash[:error] %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+
+  <a href="/admin/services/<%=params[:service_id]%>"class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
+    Back to the service administration page
+  </a>
+
+  <% content_for :forms do %>
+    <%= render 'form', object: @api_submission_settings_dev, deployment_environment: 'dev'%>
+    <%= render 'form', object: @api_submission_settings_production,deployment_environment: 'production' %>
+  <% end %>
+  <%= yield :forms %>
+</section>
