@@ -682,8 +682,8 @@ function workaroundForDefaultText(view) {
 
 function editPageContentViewCustomisations() {
   var $button1 = $("[data-component=add-content]");
-  var $target = $("#new_answers :submit");
-  $target.before($button1);
+  var $target = $("#new_answers");
+  $target.append($button1);
 }
 
 
@@ -710,8 +710,8 @@ function editPageConfirmationViewCustomisations() {
 
 function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
-  var $target = $("#new_answers input:submit");
-  $target.before($button1);
+  var $target = $("#new_answers");
+  $target.append($button1);
   accessibilityQuestionViewEnhancements(this);
 }
 
