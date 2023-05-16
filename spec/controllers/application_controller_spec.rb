@@ -284,6 +284,28 @@ RSpec.describe ApplicationController do
     end
   end
 
+  describe '#service_slug' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+    end
+
+    context 'when SERVICE_SLUG exists' do
+      before do
+        allow(controller).to receive(:service_slug_config).and_return('service-slug')
+      end
+
+      it 'returns service slug' do
+        expect(controller.service_slug).to eq('service-slug')
+      end
+    end
+
+    context 'when SERVICE_SLUG does not exists' do
+      it 'returns service slug' do
+        expect(controller.service_slug).to eq('version-fixture')
+      end
+    end
+  end
+
   describe '#service_slug_config' do
     before do
       allow(controller).to receive(:service).and_return(service)

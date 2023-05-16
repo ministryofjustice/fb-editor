@@ -1,0 +1,64 @@
+<%= mojf_settings_screen(
+  heading:t('settings.form_name.heading')
+  ) do |c| %>
+
+  <% c .with_back_link(href: settings_path) %>
+
+  <%= form_for @form_name_url_settings,
+    as: :service,
+    url: settings_form_name_url_index_path(service.service_id),
+    html: { id: 'form-name-url-settings' },
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+
+    <% if f.object.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title"><%= t('activemodel.errors.summary_title') %></h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+              <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+              <li>
+                <a href="#form-name-url-serttings-field-error_<%= index%>"  >
+                  <%= error_message %>
+                </a>
+              </li>
+            <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+      <%= f.govuk_text_field :service_name,
+        label: { text: t('settings.form_name.form_name.label') },
+        hint: {
+          text: t('settings.form_name.form_name.lede',
+          href:  t('settings.form_name.form_name.href')
+          ).html_safe
+          },
+        id: "service-name-field",
+        class: "govuk-input width-responsive-two-thirds",
+        value: f.object.saved_service_name %>
+    </div>
+
+
+    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+      <%= f.govuk_text_field :service_slug,
+        label: { text: t('settings.form_name.form_slug.label') },
+        hint: {
+          text: t('settings.form_name.form_slug.lede',
+          href:  t('settings.form_name.form_slug.href')
+          ).html_safe
+          },
+        suffix_text: t('settings.form_name.form_slug.domain'),
+        id: "service-name-field",
+        class: "govuk-input width-responsive-two-thirds",
+        value: f.object.saved_service_slug %>
+    </div>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('actions.save') %>
+    </button>
+  <% end %>
+<% end %>
