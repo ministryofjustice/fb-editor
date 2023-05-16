@@ -126,4 +126,11 @@ class ApplicationController < ActionController::Base
     request.script_name.include?('preview')
   end
   helper_method :editor_preview?
+
+  def service_slug_config
+    @service_slug_config ||= ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'SERVICE_SLUG'
+    )&.decrypt_value
+  end
 end

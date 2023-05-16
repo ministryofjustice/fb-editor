@@ -124,5 +124,10 @@ FactoryBot.define do
       name { 'SAVE_AND_RETURN' }
       value { '1' }
     end
+
+    trait :service_slug do
+      name { 'SERVICE_SLUG' }
+      value { 'eat-slugs-malfoy' }
+    end
   end
 end
