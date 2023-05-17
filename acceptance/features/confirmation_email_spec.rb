@@ -8,6 +8,7 @@ feature 'Confirmation email' do
   # Capybara strips out the carriage return `\r`
   let(:message_body) {
     "Thank you for your submission to ‘#{service_name}’. \n\nA copy of the information you provided is attached to this email."
+    I18n.t('default_values.confiramtion_email_body', service_name: service_name).gsub!('{{refernce_number_placeholder}}','')
   }
   let(:message_subject) { "Your submission to ‘#{service_name}’" }
   let(:multiple_question_page) { 'Title' }
