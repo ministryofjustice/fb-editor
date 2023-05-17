@@ -6,7 +6,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
     let(:params) { {} }
 
     context 'deployment environment' do
-      let(:service_output_json_key) { 'f89ea3f29cbdece2' }
+      let(:service_output_json_key) { 'f89ea3f29cbdece2x' }
       let(:service_output_json_endpoint) { 'valid.gov.uk' }
       let(:params) { { service_output_json_key:, service_output_json_endpoint: } }
 
@@ -25,8 +25,8 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
       let(:params) { { deployment_environment:, service_output_json_endpoint:, service_output_json_key: } }
       let(:expected_error) { described_class::KEY_LENGTH_ERROR }
 
-      context 'has to be 16 characters long' do
-        let(:service_output_json_key) { '98957af1a0424376' }
+      context 'has to be 17 characters long' do
+        let(:service_output_json_key) { '98957af1a0424376z' }
 
         it 'is valid' do
           expect(subject).to be_valid
@@ -70,7 +70,7 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
 
     context 'service_output_json_endpoint' do
       let(:deployment_environment) { 'production' }
-      let(:service_output_json_key) { 'f89ea3f29cbdece2' }
+      let(:service_output_json_key) { 'f89ea3f29cbdece2x' }
       let(:params) { { deployment_environment:, service_output_json_endpoint:, service_output_json_key: } }
       let(:expected_error) { described_class::URL_ERROR }
 
