@@ -10,6 +10,14 @@ class ServicesController < PermissionsController
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
+
+      if ENV['NAME_SLUG'] == 'enabled'
+        FormNameUpdater.new(
+          service_id: @service_creation.service_id,
+          service_name: @service_creation.service_name
+        ).create_or_update!
+      end
+
       redirect_to edit_service_path(@service_creation.service_id)
     else
       render :index
