@@ -53,5 +53,17 @@ RSpec.describe Admin::ApiSubmissionSettings, type: :model do
         end
       end
     end
+
+    context 'service_output_json_key' do
+      let(:service_output_json_key) { nil }
+
+      it 'do not allow nil' do
+        expect(subject).to_not be_valid
+      end
+
+      it 'allow blank' do
+        should allow_values('').for(:service_output_json_key)
+      end
+    end
   end
 end
