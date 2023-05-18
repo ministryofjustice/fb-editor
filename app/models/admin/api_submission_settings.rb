@@ -9,7 +9,7 @@ module Admin
     validates :deployment_environment, inclusion: {
       in: Rails.application.config.deployment_environments
     }
-    validates :service, presence: true
+    validates :service, :service_output_json_key, presence: true
     validate :is_url_valid
 
     URL_ERROR = 'Endpoint field should be a valid URL. '.freeze
