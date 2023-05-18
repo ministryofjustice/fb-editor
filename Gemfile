@@ -14,8 +14,8 @@ gem 'delayed_job_active_record'
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'editable-content-web-component'
-# gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.0.3'
+gem 'metadata_presenter', path: '../fb-metadata-presenter'
+# gem 'metadata_presenter', '3.0'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
@@ -36,6 +36,8 @@ gem 'sentry-rails', '~> 5.8.0'
 gem 'sentry-ruby', '~> 5.8.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
+
+gem 'govspeak', '~> 7.1'
 
 group :development, :test do
   gem 'brakeman'

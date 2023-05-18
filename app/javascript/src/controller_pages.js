@@ -62,7 +62,7 @@ class PagesController extends DefaultController {
 
   updateComponents() {
     $(".fb-editable").each(function() {
-      $(this).data("instance").save();
+      $(this).data("instance") ? $(this).data("instance").save() : $(this).get(0).save();
     });
   }
 }
@@ -521,16 +521,21 @@ function enhanceContent(view) {
     });
   });
 
-  view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
-    var $node = $(node);
-    new Content($node, {
-      form: view.submitHandler.$form,
-      text: {
-        default_content: view.text.defaults.content
-      },
-      htmlAdjustment: htmlAdjustment,
-      markdownAdjustment: markdownAdjustment
-    });
+  // view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
+  //   var $node = $(node);
+  //   new Content($node, {
+  //     form: view.submitHandler.$form,
+  //     text: {
+  //       default_content: view.text.defaults.content
+  //     },
+  //     htmlAdjustment: htmlAdjustment,
+  //     markdownAdjustment: markdownAdjustment
+  //   });
+  // });
+  const form = document.querySelector('#editContentForm');
+  console.log(form);
+  document.querySelectorAll('editable-content').forEach((element) => {
+    element.form = form
   });
 }
 

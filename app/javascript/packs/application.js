@@ -9,6 +9,12 @@ require("jquery")
 require("jquery-ui")
 require("../src/index")
 
+import EditableContent from '../src/web-components/editable-content.js';
+
+if ('customElements' in window) {
+  customElements.define('editable-content', EditableContent);
+}
+
 // Entry point for fb-editor stylesheets
 import "../styles/application.scss"
 
