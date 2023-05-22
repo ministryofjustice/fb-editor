@@ -283,4 +283,34 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#service_slug_config' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when SERVICE_SLUG exists' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :service_slug,
+          service_id: service.service_id
+        )
+      end
+
+      it 'returns service slug' do
+        expect(controller.service_slug_config).to eq('eat-slugs-malfoy')
+      end
+    end
+
+    context 'when SERVICE_SLUG does not exist' do
+      let!(:service_configuration) { nil }
+
+      it 'returns nil' do
+        expect(controller.service_slug_config).to be_nil
+      end
+    end
+  end
 end
