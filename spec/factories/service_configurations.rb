@@ -129,5 +129,10 @@ FactoryBot.define do
       name { 'SERVICE_SLUG' }
       value { 'eat-slugs-malfoy' }
     end
+
+    trait :previous_service_slug do
+      name { 'PREVIOUS_SERVICE_SLUG' }
+      value { 'slug-life' }
+    end
   end
 end
