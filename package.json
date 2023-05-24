@@ -14,6 +14,7 @@
     "@rails/webpacker": "^5.4.4",
     "@sentry/browser": "^7.28.1",
     "accessible-autocomplete": "^2.0.4",
+    "chai-dom": "^1.11.0",
     "govuk-frontend": "4.4.1",
     "govuk-markdown": "^0.3.0",
     "jquery": "^3.6.4",
@@ -33,6 +34,7 @@
     "form-data": "^4.0.0",
     "jquery-ui": "^1.13.2",
     "jsdom": "^20.0.3",
+    "jsdom-global": "^3.0.2",
     "mocha": "^10.2.0",
     "sinon-chai": "^3.7.0"
   }

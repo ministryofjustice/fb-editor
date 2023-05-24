@@ -37,8 +37,8 @@ class EditableContent extends HTMLElement {
     // the initialMarkup
     setTimeout(() => {
       this.initialMarkup = this.innerHTML;
-      this.initialContent = this.getAttribute('content').replace(/\\r\\n?|\\n/g, '\n');
-      this.defaultContent = this.getAttribute('default-content');
+      this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
+      this.defaultContent = this.getAttribute('default-content') || '';
       this.json = (this.dataset.json ? JSON.parse(this.dataset.json) : undefined);
       this.render();
     })
@@ -48,9 +48,7 @@ class EditableContent extends HTMLElement {
   // If content area is part of page components we need to return compontn json
   // as a string otherwise we return the content string
   get content() {
-    console.log('getting content')
     if(this.isComponent) {
-      console.log('this is a component')
       this.json.content = this.input.value;
       console.log(this)
       return JSON.stringify(this.json);

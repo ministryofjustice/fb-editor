@@ -9,7 +9,7 @@ require("jquery")
 require("jquery-ui")
 require("../src/index")
 
-import EditableContent from '../src/web-components/editable-content.js';
+import EditableContent from '../src/web-components/editable-content.mjs';
 
 if ('customElements' in window) {
   customElements.define('editable-content', EditableContent);
