@@ -2,11 +2,15 @@ module MojForms
   class BackLinkComponent < GovukComponent::Base
     attr_reader :text, :href
 
-    def initialize(href:, text: t('actions.back'), classes: [], html_attributes: {})
+    def initialize(href:, text: '', classes: [], html_attributes: {})
       @href = href
       @text = text
 
       super(classes:, html_attributes:)
+    end
+
+    def before_render
+      @text = @text.blank? ? t('actions.back') : @text
     end
 
     def call
