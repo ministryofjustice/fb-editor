@@ -35,6 +35,13 @@ module FbEditor
     config.generators.system_tests = nil
 
     config.autoload_paths << "#{root}/app/models/component_validations"
+    config.autoload_paths << "#{root}/app/services/editor"
+    config.autoload_paths << "#{root}/app/services/email_service"
+    config.autoload_paths << "#{root}/app/services/metadata_api_client"
+    config.autoload_paths << "#{root}/app/services/publisher"
+    config.autoload_paths << "#{root}/app/services/unpublisher"
+    config.autoload_paths << "#{root}/app/services/uptime"
+
     config.active_model.i18n_customize_full_message = true
   end
 end
