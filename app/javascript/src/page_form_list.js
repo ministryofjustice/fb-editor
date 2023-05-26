@@ -15,7 +15,6 @@
 
 const DialogForm = require('./component_dialog_form');
 const DefaultController = require('./controller_default');
-const { CharacterCount } = require('govuk-frontend');
 
 class FormListPage extends DefaultController {
   constructor(app) {
@@ -23,10 +22,6 @@ class FormListPage extends DefaultController {
 
     // Create dialog for handling new form input and error reporting.
     new CreateFormDialog($("[data-component='FormCreateDialog']"));
-    var $characterCount = document.querySelector('[data-module="govuk-character-count"]')
-    if ($characterCount) {
-      new CharacterCount($characterCount).init()
-    }
   }
 }
 

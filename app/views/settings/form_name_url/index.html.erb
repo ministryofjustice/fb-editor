@@ -29,33 +29,37 @@
       </div>
     <% end %>
 
-    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
-      <%= f.govuk_text_field :service_name,
-        label: { text: t('settings.form_name.form_name.label') },
-        hint: {
-          text: t('settings.form_name.form_name.lede',
-          href:  t('settings.form_name.form_name.href')
-          ).html_safe
-          },
-        id: "service-name-field",
-        class: "govuk-input width-responsive-two-thirds",
-        value: f.object.saved_service_name %>
-    </div>
+    <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>   
+        <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
+
+        <%= f.govuk_text_field :service_name,
+          label: ->  {},
+          class: "govuk-input width-responsive-two-thirds",
+          value: f.object.saved_service_name,
+          'aria-labelledby': 'form-name-legend' %>
+    <% end %>
 
 
-    <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
-      <%= f.govuk_text_field :service_slug,
-        label: { text: t('settings.form_name.form_slug.label') },
-        hint: {
-          text: t('settings.form_name.form_slug.lede',
-          href:  t('settings.form_name.form_slug.href')
-          ).html_safe
-          },
-        suffix_text: t('settings.form_name.form_slug.domain'),
-        id: "service-name-field",
-        class: "govuk-input width-responsive-two-thirds",
-        value: f.object.saved_service_slug %>
-    </div>
+    <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>   
+      <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
+      <div class="fb-domain-input">
+        <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>">
+          <%= f.govuk_text_field :service_slug,
+            label: -> {},
+            hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
+            class: "govuk-input  govuk-js-character-count",
+            value: f.object.saved_service_slug,
+            'aria-labelledby': 'form-url-legend'
+          %>
+          <div id="service-service-slug-field-info" class="govuk-hint govuk-character-count__message">
+            You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
+          </div>
+          <div class="fb-domain-input__suffix" aria-hidden="true">
+            <%= t('settings.form_name.form_slug.domain') %>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
     <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
       <%= t('actions.save') %>
