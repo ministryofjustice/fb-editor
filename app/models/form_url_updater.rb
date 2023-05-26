@@ -11,6 +11,11 @@ class FormUrlUpdater
       if previous_service_slug.nil? && currently_published?
         save_config_previous_service_slug
       end
+
+      if previous_service_slug.present? && !currently_published?
+        remove_previous_service_slug_config
+      end
+
       save_config_service_slug
     end
   end
@@ -27,6 +32,11 @@ class FormUrlUpdater
     create_or_update_service_configuration(config: 'PREVIOUS_SERVICE_SLUG', deployment_environment: 'production', value: existing_service_slug_config)
   end
 
+  def remove_previous_service_slug_config
+    remove_service_configuration(config: 'PREVIOUS_SERVICE_SLUG', deployment_environment: 'dev')
+    remove_service_configuration(config: 'PREVIOUS_SERVICE_SLUG', deployment_environment: 'production')
+  end
+
   def create_or_update_service_configuration(config:, deployment_environment:, value:)
     setting = find_or_initialize_setting(config, deployment_environment)
     setting.value = value
@@ -39,6 +49,11 @@ class FormUrlUpdater
       deployment_environment:,
       name: config
     )
+  end
+
+  def remove_service_configuration(config:, deployment_environment:)
+    setting = find_or_initialize_setting(config, deployment_environment)
+    setting.destroy!
   end
 
   def new_service_slug

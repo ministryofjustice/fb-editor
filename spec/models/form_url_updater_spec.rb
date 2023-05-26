@@ -208,24 +208,62 @@ RSpec.describe FormUrlUpdater do
         end
       end
 
-      context 'when service has not been published' do
-        let(:params) { 'I am a unique service' }
-        let(:expected_service_slug) { 'i-am-a-unique-service' }
+      context 'when service is not currently published' do
+        context 'and previous service slug does not exist' do
+          let(:params) { 'I am a unique service' }
+          let(:expected_service_slug) { 'i-am-a-unique-service' }
 
-        it 'updates the existing service slug config' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(expected_service_slug)
+          it 'updates the existing service slug config' do
+            form_name_updater.create_or_update!
+            service_configuration.reload
+            expect(
+              service_configuration.decrypt_value
+            ).to eq(expected_service_slug)
+          end
+
+          it 'does not create a previous service slug config' do
+            form_name_updater.create_or_update!
+            service_configuration.reload
+            expect(
+              previous_slug_service_config.present?
+            ).to be_falsey
+          end
         end
 
-        it 'does not create a previous service slug config' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            previous_slug_service_config.present?
-          ).to be_falsey
+        context 'and previous service slug exists' do
+          let(:params) { 'I am a unique service' }
+          let(:expected_service_slug) { 'i-am-a-unique-service' }
+
+          before do
+            create(
+              :service_configuration,
+              :previous_service_slug,
+              service_id: service.service_id,
+              deployment_environment: 'dev'
+            )
+            create(
+              :service_configuration,
+              :previous_service_slug,
+              service_id: service.service_id,
+              deployment_environment: 'production'
+            )
+          end
+
+          it 'updates the existing service slug config' do
+            form_name_updater.create_or_update!
+            service_configuration.reload
+            expect(
+              service_configuration.decrypt_value
+            ).to eq(expected_service_slug)
+          end
+
+          it 'removes the previous service slug config' do
+            form_name_updater.create_or_update!
+            service_configuration.reload
+            expect(
+              previous_slug_service_config.present?
+            ).to be_falsey
+          end
         end
       end
     end
