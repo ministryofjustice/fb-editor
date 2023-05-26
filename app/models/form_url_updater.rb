@@ -10,10 +10,8 @@ class FormUrlUpdater
     ActiveRecord::Base.transaction do
       if previous_service_slug.nil? && currently_published?
         save_config_previous_service_slug
-        save_config_service_slug
-      else
-        save_config_service_slug
       end
+      save_config_service_slug
     end
   end
 
@@ -75,14 +73,14 @@ class FormUrlUpdater
 
   def existing_service_slug_config
     @existing_service_slug_config ||= ServiceConfiguration.find_by(
-      service_id: service_id,
+      service_id:,
       name: 'SERVICE_SLUG'
     )&.decrypt_value
   end
 
   def previous_service_slug
     @previous_service_slug ||= ServiceConfiguration.find_by(
-      service_id: service_id,
+      service_id:,
       name: 'PREVIOUS_SERVICE_SLUG'
     )
   end
