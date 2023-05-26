@@ -314,7 +314,7 @@ en:
       help: Additional guidance for URL is available on
       form_name:
         label: 'Form name'
-        lede: This appears in the header of all your form pages and is what your form is liseted as in the MoJ Forms editor. A good name describes the task the form is designer for and starts with an action, such as "Get help with..." or "Apply for..." %{href}.
+        lede: This appears in the header of all your form pages and is what your form is listed as in the MoJ Forms editor. A good name describes the task the form is designed for and starts with an action, such as "Get help with..." or "Apply for..." %{href}.
         href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form</a>
       form_slug:
         label: 'URL'
