@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_14_164512) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_05_24_135119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -21,13 +20,13 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
     t.text "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
+    t.datetime "run_at", precision: nil
+    t.datetime "locked_at", precision: nil
+    t.datetime "failed_at", precision: nil
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
@@ -35,8 +34,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
     t.uuid "service_id", null: false
     t.string "email", null: false
     t.integer "status", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["service_id"], name: "index_from_addresses_on_service_id"
   end
 
@@ -53,16 +52,16 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
 
   create_table "legacy_service_names", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "publish_services", force: :cascade do |t|
     t.string "deployment_environment", null: false
     t.uuid "service_id", null: false
     t.string "status", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.uuid "version_id"
     t.uuid "user_id"
     t.uuid "autocomplete_ids", default: [], array: true
@@ -77,8 +76,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
     t.string "value", null: false
     t.string "deployment_environment", null: false
     t.uuid "service_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["service_id", "deployment_environment", "name"], name: "index_service_configurations_on_service_deployment_name"
     t.index ["service_id", "deployment_environment"], name: "index_service_configurations_on_service_id_and_deployment_env"
     t.index ["service_id"], name: "index_service_configurations_on_service_id"
@@ -87,8 +86,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -97,8 +96,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
     t.boolean "send_email", default: false
     t.string "deployment_environment"
     t.uuid "service_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "service_csv_output", default: false
     t.boolean "send_confirmation_email", default: false
     t.boolean "payment_link", default: false
@@ -109,8 +108,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
   create_table "uptime_checks", force: :cascade do |t|
     t.uuid "service_id", null: false
     t.string "check_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["service_id"], name: "index_uptime_checks_on_service_id"
   end
 
@@ -118,8 +117,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_164512) do
     t.string "email"
     t.string "name"
     t.string "timezone", default: "London"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "identities", "users"
