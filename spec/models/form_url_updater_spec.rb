@@ -1,8 +1,8 @@
-RSpec.describe FormNameUpdater do
+RSpec.describe FormUrlUpdater do
   subject(:form_name_updater) do
     described_class.new(
       service_id: service.service_id,
-      service_name: ServiceCreation.new(attributes).service_name
+      service_slug: params
     )
   end
   let(:current_user) { double(id: '1') }
@@ -21,6 +21,8 @@ RSpec.describe FormNameUpdater do
 
   describe '#create_or_update' do
     context 'on form creation' do
+      let(:params) { ServiceCreation.new(attributes).service_name }
+
       context 'when service slug is unique' do
         let(:attributes) { { service_name: 'I am a unique service' } }
         let(:expected_service_slug) { 'i-am-a-unique-service' }
@@ -135,9 +137,11 @@ RSpec.describe FormNameUpdater do
           ).to eq(expected_service_slug)
         end
       end
+    end
 
+    context 'on form update' do
       context 'when service has been published' do
-        let(:attributes) { { service_name: 'I am a unique service' } }
+        let(:params) { 'I am a unique service' }
         let(:expected_service_slug) { 'i-am-a-unique-service' }
         let(:previous_service_slug) { 'eat-slugs-malfoy' }
 
@@ -155,7 +159,7 @@ RSpec.describe FormNameUpdater do
             deployment_environment: 'production'
           )
 
-          allow_any_instance_of(FormNameUpdater).to receive(:currently_published?).and_return(true)
+          allow_any_instance_of(FormUrlUpdater).to receive(:currently_published?).and_return(true)
         end
 
         context 'when previous service slug config does not exist' do

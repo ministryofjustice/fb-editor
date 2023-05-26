@@ -1,9 +1,9 @@
-class FormNameUpdater
-  attr_reader :service_id, :service_name
+class FormUrlUpdater
+  attr_reader :service_id, :service_slug
 
-  def initialize(service_id:, service_name:)
+  def initialize(service_id:, service_slug:)
     @service_id = service_id
-    @service_name = service_name
+    @service_slug = service_slug
   end
 
   def create_or_update!
@@ -20,8 +20,8 @@ class FormNameUpdater
   private
 
   def save_config_service_slug
-    create_or_update_service_configuration(config: 'SERVICE_SLUG', deployment_environment: 'dev', value: service_slug)
-    create_or_update_service_configuration(config: 'SERVICE_SLUG', deployment_environment: 'production', value: service_slug)
+    create_or_update_service_configuration(config: 'SERVICE_SLUG', deployment_environment: 'dev', value: new_service_slug)
+    create_or_update_service_configuration(config: 'SERVICE_SLUG', deployment_environment: 'production', value: new_service_slug)
   end
 
   def save_config_previous_service_slug
@@ -43,8 +43,8 @@ class FormNameUpdater
     )
   end
 
-  def service_slug
-    @service_slug ||= begin
+  def new_service_slug
+    @new_service_slug ||= begin
       return parameterized_service_slug if unique_service_slug?
 
       # Replace the last 3 chars with random 3 alpha-numric chars
@@ -54,7 +54,7 @@ class FormNameUpdater
 
   def parameterized_service_slug
     # parameterize, use first non-numeric char and limit to 57 chars
-    @parameterized_service_slug ||= service_name.parameterize.slice(service_name.index(/\D/), 57)
+    @parameterized_service_slug ||= service_slug.parameterize.slice(service_slug.index(/\D/), 57)
   end
 
   def unique_service_slug?
