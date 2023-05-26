@@ -318,7 +318,7 @@ en:
         href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form</a>
       form_slug:
         label: 'URL'
-        lede: "This will be your form's web address when it goes live. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.\r\n\r\nChanging a live form's URL can cause problems for users so this option is only available before a form has been published to Live."
+        lede: "This will be your form's web address when it goes live. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />Changing a live form's URL can cause problems for users so this option is only available before a form has been published to Live."
         href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards</a>
         hint: Maximum 57 characters. It cannot start with a number or include spaces or special characters except hyphens
         domain: .form.service.justice.gov.uk
@@ -479,6 +479,9 @@ en:
         service_name: 'Give your form a name'
       settings:
         service_name: 'Form name'
+      form_name_url_settings:
+        service_name: 'Form name'
+        service_slug: 'URL'
       form_analytics_settings:
         enabled_test: Enable analytics on Test
         enabled_live: Enable analytics on Live
