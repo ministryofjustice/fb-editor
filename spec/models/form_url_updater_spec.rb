@@ -140,25 +140,27 @@ RSpec.describe FormUrlUpdater do
     end
 
     context 'on form update' do
+      before do
+        create(
+          :service_configuration,
+          :service_slug,
+          service_id: service.service_id,
+          deployment_environment: 'dev'
+        )
+        create(
+          :service_configuration,
+          :service_slug,
+          service_id: service.service_id,
+          deployment_environment: 'production'
+        )
+      end
+
       context 'when service has been published' do
         let(:params) { 'I am a unique service' }
         let(:expected_service_slug) { 'i-am-a-unique-service' }
         let(:previous_service_slug) { 'eat-slugs-malfoy' }
 
         before do
-          create(
-            :service_configuration,
-            :service_slug,
-            service_id: service.service_id,
-            deployment_environment: 'dev'
-          )
-          create(
-            :service_configuration,
-            :service_slug,
-            service_id: service.service_id,
-            deployment_environment: 'production'
-          )
-
           allow_any_instance_of(FormUrlUpdater).to receive(:currently_published?).and_return(true)
         end
 
@@ -203,6 +205,27 @@ RSpec.describe FormUrlUpdater do
               service_configuration.decrypt_value
             ).to eq(expected_service_slug)
           end
+        end
+      end
+
+      context 'when service has not been published' do
+        let(:params) { 'I am a unique service' }
+        let(:expected_service_slug) { 'i-am-a-unique-service' }
+
+        it 'updates the existing service slug config' do
+          form_name_updater.create_or_update!
+          service_configuration.reload
+          expect(
+            service_configuration.decrypt_value
+          ).to eq(expected_service_slug)
+        end
+
+        it 'does not create a previous service slug config' do
+          form_name_updater.create_or_update!
+          service_configuration.reload
+          expect(
+            previous_slug_service_config.present?
+          ).to be_falsey
         end
       end
     end
