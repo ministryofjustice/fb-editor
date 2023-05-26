@@ -1,6 +1,7 @@
 class ServicesController < PermissionsController
   layout 'form', only: :edit
   skip_before_action :authorised_access, only: %i[index create]
+  ACCEPTANCE_TEST_USER = 'Acceptance Tests'.freeze
 
   def index
     @service_creation = ServiceCreation.new
@@ -10,8 +11,7 @@ class ServicesController < PermissionsController
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
-
-      if ENV['NAME_SLUG'] == 'enabled'
+      if ENV['NAME_SLUG'] == 'enabled' && current_user.name != ACCEPTANCE_TEST_USER
         FormNameUpdater.new(
           service_id: @service_creation.service_id,
           service_name: @service_creation.service_name
