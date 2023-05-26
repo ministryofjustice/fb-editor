@@ -50,7 +50,6 @@ class EditableContent extends HTMLElement {
   get content() {
     if(this.isComponent) {
       this.json.content = this.input.value;
-      console.log(this)
       return JSON.stringify(this.json);
     } else {
       return this.input.value == this.defaultContent ? '' : this.input.value;
@@ -97,7 +96,6 @@ class EditableContent extends HTMLElement {
 
         this.updateHeight(target);
       });
-
       return
     }
     
