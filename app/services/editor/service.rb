@@ -4,7 +4,8 @@ module Editor
     attr_accessor :service_name, :current_user, :service_id, :latest_metadata
 
     MINIMUM = 3
-    MAXIMUM = 57
+    MAXIMUM = ENV['NAME_SLUG'] == 'enabled' ? 255 : 57
+    URL_MAXIMUM = 57
 
     validates :service_name, presence: true
     validates :service_name, length: { minimum: MINIMUM, maximum: MAXIMUM }, allow_blank: true

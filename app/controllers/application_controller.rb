@@ -127,6 +127,12 @@ class ApplicationController < ActionController::Base
   end
   helper_method :editor_preview?
 
+  def service_slug
+    return service_slug_config if service_slug_config.present?
+
+    service.service_slug
+  end
+
   def service_slug_config
     @service_slug_config ||= ServiceConfiguration.find_by(
       service_id: service.service_id,

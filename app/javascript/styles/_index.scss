@@ -1226,3 +1226,31 @@ dl > div:not(:first-of-type){
   margin-top: govuk-spacing(7);
 }
 
+.govuk-character-count .govuk-input {
+  margin-bottom: 5px;
+}
+
+.fb-domain-input {
+  position:relative;
+  
+  .govuk-input {
+    width: 85%;
+  }
+
+  &__suffix {
+    position: absolute;
+    left: calc(85% + 5px);
+    bottom: 36px;
+  }
+
+  @include govuk-media-query($until: tablet) {
+    .govuk-input {
+      width: 100%;
+    }
+
+    .fb-domain-input__suffix {
+      display: none;
+    }
+  }
+}
+

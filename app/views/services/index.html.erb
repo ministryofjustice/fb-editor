@@ -27,17 +27,19 @@
            data-component="FormCreateDialog">
         <%= form_for(@service_creation, url: services_path) do |f| %>
           <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
-            <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::MAXIMUM %>">
+            <%= tag.div class: 'govuk-character-count', data: { module: 'govuk-character-count', maxlength: Editor::Service::MAXIMUM, threshold: ENV['NAME_SLUG'] == 'enabled' ? 90 : 0 } do %>
               <%= f.label :service_name, class: "govuk-label govuk-label--m" %>
               <% f.object.errors.each do |error|  %>
                 <p class="govuk-error-message"><%= error.message %></p>
               <% end %>
-              <div class="govuk-hint" id="service-name-hint"> <%= t('services.form_name_hint', max_length: Editor::Service::MAXIMUM)%></div>
+              <div class="govuk-hint" id="service-name-hint"> 
+                <%= ENV['NAME_SLUG'] == 'enabled' ? t('services.form_name_change_hint') : t('services.form_name_hint', max_length: Editor::Service::MAXIMUM)%>
+              </div>
               <%= f.text_field :service_name, class: "govuk-input govuk-js-character-count", 'aria-describedby': 'service-name-hint service_creation_service_name-info'%>
               <div id="service_creation_service_name-info" class="govuk-hint govuk-character-count__message">
                 You can enter up to <%= Editor::Service::MAXIMUM %> characters
               </div>
-            </div>
+            <% end %>
 
           </div>
           <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>

@@ -308,6 +308,20 @@ en:
       negative: 'No'
   settings:
     name: 'Settings'
+    form_name:
+      heading: 'Form name and URL'
+      lede: ''
+      help: Additional guidance for URL is available on
+      form_name:
+        label: 'Form name'
+        lede: This appears in the header of all your form pages and is what your form is listed as in the MoJ Forms editor. A good name describes the task the form is designed for and starts with an action, such as "Get help with..." or "Apply for..." %{href}.
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form</a>
+      form_slug:
+        label: 'URL'
+        lede: "This will be your form's web address when it goes live. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />Changing a live form's URL can cause problems for users so this option is only available before a form has been published to Live."
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards</a>
+        hint: Maximum 57 characters. It cannot start with a number or include spaces or special characters except hyphens
+        domain: .form.service.justice.gov.uk
     form_information:
       heading: 'Form details'
       lede: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
@@ -452,6 +466,7 @@ en:
     heading: 'Your forms'
     edit: 'Edit'
     form_name_hint: "Maximum %{max_length} characters, including spaces. It cannot start with a number or include special characters except ' - ( )"
+    form_name_change_hint: "You will be able to change this later in your form's settings"
     preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
@@ -464,6 +479,9 @@ en:
         service_name: 'Give your form a name'
       settings:
         service_name: 'Form name'
+      form_name_url_settings:
+        service_name: 'Form name'
+        service_slug: 'URL'
       form_analytics_settings:
         enabled_test: Enable analytics on Test
         enabled_live: Enable analytics on Live

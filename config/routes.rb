@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       resources :settings, only: [:index]
       namespace :settings do
         resources :form_information, only: [:index, :create]
+        resources :form_name_url, only: [:index, :create]
         resources :form_analytics, only: [:index, :create]
         resources :reference_payment, only: [:index, :create]
         resources :save_and_return, only: [:index, :create]

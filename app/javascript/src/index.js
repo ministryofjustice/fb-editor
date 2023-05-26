@@ -8,6 +8,7 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
 const ReferencePaymentController = require('./controller_reference_payment');
+const GOVUKFrontend = require('govuk-frontend')
 
 const {
   snakeToPascalCase,
@@ -92,4 +93,7 @@ switch(controllerAndAction()) {
        Controller = DefaultController;
 }
 
-$(document).ready( () =>  new Controller(app) );
+$(document).ready( () =>  {
+  new Controller(app);
+  GOVUKFrontend.initAll();
+});

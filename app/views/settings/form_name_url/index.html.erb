@@ -1,0 +1,51 @@
+<%= mojf_settings_screen(
+  heading:t('settings.form_name.heading')
+  ) do |c| %>
+
+  <% c .with_back_link(href: settings_path) %>
+
+  <%= form_for @form_name_url_settings,
+    as: :service,
+    url: settings_form_name_url_index_path(service.service_id),
+    html: { id: 'form-name-url-settings' },
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+
+    <%= f.govuk_error_summary %>
+
+    <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>   
+        <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
+
+        <%= f.govuk_text_field :service_name,
+          label: ->  {},
+          class: "govuk-input width-responsive-two-thirds",
+          value: f.object.saved_service_name,
+          'aria-labelledby': 'form-name-legend' %>
+    <% end %>
+
+
+    <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>   
+      <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
+      <div class="fb-domain-input">
+        <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>">
+          <%= f.govuk_text_field :service_slug,
+            label: -> {},
+            hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
+            class: "govuk-input  govuk-js-character-count",
+            value: f.object.saved_service_slug,
+            'aria-labelledby': 'form-url-legend'
+          %>
+          <div id="service-service-slug-field-info" class="govuk-hint govuk-character-count__message">
+            You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
+          </div>
+          <div class="fb-domain-input__suffix" aria-hidden="true">
+            <%= t('settings.form_name.form_slug.domain') %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('actions.save') %>
+    </button>
+  <% end %>
+<% end %>

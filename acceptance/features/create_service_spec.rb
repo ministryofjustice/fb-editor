@@ -24,6 +24,8 @@ feature 'Create a service' do
   background do
     given_I_am_logged_in
     given_I_want_to_create_a_service
+    allow(ENV).to receive(:[])
+    allow(ENV).to receive(:[]).with('NAME_SLUG').and_return('enabled')
   end
 
   scenario 'validates the service name' do
@@ -39,6 +41,7 @@ feature 'Create a service' do
   end
 
   scenario 'validates the service name max length' do
+
     given_I_add_a_service_with_many_characters
     when_I_create_the_service
     then_I_should_see_a_validation_message_for_max_length
