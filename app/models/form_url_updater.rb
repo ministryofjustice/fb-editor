@@ -79,7 +79,7 @@ class FormUrlUpdater
   end
 
   def all_existing_service_slugs
-    @all_existing_service_slugs ||= ServiceConfiguration.where(name: 'SERVICE_SLUG').map(&:decrypt_value)
+    @all_existing_service_slugs ||= ServiceConfiguration.where(name: 'SERVICE_SLUG').map(&:decrypt_value) - [existing_service_slug_config]
   end
 
   def all_previous_service_slugs
