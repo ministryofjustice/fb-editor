@@ -79,4 +79,5 @@ class ElasticTextarea extends HTMLElement {
     }
   }
 }
-export { ElasticTextarea }
+module.exports = {ElasticTextarea}
+

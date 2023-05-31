@@ -3680,8 +3680,9 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-"marked-govspeak@file:../../Personal/marked-govspeak":
+marked-govspeak@x-govuk/marked-govspeak#Fix-CTA-regex:
   version "0.1.0"
+  resolved "https://codeload.github.com/x-govuk/marked-govspeak/tar.gz/bc2d531133cef988efa681c6f2447c0858907643"
   dependencies:
     marked "^4.0.12"
 

@@ -1,6 +1,6 @@
-import {marked} from 'marked';
-import govspeak from 'marked-govspeak'
-import GovukHTMLRenderer from 'govuk-markdown'
+const marked = require('marked')
+const govspeak = require('marked-govspeak')
+const GovukHTMLRenderer = require('govuk-markdown')
 
 class EditableContent extends HTMLElement {
   constructor() {
@@ -176,4 +176,7 @@ class EditableContent extends HTMLElement {
   }
 
 }
-export { EditableContent }
+
+module.exports  = {EditableContent}
+
+

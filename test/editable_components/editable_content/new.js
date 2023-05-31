@@ -1,10 +1,10 @@
-import 'jsdom-global/register.js'
-import 'chai/register-expect.js';
-import chai from 'chai'
+// import 'jsdom-global/register.js'
+require('jsdom-global')()
+const chai = require('chai')
+const chaiDom = require('chai-dom')
 const expect  = chai.expect 
-import chaiDom from 'chai-dom'
 chai.use(chaiDom)
-import EditableContent from '../../../app/javascript/src/web-components/editable-content.mjs'
+const { EditableContent } = require( '../../../app/javascript/src/web-components/editable-content')
 //
 
 describe('EditableContent', function() {

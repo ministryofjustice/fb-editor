@@ -20,7 +20,7 @@
     "jquery": "^3.6.4",
     "jquery-ui-dist": "^1.13.2",
     "marked": "4.3.0",
-    "marked-govspeak": "file:./../../Personal/marked-govspeak",
+    "marked-govspeak": "x-govuk/marked-govspeak#Fix-CTA-regex",
     "resolve-url-loader": "^5.0.0",
     "sanitize-html": "^2.8.1",
     "showdown": "^2.1.0",
