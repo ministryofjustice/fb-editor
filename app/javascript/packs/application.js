@@ -10,8 +10,10 @@ require("jquery-ui")
 require("../src/index")
 
 import EditableContent from '../src/web-components/editable-content.mjs';
+import ElasticTextarea from '../src/web-components/elastic-textarea.mjs';
 
 if ('customElements' in window) {
+  customElements.define('elastic-textarea', ElasticTextarea);
   customElements.define('editable-content', EditableContent);
 }
 

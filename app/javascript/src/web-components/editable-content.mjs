@@ -71,7 +71,9 @@ class EditableContent extends HTMLElement {
     const initialMarkup = (this.initialMarkup.trim() != '' ? this.initialMarkup : this.defaultContent);
     this.innerHTML = `
     <div class="editable-content" data-element="editable-content-root">
-      <textarea class="govuk-textarea" data-element="editable-content-input" rows="10" hidden>${initialContent}</textarea>
+      <elastic-textarea>
+        <textarea class="govuk-textarea" data-element="editable-content-input" rows="10" hidden>${initialContent}</textarea>
+      </elastic-textarea>
       <div data-element="editable-content-output">${initialMarkup}</div>
     </div>`
 
@@ -91,11 +93,6 @@ class EditableContent extends HTMLElement {
       this.root.addEventListener('click', () => { this.state.mode === 'read' ? this.state.mode = 'edit' : '' });
       this.root.addEventListener('focus', () => { this.state.mode === 'read' ? this.state.mode = 'edit' : '' });
       this.input.addEventListener('blur', () => { this.state.mode === 'edit' ? this.state.mode = 'read' : '' });
-      this.addEventListener("input", ({ target }) => {
-        if (!(target instanceof HTMLTextAreaElement)) return;
-
-        this.updateHeight(target);
-      });
       return
     }
     
@@ -112,7 +109,7 @@ class EditableContent extends HTMLElement {
         this._contentBeforeEditing = this.input.value.trim();
         this.show(this.input)
         this.hide(this.output)
-        this.updateHeight(this.input);
+        // this.updateHeight(this.input);
         this.input.focus();
 
         if(this.valueIsDefault()) this.input.value = '';
@@ -154,76 +151,12 @@ class EditableContent extends HTMLElement {
     this.output.innerHTML = marked.parse(this.input.value);
   }
 
-  updateHeight(textareaEl) {
-    if (this.isScrolling(textareaEl)) {
-      this.grow(textareaEl);
-    } else {
-      this.shrink(textareaEl);
-    }
-  }
-
   valueIsDefault() {
     return this.input.value == this.defaultContent;
   }
 
   valueHasChanged() {
     return this.input.value.trim() !== this._contentBeforeEditing 
-  }
-
-  isScrolling(textareaEl) {
-    return textareaEl.scrollHeight > textareaEl.clientHeight;
-  }
-
-  rows(textareaEl) {
-    return textareaEl.rows;
-  }
-
-  grow(textareaEl) {
-    // Store initial height of textarea
-    let previousHeight = textareaEl.clientHeight;
-    let rows = this.rows(textareaEl);
-
-    while (this.isScrolling(textareaEl)) {
-      rows++;
-      textareaEl.rows = rows;
-
-      // Get height after rows change is made
-      const newHeight = textareaEl.clientHeight ;
-
-      // If the height hasn't changed, break the loop
-      // This is an important safety check in case the height is hard coded
-      if (newHeight === previousHeight) break;
-
-      // Store the updated height for the next comparison and proceed
-      previousHeight = newHeight;
-    }
-  }
-
-  /** Shrink until the textarea matches the minimum rows or starts overflowing */
-  shrink(textareaEl) {
-    // Store initial height of textarea
-    let previousHeight = textareaEl.clientHeight;
-
-    const minRows = parseInt(textareaEl.dataset.minRows);
-    let rows = this.rows(textareaEl);
-
-    while (!this.isScrolling(textareaEl) && rows > minRows) {
-      rows--;
-      textareaEl.rows = Math.max(rows, minRows);
-
-      // Get height after rows change is made
-      const newHeight = textareaEl.clientHeight;
-
-      // If the height hasn't changed, break the loop
-      // This is an important safety check in case the height is hard coded
-      if (newHeight === previousHeight) break;
-
-      // If we shrunk so far that we're overflowing, add a row back on.
-      if (this.isScrolling(textareaEl)) {
-        this.grow(textareaEl);
-        break;
-      }
-    }
   }
 
   save() {
@@ -243,5 +176,4 @@ class EditableContent extends HTMLElement {
   }
 
 }
-
-export default EditableContent
+export { EditableContent }
