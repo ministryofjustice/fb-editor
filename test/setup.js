@@ -4,7 +4,7 @@ const sinonChai = require("sinon-chai");
 const chaiDom = require('chai-dom')
 const jquery = require('jquery');
 
-const cleanDOM = require('jsdom-global')(`<html>
+const cleanJSDOM = require('jsdom-global')(`<html>
      <head>
       <title>Test document</title>
     </head>
@@ -15,11 +15,12 @@ const cleanDOM = require('jsdom-global')(`<html>
      </html>`, {
     url: "http://localhost",
   })
+
 chai.use(sinonChai);
 chai.use(chaiDom)
 
 global.expect = expect;
-global.cleanDOM = cleanDOM;
+global.cleanJSDOM = cleanJSDOM;
 global.jQuery = jquery( global.window );
 global.$ = jQuery;
 global.sinon = require("sinon"); // sinon *must* be required after the above line

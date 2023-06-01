@@ -25,8 +25,11 @@ class EditableContent extends HTMLElement {
       }
     )
 
+    marked.setOptions({
+      renderer: new GovukHTMLRenderer(),
+    })
+
     marked.use({ 
-      renderer: GovukHTMLRenderer,
       extensions: govspeak 
     })
   }
@@ -164,18 +167,16 @@ class EditableContent extends HTMLElement {
       if(hiddenInput) {
         hiddenInput.value = this.content;
       } else {
-        const button = this.submissionForm.querySelector('button[type="submit], input[type="submit"]');
+        const button = this.submissionForm.querySelector('button[type="submit"], input[type="submit"]');
         const newHiddenInput = document.createElement('input');
         newHiddenInput.setAttribute('name', this.id);
         newHiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.value = this.content;
-        button.insertAdjacentHTML('beforebegin', newHiddenInput);
+        newHiddenInput.value = this.content;
+        button.insertAdjacentElement('beforebegin', newHiddenInput);
       }
     }
   }
 
 }
 
-module.exports  = {EditableContent}
-
-
+module.exports = { EditableContent }
