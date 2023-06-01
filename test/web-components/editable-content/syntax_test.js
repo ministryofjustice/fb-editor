@@ -35,7 +35,7 @@ describe('<editable-content>', function() {
         component.root.focus();
         button.focus();
 
-        expect(component.output).to.contain.html(`<h1 class="govuk-heading-l" id="heading-1">Heading 1</h1><h2 class="govuk-heading-m" id="heading-2">Heading 2</h2><h3 class="govuk-heading-s" id="heading-3">Heading 3</h3><h4 class="govuk-heading-s" id="heading-4">Heading 4</h4>`)
+        expect(component.output).to.contain.html(`<h1 id="heading-1" class="govuk-heading-l">Heading 1</h1><h2 id="heading-2" class="govuk-heading-m">Heading 2</h2><h3 id="heading-3" class="govuk-heading-s">Heading 3</h3><h4 id="heading-4" class="govuk-heading-s">Heading 4</h4>`)
       })
     })
 
@@ -50,7 +50,7 @@ describe('<editable-content>', function() {
         component.root.focus();
         button.focus();
 
-        expect(component.output).to.contain.html(`<p class="govuk-body"><a class="govuk-link" href="http://example.com">Link</a></p>`)
+        expect(component.output).to.contain.html(`<p class="govuk-body"><a href="http://example.com" class="govuk-link">Link</a></p>`)
       })
 
       it('renders email links', async function() {
@@ -63,7 +63,7 @@ describe('<editable-content>', function() {
         component.root.focus();
         button.focus();
 
-        expect(component.output).to.contain.html(`<p class="govuk-body"><a class="govuk-link" href="mailto:email@address.com">email@address.com</a></p>`)
+        expect(component.output).to.contain.html(`<p class="govuk-body"><a href="mailto:email@address.com" class="govuk-link">email@address.com</a></p>`)
       })
     })
 

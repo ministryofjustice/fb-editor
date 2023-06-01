@@ -115,9 +115,8 @@ describe('<editable-content>', function() {
         component = getElements();
       })
 
-      it('should insert initial html into output element', function() {
-        console.log(document.body.innerHTML)
-        expect(component.output).to.include.html(initialHTML)
+      it('should insert the initial html into output element', function() {
+        expect(component.output).to.include.html(`<p>This is content</p>`)
       });
 
       it('should insert content into input element', function() {
@@ -133,7 +132,7 @@ describe('<editable-content>', function() {
 
         button.focus()
 
-        expect(component.output).to.have.html(`<h1 class="govuk-heading-l" id="heading-1">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
+        expect(component.output).to.have.html(`<h1 id="heading-1" class="govuk-heading-l">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
 `)
       })
     })

@@ -1,6 +1,7 @@
 const marked = require('marked')
 const govspeak = require('marked-govspeak')
 const GovukHTMLRenderer = require('govuk-markdown')
+const DOMPurify = require('dompurify')
 
 class EditableContent extends HTMLElement {
   constructor() {
@@ -59,6 +60,11 @@ class EditableContent extends HTMLElement {
     }
   }
 
+  get html() {
+    const unsafeHTML = marked.parse(this.input.value);
+    return DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}})
+  }
+
   // Is the content area part of the page components 
   get isComponent() {
     return !!this.json;
@@ -79,7 +85,7 @@ class EditableContent extends HTMLElement {
       </elastic-textarea>
       <div data-element="editable-content-output">${initialMarkup}</div>
     </div>`
-
+    
     this.afterRender()
   }
 
@@ -150,7 +156,7 @@ class EditableContent extends HTMLElement {
   }
 
   updateOutput(){
-    this.output.innerHTML = marked.parse(this.input.value);
+    this.output.innerHTML = this.html   
   }
 
   valueIsDefault() {
