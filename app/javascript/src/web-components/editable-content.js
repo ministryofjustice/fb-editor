@@ -109,7 +109,6 @@ class EditableContent extends HTMLElement {
         this._contentBeforeEditing = this.input.value.trim();
         this.show(this.input)
         this.hide(this.output)
-        // this.updateHeight(this.input);
         this.input.focus();
 
         if(this.valueIsDefault()) this.input.value = '';
