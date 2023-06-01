@@ -147,16 +147,38 @@ RSpec.describe Publisher::ServiceProvisioner do
   end
 
   describe '#service_slug' do
-    let(:attributes) { { service_id: SecureRandom.uuid } }
+    let(:service_id) { SecureRandom.uuid }
+    let(:attributes) { { service_id: } }
 
-    before do
-      expect(MetadataApiClient::Version).to receive(:find)
-        .with(service_id: attributes[:service_id], version_id: attributes[:version_id])
-        .and_return(MetadataApiClient::Version.new(service_metadata))
+    context 'if SERVICE_SLUG does not exist' do
+      before do
+        expect(MetadataApiClient::Version).to receive(:find)
+          .with(service_id: attributes[:service_id], version_id: attributes[:version_id])
+          .and_return(MetadataApiClient::Version.new(service_metadata))
+      end
+
+      it 'returns slug using the service name' do
+        expect(service_provisioner.service_slug).to eq('version-fixture')
+      end
     end
 
-    it 'returns slug using the service name' do
-      expect(service_provisioner.service_slug).to eq('version-fixture')
+    context 'if SERVICE_SLUG does exist' do
+      let!(:service_config) do
+        create(
+          :service_configuration,
+          :dev,
+          :service_slug,
+          service_id:
+        )&.decrypt_value
+      end
+
+      before do
+        allow_any_instance_of(Publisher::ServiceProvisioner).to receive(:service_slug_config).and_return(service_config)
+      end
+
+      it 'returns slug using the service name' do
+        expect(service_provisioner.service_slug).to eq('eat-slugs-malfoy')
+      end
     end
   end
 

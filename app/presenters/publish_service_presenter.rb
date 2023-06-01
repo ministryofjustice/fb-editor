@@ -3,12 +3,15 @@ class PublishServicePresenter
   attr_reader :service, :publish_service
 
   delegate :deployment_environment, to: :publish_service
-  delegate :service_slug, to: :service
 
   def initialize(publish_service_query, service)
     @publishes = publish_service_query
     @publish_service = latest
     @service = service
+  end
+
+  def service_slug
+    service_slug_config || service.service_slug
   end
 
   def latest
@@ -30,5 +33,14 @@ class PublishServicePresenter
 
   def url
     "https://#{hostname}" if published?
+  end
+
+  private
+
+  def service_slug_config
+    @service_slug_config ||= ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'SERVICE_SLUG'
+    )&.decrypt_value
   end
 end

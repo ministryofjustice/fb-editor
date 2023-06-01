@@ -40,9 +40,11 @@ class Publisher
       binding
     end
 
-    delegate :service_slug, to: :service
-
     delegate :service_name, to: :service
+
+    def service_slug
+      (service_slug_config.presence || service.service_slug)
+    end
 
     def container_port
       Rails.application.config.platform_environments[:common][:container_port]
@@ -193,6 +195,13 @@ class Publisher
 
     def deployment_environment_upcase
       @deployment_environment_upcase ||= deployment_environment.upcase
+    end
+
+    def service_slug_config
+      ServiceConfiguration.find_by(
+        service_id:,
+        name: 'SERVICE_SLUG'
+      )&.decrypt_value
     end
   end
 end
