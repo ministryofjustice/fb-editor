@@ -12,9 +12,9 @@ class ServicesController < PermissionsController
 
     if @service_creation.create
       if ENV['NAME_SLUG'] == 'enabled' && current_user.name != ACCEPTANCE_TEST_USER
-        FormNameUpdater.new(
+        FormUrlUpdater.new(
           service_id: @service_creation.service_id,
-          service_name: @service_creation.service_name
+          service_slug: @service_creation.service_name
         ).create_or_update!
       end
 

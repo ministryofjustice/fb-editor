@@ -600,6 +600,8 @@ en:
         reply_to:
           domain_invalid: The reply address must be an MoJ email address or other approved address
           blank: Enter a reply email address
+        service_slug:
+          exists: The URL entered already exists, please try another URL
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: Form names must be %{count} characters or more

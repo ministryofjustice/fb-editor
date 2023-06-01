@@ -7,9 +7,9 @@ class Settings::FormNameUrlController < FormController
     @form_name_url_settings = FormNameUrlSettings.new(service_params)
 
     if @form_name_url_settings.create
-      FormNameUpdater.new(
+      FormUrlUpdater.new(
         service_id: service.service_id,
-        service_name: params[:service][:service_slug]
+        service_slug: params[:service][:service_slug]
       ).create_or_update!
 
       redirect_to settings_form_name_url_index_path(service.service_id)

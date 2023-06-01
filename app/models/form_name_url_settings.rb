@@ -11,6 +11,7 @@ class FormNameUrlSettings
   validates :service_slug, length: { minimum: MINIMUM, maximum: 57 }, allow_blank: true
   validates :service_slug, format: { with: /\A[a-zA-Z][\sa-z0-9-]*\z/ }, allow_blank: true
   validates :service_slug, format: { with: /\A\S+\Z/ }, allow_blank: true
+  validates_with ServiceSlugValidator
 
   def create
     return false if invalid?
