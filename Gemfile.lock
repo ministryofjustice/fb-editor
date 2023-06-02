@@ -10,6 +10,14 @@ PATH
       sprockets
       sprockets-rails
 
+GIT
+  remote: https://github.com/sass/sassc-ruby.git
+  revision: 244d3dcc8b985e25bab066b296f0f202e43e41ad
+  ref: refs/pull/233/head
+  specs:
+    sassc (2.4.0)
+      ffi (~> 1.9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -140,14 +148,6 @@ GEM
       rexml
     crass (1.0.6)
     daemons (1.4.1)
-    dartsass-ruby (3.0.1)
-      sass-embedded (~> 1.54)
-    dartsass-sprockets (3.0.0)
-      dartsass-ruby (~> 3.0)
-      railties (>= 4.0.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     date (3.3.3)
     debug_inspector (1.1.0)
     delayed_job (4.1.11)
@@ -441,8 +441,11 @@ GEM
       google-protobuf (~> 3.21)
     sass-embedded (1.62.1-x86_64-linux-gnu)
       google-protobuf (~> 3.21)
-    sassc (2.4.0)
-      ffi (~> 1.9)
+    sass-rails (6.0.0)
+      sassc-rails (~> 2.1, >= 2.1.1)
+    sassc-embedded (1.59.0)
+      sass-embedded (~> 1.59)
+      sassc (~> 2.0)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)
@@ -536,7 +539,6 @@ DEPENDENCIES
   byebug
   capybara
   daemons
-  dartsass-sprockets
   delayed_job_active_record
   dotenv-rails
   factory_bot_rails
@@ -558,6 +560,9 @@ DEPENDENCIES
   rspec_junit_formatter
   rubocop (~> 1.44.1)
   rubocop-govuk
+  sass-rails (>= 6)
+  sassc!
+  sassc-embedded
   selenium-webdriver (= 4.8.0)
   sentry-delayed_job (~> 5.8.0)
   sentry-rails (~> 5.8.0)
