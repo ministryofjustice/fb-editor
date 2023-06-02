@@ -11,7 +11,7 @@ class PublishServicePresenter
   end
 
   def service_slug
-    service_slug_config || service.service_slug
+    (previous_service_slug.presence || service_slug_config.presence || service.service_slug)
   end
 
   def latest
@@ -41,6 +41,13 @@ class PublishServicePresenter
     @service_slug_config ||= ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'SERVICE_SLUG'
+    )&.decrypt_value
+  end
+
+  def previous_service_slug
+    @previous_service_slug ||= ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'PREVIOUS_SERVICE_SLUG'
     )&.decrypt_value
   end
 end
