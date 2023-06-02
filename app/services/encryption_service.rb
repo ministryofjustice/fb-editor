@@ -21,6 +21,8 @@ class EncryptionService
   private
 
   def encryptor
-    ActiveSupport::MessageEncryptor.new(KEY)
+    crypt = ActiveSupport::MessageEncryptor.new(KEY)
+    crypt.rotate cipher: "aes-128-cbc-hmac-sha1"
+    crypt
   end
 end
