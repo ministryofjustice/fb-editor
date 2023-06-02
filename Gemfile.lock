@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/sass/sassc-ruby.git
+  revision: 244d3dcc8b985e25bab066b296f0f202e43e41ad
+  ref: refs/pull/233/head
+  specs:
+    sassc (2.4.0)
+      ffi (~> 1.9)
+
 PATH
   remote: ../fb-metadata-presenter
   specs:
@@ -9,14 +17,6 @@ PATH
       sassc-rails (= 2.1.2)
       sprockets
       sprockets-rails
-
-GIT
-  remote: https://github.com/sass/sassc-ruby.git
-  revision: 244d3dcc8b985e25bab066b296f0f202e43e41ad
-  ref: refs/pull/233/head
-  specs:
-    sassc (2.4.0)
-      ffi (~> 1.9)
 
 GEM
   remote: https://rubygems.org/
