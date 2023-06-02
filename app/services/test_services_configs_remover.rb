@@ -11,7 +11,7 @@ class TestServicesConfigsRemover
     end
   end
 
-  private
+  # private
 
   def moj_forms_team_service_ids
     @moj_forms_team_service_ids ||= team_services.map(&:id) + RUNNER_ACCEPTANCE_TEST_FORMS
