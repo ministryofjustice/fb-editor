@@ -533,7 +533,6 @@ function enhanceContent(view) {
   //   });
   // });
   const form = document.querySelector('#editContentForm');
-  console.log(form);
   document.querySelectorAll('editable-content').forEach((element) => {
     element.form = form
   });
