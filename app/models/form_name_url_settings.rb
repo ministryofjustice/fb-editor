@@ -37,6 +37,10 @@ class FormNameUrlSettings
     service_slug
   end
 
+  def published_to_live?
+    published_production&.last&.published?
+  end
+
   private
 
   def params(setting_name)
@@ -45,5 +49,11 @@ class FormNameUrlSettings
 
   def metadata
     latest_metadata.merge(service_name:)
+  end
+
+  def published_production
+    @published_production ||= PublishService.where(
+      service_id:
+    ).production
   end
 end

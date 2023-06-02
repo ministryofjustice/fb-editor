@@ -12,7 +12,7 @@
 
     <%= f.govuk_error_summary %>
 
-    <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>   
+    <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>
         <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
 
         <%= f.govuk_text_field :service_name,
@@ -22,8 +22,18 @@
           'aria-labelledby': 'form-name-legend' %>
     <% end %>
 
-
-    <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>   
+  <% if f.object.published_to_live? %>
+    <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>
+      <p><%= t('settings.form_name.form_slug.lede_live', href: t('settings.form_name.form_slug.href'), contact_us: t('settings.form_name.form_slug.contact_us')).html_safe %></p>
+      <div class="fb-domain-input">
+        <div aria-hidden="true">
+          <p><strong><%= f.object.service_slug %></strong><%= t('settings.form_name.form_slug.domain') %></p>
+          <%= f.hidden_field :service_slug, value: f.object.service_slug %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>
       <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
       <div class="fb-domain-input">
         <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>">
@@ -43,7 +53,7 @@
         </div>
       </div>
     <% end %>
-
+  <% end %>
     <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
       <%= t('actions.save') %>
     </button>
