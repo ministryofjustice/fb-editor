@@ -31,7 +31,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.1'
 gem 'rails', '~> 7.0'
 gem 'sassc', github: 'sass/sassc-ruby', ref: 'refs/pull/233/head'
-gem 'sassc-embedded'
+gem 'sassc-embedded', platforms: %i[ruby]
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.8.0'
 gem 'sentry-rails', '~> 5.8.0'
