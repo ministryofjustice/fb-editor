@@ -140,6 +140,14 @@ GEM
       rexml
     crass (1.0.6)
     daemons (1.4.1)
+    dartsass-ruby (3.0.1)
+      sass-embedded (~> 1.54)
+    dartsass-sprockets (3.0.0)
+      dartsass-ruby (~> 3.0)
+      railties (>= 4.0.0)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     date (3.3.3)
     debug_inspector (1.1.0)
     delayed_job (4.1.11)
@@ -190,6 +198,8 @@ GEM
     ffi (1.15.5)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    google-protobuf (3.23.2-x86_64-darwin)
+    google-protobuf (3.23.2-x86_64-linux)
     govspeak (7.1.1)
       actionview (>= 6)
       addressable (>= 2.3.8, < 3)
@@ -427,8 +437,10 @@ GEM
     sanitize (6.0.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
+    sass-embedded (1.62.1-x86_64-darwin)
+      google-protobuf (~> 3.21)
+    sass-embedded (1.62.1-x86_64-linux-gnu)
+      google-protobuf (~> 3.21)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -507,7 +519,6 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yui-compressor (0.12.0)
     zeitwerk (2.6.8)
 
 PLATFORMS
@@ -525,6 +536,7 @@ DEPENDENCIES
   byebug
   capybara
   daemons
+  dartsass-sprockets
   delayed_job_active_record
   dotenv-rails
   factory_bot_rails
@@ -546,7 +558,6 @@ DEPENDENCIES
   rspec_junit_formatter
   rubocop (~> 1.44.1)
   rubocop-govuk
-  sass-rails (>= 6)
   selenium-webdriver (= 4.8.0)
   sentry-delayed_job (~> 5.8.0)
   sentry-rails (~> 5.8.0)
@@ -559,7 +570,6 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webmock
   webpacker (~> 5.4)
-  yui-compressor (~> 0.12.0)
 
 RUBY VERSION
    ruby 3.1.3p185
