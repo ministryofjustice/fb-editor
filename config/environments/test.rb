@@ -1,5 +1,4 @@
 require "active_support/core_ext/integer/time"
-# require "./lib/skipping_sass_compressor"
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
@@ -8,8 +7,6 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
-  # config.assets.css_compressor = SkippingSassCompressor.new
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.
   config.cache_classes = true
