@@ -6,13 +6,12 @@ RSpec.describe TestableEditorRemover do
       "origin/HEAD -> origin/main\n  origin/acceptance-test/delete-component-multi-question\n  origin/main\n  origin/test-create-form\n  origin/testable-editor-to-keep"
     end
     let(:kubernetes_deployments) do
-      "NAME                                                              READY   UP-TO-DATE   AVAILABLE   AGE\ntestable-editor-to-keep-web-test                                2/2     2            2           134d\ntestable-editor-to-keep-workers-test                           2/2     2            2           134d\nfb-metadata-api-test                                              2/2     2            2           245d\ntestable-editor-to-remove-web-test       2/2     2            2           2d3h\ntestable-editor-to-remove-workers-test   2/2     2            2           2d3h"
+      "NAME                                                              READY   UP-TO-DATE   AVAILABLE   AGE\ntestable-editor-to-keep-web-test                                2/2     2            2           134d\nfb-metadata-api-test                                              2/2     2            2           245d\ntestable-editor-to-remove-web-test       2/2     2            2           2d3h"
     end
     let(:expected_targets) do
       [
         { config: 'configmap', name: 'testable-editor-to-remove-config-map' },
         { config: 'deployment', name: 'testable-editor-to-remove-web-test' },
-        { config: 'deployment', name: 'testable-editor-to-remove-workers-test' },
         { config: 'hpa', name: 'testable-editor-to-remove-web-test' },
         { config: 'ingress', name: 'testable-editor-to-remove-ing-test' },
         { config: 'service', name: 'testable-editor-to-remove-svc-test' },
