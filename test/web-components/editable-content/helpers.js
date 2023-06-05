@@ -5,12 +5,12 @@ async function createComponent(element, html) {
   await new Promise(resolve => setTimeout(resolve, 0));
 }
 
-function createTemplate(id, defaultContent='', markdown='', html='', json='') {
+function createTemplate(id, defaultContent='', markdown='', html='', config='') {
   return `
   <form id="${id}-form">
     <button type=submit>Save</button>
   </form>
-  <editable-content id="${id}" default-content="${defaultContent}" content="${markdown}" data-json="${json}" >
+  <editable-content id="${id}" default-content="${defaultContent}" content="${markdown}" data-config="${config}" >
     ${html}
   </editable-content>`
 }

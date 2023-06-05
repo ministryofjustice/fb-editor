@@ -43,7 +43,7 @@ class EditableContent extends HTMLElement {
       this.initialMarkup = this.innerHTML;
       this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
       this.defaultContent = this.getAttribute('default-content') || '';
-      this.json = (this.dataset.json ? JSON.parse(this.dataset.json) : undefined);
+      this.config = (this.dataset.config ? JSON.parse(decodeURIComponent(this.dataset.config)) : undefined);
       this.render();
     })
   }
@@ -53,21 +53,26 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
-      this.json.content = this.input.value;
-      return JSON.stringify(this.json);
+      this.config.content = this.input.value;
+      return JSON.stringify(this.config);
     } else {
       return this.input.value == this.defaultContent ? '' : this.input.value;
     }
   }
 
   get html() {
-    const unsafeHTML = marked.parse(this.input.value);
+    const content = this.input.value || this.defaultContent
+    const unsafeHTML = marked.parse(content);
     return DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}})
   }
 
   // Is the content area part of the page components 
   get isComponent() {
-    return !!this.json;
+    return !!this.config;
+  }
+
+  get $node() {
+    return $(this);
   }
 
   // The form containing the element that will be updated on save
@@ -81,7 +86,7 @@ class EditableContent extends HTMLElement {
     this.innerHTML = `
     <div class="editable-content" data-element="editable-content-root">
       <elastic-textarea>
-        <textarea class="govuk-textarea" data-element="editable-content-input" rows="10" hidden>${initialContent}</textarea>
+        <textarea class="" data-element="editable-content-input" rows="8" hidden>${initialContent}</textarea>
       </elastic-textarea>
       <div data-element="editable-content-output">${initialMarkup}</div>
     </div>`
@@ -96,12 +101,19 @@ class EditableContent extends HTMLElement {
 
     if(this.input && this.output) {
       this.root.setAttribute('tabindex', '0');
+      this.root.setAttribute('mode', this.state.mode)
 
       this.input.dataset.minRows = this.input.rows || 5;
 
-      this.root.addEventListener('click', () => { this.state.mode === 'read' ? this.state.mode = 'edit' : '' });
-      this.root.addEventListener('focus', () => { this.state.mode === 'read' ? this.state.mode = 'edit' : '' });
-      this.input.addEventListener('blur', () => { this.state.mode === 'edit' ? this.state.mode = 'read' : '' });
+      this.root.addEventListener('click', () => this.state.mode = 'edit' )
+      this.root.addEventListener('focus', () => this.state.mode = 'edit' )
+      // this.input.addEventListener('blur', () => this.state.mode = 'read' )
+      this.addEventListener('focusout', (event) => {
+        if(this.contains(event.relatedTarget)) return
+        console.log('focus left editable content element')
+        this.state.mode = 'read'
+      })
+
       return
     }
     
@@ -118,6 +130,7 @@ class EditableContent extends HTMLElement {
         this._contentBeforeEditing = this.input.value.trim();
         this.show(this.input)
         this.hide(this.output)
+        this.classList.add('active')
         this.input.focus();
 
         if(this.valueIsDefault()) this.input.value = '';
@@ -126,11 +139,14 @@ class EditableContent extends HTMLElement {
         break;
       case 'read':
       case 'initial':
+        console.log('default: '+this.valueIsDefault())
+        console.log('changed: '+this.valueHasChanged())
         if(this.valueIsDefault()) this.input.value = '';
-        
         this.updateOutput();
+        
         this.hide(this.input);
         this.show(this.output);
+        this.classList.remove('active')
 
         if(this.valueHasChanged()) {
           this.save();
@@ -168,21 +184,32 @@ class EditableContent extends HTMLElement {
   }
 
   save() {
-    if(this.submissionForm) {
-      const hiddenInput = this.submissionForm.querySelector(`input[name="${this.id}"]`);
-      if(hiddenInput) {
-        hiddenInput.value = this.content;
-      } else {
-        const button = this.submissionForm.querySelector('button[type="submit"], input[type="submit"]');
-        const newHiddenInput = document.createElement('input');
-        newHiddenInput.setAttribute('name', this.id);
-        newHiddenInput.setAttribute('type', 'hidden');
-        newHiddenInput.value = this.content;
-        button.insertAdjacentElement('beforebegin', newHiddenInput);
-      }
+    console.log('saving')
+    if(!this.submissionForm) return
+    const hiddenInput = this.submissionForm.querySelector(`input[name="${this.id}"]`);
+    console.log(hiddenInput)
+    if(hiddenInput) {
+      hiddenInput.value = this.content;
+    } else {
+      const button = this.submissionForm.querySelector('button[type="submit"], input[type="submit"]');
+      const newInputHTML = `<input type="hidden" name="${this.id}" value="${this.content}" />`
+      button.insertAdjacentHTML('beforebegin', newInputHTML);
     }
   }
 
+  destroy() {
+    if(!this.submissionForm) return 
+    const hiddenInput = this.submissionForm.querySelector(`input[name="${this.id}"]`);
+    const button = this.submissionForm.querySelector('button[type="submit"], input[type="submit"]');
+
+    if(hiddenInput) {
+      hiddenInput.remove()
+    }
+    
+    const deleteInputHTML = `<input type="hidden" name="delete_components[]" value="${this.config._uuid}" />`
+    button.insertAdjacentHTML('beforebegin', deleteInputHTML);
+    this.remove()
+  }
 }
 
 module.exports = { EditableContent }

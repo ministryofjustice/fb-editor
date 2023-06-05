@@ -13,6 +13,10 @@ class ElasticTextarea extends HTMLElement {
       this.textarea.addEventListener("input", () => {
         this.update()
       });
+
+      this.textarea.addEventListener("focus", () => {
+        this.update()
+      });
   }
 
   get isScrolling() {

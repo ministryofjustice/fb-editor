@@ -64,12 +64,12 @@ feature 'Edit check your answers page' do
     when_I_save_my_changes
     then_I_should_see_my_content(content_component, content_extra_component)
 
-    when_I_want_to_select_component_properties('[data-element="editable-content-input"]', content_component)
+    when_I_want_to_select_component_properties('[data-element="editable-content-output"]', content_component)
     and_I_want_to_delete_a_content_component
     when_I_save_my_changes
     then_I_should_not_see_my_content(content_component)
 
-    when_I_want_to_select_component_properties('[data-element="editable-content-input"]', content_extra_component)
+    when_I_want_to_select_component_properties('[data-element="editable-content-output"]', content_extra_component)
     and_I_want_to_delete_a_content_component
     when_I_save_my_changes
     then_I_should_not_see_my_content(content_extra_component)
@@ -84,10 +84,10 @@ feature 'Edit check your answers page' do
     when_I_save_my_changes
     then_I_should_see_my_content(content_component, content_extra_component)
 
-    when_I_want_to_select_component_properties('.output', content_component)
+    when_I_want_to_select_component_properties('[data-element="editable-content-output"]', content_component)
     and_I_want_to_delete_a_content_component
 
-    when_I_want_to_select_component_properties('.output', content_extra_component)
+    when_I_want_to_select_component_properties('[data-element="editable-content-output"]', content_extra_component)
     and_I_want_to_delete_a_content_component
     when_I_save_my_changes
     then_I_should_not_see_my_content(content_component, content_extra_component)

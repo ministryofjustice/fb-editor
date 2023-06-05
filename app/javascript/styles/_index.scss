@@ -429,25 +429,24 @@ a[disabled] {
   }
 }
 
-.EditableContent {
-  .input {
+editable-content {
+  [data-element="editable-content-input"] {
     border: none;
     display: none;
     font: inherit;
-    min-height: 200px; // Arbitrary
     width: 100%;
   }
 
-  &.active {
-    .input {
+  & > [mode="edit"] {
+    [data-element="editable-content-input"]  {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
     }
-
-    .output {
-      display: none;
-    }
   }
+}
+
+editable-content {
+  display:block;
 }
 
 .EditableCollectionFieldComponent,
@@ -460,7 +459,7 @@ a[disabled] {
 }
 
 .EditableCollectionFieldComponent,
-.EditableContent,
+editable-content,
 .EditableGroupFieldComponent,
 .EditableTextFieldComponent,
 .EditableTextareaFieldComponent,

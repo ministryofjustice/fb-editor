@@ -318,7 +318,7 @@ module CommonSteps
 
     # the input element of the content component is what needs to be
     # interacted with in order to set a value
-    element.find('[data-element="editable-content-input"]', visible: false).set(content)
+    element.find('[data-element="editable-content-input"]', visible: false).fill_in(with: content)
 
     # click outside to close the editable component
     editor.service_name.click
