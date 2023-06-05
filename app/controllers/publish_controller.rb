@@ -7,26 +7,13 @@ class PublishController < FormController
   end
 
   def create
-    if published_form_uses_previous_slug?(publish_service_params[:deployment_environment])
-      unpublish_service = published(publish_service_params[:deployment_environment])
-      version_metadata = get_version_metadata(unpublish_service)
-
-      unpublish_service_creation = PublishServiceCreation.new(
-        service_id: service.service_id,
-        version_id: version_metadata['version_id'],
-        deployment_environment: publish_service_params[:deployment_environment],
-        user_id: current_user.id
-      )
-
-      UnpublishServiceJob.perform_later(
-        publish_service_id: unpublish_service_creation.publish_service_id,
-        service_slug: previous_service_slug
-      )
-    end
-
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     if @publish_service_creation.save
+      if previous_service_slug.present?
+        all_previous_service_slugs.destroy_all
+      end
+
       PublishServiceJob.perform_later(
         publish_service_id: @publish_service_creation.publish_service_id
       )
@@ -91,23 +78,17 @@ class PublishController < FormController
     end
   end
 
-  def published(deployment_environment)
-    return if previous_service_slug.nil?
-
-    PublishService.where(
-      service_id: @service.service_id,
-      deployment_environment:
-    ).completed.desc.first
-  end
-
   def previous_service_slug
     @previous_service_slug ||= ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'PREVIOUS_SERVICE_SLUG'
-    )&.decrypt_value
+    )
   end
 
-  def published_form_uses_previous_slug?(deployment_environment)
-    published(deployment_environment).present? && previous_service_slug.present?
+  def all_previous_service_slugs
+    @all_previous_service_slugs ||= ServiceConfiguration.where(
+      service_id: service.service_id,
+      name: 'PREVIOUS_SERVICE_SLUG'
+    )
   end
 end
