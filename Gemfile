@@ -13,7 +13,7 @@ gem 'delayed_job_active_record'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'update-start-page-template'
+#     branch: 'editable-content-web-component'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.0'
 
