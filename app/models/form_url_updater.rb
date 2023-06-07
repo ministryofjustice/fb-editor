@@ -8,6 +8,10 @@ class FormUrlUpdater
 
   def create_or_update!
     ActiveRecord::Base.transaction do
+      if existing_service_slug_config.nil?
+        save_config_service_slug
+      end
+
       if previous_service_slug.nil? && currently_published?
         save_config_previous_service_slug
       end
