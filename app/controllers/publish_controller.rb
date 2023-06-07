@@ -11,6 +11,11 @@ class PublishController < FormController
 
     if @publish_service_creation.save
       if previous_service_slug.present?
+        UnpublishServiceJob.perform_later(
+          publish_service_id: published_service.id,
+          service_slug: previous_service_slug.decrypt_value
+        )
+
         all_previous_service_slugs.destroy_all
       end
 
@@ -76,6 +81,13 @@ class PublishController < FormController
     else
       @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
+  end
+
+  def published_service
+    @published_service ||= PublishService.where(
+      service_id: service.service_id,
+      deployment_environment: 'dev'
+    ).completed.desc.first
   end
 
   def previous_service_slug
