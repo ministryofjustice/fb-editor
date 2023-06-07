@@ -42,5 +42,5 @@ USER ${UID}
 ARG RAILS_ENV=production
 RUN yarn install --production --check-files
 RUN ./bin/webpack
-RUN RAILS_ENV=${RAILS_ENV} SECRET_KEY_BASE=$(bin/rake secret) bundle exec rake assets:precompile --trace
-CMD bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
+RUN RAILS_ENV=${RAILS_ENV} GOVUK_APP_DOMAIN='moj-forms.service.justice.gov.uk' GOVUK_WEBSITE_ROOT='www' SECRET_KEY_BASE=$(bin/rake secret) bundle exec rake assets:precompile --trace
+CMD bundle exec rake db:migrate:ignore_concurrent && GOVUK_APP_DOMAIN='' GOVUK_WEBSITE_ROOT='' bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
