@@ -1,5 +1,5 @@
 const marked = require('marked')
-const govspeak = require('marked-govspeak')
+const govspeak = require('@x-govuk/marked-govspeak')
 const GovukHTMLRenderer = require('govuk-markdown')
 const DOMPurify = require('dompurify')
 

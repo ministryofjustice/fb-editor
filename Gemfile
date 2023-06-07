@@ -11,10 +11,10 @@ gem 'delayed_job_active_record'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'editable-content-web-component'
-gem 'metadata_presenter', path: '../fb-metadata-presenter'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'editable-content-web-component'
+# gem 'metadata_presenter', path: '../fb-metadata-presenter'
 # gem 'metadata_presenter', '3.0'
 
 gem 'aws-sdk-s3'
@@ -30,8 +30,6 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.1'
 gem 'rails', '~> 7.0'
-gem 'sassc', github: 'sass/sassc-ruby', ref: 'refs/pull/233/head'
-gem 'sassc-embedded', platforms: %i[ruby]
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.8.0'
 gem 'sentry-rails', '~> 5.8.0'
