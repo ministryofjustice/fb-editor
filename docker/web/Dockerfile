@@ -39,8 +39,13 @@ EXPOSE $APP_PORT
 
 USER ${UID}
 
+# Govuk Publishing Components gem requires these env vars to be set, however we
+# do not actually need to use them.
+ENV GOVUK_APP_DOMAIN '' 
+ENV GOVUK_WEBSITE_ROOT '' 
+
 ARG RAILS_ENV=production
 RUN yarn install --production --check-files
 RUN ./bin/webpack
-RUN RAILS_ENV=${RAILS_ENV} GOVUK_APP_DOMAIN='www.gov.uk' GOVUK_WEBSITE_ROOT='https://www.gov.uk' SECRET_KEY_BASE=$(bin/rake secret) bundle exec rake assets:precompile --trace
-CMD  GOVUK_APP_DOMAIN='www.gov.uk' GOVUK_WEBSITE_ROOT='https://www.gov.uk' bundle exec rake db:migrate:ignore_concurrent && GOVUK_APP_DOMAIN='www.gov.uk' GOVUK_WEBSITE_ROOT='https://www.gov.uk' bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
+RUN RAILS_ENV=${RAILS_ENV} SECRET_KEY_BASE=$(bin/rake secret) bundle exec rake assets:precompile --trace
+CMD bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
