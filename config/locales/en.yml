@@ -289,7 +289,7 @@ en:
       affirmative: 'Yes'
       negative: 'No'
   question:
-    optional_flag: '(Optional)'
+    optional_flag: '(optional)'
     menu:
       activator: 'Properties'
       remove: 'Delete...'

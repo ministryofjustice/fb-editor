@@ -110,21 +110,24 @@ class Question {
    * This function is to handle the adding the extra element.
    **/
   setRequiredFlag() {
-    var $target = this.$heading;
     var text = this._config.text.optionalFlag;
-    var regExpTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1"); // Need to escape parenthesis for RegExp
-    var textWithSpace =  " " + text;
-    var re = new RegExp(regExpTextWithSpace + "$");
+    // Escape the parentheses
+    var escapedTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1");
+    // $ - must be at the end of the string
+    // i - case insensitive
+    var regex = new RegExp(escapedTextWithSpace + "$", "i"); 
 
-    // Since we always remove first we can add knowing duplicates should not happen.
-    $target.text($target.text().replace(re, ""));
-    if(!this.required) {
-      $target.text($target.text() + textWithSpace);
+    if(this.required) {
+      this.$heading.text(this.$heading.text().replace(regex, ''))
+    } else {
+      if(!this.$heading.text().match(regex)) {
+        this.$heading.text(`${this.$heading.text()} ${text}`);
+      }
     }
 
-    // If we've changed the $target content, or the eitor has, we
+    // If we've changed the this.$heading content, or the editor has, we
     // need to check whether required flag needs to show, or not.
-    $target.data("instance").update();
+    this.$heading.data("instance").update();
   }
 
   focus() {
