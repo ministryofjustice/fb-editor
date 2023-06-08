@@ -1,8 +1,10 @@
 class TestableEditorRemover
   WEB = '-web-test'.freeze
+  WORKERS = '-workers-test'.freeze
   CONFIGURATIONS = [
     { type: 'configmap', append: '-config-map' },
     { type: 'deployment', append: WEB },
+    { type: 'deployment', append: WORKERS },
     { type: 'hpa', append: WEB },
     { type: 'ingress', append: '-ing-test' },
     { type: 'service', append: '-svc-test' },
@@ -46,7 +48,7 @@ class TestableEditorRemover
   def unique_testable_deployments
     deployments = kubernetes_deployments.split("\n").map do |deployment|
       if deployment.include?(TESTABLE)
-        deployment.split(' ')[0].gsub(/#{WEB}/, '')
+        deployment.split(' ')[0].gsub(/#{WEB}|#{WORKERS}/, '')
       end
     end
     deployments.compact.uniq

@@ -152,11 +152,8 @@ spec:
       volumes:
         - name: tmp-files
           emptyDir: {}
-
-# workers
-# Only build workers for the main branch editor
-{{- if eq .Values.app_name "fb-editor" }}
 ---
+# workers
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -297,4 +294,3 @@ spec:
       volumes:
         - name: tmp-files
           emptyDir: {}
-{{- end }}
