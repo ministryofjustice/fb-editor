@@ -31,6 +31,10 @@ class Publisher
           erb = ERB.new(template_content)
           content = erb.result(service_provisioner.get_binding)
 
+          Rails.logger.debug('***** writing to config *****')
+          Rails.logger.debug("erb: #{erb}")
+          Rails.logger.debug("content: #{content}")
+
           write_config_file(
             file: File.expand_path(File.join(destination, "#{template}.yaml")),
             content:

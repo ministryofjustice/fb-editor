@@ -78,7 +78,7 @@ class Publisher
       end
 
       def config_dir
-        Rails.root.join('tmp', 'publisher', service_id)
+        Rails.root.join('tmp', 'publisher', "#{service_id}-#{service_slug}")
       end
 
       def config_dir?
