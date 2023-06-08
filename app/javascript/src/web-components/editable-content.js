@@ -110,7 +110,6 @@ class EditableContent extends HTMLElement {
       // this.input.addEventListener('blur', () => this.state.mode = 'read' )
       this.addEventListener('focusout', (event) => {
         if(this.contains(event.relatedTarget)) return
-        console.log('focus left editable content element')
         this.state.mode = 'read'
       })
 
@@ -131,10 +130,11 @@ class EditableContent extends HTMLElement {
         this.show(this.input)
         this.hide(this.output)
         this.classList.add('active')
-        this.input.focus();
+        this.input.focus({ preventScroll: true });
 
         if(this.valueIsDefault()) this.input.value = '';
         // Move cursor to end of content 
+        console.log(this.input.value.length)
         this.input.selectionStart = this.input.value.length;
         break;
       case 'read':
@@ -198,7 +198,7 @@ class EditableContent extends HTMLElement {
   }
 
   destroy() {
-    if(!this.submissionForm) return 
+    if(!this.submissionForm) return
     const hiddenInput = this.submissionForm.querySelector(`input[name="${this.id}"]`);
     const button = this.submissionForm.querySelector('button[type="submit"], input[type="submit"]');
 
