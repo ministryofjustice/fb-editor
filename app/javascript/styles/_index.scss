@@ -682,7 +682,8 @@ editable-content,
     fill: #949494;
   }
 
-  &.active {
+  &.active,
+  &.selected {
     path {
       stroke-width:4px;
       stroke: $govuk-link-hover-colour;
