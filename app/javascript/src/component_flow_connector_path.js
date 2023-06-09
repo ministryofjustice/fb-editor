@@ -157,6 +157,11 @@ class FlowConnectorPath {
       flowConnectorPath.$node.removeClass("active");
     });
 
+    this.$node.find("path").on("click", function() {
+      $('.FlowConnectorPath').removeClass("selected")
+      flowConnectorPath.$node.toggleClass("selected");
+    });
+
     // Uncomment for developer helper code only
     //this.makeLinesVisibleForTesting();
   }
