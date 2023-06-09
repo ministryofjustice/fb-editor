@@ -84,21 +84,21 @@ class PublishController < FormController
   end
 
   def published_service
-    @published_service ||= PublishService.where(
+    PublishService.where(
       service_id: service.service_id,
       deployment_environment: 'dev'
     ).completed.desc.first
   end
 
   def previous_service_slug
-    @previous_service_slug ||= ServiceConfiguration.find_by(
+    ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'PREVIOUS_SERVICE_SLUG'
     )
   end
 
   def all_previous_service_slugs
-    @all_previous_service_slugs ||= ServiceConfiguration.where(
+    ServiceConfiguration.where(
       service_id: service.service_id,
       name: 'PREVIOUS_SERVICE_SLUG'
     )

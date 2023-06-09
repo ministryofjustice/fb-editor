@@ -61,17 +61,15 @@ class FormUrlUpdater
   end
 
   def new_service_slug
-    @new_service_slug ||= begin
-      return parameterized_service_slug if unique_service_slug?
+    return parameterized_service_slug if unique_service_slug?
 
-      # Replace the last 3 chars with random 3 alpha-numric chars
-      parameterized_service_slug.gsub(/.{3}$/, SecureRandom.alphanumeric(3)).downcase
-    end
+    # Replace the last 3 chars with random 3 alpha-numric chars
+    parameterized_service_slug.gsub(/.{3}$/, SecureRandom.alphanumeric(3)).downcase
   end
 
   def parameterized_service_slug
     # parameterize, use first non-numeric char and limit to 57 chars
-    @parameterized_service_slug ||= service_slug.parameterize.slice(service_slug.index(/\D/), 57)
+    service_slug.parameterize.slice(service_slug.index(/\D/), 57)
   end
 
   def unique_service_slug?
@@ -79,26 +77,26 @@ class FormUrlUpdater
   end
 
   def all_service_slugs
-    @all_service_slugs ||= all_existing_service_slugs.concat(all_previous_service_slugs)
+    all_existing_service_slugs.concat(all_previous_service_slugs)
   end
 
   def all_existing_service_slugs
-    @all_existing_service_slugs ||= ServiceConfiguration.where(name: 'SERVICE_SLUG').map(&:decrypt_value) - [existing_service_slug_config]
+    ServiceConfiguration.where(name: 'SERVICE_SLUG').map(&:decrypt_value) - [existing_service_slug_config]
   end
 
   def all_previous_service_slugs
-    @all_previous_service_slugs ||= ServiceConfiguration.where(name: 'PREVIOUS_SERVICE_SLUG').map(&:decrypt_value)
+    ServiceConfiguration.where(name: 'PREVIOUS_SERVICE_SLUG').map(&:decrypt_value)
   end
 
   def existing_service_slug_config
-    @existing_service_slug_config ||= ServiceConfiguration.find_by(
+    ServiceConfiguration.find_by(
       service_id:,
       name: 'SERVICE_SLUG'
     )&.decrypt_value
   end
 
   def previous_service_slug
-    @previous_service_slug ||= ServiceConfiguration.find_by(
+    ServiceConfiguration.find_by(
       service_id:,
       name: 'PREVIOUS_SERVICE_SLUG'
     )
