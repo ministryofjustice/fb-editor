@@ -35,7 +35,7 @@ feature 'Mark question as optional' do
     within_window(preview_form) do
       expect(page).to have_content('Service name goes here')
       page.click_button 'Start now'
-      expect(page).to have_content('Full name (Optional)')
+      expect(page).to have_content('Full name (optional)')
       page.click_button 'Continue'
       expect(page.text).to_not include('Full name')
       expect(page).to have_content('Option')
