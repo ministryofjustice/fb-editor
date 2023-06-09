@@ -28,6 +28,7 @@ class EditableContent extends HTMLElement {
 
     marked.setOptions({
       renderer: new GovukHTMLRenderer(),
+      headingsStartWith: 'xl'
     })
 
     marked.use({ 
