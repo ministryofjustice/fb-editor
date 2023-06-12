@@ -24,8 +24,6 @@ feature 'Create a service' do
   background do
     given_I_am_logged_in
     given_I_want_to_create_a_service
-    allow(ENV).to receive(:[])
-    allow(ENV).to receive(:[]).with('NAME_SLUG').and_return('enabled')
   end
 
   scenario 'validates the service name' do
