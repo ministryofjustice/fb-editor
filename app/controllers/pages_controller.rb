@@ -8,6 +8,7 @@ class PagesController < FormController
   def edit
     return if @page.components.nil?
 
+    # byebug
     if @page.autocomplete_component_present?
       items = autocomplete_items(@page.components)
       @page.assign_autocomplete_items(items)
@@ -101,13 +102,14 @@ class PagesController < FormController
   def multiupload_files_remaining
     # byebug
     max_files = @page.components.select { |c| c.type == 'multiupload' }.first['max_files'].to_i
+    answered = false
     if max_files == 1
-      if answered?
+      if answered
         I18n.t('presenter.questions.multiupload.answered_singular')
       else
         I18n.t('presenter.questions.multiupload.singular')
       end
-    elsif answered?
+    elsif answered
       I18n.t('presenter.questions.multiupload.answered_plural', max: max_files)
     else
       I18n.t('presenter.questions.multiupload.plural', max: max_files)
