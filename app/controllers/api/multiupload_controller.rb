@@ -9,7 +9,7 @@ module Api
 
     def create
       @metadata_updater = PageUpdater.new(update_params)
-      if(params['max_files_value'].to_i > 0)
+      if params['max_files_value'].to_i.positive?
         if @metadata_updater.update
           redirect_to edit_page_path(
             service.service_id,
@@ -30,21 +30,21 @@ module Api
     end
 
     def update_params
-      page = service.pages.select{ |p| p._uuid == params['page_id']}.first.deep_dup
-      page.metadata.components.select {|c| c['_uuid'] == params['component_id']}.first['max_files'] = params['max_files_value']
+      page = service.pages.select { |p| p._uuid == params['page_id'] }.first.deep_dup
+      page.metadata.components.select { |c| c['_uuid'] == params['component_id'] }.first['max_files'] = params['max_files_value']
       page.component['max_files'] = params['max_files_value']
-      update_params = ActiveSupport::HashWithIndifferentAccess.new({
+      ActiveSupport::HashWithIndifferentAccess.new({
         uuid: params['component']['page_uuid'],
         latest_metadata: service_metadata,
         service_id: service.service_id,
-        actions: {},
+        actions: {}
       }).merge(page.to_h)
     end
 
     private
 
     def component
-      @component ||= service.pages.select{ |p| p._uuid == params['page_id']}.first.components.select {|c| c._uuid == params['component_id']}.first
+      @component ||= service.pages.select { |p| p._uuid == params['page_id'] }.first.components.select { |c| c._uuid == params['component_id'] }.first
     end
   end
 end
