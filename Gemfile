@@ -11,9 +11,9 @@ gem 'delayed_job_active_record'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'editable-content-web-component'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'multi-file-upload'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.0.6'
 
@@ -36,12 +36,13 @@ gem 'sentry-rails', '~> 5.8.0'
 gem 'sentry-ruby', '~> 5.8.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
+gem 'byebug'
 
 gem 'govspeak', '~> 7.1'
 
 group :development, :test do
   gem 'brakeman'
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
