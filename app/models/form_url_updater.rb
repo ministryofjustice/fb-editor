@@ -69,7 +69,7 @@ class FormUrlUpdater
 
   def parameterized_service_slug
     # parameterize, use first non-numeric char and limit to 57 chars
-    service_slug.parameterize.slice(service_slug.index(/\D/), 57)
+    service_slug.slice(service_slug.index(/\D/), 57).strip.parameterize
   end
 
   def unique_service_slug?
