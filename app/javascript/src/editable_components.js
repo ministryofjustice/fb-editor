@@ -970,6 +970,7 @@ function editableComponent($node, config) {
     case "email":
     case "number":
     case "upload":
+    case "multiupload":
     case "autocomplete":
       klass = EditableTextFieldComponent;
       break;
