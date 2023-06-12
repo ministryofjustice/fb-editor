@@ -10,14 +10,13 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
       deployment_environment: 'dev'
     )
   end
-
   let(:config_dir) do
-    Rails.root.join('tmp', 'publisher', service_provisioner.service_id)
+    Rails.root.join('tmp', 'publisher', "#{service_provisioner.service_id}-#{service_provisioner.service_slug}")
   end
 
   before do
-    allow(cloud_platform).to receive(:create_config_dir).and_return(config_dir)
     allow(service_provisioner).to receive(:service_slug).and_return('obi-wan')
+    allow(cloud_platform).to receive(:create_config_dir).and_return(config_dir)
   end
 
   describe '#pre_publishing' do
@@ -46,7 +45,6 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
 
       context 'when config files exist' do
         let(:config_files?) { true }
-
         it 'calls kubecontrol' do
           expect(
             ::Publisher::Utils::KubeControl

@@ -267,5 +267,18 @@ RSpec.describe FormUrlUpdater do
         end
       end
     end
+
+    context 'when SERVICE_CONFIG does not exist' do
+      let(:params) { 'I am a unique service' }
+      let(:expected_service_slug) { 'i-am-a-unique-service' }
+
+      it 'creates a SERVICE_CONFIG' do
+        form_name_updater.create_or_update!
+        service_configuration.reload
+        expect(
+          service_configuration.decrypt_value
+        ).to eq(expected_service_slug)
+      end
+    end
   end
 end
