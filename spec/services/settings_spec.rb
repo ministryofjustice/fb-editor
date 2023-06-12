@@ -58,7 +58,7 @@ RSpec.describe Settings do
       end
 
       context 'when name is too long' do
-        let(:attributes) { { service_name: 'E' * 129 } }
+        let(:attributes) { { service_name: 'E' * 256 } }
 
         it 'returns false' do
           expect(settings.update).to be_falsey
