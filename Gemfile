@@ -36,11 +36,10 @@ gem 'sentry-rails', '~> 5.8.0'
 gem 'sentry-ruby', '~> 5.8.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
-gem 'byebug'
 
 group :development, :test do
   gem 'brakeman'
-  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
