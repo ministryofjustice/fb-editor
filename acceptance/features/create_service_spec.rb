@@ -100,13 +100,13 @@ feature 'Create a service' do
 
   def then_I_should_see_a_validation_message_for_min_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_short', count: Editor::Service::MINIMUM)
+      I18n.t('activemodel.errors.messages.too_short', attribute: 'Give your form a name', count: Editor::Service::MINIMUM)
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_long', count: Editor::Service::MAXIMUM)
+      I18n.t('activemodel.errors.messages.too_long', attribute: 'Give your form a name', count: Editor::Service::MAXIMUM)
     )
   end
 
