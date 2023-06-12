@@ -310,7 +310,7 @@ en:
     name: 'Settings'
     form_name:
       heading: 'Form name and URL'
-      lede: ''
+      lede: Manage your form's name and URL.
       help: Additional guidance for URL is available on
       form_name:
         label: 'Form name'
@@ -324,14 +324,6 @@ en:
         href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards</a>
         hint: Maximum 57 characters. It cannot start with a number or include spaces or special characters except hyphens
         domain: .form.service.justice.gov.uk
-    form_information:
-      heading: 'Form details'
-      lede: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
-      description: "Set your form's name, URL and phase (e.g. Alpha, Beta)."
-      form_name:
-        label: 'Form name'
-        hint: 'The visible name of your form'
-        warning_message: 'We are making some changes in this area. In the meantime, <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact/">contact&nbsp;us</a> to change your form’s name.'
     form_analytics:
       heading: Google Analytics
       lede:  Monitor your form's performance (requires a Google Analytics account).
@@ -606,8 +598,8 @@ en:
           exists: The URL entered already exists, please try another URL
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
-        too_short: Form names must be %{count} characters or more
-        too_long: Form names must be %{count} characters or fewer
+        too_short: "%{attribute} must be %{count} characters or more"
+        too_long: "%{attribute} must be %{count} characters or fewer"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'

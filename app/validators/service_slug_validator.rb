@@ -28,7 +28,7 @@ class ServiceSlugValidator < ActiveModel::Validator
   end
 
   def current_service_slug_config(service_id:)
-    @current_service_slug_config ||= ServiceConfiguration.find_by(
+    ServiceConfiguration.find_by(
       service_id:,
       name: 'SERVICE_SLUG'
     )&.decrypt_value
