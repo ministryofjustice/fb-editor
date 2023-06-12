@@ -58,12 +58,16 @@ class QuestionMenu extends ActivatedMenu {
       case "upload":
         this.upload();
         break;
+      case "multiupload":
+        this.multiupload();
+        break;
       case "close":
         this.close();
         break;
     }
   }
 
+  // will raise a new event for multi upload
   remove() {
     $(document).trigger("QuestionMenuSelectionRemove", this.question);
   }
@@ -79,6 +83,10 @@ class QuestionMenu extends ActivatedMenu {
 
   upload() {
     $(document).trigger("QuestionMenuSelectionUpload", this.question);
+  }
+
+  multiupload() {
+    $(document).trigger("QuestionMenuSelectionMultiUpload", this.question);
   }
 
   close() {

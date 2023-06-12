@@ -1,0 +1,27 @@
+<div class="component-dialog-api-request" id="multiupload_items">
+  <%= form_for @component, url: api_service_multiupload_path(service_id: service.service_id, page_id: @page_id, component_id: @component._uuid), method: :post, multipart: true do |form| %>
+  <div class="govuk-form-group">
+  <%= form.hidden_field(:page_uuid, value: @page_id) %>
+  <label class="govuk-label govuk-label--m" for="max_files_value">
+    <%= t('question.dialog.multiupload_label') %>
+  </label> 
+  <p class="govuk-hint"><%= t('question.dialog.multiupload_hint') %></p>
+  <input class="govuk-input govuk-input--width-5 <%= has_error ? 'govuk-input--error' : '' %>"
+        id="max_files_value"
+        name="max_files_value"
+        pattern="[0-9]*"
+        inputmode="numeric"
+        spellcheck="false"
+        autocomplete=""
+        aria-describedby="<%= has_error ? "component_validation_multiupload_error" : ""%>"
+        value="<%= @component.max_files %>">
+
+    </div>
+
+  <%= form.button t('question.dialog.multiupload_continue'), type: "submit", class: 'govuk-button fb-govuk-button' %>
+
+  <button class="govuk-button govuk-button--secondary" type="button" >
+    <%= t('dialogs.button_cancel') %>
+  </button>
+  <% end %>
+</div>

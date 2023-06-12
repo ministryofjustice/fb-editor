@@ -13,6 +13,13 @@
         </li>
       <% end %>
 
+      <% if component.type  == 'multiupload' %>
+        <li data-action="multiupload"
+            data-api-path="<%= URI.decode_www_form_component(api_service_multiupload_path(service.service_id, @page.uuid, component.uuid))%>">
+            <span><%= t('question.menu.multiupload_options') %></span>
+        </li>
+      <% end %>
+
       <% enabled_validations(component).each do |validation| %>
         <li data-action="validation"
             data-validation="<%= validation %>"
