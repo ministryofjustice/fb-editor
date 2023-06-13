@@ -3,6 +3,9 @@ class ServiceDestroyer < Editor::Service
     return false if invalid?
 
     service = MetadataApiClient::Service.destroy
+    Rails.logger.debug("********************************")
+    Rails.logger.debug("Service destroyer message: #{service}")
+    Rails.logger.debug("********************************")
 
     if service.errors?
       add_errors(service)
