@@ -148,7 +148,7 @@ module Admin
         metadata = latest_version(params[:id])
         @service_destroyer = ServiceDestroyer.new
 
-        if @service_destroyer.destroy(params[:id])
+        if @service_destroyer.destroy
           flash[:success] = "Service: #{metadata['service_name']} has been deleted"
         else
           flash[:error] = "Could not delete service: #{metadata['service_name']}"
