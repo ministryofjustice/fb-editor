@@ -1,8 +1,8 @@
 class ServiceDestroyer < Editor::Service
-  def destroy
+  def destroy(service_id)
     return false if invalid?
 
-    service = MetadataApiClient::Service.destroy(metadata)
+    service = MetadataApiClient::Service.destroy(service_id)
 
     if service.errors?
       add_errors(service)

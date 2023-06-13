@@ -146,9 +146,9 @@ module Admin
         flash[:notice] = 'You cannot delete this service as it has been previously published to Live'
       else
         metadata = latest_version(params[:id])
-        @service_destroyer = ServiceDestroyer.new({ service_id: params[:id] })
+        @service_destroyer = ServiceDestroyer.new
 
-        if @service_destroyer.destroy
+        if @service_destroyer.destroy(params[:id])
           flash[:success] = "Service: #{metadata['service_name']} has been deleted"
         else
           flash[:error] = "Could not delete service: #{metadata['service_name']}"
