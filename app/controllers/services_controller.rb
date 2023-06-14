@@ -12,7 +12,7 @@ class ServicesController < PermissionsController
 
     if @service_creation.create
       if current_user.name != ACCEPTANCE_TEST_USER
-        FormUrlUpdater.new(
+        FormUrlCreation.new(
           service_id: @service_creation.service_id,
           service_slug: @service_creation.service_name
         ).create_or_update!
