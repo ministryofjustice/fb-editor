@@ -1,8 +1,8 @@
 module MetadataApiClient
   class Connection
     SUBSCRIPTION = 'metadata_api.client'
-    OPEN_TIMEOUT = 10
-    TIMEOUT = 15
+    OPEN_TIMEOUT = 60
+    TIMEOUT = 60
 
     attr_reader :connection
 
