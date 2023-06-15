@@ -14,5 +14,4 @@ data:
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}
   AV_HOST: fb-av-svc-{{ .Values.environmentName }}
   API_SUBMISSION: {{ .Values.api_submission }}
-  NAME_SLUG: {{ .Values.name_slug }}
   MULTI_FILE_UPLOAD: {{ .Values.multi_file_upload }}
