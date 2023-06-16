@@ -1,6 +1,6 @@
 # Fb Editor
 
-New editor from the MoJ online.
+New editor for MoJ Forms.
 
 ## Prerequisites
 * Docker
