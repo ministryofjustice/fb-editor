@@ -91,7 +91,7 @@ class EditableElement extends EditableBase {
     var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("focus.editablecomponent", this.edit.bind(this) );
+    $node.on("focus.editablecomponent", (e)  => { console.log(e); this.edit.bind(this) } );
     $node.on("paste.editablecomponent", e => pasteAsPlainText(e) );
     $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e) );
 
@@ -131,6 +131,8 @@ class EditableElement extends EditableBase {
   }
 
   edit() {
+    this.removePlaceholder();
+    // this.moveCaretToEndOfContent();
     this.$node.addClass(this._config.editClassname);
   }
 
@@ -147,6 +149,30 @@ class EditableElement extends EditableBase {
 
   focus() {
     this.$node.focus();
+  }
+
+  removePlaceholder() {
+    if(this.$node.text().trim() == this._defaultContent) {
+      this.$node.text('')
+    }
+  }
+
+  selectContent() {
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    const range = document.createRange();
+    range.selectNodeContents(this.$node.get(0));
+    selection.addRange(range);
+  }
+
+  moveCaretToEndOfContent() {
+    const range = document.createRange();//Create a range (a range is a like the selection but invisible)
+    const selection = window.getSelection();//get the selection object (allows you to change selection)
+
+    range.selectNodeContents(this.$node.get(0));//Select the entire contents of the element with the range
+    range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+    selection.removeAllRanges();//remove any selections already made
+    selection.addRange(range);//make the range you have just created the visible selection
   }
 }
 
