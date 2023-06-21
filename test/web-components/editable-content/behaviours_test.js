@@ -50,7 +50,7 @@ describe('<editable-content>', function() {
       })
 
       it('should show the input on click', function() {
-        component.output.click()
+        component.root.click()
 
         expect(component.output).not.to.be.displayed
         expect(component.input).to.be.displayed
@@ -132,7 +132,7 @@ describe('<editable-content>', function() {
 
         button.focus()
 
-        expect(component.output).to.have.html(`<h1 id="heading-1" class="govuk-heading-l">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
+        expect(component.output).to.have.html(`<h1 id="heading-1" class="govuk-heading-xl">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
 `)
       })
     })

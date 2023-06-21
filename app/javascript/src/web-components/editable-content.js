@@ -135,13 +135,10 @@ class EditableContent extends HTMLElement {
 
         if(this.valueIsDefault()) this.input.value = '';
         // Move cursor to end of content 
-        console.log(this.input.value.length)
         this.input.selectionStart = this.input.value.length;
         break;
       case 'read':
       case 'initial':
-        console.log('default: '+this.valueIsDefault())
-        console.log('changed: '+this.valueHasChanged())
         if(this.valueIsDefault()) this.input.value = '';
         this.updateOutput();
         
@@ -185,10 +182,8 @@ class EditableContent extends HTMLElement {
   }
 
   save() {
-    console.log('saving')
     if(!this.submissionForm) return
     const hiddenInput = this.submissionForm.querySelector(`input[name="${this.id}"]`);
-    console.log(hiddenInput)
     if(hiddenInput) {
       hiddenInput.value = this.content;
     } else {

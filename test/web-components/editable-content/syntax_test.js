@@ -35,7 +35,7 @@ describe('<editable-content>', function() {
         component.root.focus();
         button.focus();
 
-        expect(component.output).to.contain.html(`<h1 id="heading-1" class="govuk-heading-l">Heading 1</h1><h2 id="heading-2" class="govuk-heading-m">Heading 2</h2><h3 id="heading-3" class="govuk-heading-s">Heading 3</h3><h4 id="heading-4" class="govuk-heading-s">Heading 4</h4>`)
+        expect(component.output).to.contain.html(`<h1 id="heading-1" class="govuk-heading-xl">Heading 1</h1><h2 id="heading-2" class="govuk-heading-l">Heading 2</h2><h3 id="heading-3" class="govuk-heading-m">Heading 3</h3><h4 id="heading-4" class="govuk-heading-s">Heading 4</h4>`)
       })
     })
 
