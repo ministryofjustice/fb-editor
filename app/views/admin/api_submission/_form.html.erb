@@ -26,6 +26,11 @@
       text: 'This is the JSON output endpoint URL'
       } %>
   </div>
+  <%= :service_output_json_key %>
+  <%= @service_output_json_key %>
+  <% if @service_output_json_key %>
+    <%= mask_value('SERVICE_OUTPUT_JSON_KEY', @service_output_json_key) %>
+  <% end %>
 
   </div>
     <%= f.govuk_password_field :service_output_json_key,
