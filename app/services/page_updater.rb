@@ -48,7 +48,6 @@ class PageUpdater
         end
       end
     end
-
     new_object = check_item_uuids(new_object)
 
     @latest_metadata[page_collection][index] = new_object
