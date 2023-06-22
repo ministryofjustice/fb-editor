@@ -110,9 +110,9 @@ class PagesController < FormController
         I18n.t('presenter.questions.multiupload.singular')
       end
     elsif answered
-      I18n.t('presenter.questions.multiupload.answered_plural', max: max_files)
+      I18n.t('presenter.questions.multiupload.answered_plural', num: max_files)
     else
-      I18n.t('presenter.questions.multiupload.plural', max: max_files)
+      I18n.t('presenter.questions.multiupload.plural', num: max_files)
     end
   end
   helper_method :multiupload_files_remaining
