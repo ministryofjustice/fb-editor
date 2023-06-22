@@ -117,6 +117,10 @@ class PagesController < FormController
   end
   helper_method :multiupload_files_remaining
 
+  def uploads_remaining
+    0
+  end
+
   def answered?(component_id)
     false
   end
