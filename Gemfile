@@ -15,7 +15,7 @@ gem 'delayed_job_active_record'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'editable-content-web-component'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.0.3'
+gem 'metadata_presenter', '3.0.5'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
