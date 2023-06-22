@@ -115,11 +115,12 @@ class EditableElement extends EditableBase {
 
   set content(content) {
     var trimmedContent = content.trim();
+
     if(this._content != trimmedContent) {
       this._content = trimmedContent;
 
       // If something changed...
-      if(this._content != this._defaultContent && this._content != this._originalContent) {
+      if(this._content != this._defaultContent || this._content != this._originalContent) {
         this.emitSaveRequired();
       }
     }
@@ -136,7 +137,14 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    this.content = this.$node.text().trim();
+    const currentContent = this.$node.text();
+
+    if(currentContent == '' ){
+      this.content = (this._required ? this._originalContent : this._defaultContent);
+    } else {
+      this.content = currentContent
+    }
+
     this.$node.removeClass(this._config.editClassname);
   }
 
