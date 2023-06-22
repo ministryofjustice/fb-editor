@@ -1,17 +1,10 @@
 <%= mojf_settings_screen(heading:t('settings.name')) do |c| %>
   <nav class="govuk-navigation" aria-labelledby="page-heading">
     <dl class="fb-settings-list">
-      <% if ENV['NAME_SLUG'] == 'enabled' && moj_forms_dev? %>
-        <div>
-          <dt><%= link_to t('settings.form_name.heading'), settings_form_name_url_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint"><%= t('settings.form_information.lede') %></dd>
-        </div>
-      <% else %>
-        <div>
-          <dt><%= link_to t('settings.form_information.heading'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint"><%= t('settings.form_information.lede') %></dd>
-        </div>
-      <% end %>
+      <div>
+        <dt><%= link_to t('settings.form_name.heading'), settings_form_name_url_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint"><%= t('settings.form_name.lede') %></dd>
+      </div>
       <div>
         <dt><%= link_to t('settings.reference_payment.link'), settings_reference_payment_index_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint" ><%= t('settings.reference_payment.lede') %></dd>

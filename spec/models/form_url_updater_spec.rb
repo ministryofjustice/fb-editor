@@ -20,125 +20,6 @@ RSpec.describe FormUrlUpdater do
   end
 
   describe '#create_or_update' do
-    context 'on form creation' do
-      let(:params) { ServiceCreation.new(attributes).service_name }
-
-      context 'when service slug is unique' do
-        let(:attributes) { { service_name: 'I am a unique service' } }
-        let(:expected_service_slug) { 'i-am-a-unique-service' }
-
-        it 'updates the service configuration subject' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(expected_service_slug)
-        end
-      end
-
-      context 'when there is a duplicate service slug' do
-        let!(:existing_service_configuration) do
-          create(
-            :service_configuration,
-            :dev,
-            :service_slug,
-            service_id: SecureRandom.uuid
-          )
-        end
-        let(:attributes) { { service_name: 'Eat slugs malfoy' } }
-        let(:expected_service_slug) { 'eat-slugs-malfoy' }
-
-        it 'changes the last three characters for uniqueness' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value.last(3)
-          ).to_not eq(expected_service_slug.last(3))
-          expect(
-            service_configuration.decrypt_value.first(12)
-          ).to eq(expected_service_slug.first(12))
-        end
-
-        context 'when there is a duplicate previous service slug config' do
-          let!(:existing_service_configuration) do
-            create(
-              :service_configuration,
-              :dev,
-              :previous_service_slug,
-              service_id: SecureRandom.uuid
-            )
-          end
-          let(:attributes) { { service_name: 'Slug Life' } }
-          let(:expected_service_slug) { 'slug-life' }
-
-          it 'changes the last three characters for uniqueness' do
-            form_name_updater.create_or_update!
-            service_configuration.reload
-            expect(
-              service_configuration.decrypt_value.last(3)
-            ).to_not eq(expected_service_slug.last(3))
-            expect(
-              service_configuration.decrypt_value.first(6)
-            ).to eq(expected_service_slug.first(6))
-          end
-        end
-      end
-
-      context 'when service name is longer than 57 chars' do
-        let(:attributes) do
-          {
-            service_name: 'This is a very very very very long service name cut me off now'
-          }
-        end
-        let(:expected_service_slug) { 'this-is-a-very-very-very-very-long-service-name-cut-me-of' }
-
-        it 'creates a service configuration object with 57 characters' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value.length
-          ).to eq(57)
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(expected_service_slug)
-        end
-      end
-
-      context 'when service name contains special characters' do
-        let(:attributes) do
-          {
-            service_name: 'All 0f the ("special") characters?!'
-          }
-        end
-        let(:expected_service_slug) { 'all-0f-the-special-characters' }
-
-        it 'creates a unique service configuration object removing non-alphanumeric characters' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(expected_service_slug)
-        end
-      end
-
-      context 'when the form name begins with a number' do
-        let(:attributes) do
-          {
-            service_name: '123remove the prefix 123'
-          }
-        end
-        let(:expected_service_slug) { 'remove-the-prefix-123' }
-
-        it 'removes the leading numbers' do
-          form_name_updater.create_or_update!
-          service_configuration.reload
-          expect(
-            service_configuration.decrypt_value
-          ).to eq(expected_service_slug)
-        end
-      end
-    end
-
     context 'on form update' do
       before do
         create(
@@ -156,7 +37,7 @@ RSpec.describe FormUrlUpdater do
       end
 
       context 'when service has been published' do
-        let(:params) { 'I am a unique service' }
+        let(:params) { 'i-am-a-unique-service' }
         let(:expected_service_slug) { 'i-am-a-unique-service' }
         let(:previous_service_slug) { 'eat-slugs-malfoy' }
 
@@ -210,7 +91,7 @@ RSpec.describe FormUrlUpdater do
 
       context 'when service is not currently published' do
         context 'and previous service slug does not exist' do
-          let(:params) { 'I am a unique service' }
+          let(:params) { 'i-am-a-unique-service' }
           let(:expected_service_slug) { 'i-am-a-unique-service' }
 
           it 'updates the existing service slug config' do
@@ -231,7 +112,7 @@ RSpec.describe FormUrlUpdater do
         end
 
         context 'and previous service slug exists' do
-          let(:params) { 'I am a unique service' }
+          let(:params) { 'i-am-a-unique-service' }
           let(:expected_service_slug) { 'i-am-a-unique-service' }
 
           before do
@@ -265,6 +146,19 @@ RSpec.describe FormUrlUpdater do
             ).to be_falsey
           end
         end
+      end
+    end
+
+    context 'when SERVICE_CONFIG does not exist' do
+      let(:params) { 'i-am-a-unique-service' }
+      let(:expected_service_slug) { 'i-am-a-unique-service' }
+
+      it 'creates a SERVICE_CONFIG' do
+        form_name_updater.create_or_update!
+        service_configuration.reload
+        expect(
+          service_configuration.decrypt_value
+        ).to eq(expected_service_slug)
       end
     end
   end

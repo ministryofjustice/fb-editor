@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
   end
 
   def service_slug_config
-    @service_slug_config ||= ServiceConfiguration.find_by(
+    ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'SERVICE_SLUG'
     )&.decrypt_value

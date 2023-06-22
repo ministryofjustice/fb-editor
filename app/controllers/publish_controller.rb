@@ -10,6 +10,15 @@ class PublishController < FormController
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     if @publish_service_creation.save
+      if previous_service_slug.present?
+        UnpublishServiceJob.perform_later(
+          publish_service_id: published_service.id,
+          service_slug: previous_service_slug.decrypt_value
+        )
+
+        all_previous_service_slugs.destroy_all
+      end
+
       PublishServiceJob.perform_later(
         publish_service_id: @publish_service_creation.publish_service_id
       )
@@ -72,5 +81,26 @@ class PublishController < FormController
     else
       @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
+  end
+
+  def published_service
+    PublishService.where(
+      service_id: service.service_id,
+      deployment_environment: 'dev'
+    ).completed.desc.first
+  end
+
+  def previous_service_slug
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'PREVIOUS_SERVICE_SLUG'
+    )
+  end
+
+  def all_previous_service_slugs
+    ServiceConfiguration.where(
+      service_id: service.service_id,
+      name: 'PREVIOUS_SERVICE_SLUG'
+    )
   end
 end

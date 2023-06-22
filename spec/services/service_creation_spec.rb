@@ -23,7 +23,7 @@ RSpec.describe ServiceCreation do
       end
 
       context 'when name is too long' do
-        let(:attributes) { { service_name: 'E' * 129 } }
+        let(:attributes) { { service_name: 'E' * 256 } }
 
         it 'returns false' do
           expect(service_creation.create).to be_falsey
@@ -79,14 +79,6 @@ RSpec.describe ServiceCreation do
           ).to include('is already used by another form. Please modify it.')
         end
       end
-
-      context 'when name starts with a number' do
-        let(:attributes) { { service_name: '1st-form' } }
-
-        it 'returns false' do
-          expect(service_creation.create).to be_falsey
-        end
-      end
     end
 
     context 'when is valid' do
@@ -114,6 +106,26 @@ RSpec.describe ServiceCreation do
         expect(
           service_creation.service_id
         ).to eq('05e12a93-3978-4624-a875-e59893f2c262')
+      end
+
+      context 'when name has special characters' do
+        let(:attributes) do
+          { service_name: '$p£ci@l.(har%', current_user: double(id: '1') }
+        end
+
+        it 'returns true' do
+          expect(service_creation.create).to be_truthy
+        end
+      end
+
+      context 'when service name begins with a number' do
+        let(:attributes) do
+          { service_name: '001 Service', current_user: double(id: '1') }
+        end
+
+        it 'returns true' do
+          expect(service_creation.create).to be_truthy
+        end
       end
     end
 
@@ -156,18 +168,6 @@ RSpec.describe ServiceCreation do
 
       it 'returns true' do
         expect(service_creation.create).to be_truthy
-      end
-    end
-
-    context 'when name is invalid format' do
-      ['something.invalid', 'with_underscore'].each do |invalid|
-        let(:attributes) { { service_name: invalid } }
-
-        context "when format is #{invalid}" do
-          it 'returns false' do
-            expect(service_creation.create).to be_falsey
-          end
-        end
       end
     end
   end

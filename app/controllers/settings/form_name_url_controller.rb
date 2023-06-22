@@ -1,5 +1,6 @@
 class Settings::FormNameUrlController < FormController
   before_action :assign_form_object, only: :index
+  before_action :create_service_slug_config, only: :index
 
   def index; end
 
@@ -34,5 +35,22 @@ class Settings::FormNameUrlController < FormController
       service_name: service.service_name,
       service_slug:
     )
+  end
+
+  def service_slug_config
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
+    )&.decrypt_value
+  end
+
+  def create_service_slug_config
+    if service_slug_config.blank?
+      FormUrlUpdater.new(
+        service_id: service.service_id,
+        service_slug:
+      ).create_or_update!
+    end
   end
 end
