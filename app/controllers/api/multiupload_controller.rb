@@ -30,9 +30,10 @@ module Api
     end
 
     def update_params
+      # byebug
       page = service.pages.select { |p| p._uuid == params['page_id'] }.first.deep_dup
       page.metadata.components.select { |c| c['_uuid'] == params['component_id'] }.first['max_files'] = params['max_files_value']
-      page.component['max_files'] = params['max_files_value']
+      # page.component['max_files'] = params['max_files_value']
       ActiveSupport::HashWithIndifferentAccess.new({
         uuid: params['component']['page_uuid'],
         latest_metadata: service_metadata,
