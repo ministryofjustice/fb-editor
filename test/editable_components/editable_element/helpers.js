@@ -9,12 +9,12 @@ const constants = {
 }
 
 function createEditableElement(id, config, content) {
-    var text = content ? content : constants.EDITABLE_RAW_CONTENT;
-    var html = `<form id="${id}-form">
+  var text = content == undefined ? constants.EDITABLE_RAW_CONTENT : content;
+  var html = `<form id="${id}-form">
       </form>
       <div id="${id}" data-default-text="${constants.EDITABLE_DEFAULT_CONTENT}">${text}</div>`;
 
-    $(document.body).append(html);
+    $(document).find('body').append(html);
 
     $node = $(document).find('#'+id);
     $form = $(document).find('#'+id+'-form');
@@ -47,8 +47,10 @@ function createEditableElement(id, config, content) {
 }
 
 function teardownView(id) {
-    $("#" + id).remove();
-    $("#" + id + "-form").remove();
+    var nodes = document.querySelectorAll(`#${id}, #${id}-form`);
+    if(nodes) {
+      nodes.forEach( (node) => node.remove() )
+    }
 }
 
 module.exports = {
