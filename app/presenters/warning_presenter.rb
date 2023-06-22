@@ -12,12 +12,12 @@ class WarningPresenter
   end
 
   def cya_and_confirmation_missing?
-    !checkanswers_in_main_flow? &&
-      !confirmation_in_main_flow?
+    !checkanswers_in_main_flow &&
+      !confirmation_in_main_flow
   end
 
-  def confirmation_in_main_flow?
-    grid.page_uuids.include?(service.confirmation_page&.uuid)
+  def confirmation_in_main_flow
+    @confirmation_in_main_flow ||= grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 
   private
@@ -29,19 +29,19 @@ class WarningPresenter
   end
 
   def cya_page_not_present_message
-    if !checkanswers_in_main_flow? && confirmation_in_main_flow?
+    if !checkanswers_in_main_flow && confirmation_in_main_flow
       messages[:cya_page]
     end
   end
 
   def confirmation_page_not_present_message
-    if checkanswers_in_main_flow? && !confirmation_in_main_flow?
+    if checkanswers_in_main_flow && !confirmation_in_main_flow
       messages[:confirmation_page]
     end
   end
 
-  def checkanswers_in_main_flow?
-    grid.page_uuids.include?(service.checkanswers_page&.uuid)
+  def checkanswers_in_main_flow
+    @checkanswers_in_main_flow ||= grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
   def grid
