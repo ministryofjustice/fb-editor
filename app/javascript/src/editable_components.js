@@ -42,9 +42,6 @@ class EditableBase {
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
-    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
-      e.preventDefault();
-    });
   }
 
   get config() {
@@ -91,7 +88,7 @@ class EditableElement extends EditableBase {
     var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("focus.editablecomponent", (e)  => { console.log(e); this.edit.bind(this) } );
+    $node.on("focus.editablecomponent", this.edit.bind(this) );
     $node.on("paste.editablecomponent", e => pasteAsPlainText(e) );
     $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e) );
 
@@ -132,7 +129,9 @@ class EditableElement extends EditableBase {
 
   edit() {
     this.removePlaceholder();
-    // this.moveCaretToEndOfContent();
+    if(this.$node.text().trim() == this.config.defaultLabelValue || this.$node.text().trim() == this.config.defaultItemLabelValue) {
+      this.selectContent();
+    }
     this.$node.addClass(this._config.editClassname);
   }
 
