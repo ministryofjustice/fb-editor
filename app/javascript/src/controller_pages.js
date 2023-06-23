@@ -517,7 +517,7 @@ function enhanceContent(view) {
       text: {
         default_content: view.text.defaults.content
       },
-
+      defaultLabelValue: $node.data('fb-default-value'),
       type: $node.data("fb-content-type")
     });
   });
