@@ -3,9 +3,10 @@ class SubmissionPagesPresenter
   include GovukLinkHelper
   attr_reader :messages, :service
 
-  def initialize(service, messages)
+  def initialize(service, messages, grid)
     @service = service
     @messages = messages
+    @grid = grid
   end
 
   def message
@@ -49,14 +50,10 @@ class SubmissionPagesPresenter
   end
 
   def checkanswers_in_main_flow
-    @checkanswers_in_main_flow ||= grid.page_uuids.include?(service.checkanswers_page&.uuid)
+    @checkanswers_in_main_flow ||= @grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
   def confirmation_in_main_flow
-    @confirmation_in_main_flow ||= grid.page_uuids.include?(service.confirmation_page&.uuid)
-  end
-
-  def grid
-    @grid ||= MetadataPresenter::Grid.new(service)
+    @confirmation_in_main_flow ||= @grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 end
