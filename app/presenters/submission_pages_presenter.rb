@@ -33,27 +33,27 @@ class SubmissionPagesPresenter
   end
 
   def cya_and_confirmation_missing?
-    !checkanswers_in_main_flow &&
-      !confirmation_in_main_flow
+    !checkanswers_in_main_flow? &&
+      !confirmation_in_main_flow?
   end
 
   def cya_page_not_present_message
-    if !checkanswers_in_main_flow && confirmation_in_main_flow
+    if !checkanswers_in_main_flow? && confirmation_in_main_flow?
       messages[:cya_page].gsub('%{href}', link('cya_page')).html_safe
     end
   end
 
   def confirmation_page_not_present_message
-    if checkanswers_in_main_flow && !confirmation_in_main_flow
+    if checkanswers_in_main_flow? && !confirmation_in_main_flow?
       messages[:confirmation_page].gsub('%{href}', link('confirmation_page')).html_safe
     end
   end
 
-  def checkanswers_in_main_flow
-    @checkanswers_in_main_flow ||= @grid.page_uuids.include?(service.checkanswers_page&.uuid)
+  def checkanswers_in_main_flow?
+    @grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
-  def confirmation_in_main_flow
-    @confirmation_in_main_flow ||= @grid.page_uuids.include?(service.confirmation_page&.uuid)
+  def confirmation_in_main_flow?
+    @grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 end
