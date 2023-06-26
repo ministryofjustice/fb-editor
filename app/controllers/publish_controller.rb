@@ -52,12 +52,14 @@ class PublishController < FormController
     @publish_page_presenter_dev = PublishingPagePresenter.new(
       service:,
       deployment_environment: 'dev',
-      service_autocomplete_items:
+      service_autocomplete_items:,
+      grid:
     )
     @publish_page_presenter_production = PublishingPagePresenter.new(
       service:,
       deployment_environment: 'production',
-      service_autocomplete_items:
+      service_autocomplete_items:,
+      grid:
     )
   end
 

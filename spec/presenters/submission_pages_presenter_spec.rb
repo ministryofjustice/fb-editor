@@ -25,10 +25,11 @@ RSpec.describe SubmissionPagesPresenter do
   let(:arnold_wrong_answers) do
     metadata['flow']['6324cca4-7770-4765-89b9-1cdc41f49c8b']
   end
+  let(:grid) { MetadataPresenter::Grid.new(service) }
 
   describe '#message' do
     let(:presenter) do
-      SubmissionPagesPresenter.new(service, I18n.t('warnings.submission_pages.dev'))
+      SubmissionPagesPresenter.new(service, I18n.t('warnings.submission_pages.dev'), grid)
     end
     context 'check presence of cya and confirmation page' do
       context 'when there is both a check answers and confirmation page' do

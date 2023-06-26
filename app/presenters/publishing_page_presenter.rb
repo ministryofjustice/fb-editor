@@ -1,9 +1,10 @@
 class PublishingPagePresenter
-  def initialize(service:, deployment_environment:, service_autocomplete_items:)
+  def initialize(service:, deployment_environment:, service_autocomplete_items:, grid:)
     @deployment_environment = deployment_environment
     @service = service
     @service_autocomplete_items = service_autocomplete_items
     @publish_creation = set_publish_creation
+    @grid = grid
   end
 
   attr_reader :service, :deployment_environment, :service_autocomplete_items
@@ -20,7 +21,7 @@ class PublishingPagePresenter
 
   def autocomplete_warning
     @autocomplete_warning ||= AutocompleteItemsPresenter.new(
-      MetadataPresenter::Grid.new(service),
+      @grid,
       service_autocomplete_items,
       deployment_environment
     )
@@ -52,7 +53,8 @@ class PublishingPagePresenter
   def submission_pages_presenter
     SubmissionPagesPresenter.new(
       service,
-      I18n.t("warnings.submission_pages.#{deployment_environment}")
+      I18n.t("warnings.submission_pages.#{deployment_environment}"),
+      @grid
     )
   end
 

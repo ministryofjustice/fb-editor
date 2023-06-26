@@ -104,7 +104,7 @@ class PagesFlow
   def warning(_)
     {
       type: 'warning',
-      content: SubmissionPagesPresenter.new(service, I18n.t('warnings.pages_flow')).message
+      content: SubmissionPagesPresenter.new(service, I18n.t('warnings.pages_flow'), grid).message
     }
   end
 

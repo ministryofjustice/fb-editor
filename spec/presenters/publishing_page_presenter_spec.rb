@@ -3,11 +3,13 @@ RSpec.describe PublishingPagePresenter do
     described_class.new(
       service:,
       deployment_environment:,
-      service_autocomplete_items:
+      service_autocomplete_items:,
+      grid:
     )
   end
   let(:deployment_environment) { 'dev' }
   let(:service_autocomplete_items) { double(messages: []) }
+  let(:grid) { MetadataPresenter::Grid.new(service) }
 
   describe '#publish_creation' do
     it 'returns an instance of a publish creation' do
