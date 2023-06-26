@@ -124,16 +124,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: service_sentry_dsn_live
-          - name: SERVICE_SENTRY_CSP_URL_TEST
-            valueFrom:
-              secretKeyRef:
-                name: fb-editor-secrets-{{ .Values.environmentName }}
-                key: service_sentry_csp_url_test
-          - name: SERVICE_SENTRY_CSP_URL_LIVE
-            valueFrom:
-              secretKeyRef:
-                name: fb-editor-secrets-{{ .Values.environmentName }}
-                key: service_sentry_csp_url_live
           - name: SLACK_PUBLISH_WEBHOOK
             valueFrom:
               secretKeyRef:
@@ -266,16 +256,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: service_sentry_dsn_live
-          - name: SERVICE_SENTRY_CSP_URL_TEST
-            valueFrom:
-              secretKeyRef:
-                name: fb-editor-secrets-{{ .Values.environmentName }}
-                key: service_sentry_csp_url_test
-          - name: SERVICE_SENTRY_CSP_URL_LIVE
-            valueFrom:
-              secretKeyRef:
-                name: fb-editor-secrets-{{ .Values.environmentName }}
-                key: service_sentry_csp_url_live
           - name: SLACK_PUBLISH_WEBHOOK
             valueFrom:
               secretKeyRef:

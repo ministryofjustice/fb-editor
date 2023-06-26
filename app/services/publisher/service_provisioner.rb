@@ -127,15 +127,6 @@ class Publisher
       end
     end
 
-    def service_sentry_csp_url
-      if live_production?
-        ENV['SERVICE_SENTRY_CSP_URL_LIVE']
-      else
-        # test-dev, test-production and live-dev
-        ENV['SERVICE_SENTRY_CSP_URL_TEST']
-      end
-    end
-
     def live_production?
       platform_deployment == LIVE_PRODUCTION
     end

@@ -54,8 +54,6 @@ spec:
             value: <%= secret_key_base %>
           - name: SENTRY_DSN
             value: '<%= service_sentry_dsn %>'
-          - name: SENTRY_CSP_URL
-            value: '<%= service_sentry_csp_url %>'
           - name: ACCESS_KEY_ID
             value: <%= aws_s3_access_key_id %>
           - name: SECRET_ACCESS_KEY
