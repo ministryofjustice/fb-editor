@@ -322,7 +322,7 @@ GEM
     prometheus_exporter (2.0.8)
       webrick
     public_suffix (5.0.1)
-    puma (6.2.2)
+    puma (6.3.0)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.7)
@@ -536,7 +536,7 @@ DEPENDENCIES
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
-  puma (~> 6.1)
+  puma (~> 6.3)
   rails (~> 7.0)
   rspec-rails
   rspec_junit_formatter
