@@ -3,11 +3,18 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-
 // Scripts called by javascript_pack_tag
 require("jquery")
 require("jquery-ui")
 require("../src/index")
+
+const { EditableContent } = require('../src/web-components/editable-content');
+const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
+
+if ('customElements' in window) {
+  customElements.define('elastic-textarea', ElasticTextarea);
+  customElements.define('editable-content', EditableContent);
+}
 
 // Entry point for fb-editor stylesheets
 import "../styles/application.scss"

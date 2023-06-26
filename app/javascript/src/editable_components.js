@@ -964,7 +964,7 @@ function editableComponent($node, config) {
       klass = EditableElement;
       break;
     case "content":
-      klass = EditableContent;
+      // klass = EditableContent;
       break;
     case "text":
     case "email":
@@ -994,7 +994,7 @@ module.exports =  {
   EditableComponentBase: EditableComponentBase,
   EditableBase: EditableBase,
   EditableElement: EditableElement,
-  EditableContent: EditableContent,
+  // EditableContent: EditableContent,
   EditableTextFieldComponent: EditableTextFieldComponent,
   EditableTextareaFieldComponent: EditableTextareaFieldComponent,
   EditableGroupFieldComponent: EditableGroupFieldComponent,

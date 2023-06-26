@@ -318,7 +318,7 @@ module CommonSteps
 
     # the input element of the content component is what needs to be
     # interacted with in order to set a value
-    element.find('.input', visible: false).set(content)
+    element.find('[data-element="editable-content-input"]', visible: false).fill_in(with: content)
 
     # click outside to close the editable component
     editor.service_name.click
@@ -326,10 +326,10 @@ module CommonSteps
 
   def element_output(element)
     # content component elements
-    element.find('.output p', visible: false)
+    element.find('[data-element="editable-content-output"] p', visible: false)
   rescue Capybara::ElementNotFound
     # body elements
-    element.find('.output', visible: false)
+    element.find('[data-element="editable-content-output"]', visible: false)
   end
 
   def then_I_should_not_see_optional_text

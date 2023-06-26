@@ -5,7 +5,7 @@
 # Add the mes of any gems whose assets you do not wish to be compiled 
 # to the SKIP_GEMS constant.
 module SprocketsPathsOverride
-  SKIP_GEMS = []
+  SKIP_GEMS = ['govuk_publishing_components']
 
   def append_path(path)
     should_skip = SKIP_GEMS.any? do |gem|

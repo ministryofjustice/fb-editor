@@ -1,32 +1,28 @@
 const chai = require("chai");
 const expect = chai.expect;
 const sinonChai = require("sinon-chai");
-const jsdom = require("jsdom");
+const chaiDom = require('chai-dom')
 const jquery = require('jquery');
-const { JSDOM } = jsdom;
-const FormData = require('form-data');
 
-var dom = new JSDOM(`<html>
-    <head>
+const cleanJSDOM = require('jsdom-global')(`<html>
+     <head>
       <title>Test document</title>
     </head>
-    <body>
-      <h1>Testing document</h1>
-      <p>Nothing much here</p>
-    </body>
-  </html>`, {
+     <body>
+       <h1>Testing document</h1>
+       <p>Nothing much here</p>
+     </body>
+     </html>`, {
     url: "http://localhost",
-  });
+  })
 
 chai.use(sinonChai);
+chai.use(chaiDom)
 
 global.expect = expect;
-global.window = dom.window;
-global.document = window.document;
-global.FormData = FormData;
-global.jQuery = require( 'jquery' )( window );
+global.cleanJSDOM = cleanJSDOM;
+global.jQuery = jquery( global.window );
 global.$ = jQuery;
-global.XMLHttpRequest = global.window.XMLHttpRequest; // needs to exist for sinon
 global.sinon = require("sinon"); // sinon *must* be required after the above line
 
 // Highjack form submits to inspect data

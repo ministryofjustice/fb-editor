@@ -37,7 +37,6 @@ describe('editableComponent', function() {
 
   const tests = [
     { type: 'element', name: 'EditableElement', expected: editable.EditableElement },
-    { type: 'content', name: 'EditableContent', expected: editable.EditableContent },
     { type: 'text', name: 'EditableTextFieldComponent', expected: editable.EditableTextFieldComponent },
     { type: 'email', name: 'EditableTextFieldComponent', expected: editable.EditableTextFieldComponent },
     { type: 'number', name: 'EditableTextFieldComponent', expected: editable.EditableTextFieldComponent },

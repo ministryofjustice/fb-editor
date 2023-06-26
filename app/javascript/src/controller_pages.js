@@ -24,6 +24,7 @@ const {
 } = require('./shared/content');
 
 const ActivatedMenu = require('./components/menus/activated_menu');
+const ContentMenu = require('./components/menus/content_menu');
 const editable_components = require('./editable_components');
 const EditableElement = editable_components.EditableElement;
 const Content = require('./content');
@@ -62,7 +63,7 @@ class PagesController extends DefaultController {
 
   updateComponents() {
     $(".fb-editable").each(function() {
-      $(this).data("instance").save();
+      $(this).data("instance") ? $(this).data("instance").save() : $(this).get(0).save();
     });
   }
 }
@@ -469,7 +470,7 @@ function addContentMenuListeners(view) {
       // Workaround solution that doesn't require extra backend work
       component.$node.hide(); // 1. First remove component from view
       view.updateComponents(); // 2. Update form (in case anything else has changed)
-      component.remove(); // 3. Remove corresponding component from form
+      component.destroy(); // 3. Remove corresponding component from form
       view.submitHandler.submittable = true; // 4. Trigger save required (to enable Save button)
     };
     view.dialogConfirmationDelete.open({
@@ -521,19 +522,30 @@ function enhanceContent(view) {
     });
   });
 
-  view.$editable.filter("[data-fb-content-type=content]").each(function(i, node) {
-    var $node = $(node);
-    new Content($node, {
-      form: view.submitHandler.$form,
-      text: {
-        default_content: view.text.defaults.content
-      },
-      htmlAdjustment: htmlAdjustment,
-      markdownAdjustment: markdownAdjustment
-    });
+  const form = document.querySelector('#editContentForm');
+  document.querySelectorAll('editable-content').forEach((element) => {
+    element.form = form
+    if(element.isComponent) createContentMenu(element)
   });
 }
 
+function createContentMenu(component) {
+  var template = $("[data-component-template=ContentMenu]");
+  var $ul = $(template.html());
+
+  // Need to make sure $ul is added to body before we try to create a ContentMenu out of it.
+  $(document.body).append($ul);
+
+  return new ContentMenu(component, $ul, {
+    activator_text: template.data("activator-text"),
+    menu: {
+      position: {
+        my: "left top",
+        at: "left top",
+      }
+    }
+  });
+}
 
 /* Add edit functionality and component enhancements to questions.
  **/

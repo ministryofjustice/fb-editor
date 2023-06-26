@@ -55,8 +55,8 @@ class ContentMenu extends ActivatedMenu {
   }
 
   open(config) {
-    if(this.component) {
-      this.component.$node.addClass("active");
+    if(this.component && this.component.state) {
+      this.component.state.mode = 'edit'
     }
     super.open(config);
   }
