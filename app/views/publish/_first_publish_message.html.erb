@@ -7,7 +7,7 @@
 
 </p>
 
-<script type="module">
+<script nonce=<%= request.content_security_policy_nonce %> type="module">
   /*
   * This script is reponsible for checking if the published service is live and
   * updating the first publish message accordingly.
