@@ -5,15 +5,20 @@ RSpec.describe UnpublishDevServices do
 
   describe '#call' do
     let(:version_metadata) { metadata_fixture(:version) }
+    let(:service_configuration) do
+      ServiceConfiguration.find_by(
+        service_id: service.service_id,
+        name: 'SERVICE_SLUG'
+      )
+    end
     let(:params) do
       {
         publish_service_id: published_services.id,
-        service_slug: 'version-fixture'
+        service_slug: service_configuration
       }
     end
 
     before do
-      allow(unpublish_dev_services).to receive(:get_version_metadata).and_return(version_metadata)
       allow(UnpublishServiceJob).to receive(:perform_later).and_call_original
       allow(UnpublishServiceJob).to receive(:perform_later).with(params)
 

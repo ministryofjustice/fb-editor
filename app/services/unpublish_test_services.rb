@@ -1,6 +1,4 @@
 class UnpublishTestServices
-  include MetadataVersionHelper
-
   ACCEPTANCE_TEST_SERVICES = [
     'cd75ad76-1d4b-4ce5-8a9e-035262cd2683', # New Runner Service
     'e68dca75-20b8-468e-9436-e97791a914c5', # Branching Fixture 10 Service
@@ -13,10 +11,9 @@ class UnpublishTestServices
   def call
     ENVIRONMENTS.each do |environment|
       send(environment).each do |publish_service|
-        version_metadata = get_version_metadata(publish_service)
         UnpublishServiceJob.perform_later(
           publish_service_id: publish_service.id,
-          service_slug: service_slug(version_metadata)
+          service_slug: service_slug(publish_service.service_id)
         )
       end
     end
@@ -37,5 +34,12 @@ class UnpublishTestServices
 
   def production
     published_services.select { |ps| ps.deployment_environment == 'production' }
+  end
+
+  def service_slug(service_id)
+    ServiceConfiguration.find_by(
+      service_id:,
+      name: 'SERVICE_SLUG'
+    )&.decrypt_value
   end
 end
