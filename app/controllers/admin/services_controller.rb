@@ -100,7 +100,7 @@ module Admin
         if publish_service_creation.save
           UnpublishServiceJob.perform_later(
             publish_service_id: publish_service_creation.publish_service_id,
-            service_slug: service_slug(version_metadata)
+            service_slug: service_slug(publish_service.service_id)
           )
           flash[:success] = "Service queued for unpublishing from #{params[:deployment_environment]}. Refresh in a minute"
         else
@@ -217,11 +217,6 @@ module Admin
       ).last&.unpublished?
     end
 
-    def service_slug(version_metadata)
-      service = MetadataPresenter::Service.new(version_metadata, editor: true)
-      service.service_slug
-    end
-
     def maintenance_mode_params
       params.require(:maintenance_mode_settings).permit(
         :maintenance_mode,
@@ -248,6 +243,13 @@ module Admin
 
     def require_authentication
       password.present? && username.present? ? '1' : '0'
+    end
+
+    def service_slug(service_id)
+      ServiceConfiguration.find_by(
+        service_id:,
+        name: 'SERVICE_SLUG'
+      )&.decrypt_value
     end
   end
 end

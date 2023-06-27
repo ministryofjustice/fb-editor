@@ -1,6 +1,4 @@
 class UnpublishDevServices
-  include MetadataVersionHelper
-
   AUTOMATED_TEST_SERVICES = [
     'cd75ad76-1d4b-4ce5-8a9e-035262cd2683', # New Runner Service
     'e68dca75-20b8-468e-9436-e97791a914c5', # Branching Fixture 10 Service
@@ -10,10 +8,9 @@ class UnpublishDevServices
 
   def call
     published_dev_services.each do |publish_service|
-      version_metadata = get_version_metadata(publish_service)
       UnpublishServiceJob.perform_later(
         publish_service_id: publish_service.id,
-        service_slug: service_slug(version_metadata)
+        service_slug: service_slug(publish_service.service_id)
       )
     end
   end
@@ -29,5 +26,12 @@ class UnpublishDevServices
 
   def published_dev_services
     published_services.select { |ps| ps.deployment_environment == 'dev' }
+  end
+
+  def service_slug(service_id)
+    ServiceConfiguration.find_by(
+      service_id:,
+      name: 'SERVICE_SLUG'
+    )&.decrypt_value
   end
 end
