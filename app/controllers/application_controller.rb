@@ -132,7 +132,6 @@ class ApplicationController < ActionController::Base
 
     service.service_slug
   end
-  helper_method :service_slug
 
   def service_slug_config
     ServiceConfiguration.find_by(

@@ -94,5 +94,6 @@ module Admin
         name: 'SERVICE_SLUG'
       )&.decrypt_value
     end
+    helper_method :service_slug
   end
 end
