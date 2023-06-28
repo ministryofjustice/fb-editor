@@ -15,7 +15,7 @@ module Admin
       Uptime.new(
         service_id: service.service_id,
         service_name: service.service_name,
-        host: "#{service_slug(service.service_id)}.#{url_root}",
+        host: "#{service_slug(service)}.#{url_root}",
         adapter:
       ).create
 
@@ -95,8 +95,8 @@ module Admin
       )&.decrypt_value
     end
 
-    def service_slug(service_id)
-      service_slug_config(service_id).presence || service.service_slug
+    def service_slug(service)
+      service_slug_config(service.service_id).presence || service.service_slug
     end
     helper_method :service_slug
   end
