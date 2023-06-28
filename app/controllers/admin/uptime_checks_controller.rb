@@ -96,7 +96,7 @@ module Admin
     end
 
     def service_slug(service_id)
-      service_slug_config(service_id).presence? || service.service_slug
+      service_slug_config(service_id).presence || service.service_slug
     end
     helper_method :service_slug
   end

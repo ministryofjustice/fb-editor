@@ -46,6 +46,6 @@ class UnpublishTestServices
   end
 
   def service_slug(service_id, version_metadata)
-    service_slug_config(service_id).presence? || service_slug_from_name(version_metadata)
+    service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
   end
 end
