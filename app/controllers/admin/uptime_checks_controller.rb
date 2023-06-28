@@ -87,12 +87,16 @@ module Admin
       Uptime::Adapters::Pingdom
     end
 
-    def service_slug(service_id)
+    def service_slug_config(service_id)
       ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
         name: 'SERVICE_SLUG'
       )&.decrypt_value
+    end
+
+    def service_slug(service_id)
+      service_slug_config(service_id).presence? || service.service_slug
     end
     helper_method :service_slug
   end
