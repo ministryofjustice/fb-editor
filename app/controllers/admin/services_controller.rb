@@ -100,7 +100,7 @@ module Admin
         if publish_service_creation.save
           UnpublishServiceJob.perform_later(
             publish_service_id: publish_service_creation.publish_service_id,
-            service_slug: service_slug(publish_service.service_id)
+            service_slug: service_slug(publish_service.service_id, version_metadata)
           )
           flash[:success] = "Service queued for unpublishing from #{params[:deployment_environment]}. Refresh in a minute"
         else
@@ -245,11 +245,20 @@ module Admin
       password.present? && username.present? ? '1' : '0'
     end
 
-    def service_slug(service_id)
+    def service_slug_config(service_id)
       ServiceConfiguration.find_by(
         service_id:,
         name: 'SERVICE_SLUG'
       )&.decrypt_value
+    end
+
+    def service_slug_from_name(version_metadata)
+      service = MetadataPresenter::Service.new(version_metadata, editor: true)
+      service.service_slug
+    end
+
+    def service_slug(service_id, version_metadata)
+      service_slug_config(service_id).presence? || service_slug_from_name(version_metadata)
     end
   end
 end
