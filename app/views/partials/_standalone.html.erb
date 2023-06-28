@@ -4,7 +4,7 @@
     <% service.standalone_pages.each do |page| %>
       <li class="page">
         <%= flow_thumbnail(page) %>
-        <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
+        <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %> <%= page.contains_placeholders? ? '!!' : 'OK' %>
       </li>
     <% end %>
   </ul>
