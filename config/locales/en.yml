@@ -112,6 +112,9 @@ en:
         max:
           label: Maximum answer length
           status_label: Set a maximum answer length
+      max_files:
+        label: 'Maximum number of files that can be uploaded'
+        hint: 'Set a limit for this page of between 1 and 10 files'
       button: Update
     autocomplete:
       legend: Upload autocomplete options
@@ -303,6 +306,7 @@ en:
       min_string_length: 'Minimum answer length...'
       upload_options: 'Autocomplete options...'
       multiupload_options: 'Number of files...'
+      max_files: 'Number of files...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
@@ -573,6 +577,9 @@ en:
           format: "%{message}"
         maximum_validation:
           format: "%{message}"
+        max_files_validation:
+          too_small: "%{label} cannot be less than 1"
+          too_big: "%{label} cannot be larger than 10"
         form_analytics_settings:
           blank: Enter at least one tracking ID
           ua: A Universal Analytics ID must start with UA
