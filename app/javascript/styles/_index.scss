@@ -610,10 +610,14 @@ editable-content,
     &.active {
       z-index: 1;
     }
+
+    &.selected {
+      z-index: 2;
+    }
   }
 
   .FlowItem {
-    z-index: 2
+    z-index: 3
   }
 
   .ConnectionMenuActivator {
@@ -682,9 +686,15 @@ editable-content,
     fill: #949494;
   }
 
-  &.active {
+  &.active,
+  &.selected {
     path {
       stroke-width:4px;
+    }
+  }
+
+  &.active {
+    path {
       stroke: $govuk-link-hover-colour;
     }
 
@@ -692,6 +702,17 @@ editable-content,
       fill: $govuk-link-hover-colour;
     }
   }
+
+  &.selected {
+    path {
+      stroke: govuk-colour('orange');
+    }
+
+    .arrowPath {
+      fill: govuk-colour('orange');
+    }
+  }
+  
 }
 
 .PageMenuActivator {
