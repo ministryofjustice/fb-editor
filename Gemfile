@@ -15,7 +15,7 @@ gem 'metadata_presenter',
     github: 'ministryofjustice/fb-metadata-presenter',
     branch: 'multi-file-upload'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.0.6'
+# gem 'metadata_presenter', '3.0.6'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
