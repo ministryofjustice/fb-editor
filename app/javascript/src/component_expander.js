@@ -48,13 +48,20 @@
 *   - wrap_content: (boolean)    If true will wrap all content of the
 *                                $node aside from the $activator with a wrapper <div>
 *   - auto_open: (boolean)       If true, the component will be open on page load. 
+*   - persist: (boolean)         Should the open/close state be persisted in
+*                                localStorage
+*   - id: (string)               Provide an optional id for the component,
+*                                otherwise a unique id will be generated. Must
+*                                be provided if persist option is enabled as the
+*                                id is used as the localStorage key
 *   - duration: (integer)        The duration in ms of the open/close animation.
 *
  **/
 
 const { 
   mergeObjects,
-  uniqueString
+  uniqueString,
+  storageAvailable,
 } = require('./utilities');
 
 /**
@@ -76,17 +83,23 @@ class Expander {
       activator_source: "activate", // Developer mistake occured if see this text.
       wrap_content: true && !$content.is("details"), // Default is true unless detect <details> in use.
       auto_open: false,
+      persist: false,
       duration: 0,
     }, config);
 
+    if(conf.persist === true && !conf.id) {
+      console.error('You must provide an `id` in Expander component config when using `persist`.')
+      conf.persist = false;
+    }
+
     this.#config = conf;
     this.#state = ""; // This value always get overwritten by openState
-    this.#id = uniqueString("Expander_");
+    this.#id = conf.id || uniqueString("Expander_");
     this.#browserControlled = false; // Will be changed in createNode if $content is <details> element
     this.$node = this.#createNode($content);
     this.$activator = this.#createActivator();
-
-    conf.auto_open ? this.open() : this.close();
+   
+    this.setInitialState();
   }
 
   set openState(open) {
@@ -130,6 +143,23 @@ class Expander {
 
   toggle() {
     this.isOpen() ? this.close() : this.open();
+    if(this.#config.persist && storageAvailable("localStorage")) {
+      localStorage.setItem(this.#id, this.#state)
+    }
+  }
+
+  setInitialState() {
+    let previousState;
+
+    if(storageAvailable('localStorage')) {
+      previousState = window.localStorage.getItem(this.#id)
+    }
+
+    if(this.#config.persist && previousState) {
+      previousState == 'open' ? this.open() : this.close()
+    } else {
+      this.#config.auto_open ? this.open() : this.close();
+    }
   }
 
   /* Create/define activator element to use from the source provided

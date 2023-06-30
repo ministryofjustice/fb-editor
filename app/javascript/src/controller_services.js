@@ -1054,6 +1054,8 @@ function createExpanderComponents() {
       activator_source: $node.find('> h2').first(),
       wrap_content: true,
       auto_open: true,
+      persist: true,
+      id: 'flow-view-footer-expander'
     });
   });
 }
