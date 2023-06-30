@@ -2,7 +2,7 @@ require('../../setup');
 
 describe('EditableElement', function() {
   const helpers = require('./helpers');
-  const COMPONENT_ID = 'editable-element-component-test';
+  const COMPONENT_ID = 'editable-element-events-test';
 
   describe('Events', function() {
     var created;

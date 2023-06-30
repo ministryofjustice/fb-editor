@@ -42,9 +42,6 @@ class EditableBase {
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
-    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
-      e.preventDefault();
-    });
   }
 
   get config() {
@@ -118,11 +115,12 @@ class EditableElement extends EditableBase {
 
   set content(content) {
     var trimmedContent = content.trim();
+
     if(this._content != trimmedContent) {
       this._content = trimmedContent;
 
       // If something changed...
-      if(this._content != this._defaultContent && this._content != this._originalContent) {
+      if(this._content != this._defaultContent || this._content != this._originalContent) {
         this.emitSaveRequired();
       }
     }
@@ -131,11 +129,22 @@ class EditableElement extends EditableBase {
   }
 
   edit() {
+    this.removePlaceholder();
+    if(this.$node.text().trim() == this.config.defaultLabelValue || this.$node.text().trim() == this.config.defaultItemLabelValue) {
+      this.selectContent();
+    }
     this.$node.addClass(this._config.editClassname);
   }
 
   update() {
-    this.content = this.$node.text().trim();
+    const currentContent = this.$node.text();
+
+    if(currentContent == '' ){
+      this.content = (this._required ? this._originalContent : this._defaultContent);
+    } else {
+      this.content = currentContent
+    }
+
     this.$node.removeClass(this._config.editClassname);
   }
 
@@ -147,6 +156,30 @@ class EditableElement extends EditableBase {
 
   focus() {
     this.$node.focus();
+  }
+
+  removePlaceholder() {
+    if(this.$node.text().trim() == this._defaultContent) {
+      this.$node.text('')
+    }
+  }
+
+  selectContent() {
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    const range = document.createRange();
+    range.selectNodeContents(this.$node.get(0));
+    selection.addRange(range);
+  }
+
+  moveCaretToEndOfContent() {
+    const range = document.createRange();//Create a range (a range is a like the selection but invisible)
+    const selection = window.getSelection();//get the selection object (allows you to change selection)
+
+    range.selectNodeContents(this.$node.get(0));//Select the entire contents of the element with the range
+    range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+    selection.removeAllRanges();//remove any selections already made
+    selection.addRange(range);//make the range you have just created the visible selection
   }
 }
 

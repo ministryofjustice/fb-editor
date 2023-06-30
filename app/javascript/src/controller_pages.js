@@ -495,8 +495,13 @@ function focusOnEditableComponent() {
     }
   }
   else {
-    // Standard editable page so find first editable item.
-    $(".fb-editable").eq(0).focus();
+    const pageTitle = $('h1.EditableElement').get(0)
+
+    if(pageTitle) {
+      pageTitle.focus();
+    } else {
+      $(".fb-editable").eq(0).focus();
+    }
   }
 }
 
@@ -517,7 +522,7 @@ function enhanceContent(view) {
       text: {
         default_content: view.text.defaults.content
       },
-
+      defaultLabelValue: $node.data('fb-default-value'),
       type: $node.data("fb-content-type")
     });
   });

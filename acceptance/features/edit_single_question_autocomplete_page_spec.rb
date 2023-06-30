@@ -83,6 +83,7 @@ feature 'Edit single question autocomplete page' do
   end
 
   def and_I_have_optional_section_heading_text
+    editor.service_name.click
     expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
 
@@ -108,6 +109,7 @@ feature 'Edit single question autocomplete page' do
   end
 
   def then_I_should_see_the_default_section_heading
+    editor.service_name.click
     expect(editor.section_heading_hint.text).to eq(default_section_heading)
   end
 

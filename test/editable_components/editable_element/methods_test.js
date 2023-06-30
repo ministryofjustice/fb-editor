@@ -4,7 +4,7 @@ describe('EditableElement', function() {
 
   const helpers = require('./helpers');
   const c = helpers.constants;
-  const COMPONENT_ID = 'editable-element-methods-test';
+  const COMPONENT_ID = 'editable-element-methods-testsvdb';
 
   describe('Methods', function() {
     var created;
@@ -138,31 +138,35 @@ describe('EditableElement', function() {
       })
 
       it('doesn\'t trigger saveRequired when content is original', function() {
-        created.instance.content = 'More new content';
+        //reset
+        helpers.teardownView(COMPONENT_ID);
+        created = undefined;
+        //new instance with default text
+        created = helpers.createEditableElement(COMPONENT_ID, {}, c.EDITABLE_TRIMMED_CONTENT);
         var eventCount = 0;
 
         $(document).on('SaveRequired', function() {
           eventCount++;
         });
+
         created.instance.content = c.EDITABLE_TRIMMED_CONTENT;
         expect(eventCount).to.equal(0);
       });
 
       it('doesn\'t trigger saveRequired when content is default', function() {
         //reset
-        helpers.teardownView();
+        helpers.teardownView(COMPONENT_ID);
         created = undefined;
         //new instance with default text
         created = helpers.createEditableElement(COMPONENT_ID, {
-            attributeDefaultText: 'defaultText',
-        });
-        created.instance.content = 'More new content';
+            attributeDefaultText: c.EDITABLE_DEFAULT_CONTENT,
+        }, ' ');
         var eventCount = 0;
 
         $(document).on('SaveRequired', function() {
           eventCount++;
         });
-        created.instance.content = c.EDITABLE_DEFAULT_CONTENT;
+        created.instance.content = '';
         expect(eventCount).to.equal(0);
       });
     });
