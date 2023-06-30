@@ -11,21 +11,15 @@ feature 'Edit standalone pages' do
   end
 
   scenario 'the cookies page' do
-    given_I_have_footer_pages
     and_I_visit_the_cookies_page
     then_the_page_should_not_be_editable
   end
 
   scenario 'editing footer standalone pages' do
-    given_I_have_footer_pages
     and_I_edit_the_privacy_page
     and_I_change_the_page_heading(privacy_heading)
     when_I_save_my_changes
     then_I_should_see_the_new_privacy_heading
-  end
-
-  def given_I_have_footer_pages
-    editor.footer_pages_link.click
   end
 
   def and_I_visit_the_cookies_page
