@@ -18,7 +18,7 @@ Rails.application.configure do
                        "'sha256-g0/XswAmA05eJqlbjX+QanYdtwQs9NJHFaBXC9/dmm8='", # style tag on admin service page
                        "'sha256-NN3cxOpkbkk3bTeAp9eF4SiKghXfcmGXX+G8ICEuZtQ='" # hash for component validation
     # Specify URI for violation reports
-    # policy.report_uri "/csp-violation-report-endpoint"
+    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts
