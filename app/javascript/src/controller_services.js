@@ -1053,6 +1053,7 @@ function createExpanderComponents() {
     new Expander($node, {
       activator_source: $node.find('> h2').first(),
       wrap_content: true,
+      auto_open: true,
     });
   });
 }
