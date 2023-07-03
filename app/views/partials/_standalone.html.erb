@@ -4,7 +4,17 @@
     <% service.standalone_pages.each do |page| %>
       <li class="page">
         <%= flow_thumbnail(page) %>
-        <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %> <%= page.contains_placeholders? ? '!!' : 'OK' %>
+        <%= link_to edit_page_path(service.service_id, page.uuid) , class: "govuk-link #{page.contains_placeholders? ? 'govuk-warning-link' : ''}"  do %> 
+          <% if page.contains_placeholders? %>
+              <span class="govuk-warning-link__icon" aria-hidden="true">!</span>
+          <% end %>
+          <span class="govuk-warning-link__text">
+          <% if page.contains_placeholders? %>
+              <span class="govuk-visually-hidden">Warning</span>
+            <% end %>
+              <%= page.url.titleize %>
+          </span>
+        <% end %>
       </li>
     <% end %>
   </ul>

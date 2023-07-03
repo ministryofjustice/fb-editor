@@ -885,12 +885,6 @@ editable-content,
   }
 }
 
-.flow-link {
-  display: inline-block;
-  margin-top: govuk-spacing(2);
-  width: 200px;
-}
-
 .flow-page {
   height: 250px;
   vertical-align: middle;
@@ -1187,6 +1181,85 @@ editable-content,
     color: govuk-colour("white");
   }
 }
+
+.govuk-warning-link {
+  position: relative;
+  display: flex;
+
+   & &__icon {
+    @include govuk-font($size: false, $weight: bold);
+
+    box-sizing: border-box;
+
+    display: inline-block;
+
+    position: absolute;
+    left: 0;
+
+    min-width: 22px;
+    min-height: 22px;
+    margin-top: -2px;
+
+    @include govuk-media-query($from: tablet) {
+      margin-top: -0px;
+    }
+
+    // When a user customises their colours the background colour will often be removed.
+    // Adding a border to the component keeps it's shape as a circle.
+    border: 3px solid govuk-colour("red");
+    border-radius: 50%;
+
+    color: govuk-colour("white");
+    background: govuk-colour("red");
+
+    font-size: 18px;
+    line-height: 16px;
+
+    text-align: center;
+
+    // Prevent the exclamation mark from being included when the warning text
+    // is copied, for example.
+    user-select: none;
+
+    // Improve rendering in Windows High Contrast Mode (Edge), where a
+    // readability backplate behind the exclamation mark obscures the circle
+    forced-color-adjust: none;
+
+    @media screen and (forced-colors: active) {
+      border-color: windowText;
+      color: windowText;
+      background: transparent;
+    }
+  }
+
+  & &__text {
+    padding-left: 30px;
+  }
+
+  &:link {
+    color: $govuk-error-colour;
+  }
+
+  &:focus {
+    background-color: transparent;
+    box-shadow: 0 -2px transparent, 0 4px transparent
+  }
+
+  &:focus &__icon {
+    border: 3px solid govuk-colour("white");
+    border-radius: 50%;
+
+    color: govuk-colour("red");
+    background: govuk-colour("white");
+  }
+
+  &:focus &__text {
+    background-color: govuk-colour("red");
+    color: govuk-colour("white");
+    box-shadow: 0 -2px $govuk-error-colour, 0 4px #0b0c0c
+  }
+}
+
 
 .govuk-header {
   // Try to get consistency between with/without page navigation bars
