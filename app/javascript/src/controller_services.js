@@ -76,6 +76,8 @@ ServicesController.edit = function() {
     layoutDetachedItemsOverview(view);
   }
 
+  addEventListeners()
+
   renderActivatedMenus(view);
 
   addServicesContentScrollContainer(view);
@@ -181,6 +183,35 @@ function setupUndoRedoButton(view) {
   });
 }
 
+function addEventListeners() {
+  document.body.addEventListener('click', function(event) {
+    const target = event.target;
+    const targetConnectorPath = target.closest('.FlowConnectorPath')
+    const flowConnectorPaths = document.querySelectorAll('.FlowConnectorPath')
+
+    flowConnectorPaths.forEach((path) => {
+      if( path != targetConnectorPath) {
+        path.classList.remove('selected')
+      } 
+    }) 
+    if(target.matches('path')) {
+      targetConnectorPath?.classList.toggle('selected')
+    }
+  })
+
+  document.body.addEventListener('mouseover', function(event) {
+    if(!event.target.matches('path')) return;
+    
+    event.target.closest('.FlowConnectorPath').classList.add('active')
+  })
+
+  document.body.addEventListener('mouseout', function(event) {
+    if(!event.target.matches('path')) return;
+    
+    event.target.closest('.FlowConnectorPath').classList.remove('active')
+  })
+
+}
 
 /* VIEW SETUP FUNCTION:
  * --------------------
@@ -218,6 +249,10 @@ function layoutFormFlowOverview(view) {
   renderFlowConnectorPaths($container);
   adjustOverviewHeight($container);
   adjustOverviewWidth($container);
+
+
+
+
   performance.mark('flow-layout-end')
 }
 

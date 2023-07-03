@@ -15,7 +15,7 @@ module Admin
       Uptime.new(
         service_id: service.service_id,
         service_name: service.service_name,
-        host: "#{service.service_slug}.#{url_root}",
+        host: "#{service_slug(service)}.#{url_root}",
         adapter:
       ).create
 
@@ -86,5 +86,18 @@ module Admin
     def adapter
       Uptime::Adapters::Pingdom
     end
+
+    def service_slug_config(service_id)
+      ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'SERVICE_SLUG'
+      )&.decrypt_value
+    end
+
+    def service_slug(service)
+      service_slug_config(service.service_id).presence || service.service_slug
+    end
+    helper_method :service_slug
   end
 end

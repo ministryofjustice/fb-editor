@@ -1,0 +1,13 @@
+<label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
+  <%= @component_validation.label %>
+</label>
+<p class="govuk-hint"><%= @component_validation.hint %></p>
+<input class="govuk-input govuk-input--width-5 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
+       id="component_validation_value"
+       name="component_validation[value]"
+       pattern="[0-9]*"
+       inputmode="numeric"
+       spellcheck="false"
+       autocomplete=""
+       aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %>"
+       value="<%= @component_validation.main_value %>">

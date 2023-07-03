@@ -18,7 +18,7 @@ module MetadataVersionHelper
     MetadataApiClient::Service.latest_version(service_id)
   end
 
-  def service_slug(version_metadata)
+  def service_slug_from_name(version_metadata)
     service = MetadataPresenter::Service.new(version_metadata, editor: true)
     service.service_slug
   end

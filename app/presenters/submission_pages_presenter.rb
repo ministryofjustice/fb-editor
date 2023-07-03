@@ -3,24 +3,16 @@ class SubmissionPagesPresenter
   include GovukLinkHelper
   attr_reader :messages, :service
 
-  def initialize(service, messages)
+  def initialize(service, messages, grid)
     @service = service
     @messages = messages
+    @grid = grid
   end
 
   def message
     @message ||= submitting_pages_not_present_message ||
       confirmation_page_not_present_message ||
       cya_page_not_present_message
-  end
-
-  def cya_and_confirmation_missing?
-    !checkanswers_in_main_flow? &&
-      !confirmation_in_main_flow?
-  end
-
-  def confirmation_in_main_flow?
-    grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 
   private
@@ -40,6 +32,11 @@ class SubmissionPagesPresenter
     end
   end
 
+  def cya_and_confirmation_missing?
+    !checkanswers_in_main_flow? &&
+      !confirmation_in_main_flow?
+  end
+
   def cya_page_not_present_message
     if !checkanswers_in_main_flow? && confirmation_in_main_flow?
       messages[:cya_page].gsub('%{href}', link('cya_page')).html_safe
@@ -53,10 +50,10 @@ class SubmissionPagesPresenter
   end
 
   def checkanswers_in_main_flow?
-    grid.page_uuids.include?(service.checkanswers_page&.uuid)
+    @grid.page_uuids.include?(service.checkanswers_page&.uuid)
   end
 
-  def grid
-    @grid ||= MetadataPresenter::Grid.new(service)
+  def confirmation_in_main_flow?
+    @grid.page_uuids.include?(service.confirmation_page&.uuid)
   end
 end

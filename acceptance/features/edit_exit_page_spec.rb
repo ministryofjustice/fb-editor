@@ -59,7 +59,7 @@ feature 'Edit exit pages' do
     and_I_return_to_flow_page
     and_I_edit_the_page(url: default_exit_page_title)
     then_I_should_see_the_component(content_component)
-    when_I_want_to_select_component_properties('.output', content_component)
+    when_I_want_to_select_component_properties('[data-element="editable-content-output"]', content_component)
     and_I_want_to_delete_a_content_component
     then_I_should_not_see_my_content(content_component)
   end
@@ -89,7 +89,7 @@ feature 'Edit exit pages' do
 
     # the output element p tag of a content component is the thing which has
     # the actual text in it
-    output_component = editor.first_component.find('.output p', visible: false)
+    output_component = editor.first_component.find('[data-element="editable-content-output"]', visible: false)
     expect(output_component.text).to eq(optional_content)
   end
 
