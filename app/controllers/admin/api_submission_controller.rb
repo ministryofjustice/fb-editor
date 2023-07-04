@@ -1,7 +1,6 @@
 module Admin
   class ApiSubmissionController < FormController
     before_action :assign_form_objects
-    attr_accessor :service_output_json_key
 
     SERVICE_OUTPUT_JSON_ENDPOINT = 'SERVICE_OUTPUT_JSON_ENDPOINT'.freeze
     SERVICE_OUTPUT_JSON_KEY = 'SERVICE_OUTPUT_JSON_KEY'.freeze
@@ -20,8 +19,6 @@ module Admin
     def index; end
 
     def create
-      @service_output_json_key = params[:admin_api_submission_settings][:service_output_json_key]
-
       @api_submission = ApiSubmissionSettings.new(
         api_submission_settings_params.merge(service:)
       )

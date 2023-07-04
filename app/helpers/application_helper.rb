@@ -95,24 +95,6 @@ module ApplicationHelper
     response.metadata['items'].present?
   end
 
-  def masked_config?(name)
-    Rails.application.config.mask_values.include?(name)
-  end
-
-  def mask_value(name, value)
-    return unless value.is_a? String
-
-    return value unless masked_config?(name)
-
-    if value.length <= Rails.application.config.mask_lower_length
-      value.gsub(/./, Rails.application.config.mask_character)
-    elsif value.length <= Rails.application.config.mask_upper_length
-      value.gsub(/.(?=.{2})/, Rails.application.config.mask_character)
-    else
-      value.gsub(/.(?=.{4})/, Rails.application.config.mask_character)
-    end
-  end
-
   # Remove once hotjar testing is complete
   def live_platform?
     ENV['PLATFORM_ENV'] == 'live'
