@@ -999,6 +999,7 @@ editable-content,
     margin-bottom: govuk-spacing(9);
     margin-right: govuk-spacing(9);
     width: 200px;
+    vertical-align: top;
   }
 }
 
@@ -1021,7 +1022,6 @@ editable-content,
     @include list_reset;
   }
 }
-
 
 /* govuk-app-navigation does not appear to exist
  * but these styles are influenced by the GovUK
@@ -1184,21 +1184,21 @@ editable-content,
 
 .govuk-warning-link {
   position: relative;
-  display: flex;
 
-   & &__icon {
+  & &__icon {
     @include govuk-font($size: false, $weight: bold);
 
     box-sizing: border-box;
 
     display: inline-block;
 
-    position: absolute;
-    left: 0;
-
     min-width: 22px;
     min-height: 22px;
     margin-top: -2px;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    text-decoration: none;
 
     @include govuk-media-query($from: tablet) {
       margin-top: -0px;
@@ -1232,10 +1232,6 @@ editable-content,
     }
   }
 
-  & &__text {
-    padding-left: 30px;
-  }
-
   &:link {
     color: $govuk-error-colour;
   }
@@ -1243,14 +1239,6 @@ editable-content,
   &:focus {
     background-color: transparent;
     box-shadow: 0 -2px transparent, 0 4px transparent
-  }
-
-  &:focus &__icon {
-    border: 3px solid govuk-colour("white");
-    border-radius: 50%;
-
-    color: govuk-colour("red");
-    background: govuk-colour("white");
   }
 
   &:focus &__text {
