@@ -23,7 +23,7 @@
     <% else %>
 
       <% if item[:type] == 'flow.branch' %>
-        <article class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
+        <article id="<%= item[:uuid] %>" class="flow-item flow-branch" data-fb-id="<%= item[:uuid] %>">
           <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{item[:uuid]}", alt: "", role: "presentation" %>
           <map name="thumbnail-<%= item[:uuid] %>" aria-hidden="true">
             <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, item[:uuid]) %>" tabindex="-1">
@@ -60,7 +60,7 @@
 
         <% if item[:next].empty? %>
           <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
-          <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
+          <article id="<%= item[:uuid] %>" class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" <%= !(item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
             <%= flow_thumbnail_link(item) %>
             <%= flow_text_link(item) %>
             <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
@@ -69,7 +69,7 @@
             <% end %>
           </article>
         <% else %>
-          <article class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
+          <article id="<%= item[:uuid] %>" class="flow-item flow-page" aria-label="<%= item[:title] %>" data-fb-id="<%= item[:uuid] %>" data-next="<%= item[:next] %>">
             <%= flow_thumbnail_link(item) %>
             <%= flow_text_link(item) %>
             <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
