@@ -211,6 +211,32 @@ function addEventListeners() {
     event.target.closest('.FlowConnectorPath').classList.remove('active')
   })
 
+  document.body.addEventListener('click', function(event){
+    console.log('you clicked')
+    if(!event.target.closest('.flow-item')) return;
+    console.log('you clicked something in a flow item');
+    console.log(event);
+    // event.preventDefault();
+    if(!(event.target.closest('.flow-thumbnail') || event.target.closest('.govuk-link')) ) return;
+    console.log('you clicked a thumbnail or a link');
+    
+    
+    const id = event.target.closest('.flow-item').dataset.fbId 
+    console.log({id})
+    const state = { flow_item_id: id };
+    const url = new URL(location)
+    url.hash = id;
+
+    history.pushState(state, "", `${url}`);
+    
+  })
+
+  // window.addEventListener("popstate", (event) => {
+  //   console.log(
+  //     `LOCATION: ${DOCUMENT.LOCATION}, STATE: ${json.STRINGIFY(EVENT.STATE)}`
+  //   );
+  // });
+
 }
 
 /* VIEW SETUP FUNCTION:
