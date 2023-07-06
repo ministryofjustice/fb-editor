@@ -18,6 +18,7 @@ const Dialog = require('./component_dialog');
 const SentryLogger=  require('./sentry_logger');
 const post = require('./utilities').post;
 
+const SubmitHandler = require('./submit_handler');
 
 class DefaultController {
   constructor(app) {
