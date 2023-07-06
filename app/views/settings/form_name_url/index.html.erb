@@ -44,7 +44,7 @@
             value: f.object.saved_service_slug,
             'aria-labelledby': 'form-url-legend'
           %>
-        <div id="<%= f.object.errors[:service_slug] ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
+        <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
             You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
           </div>
           <div class="fb-domain-input__suffix" aria-hidden="true">
