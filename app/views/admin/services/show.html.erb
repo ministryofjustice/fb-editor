@@ -15,9 +15,7 @@
       Visit service in app
     </a>
 
-<% if ENV['API_SUBMISSION'] == 'enabled' %>
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
-<% end %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
