@@ -1,4 +1,4 @@
-<script>
+<script nonce=<%= request.content_security_policy_nonce %>>
   var SENTRY_DSN = "<%= ENV['SENTRY_DSN'] %>";
   var PLATFORM_ENV =  "<%= ENV['PLATFORM_ENV'] %>";
   var app = {

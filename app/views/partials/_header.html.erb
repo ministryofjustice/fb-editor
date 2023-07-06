@@ -1,4 +1,4 @@
-<script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+<script nonce=<%= request.content_security_policy_nonce %>>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
 <header class="govuk-header govuk-header__container" role="banner" data-module="govuk-header">
   <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
 

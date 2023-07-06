@@ -74,6 +74,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: sentry_dsn
+          - name: SENTRY_CSP_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_csp_url
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:
@@ -216,6 +221,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: sentry_dsn
+          - name: SENTRY_CSP_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_csp_url
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:

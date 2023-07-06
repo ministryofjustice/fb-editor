@@ -167,7 +167,7 @@
 
     <a href="<%= edit_admin_service_version_path(@service.service_id, @latest_metadata['version_id']) %>" class="govuk-button fb-govuk-button">Edit</a>
 
-    <pre class="govuk-!-padding-right-5" style="white-space:pre-wrap;">
+    <pre class="govuk-!-padding-right-5 white-space-pre-wrap">
       <%= JSON.pretty_generate(@latest_metadata) %>
     </pre>
 
