@@ -13,10 +13,8 @@ Rails.application.configure do
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"
-    policy.style_src   :self,
-                       "'unsafe-hashes'",
-                       "'sha256-g0/XswAmA05eJqlbjX+QanYdtwQs9NJHFaBXC9/dmm8='", # style tag on admin service page
-                       "'sha256-NN3cxOpkbkk3bTeAp9eF4SiKghXfcmGXX+G8ICEuZtQ='" # hash for component validation
+    policy.style_src   :self, :https
+
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
   end
