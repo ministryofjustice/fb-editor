@@ -15,7 +15,8 @@ Rails.application.configure do
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
                        "https://*.hotjar.com"
     policy.style_src   :self,
-                       "https://*.hotjar.com"
+                       "https://*.hotjar.com",
+                       'unsafe-inline'
     policy.connect_src :self,
                        "https://*.hotjar.com",
                        "https://*.hotjar.io",
