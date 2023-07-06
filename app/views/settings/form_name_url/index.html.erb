@@ -10,7 +10,26 @@
     html: { id: 'form-name-url-settings' },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-    <%= f.govuk_error_summary %>
+  <% if f.object.errors.present? %>
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+      <h2 class="govuk-error-summary__title">
+        <%= t('activemodel.errors.summary_title') %>
+      </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+            <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+            <li>
+              <a href="#form-name-url-settings-field-error-<%= index %>">
+                <%= error_message %>
+              </a>
+            </li>
+          <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
     <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>
         <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
@@ -37,13 +56,25 @@
       <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
       <div class="fb-domain-input">
         <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>" data-threshold="75">
-          <%= f.govuk_text_field :service_slug,
-            label: -> {},
-            hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
-            class: "govuk-input  govuk-js-character-count",
-            value: f.object.saved_service_slug,
-            'aria-labelledby': 'form-url-legend'
-          %>
+          <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
+            <% if f.object.errors.present? %>
+              <% f.object.errors.full_messages.each_with_index do |error_message, index| %>
+                <% if error_message.include?('URL') %>
+                  <p id="form-name-url-settings-field-error-<%= index %>" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+                  </p>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <%= f.govuk_text_field :service_slug,
+              label: -> {},
+              hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
+              class: "govuk-input  govuk-js-character-count",
+              value: f.object.saved_service_slug,
+              'aria-labelledby': 'form-url-legend'
+            %>
+          </div>
         <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
             You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
           </div>
