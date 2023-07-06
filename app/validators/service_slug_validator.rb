@@ -11,6 +11,42 @@ class ServiceSlugValidator < ActiveModel::Validator
         )
       )
     end
+
+    if record.service_slug.include?(' ')
+      record.errors.add(
+        :base,
+        I18n.t(
+          'activemodel.errors.models.service_slug.whitespace'
+        )
+      )
+    end
+
+    if record.service_slug.start_with?(/[0-9]/)
+      record.errors.add(
+        :base,
+        I18n.t(
+          'activemodel.errors.models.service_slug.starts_with_number'
+        )
+      )
+    end
+
+    if record.service_slug.match?(/[A-Z]/)
+      record.errors.add(
+        :base,
+        I18n.t(
+          'activemodel.errors.models.service_slug.contains_uppercase'
+        )
+      )
+    end
+
+    unless record.service_slug.match?(/^[a-zA-Z0-9-]+$/)
+      record.errors.add(
+        :base,
+        I18n.t(
+          'activemodel.errors.models.service_slug.special_characters'
+        )
+      )
+    end
   end
 
   private
