@@ -41,6 +41,19 @@ module ApplicationHelper
     end
   end
 
+  # rubocop:disable Rails/HelperInstanceVariable
+  def pages_url
+    case controller_name
+    when 'pages'
+      edit_service_path(service.service_id, anchor: @page&.uuid)
+    when 'branches'
+      edit_service_path(service.service_id, anchor: @branch&.branch_uuid)
+    else
+      edit_service_path(service.service_id)
+    end
+  end
+  # rubocop:enable Rails/HelperInstanceVariable
+
   def strip_url(url)
     url.to_s.chomp('/').reverse.chomp('/').reverse.strip.downcase
   end

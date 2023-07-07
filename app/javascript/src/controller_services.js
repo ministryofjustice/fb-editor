@@ -81,7 +81,9 @@ ServicesController.edit = function() {
   renderActivatedMenus(view);
 
   addServicesContentScrollContainer(view);
+  setScrollPosition(view);
   view.ready();
+
 
   const flowLayoutTime = performance.measure('flow-layout-time', 'flow-layout-start', 'flow-layout-end');
   const flowItemPositionTime = performance.measure('flow-item-position-time', 'flow-layout-start', 'flow-items-positioned');
@@ -209,6 +211,18 @@ function addEventListeners() {
     if(!event.target.matches('path')) return;
     
     event.target.closest('.FlowConnectorPath').classList.remove('active')
+  })
+
+  document.body.addEventListener('click', function(event){
+    if(!event.target.closest('.flow-item')) return;
+    if(!(event.target.closest('.flow-thumbnail') || event.target.closest('.govuk-link')) ) return;
+    
+    const id = event.target.closest('.flow-item').dataset.fbId 
+    const state = { flow_item_id: id };
+    const url = new URL(location)
+
+    url.hash = id;
+    history.replaceState(state, "", `${url}`);
   })
 
 }
@@ -632,6 +646,28 @@ function adjustScrollDimensionsAndPositions($body, $container, $main, $header, $
     $nav.css("top", (y + navTop) + "px");
     $title.css("top", (y + titleTop) + "px");
   });
+}
+
+function setScrollPosition(view) {
+  if(!location.hash) return;
+
+  const id = location.hash.replace('#','');
+  console.log(id)
+  const flowItem = document.querySelector(`[data-fb-id="${id}"]`)
+  console.log(flowItem);
+  if(!flowItem) return;
+
+  const rect = flowItem.getBoundingClientRect()
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const scrollLeft = window.pageXOfset || document.documentElement.scrollLeft;
+
+  const position = {
+    top: rect.top + scrollTop - window.innerHeight/2, 
+    left: rect.left + scrollLeft - window.innerWidth/2 
+  }
+  console.log(position)
+
+  window.scrollTo(position)
 }
 
 
