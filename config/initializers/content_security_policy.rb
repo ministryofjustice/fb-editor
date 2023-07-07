@@ -13,7 +13,8 @@ Rails.application.configure do
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
-                       "https://*.hotjar.com"
+                       "https://*.hotjar.com",
+                       'unsafe-inline'
     policy.style_src   :self,
                        "https://*.hotjar.com",
                        'unsafe-inline'
