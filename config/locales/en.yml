@@ -610,6 +610,7 @@ en:
           starts_with_number: Your URL cannot start with a number
           contains_uppercase: Your URL cannot include upper-case letters
           special_characters: Your URL cannot include special characters except hyphens
+          blank: Your URL cannot be blank
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"

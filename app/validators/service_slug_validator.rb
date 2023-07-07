@@ -1,5 +1,14 @@
 class ServiceSlugValidator < ActiveModel::Validator
   def validate(record)
+    if record.service_slug.blank?
+      return record.errors.add(
+        :base,
+        I18n.t(
+          'activemodel.errors.models.service_slug.blank'
+        )
+      )
+    end
+
     current_service_slug = current_service_slug_config(service_id: record.service_id)
     valid_service_slugs = all_service_slugs - [current_service_slug]
 
