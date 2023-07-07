@@ -45,9 +45,9 @@ module ApplicationHelper
   def pages_url
     case controller_name
     when 'pages'
-      edit_service_path(service.service_id, anchor: @page.uuid)
+      edit_service_path(service.service_id, anchor: @page&.uuid)
     when 'branches'
-      edit_service_path(service.service_id, anchor: @branch.branch_uuid)
+      edit_service_path(service.service_id, anchor: @branch&.branch_uuid)
     else
       edit_service_path(service.service_id)
     end
