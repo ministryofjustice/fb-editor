@@ -9,7 +9,7 @@
             <span class="govuk-visually-hidden"><%= t('actions.edit') %></span>
             <%= page.url.titleize %>
             <% if page.contains_placeholders? %>
-              <span class="govuk-visually-hidden">, Incomplete</span>
+              <span class="govuk-visually-hidden">, <%= t('assistive_text.incomplete') %></span>
             <% end %>
           </span>
           <% if page.contains_placeholders? %>
