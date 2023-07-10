@@ -1,56 +1,54 @@
-class ServiceSlugValidator < ActiveModel::Validator
-  def validate(record)
-    if record.service_slug.blank?
-      return record.errors.add(
-        :base,
-        I18n.t(
-          'activemodel.errors.models.service_slug.blank'
-        )
+class ServiceSlugValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    if value.blank?
+      return record.errors.add attribute, (
+        options[:message] ||
+        I18n.t('activemodel.errors.models.service_slug.blank')
       )
     end
 
     current_service_slug = current_service_slug_config(service_id: record.service_id)
     valid_service_slugs = all_service_slugs - [current_service_slug]
 
-    unless valid_service_slugs.exclude?(record.service_slug)
-      record.errors.add(
-        :base,
+    unless valid_service_slugs.exclude?(value)
+      record.errors.add attribute, (
+        options[:message] ||
         I18n.t(
           'activemodel.errors.models.service_slug.exists'
         )
       )
     end
 
-    if record.service_slug.include?(' ')
-      record.errors.add(
-        :base,
+    if value.include?(' ')
+      record.errors.add attribute, (
+        options[:message] ||
         I18n.t(
           'activemodel.errors.models.service_slug.whitespace'
         )
       )
     end
 
-    if record.service_slug.start_with?(/[0-9]/)
-      record.errors.add(
-        :base,
+    if value.start_with?(/[0-9]/)
+      record.errors.add attribute, (
+        options[:message] ||
         I18n.t(
           'activemodel.errors.models.service_slug.starts_with_number'
         )
       )
     end
 
-    if record.service_slug.match?(/[A-Z]/)
-      record.errors.add(
-        :base,
+    if value.match?(/[A-Z]/)
+      record.errors.add attribute, (
+        options[:message] ||
         I18n.t(
           'activemodel.errors.models.service_slug.contains_uppercase'
         )
       )
     end
 
-    unless record.service_slug.match?(/^[a-zA-Z0-9-]+$/)
-      record.errors.add(
-        :base,
+    unless value.match?(/^[a-zA-Z0-9-]+$/)
+      record.errors.add attribute, (
+        options[:message] ||
         I18n.t(
           'activemodel.errors.models.service_slug.special_characters'
         )
