@@ -15,7 +15,8 @@ en:
       content: Content page
       exit: Exit page
   assistive_text:
-    warning: Warning
+    warning: warning
+    incomplete: incomplete
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'

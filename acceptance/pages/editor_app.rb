@@ -34,8 +34,8 @@ class EditorApp < SitePrism::Page
 
   # Pages flow
   element :footer_pages_link, 'button', text: I18n.t('pages.footer')
-  element :cookies_link, :link, 'cookies'
-  element :privacy_link, :link, 'privacy'
+  element :cookies_link, :link, 'Cookies', class: 'govuk-link'
+  element :privacy_link, :link, 'Privacy', class: 'govuk-link'
 
   element :pages_link, :link, I18n.t('pages.name')
   element :publishing_link, :link, I18n.t('publish.name')
