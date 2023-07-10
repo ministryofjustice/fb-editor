@@ -46,7 +46,7 @@ class ServiceSlugValidator < ActiveModel::EachValidator
       )
     end
 
-    unless value.match?(/^[a-zA-Z0-9-]+$/)
+    unless value.match?(/^[a-zA-Z0-9- ]+$/)
       record.errors.add attribute, (
         options[:message] ||
         I18n.t(
