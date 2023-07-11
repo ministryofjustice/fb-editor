@@ -199,6 +199,7 @@ RSpec.describe Branch do
           "What was the name of the band playing in Jabba's palace?",
           "What is The Mandalorian's real name?",
           'Upload your best dog photo',
+          'Upload your best dog photos',
           'Countries'
         ]
       )
@@ -217,6 +218,7 @@ RSpec.describe Branch do
           { 'data-supports-branching': true },
           { 'data-supports-branching': false },
           { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
           { 'data-supports-branching': false },
           { 'data-supports-branching': false }
         ]
