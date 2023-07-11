@@ -14,11 +14,19 @@
       <% end %>
 
       <% enabled_validations(component).each do |validation| %>
-        <li data-action="validation"
+        <% if validation == 'max_files' %>
+          <li data-action="validation"
             data-validation="<%= validation %>"
             data-api-path="<%= URI.decode_www_form_component(api_service_page_component_validations_path(service.service_id, @page.uuid, component.uuid, validation)) -%>">
-          <span role="menuitemcheckbox" aria-checked="<%= component.validation[validation] ? 'true' : 'false' -%>"><%= t("question.menu.#{validation}") %></span>
-        </li>
+            <span><%= t("question.menu.#{validation}") %></span>
+          </li>
+        <% else %>
+          <li data-action="validation"
+              data-validation="<%= validation %>"
+              data-api-path="<%= URI.decode_www_form_component(api_service_page_component_validations_path(service.service_id, @page.uuid, component.uuid, validation)) -%>">
+              <span role="menuitemcheckbox" aria-checked="<%= component.validation[validation] ? 'true' : 'false' -%>"><%= t("question.menu.#{validation}") %></span>
+          </li>
+        <% end %>
       <% end %>
 
       <% unless @page.type == 'page.singlequestion' %>
