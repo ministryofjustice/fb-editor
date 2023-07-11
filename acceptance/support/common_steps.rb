@@ -396,7 +396,7 @@ module CommonSteps
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
     expect(editor).to have_content(page_link)
-    editor.flow_thumbnail(page_title).hover #hides the connection menu
+    editor.service_name.click #hides the connection menu
   end
 
   def then_I_should_see_default_service_pages

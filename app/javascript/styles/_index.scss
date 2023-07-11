@@ -883,12 +883,21 @@ editable-content,
   .text {
     word-break: break-word;
   }
-}
 
-.flow-link {
-  display: inline-block;
-  margin-top: govuk-spacing(2);
-  width: 200px;
+  &__title {
+    &:visited {
+      color: $govuk-link-colour;
+    }
+    &:hover {
+      color:  $govuk-link-hover-colour;
+    }
+    &:active {
+      color:  $govuk-link-active-colour;
+    }
+    &:focus {
+      color: $govuk-focus-text-colour;
+    }
+  }
 }
 
 .flow-page {
@@ -1005,6 +1014,7 @@ editable-content,
     margin-bottom: govuk-spacing(9);
     margin-right: govuk-spacing(9);
     width: 200px;
+    vertical-align: top;
   }
 }
 
@@ -1027,7 +1037,6 @@ editable-content,
     @include list_reset;
   }
 }
-
 
 /* govuk-app-navigation does not appear to exist
  * but these styles are influenced by the GovUK
@@ -1187,6 +1196,78 @@ editable-content,
     color: govuk-colour("white");
   }
 }
+
+.govuk-warning-link {
+  position: relative;
+
+  & &__icon {
+    @include govuk-font($size: false, $weight: bold);
+
+    box-sizing: border-box;
+
+    display: inline-block;
+
+    min-width: 22px;
+    min-height: 22px;
+    margin-top: -2px;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    text-decoration: none;
+
+    @include govuk-media-query($from: tablet) {
+      margin-top: -0px;
+    }
+
+    // When a user customises their colours the background colour will often be removed.
+    // Adding a border to the component keeps it's shape as a circle.
+    border: 3px solid govuk-colour("red");
+    border-radius: 50%;
+
+    color: govuk-colour("white");
+    background: govuk-colour("red");
+
+    font-size: 18px;
+    line-height: 16px;
+
+    text-align: center;
+
+    // Prevent the exclamation mark from being included when the warning text
+    // is copied, for example.
+    user-select: none;
+
+    // Improve rendering in Windows High Contrast Mode (Edge), where a
+    // readability backplate behind the exclamation mark obscures the circle
+    forced-color-adjust: none;
+
+    @media screen and (forced-colors: active) {
+      border-color: windowText;
+      color: windowText;
+      background: transparent;
+    }
+  }
+
+  &:link,
+  &:visited {
+    color: $govuk-error-colour;
+  }
+
+  &:hover {
+    color: #942514;
+  }
+
+  &:focus {
+    background-color: transparent;
+    box-shadow: 0 -2px transparent, 0 4px transparent
+  }
+
+  &:focus &__text {
+    background-color: govuk-colour("red");
+    color: govuk-colour("white");
+    box-shadow: 0 -2px $govuk-error-colour, 0 4px #0b0c0c
+  }
+}
+
 
 .govuk-header {
   // Try to get consistency between with/without page navigation bars

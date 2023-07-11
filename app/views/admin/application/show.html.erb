@@ -36,7 +36,7 @@ as well as a link to its edit page.
 
   <dl>
     <% page.attributes.each do |attribute| %>
-      <dt class="attribute-label" id="<%= attribute.name %>" style="margin-top: 0;">
+      <dt class="govuk-!-margin-top-0 attribute-label" id="<%= attribute.name %>">
       <%= t(
         "helpers.label.#{resource_name}.#{attribute.name}",
         default: page.resource.class.human_attribute_name(attribute.name),
@@ -51,7 +51,7 @@ as well as a link to its edit page.
 
 <% if @user_services.present? %>
 
-  <div style="clear: both;">
+  <div class="clear-both">
     <h2>Forms</h2>
       <ul class="fb-editor-list fb-editor-form-list">
           <% @user_services.each do |service| %>

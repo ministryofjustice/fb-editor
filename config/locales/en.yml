@@ -15,7 +15,8 @@ en:
       content: Content page
       exit: Exit page
   assistive_text:
-    warning: Warning
+    warning: warning
+    incomplete: incomplete
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
@@ -45,6 +46,16 @@ en:
   notification_banners:
     important: Important
     success: Success
+    cookies:
+      heading:   "This page can’t be edited. You don’t need to do anything with it because we’ve taken care of it for you."
+    privacy:
+      heading: "You need to ensure you are following data protection requirements and complete this page before your form can go live. "
+      link_text: "Learn more about data protection and privacy"
+      link_href: "https://moj-forms.service.justice.gov.uk/data-protection/"
+    accessibility:
+      heading: "You need to ensure your form’s content is accessible and complete this page before your form can go live. "
+      link_text: "Learn more about accessibility"
+      link_href: "https://moj-forms.service.justice.gov.uk/accessibility/"
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'

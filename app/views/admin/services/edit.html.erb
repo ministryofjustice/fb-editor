@@ -32,7 +32,8 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
                url: admin_service_path(@service.service_id),
                method: :put,
                builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
-<div class="govuk-!-margin-bottom-5" style="display: flex; justify-content: space-between; align-items: center;">
+
+<div class="govuk-!-margin-bottom-5 flex align-items-center justify-content-between">
     <a href="<%= admin_services_path %>" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
       Back to services
     </a>

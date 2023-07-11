@@ -15,9 +15,7 @@
       Visit service in app
     </a>
 
-<% if ENV['API_SUBMISSION'] == 'enabled' %>
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
-<% end %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -169,7 +167,7 @@
 
     <a href="<%= edit_admin_service_version_path(@service.service_id, @latest_metadata['version_id']) %>" class="govuk-button fb-govuk-button">Edit</a>
 
-    <pre class="govuk-!-padding-right-5" style="white-space:pre-wrap;">
+    <pre class="govuk-!-padding-right-5 white-space-pre-wrap">
       <%= JSON.pretty_generate(@latest_metadata) %>
     </pre>
 

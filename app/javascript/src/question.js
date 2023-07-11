@@ -39,6 +39,8 @@ class Question {
         // optionalFlag: Replaced with design requirement
       },
       type: $node.data("fb-content-type"),
+      defaultLabelValue: $node.data('fb-default-value'),
+      defaultItemLabelValue: $node.data('fb-default-item-value'),
       view: {}
     }, config);
 

@@ -36,7 +36,7 @@
     <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>
       <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
       <div class="fb-domain-input">
-        <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>">
+        <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>" data-threshold="75">
           <%= f.govuk_text_field :service_slug,
             label: -> {},
             hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
@@ -44,7 +44,7 @@
             value: f.object.saved_service_slug,
             'aria-labelledby': 'form-url-legend'
           %>
-          <div id="service-service-slug-field-info" class="govuk-hint govuk-character-count__message">
+        <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
             You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
           </div>
           <div class="fb-domain-input__suffix" aria-hidden="true">
