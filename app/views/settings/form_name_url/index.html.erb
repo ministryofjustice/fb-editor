@@ -1,14 +1,13 @@
-<%= mojf_settings_screen(
-  heading:t('settings.form_name.heading')
-) do |c| %>
+<%= mojf_settings_screen(heading:t('settings.form_name.heading')) do |screen| %>
 
-<% c .with_back_link(href: settings_path) %>
-
-<%= form_for @form_name_url_settings,
-  as: :service,
-  url: settings_form_name_url_index_path(service.service_id),
-  html: { id: 'form-name-url-settings' },
-  builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+  <% screen.with_back_link(href: settings_path) %>
+  
+  <editable-page prevent-unload submitted-label="<%= t('actions.saved') %>" unsubmitted-label="<%= t('actions.save') %>" submitting-label="<%= t('actions.saving') %>" assistive-description="<%= t('aria.disabled_save_description') %>"  >
+  <%= form_for @form_name_url_settings,
+    as: :service,
+    url: settings_form_name_url_index_path(service.service_id),
+    html: { id: 'form-name-url-settings' },
+    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
   <% if f.object.errors.present? %>
     <div class="govuk-error-summary" data-module="govuk-error-summary">
@@ -89,8 +88,10 @@
       </div>
     <% end %>
   <% end %>
-  <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-    <%= t('actions.save') %>
-  </button>
-<% end %>
+
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      <%= t('actions.save') %>
+    </button>
+  <% end %>
+  </editable-page>
 <% end %>

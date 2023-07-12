@@ -10,10 +10,12 @@ require("../src/index")
 
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
+const { EditablePage } = require('../src/web-components/editable-page');
 
 if ('customElements' in window) {
   customElements.define('elastic-textarea', ElasticTextarea);
   customElements.define('editable-content', EditableContent);
+  customElements.define('editable-page', EditablePage);
 }
 
 // Entry point for fb-editor stylesheets
