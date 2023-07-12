@@ -10,15 +10,14 @@ class SaveButton extends HTMLButtonElement {
   }
 
   connectedCallback() {
-    console.log('connected')
     this.text = {
       saved: this.dataset.savedLabel || '',
       unsaved: this.dataset.unsavedLabel || '',
       saving: this.dataset.savingLabel || '',
     }
     this.assistiveText = this.dataset.assistiveText
-
     this.initialized = true;
+
     setTimeout(() => {
       this.render();
     })
@@ -28,7 +27,6 @@ class SaveButton extends HTMLButtonElement {
     if(!this.initialized) return
 
     if(attribute == 'save-required' && newValue != oldValue) {
-      console.log('save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required       save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required       save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required        save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required       save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required      save required save required   save required save required   save required    save required save required   save required save required   save required    save required save required   save required     save required save required   save required save required   save required    save required save required   save required        attribute changed')
       this.#setState() 
     }
   }
@@ -45,11 +43,11 @@ class SaveButton extends HTMLButtonElement {
     return this.hasAttribute('save-required');
   }
 
+  set saveRequired(value) {
+    this.setAttribute('save-required', value)
+  }
+
   render() {
-    console.log('render')
-
-    console.log(this.text)
-
     this.setAttribute('type', 'submit')
     this.#setState()
 
@@ -62,8 +60,7 @@ class SaveButton extends HTMLButtonElement {
   }
 
   afterRender() {
-    console.log('after render')
-      this.form.addEventListener('input', (event) => this.setAttribute('save-required', 'true'))
+      this.form.addEventListener('input', (event) => this.saveRequired = 'true')
       this.form.addEventListener('submit', (event) => this.#handleSubmit(event))
 
       this.addEventListener('click', (event) => this.#handleClick(event))
