@@ -1,15 +1,31 @@
 class SaveButton extends HTMLButtonElement {
   #enabled;
 
+  static get observedAttributes() {
+    return ['save-required']
+  }
+
   constructor() {
     super();
   }
 
   connectedCallback() {
-    this.#enabled = this.saveable === 'true'
+    this.text = {
+      saved: this.dataset.savedLabel || '',
+      unsaved: this.dataset.unsavedLabel || '',
+      saving: this.dataset.savingLabel || '',
+    }
+    this.assistiveText = this.dataset.assistiveText
+
     setTimeout(() => {
       this.render();
     })
+  }
+
+  attributeChangedCallback(attribute, oldValue, newValue) {
+    if(attribute == 'save-required' && newValue != oldValue) {
+      this.#setState() 
+    }
   }
 
   get describedBy() {
@@ -20,39 +36,24 @@ class SaveButton extends HTMLButtonElement {
     return this.hasAttribute('prevent-unload');
   }
 
-  get saveable() {
-    return this.#enabled
-  }
-
-  set saveable(value) {
-    if(value) { 
-      this.#enable();
-    } else {
-      this.#disable();
-    }
-
+  get saveRequired() {
+    return this.hasAttribute('save-required');
   }
 
   render() {
-    this.text = {
-      saved: this.dataset.savedLabel || '',
-      unsaved: this.dataset.unsavedLabel || '',
-      saving: this.dataset.savingLabel || '',
-    }
-
     this.setAttribute('type', 'submit')
-    this.assistiveText = this.dataset.assistiveText
+    this.#setState()
 
     if(this.assistiveText) {
       this.insertAdjacentHTML('afterend', `<span class="sr-only" id="${this.form.id}-save-description"></span>`)
       this.setAttribute('aria-describedby', `${this.form.id}-save-description`)
     }
+
     this.afterRender();
   }
 
   afterRender() {
-      this.saveable = false;
-      this.form.addEventListener('input', (event) => this.saveable = true)
+      this.form.addEventListener('input', (event) => this.setAttribute('save-required', 'true'))
       this.form.addEventListener('submit', (event) => this.#handleSubmit(event))
 
       this.addEventListener('click', (event) => this.#handleClick(event))
@@ -64,7 +65,7 @@ class SaveButton extends HTMLButtonElement {
   }
 
   #handleClick(event) {
-    if(this.saveable) {
+    if(this.saveRequired) {
       this.innerText = this.text.saving
     } else {
       event.preventDefault();
@@ -72,7 +73,7 @@ class SaveButton extends HTMLButtonElement {
   }
 
   #handleSubmit(event) {
-    if(this.saveable) {
+    if(this.saveRequired) {
       this.#removeBeforeUnloadListener();
     } else {
       event.preventDefault();
@@ -94,6 +95,10 @@ class SaveButton extends HTMLButtonElement {
     if(this.preventUnload) {
       window.removeEventListener('beforeunload', this.#beforeUnloadListener, {capture: true});
     }
+  }
+
+  #setState() {
+    this.saveRequired ? this.#enable() : this.#disable()
   }
 
   #enable() {
