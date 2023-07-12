@@ -51,7 +51,7 @@ feature 'Form name URL settings page' do
 
   scenario 'validates the service slug' do
     given_I_update_the_service_slug('')
-    then_I_should_see_a_validation_message_for_required('URL')
+    then_I_should_see_a_validation_message('blank')
   end
 
   scenario 'validates the service slug min length' do
@@ -62,6 +62,26 @@ feature 'Form name URL settings page' do
   scenario 'validates the service slug max length' do
     given_I_update_the_service_slug('slug' * 15)
     then_I_should_see_a_validation_message_for_max_length('URL', 57)
+  end
+
+  scenario 'validates the service slug does not contain spaces' do
+    given_I_update_the_service_slug('slug with whitespace')
+    then_I_should_see_a_validation_message('whitespace')
+  end
+
+  scenario 'validates the service slug does not upper case characters' do
+    given_I_update_the_service_slug('slug with UpPer Case')
+    then_I_should_see_a_validation_message('contains_uppercase')
+  end
+
+  scenario 'validates the service slug does not special characters' do
+    given_I_update_the_service_slug('slug with sp£c!al chars')
+    then_I_should_see_a_validation_message('special_characters')
+  end
+
+  scenario 'validates the service slug does not start with a number' do
+    given_I_update_the_service_slug('123 slug')
+    then_I_should_see_a_validation_message('starts_with_number')
   end
 
   scenario 'updates the service slug in settings' do
@@ -133,6 +153,12 @@ feature 'Form name URL settings page' do
   def then_I_should_see_a_validation_message_for_max_length(attribute, count)
     expect(editor).to have_content(
       I18n.t('activemodel.errors.messages.too_long', attribute: attribute, count: count)
+    )
+  end
+
+  def then_I_should_see_a_validation_message(error)
+    expect(editor).to have_content(
+      I18n.t("activemodel.errors.models.service_slug.#{error}")
     )
   end
 

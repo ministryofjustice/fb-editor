@@ -1,26 +1,47 @@
 <%= mojf_settings_screen(
   heading:t('settings.form_name.heading')
-  ) do |c| %>
+) do |c| %>
 
-  <% c .with_back_link(href: settings_path) %>
+<% c .with_back_link(href: settings_path) %>
 
-  <%= form_for @form_name_url_settings,
-    as: :service,
-    url: settings_form_name_url_index_path(service.service_id),
-    html: { id: 'form-name-url-settings' },
-    builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+<%= form_for @form_name_url_settings,
+  as: :service,
+  url: settings_form_name_url_index_path(service.service_id),
+  html: { id: 'form-name-url-settings' },
+  builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
-    <%= f.govuk_error_summary %>
+  <% if f.object.errors.present? %>
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          <%= t('activemodel.errors.summary_title') %>
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+            <% f.object.errors.messages.each do |attribute, messages| %>
+              <% messages.each do |message| %>
+                <li>
+                  <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                    <%= message %>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
 
-    <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>
-        <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
+  <%= f.govuk_fieldset legend: { text:t('settings.form_name.form_name.label'), size: 's', id: 'form-name-legend' }, class:"govuk-!-margin-bottom-6" do %>
+    <p class="govuk-!-margin-top-2 govuk-!-margin-bottom-6"><%= t('settings.form_name.form_name.lede', href:  t('settings.form_name.form_name.href') ).html_safe %></p>
 
-        <%= f.govuk_text_field :service_name,
-          label: ->  {},
-          class: "govuk-input width-responsive-two-thirds",
-          value: f.object.saved_service_name,
-          'aria-labelledby': 'form-name-legend' %>
-    <% end %>
+    <%= f.govuk_text_field :service_name,
+      label: ->  {},
+      class: "govuk-input width-responsive-two-thirds",
+      value: f.object.saved_service_name,
+      'aria-labelledby': 'form-name-legend' %>
+  <% end %>
 
   <% if f.object.published_to_live? %>
     <%= f.govuk_fieldset legend: { text: t('settings.form_name.form_slug.label'), size: 's', id: 'form-url-legend' } do %>
@@ -37,25 +58,39 @@
       <p><%= t('settings.form_name.form_slug.lede', href:  t('settings.form_name.form_slug.href')).html_safe %></p>
       <div class="fb-domain-input">
         <div class="govuk-character-count" data-module="govuk-character-count" data-maxlength="<%= Editor::Service::URL_MAXIMUM %>" data-threshold="75">
-          <%= f.govuk_text_field :service_slug,
-            label: -> {},
-            hint: { text: t('settings.form_name.form_slug.hint'), class: 'govuk-!-margin-bottom-4' },
-            class: "govuk-input  govuk-js-character-count",
-            value: f.object.saved_service_slug,
-            'aria-labelledby': 'form-url-legend'
-          %>
-        <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
-            You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
-          </div>
-          <div class="fb-domain-input__suffix" aria-hidden="true">
-            <%= t('settings.form_name.form_slug.domain') %>
+
+          <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors[:service_slug].any? ? 'govuk-form-group--error' : '' %>">
+            <div id="service-service-slug-hint" class="govuk-hint govuk-!-margin-bottom-4">
+              <%= t('settings.form_name.form_slug.hint') %>
+            </div>
+
+            <% f.object.errors[:service_slug]&.each_with_index do |error_message, index| %>
+              <p id="service-service-slug-field-error-<%=index%>" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> <%= error_message %>
+              </p>
+            <% end %>
+
+            <input class="govuk-input govuk-js-character-count" 
+                   id="service-service-slug-field<%= f.object.errors[:service_slug].any? ? '-error' : '' %>" 
+                   name="service[service_slug]" 
+                   type="text" 
+                   aria-labelledby="form-url-legend" 
+                   aria-describedby="<%= f.object.errors[:service_slug].any? ? f.object.errors[:service_slug]&.map.with_index {|_,index| "service-service-slug-field-error-#{index}"}.join(' ') : 'service-service-slug-hint'  %>"
+                   value="<%= f.object.saved_service_slug %>">
+
+                   <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
+                     You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
+                     <div class="fb-domain-input__suffix" aria-hidden="true">
+                       <%= t('settings.form_name.form_slug.domain') %>
+                     </div>
+                   </div>
           </div>
         </div>
       </div>
     <% end %>
   <% end %>
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t('actions.save') %>
-    </button>
-  <% end %>
+  <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+    <%= t('actions.save') %>
+  </button>
+<% end %>
 <% end %>
