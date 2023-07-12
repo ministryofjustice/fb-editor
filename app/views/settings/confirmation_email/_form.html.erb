@@ -28,7 +28,12 @@
       <%= render "email_fields", f: f, deployment_environment: deployment_environment %>
     <% end %>
 
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t("settings.submission.#{deployment_environment}.save_button") %>
-    </button>
+    <%= mojf_save_button(form: f, 
+                         text: t("settings.submission.#{deployment_environment}.save_button"), 
+                         html_attributes: {
+                           'prevent-unload': true,
+                           data: {
+                             unsaved_label: t("settings.submission.#{deployment_environment}.save_button"),
+                           }
+                         }) %>
   <% end %>

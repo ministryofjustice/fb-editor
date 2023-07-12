@@ -87,17 +87,7 @@
       </div>
     <% end %>
   <% end %>
-    <button is="save-button" 
-            class="govuk-button fb-govuk-button" 
-            data-module="govuk-button"
-            data-saved-label="<%= t('actions.saved') %>"
-            data-unsaved-label="<%= t('actions.save') %>"
-            data-saving-label="<%= t('actions.saving') %>"
-            data-assistive-text="<%= t('aria.disabled_save_description') %>"
-            prevent-unload
-            >
-      <%= t('actions.save') %>
-    </button>
+  <%= mojf_save_button(text: t('actions.save'), form: f, html_attributes: {'prevent-unload': true}) %>
   <% end %>
   </editable-page>
 <% end %>
