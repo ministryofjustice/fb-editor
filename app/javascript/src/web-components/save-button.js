@@ -84,18 +84,26 @@ class SaveButton extends HTMLButtonElement {
   }
 
   set saveRequired(value) {
-    this.setAttribute('save-required', value);
+    switch(value) {
+      case '':
+      case 'true':
+      case true:
+        this.setAttribute('save-required', value);
+        break;
+      default:
+        this.removeAttribute('save-required');
+    }
   }
 
   render() {
     this.setAttribute('type', 'submit'); // ensure type is submit
-    this.#setState();
 
     if(this.assistiveText) {
       this.insertAdjacentHTML('afterend', `<span class="sr-only" id="${this.form.id}-save-description"></span>`);
       this.setAttribute('aria-describedby', `${this.form.id}-save-description`);
     }
 
+    this.#setState();
     this.afterRender();
   }
 
@@ -111,7 +119,7 @@ class SaveButton extends HTMLButtonElement {
   submit() {
     this.#enabled = true;
     this.#removeBeforeUnloadListener();
-    this.form.submit();
+    this.form.submit(); // Does not raise a `submit` event
   }
 
   #handleClick(event) {
@@ -123,10 +131,11 @@ class SaveButton extends HTMLButtonElement {
   }
 
   #handleSubmit(event) {
-    if(this.saveRequired) {
+    if(this.#enabled) {
       this.#removeBeforeUnloadListener();
     } else {
       event.preventDefault();
+      event.stopImmediatePropagation();
     }
   }
 
@@ -141,7 +150,7 @@ class SaveButton extends HTMLButtonElement {
     }
   }
 
-  #removeBeforeUnloadListener() {  
+  #removeBeforeUnloadListener() {
     if(this.preventUnload) {
       window.removeEventListener('beforeunload', this.#beforeUnloadListener, {capture: true});
     }
