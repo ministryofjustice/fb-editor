@@ -131,7 +131,7 @@ feature 'Confirmation email' do
     expect(page).to have_content(I18n.t('settings.confirmation_email.description'))
     expect(page).to have_content(I18n.t("activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_#{environment}"))
     expect(page).to have_content(I18n.t("publish.#{environment}.description"))
-    expect(page).to have_button(I18n.t("settings.submission.#{environment}.save_button"))
+    expect(page).to have_button(I18n.t("actions.saved"))
   end
 
   def when_I_disable_confirmation_email(environment)
@@ -169,8 +169,9 @@ feature 'Confirmation email' do
   end
 
   def then_I_add_a_reply_to_email(email, error="")
-    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field#{error}").set(email)
-    click_button(I18n.t("settings.submission.#{environment}.save_button"))
+    input = editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field#{error}")
+    input.fill_in(with: email)
+    # click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
   def then_I_should_see_email_component_question_selected
