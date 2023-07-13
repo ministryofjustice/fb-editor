@@ -1,3 +1,40 @@
+/**
+ * A custom element that extends an HTML Button element to accessibly disable 
+ * itself according to the state of the form. Can also optionally be configured
+ * to add page unload prevention.
+ *
+ * Minimum markup:
+ * <button is="save-button">Label</button>
+ *
+ * Complete markup
+ * <button is="save-button" 
+ *         data-assistive-text="No changes to save"
+ *         data-saved-label="Saved"
+ *         data-unsaved-label="Save"
+ *         data-saving-label="Saving..."
+ *         save-required
+ *         prevent-unload>
+ *    Save
+ * </button>
+ *
+ * Attributes:
+ * prevent-unload - adds page unload protection.  If there are changes to save, 
+ *                  attempting to leave the page will cause a browser prompt.
+ *
+ * save-required - controls the state of the button.  If present, the button
+ *                 will be enabled, displaying the 'unsaved' label.  If this
+ *                 attribute is not present, the button will be accessibly
+ *                 disabled using aria-disabled, and the `aria-describedby`
+ *                 attribute will contain the assistive text to explain the
+ *                 disabled state.
+ *
+ * The main operation of the component is by attaching an event to the `input`
+ * event of the form associated with the button. On input, the save-required
+ * attribute is set on the button, enabling it and cimmunicating to the user
+ * that there are changes to be saved.
+ *
+ **/
+
 class SaveButton extends HTMLButtonElement {
   #enabled;
 
@@ -14,8 +51,8 @@ class SaveButton extends HTMLButtonElement {
       saved: this.dataset.savedLabel || '',
       unsaved: this.dataset.unsavedLabel || '',
       saving: this.dataset.savingLabel || '',
-    }
-    this.assistiveText = this.dataset.assistiveText
+    };
+    this.assistiveText = this.dataset.assistiveText;
     this.initialized = true;
 
     setTimeout(() => {
@@ -24,15 +61,18 @@ class SaveButton extends HTMLButtonElement {
   }
 
   attributeChangedCallback(attribute, oldValue, newValue) {
-    if(!this.initialized) return
+    // In some cases this callback can be called before connectedCallback which
+    // would fail without this guard
+    if(!this.initialized) return;
+    if(newValue == oldValue) return;
 
-    if(attribute == 'save-required' && newValue != oldValue) {
-      this.#setState() 
+    if(attribute == 'save-required') {
+      this.#setState();
     }
   }
 
   get describedBy() {
-    return this.form.querySelector(`#${this.getAttribute('aria-describedby')}`)
+    return this.form.querySelector(`#${this.getAttribute('aria-describedby')}`);
   }
 
   get preventUnload() {
@@ -44,36 +84,39 @@ class SaveButton extends HTMLButtonElement {
   }
 
   set saveRequired(value) {
-    this.setAttribute('save-required', value)
+    this.setAttribute('save-required', value);
   }
 
   render() {
-    this.setAttribute('type', 'submit')
-    this.#setState()
+    this.setAttribute('type', 'submit'); // ensure type is submit
+    this.#setState();
 
     if(this.assistiveText) {
-      this.insertAdjacentHTML('afterend', `<span class="sr-only" id="${this.form.id}-save-description"></span>`)
-      this.setAttribute('aria-describedby', `${this.form.id}-save-description`)
+      this.insertAdjacentHTML('afterend', `<span class="sr-only" id="${this.form.id}-save-description"></span>`);
+      this.setAttribute('aria-describedby', `${this.form.id}-save-description`);
     }
 
     this.afterRender();
   }
 
   afterRender() {
-      this.form.addEventListener('input', (event) => this.saveRequired = 'true')
-      this.form.addEventListener('submit', (event) => this.#handleSubmit(event))
+      this.form.addEventListener('input', (event) => this.saveRequired = 'true');
+      this.form.addEventListener('submit', (event) => this.#handleSubmit(event));
 
-      this.addEventListener('click', (event) => this.#handleClick(event))
+      this.addEventListener('click', (event) => this.#handleClick(event));
   }
 
+  // Enables programatically submitting the form, regardless of the state of the
+  // button, and bypassing unload prevention.
   submit() {
     this.#enabled = true;
+    this.#removeBeforeUnloadListener();
     this.form.submit();
   }
 
   #handleClick(event) {
     if(this.saveRequired) {
-      this.innerText = this.text.saving
+      this.innerText = this.text.saving;
     } else {
       event.preventDefault();
     }
@@ -105,7 +148,7 @@ class SaveButton extends HTMLButtonElement {
   }
 
   #setState() {
-    this.saveRequired ? this.#enable() : this.#disable()
+    this.saveRequired ? this.#enable() : this.#disable();
   }
 
   #enable() {
@@ -131,7 +174,6 @@ class SaveButton extends HTMLButtonElement {
 
     this.#removeBeforeUnloadListener();
   }
-
 }
 
 module.exports = { SaveButton }
