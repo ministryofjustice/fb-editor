@@ -75,18 +75,9 @@ PagesController.edit = function() {
   var view = this;
   var $form = $("#editContentForm");
 
-  var submitHandler = new SubmitHandler($form, {
-    text: {
-      submitted: view.text.actions.saved,
-      unsubmitted: view.text.actions.save,
-      submitting: view.text.actions.saving,
-      description: view.text.aria.disabled_save_description,
-    },
-    preventUnload: true,
-  });
 
   this.$editable = $(".fb-editable");
-  this.submitHandler = submitHandler;
+  this.saveButton = document.querySelector('button[is="save-button"]')
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
 
@@ -121,14 +112,14 @@ PagesController.edit = function() {
   // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
-    new AddContent($node, { $form: submitHandler.$form, view: view });
+    new AddContent($node, { form: view.saveButton.$form, view: view });
   });
 
   // Enhance any Add Component buttons.
   view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
-    new AddComponent($node, { $form: submitHandler.$form });
+    new AddComponent($node, { form: view.saveButton.$form });
   });
 
   // Setting focus for editing.
@@ -142,10 +133,9 @@ PagesController.edit = function() {
   addContentMenuListeners(view);
   addEditableComponentItemMenuListeners(view);
 
-  submitHandler.submittable = false;
-  this.$document.on("SaveRequired", () => submitHandler.submittable = true );
-  this.$document.on("MaxFilesSave", () => this.submitHandler.submit() );
-  this.submitHandler.$form.on("submit", () => this.updateComponents() );
+  this.$document.on("SaveRequired", () => this.saveButton.saveRequired = true );
+  this.$document.on("MaxFilesSave", () => this.saveButton.save() );
+  this.saveButton.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
   // The static content is wrapped in [fb-content-type=static] to help identify it.
@@ -198,9 +188,8 @@ class AddComponent {
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
   if( action != "none" ) {
-    updateHiddenInputOnForm(this.submitHandler.$form, "page[add_component]", action);
-    this.submitHandler.submit();
-
+    updateHiddenInputOnForm(this.saveButton.$form, "page[add_component]", action);
+    this.saveButton.save();
   }
 }
 
@@ -213,11 +202,11 @@ class AddContent {
     var fieldname = $node.data("fb-field-name") || "page[add_component]";
     this.$button = $button;
     this.$node = $node;
-    this.submitHandler = config.view.submitHandler;
+    this.saveButton = config.view.saveButton;
 
     $button.on("click.AddContent", () => {
       updateHiddenInputOnForm(config.$form, fieldname, "content");
-      this.submitHandler.submit();
+      this.saveButton.save();
     });
 
     $node.addClass("AddContent");
@@ -253,7 +242,7 @@ function addQuestionMenuListeners(view) {
       // 3. Remove corresponding component from form
           question.remove();
       // 4. Trigger save required (to enable Save button)
-          view.submitHandler.submittable = true;
+          view.saveButton.saveRequired = true;
         });
       }
     });
@@ -485,7 +474,7 @@ function addContentMenuListeners(view) {
       component.$node.hide(); // 1. First remove component from view
       view.updateComponents(); // 2. Update form (in case anything else has changed)
       component.destroy(); // 3. Remove corresponding component from form
-      view.submitHandler.submittable = true; // 4. Trigger save required (to enable Save button)
+      view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
     };
     view.dialogConfirmationDelete.open({
       heading: html.replace(/#{label}/, ""),
@@ -529,7 +518,7 @@ function enhanceContent(view) {
     new EditableElement($node, {
       editClassname: "active",
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       id: $node.data("fb-content-id"),
       htmlAdjustment: htmlAdjustment,
       markdownAdjustment: markdownAdjustment,
@@ -571,7 +560,7 @@ function createContentMenu(component) {
 function enhanceQuestions(view) {
   view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=multiupload]").each(function(i, node) {
     new TextQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
@@ -581,7 +570,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=autocomplete]").each(function(i, node) {
     new AutocompleteQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       text: {
         default_content: view.text.defaults.content,
         optionalFlag: view.text.question_optional_flag
@@ -592,7 +581,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     new DateQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
@@ -601,7 +590,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=textarea]").each(function(i, node) {
     new TextareaQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       text: {
         optionalFlag: view.text.question_optional_flag
       }
@@ -610,7 +599,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=checkboxes]").each(function(i, node) {
     new CheckboxesQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       view: view,
       text: {
         edit: view.text.actions.edit,
@@ -640,7 +629,7 @@ function enhanceQuestions(view) {
 
   view.$editable.filter("[data-fb-content-type=radios]").each(function(i, node) {
     new RadiosQuestion($(this), {
-      form: view.submitHandler.$form,
+      form: view.saveButton.$form,
       view: view,
       text: {
         edit: view.text.actions.edit,

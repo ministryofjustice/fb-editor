@@ -74,6 +74,10 @@ class SaveButton extends HTMLButtonElement {
   get describedBy() {
     return this.form.querySelector(`#${this.getAttribute('aria-describedby')}`);
   }
+  
+  get $form() {
+    return $(this.form)
+  }
 
   get preventUnload() {
     return this.hasAttribute('prevent-unload');
@@ -116,10 +120,10 @@ class SaveButton extends HTMLButtonElement {
 
   // Enables programatically submitting the form, regardless of the state of the
   // button, and bypassing unload prevention.
-  submit() {
+  save() {
     this.#enabled = true;
     this.#removeBeforeUnloadListener();
-    this.form.submit(); // Does not raise a `submit` event
+    this.form.submit();
   }
 
   #handleClick(event) {

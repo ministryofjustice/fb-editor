@@ -27,8 +27,9 @@
     <% end %>
   <% end %>
 
-  <%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save', 'aria-describedby': "save_description" %>
-  <span class="sr-only" id="save_description"></span>
+
+    <%= mojf_save_button(form: f, text: t('actions.save'), html_attributes: {id: 'fb-editor-save', 'prevent-unload': true}) %>
+
 <% end %>
 
 <% # app.page is initialised in partials/properties. %>
