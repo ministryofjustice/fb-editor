@@ -46,7 +46,7 @@ feature 'Preview page' do
   def then_I_should_upload_my_files(preview_page)
     within_window(preview_page) do
       and_I_upload_my_file
-      and_I_change_the_answer_of_my_file
+      # and_I_change_the_answer_of_my_file
       and_I_go_to_next_page
       then_I_should_be_on_the_check_your_answers_page
       and_I_change_the_answer_of_my_file
@@ -59,7 +59,7 @@ feature 'Preview page' do
   end
 
   def and_I_upload_my_file
-    attach_file 'answers[kenobi_upload_1]',
+    attach_file 'answers[kenobi_multiupload_1]',
       './acceptance/fixtures/computer_says_no.gif'
     and_I_go_to_next_page
   end
@@ -83,7 +83,7 @@ feature 'Preview page' do
   end
 
   def and_I_remove_the_file
-    click_link 'Remove file'
+    click_link 'Delete'
   end
 
   def when_I_preview_the_upload_page

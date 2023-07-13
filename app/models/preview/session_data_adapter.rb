@@ -28,5 +28,10 @@ module Preview
       user_data['user_data'].delete(component_id)
       user_data['user_data']
     end
+
+    def delete_file(component_id, file_id)
+      user_data = session[service_id] || {}
+      user_data['user_data'][component_id] = user_data['user_data'][component_id].reject { |f| f['uuid'] == file_id }
+    end
   end
 end

@@ -1,6 +1,7 @@
 const {
   htmlAdjustment
 } = require('../shared/content');
+require('../shared/multiupload')
 
 const ENVIRONMENT_PREVIEW = "preview";
 const ENVIRONMENT_RUNNER = "runner";
@@ -38,10 +39,22 @@ function supportGovUkContent() {
   }
 }
 
+function initializeMultifileUploadPage() {
+  const addAnotherButton  = document.querySelector('[data-multiupload-element="add-another-file"]');
+
+  if(!addAnotherButton) return;
+
+  addAnotherButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.multiupload.showFileUpload();
+  })
+}
+
 
 /* Page initialiser section
  **/
 contentLoaded(window, () => {
   preventCookieBannerInPreview();
   supportGovUkContent();
+  initializeMultifileUploadPage();
 });
