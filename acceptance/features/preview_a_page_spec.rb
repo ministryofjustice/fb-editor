@@ -53,7 +53,9 @@ feature 'Preview page' do
       and_I_remove_the_file
       and_I_go_to_next_page
       then_I_should_see_that_I_should_add_a_file
+      and_I_click_add_another
       and_I_upload_my_file
+      and_I_go_to_next_page
       then_I_should_be_on_the_check_your_answers_page
     end
   end
@@ -66,6 +68,10 @@ feature 'Preview page' do
 
   def and_I_change_the_answer_of_my_file
     click_link 'Change'
+  end
+
+  def and_I_click_add_another
+    click_button 'Add another file'
   end
 
   def and_I_go_to_next_page
