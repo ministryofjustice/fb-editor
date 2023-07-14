@@ -83,6 +83,8 @@ feature 'Reference Payment Page' do
     when_I_enable_confirmation_email('dev')
     expect(page).to have_content('{{reference_number}}')
     expect(page).to have_content('{{payment_link}}')
+    
+    then_I_should_be_warned_when_leaving_the_page
 
     when_I_visit_the_reference_payment_page
     with_setting(payment_link_checkbox, false)
@@ -91,6 +93,8 @@ feature 'Reference Payment Page' do
     when_I_enable_confirmation_email('dev')
     expect(page).to_not have_content('{{payment_link}}')
     expect(page).to have_content('{{reference_number}}')
+
+    then_I_should_be_warned_when_leaving_the_page
 
     when_I_visit_the_reference_payment_page
     with_setting(reference_number_checkbox, false)
@@ -142,7 +146,7 @@ feature 'Reference Payment Page' do
   ## Reference Payment Settings Page
   def when_I_visit_the_reference_payment_page
     page.find(:css, '#main-content', visible: true)
-    editor.click_link(I18n.t('settings.name'))
+    editor.settings_link.click
     expect(page).to have_content(I18n.t('settings.reference_payment.lede'))
     editor.click_link(I18n.t('settings.reference_payment.heading'))
   end
@@ -177,5 +181,9 @@ feature 'Reference Payment Page' do
   ## Confirmation Email Settings Page
   def then_I_add_a_reply_to_email(email, environment)
     editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
+  end
+  
+  def then_I_should_be_warned_when_leaving_the_page
+    accept_confirm(wait: 1) { editor.settings_link.click }
   end
 end

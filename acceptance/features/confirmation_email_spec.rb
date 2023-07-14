@@ -131,7 +131,9 @@ feature 'Confirmation email' do
     expect(page).to have_content(I18n.t('settings.confirmation_email.description'))
     expect(page).to have_content(I18n.t("activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_#{environment}"))
     expect(page).to have_content(I18n.t("publish.#{environment}.description"))
-    expect(page).to have_button(I18n.t("actions.saved"))
+    within( "#confirmation-email-submission-#{environment}") do
+      expect(page).to have_button(I18n.t("actions.saved"))
+    end
   end
 
   def when_I_disable_confirmation_email(environment)

@@ -54,7 +54,9 @@ feature 'Submission email' do
     expect(page).to have_content(I18n.t('settings.collection_email.lede'))
     expect(page).to have_content(I18n.t("publish.#{environment}.heading"))
     expect(page).to have_content(I18n.t("publish.#{environment}.description"))
-    expect(page).to have_button(I18n.t("settings.submission.#{environment}.save_button"))
+    within( "#email-submission-#{environment}") do
+      expect(page).to have_button(I18n.t("actions.saved"))
+    end
   end
 
   def when_I_enable_submission_email(environment)
