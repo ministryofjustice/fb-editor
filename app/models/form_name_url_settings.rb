@@ -5,13 +5,11 @@ class FormNameUrlSettings
 
   MINIMUM = 3
 
-  validates :service_name, :service_slug, presence: true
+  validates :service_name, presence: true
   validates :service_name, legacy_service_name: true
   validates :service_name, length: { minimum: MINIMUM, maximum: 255 }, allow_blank: true
   validates :service_slug, length: { minimum: MINIMUM, maximum: 57 }, allow_blank: true
-  validates :service_slug, format: { with: /\A[a-zA-Z][\sa-z0-9-]*\z/ }, allow_blank: true
-  validates :service_slug, format: { with: /\A\S+\Z/ }, allow_blank: true
-  validates_with ServiceSlugValidator
+  validates_with ServiceSlugValidator, attributes: :service_slug
 
   def create
     return false if invalid?

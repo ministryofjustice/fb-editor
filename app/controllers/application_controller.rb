@@ -122,6 +122,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :save_and_return_enabled?
 
+  def show_save_and_return
+    @page.upload_components.none?
+  end
+  helper_method :show_save_and_return
+
   def save_and_return_config
     @save_and_return_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'SAVE_AND_RETURN')
   end

@@ -15,7 +15,7 @@ gem 'metadata_presenter',
     github: 'ministryofjustice/fb-metadata-presenter',
     branch: 'multi-file-upload'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-# gem 'metadata_presenter', '3.0.13'
+# gem 'metadata_presenter', '3.0.15'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
@@ -31,9 +31,9 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.3'
 gem 'rails', '~> 7.0'
 gem 'sass-rails', '>= 6'
-gem 'sentry-delayed_job', '~> 5.8.0'
-gem 'sentry-rails', '~> 5.8.0'
-gem 'sentry-ruby', '~> 5.8.0'
+gem 'sentry-delayed_job', '~> 5.10.0'
+gem 'sentry-rails', '~> 5.10.0'
+gem 'sentry-ruby', '~> 5.10.0'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
 
