@@ -187,6 +187,30 @@ feature 'Component validations' do
     end
   end
 
+  shared_examples 'a max files validation' do
+    scenario 'configuring the max files' do
+      and_I_visit_a_page(page_url)
+      when_I_want_to_select_question_properties
+      then_I_should_see_the_max_files_validations
+
+      and_I_select_a_validation(menu_text)
+      then_I_should_see_the_validation_modal(label, status_label)
+
+      and_I_set_the_input_value(first_answer)
+      click_button(I18n.t('question.dialog.multiupload_continue'))
+
+      and_I_click_save
+
+      sleep(0.5)
+
+      and_I_should_see_the_max_files_displayed
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      then_I_should_see_the_previously_set_configuration(first_answer)
+    end
+  end
+
   shared_examples 'a string length words validation' do
     scenario 'configuring string length words validation' do
       and_I_visit_a_page(page_url)
@@ -460,6 +484,16 @@ feature 'Component validations' do
     it_behaves_like 'a string length words validation'
   end
 
+  context 'max files' do
+    let(:page_url) { 'Multifile upload' }
+    let(:menu_text) { I18n.t('question.menu.max_files') }
+    let(:label) { I18n.t('question.dialog.multiupload_label') }
+    let(:status_label) { I18n.t('question.dialog.multiupload_hint') }
+    let(:first_answer) { '3' }
+
+    it_behaves_like 'a max files validation'
+  end
+
   def and_I_visit_a_page(flow_title)
     editor.flow_thumbnail(flow_title).click
   end
@@ -494,6 +528,10 @@ feature 'Component validations' do
   def and_I_set_the_date_input_value(field, value)
     sleep(0.5)
     page.fill_in("component_validation[#{field}]", with: value)
+  end
+
+  def and_I_should_see_the_max_files_displayed
+    expect(page).to have_content(I18n.t('presenter.questions.multiupload.plural', num: first_answer))
   end
 
   def then_I_should_see_the_minimum_and_maximum_validations
@@ -571,6 +609,10 @@ feature 'Component validations' do
   def then_I_should_see_the_string_length_validations
     expect(page).to have_content(I18n.t('question.menu.max_string_length'))
     expect(page).to have_content(I18n.t('question.menu.min_string_length'))
+  end
+
+  def then_I_should_see_the_max_files_validations
+    expect(page).to have_content(I18n.t('question.menu.max_files'))
   end
 
   def then_the_radio_is_selected(text)
