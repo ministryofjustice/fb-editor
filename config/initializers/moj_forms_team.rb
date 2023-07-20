@@ -3,7 +3,9 @@ MOJ_FORMS_ADMIN = [
   'sijy.mathew@digital.justice.gov.uk',
   'mark.jefferson@digital.justice.gov.uk',
   'assma.banaris@digital.justice.gov.uk',
-  'fabien.marry@digital.justice.gov.uk'
+  'fabien.marry@digital.justice.gov.uk',
+  'natalia.stutter@digital.justice.gov.uk',
+  'darren.rooke@digital.justice.gov.uk'
 ].freeze
 
 MOJ_FORMS_DEVS = [
