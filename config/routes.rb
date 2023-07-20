@@ -98,9 +98,6 @@ Rails.application.routes.draw do
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
-      get '/:page_id/components/:component_id/multiupload', to: 'multiupload#show', as: :multiupload
-      post '/:page_id/components/:component_id/multiupload', to: 'multiupload#create'
-
       get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
 
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
