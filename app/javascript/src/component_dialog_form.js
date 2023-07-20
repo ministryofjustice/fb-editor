@@ -308,6 +308,9 @@ class DialogForm {
       success: function(data) {
         safelyActivateFunction(dialog.#config.onSuccess, data, dialog);
         dialog.close();
+        if (data['max_files']) {
+          $(document).trigger("MaxFilesSave");
+        }
       },
       error: function(data) {
         safelyActivateFunction(dialog.#config.onError, data, dialog);

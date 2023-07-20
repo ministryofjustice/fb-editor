@@ -144,6 +144,7 @@ PagesController.edit = function() {
 
   submitHandler.submittable = false;
   this.$document.on("SaveRequired", () => submitHandler.submittable = true );
+  this.$document.on("MaxFilesSave", () => this.submitHandler.submit() );
   this.submitHandler.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.

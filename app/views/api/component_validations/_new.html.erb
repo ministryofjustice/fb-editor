@@ -11,7 +11,7 @@
           </legend>
           <% if @component_validation.validator == 'max_files' %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-            <div class="govuk-checkboxes__item" style="display:none">
+            <div class="govuk-checkboxes__item govuk-visually-hidden">
               <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" checked="checked">
               <label class="govuk-label govuk-checkboxes__label" for="component_validation_status">
                 <%= @component_validation.status_label %>
