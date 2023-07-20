@@ -199,8 +199,6 @@ feature 'Component validations' do
       and_I_set_the_input_value(first_answer)
       click_button(I18n.t('question.dialog.multiupload_continue'))
 
-      and_I_click_save
-
       sleep(0.5)
 
       and_I_should_see_the_max_files_displayed
