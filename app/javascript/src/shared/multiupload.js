@@ -5,11 +5,9 @@ function showFileUpload() {
   if(!addAnotherButton) return;
   if(!uploadFile) return;
 
-  // addAnotherButton.setAttribute('hidden', '');
   addAnotherButton.style.display = 'none'
   uploadFile.removeAttribute('hidden');
 }
-
 
 // So we can just access required functions from the window object
 window.multiupload = {
