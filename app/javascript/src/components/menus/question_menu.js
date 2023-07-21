@@ -67,7 +67,6 @@ class QuestionMenu extends ActivatedMenu {
     }
   }
 
-  // will raise a new event for multi upload
   remove() {
     $(document).trigger("QuestionMenuSelectionRemove", this.question);
   }
