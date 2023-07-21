@@ -98,23 +98,7 @@ class PagesController < FormController
     }
   end
 
-  def multiupload_files_remaining
-    max_files = @page.components.select { |c| c.type == 'multiupload' }.first['max_files'].to_i
-    answered = false
-    if max_files == 1
-      if answered
-        I18n.t('presenter.questions.multiupload.answered_singular')
-      else
-        I18n.t('presenter.questions.multiupload.singular')
-      end
-    elsif answered
-      I18n.t('presenter.questions.multiupload.answered_plural', num: max_files)
-    else
-      I18n.t('presenter.questions.multiupload.plural', num: max_files)
-    end
-  end
-  helper_method :multiupload_files_remaining
-
+  # used by multiupload template
   def uploads_remaining
     0
   end
