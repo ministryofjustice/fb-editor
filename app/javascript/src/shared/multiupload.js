@@ -7,6 +7,7 @@ function showFileUpload() {
 
   addAnotherButton.style.display = 'none'
   uploadFile.removeAttribute('hidden');
+  uploadFile.focus();
 }
 
 // So we can just access required functions from the window object
