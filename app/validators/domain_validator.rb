@@ -1,10 +1,9 @@
-class DomainValidator < ActiveModel::Validator
-  def validate(record)
-    user_email = record.service_email_output
-    domain = user_email.split('@').last
-    unless domain.in?(Rails.application.config.allowed_domains)
+class DomainValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    domain = value.split('@').last
+    if value.present? && !domain.in?(Rails.application.config.allowed_domains)
       record.errors.add(
-        :base,
+        attribute,
         I18n.t('activemodel.errors.models.email_settings.domain_invalid')
       )
     end
