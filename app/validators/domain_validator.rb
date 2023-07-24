@@ -4,7 +4,7 @@ class DomainValidator < ActiveModel::EachValidator
     if value.present? && !domain.in?(Rails.application.config.allowed_domains)
       record.errors.add(
         attribute,
-        I18n.t('activemodel.errors.models.email_settings.domain_invalid')
+        I18n.t("activemodel.errors.models.#{record.model_name.singular}.domain_invalid")
       )
     end
   end
