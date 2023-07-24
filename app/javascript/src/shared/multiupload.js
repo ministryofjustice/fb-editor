@@ -1,5 +1,6 @@
 function showFileUpload() {
   const addAnotherButton  = document.querySelector('[data-multiupload-element="add-another-file"]');
+  const uploadFile  = document.querySelector('[data-multiupload-element="upload-another-file"]');
   const fileInput = document.querySelector('input[type="file"]')
 
   if(!addAnotherButton) return;
