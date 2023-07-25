@@ -316,7 +316,6 @@ en:
       max_string_length: 'Maximum answer length...'
       min_string_length: 'Minimum answer length...'
       upload_options: 'Autocomplete options...'
-      multiupload_options: 'Number of files...'
       max_files: 'Number of files...'
     dialog:
       heading_remove: Delete the component '#{label}'?
