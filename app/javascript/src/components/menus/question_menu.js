@@ -58,6 +58,9 @@ class QuestionMenu extends ActivatedMenu {
       case "upload":
         this.upload();
         break;
+      case "multiupload":
+        this.multiupload();
+        break;
       case "close":
         this.close();
         break;
@@ -81,6 +84,10 @@ class QuestionMenu extends ActivatedMenu {
     $(document).trigger("QuestionMenuSelectionUpload", this.question);
   }
 
+  multiupload() {
+    $(document).trigger("QuestionMenuSelectionMultiUpload", this.question);
+  }
+
   close() {
     super.close();
     this.activator.$node.removeClass("active");
@@ -99,6 +106,10 @@ class QuestionMenu extends ActivatedMenu {
 
     this.$node.find("[data-validation]").each(function() {
       var validationType = $(this).data('validation');
+      if( validationType == 'max_files' ) {
+        return
+      }
+      
       if( validationData[validationType] ) {
         $(this).find('> :first-child').attr('aria-checked', 'true');
       } else {

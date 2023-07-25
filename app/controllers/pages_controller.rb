@@ -98,6 +98,17 @@ class PagesController < FormController
     }
   end
 
+  # used by multiupload template
+  def uploads_remaining
+    0
+  end
+  helper_method :uploads_remaining
+
+  def uploads_count
+    0
+  end
+  helper_method :uploads_count
+
   def answered?(component_id)
     false
   end

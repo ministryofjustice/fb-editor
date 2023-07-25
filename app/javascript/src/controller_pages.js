@@ -144,6 +144,7 @@ PagesController.edit = function() {
 
   submitHandler.submittable = false;
   this.$document.on("SaveRequired", () => submitHandler.submittable = true );
+  this.$document.on("MaxFilesSave", () => this.submitHandler.submit() );
   this.submitHandler.$form.on("submit", () => this.updateComponents() );
 
   // Bit hacky: Cookies page is going through this controller but content is static.
@@ -407,6 +408,19 @@ function addQuestionMenuListeners(view) {
       },
     });
   });
+
+  view.$document.on("QuestionMenuSelectionMultiUpload", function(event, question) {
+    var apiUrl = question.menu.selectedItem.data('apiPath');
+    var maxFilesVal = question.data.max_files
+    console.log(question)
+    console.log(apiUrl)
+    console.log(maxFilesVal)
+    new DialogForm(apiUrl, {
+      activator: question.menu.selectedItem,
+      remote: true,
+      autoOpen: true,
+    });
+  });
 }
 
 function addEditableComponentItemMenuListeners(view) {
@@ -555,7 +569,7 @@ function createContentMenu(component) {
 /* Add edit functionality and component enhancements to questions.
  **/
 function enhanceQuestions(view) {
-  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload]").each(function(i, node) {
+  view.$editable.filter("[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=multiupload]").each(function(i, node) {
     new TextQuestion($(this), {
       form: view.submitHandler.$form,
       text: {

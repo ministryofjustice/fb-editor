@@ -33,6 +33,10 @@ class ApplicationController < ActionController::Base
     Preview::SessionDataAdapter.new(session, params[:id]).delete(component_id)
   end
 
+  def remove_file_from_data(component_id, file_id)
+    Preview::SessionDataAdapter.new(session, params[:id]).delete_file(component_id, file_id)
+  end
+
   def answer_params
     Preview::AnswerParams.new(@page_answers).answers
   end

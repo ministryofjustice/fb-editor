@@ -140,7 +140,7 @@ RSpec.describe PagesFlow do
               type: 'page.singlequestion',
               title: 'Upload your best dog photo',
               uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd66',
-              next: 'c7755991-436b-4495-afa6-803db58cefbc',
+              next: '2ef7d11e-0307-49e9-9fe2-345dc528dd67',
               previous_uuid: '80420693-d6f2-4fce-a860-777ca774a6f5',
               thumbnail: 'upload',
               url: 'dog-picture'
@@ -149,10 +149,21 @@ RSpec.describe PagesFlow do
           [
             {
               type: 'page.singlequestion',
+              title: 'Upload your best dog photos',
+              uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd67',
+              next: 'c7755991-436b-4495-afa6-803db58cefbc',
+              previous_uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd66',
+              thumbnail: 'multiupload',
+              url: 'dog-picture-2'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
               title: 'Countries',
               uuid: 'c7755991-436b-4495-afa6-803db58cefbc',
               next: 'e337070b-f636-49a3-a65c-f506675265f0',
-              previous_uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd66',
+              previous_uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd67',
               thumbnail: 'autocomplete',
               url: 'countries'
             }
