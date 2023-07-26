@@ -14,8 +14,10 @@ metadata:
       }
     external-dns.alpha.kubernetes.io/set-identifier: <%= service_slug %>-ingress-<%= namespace %>-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
-    SecRuleEngine: On
-    SecDefaultAction: "phase:2,pass,log,tag:github_team=form-builder"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      SecRuleEngine On
+      SecDefaultAction "phase:2,pass,log,tag:github_team=form-builder"
 spec:
   tls:
     ingressClassName: modsec
