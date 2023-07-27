@@ -77,7 +77,9 @@ feature 'Submission email' do
   end
 
   def then_I_add_a_send_to_email(email)
-    editor.find(:css, "input#email-settings-service-email-output-#{environment}-field").set(email)
+    within( "#email-submission-#{environment}") do
+      editor.find(:css, 'input[name="email_settings[service_email_output]"]').set(email)
+    end
     click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 

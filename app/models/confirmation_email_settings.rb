@@ -18,8 +18,7 @@ class ConfirmationEmailSettings < BaseEmailSettings
 
   validates :confirmation_email_reply_to, presence: true, if: :send_by_confirmation_email?
   validates :confirmation_email_reply_to, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true, if: :send_by_confirmation_email?
-  validates :confirmation_email_reply_to, domain: true, if: :send_by_confirmation_email? 
-
+  validates :confirmation_email_reply_to, domain: true, if: :send_by_confirmation_email?
 
   def send_by_confirmation_email_checked?
     send_by_confirmation_email? || SubmissionSetting.find_by(
