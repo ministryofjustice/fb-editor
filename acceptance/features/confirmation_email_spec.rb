@@ -173,7 +173,6 @@ feature 'Confirmation email' do
   def then_I_add_a_reply_to_email(email, error="")
     input = editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field#{error}")
     input.fill_in(with: email)
-    # click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
   def then_I_should_see_email_component_question_selected
