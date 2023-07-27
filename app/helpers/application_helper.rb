@@ -6,14 +6,14 @@ module ApplicationHelper
   end
 
   # Used on service flow page
-  def flow_thumbnail_link(args)
+  def flow_thumbnail_link(item)
     link_to edit_page_path(
-      service.service_id, args[:uuid]
-    ), class: "flow-thumbnail #{args[:thumbnail]} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
+      service.service_id, item[:uuid]
+    ), class: "flow-thumbnail #{item[:thumbnail]} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
       concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
       concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(args[:title], class: 'text')
-      concat image_pack_tag("thumbnails/thumbs_#{args[:thumbnail]}.jpg", class: 'body', alt: '')
+      concat tag.span(flow_item_title(item), class: 'text')
+      concat image_pack_tag("thumbnails/thumbs_#{item[:thumbnail]}.jpg", class: 'body', alt: '')
     end
   end
 
@@ -25,8 +25,16 @@ module ApplicationHelper
                edit_page_path(service.service_id, item[:uuid])
              end), class: 'govuk-link flow-item__title' do
       concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(item[:title], class: 'text')
+      concat tag.span(flow_item_title(item), class: 'text')
     end
+  end
+
+  def flow_item_title(item)
+    return item[:title] unless item[:type] == 'page.confirmation'
+    return item[:title] unless payment_link_enabled?
+    return item[:title] unless item[:title] == I18n.t('presenter.confirmation.application_complete')
+
+    I18n.t('presenter.confirmation.payment_enabled')
   end
 
   def flow_branch_link(item)
