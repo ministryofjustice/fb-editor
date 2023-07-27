@@ -39,8 +39,8 @@ RSpec.describe EmailSettings do
         allow(email_settings).to receive(:send_by_email).and_return('0')
       end
 
-      it 'do not allow malformed emails' do
-        should_not allow_values(
+      it 'allows malformed emails' do
+        should allow_values(
           'organa', 'leia'
         ).for(:service_email_output)
       end

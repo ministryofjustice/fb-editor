@@ -2,7 +2,8 @@
     url: settings_email_index_path(service.service_id),
     html: {
       id: "email-submission-#{deployment_environment}",
-      class: 'collect-info-environment-config govuk-!-margin-top-8'
+      class: 'collect-info-environment-config govuk-!-margin-top-8',
+      novalidate: true
     },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 

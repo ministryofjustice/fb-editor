@@ -5,6 +5,8 @@ RSpec.describe  ReplyToAddressValidator do
 
   describe '#validate' do
     before do
+      allow(subject).to receive(:send_by_confirmation_email?).and_return(true)
+      allow(subject).to receive(:confirmation_email_component_id).and_return(true)
       subject.validate
     end
 
