@@ -48,8 +48,8 @@
 
     <%= render partial: 'form', locals: { f: f } %>
 
-    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
-      <%= t('actions.save') %>
-    </button>
+    
+    <%= mojf_save_button(form: f, text: t('actions.save'), html_attributes: {'prevent-unload': true }) %>
+
   <% end %>
 <% end %>

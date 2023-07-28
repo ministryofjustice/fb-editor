@@ -559,6 +559,7 @@ module CommonSteps
   end
 
   def then_I_fill_in_reply_to_email(email, environment)
-    editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
+    input = editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field")
+    input.fill_in(with: email)
   end
 end

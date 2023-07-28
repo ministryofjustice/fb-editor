@@ -18,7 +18,6 @@ const Dialog = require('./component_dialog');
 const SentryLogger=  require('./sentry_logger');
 const post = require('./utilities').post;
 
-
 class DefaultController {
   constructor(app) {
     var $document = $(document);

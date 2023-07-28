@@ -4,16 +4,19 @@
 // that code so it'll be compiled.
 
 // Scripts called by javascript_pack_tag
+require('@ungap/custom-elements'); // required until safari supports customizing native elements using `is`
 require("jquery")
 require("jquery-ui")
 require("../src/index")
 
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
+const { SaveButton } = require('../src/web-components/save-button');
 
 if ('customElements' in window) {
   customElements.define('elastic-textarea', ElasticTextarea);
   customElements.define('editable-content', EditableContent);
+  customElements.define('save-button', SaveButton, { extends: 'button'});
 }
 
 // Entry point for fb-editor stylesheets

@@ -18,9 +18,9 @@ class EmailSettings < BaseEmailSettings
 
   validates :service_email_output, presence: true, if: :send_by_email?
 
-  validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+  validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true, if: :send_by_email?
 
-  validates_with DomainValidator
+  validates_with DomainValidator, if: :send_by_email?
 
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(

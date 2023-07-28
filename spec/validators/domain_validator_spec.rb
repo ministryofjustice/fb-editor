@@ -4,6 +4,7 @@ RSpec.describe  DomainValidator do
 
   describe '#validate' do
     before do
+      allow(subject).to receive(:send_by_email?).and_return(true)
       subject.validate
     end
 
