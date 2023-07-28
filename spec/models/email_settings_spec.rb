@@ -15,9 +15,15 @@ RSpec.describe EmailSettings do
         allow(email_settings).to receive(:send_by_email).and_return('1')
       end
 
-      it 'allow emails' do
+      it 'does not allow non-whitelisted email domains' do
+        should_not allow_values(
+          'frodo@shire.org'
+        ).for(:service_email_output)
+      end
+
+      it 'allows whitelisted email domains' do
         should allow_values(
-          'frodo@shire.uk'
+          'frodo@digital.justice.gov.uk'
         ).for(:service_email_output)
       end
 
@@ -37,6 +43,12 @@ RSpec.describe EmailSettings do
     context 'when send by email is unticked' do
       before do
         allow(email_settings).to receive(:send_by_email).and_return('0')
+      end
+
+      it 'allows non-whitelisted email domains' do
+        should allow_values(
+          'frodo@shire.org'
+        ).for(:service_email_output)
       end
 
       it 'allows malformed emails' do

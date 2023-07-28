@@ -14,13 +14,60 @@ RSpec.describe ConfirmationEmailSettings do
         allow(confirmation_email_settings).to receive(:send_by_confirmation_email).and_return('1')
       end
 
-      it 'allow emails' do
+      it 'allow email questions' do
         should allow_values(
           'email_question_1', 'email_question_2'
         ).for(:confirmation_email_component_id)
       end
+
+      it 'allow emails' do
+        should allow_values(
+          'frodo@digital.justice.gov.uk'
+        ).for(:confirmation_email_reply_to)
+      end
+
+      it 'do not allow malformed emails' do
+        should_not allow_values(
+          'organa', 'leia'
+        ).for(:confirmation_email_reply_to)
+      end
+
+      it 'do not allow blanks' do
+        should_not allow_values(
+          nil, ''
+        ).for(:confirmation_email_reply_to)
+      end
     end
 
+    context 'when send by confirmation email is unticked' do
+      before do
+        allow(confirmation_email_settings).to receive(:send_by_confirmation_email).and_return('0')
+      end
+
+      it 'allow any questions' do
+        should allow_values(
+          'email_question_any', 'question_other'
+        ).for(:confirmation_email_component_id)
+      end
+
+      it 'allows non-whitelisted email domains' do
+        should allow_values(
+          'frodo@shire.org'
+        ).for(:confirmation_email_reply_to)
+      end
+
+      it 'allow malformed emails' do
+        should allow_values(
+          'organa', 'leia'
+        ).for(:confirmation_email_reply_to)
+      end
+
+      it 'allow blanks' do
+        should allow_values(
+          nil, ''
+        ).for(:confirmation_email_reply_to)
+      end
+    end
     context 'deployment environment' do
       it 'allow dev and production' do
         should allow_values('dev', 'production').for(:deployment_environment)

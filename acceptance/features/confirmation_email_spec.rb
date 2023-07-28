@@ -14,8 +14,8 @@ feature 'Confirmation email' do
   let(:multiple_question_page) { 'Title' }
   let(:email_question) { 'Email address question' }
   let(:text_component_question) { 'Question' }
-  let(:invalid_format) { I18n.t('activemodel.errors.models.from_address.invalid') }
-  let(:invalid_domain) { I18n.t('activemodel.errors.models.reply_to.domain_invalid') }
+  let(:invalid_format) { I18n.t('activemodel.errors.models.confirmation_email_settings.invalid') }
+  let(:invalid_domain) { I18n.t('activemodel.errors.models.confirmation_email_settings.domain_invalid') }
 
   background do
     given_I_am_logged_in
