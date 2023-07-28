@@ -114,7 +114,7 @@ feature 'Reference Payment Page' do
     click_button(I18n.t('actions.save'))
 
     and_I_return_to_flow_page
-    given_I_edit_a_confirmation_page
+    given_I_edit_a_confirmation_page(text: I18n.t('presenter.confirmation.payment_enabled'))
     expect(page).to have_css('div.govuk-panel--confirmation-payment', text: confirmation_page_payment_text)
 
     editor.question_heading.first.set('You have to pay now')

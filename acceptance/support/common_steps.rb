@@ -142,8 +142,8 @@ module CommonSteps
     editor.add_confirmation.click
   end
 
-  def given_I_edit_a_confirmation_page
-    page.find('.govuk-link', text: 'Application complete').click
+  def given_I_edit_a_confirmation_page(text: 'Application complete' )
+    page.find('.govuk-link', text: text).click
   end
 
   def given_I_add_an_exit_page
