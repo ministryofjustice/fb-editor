@@ -299,6 +299,7 @@ en:
     menu:
       activator: 'Settings'
       remove: 'Delete...'
+      show_if: 'Show if...'
     dialog:
       heading_remove: "Delete the component?"
       affirmative: 'Yes'
