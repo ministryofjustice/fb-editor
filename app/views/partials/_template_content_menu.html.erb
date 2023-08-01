@@ -1,10 +1,12 @@
-<script type="text/html"
-        data-component-template="ContentMenu"
-        data-activator-text="<%= t('content.menu.activator') %>">
-  <ul class="govuk-navigation component-activated-menu">
-    <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
-    <% if ENV['CONDITIONAL_CONTENT'] == 'enabled' && moj_forms_dev? %>
-      <li data-action="show-if"><span><%= t('content.menu.show_if')%></span></li>
-    <% end %>
-  </ul>
-</script>
+<% @page.components.each do |component| %>
+  <script type="text/html"
+          data-component-template="ContentMenu"
+          data-activator-text="<%= t('content.menu.activator') %>">
+    <ul class="govuk-navigation component-activated-menu">
+      <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
+      <% if ENV['CONDITIONAL_CONTENT'] == 'enabled' && moj_forms_dev? %>
+        <li><%= link_to t('content.menu.show_if'), api_service_conditional_content_new_path(service.service_id, component.uuid) %></li>
+      <% end %>
+    </ul>
+  </script>
+<% end %>

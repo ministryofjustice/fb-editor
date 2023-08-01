@@ -23,6 +23,10 @@ class ComponentExpression
     }
   end
 
+  def ==(other)
+    component == other.component
+  end
+
   def answers
     component_object.items.map { |item| [item.label, item.uuid] }
   end
