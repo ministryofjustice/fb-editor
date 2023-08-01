@@ -205,7 +205,7 @@ class AddContent {
     this.saveButton = config.view.saveButton;
 
     $button.on("click.AddContent", () => {
-      updateHiddenInputOnForm(config.$form, fieldname, "content");
+      updateHiddenInputOnForm(config.form, fieldname, "content");
       this.saveButton.save();
     });
 

@@ -92,7 +92,7 @@ describe('save-button', function() {
       });
     });
 
-    describe('submit()', function() {
+    describe('save()', function() {
       const sandbox = sinon.createSandbox();
 
       describe('when save required', function() {
@@ -113,7 +113,7 @@ describe('save-button', function() {
         it('submits the form', function() {
           const formSubmitSpy = sandbox.spy(form, 'submit')
 
-          saveButton.submit();
+          saveButton.save();
 
           expect(formSubmitSpy).to.have.been.calledOnce;
         })
@@ -121,9 +121,9 @@ describe('save-button', function() {
         it('removes the beforeunload listener', function() {
           const removeEventListenerSpy = sandbox.spy(window, 'removeEventListener')
 
-          saveButton.submit()
+          saveButton.save()
 
-          expect(removeEventListenerSpy).to.have.been.calledOnce
+          expect(removeEventListenerSpy).to.have.been.calledOnce;
         })
 
       })

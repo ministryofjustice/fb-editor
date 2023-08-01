@@ -122,7 +122,7 @@ class SaveButton extends HTMLButtonElement {
   // button, and bypassing unload prevention.
   save() {
     this.#enabled = true;
-    this.#removeBeforeUnloadListener();
+    this.form.dispatchEvent(new Event('submit')) // Trigger submit event listeners
     this.form.submit();
   }
 
