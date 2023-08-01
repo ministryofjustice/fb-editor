@@ -1,0 +1,5 @@
+<%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
+  <div class="branch" data-conditional-index="<%= conditional.index %>">
+    <%= render 'form_expressions', conditional: conditional %>
+  </div>
+<% end %>

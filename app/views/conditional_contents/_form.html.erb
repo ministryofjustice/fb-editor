@@ -1,0 +1,4 @@
+<%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
+<%= render 'form_conditionals', f: f %>
+
+<%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>

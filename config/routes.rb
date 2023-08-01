@@ -93,6 +93,10 @@ Rails.application.routes.draw do
         get '/destroy-message', to: 'branches#destroy_message', as: :destroy_message
       end
 
+      resources  :conditional_contents, param: :component_id, only: [:create, :edit, :update, :destroy] do
+        get '/conditionals', to: 'conditional_contents#new', as: 'new'
+      end
+
       get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
