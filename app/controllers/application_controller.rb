@@ -148,4 +148,9 @@ class ApplicationController < ActionController::Base
       name: 'SERVICE_SLUG'
     )&.decrypt_value
   end
+
+  def load_conditional_content
+    @page.content_components.map(&:uuid)
+  end
+  helper_method :load_conditional_content
 end
