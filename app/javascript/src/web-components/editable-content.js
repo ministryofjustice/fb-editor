@@ -3,6 +3,17 @@ const govspeak = require('@x-govuk/marked-govspeak')
 const GovukHTMLRenderer = require('govuk-markdown')
 const DOMPurify = require('dompurify')
 
+DOMPurify.addHook("afterSanitizeAttributes", function (node, data, config) {
+  if (node.nodeName === "A" && node.classList.contains("govuk-button")) {
+    // Replace it with a link
+    // node.classList.remove("gem-c-button", "govuk-button", "govuk-button--start");
+    // node.classList.add('govuk-link')
+
+    // Or remove it (and its wrapper <p>)
+    node.parentNode.remove();
+  }
+});
+
 class EditableContent extends HTMLElement {
   constructor() {
     super() 
@@ -26,13 +37,23 @@ class EditableContent extends HTMLElement {
       }
     )
 
+    const allowedGovspeakComponents = [
+      'govspeak-warning-callout',
+      'govspeak-information-callout',
+      'govspeak-address',
+      'govspeak-call-to-action',
+      'govspeak-contact',
+      'govspeak-button' // We need to allow it, for it to gain the govuk-button classes. Then DOMPurify will remove it
+    ]
+
     marked.setOptions({
       renderer: new GovukHTMLRenderer(),
-      headingsStartWith: 'xl'
+      headingsStartWith: 'xl',
+      // govspeakGemCompatibility: true
     })
 
     marked.use({ 
-      extensions: govspeak 
+      extensions: govspeak.filter((component) => allowedGovspeakComponents.includes(component.name) )
     })
   }
 
@@ -64,7 +85,7 @@ class EditableContent extends HTMLElement {
   get html() {
     const content = this.input.value || this.defaultContent
     const unsafeHTML = marked.parse(content);
-    return DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}})
+    return this.sanitize(unsafeHTML)
   }
 
   // Is the content area part of the page components 
@@ -83,7 +104,7 @@ class EditableContent extends HTMLElement {
 
   render() {
     const initialContent = this.initialContent || this.defaultContent;
-    const initialMarkup = (this.initialMarkup.trim() != '' ? this.initialMarkup : this.defaultContent);
+    const initialMarkup = (this.initialMarkup.trim() != '' ? this.sanitize(this.initialMarkup) : this.defaultContent);
     this.innerHTML = `
     <div class="editable-content" data-element="editable-content-root">
       <elastic-textarea>
@@ -205,6 +226,13 @@ class EditableContent extends HTMLElement {
     const deleteInputHTML = `<input type="hidden" name="delete_components[]" value="${this.config._uuid}" />`
     button.insertAdjacentHTML('beforebegin', deleteInputHTML);
     this.remove()
+  }
+
+  sanitize(unsafeHTML) {
+    return DOMPurify.sanitize(unsafeHTML, {
+        USE_PROFILES: {html: true}, 
+        FORBID_TAGS: ['style', 'button']
+    })  
   }
 }
 
