@@ -159,7 +159,8 @@ class ApplicationController < ActionController::Base
   end
 
   def confirmation_email
-    @confirmation_email ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')&.decrypt_value
+    confirmation_email_component_id = ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')&.decrypt_value
+    @confirmation_email ||= session[@service.service_id]['user_data'][confirmation_email_component_id]
   end
   helper_method :confirmation_email
 
