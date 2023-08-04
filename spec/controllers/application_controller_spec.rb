@@ -352,8 +352,19 @@ RSpec.describe ApplicationController do
         )
       end
 
+      let(:dummy_session) { { service.service_id => { 'user_data' => { 'email_question_1' => dummy_email } } } }
+      let(:dummy_email) { 'em@il.com' }
+
+      before do
+        allow_any_instance_of(Preview::SessionDataAdapter).to receive(:session).and_return(dummy_session)
+      end
+
       it 'confirmation_email_enabled? returns true' do
         expect(controller.confirmation_email_enabled?).to be_truthy
+      end
+
+      it 'confirmation_email returns the email in session' do
+        expect(controller.confirmation_email).to eq(dummy_email)
       end
     end
 
