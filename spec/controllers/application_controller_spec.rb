@@ -335,4 +335,38 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#confirmation_email' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when CONFIRMATION_EMAIL_COMPONENT_ID is present' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :confirmation_email_component_id,
+          service_id: service.service_id
+        )
+      end
+
+      it 'confirmation_email_enabled? returns true' do
+        expect(controller.confirmation_email_enabled?).to be_truthy
+      end
+    end
+
+    context 'when CONFIRMATION_EMAIL_COMPONENT_ID is not present' do
+      let!(:service_configuration) { nil }
+
+      it 'confirmation_email_enabled? returns false' do
+        expect(controller.confirmation_email_enabled?).to be_falsey
+      end
+
+      it 'confirmation_email doesn\'t return anything' do
+        expect(controller.confirmation_email).to be_nil
+      end
+    end
+  end
 end
