@@ -158,6 +158,11 @@ class ApplicationController < ActionController::Base
     @confirmation_email_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')
   end
 
+  def confirmation_email
+    @confirmation_email ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')&.decrypt_value
+  end
+  helper_method :confirmation_email
+
   def load_conditional_content
     @page.content_components.map(&:uuid)
   end
