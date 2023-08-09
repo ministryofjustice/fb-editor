@@ -21,6 +21,10 @@ class ComponentConditional
     }
   end
 
+  def ==(other)
+    expressions == other.expressions
+  end
+
   def expressions
     @expressions ||= []
   end

@@ -58,7 +58,8 @@ RSpec.describe ConditionalContent do
         [
           'Checkbox',
           'Colours',
-          'Pet choice'
+          'Pet choice',
+          'Email address question'
         ]
       )
     end
@@ -68,7 +69,8 @@ RSpec.describe ConditionalContent do
         [
           { 'data-supports-branching': true },
           { 'data-supports-branching': true },
-          { 'data-supports-branching': true }
+          { 'data-supports-branching': true },
+          { 'data-supports-branching': false }
         ]
       )
     end
@@ -80,7 +82,7 @@ RSpec.describe ConditionalContent do
         'conditionals_attributes' => {
           '0' => {
             'expressions_attributes' => {
-              '0' => { 'component' => 'eb40d6c7-6c07-4c64-8891-f0b4d36ca123' }
+              '0' => { 'component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b' }
             }
           }
         }
@@ -93,7 +95,7 @@ RSpec.describe ConditionalContent do
       object.tap do
         object.expressions.push(
           ComponentExpression.new(
-            'component' => 'eb40d6c7-6c07-4c64-8891-f0b4d36ca123',
+            'component' => 'd1c04d9e-877f-4219-a96f-e21dde925f4b',
             'page' => double(uuid: 'some-page-uuid')
           )
         )
@@ -106,6 +108,80 @@ RSpec.describe ConditionalContent do
           expected_conditional
         ]
       )
+    end
+  end
+
+  describe '#previous_flow_uuid' do
+    context 'previous flow uuid is present' do
+      it 'returns the previous flow uuid' do
+        expect(conditional_content.flow_uuid).to eq(previous_flow_uuid)
+      end
+    end
+
+    context 'there is no previous page' do
+      let(:previous_flow_uuid) { nil }
+
+      it 'returns the current page in the flow' do
+        expect(conditional_content.flow_uuid).to eq(conditional_content_uuid)
+      end
+    end
+  end
+
+  describe '#validations' do
+    before do
+      conditional_content.valid?
+    end
+
+    context 'when blank conditionals' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'expressions_attributes' => {
+                '0' => { 'component' => '' }
+              }
+            }
+          }
+        }
+      end
+
+      it 'does not accept blank conditionals' do
+        expect(conditional_content.conditionals_validations).to be_present
+      end
+
+      it 'adds error to conditionals object' do
+        errors = conditional_content.conditionals.first.errors
+        expect(errors).to be_present
+        expect(errors.of_kind?(:expressions, :invalid_expression)).to be_truthy
+      end
+    end
+
+    context 'when valid conditionals' do
+      let(:attributes) do
+        {
+          'conditionals_attributes' => {
+            '0' => {
+              'expressions_attributes' => {
+                '0' => {
+                  'page' => '07635f6d-34a8-45c8-884f-87696eba6a1f',
+                  'field' => '46c218d5-018a-482a-a66d-0d84be80f543',
+                  'operator' => 'is_not',
+                  'component' => '612f5bc2-8766-4296-9b9c-47f92bdc4b62'
+                }
+              }
+            }
+          }
+        }
+      end
+
+      it 'no errors on conditional_content' do
+        expect(conditional_content.errors).to be_blank
+      end
+
+      it 'no errors on conditionals' do
+        errors = conditional_content.conditionals.first.errors
+        expect(errors).to be_blank
+      end
     end
   end
 end

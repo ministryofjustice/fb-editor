@@ -5,13 +5,13 @@ class ConditionalContent
   attr_reader :traversable
 
   validate :conditionals_validations
-  validates :component_id, presence: true
+  validates :conditional_content_uuid, presence: true
 
   def initialize(attributes)
     @service = attributes.delete(:service)
-    @component_id = attributes.delete(:component_id)
     @conditional_content_uuid = attributes.delete(conditional_content_uuid)
-    @traversable = Traversable.new(service:, flow_uuid: attributes[:previous_flow_uuid])
+    @previous_flow_uuid = attributes.delete(previous_flow_uuid)
+    @traversable = Traversable.new(service:, flow_uuid:)
     super
   end
 
@@ -68,5 +68,11 @@ class ConditionalContent
     end
 
     results.flatten(1)
+  end
+
+  def flow_uuid
+    return conditional_content_uuid if previous_flow_uuid.blank?
+
+    previous_flow_uuid
   end
 end
