@@ -4,7 +4,8 @@ ALLOWED_DOMAINS = [
   'cica.gov.uk',
   'ccrc.gov.uk',
   'judicialappointments.gov.uk',
-  'ospt.gov.uk'
+  'ospt.gov.uk',
+  'gov.sscl.com'
 ].freeze
 
 Rails.application.config.allowed_domains = ALLOWED_DOMAINS
