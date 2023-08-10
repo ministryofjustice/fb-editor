@@ -1,7 +1,7 @@
 class ConditionalContent
   include ActiveModel::Model
   include ApplicationHelper
-  attr_accessor :previous_flow_uuid, :service, :conditional_content_uuid
+  attr_accessor :previous_flow_uuid, :service, :component_uuid
   attr_reader :traversable
 
   validate :conditionals_validations
@@ -9,7 +9,7 @@ class ConditionalContent
 
   def initialize(attributes)
     @service = attributes.delete(:service)
-    @conditional_content_uuid = attributes.delete(conditional_content_uuid)
+    @component_uuid = attributes.delete(component_uuid)
     @previous_flow_uuid = attributes.delete(previous_flow_uuid)
     @traversable = Traversable.new(service:, flow_uuid:)
     super
@@ -71,7 +71,7 @@ class ConditionalContent
   end
 
   def flow_uuid
-    return conditional_content_uuid if previous_flow_uuid.blank?
+    return component_uuid if previous_flow_uuid.blank?
 
     previous_flow_uuid
   end

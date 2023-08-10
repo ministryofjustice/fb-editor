@@ -26,7 +26,7 @@ class ConditionalContentsController < FormController
     {
       service:,
       previous_flow_uuid:,
-      conditional_content_uuid: params[:conditional_content_uuid]
+      component_uuid: params[:component_id]
     }
   end
 
@@ -35,7 +35,7 @@ class ConditionalContentsController < FormController
   end
 
   def previous_flow_uuid
-    page_uuid = service.page_with_component(params[:conditional_content_component_id]).uuid
+    page_uuid = service.page_with_component(params[:component_id]).uuid
     previous_flow_obj = service.flow.select { |_k, v| v['next']['default'] == page_uuid }
     previous_flow_obj.keys.first
   end
