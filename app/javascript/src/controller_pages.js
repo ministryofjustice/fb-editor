@@ -481,6 +481,14 @@ function addContentMenuListeners(view) {
       confirm: view.text.dialogs.button_delete_component
     });
   });
+
+  view.$document.on("ContentMenuSelectionConditionalContent", function(event, component, apiUrl) {
+    new DialogForm(component.apiUrl, {
+      activator: component,
+      remote: true,
+      autoOpen: true,
+    });
+  });
 }
 
 

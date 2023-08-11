@@ -3,7 +3,7 @@ class Api::ConditionalContentsController < ConditionalContentsController
   skip_before_action :authorised_access
 
   def new_conditional
-    render layout: false
+    render 'new_conditional', layout: false
   end
 
   def require_user!

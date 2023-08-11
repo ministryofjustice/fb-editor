@@ -26,6 +26,7 @@ class Content {
       // Config defaults
       attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
       data: $node.data("fb-content-data"), // TODO: Phase this out because Question should control data
+      data2: $node.data("fb-data-config"),
       editClassname: "active",
       id: $node.data("fb-content-id"),
       text: {},
@@ -35,6 +36,7 @@ class Content {
     $node.addClass("Content");
     this._config = conf;
     this.data = $node.data("fb-content-data");
+    this.data2 = $node.data("fb-data-config");
     this.$node = $node;
     this.editable = editableComponent($node, conf);
     this.menu = this.data && createContentMenu.call(this); // Components with data are user added, others are templated
