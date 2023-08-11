@@ -5,7 +5,10 @@
     <ul class="govuk-navigation component-activated-menu">
       <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
       <% if ENV['CONDITIONAL_CONTENT'] == 'enabled' && moj_forms_dev? %>
-        <li><%= link_to t('content.menu.show_if'), api_service_conditional_contents_path(service.service_id, component.uuid) %></li>
+      <li data-action="conditional-content"
+        data-api-path="<%= URI.decode_www_form_component(api_service_conditional_contents_path(service.service_id, component.uuid))%>">
+        <span><%= t('content.menu.show_if') %></span>
+      </li>
       <% end %>
     </ul>
   </script>

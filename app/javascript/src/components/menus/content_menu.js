@@ -51,6 +51,9 @@ class ContentMenu extends ActivatedMenu {
       case "close":
         this.close();
         break;
+      case "conditional-content":
+        this.conditionalContent(item.data('apiPath'));
+        break;
     }
   }
 
@@ -71,6 +74,11 @@ class ContentMenu extends ActivatedMenu {
 
   remove() {
     $(document).trigger("ContentMenuSelectionRemove", this.component);
+  }
+
+  conditionalContent(apiUrl) {
+    this.component.apiUrl = apiUrl
+    $(document).trigger("ContentMenuSelectionConditionalContent", this.component, apiUrl);
   }
 }
 
