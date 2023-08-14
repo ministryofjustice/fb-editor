@@ -8,6 +8,7 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
 const ReferencePaymentController = require('./controller_reference_payment');
+const ContentVisibilityController = require('./controller_content_visibility');
 const GOVUKFrontend = require('govuk-frontend')
 
 const {
@@ -46,6 +47,13 @@ switch(controllerAndAction()) {
   case "BranchesController#edit":
   case "BranchesController#update":
        Controller = BranchesController;
+  break;
+
+  case "ContentVisibilityController#new":
+  case "ContentVisibilityController#create":
+  case "ContentVisibilityController#edit":
+  case "ContentVisibilityController#update":
+        Controller = ContentVisibilityController;
   break;
 
   case "ServicesController#index":
