@@ -67,7 +67,7 @@ class PublishForm {
     var $activator = $node.parent().find('button[data-fb-action="publish"]');
     var $errors = $node.find(".govuk-error-message");
 
-    new ContentVisibilityController($content, $radios);
+    new ModalContentVisibilityController($content, $radios);
     new DialogForm($node, {
       autoOpen: $errors.length ? true : false,
       activator: $activator,
@@ -97,7 +97,7 @@ class PublishForm {
  *         visibleOnLoad: Function || Boolean // Value should be true/false but you can pass a function to return such a value.
  *       }
  **/
-class ContentVisibilityController {
+class ModalContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
     if($radios.length > 0) {

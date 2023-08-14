@@ -113,8 +113,6 @@ class ContentVisibilityCondition {
       $node.attr("id", utilities.uniqueString("content-visibility-condition_"));
     }
 
-    console.log($node)
-
     $node.addClass("ContentVisibilityCondition");
     $node.data("instance", this);
     $node.append($remover);
