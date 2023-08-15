@@ -418,6 +418,8 @@ workflows:
       #       - build
       - build_web_testable_branch:
           context: *context
+            requires:
+              - build
           # requires:
           #   - lint
           #   - security
@@ -429,6 +431,8 @@ workflows:
                 - /testable-.*/
       - build_workers_testable_branch:
           context: *context
+            requires:
+              - build
           # requires:
           #   - lint
           #   - security
