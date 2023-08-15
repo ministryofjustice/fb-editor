@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup:
+      - aws-cli/setup: &aws_cli
           role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION # this will use the env var
       - run: &node_version
@@ -41,7 +41,7 @@ jobs:
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
     # Authenticate to the ECR repository using the standard command
-      - run:
+      - run: &ecr_login
           name: Login to ecr
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
@@ -118,6 +118,7 @@ jobs:
       - slack/status: *slack_status
   build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
+
     docker: &ecr_image
       - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
         aws_auth:
@@ -134,15 +135,8 @@ jobs:
       - run: &deploy_scripts
           name: cloning deploy scripts
           command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
-
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
-      - run:
-          name: Login to ecr
-          command: |
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-     
+      - run: *aws_cli
+      - run: *ecr_login
       - run:
           name: build testable editor web docker images
           environment:
