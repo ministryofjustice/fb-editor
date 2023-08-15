@@ -120,7 +120,7 @@ jobs:
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git:temporary-ecr-creds deploy-scripts'
       - run:
           name: build testable editor web docker images
           environment:
