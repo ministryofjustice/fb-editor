@@ -5,6 +5,9 @@ orbs:
   node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.3
   kubernetes: circleci/kubernetes@0.12.0
+  aws-cli: circleci/aws-cli@4.0.0 # use v4 of this orb
+  aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
+
 
 jobs:
   build:
@@ -32,7 +35,7 @@ jobs:
           fail_only: true
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
-          include_job_number_field: false
+          include_job_number_field: false  
   lint:
     docker:
       - image: 'cimg/ruby:3.1.3-node'
@@ -104,6 +107,7 @@ jobs:
           command: yarn run jstest
       - slack/status: *slack_status
   build_web_testable_branch:
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     working_directory: ~/circle/git/fb-editor
     docker: &ecr_image
       - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
@@ -121,6 +125,12 @@ jobs:
       - run: &deploy_scripts
           name: cloning deploy scripts
           command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      - aws-cli/setup:
+        role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+        region: $ECR_REGION # this will use the env var
+    # Authenticate to the ECR repository using the standard command
+      - run: |
+        aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
       - run:
           name: build testable editor web docker images
           environment:
