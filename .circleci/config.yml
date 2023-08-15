@@ -17,12 +17,15 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
+      # - aws-cli/setup:
+      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+      #     region: $ECR_REGION # this will use the env var
       - run: &node_version
           name: Swap node versions
           command: |
+            echo '******************'
+            echo $ECR_ROLE_TO_ASSUME
+            echo '******************'
             set +e
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
             export NVM_DIR="$HOME/.nvm"
