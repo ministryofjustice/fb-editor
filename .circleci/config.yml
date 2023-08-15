@@ -360,6 +360,7 @@ workflows:
   test_and_build:
     jobs:
       - build:
+          context: *context
           filters:
             branches:
               ignore:
