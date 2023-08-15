@@ -418,6 +418,7 @@ workflows:
   deploy_testable_branch:
     jobs:
       - build:
+          context: *context
           filters:
             branches:
               only:
