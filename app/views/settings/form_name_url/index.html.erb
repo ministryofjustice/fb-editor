@@ -76,12 +76,12 @@
                    aria-describedby="<%= f.object.errors[:service_slug].any? ? f.object.errors[:service_slug]&.map.with_index {|_,index| "service-service-slug-field-error-#{index}"}.join(' ') : 'service-service-slug-hint'  %>"
                    value="<%= f.object.saved_service_slug %>">
 
-                   <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message">
+                   <div id="<%= f.object.errors[:service_slug].any? ? 'service-service-slug-field-error-info' : 'service-service-slug-field-info' %>" class="govuk-hint govuk-character-count__message" aria-hidden="true">
                      You can enter up to <%= Editor::Service::URL_MAXIMUM %> characters
-                     <div class="fb-domain-input__suffix" aria-hidden="true">
-                       <%= t('settings.form_name.form_slug.domain') %>
-                     </div>
                    </div>
+                   <div class="fb-domain-input__suffix">
+                    <%= t('settings.form_name.form_slug.domain') %>
+                  </div>
           </div>
         </div>
       </div>
