@@ -132,10 +132,6 @@ jobs:
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      - run: &deploy_scripts
-          name: cloning deploy scripts
-          command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
-
       - aws-cli/setup:
           role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION # this will use the env var
@@ -144,6 +140,10 @@ jobs:
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
      
+      - run: &deploy_scripts
+          name: cloning deploy scripts
+          command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+
       - run:
           name: build testable editor web docker images
           environment:
