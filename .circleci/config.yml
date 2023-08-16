@@ -154,6 +154,7 @@ jobs:
       #     command: './deploy-scripts/bin/build'
 
       - aws-ecr/build-image:
+          build_path: /docker/web
           push-image: true
           tag: ${CIRCLE_SHA1}
           region: $ECR_REGION # this will use the env var
