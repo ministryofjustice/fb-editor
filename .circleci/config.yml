@@ -119,11 +119,11 @@ jobs:
   build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
 
-    docker: &ecr_image
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+    # docker: &ecr_image
+    #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+    #     aws_auth:
+    #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
+    #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
       - setup_remote_docker: &remote_docker
