@@ -119,11 +119,12 @@ jobs:
   build_web_testable_branch:
     working_directory: ~/circle/git/fb-editor
 
-    docker: &ecr_image
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+    # docker: &ecr_image
+    #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+    #     aws_auth:
+    #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
+    #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - setup_remote_docker: &remote_docker
@@ -156,7 +157,7 @@ jobs:
           include_job_number_field: false
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -171,7 +172,7 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -210,7 +211,7 @@ jobs:
     - slack/status: *testable_slack_status
   build_web_image:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -225,7 +226,7 @@ jobs:
       - slack/status: *slack_status
   build_workers_image:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -240,7 +241,7 @@ jobs:
       - slack/status: *slack_status
   deploy_to_test_eks:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -335,7 +336,7 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_to_live_eks:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
