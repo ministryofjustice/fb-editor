@@ -156,7 +156,7 @@ jobs:
           include_job_number_field: false
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -171,7 +171,7 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -210,7 +210,7 @@ jobs:
     - slack/status: *testable_slack_status
   build_web_image:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -225,7 +225,7 @@ jobs:
       - slack/status: *slack_status
   build_workers_image:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -240,7 +240,7 @@ jobs:
       - slack/status: *slack_status
   deploy_to_test_eks:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -335,7 +335,7 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_to_live_eks:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
