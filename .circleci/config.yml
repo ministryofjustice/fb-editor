@@ -158,6 +158,8 @@ jobs:
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -173,6 +175,8 @@ jobs:
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -212,6 +216,7 @@ jobs:
   build_web_image:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -242,6 +247,7 @@ jobs:
   deploy_to_test_eks:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
@@ -337,6 +343,7 @@ jobs:
   deploy_to_live_eks:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
