@@ -413,6 +413,28 @@ a[disabled] {
   }
 }
 
+.ContentVisibilityQuestion {
+  padding-left: 15%;
+  position: relative;
+
+  label {
+    @include govuk-font($size: 24);
+
+    display: inline-block;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    top: 5px;
+  }
+
+  select,
+  .error-message {
+    width: 100%;
+  }
+
+  @include govuk-media-query($until: tablet) {
+  }
+}
 
 /* Editable components
  * ------------------- */
@@ -712,7 +734,7 @@ editable-content,
       fill: govuk-colour('orange');
     }
   }
-  
+
 }
 
 .PageMenuActivator {
@@ -1340,7 +1362,7 @@ dl > div:not(:first-of-type){
 
 .fb-domain-input {
   position:relative;
-  
+
   .govuk-input {
     width: 85%;
   }

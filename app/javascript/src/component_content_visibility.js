@@ -235,43 +235,41 @@ class ContentVisibilityQuestion {
     }
   }
 
-  // clearErrorState() {
-  //   var classes = this.#config.css_classes_error.split(" ");
+  clearErrorState() {
+    var classes = this.#config.css_classes_error.split(" ");
 
-  //   // First clear anything added by error() method.
-  //   this.condition.$node.removeClass("error");
-  //   this.condition.$node.removeClass(this.#config.css_classes_error);
+    this.condition.$node.removeClass("error");
+    this.condition.$node.removeClass(this.#config.css_classes_error);
 
-  //   if(this._$error && this._$error.length > 0) {
-  //     this._$error.remove();
-  //     this._$error = null;
-  //   }
+    if(this._$error && this._$error.length > 0) {
+      this._$error.remove();
+      this._$error = null;
+    }
 
-    // Second remove any template injected error messages identified by config.
-    // this.condition.$node.find(this.#config.selector_error_messsage).remove();
+    this.condition.$node.find(this.#config.selector_error_messsage).remove();
 
     // Lastly remove any template injected error message classes identified by config.
-    // for(var i=0; i < classes.length; ++i) {
-    //   if(classes[i].length > 0) {
-    //     this.$node.removeClass(classes[i]);
-    //     this.$node.find("." + classes[i]).removeClass(classes[i]);
-    //   }
-    // }
-  // }
+    for(var i=0; i < classes.length; ++i) {
+      if(classes[i].length > 0) {
+        this.$node.removeClass(classes[i]);
+        this.$node.find("." + classes[i]).removeClass(classes[i]);
+      }
+    }
+  }
 
-  // error(type) {
-  //   var $error = $("<p class=\"error-message\"></p>");
-  //   var errors = this.#config.view.text.errors.branches;
-  //   switch(type) {
-  //     case "unsupported": $error.text(errors.unsupported_question);
-  //       break;
-  //     default: $error.text("An error occured");
-  //   }
+  error(type) {
+    var $error = $("<p class=\"error-message\"></p>");
+    var errors = this.#config.view.text.errors.conditional_visibility;
+    switch(type) {
+      case "unsupported": $error.text(errors.unsupported_question);
+        break;
+      default: $error.text("An error occured");
+    }
 
-  //   this._$error = $error;
-  //   this.$node.append($error);
-  //   this.condition.$node.addClass("error");
-  // }
+    this._$error = $error;
+    this.$node.append($error);
+    this.condition.$node.addClass("error");
+  }
 }
 
 class ContentVisibilityAnswer {
