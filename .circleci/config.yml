@@ -171,7 +171,7 @@ jobs:
       - checkout
       # - setup_remote_docker: *remote_docker
       - run: *build_sha
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: build testable editor workers docker images
           environment:
@@ -196,7 +196,7 @@ jobs:
             echo 'export BUILD_SHA=$CIRCLE_SHA1' >> $BASH_ENV
             echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_339c9dd086ca45a8262af090e5e8e82a' >> $BASH_ENV
             source $BASH_ENV
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: deploy to test
           environment:
@@ -212,7 +212,7 @@ jobs:
     - checkout
     - ruby/install-deps
     - kubernetes/install-kubectl
-    - run: *deploy_scripts
+    # - run: *deploy_scripts
     - run:
         name: set kubernetes context for saas namespace
         command: './deploy-scripts/bin/set_testable_editors_context'
@@ -228,7 +228,7 @@ jobs:
       - checkout
       # - setup_remote_docker: *remote_docker
       - run: *build_sha
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: build web docker images
           environment:
@@ -245,7 +245,7 @@ jobs:
       - checkout
       # - setup_remote_docker: *remote_docker
       - run: *build_sha
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: build workers docker images
           environment:
@@ -262,7 +262,7 @@ jobs:
       # - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: deploy to test (EKS cluster)
           environment:
@@ -358,7 +358,7 @@ jobs:
       # - setup_remote_docker: *remote_docker
       - add_ssh_keys: *ssh_keys
       - run: *base_environment_variables
-      - run: *deploy_scripts
+      # - run: *deploy_scripts
       - run:
           name: deploy to live (eks)
           environment:
