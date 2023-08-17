@@ -8,6 +8,8 @@ class ConditionalContentsController < FormController
 
   def create
     @conditional_content = ConditionalContent.new(conditional_content_params)
+
+    # Add ContentVisibilityCreation
   end
 
   def conditional_index
@@ -35,8 +37,11 @@ class ConditionalContentsController < FormController
   end
 
   def previous_flow_uuid
-    page_uuid = service.page_with_component(params[:component_uuid]).uuid
-    previous_flow_obj = service.flow.select { |_k, v| v['next']['default'] == page_uuid }
-    previous_flow_obj.keys.first
+    if params[:component_uuid].present?
+      page_uuid = service.page_with_component(params[:component_uuid]).uuid
+      previous_flow_obj = service.flow.select { |_k, v| v['next']['default'] == page_uuid }
+      return previous_flow_obj.keys.first
+    end
+    params['conditional_content']['previous_flow_uuid']
   end
 end
