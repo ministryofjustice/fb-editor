@@ -116,14 +116,14 @@ function createContentVisibility(view, $node) {
 function updateContentVisibility(view) {
   var $first = view.contentVisibilityNodes.eq(0);
 
-  if(view.contentVisibilityNodes.length > 1) {
-    $first.find(".ActivatedMenuActivator").show();
-    $first.data("instance").remover.enable();
-  }
-  else {
-    $first.find(".ActivatedMenuActivator").hide();
-    $first.data("instance").remover.disable();
-  }
+  // if(view.contentVisibilityNodes.length > 1) {
+  //   $first.find(".ActivatedMenuActivator").show();
+  //   $first.data("instance").remover.enable();
+  // }
+  // else {
+  //   $first.find(".ActivatedMenuActivator").hide();
+  //   $first.data("instance").remover.disable();
+  // }
 
   // 2. Remove first 'or'.
   // removeBranchCombinator(view.contentVisibilityNodes.eq(0));
