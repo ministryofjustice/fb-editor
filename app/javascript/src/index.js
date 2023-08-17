@@ -49,10 +49,10 @@ switch(controllerAndAction()) {
        Controller = BranchesController;
   break;
 
-  case "ContentVisibilityController#new":
-  case "ContentVisibilityController#create":
-  case "ContentVisibilityController#edit":
-  case "ContentVisibilityController#update":
+  case "ConditionalContentsController#new":
+  case "ConditionalContentsController#create":
+  case "ConditionalContentsController#edit":
+  case "ConditionalContentsController#update":
         Controller = ContentVisibilityController;
   break;
 
