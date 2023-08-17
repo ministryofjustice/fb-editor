@@ -17,9 +17,9 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
+      # - aws-cli/setup:
+      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+      #     region: $ECR_REGION # this will use the env var
       - run: &node_version
           name: Swap node versions
           command: |
@@ -41,10 +41,10 @@ jobs:
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
     # Authenticate to the ECR repository using the standard command
-      - run:
-          name: Login to ecr
-          command: |
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      # - run:
+      #     name: Login to ecr
+      #     command: |
+      #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
       
   lint:
     docker:
@@ -133,13 +133,13 @@ jobs:
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      # - aws-cli/setup:
-      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-      #     region: $ECR_REGION # this will use the env var
-      # - run:
-      #     name: Login to ecr
-      #     command: |
-      #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - run:
+          name: Login to ecr
+          command: |
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
 
      
       # - run: &deploy_scripts
