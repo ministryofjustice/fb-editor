@@ -49,7 +49,7 @@ class ContentVisibilityController extends DefaultController {
 
     ContentVisibilityController.addContentVisibilityEventListeners(this)
     ContentVisibilityController.enhanceCurrentContentVisibility.call(this, $content);
-    ContentVisibilityController.enhanceContentVisibilityInjector.call(this, $injectors);
+    ContentVisibilityController.enhanceContentVisibilityInjectors.call(this, $injectors);
   }
 }
 
