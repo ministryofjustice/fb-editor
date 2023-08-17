@@ -4,15 +4,13 @@ const EVENT_QUESTION_CHANGE = "ContentVisibilityQuestion_Change";
 
 class ContentVisibility {
   #config;
-  #conditions; // Stores created BranchConditions
-  #conditionCount; // TODO: Maybe remove if we can find way to use the #conditions.length
-  #index; // Index number of the Branch
+  #conditions;
+  #conditionCount;
+  #index;
 
   constructor($node, config) {
     var content_visibility = this;
     var conf = utilities.mergeObjects({ content_visibility: this }, config);
-    var $injector = $(conf.selector_condition_add, $node);
-    // var $remover = $(conf.selector_branch_remove, $node);
 
     if($node.attr("id") == "" || $node.attr("id") == undefined) {
       $node.attr("id", utilities.uniqueString("conditional_content_"));
@@ -27,9 +25,6 @@ class ContentVisibility {
     this.#index = Number(conf.index);
     this.$node = $node;
     this.view = conf.view;
-    // this.destination = new BranchDestination($node.find(config.selector_destination), conf);
-    this.conditionInjector = new ContentVisibilityConditionInjector($injector, conf);
-    // this.remover = new ContentVisibilityRemover($remover, conf);
 
     this.$node.find(this.#config.selector_condition).each(function(index) {
       var $node = $(this);
@@ -61,7 +56,6 @@ class ContentVisibility {
   }
 
   removeCondition(condition) {
-    // Find and remove from conditions array
     for(var i=0; i<this.#conditions.length; ++i) {
       if(this.#conditions[i] == condition) {
         this.#conditions.splice(i, 1);
@@ -70,14 +64,6 @@ class ContentVisibility {
 
     this.#updateConditions();
   }
-
-  // destroy() {
-  //   // 1. Anything specifig to this function here.
-  //   this.$node.remove();
-
-  //   // 2. Then trigger the related event for listeners.
-  //   $(document).trigger('Branch_Destroy', this);
-  // }
 
   #createCondition($node) {
     var condition = new ContentVisibilityCondition($node, utilities.mergeObjects(this.#config, {
@@ -159,25 +145,6 @@ class ContentVisibilityCondition {
   // }
 }
 
-class ContentVisibilityConditionInjector {
-  #config;
-
-  constructor($node, config) {
-    var conf = utilities.mergeObjects({ condition: this }, config);
-
-    $node.addClass("ContentVisibilityConditionInjector");
-    $node.data("instance", this);
-    $node.on("click", (e) => {
-      e.preventDefault();
-      conf.branch.addCondition();
-    });
-
-    this.#config = conf;
-    this.content_visibility = conf.content_visibility;
-    this.$node = $node;
-  }
-}
-
 class ContentVisibilityQuestion {
   #config;
   #index;
@@ -225,7 +192,7 @@ class ContentVisibilityQuestion {
            });
            break;
       case false:
-           this.error("unsupported");
+          //  this.error("unsupported");
            this.enable();
            break;
       default:
@@ -255,20 +222,6 @@ class ContentVisibilityQuestion {
         this.$node.find("." + classes[i]).removeClass(classes[i]);
       }
     }
-  }
-
-  error(type) {
-    var $error = $("<p class=\"error-message\"></p>");
-    var errors = this.#config.view.text.errors.conditional_visibility;
-    switch(type) {
-      case "unsupported": $error.text(errors.unsupported_question);
-        break;
-      default: $error.text("An error occured");
-    }
-
-    this._$error = $error;
-    this.$node.append($error);
-    this.condition.$node.addClass("error");
   }
 }
 
@@ -306,68 +259,5 @@ class ContentVisibilityAnswer {
     }
   }
 }
-
-// class ContentVisibilityRemover {
-//   #config;
-//   #disabled = false;
-
-//   constructor($node, config) {
-//     var remover = this;
-//     var conf = utilities.mergeObjects({}, config);
-
-//     $node.addClass("ContentVisibilityRemover");
-//     $node.data("instance", this);
-//     $node.attr("aria-controls", conf.branch.$node.attr("id"));
-//     $node.on("click", (e) => {
-//       e.preventDefault();
-//       remover.activate();
-//     });
-
-//     this.#config = conf;
-//     this.branch = conf.branch;
-//     this.$node = $node;
-//   }
-
-//   disable() {
-//     this.$node.addClass("disabled");
-//     this.#disabled = true;
-//   }
-
-//   enable() {
-//     this.$node.removeClass("disabled");
-//     this.#disabled = false;
-//   }
-
-//   isDisabled() {
-//     return this.#disabled;
-//   }
-
-//   #action() {
-//     // 1. Trigger the related event for listeners.
-//     $(document).trigger("ContentVisibilityRemover_Action", this);
-//     // 2. Finally pass off to the branch.
-//     this.branch.destroy();
-//   }
-
-//   #confirm() {
-//     var remover = this;
-//     this.#config.confirmation_remove = false;
-//     $(document).trigger("ContentVisibilityRemover_Confirm", {
-//       instance: remover,
-//       action:  function () { remover.activate(); },
-
-//     });
-//   }
-
-//   // Check if confirmation is required or just run the action
-//   activate() {
-//     if(this.#config.confirmation_remove) {
-//       this.#confirm();
-//     }
-//     else {
-//       this.#action();
-//     }
-//   }
-// }
 
 module.exports = ContentVisibility;

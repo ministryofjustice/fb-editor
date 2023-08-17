@@ -1,7 +1,6 @@
 
 const utilities = require('./utilities');
 const DefaultController = require('./controller_default');
-const ActivatedMenu = require('./components/menus/activated_menu');
 const ContentVisibility = require('./component_content_visibility');
 const ContentVisibilityInjector = require('./component_content_visibility_injector');
 const CONTENT_VISIBILITY_SELECTOR = ".content-visibility";
@@ -72,24 +71,17 @@ ContentVisibilityController.enhanceContentVisibilityInjectors = function($inject
 function createContentVisibility(view, $node) {
   var content_visibility = new ContentVisibility($node, {
     index: view.contentVisibilityIndex,
-    // css_classes_error: CSS_CLASS_ERRORS,
     selector_answer: CONTENT_VISIBILITY_ANSWER_SELECTOR,
-    // selector_branch_remove: CONTENT_VISIBILITY_REMOVE_SELECTOR,
     selector_condition: CONTENT_VISIBILITY_CONDITION_SELECTOR,
     selector_condition_add: CONTENT_VISIBILITY_CONDITION_ADD_SELECTOR,
-    // selector_condition_remove: CONTENT_VISIBILITY_CONDITION_REMOVE_SELECTOR,
-    // selector_error_messsage: CONTENT_VISIBILITY_ERROR_MESSAGE_SELECTOR,
     selector_question: CONTENT_VISIBILITY_QUESTION_SELECTOR,
     answer_url: view.api.get_expression,
-    // dialog_delete: view.dialogConfirmationDelete,
     template_condition: view.contentVisibilityConditionTemplate,
     confirmation_remove: true,
     view: view,
   });
 
-  // Add new branch view changes.
-  // addBranchMenu(branch);
-  // addBranchCombinator(branch)
+
   $(document).trigger(EVENT_QUESTION_CHANGE, content_visibility);
 
   view.contentVisibilityIndex = view.contentVisibilityIndex + 1;
@@ -115,29 +107,9 @@ function createContentVisibility(view, $node) {
 
 function updateContentVisibility(view) {
   var $first = view.contentVisibilityNodes.eq(0);
-
-  // if(view.contentVisibilityNodes.length > 1) {
-  //   $first.find(".ActivatedMenuActivator").show();
-  //   $first.data("instance").remover.enable();
-  // }
-  // else {
-  //   $first.find(".ActivatedMenuActivator").hide();
-  //   $first.data("instance").remover.disable();
-  // }
-
-  // 2. Remove first 'or'.
-  // removeBranchCombinator(view.contentVisibilityNodes.eq(0));
 }
 
 ContentVisibilityController.addContentVisibilityEventListeners = function(view) {
-  // view.$document.on("Branch_Destroy", function(event, branch){
-  //   updateBranches(view);
-  // });
-
-  // view.$document.on(EVENT_BRANCH_REMOVER_ACTION, function(event, remover) {
-  //   removeBranchCombinator(remover.branch.$node);
-  // });
-
   view.$document.on("ContentVisibilityInjector_Add", function() {
     var url = utilities.stringInject(view.api.new_conditional, {
       content_visibility_index: String(view.contentVisibilityIndex - 1)
@@ -153,15 +125,6 @@ ContentVisibilityController.addContentVisibilityEventListeners = function(view) 
     });
   });
 
-  // view.$document.on(EVENT_BRANCH_REMOVER_CONFIRM, function(event, data) {
-  //   view.dialogConfirmationDelete.onConfirm = data.action;
-  //   view.dialogConfirmationDelete.open({
-  //     heading: view.text.dialogs.heading_delete_branch,
-  //     content: view.text.dialogs.message_delete_branch,
-  //     confirm: view.text.dialogs.button_delete_branch
-  //   });
-  // });
-
   view.$document.on(EVENT_QUESTION_CHANGE, function(event, content_visibility) {
     if(content_visibility.$node.find(".ContentVisibilityAnswer").length > 0) {
       content_visibility.$node.find(".ContentVisibilityConditionInjector").show();
@@ -176,7 +139,6 @@ function createContentVisibilityConditionTemplate($node) {
   var $condition = $node.find(".condition").eq(0).clone();
   var html = "";
 
-  // See IMPORTANT, above.
   if($condition.length == 0) {
     $condition = $(".condition").clone();
   }
