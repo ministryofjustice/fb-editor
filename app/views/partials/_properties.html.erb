@@ -18,8 +18,8 @@
       }
     },
     api: {
-      new_conditional: "/api/services/<%= params[:id] %>/conditional-contents/<%= params[:component_id] %>/conditionals/#{branch_index}",
-      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{branch_index}/expressions/#{condition_index}",
+      new_conditional: "/api/services/<%= params[:id] %>/conditional-contents/<%= params[:component_id] %>/conditionals/#{content_visibility_index}",
+      get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{content_visibility_index}/expressions/#{condition_index}",
       // Feaures switches here (as per example below).
       features: {
         /* example: <%= ENV['EXAMPLE_FEATURE'] == 'enabled' %> */

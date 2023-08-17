@@ -47,6 +47,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :conditional_contents, param: :component_uuid, only: [:create, :edit, :update, :destroy] do
+        collection do
+          get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
+        end
+      end
+
       resources :settings, only: [:index]
       namespace :settings do
         resources :form_information, only: [:index, :create]
