@@ -12,12 +12,12 @@ orbs:
 jobs:
   build:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
-    docker:
+    docker: &docker_image
       - image: 'cimg/ruby:3.1.3-node'
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup:
+      - aws-cli/setup: &setup_aws
           role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION # this will use the env var
       - run: &node_version
@@ -41,7 +41,7 @@ jobs:
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
     # Authenticate to the ECR repository using the standard command
-      - run:
+      - run: &ecr_login
           name: Login to ecr
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
@@ -118,28 +118,31 @@ jobs:
       - slack/status: *slack_status
   build_web_testable_branch:
     # working_directory: ~/circle/git/fb-editor
-    working_directory:  ~/project
+    docker: *docker_image
+    # working_directory:  ~/project
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
     #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
     #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
+      - aws-cli/setup: *setup_aws
       # - setup_remote_docker: &remote_docker
       #     docker_layer_caching: true
+      - run: *ecr_login
       - run: &build_sha
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
-      - run:
-          name: Login to ecr
-          command: |
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      # - aws-cli/setup:
+      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+      #     region: $ECR_REGION # this will use the env var
+      # - run:
+      #     name: Login to ecr
+      #     command: |
+      #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
 
      
       # - run: &deploy_scripts
