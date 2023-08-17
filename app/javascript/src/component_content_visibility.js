@@ -29,7 +29,7 @@ class ContentVisibility {
     this.view = conf.view;
     // this.destination = new BranchDestination($node.find(config.selector_destination), conf);
     this.conditionInjector = new ContentVisibilityConditionInjector($injector, conf);
-    // this.remover = new BranchRemover($remover, conf);
+    // this.remover = new ContentVisibilityRemover($remover, conf);
 
     this.$node.find(this.#config.selector_condition).each(function(index) {
       var $node = $(this);
@@ -306,5 +306,68 @@ class ContentVisibilityAnswer {
     }
   }
 }
+
+// class ContentVisibilityRemover {
+//   #config;
+//   #disabled = false;
+
+//   constructor($node, config) {
+//     var remover = this;
+//     var conf = utilities.mergeObjects({}, config);
+
+//     $node.addClass("ContentVisibilityRemover");
+//     $node.data("instance", this);
+//     $node.attr("aria-controls", conf.branch.$node.attr("id"));
+//     $node.on("click", (e) => {
+//       e.preventDefault();
+//       remover.activate();
+//     });
+
+//     this.#config = conf;
+//     this.branch = conf.branch;
+//     this.$node = $node;
+//   }
+
+//   disable() {
+//     this.$node.addClass("disabled");
+//     this.#disabled = true;
+//   }
+
+//   enable() {
+//     this.$node.removeClass("disabled");
+//     this.#disabled = false;
+//   }
+
+//   isDisabled() {
+//     return this.#disabled;
+//   }
+
+//   #action() {
+//     // 1. Trigger the related event for listeners.
+//     $(document).trigger("ContentVisibilityRemover_Action", this);
+//     // 2. Finally pass off to the branch.
+//     this.branch.destroy();
+//   }
+
+//   #confirm() {
+//     var remover = this;
+//     this.#config.confirmation_remove = false;
+//     $(document).trigger("ContentVisibilityRemover_Confirm", {
+//       instance: remover,
+//       action:  function () { remover.activate(); },
+
+//     });
+//   }
+
+//   // Check if confirmation is required or just run the action
+//   activate() {
+//     if(this.#config.confirmation_remove) {
+//       this.#confirm();
+//     }
+//     else {
+//       this.#action();
+//     }
+//   }
+// }
 
 module.exports = ContentVisibility;
