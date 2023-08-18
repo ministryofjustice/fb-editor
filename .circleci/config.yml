@@ -183,7 +183,7 @@ jobs:
     steps:
       - checkout
       # - setup_remote_docker: *remote_docker
-      - run: *build_sha
+      # - run: *build_sha
       # - run: *deploy_scripts
       - run:
           name: build testable editor workers docker images
@@ -240,7 +240,7 @@ jobs:
     steps:
       - checkout
       # - setup_remote_docker: *remote_docker
-      - run: *build_sha
+      # - run: *build_sha
       # - run: *deploy_scripts
       - run:
           name: build web docker images
@@ -257,7 +257,7 @@ jobs:
     steps:
       - checkout
       # - setup_remote_docker: *remote_docker
-      - run: *build_sha
+      # - run: *build_sha
       # - run: *deploy_scripts
       - run:
           name: build workers docker images
