@@ -8,8 +8,16 @@ class ConditionalContentsController < FormController
 
   def create
     @conditional_content = ConditionalContent.new(conditional_content_params)
+    content_visibility_creation = ContentVisibilityCreation.new(
+      conditional_content: @conditional_content,
+      latest_metadata: service_metadata
+    )
 
-    # Add ContentVisibilityCreation
+    if content_visibility_creation.save
+      redirect_to edit_conditional_content_path(service.service_id, content_visibility_creation.component_uuid)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def conditional_index
@@ -42,6 +50,7 @@ class ConditionalContentsController < FormController
       previous_flow_obj = service.flow.select { |_k, v| v['next']['default'] == page_uuid }
       return previous_flow_obj.keys.first
     end
+    
     params['conditional_content']['previous_flow_uuid']
   end
 end

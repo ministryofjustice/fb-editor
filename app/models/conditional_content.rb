@@ -5,7 +5,7 @@ class ConditionalContent
   attr_reader :traversable
 
   validate :conditionals_validations
-  validates :conditional_content_uuid, presence: true
+  validates :component_uuid, presence: true
 
   def initialize(attributes)
     @service = attributes.delete(:service)
