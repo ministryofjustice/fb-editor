@@ -140,10 +140,10 @@ jobs:
       # - run:
       #     command: |
       #       cat bash.env >> $BASH_ENV
-      - run: &build_sha
-          name: Setup base environment variable
-          command: |
-            echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+      # - run: &build_sha
+      #     name: Setup base environment variable
+      #     command: |
+      #       echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
       # - aws-cli/setup:
       #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
       #     region: $ECR_REGION # this will use the env var
