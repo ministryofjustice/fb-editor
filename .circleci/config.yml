@@ -17,9 +17,9 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup: &setup_aws
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
+      # - aws-cli/setup: &setup_aws
+      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+      #     region: $ECR_REGION # this will use the env var
       - run: &node_version
           name: Swap node versions
           command: |
@@ -36,11 +36,11 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
     # Authenticate to the ECR repository using the standard command
-      - run: &ecr_login
-          name: Login to ecr
-          command: |
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-            aws configure export-credentials --format env >> $BASH_ENV
+      # - run: &ecr_login
+      #     name: Login to ecr
+      #     command: |
+      #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      #       aws configure export-credentials --format env >> $BASH_ENV
       # - run: |
       #     cp $BASH_ENV bash.env
       # - persist_to_workspace:
@@ -144,15 +144,15 @@ jobs:
       #     name: Setup base environment variable
       #     command: |
       #       echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      # - aws-cli/setup:
-      #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-      #     region: $ECR_REGION # this will use the env var
-      # - run:
-      #     name: Login to ecr
-      #     command: |
-      #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-      - aws-cli/setup: *setup_aws
-      - run: *ecr_login
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - run:
+          name: Login to ecr
+          command: |
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      # - aws-cli/setup: *setup_aws
+      # - run: *ecr_login
 
       # - run: &deploy_scripts
       #     name: cloning deploy scripts
