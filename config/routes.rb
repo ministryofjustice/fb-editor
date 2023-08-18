@@ -47,9 +47,10 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :conditional_contents, param: :component_uuid, only: [:create, :edit, :update, :destroy] do
+      resources :conditional_contents, param: :component_uuid, only: [:edit, :update, :destroy] do
         collection do
           get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
+          post '/:component_uuid', to: 'conditional_contents#create', as: 'create'
         end
       end
 
