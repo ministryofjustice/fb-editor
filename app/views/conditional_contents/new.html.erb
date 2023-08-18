@@ -1,6 +1,5 @@
 <div class="conditional-visibility new">
-  <%= form_for @conditional_content, url: conditional_contents_path(service.service_id, params[:component_uuid]), method: :post do |f| %>
+  <%= form_for @conditional_content, url: create_conditional_contents_path(service.service_id, params[:component_uuid]), method: :post do |f| %>
     <%= render 'form', f: f %>
   <% end %>
 </div>
-  

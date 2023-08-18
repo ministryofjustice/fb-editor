@@ -75,4 +75,24 @@ class ConditionalContent
 
     previous_flow_uuid
   end
+
+  def any_errors?
+    conditional_errors? ||
+      expression_errors? ||
+      errors.present?
+  end
+
+  def conditional_errors?
+    conditionals.any? do |conditional|
+      conditional.errors.messages.present?
+    end
+  end
+
+  def expression_errors?
+    # failing here as operators are blank...
+    expression_collection = conditionals.map(&:expressions)
+    expression_collection.flatten.any? do |expression|
+      expression.errors.messages.present?
+    end
+  end
 end
