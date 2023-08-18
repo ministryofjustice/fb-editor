@@ -41,12 +41,12 @@ jobs:
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
             aws configure export-credentials --format env >> $BASH_ENV
-      - run: |
-          cp $BASH_ENV bash.env
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bash.env
+      # - run: |
+      #     cp $BASH_ENV bash.env
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - bash.env
       - slack/status: &slack_status
           fail_only: true
           only_for_branches: main
@@ -132,14 +132,14 @@ jobs:
     #     aws_auth:
     #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
     #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
-    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
-      - setup_remote_docker: &remote_docker
-          docker_layer_caching: true
-      - run:
-          command: |
-            cat bash.env >> $BASH_ENV
+      # - setup_remote_docker: &remote_docker
+      #     docker_layer_caching: true
+      # - run:
+      #     command: |
+      #       cat bash.env >> $BASH_ENV
       - run: &build_sha
           name: Setup base environment variable
           command: |
@@ -151,18 +151,19 @@ jobs:
       #     name: Login to ecr
       #     command: |
       #       aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+      - aws-cli/setup: *setup_aws
+      - run: *ecr_login
 
-     
-      - run: &deploy_scripts
-          name: cloning deploy scripts
-          command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+      # - run: &deploy_scripts
+      #     name: cloning deploy scripts
+      #     command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
 
-      - run:
-          name: build testable editor web docker images
-          environment:
-            ENVIRONMENT_NAME: test
-            IMAGE_TYPE: web
-          command: './deploy-scripts/bin/build'
+      # - run:
+      #     name: build testable editor web docker images
+      #     environment:
+      #       ENVIRONMENT_NAME: test
+      #       IMAGE_TYPE: web
+      #     command: './deploy-scripts/bin/build'
 
       - aws-ecr/build-image:
           path: ~/project/docker/web
