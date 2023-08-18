@@ -35,7 +35,7 @@ jobs:
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
       - node/install-packages:
           pkg-manager: yarn
-    Authenticate to the ECR repository using the standard command
+    # Authenticate to the ECR repository using the standard command
       - run: &ecr_login
           name: Login to ecr
           command: |
