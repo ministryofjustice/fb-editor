@@ -55,12 +55,14 @@ jobs:
           tag: web-${CIRCLE_SHA1}
           region: $ECR_REGION # this will use the env var
           repo: $ECR_REPOSITORY # this will use the env var
+          skip_when_tags_exist: true
       - aws-ecr/build-image: # push worker image
           path: ~/project/docker/workers
           push-image: true
           tag: worker-${CIRCLE_SHA1}
           region: $ECR_REGION # this will use the env var
           repo: $ECR_REPOSITORY # this will use the env var
+          skip_when_tags_exist: true
       - slack/status: &slack_status
           fail_only: true
           only_for_branches: main
