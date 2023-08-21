@@ -61,7 +61,7 @@ describe('<editable-content>', function() {
         initialHTML = `<p>this is content</p>`
         initialMarkdown = 'this is content'
         const config = { _uuid: '1234567890' }
-        const html = createTemplate(ID, defaultContent, initialMarkdown, initialHTML, encodeURIComponent(JSON.stringify(config)) );
+        const html = createTemplate(ID, defaultContent, initialMarkdown, initialHTML, JSON.stringify(config) );
         await createComponent('editable-content', html)
         component = getElements();
         button = document.querySelector('button')

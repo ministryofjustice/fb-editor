@@ -73,7 +73,7 @@ describe('<editable-content>', function() {
       beforeEach( async function() {
         initialHTML = `<p>this is content</p>`
         initialMarkdown = 'this is content'
-        const html = createTemplate(ID, defaultContent, initialMarkdown, initialHTML, encodeURIComponent(JSON.stringify({"_uuid": "1234567890"})));
+        const html = createTemplate(ID, defaultContent, initialMarkdown, initialHTML, JSON.stringify({"_uuid": "1234567890"}));
         await createComponent('editable-content', html)
         component = getElements();
       })
