@@ -44,7 +44,7 @@ class EditableContent extends HTMLElement {
       this.initialMarkup = this.innerHTML;
       this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
       this.defaultContent = this.getAttribute('default-content') || '';
-      this.config = (this.dataset.config ? JSON.parse(decodeURIComponent(this.dataset.config)) : undefined);
+      this.config = (this.dataset.config ? JSON.parse(this.dataset.config) : undefined);
       this.render();
     })
   }
