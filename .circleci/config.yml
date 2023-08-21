@@ -210,12 +210,12 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    # docker: *ecr_image
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    docker: *ecr_image
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
       - checkout
-      # - setup_remote_docker: *remote_docker
+      - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
@@ -225,7 +225,7 @@ jobs:
             echo 'export BUILD_SHA=$CIRCLE_SHA1' >> $BASH_ENV
             echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_339c9dd086ca45a8262af090e5e8e82a' >> $BASH_ENV
             source $BASH_ENV
-      # - run: *deploy_scripts
+      - run: *deploy_scripts
       - run:
           name: deploy to test
           environment:
