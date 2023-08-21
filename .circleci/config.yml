@@ -179,9 +179,7 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: web
-          command: |
-            echo "export ECR_REPOSITORY=$EDITOR_WEB_ECR_REPO"
-            ./deploy-scripts/bin/build
+          command: ./deploy-scripts/bin/build
 
       # - aws-ecr/build-image:
       #     path: ~/project/docker/web
