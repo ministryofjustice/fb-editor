@@ -12,17 +12,14 @@ orbs:
 jobs:
   build:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
-    docker: &ecr_image
-      # - image: 'cimg/ruby:3.1.3-node'
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
+    # docker: &ecr_image
+      - image: 'cimg/ruby:3.1.3-node'
+      # - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+      #   aws_auth:
+      #     oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
     steps:
       - checkout
       - ruby/install-deps
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
       - run: &node_version
           name: Swap node versions
           command: |
@@ -39,6 +36,10 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
     # Authenticate to the ECR repository using the standard command
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+          profile-name: "fb-editor"
       - run: &ecr_login
           name: Login to ecr
           command: |
@@ -50,6 +51,10 @@ jobs:
           root: .
           paths:
             - bash.env
+      - aws-cli/setup:
+          role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN # this will use the env var
+          region: $ECR_REGION # this will use the env var
+          profile-name: "fb-builder"
       # - aws-ecr/build-image: # push web image
       #     path: ~/project/docker/web
       #     push-image: true
@@ -146,8 +151,12 @@ jobs:
   build_web_testable_branch:
     # working_directory: ~/circle/git/fb-editor
     # docker: *docker_image
-    docker: *ecr_image
+    # docker: *ecr_image
     # working_directory:  ~/project
+    docker: &ecr_image
+      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+        aws_auth:
+          oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
