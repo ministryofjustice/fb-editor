@@ -10,6 +10,25 @@ orbs:
 
 
 jobs:
+  login-to-aws:
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    steps:
+      - checkout
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+          profile-name: "fb-editor"
+      - run: &ecr_login
+          name: Login to ecr
+          command: |
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+            aws configure export-credentials --format env >> $BASH_ENV
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
   build:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     # docker: &ecr_image
@@ -36,25 +55,10 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
     # Authenticate to the ECR repository using the standard command
-      - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION # this will use the env var
-          profile-name: "fb-editor"
-      - run: &ecr_login
-          name: Login to ecr
-          command: |
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-            aws configure export-credentials --format env >> $BASH_ENV
-      - run: |
-          cp $BASH_ENV bash.env
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bash.env
-      - aws-cli/setup:
-          role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN # this will use the env var
-          region: $ECR_REGION # this will use the env var
-          profile-name: "fb-builder"
+      # - aws-cli/setup:
+      #     role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN # this will use the env var
+      #     region: $ECR_REGION # this will use the env var
+      #     profile-name: "fb-builder"
       # - aws-ecr/build-image: # push web image
       #     path: ~/project/docker/web
       #     push-image: true
@@ -485,8 +489,13 @@ workflows:
             - acceptance_tests_eks
   deploy_testable_branch:
     jobs:
-      - build:
+      - login-to-aws:
           context: *context
+          filters:
+            branches:
+              only:
+                - /testable-.*/
+      - build:
           filters:
             branches:
               only:
@@ -506,6 +515,7 @@ workflows:
       - build_web_testable_branch:
           context: *context
           requires:
+            - login-to-aws 
             - build
           # requires:
           #   - lint
