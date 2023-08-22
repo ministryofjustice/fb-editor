@@ -148,6 +148,13 @@
     %>
     <% end %>
 
+<div>
+  <% if @show_delete_button %>
+    <%= link_to 'Delete Service', admin_service_path(@service.service_id, @service),
+                method: :delete, class: "govuk-button fb-govuk-button"  %>
+  <%end%>
+</div>
+
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       Latest Metadata
     </h2>

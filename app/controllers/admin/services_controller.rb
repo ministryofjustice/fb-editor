@@ -23,6 +23,9 @@ module Admin
       @published_to_live = published('production')
       @published_to_test = published('dev')
       @versions = MetadataApiClient::Version.all(@service.service_id)
+      if ['test','local'].include?(ENV['PLATFORM_ENV'])
+        @show_delete_button = true
+      end
     end
 
     def create
@@ -255,6 +258,11 @@ module Admin
       params[:search] || ''
     end
     helper_method :search_term
+
+    def destroy
+      puts 'This is destroy'
+    end
+
 
     private
 
