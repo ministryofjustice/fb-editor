@@ -260,9 +260,17 @@ module Admin
     helper_method :search_term
 
     def destroy
-      puts 'This is destroy'
+      service_id = params[:id]
+      Rails.logger.info "Service #{service_id} to delete"
+      @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      if unpublished?('dev') && unpublished?('production')
+        flash[:success] = "Service #{service_id} to be deleted"
+      else
+        flash[:error] = 'Please unpublish before deleting a service'
+      end
+      redirect_to admin_service_path(service_id)
     end
-
 
     private
 
