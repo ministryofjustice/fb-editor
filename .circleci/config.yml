@@ -18,7 +18,7 @@ jobs:
       - checkout
       - ruby/install-deps
       - aws-cli/setup:
-          role_arn: $BUILD_IMAGE_ECR_URI # this will use the env var
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION # this will use the env var
       - run: &node_version
           name: Swap node versions
@@ -61,6 +61,9 @@ jobs:
       #     region: $ECR_REGION # this will use the env var
       #     repo: $ECR_REPOSITORY # this will use the env var
       #     skip_when_tags_exist: true
+      - aws-cli/setup:
+          role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN # this will use the env var
+          region: $ECR_REGION # this will use the env var
       - slack/status: &slack_status
           fail_only: true
           only_for_branches: main
