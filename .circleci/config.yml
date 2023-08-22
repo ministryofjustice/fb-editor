@@ -21,13 +21,12 @@ jobs:
           name: Login to ecr
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-            aws configure export-credentials --format env >> $BASH_ENV
-      - run: |
-          cp $BASH_ENV bash.env
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bash.env
+      # - run: |
+      #     cp $BASH_ENV bash.env
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #       - bash.env
   build:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     docker: &docker_image
@@ -170,11 +169,11 @@ jobs:
       - checkout
       - setup_remote_docker: &remote_docker
           docker_layer_caching: true
-      - attach_workspace:
-          at: .
-      - run:
-          command: |
-            cat bash.env >> $BASH_ENV
+      # - attach_workspace:
+      #     at: .
+      # - run:
+      #     command: |
+      #       cat bash.env >> $BASH_ENV
       - run: &build_sha
           name: Setup base environment variable
           command: |
