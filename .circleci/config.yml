@@ -139,7 +139,11 @@ jobs:
       - slack/status: *slack_status
   build_web_testable_branch:
     # working_directory: ~/circle/git/fb-editor
-    docker: *docker_image
+    # docker: *docker_image
+    docker: &ecr_image
+      - image: $BUILD_IMAGE_ECR_URI
+        aws_auth:
+          oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
     # working_directory:  ~/project
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
@@ -193,8 +197,8 @@ jobs:
           include_job_number_field: false
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    # docker: *ecr_image
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    docker: *ecr_image
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
       - checkout
@@ -210,8 +214,8 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    # docker: *ecr_image
-    docker: *docker_image
+    docker: *ecr_image
+    # docker: *docker_image
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
