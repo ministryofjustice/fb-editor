@@ -221,7 +221,7 @@ jobs:
           include_job_number_field: false
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
@@ -238,7 +238,7 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    docker: *ecr_image
+    # docker: *ecr_image
     # docker: *docker_image
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
