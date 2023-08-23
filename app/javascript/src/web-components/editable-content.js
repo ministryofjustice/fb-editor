@@ -33,13 +33,6 @@ class EditableContent extends HTMLElement {
 
         return markdown
       },
-      // removeButtons: (markdown) => {
-      //   console.log('removing buttons')
-      //   markdown = markdown.replace(/{button\s?(?:start)?}(?:.*?){\/button}/gi, '')
-
-      //   return markdown
-      // },
-
     }
 
     const allowedGovspeakComponents = [
@@ -119,6 +112,10 @@ class EditableContent extends HTMLElement {
     return val
   }
 
+  set value(value) {
+    this.input.value = value
+  }
+
   // The form containing the element that will be updated on save
   set form(element) {
     this.submissionForm = element;
@@ -151,7 +148,6 @@ class EditableContent extends HTMLElement {
 
       this.root.addEventListener('click', () => this.state.mode = 'edit' )
       this.root.addEventListener('focus', () => this.state.mode = 'edit' )
-      // this.input.addEventListener('blur', () => this.state.mode = 'read' )
       this.addEventListener('focusout', (event) => {
         if(this.contains(event.relatedTarget)) return
         this.state.mode = 'read'
@@ -170,7 +166,7 @@ class EditableContent extends HTMLElement {
 
     switch(this.state.mode) {
       case 'edit':
-        this._contentBeforeEditing = this.value.trim();
+        this._contentBeforeEditing = this.input.value.trim();
         this.show(this.input)
         this.hide(this.output)
         this.classList.add('active')

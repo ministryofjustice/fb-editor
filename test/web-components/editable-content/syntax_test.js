@@ -204,7 +204,7 @@ $CTA`
           component.root.focus();
           button.focus();
 
-          expect(component.output).to.contain.html(`<div class="govspeak-call-to-action">
+          expect(component.output).to.contain.html(`<div class="call-to-action">
   <p class="govuk-body">Call to action</p>
 
 </div>`)
