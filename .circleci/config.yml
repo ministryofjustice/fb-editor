@@ -179,14 +179,14 @@ jobs:
       #     docker_layer_caching: true
       - attach_workspace:
           at: .
-      - run:
+      - run: &workspace_envs
           command: |
             cat bash.env >> $BASH_ENV
       - run: &build_sha
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      - run:
+      - run: &kubectl
           name: Install kubectl
           command: |
             curl -LO https://dl.k8s.io/release/<< pipeline.parameters.kubectl-version >>/bin/linux/amd64/kubectl
@@ -244,12 +244,16 @@ jobs:
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
     # docker: *ecr_image
-    docker: *docker_image
-    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    # docker: *docker_image
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
       - checkout
       # - setup_remote_docker: *remote_docker
+      - attach_workspace:
+        at: .
+      - run: *workspace_envs
+      - run: *kubectl
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
