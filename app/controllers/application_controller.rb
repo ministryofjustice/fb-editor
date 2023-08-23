@@ -149,6 +149,27 @@ class ApplicationController < ActionController::Base
     )&.decrypt_value
   end
 
+  def confirmation_email_enabled?
+    confirmation_email_config.present?
+  end
+  helper_method :confirmation_email_enabled?
+
+  def confirmation_email_config
+    @confirmation_email_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')
+  end
+
+  def confirmation_email
+    confirmation_email_component_id = ServiceConfiguration.find_by(service_id: service.service_id, name: 'CONFIRMATION_EMAIL_COMPONENT_ID')&.decrypt_value
+    user_data = Preview::SessionDataAdapter.new(session, service.service_id).load_data
+    @confirmation_email ||= user_data[confirmation_email_component_id] if confirmation_email_enabled?
+  end
+  helper_method :confirmation_email
+
+  def is_confirmation_email_question?
+    confirmation_email_config&.decrypt_value == @page.metadata.components[0]['_id']
+  end
+  helper_method :is_confirmation_email_question?
+
   def load_conditional_content
     @page.content_components.map(&:uuid)
   end
