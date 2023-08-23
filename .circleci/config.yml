@@ -155,10 +155,12 @@ jobs:
     # docker: *docker_image
     # docker: *ecr_image
     # working_directory:  ~/project
+    # docker: &ecr_image
+    #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+    #     aws_auth:
+    #       oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
     docker: &ecr_image
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
+      - image: bitnami/kubectl:latest
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
