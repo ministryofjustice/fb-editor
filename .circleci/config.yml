@@ -27,7 +27,7 @@ jobs:
           name: Login to ecr
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-            
+            aws configure export-credentials --format env
       - run: |
           cp $BASH_ENV bash.env
       - persist_to_workspace:
@@ -172,10 +172,11 @@ jobs:
     #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
     #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+      docker_layer_caching: true
     steps:
       - checkout
-      - setup_remote_docker: &remote_docker
-          docker_layer_caching: true
+      # - setup_remote_docker: &remote_docker
+      #     docker_layer_caching: true
       - attach_workspace:
           at: .
       - run:
@@ -248,7 +249,7 @@ jobs:
 
     steps:
       - checkout
-      - setup_remote_docker: *remote_docker
+      # - setup_remote_docker: *remote_docker
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
