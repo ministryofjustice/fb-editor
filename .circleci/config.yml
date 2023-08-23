@@ -7,6 +7,7 @@ orbs:
   kubernetes: circleci/kubernetes@0.12.0
   aws-cli: circleci/aws-cli@4.0.0 # use v4 of this orb
   aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
+  helm: circleci/helm@2.0.1
 
 parameters:
   kubectl-version:
@@ -254,6 +255,7 @@ jobs:
           at: .
       - run: *workspace_envs
       - run: *kubectl
+      - helm/install-helm-client
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
