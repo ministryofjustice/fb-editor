@@ -3,17 +3,6 @@ const govspeak = require('@x-govuk/marked-govspeak')
 const GovukHTMLRenderer = require('govuk-markdown')
 const DOMPurify = require('dompurify')
 
-DOMPurify.addHook("afterSanitizeAttributes", function (node, data, config) {
-  if (node.nodeName === "A" && node.classList.contains("govuk-button")) {
-    // Replace it with a link
-    // node.classList.remove("gem-c-button", "govuk-button", "govuk-button--start");
-    // node.classList.add('govuk-link')
-
-    // Or remove it (and its wrapper <p>)
-    node.parentNode.remove();
-  }
-});
-
 class EditableContent extends HTMLElement {
   constructor() {
     super() 
@@ -37,23 +26,44 @@ class EditableContent extends HTMLElement {
       }
     )
 
+    this.markdownFilters = {
+      convertButtonsToLinks: (markdown) => {
+        markdown = markdown.replace(/{button\s?(?:start)?}/gi, '')
+        markdown = markdown.replace(/{\/button\s?}/gi, '')
+
+        return markdown
+      },
+      // removeButtons: (markdown) => {
+      //   console.log('removing buttons')
+      //   markdown = markdown.replace(/{button\s?(?:start)?}(?:.*?){\/button}/gi, '')
+
+      //   return markdown
+      // },
+
+    }
+
     const allowedGovspeakComponents = [
       'govspeak-warning-callout',
       'govspeak-information-callout',
       'govspeak-address',
       'govspeak-call-to-action',
       'govspeak-contact',
-      'govspeak-button' // We need to allow it, for it to gain the govuk-button classes. Then DOMPurify will remove it
     ]
+
+    const preprocess = (markdown) => {
+      markdown = this.filterMarkdown(markdown)
+      return markdown
+    }
 
     marked.setOptions({
       renderer: new GovukHTMLRenderer(),
       headingsStartWith: 'xl',
-      // govspeakGemCompatibility: true
+      govspeakGemCompatibility: true
     })
 
     marked.use({ 
-      extensions: govspeak.filter((component) => allowedGovspeakComponents.includes(component.name) )
+      extensions: govspeak.filter((component) => allowedGovspeakComponents.includes(component.name) ),
+      hooks: { preprocess }
     })
   }
 
@@ -75,15 +85,15 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
-      this.config.content = this.input.value;
+      this.config.content = this.value;
       return JSON.stringify(this.config);
     } else {
-      return this.input.value == this.defaultContent ? '' : this.input.value;
+      return this.value == this.defaultContent ? '' : this.value;
     }
   }
 
   get html() {
-    const content = this.input.value || this.defaultContent
+    const content = this.value || this.defaultContent
     const unsafeHTML = marked.parse(content);
     return this.sanitize(unsafeHTML)
   }
@@ -95,6 +105,18 @@ class EditableContent extends HTMLElement {
 
   get $node() {
     return $(this);
+  }
+  
+  // returns the markdown content of the input after filtering it through any
+  // configured filters
+  get value() {
+    let val = this.input.value
+
+    for( const [key, filterFunction] of Object.entries(this.markdownFilters)) {
+      val = filterFunction(val)
+    }
+
+    return val
   }
 
   // The form containing the element that will be updated on save
@@ -148,19 +170,19 @@ class EditableContent extends HTMLElement {
 
     switch(this.state.mode) {
       case 'edit':
-        this._contentBeforeEditing = this.input.value.trim();
+        this._contentBeforeEditing = this.value.trim();
         this.show(this.input)
         this.hide(this.output)
         this.classList.add('active')
         this.input.focus({ preventScroll: true });
 
-        if(this.valueIsDefault()) this.input.value = '';
+        if(this.valueIsDefault()) this.value = '';
         // Move cursor to end of content 
-        this.input.selectionStart = this.input.value.length;
+        this.input.selectionStart = this.value.length;
         break;
       case 'read':
       case 'initial':
-        if(this.valueIsDefault()) this.input.value = '';
+        if(this.valueIsDefault()) this.value = '';
         this.updateOutput();
         
         this.hide(this.input);
@@ -195,11 +217,11 @@ class EditableContent extends HTMLElement {
   }
 
   valueIsDefault() {
-    return this.input.value == this.defaultContent;
+    return this.value == this.defaultContent;
   }
 
   valueHasChanged() {
-    return this.input.value.trim() !== this._contentBeforeEditing 
+    return this.value.trim() !== this._contentBeforeEditing 
   }
 
   save() {
@@ -226,6 +248,16 @@ class EditableContent extends HTMLElement {
     const deleteInputHTML = `<input type="hidden" name="delete_components[]" value="${this.config._uuid}" />`
     button.insertAdjacentHTML('beforebegin', deleteInputHTML);
     this.remove()
+  }
+
+  // Run the markdown through all configured filter functions
+  // called by marked in the preprocess hook 
+  // called in the value() getter
+  filterMarkdown(markdown) {
+    for( const [key, filterFunction] of Object.entries(this.markdownFilters)) {
+      markdown = filterFunction(markdown)
+    }
+    return markdown
   }
 
   sanitize(unsafeHTML) {
