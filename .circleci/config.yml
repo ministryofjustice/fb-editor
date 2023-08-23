@@ -11,7 +11,9 @@ orbs:
 
 jobs:
   login-to-aws:
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    docker: &docker_image
+      - image: 'cimg/ruby:3.1.3-node'
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - aws-cli/setup:
@@ -21,12 +23,13 @@ jobs:
           name: Login to ecr
           command: |
             aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-      # - run: |
-      #     cp $BASH_ENV bash.env
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #       - bash.env
+            
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
   build:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     docker: &docker_image
@@ -159,25 +162,32 @@ jobs:
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
     #       oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
-    docker: &ecr_image
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
-    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    # docker: &ecr_image
+    #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+    #     aws_auth:
+    #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
+    #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       - setup_remote_docker: &remote_docker
           docker_layer_caching: true
-      # - attach_workspace:
-      #     at: .
-      # - run:
-      #     command: |
-      #       cat bash.env >> $BASH_ENV
+      - attach_workspace:
+          at: .
+      - run:
+          command: |
+            cat bash.env >> $BASH_ENV
       - run: &build_sha
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
+      - run:
+          name: Install kubectl
+          command: |
+            curl -LO https://dl.k8s.io/release/<< pipeline.parameters.kubectl-version >>/bin/linux/amd64/kubectl
+            echo "$(curl -L -s https://dl.k8s.io/<< pipeline.parameters.kubectl-version >>/bin/linux/amd64/kubectl.sha256) kubectl" | sha256sum --check
+            sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+            kubectl version --client --output yaml
       # - aws-cli/setup:
       #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
       #     region: $ECR_REGION # this will use the env var
