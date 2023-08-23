@@ -171,8 +171,8 @@ jobs:
     #     aws_auth:
     #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
     #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
-    executor: 
-      name: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    executor:
+      name: aws-ecr/default
       docker_layer_caching: true
     steps:
       - checkout
