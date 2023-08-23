@@ -160,12 +160,10 @@ jobs:
     #     aws_auth:
     #       oidc_role_arn: $BUILD_IMAGE_OIDC_ROLE_ARN
     docker: &ecr_image
-      - image: bitnami/kubectl:latest
-    # docker: &ecr_image
-    #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-    #     aws_auth:
-    #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
-    #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
+        aws_auth:
+          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
