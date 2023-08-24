@@ -13,9 +13,9 @@ gem 'delayed_job_active_record'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'confirmation-email-data-risk'
+#     branch: 'disclaimer-multiple-email'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.2.8'
+gem 'metadata_presenter', '3.2.9'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
