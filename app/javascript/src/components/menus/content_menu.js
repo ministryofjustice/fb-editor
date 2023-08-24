@@ -52,7 +52,7 @@ class ContentMenu extends ActivatedMenu {
         this.close();
         break;
       case "conditional-content":
-        this.conditionalContent(item.data('apiPath'));
+        this.conditionalContent(item);
         break;
     }
   }
@@ -76,9 +76,10 @@ class ContentMenu extends ActivatedMenu {
     $(document).trigger("ContentMenuSelectionRemove", this.component);
   }
 
-  conditionalContent(apiUrl) {
-    this.component.apiUrl = apiUrl
-    $(document).trigger("ContentMenuSelectionConditionalContent", this.component, apiUrl);
+  conditionalContent(item) {
+    this.component.apiUrl = item.data('apiPath')
+    console.log(this.component.apiUrl)
+    $(document).trigger("ContentMenuSelectionConditionalContent", { component: this.component, selectedItem: item });
   }
 }
 

@@ -482,11 +482,13 @@ function addContentMenuListeners(view) {
     });
   });
 
-  view.$document.on("ContentMenuSelectionConditionalContent", function(event, component, apiUrl) {
+  view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
+    const {component, selectedItem } = details;
     new DialogForm(component.apiUrl, {
-      activator: component,
+      activator: selectedItem,
       remote: true,
       autoOpen: true,
+      
     });
   });
 }

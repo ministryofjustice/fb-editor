@@ -47,12 +47,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :conditional_contents, param: :component_uuid, only: [:edit, :update, :destroy] do
-        collection do
-          get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
-          post '/:component_uuid', to: 'conditional_contents#create', as: 'create'
-        end
-      end
+      
 
       resources :settings, only: [:index]
       namespace :settings do
@@ -98,6 +93,13 @@ Rails.application.routes.draw do
       resources :branches, param: :previous_flow_uuid do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'
         get '/destroy-message', to: 'branches#destroy_message', as: :destroy_message
+      end
+
+      resources :conditional_contents, param: :component_uuid, only: [:edit, :update, :destroy] do
+        collection do
+          get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
+          post '/:component_uuid', to: 'conditional_contents#create', as: 'create'
+        end
       end
 
       get 'conditional-contents/:component_id/conditionals', as: :conditional_contents, to: 'conditional_contents#new_conditional'
