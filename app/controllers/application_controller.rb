@@ -165,8 +165,8 @@ class ApplicationController < ActionController::Base
   end
   helper_method :confirmation_email
 
-  def is_confirmation_email_question?
-    confirmation_email_config&.decrypt_value == @page.metadata.components[0]['_id']
+  def is_confirmation_email_question?(component_id)
+    confirmation_email_config&.decrypt_value == component_id
   end
   helper_method :is_confirmation_email_question?
 
