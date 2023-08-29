@@ -181,8 +181,8 @@ jobs:
       # docker_layer_caching: true
     steps:
       - checkout
-      # - setup_remote_docker: &remote_docker
-      #     docker_layer_caching: true
+      - setup_remote_docker: &remote_docker
+          docker_layer_caching: true
       - attach_workspace:
           at: .
       - run: &workspace_envs
@@ -230,9 +230,9 @@ jobs:
 
     steps:
       - checkout
-      # - setup_remote_docker: *remote_docker
-      # - run: *build_sha
-      # - run: *deploy_scripts
+      - setup_remote_docker: *remote_docker
+      - run: *build_sha
+      - run: *deploy_scripts
       - run:
           name: build testable editor workers docker images
           environment:
@@ -247,12 +247,10 @@ jobs:
     # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
-      # - setup_remote_docker: *remote_docker
+      - setup_remote_docker: *remote_docker
       - attach_workspace:
           at: .
       - run: *workspace_envs
-      - run: *kubectl
-      - helm/install-helm-client
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
