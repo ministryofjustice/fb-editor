@@ -163,6 +163,11 @@ jobs:
     # docker: *docker_image
     # docker: *ecr_image
     # working_directory:  ~/project
+    docker: &ecr_image
+      - image: docker.io/ministryofjustice/fb-builder:latest
+          auth:
+            username: $DOCKER_LOGIN
+            password: $DOCKER_PASSWORD
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
@@ -172,7 +177,7 @@ jobs:
     #     aws_auth:
     #       aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
     #       aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
       # docker_layer_caching: true
     steps:
       - checkout
@@ -187,13 +192,6 @@ jobs:
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
-      - run: &kubectl
-          name: Install kubectl
-          command: |
-            curl -LO https://dl.k8s.io/release/<< pipeline.parameters.kubectl-version >>/bin/linux/amd64/kubectl
-            echo "$(curl -L -s https://dl.k8s.io/<< pipeline.parameters.kubectl-version >>/bin/linux/amd64/kubectl.sha256) kubectl" | sha256sum --check
-            sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-            kubectl version --client --output yaml
       # - aws-cli/setup:
       #     role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
       #     region: $ECR_REGION # this will use the env var
@@ -227,8 +225,8 @@ jobs:
           include_job_number_field: false
   build_workers_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    # docker: *ecr_image
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
+    docker: *ecr_image
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
 
     steps:
       - checkout
@@ -244,10 +242,9 @@ jobs:
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
-    # docker: *ecr_image
+    docker: *ecr_image
     # docker: *docker_image
-    executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
-
+    # executor: aws-ecr/default # use the aws-ecr/default executor to start the docker daemon
     steps:
       - checkout
       # - setup_remote_docker: *remote_docker
