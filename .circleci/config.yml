@@ -237,18 +237,23 @@ jobs:
           role_arn: $WORKERS_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION # this will use the env var
       - run:
-          name: Login to ecr
+          name: Swap to workers env
           command: |
             export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID
+            export WEB_ECR_REPOSITORY=$ECR_REPOSITORY
             export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID
-            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
-            export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID
+            export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY
       - run:
           name: build testable editor workers docker images
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
           command: './deploy-scripts/bin/build'
+      - run:
+          name: Restore env
+          command: |
+            export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID
+            export ECR_REPOSITORY=$WEB_ECR_REPOSITORY
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
