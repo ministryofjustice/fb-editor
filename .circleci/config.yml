@@ -233,6 +233,17 @@ jobs:
       - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
+      - aws-cli/setup:
+          role_arn: $WORKERS_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - run:
+          name: Login to ecr
+          command: |
+            export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID
+            export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+            aws configure export-credentials --format env
+            export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID
       - run:
           name: build testable editor workers docker images
           environment:
@@ -540,31 +551,32 @@ workflows:
             branches:
               only:
                 - /testable-.*/
-      # - build_workers_testable_branch:
-      #     context: *context
-      #     requires:
-      #       - build
+      - build_workers_testable_branch:
+          context: *context
+          requires:
+            - login-to-aws
+            - build
       #     # requires:
       #     #   - lint
       #     #   - security
       #     #   - rspec_test
       #     #   - js_test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - /testable-.*/
+          filters:
+            branches:
+              only:
+                - /testable-.*/
       - deploy_testable_branch:
           context: *context
           requires:
-            # - build
+            - build
             - build_web_testable_branch
-            # - build_workers_testable_branch
-      # - testable_branch_acceptance_tests:
-      #     context: *context
-      #     requires:
-      #       - deploy_testable_branch
-      # - slack/approval-notification:
-      #     message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
-      #     include_job_number_field: false
-      #     requires:
-      #       - testable_branch_acceptance_tests
+            - build_workers_testable_branch
+      - testable_branch_acceptance_tests:
+          context: *context
+          requires:
+            - deploy_testable_branch
+      - slack/approval-notification:
+          message: ":test_tube: :test_tube: :test_tube:\nSuccessfully deployed branch\nVisit: https://${CIRCLE_BRANCH}.apps.live.cloud-platform.service.justice.gov.uk\n:test_tube: :test_tube: :test_tube:"
+          include_job_number_field: false
+          requires:
+            - testable_branch_acceptance_tests
