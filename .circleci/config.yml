@@ -239,10 +239,10 @@ jobs:
       - run:
           name: Swap to workers env
           command: |
-            export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID
-            export WEB_ECR_REPOSITORY=$ECR_REPOSITORY
-            export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID
-            export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY
+            echo "export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export WEB_ECR_REPOSITORY=$ECR_REPOSITORY" >> $BASH_ENV
+            echo "export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY" >> $BASH_ENV
       - run:
           name: build testable editor workers docker images
           environment:
@@ -252,8 +252,8 @@ jobs:
       - run:
           name: Restore env
           command: |
-            export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID
-            export ECR_REPOSITORY=$WEB_ECR_REPOSITORY
+            echo "export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WEB_ECR_REPOSITORY" >> $BASH_ENV
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
