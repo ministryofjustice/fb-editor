@@ -165,9 +165,9 @@ jobs:
     # working_directory:  ~/project
     docker: &ecr_image
       - image: docker.io/ministryofjustice/fb-builder:latest
-          auth:
-            username: $DOCKER_LOGIN
-            password: $DOCKER_PASSWORD
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
     # docker: &ecr_image
     #   - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
     #     aws_auth:
