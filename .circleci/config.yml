@@ -224,16 +224,17 @@ jobs:
     docker:
       - image: 'cimg/ruby:3.1.3-node'
     steps:
-    - checkout
-    - ruby/install-deps
-    - kubernetes/install-kubectl
-    - run:
-        name: set kubernetes context for saas namespace
-        command: './deploy-scripts/bin/set_testable_editors_context'
-    - run:
-        name: remove testable editors
-        command: bundle exec rails remove:testable_editors
-    - slack/status: *testable_slack_status
+      - checkout
+      - ruby/install-deps
+      - kubernetes/install-kubectl
+      - run: *deploy_scripts
+      - run:
+          name: set kubernetes context for saas namespace
+          command: './deploy-scripts/bin/set_testable_editors_context'
+      - run:
+          name: remove testable editors
+          command: bundle exec rails remove:testable_editors
+      - slack/status: *testable_slack_status
   build_web_image:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
