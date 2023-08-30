@@ -474,10 +474,10 @@ workflows:
           context: *context
           requires:
             - deploy_to_test_eks
-      - deploy_to_live_eks:
-          context: *context
-          requires:
-            - acceptance_tests_eks
+      # - deploy_to_live_eks:
+      #     context: *context
+      #     requires:
+      #       - acceptance_tests_eks
   deploy_testable_branch:
     jobs:
       - build:
