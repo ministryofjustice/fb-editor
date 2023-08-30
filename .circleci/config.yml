@@ -223,16 +223,16 @@ jobs:
     docker:
       - image: 'cimg/ruby:3.1.3-node'
     steps:
-      - checkout
-      - ruby/install-deps
-      - kubernetes/install-kubectl
-      - run:
-          name: set kubernetes context for saas namespace
-          command: './deploy-scripts/bin/set_testable_editors_context'
-      - run:
-          name: remove testable editors
-          command: bundle exec rails remove:testable_editors
-      - slack/status: *testable_slack_status
+    - checkout
+    - ruby/install-deps
+    - kubernetes/install-kubectl
+    - run:
+        name: set kubernetes context for saas namespace
+        command: './deploy-scripts/bin/set_testable_editors_context'
+    - run:
+        name: remove testable editors
+        command: bundle exec rails remove:testable_editors
+    - slack/status: *testable_slack_status
   build_web_image:
     working_directory: ~/circle/git/fb-editor
     docker: *ecr_image
@@ -264,7 +264,7 @@ jobs:
             echo "export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID" >> $BASH_ENV
             echo "export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY" >> $BASH_ENV
       - run:
-          name: build testable editor workers docker images
+          name: build workers docker images
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
