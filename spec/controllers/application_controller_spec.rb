@@ -335,4 +335,49 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#confirmation_email' do
+    before do
+      allow(controller).to receive(:service).and_return(service)
+      allow(ServiceConfiguration).to receive(:find_by).and_return(service_configuration)
+    end
+
+    context 'when CONFIRMATION_EMAIL_COMPONENT_ID is present' do
+      let!(:service_configuration) do
+        create(
+          :service_configuration,
+          :dev,
+          :confirmation_email_component_id,
+          service_id: service.service_id
+        )
+      end
+
+      let(:dummy_session) { { service.service_id => { 'user_data' => { 'email_question_1' => dummy_email } } } }
+      let(:dummy_email) { 'em@il.com' }
+
+      before do
+        allow_any_instance_of(Preview::SessionDataAdapter).to receive(:session).and_return(dummy_session)
+      end
+
+      it 'confirmation_email_enabled? returns true' do
+        expect(controller.confirmation_email_enabled?).to be_truthy
+      end
+
+      it 'confirmation_email returns the email in session' do
+        expect(controller.confirmation_email).to eq(dummy_email)
+      end
+    end
+
+    context 'when CONFIRMATION_EMAIL_COMPONENT_ID is not present' do
+      let!(:service_configuration) { nil }
+
+      it 'confirmation_email_enabled? returns false' do
+        expect(controller.confirmation_email_enabled?).to be_falsey
+      end
+
+      it 'confirmation_email doesn\'t return anything' do
+        expect(controller.confirmation_email).to be_nil
+      end
+    end
+  end
 end
