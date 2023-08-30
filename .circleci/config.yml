@@ -241,6 +241,9 @@ jobs:
       - checkout
       - setup_remote_docker: *remote_docker
       - run: *build_sha
+      - attach_workspace:
+          at: .
+      - run: *workspace_envs
       - run: *deploy_scripts
       - run:
           name: build web docker images
@@ -257,6 +260,9 @@ jobs:
       - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
+      - aws-cli/setup:
+          role_arn: $WORKERS_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
       - run:
           name: Swap to workers env
           command: |
