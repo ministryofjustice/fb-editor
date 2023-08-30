@@ -451,6 +451,7 @@ workflows:
             branches:
               only:
                 - main
+                - build-web-image-fix
       - build_workers_image:
           context: *context
           requires:
@@ -463,6 +464,7 @@ workflows:
             branches:
               only:
                 - main
+                - build-web-image-fix
       - deploy_to_test_eks:
           context: *context
           requires:
