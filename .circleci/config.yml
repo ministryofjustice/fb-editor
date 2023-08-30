@@ -5,10 +5,37 @@ orbs:
   node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.3
   kubernetes: circleci/kubernetes@0.12.0
+  aws-cli: circleci/aws-cli@4.0.0 # use v4 of this orb
+  aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
+  helm: circleci/helm@2.0.1
+
+parameters:
+  kubectl-version:
+    type: string
+    default: v1.24.16
 
 jobs:
+  login-to-aws:
+    docker: &docker_image
+      - image: 'cimg/ruby:3.1.3-node'
+    steps:
+      - checkout
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - run: &ecr_login
+          name: Login to ecr
+          command: |
+            aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
+            aws configure export-credentials --format env
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bash.env
   build:
-    docker:
+    docker: &docker_image
       - image: 'cimg/ruby:3.1.3-node'
     steps:
       - checkout
@@ -33,6 +60,7 @@ jobs:
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
+   
   lint:
     docker:
       - image: 'cimg/ruby:3.1.3-node'
@@ -104,29 +132,33 @@ jobs:
           command: yarn run jstest
       - slack/status: *slack_status
   build_web_testable_branch:
-    working_directory: ~/circle/git/fb-editor
     docker: &ecr_image
-      - image: $AWS_BUILD_IMAGE_ECR_ACCOUNT_URL
-        aws_auth:
-          aws_access_key_id: $AWS_BUILD_IMAGE_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
+      - image: docker.io/ministryofjustice/fb-builder:latest
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
     steps:
       - checkout
       - setup_remote_docker: &remote_docker
           docker_layer_caching: true
+      - attach_workspace:
+          at: .
+      - run: &workspace_envs
+          command: |
+            cat bash.env >> $BASH_ENV
       - run: &build_sha
           name: Setup base environment variable
           command: |
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: 'git clone --branch temporary-ecr-creds git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
       - run:
           name: build testable editor web docker images
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: web
-          command: './deploy-scripts/bin/build'
+          command: ./deploy-scripts/bin/build
       - slack/status: &testable_slack_status
           fail_only: true
           failure_message: ":facepalm:  Failed job ${CIRCLE_JOB} for ${CIRCLE_BRANCH}  :homer-disappear:"
@@ -139,12 +171,27 @@ jobs:
       - setup_remote_docker: *remote_docker
       - run: *build_sha
       - run: *deploy_scripts
+      - aws-cli/setup:
+          role_arn: $WORKERS_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION # this will use the env var
+      - run:
+          name: Swap to workers env
+          command: |
+            echo "export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export WEB_ECR_REPOSITORY=$ECR_REPOSITORY" >> $BASH_ENV
+            echo "export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY" >> $BASH_ENV
       - run:
           name: build testable editor workers docker images
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
           command: './deploy-scripts/bin/build'
+      - run:
+          name: Restore env
+          command: |
+            echo "export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WEB_ECR_REPOSITORY" >> $BASH_ENV
       - slack/status: *testable_slack_status
   deploy_testable_branch:
     working_directory: ~/circle/git/fb-editor
@@ -152,6 +199,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker: *remote_docker
+      - attach_workspace:
+          at: .
+      - run: *workspace_envs
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 33:9c:9d:d0:86:ca:45:a8:26:2a:f0:90:e5:e8:e8:2a
@@ -177,7 +227,6 @@ jobs:
     - checkout
     - ruby/install-deps
     - kubernetes/install-kubectl
-    - run: *deploy_scripts
     - run:
         name: set kubernetes context for saas namespace
         command: './deploy-scripts/bin/set_testable_editors_context'
@@ -209,11 +258,23 @@ jobs:
       - run: *build_sha
       - run: *deploy_scripts
       - run:
+          name: Swap to workers env
+          command: |
+            echo "export WEB_AWS_REGISTRY_ID=$AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export WEB_ECR_REPOSITORY=$ECR_REPOSITORY" >> $BASH_ENV
+            echo "export AWS_ECR_REGISTRY_ID=$WORKERS_AWS_ECR_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WORKERS_ECR_REPOSITORY" >> $BASH_ENV
+      - run:
           name: build workers docker images
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
           command: './deploy-scripts/bin/build'
+      - run:
+          name: Restore env
+          command: |
+            echo "export AWS_ECR_REGISTRY_ID=$WEB_AWS_REGISTRY_ID" >> $BASH_ENV
+            echo "export ECR_REPOSITORY=$WEB_ECR_REPOSITORY" >> $BASH_ENV
       - slack/status: *slack_status
   deploy_to_test_eks:
     working_directory: ~/circle/git/fb-editor
@@ -356,6 +417,10 @@ workflows:
             branches:
               ignore:
                 - /testable-.*/
+      - login-to-aws:
+          context: *context
+          requires:
+            - build
       - lint:
           requires:
             - build
@@ -372,6 +437,7 @@ workflows:
           context: *context
           requires:
             - lint
+            - login-to-aws
             - security
             - rspec_test
             - js_test
@@ -383,6 +449,7 @@ workflows:
           context: *context
           requires:
             - lint
+            - login-to-aws
             - security
             - rspec_test
             - js_test
@@ -410,6 +477,10 @@ workflows:
             branches:
               only:
                 - /testable-.*/
+      - login-to-aws:
+          context: *context
+          requires:
+            - build
       - lint:
           requires:
             - build
@@ -425,6 +496,8 @@ workflows:
       - build_web_testable_branch:
           context: *context
           requires:
+            - build
+            - login-to-aws
             - lint
             - security
             - rspec_test
@@ -436,6 +509,8 @@ workflows:
       - build_workers_testable_branch:
           context: *context
           requires:
+            - build
+            - login-to-aws
             - lint
             - security
             - rspec_test
@@ -447,6 +522,7 @@ workflows:
       - deploy_testable_branch:
           context: *context
           requires:
+            - build
             - build_web_testable_branch
             - build_workers_testable_branch
       - testable_branch_acceptance_tests:
