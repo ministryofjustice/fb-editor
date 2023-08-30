@@ -26,13 +26,37 @@ class EditableContent extends HTMLElement {
       }
     )
 
+    this.markdownFilters = {
+      convertButtonsToLinks: (markdown) => {
+        markdown = markdown.replace(/{button\s?(?:start)?}/gi, '')
+        markdown = markdown.replace(/{\/button\s?}/gi, '')
+
+        return markdown
+      },
+    }
+
+    const allowedGovspeakComponents = [
+      'govspeak-warning-callout',
+      'govspeak-information-callout',
+      'govspeak-address',
+      'govspeak-call-to-action',
+      'govspeak-contact',
+    ]
+
+    const preprocess = (markdown) => {
+      markdown = this.filterMarkdown(markdown)
+      return markdown
+    }
+
     marked.setOptions({
       renderer: new GovukHTMLRenderer(),
-      headingsStartWith: 'xl'
+      headingsStartWith: 'xl',
+      govspeakGemCompatibility: true
     })
 
     marked.use({ 
-      extensions: govspeak 
+      extensions: govspeak.filter((component) => allowedGovspeakComponents.includes(component.name) ),
+      hooks: { preprocess }
     })
   }
 
@@ -54,17 +78,17 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
-      this.config.content = this.input.value;
+      this.config.content = this.value;
       return JSON.stringify(this.config);
     } else {
-      return this.input.value == this.defaultContent ? '' : this.input.value;
+      return this.value == this.defaultContent ? '' : this.value;
     }
   }
 
   get html() {
-    const content = this.input.value || this.defaultContent
+    const content = this.value || this.defaultContent
     const unsafeHTML = marked.parse(content);
-    return DOMPurify.sanitize(unsafeHTML, {USE_PROFILES: {html: true}})
+    return this.sanitize(unsafeHTML)
   }
 
   // Is the content area part of the page components 
@@ -75,6 +99,22 @@ class EditableContent extends HTMLElement {
   get $node() {
     return $(this);
   }
+  
+  // returns the markdown content of the input after filtering it through any
+  // configured filters
+  get value() {
+    let val = this.input.value
+
+    for( const [key, filterFunction] of Object.entries(this.markdownFilters)) {
+      val = filterFunction(val)
+    }
+
+    return val
+  }
+
+  set value(value) {
+    this.input.value = value
+  }
 
   // The form containing the element that will be updated on save
   set form(element) {
@@ -83,7 +123,7 @@ class EditableContent extends HTMLElement {
 
   render() {
     const initialContent = this.initialContent || this.defaultContent;
-    const initialMarkup = (this.initialMarkup.trim() != '' ? this.initialMarkup : this.defaultContent);
+    const initialMarkup = (this.initialMarkup.trim() != '' ? this.sanitize(this.initialMarkup) : this.defaultContent);
     this.innerHTML = `
     <div class="editable-content" data-element="editable-content-root">
       <elastic-textarea>
@@ -108,7 +148,6 @@ class EditableContent extends HTMLElement {
 
       this.root.addEventListener('click', () => this.state.mode = 'edit' )
       this.root.addEventListener('focus', () => this.state.mode = 'edit' )
-      // this.input.addEventListener('blur', () => this.state.mode = 'read' )
       this.addEventListener('focusout', (event) => {
         if(this.contains(event.relatedTarget)) return
         this.state.mode = 'read'
@@ -133,13 +172,13 @@ class EditableContent extends HTMLElement {
         this.classList.add('active')
         this.input.focus({ preventScroll: true });
 
-        if(this.valueIsDefault()) this.input.value = '';
+        if(this.valueIsDefault()) this.value = '';
         // Move cursor to end of content 
-        this.input.selectionStart = this.input.value.length;
+        this.input.selectionStart = this.value.length;
         break;
       case 'read':
       case 'initial':
-        if(this.valueIsDefault()) this.input.value = '';
+        if(this.valueIsDefault()) this.value = '';
         this.updateOutput();
         
         this.hide(this.input);
@@ -174,11 +213,11 @@ class EditableContent extends HTMLElement {
   }
 
   valueIsDefault() {
-    return this.input.value == this.defaultContent;
+    return this.value == this.defaultContent;
   }
 
   valueHasChanged() {
-    return this.input.value.trim() !== this._contentBeforeEditing 
+    return this.value.trim() !== this._contentBeforeEditing 
   }
 
   save() {
@@ -205,6 +244,23 @@ class EditableContent extends HTMLElement {
     const deleteInputHTML = `<input type="hidden" name="delete_components[]" value="${this.config._uuid}" />`
     button.insertAdjacentHTML('beforebegin', deleteInputHTML);
     this.remove()
+  }
+
+  // Run the markdown through all configured filter functions
+  // called by marked in the preprocess hook 
+  // called in the value() getter
+  filterMarkdown(markdown) {
+    for( const [key, filterFunction] of Object.entries(this.markdownFilters)) {
+      markdown = filterFunction(markdown)
+    }
+    return markdown
+  }
+
+  sanitize(unsafeHTML) {
+    return DOMPurify.sanitize(unsafeHTML, {
+        USE_PROFILES: {html: true}, 
+        FORBID_TAGS: ['style', 'button']
+    })  
   }
 }
 

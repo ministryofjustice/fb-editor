@@ -1158,10 +1158,10 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@x-govuk/marked-govspeak@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@x-govuk/marked-govspeak/-/marked-govspeak-0.1.0.tgz#e67ad9f1a1dd0e38ddc62726de10cb8f6a29f9d5"
-  integrity sha512-TzYVTHlsXAo9mqW2vaIGDSRZ+ZqK8ZABoKdHR2FgPlFclzHYGuhz+A3fxFFg1tjvmq3kE1geD94pVBCP7yG5tg==
+"@x-govuk/marked-govspeak@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@x-govuk/marked-govspeak/-/marked-govspeak-0.2.0.tgz#0e500cc0cd591e4746a7ffaa78363e0f8761fa91"
+  integrity sha512-+hikT3RpIWefMn2BBLS+jlk72EjvQUU3WRJ4TAtK3oJoENR6vckAM2sv9quc+lIqFyR+Jy2a8pqODmPA3Go6tA==
   dependencies:
     marked "^4.3.0"
 
