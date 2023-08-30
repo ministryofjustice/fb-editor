@@ -464,6 +464,7 @@ workflows:
           requires:
             - acceptance_tests_eks
   deploy_testable_branch:
+    jobs:
       - build:
           filters:
             branches:
