@@ -3,4 +3,12 @@
 
 <%= render 'form_conditionals', f: f %>
 
-<%= f.submit t('actions.save'), class: 'govuk-button fb-govuk-button', id: 'fb-editor-save' %>
+<div class="govuk-button-group">
+  <button class="govuk-button fb-govuk-button" type="submit">
+    <%= t('dialogs.component_validations.button') %>
+  </button>
+
+  <button class="govuk-button govuk-button--secondary" type="button" >
+    <%= t('dialogs.button_cancel') %>
+  </button>
+</div>
