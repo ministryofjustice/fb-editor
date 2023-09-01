@@ -7,7 +7,8 @@
       <%= image_pack_tag "logo--white.svg", alt: t('header.home_link_alt') %>
     </a>
 
-    <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
+    <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>" hx-on="click: alert('You clicked me!')"
+>
       <%= t('header.service_name') %>
     </a>
 

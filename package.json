@@ -20,6 +20,7 @@
     "dompurify": "^3.0.3",
     "govuk-frontend": "4.4.1",
     "govuk-markdown": "^0.3.0",
+    "htmx.org": "^1.9.5",
     "jquery": "^3.6.4",
     "jquery-ui-dist": "^1.13.2",
     "marked": "4.3.0",

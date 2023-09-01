@@ -3038,6 +3038,11 @@ htmlparser2@^8.0.0:
     domutils "^3.0.1"
     entities "^4.3.0"
 
+htmx.org@^1.9.5:
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-1.9.5.tgz#043a934c50e9945538480679e572ed1f31dbd655"
+  integrity sha512-YUMH1/zOe+75bZnSbtkqwK8wAoTJcgvwVA2W6CXoODBtsg2F9HJIPzM3vzosevrilpV6jLAR6nKapKypBs7v2A==
+
 http-proxy-agent@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-5.0.0.tgz"

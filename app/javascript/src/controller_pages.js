@@ -488,6 +488,9 @@ function addContentMenuListeners(view) {
       activator: selectedItem,
       remote: true,
       autoOpen: true,
+      onReady: (dialog) => {
+        htmx.process(dialog.$container.get(0))
+      }
       
     });
   });

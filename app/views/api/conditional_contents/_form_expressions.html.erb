@@ -1,24 +1,32 @@
 <%= conditional.fields_for :expressions do |expression| %>
   <div class="condition govuk-form-group">
-    <div class="question">
+    <conditional-question-select class="question">
       <%= expression.label :component, t('branches.expression.if'), { class: "govuk-label" } %>
       <%= expression.select :component,
         @conditional_content.previous_questions,
         { include_blank: t('branches.select_question') },
-        { class: 'govuk-select' }
-      %>
-    </div>
+        { class: 'govuk-select',
+          'hx-post': api_service_conditional_content_expressions_path(service.service_id, params[:component_uuid], conditional.options[:child_index], expression.options[:child_index]),
+          'hx-trigger': "change", 
+          'hx-target': "#conditional_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}"
+        }
+      %> 
+      <p class="error-message" data-element='conditional-question-select-error' hidden><%= t('activemodel.errors.messages.unsupported') %></p> 
+    </conditional-question-select>
 
     <%# When creating a new conditional object the component will not have been chosen yet %>
-    <% if expression.object.component.present? %>
-        <%= render partial: 'expression_answers',
-                  locals: {
-                    f: default_form_builder.new(:expression, expression.object, self, {}),
-                    expression: expression.object,
-                    conditional_index: conditional.index,
-                    expression_index: expression.index
-                  }
-        %>
-    <% end %>
+    <div id="conditional_<%=conditional.options[:child_index]%>_expression_<%=expression.options[:child_index]%>" class="answer">
+      <% if expression.object.component.present? %>
+          <%= render partial: 'expression_answers',
+                    locals: {
+                      f: default_form_builder.new(:expression, expression.object, self, {}),
+                      expression: expression.object,
+                      conditional_index: conditional.index,
+                      expression_index: expression.index
+                    }
+                  %>
+
+      <% end %>
+    </div>
   </div>
 <% end %>
