@@ -63,3 +63,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'web-console', '>= 3.3.0'
 end
+
+gem "turbo-rails", "~> 1.4"
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

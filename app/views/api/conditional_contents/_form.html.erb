@@ -1,7 +1,11 @@
 <%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
 <%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
 
-<%= render 'form_conditionals', f: f %>
+<div id="conditionals">
+  <%= render 'form_conditionals', f: f %>
+</div>
+
+<%= link_to 'Add another rule', new_conditional_api_service_conditional_contents_path(service.service_id, params[:component_uuid]), data: { turbo: true, turbo_method: :get, turbo_stream: '' } %>
 
 <div class="govuk-button-group">
   <button class="govuk-button fb-govuk-button" type="submit">

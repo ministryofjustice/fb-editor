@@ -1,43 +1,48 @@
-<div data-component-type="<%= expression.component_type %>">
-  <%= f.select :operators, expression.operators,
-    {
-      include_blank: false,
-      selected: expression.operator
-    },
-    {
-      class: 'govuk-select',
-      'data-expression-operator': '',
-      name: expression.name_attr(
-        conditional_index: conditional_index,
-        expression_index: expression_index,
-        attribute: 'operator'
-      ),
-      id: expression.id_attr(
-        conditional_index: conditional_index,
-        expression_index: expression_index,
-        attribute: 'operator'
-      )
-    }
-  %>
+<turbo-frame id="conditional_<%= conditional_index %>_expression_<%= expression_index %>" data-conditional-target="expression" class="answer">
+  <% if expression.component.present? %>
+      <div data-component-type="<%= expression.component_type %>">
+        <%= f.select :operators, expression.operators,
+          {
+            include_blank: false,
+            selected: expression.operator
+          },
+          {
+            class: 'govuk-select',
+            'data-expression-operator': '',
+            name: expression.name_attr(
+              conditional_index: conditional_index,
+              expression_index: expression_index,
+              attribute: 'operator'
+            ),
+            id: expression.id_attr(
+              conditional_index: conditional_index,
+              expression_index: expression_index,
+              attribute: 'operator'
+            )
+          }
+        %>
 
-  <%= f.select :answers, expression.answers,
-    {
-      include_blank: false,
-      selected:  expression.field
-    },
-    {
-      class: 'govuk-select',
-      'data-expression-answer': '',
-      name: expression.name_attr(
-        conditional_index: conditional_index,
-        expression_index: expression_index,
-        attribute: 'field'
-      ),
-      id: expression.id_attr(
-        conditional_index: conditional_index,
-        expression_index: expression_index,
-        attribute: 'field'
-      )
-    }
-  %>
-</div>
+      <%= f.select :answers, expression.answers,
+        {
+          include_blank: false,
+          selected:  expression.field
+        },
+        {
+          class: 'govuk-select',
+          'data-expression-answer': '',
+          name: expression.name_attr(
+            conditional_index: conditional_index,
+            expression_index: expression_index,
+            attribute: 'field'
+          ),
+          id: expression.id_attr(
+            conditional_index: conditional_index,
+            expression_index: expression_index,
+            attribute: 'field'
+          )
+        }
+      %>
+
+    </div>
+  <% end %>
+</turbo-frame>

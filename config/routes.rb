@@ -100,11 +100,11 @@ Rails.application.routes.draw do
         collection do
           get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
           post '/:component_uuid', to: 'conditional_contents#create', as: 'create'
+          get 'conditional_contents/:component_uuid/conditionals/new', as: :new_conditional, to: 'conditional_contents#new_conditional'
         end
       end
 
-      get 'conditional_contents/:component_id/conditionals', as: :conditional_contents, to: 'conditional_contents#new_conditional'
-      post 'conditional_contents/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', as: :conditional_content_expressions, to: 'conditional_content_expressions#show'
+      get 'conditional_contents/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', as: :conditional_content_expressions, to: 'conditional_content_expressions#show'
 
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete

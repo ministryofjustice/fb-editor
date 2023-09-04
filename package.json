@@ -8,6 +8,8 @@
     "jstest": "mocha --recursive"
   },
   "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^7.3.0",
     "@rails/actioncable": "^7.0.4",
     "@rails/activestorage": "^7.0.4",
     "@rails/ujs": "^7.0.4",
@@ -20,7 +22,6 @@
     "dompurify": "^3.0.3",
     "govuk-frontend": "4.4.1",
     "govuk-markdown": "^0.3.0",
-    "htmx.org": "^1.9.5",
     "jquery": "^3.6.4",
     "jquery-ui-dist": "^1.13.2",
     "marked": "4.3.0",

@@ -7,27 +7,27 @@
 require('@ungap/custom-elements'); // required until safari supports customizing native elements using `is`
 require("jquery")
 require("jquery-ui")
-import 'htmx.org';
 require("../src/index")
 
-window.htmx = require('htmx.org')
+import "@hotwired/turbo-rails"
+import { Application } from "@hotwired/stimulus"
 
-window.htmx.config.allowEval = false
-window.htmx.config.allowScriptTags = false
-window.htmx.config.inlineScriptNonce = ''
-window.htmx.config.selfRequestsOnly = true
-window.htmx.config.includeIndicatorStyles = false
+import ConditionalController from '../src/controllers/conditional_controller.js'
+
+Turbo.session.drive = false
+window.Stimulus = Application.start()
+Stimulus.register("conditional", ConditionalController)
 
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
 const { SaveButton } = require('../src/web-components/save-button');
-const { ConditionalQuestionSelect } = require('../src/web-components/conditional-question-select');
+// const { ConditionalQuestionSelect } = require('../src/web-components/conditional-question-select');
 
 if ('customElements' in window) {
   customElements.define('elastic-textarea', ElasticTextarea);
   customElements.define('editable-content', EditableContent);
   customElements.define('save-button', SaveButton, { extends: 'button'});
-  customElements.define('conditional-question-select', ConditionalQuestionSelect);
+  // customElements.define('conditional-question-select', ConditionalQuestionSelect);
 }
 
 // Entry point for fb-editor stylesheets

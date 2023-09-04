@@ -30,7 +30,10 @@
 
     <%= mojf_save_button(form: f, text: t('actions.save'), html_attributes: {id: 'fb-editor-save', 'prevent-unload': true}) %>
 
-<% end %>
+  <% end %>
+
+  
+<%= link_to 'Add another rule', new_conditional_api_service_conditional_contents_path(service.service_id, '217dh89w23erh872'), data: { turbo_method: :post, turbo_stream: '' } %>
 
 <% # app.page is initialised in partials/properties. %>
 <% # JS object should exist at this point so we're not checking for existence. %>

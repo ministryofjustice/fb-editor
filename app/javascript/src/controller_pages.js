@@ -489,7 +489,14 @@ function addContentMenuListeners(view) {
       remote: true,
       autoOpen: true,
       onReady: (dialog) => {
-        htmx.process(dialog.$container.get(0))
+      },
+      onError: (data,dialog) => {
+        console.log('error')
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+
       }
       
     });

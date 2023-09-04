@@ -27,6 +27,10 @@ class Api::ConditionalContentsController < ConditionalContentsController
   helper_method :conditional_index
   
   def new_conditional
+    # respond_to do |format|
+    #   format.turbo_stream { render 'new_condition'}
+    #   format.html { render 'new_conditional', layout: false }
+    # end
     render 'new_conditional', layout: false
   end
 

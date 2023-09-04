@@ -210,6 +210,7 @@ class DialogForm {
       this.#remoteSource = true;
       $.get(source)
       .done((response) => {
+        console.log(response)
         this.$node = $(response);
         this.#build();
         // Allow a function to be specified in dialog config
@@ -239,7 +240,7 @@ class DialogForm {
     if(this.activator) {
       this.#addActivator();
     }
-
+    console.log(this.$node)
     this.$node.dialog({
       autoOpen: false,
       classes: this.#config.classes,

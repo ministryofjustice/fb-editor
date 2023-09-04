@@ -6,11 +6,9 @@ module Api
     before_action :validate_params
 
     def show
-      question_uuid = params["conditional_content"].dig("conditionals_attributes", params["conditional_index"], "expressions_attributes", params["expression_index"], "component")
-
         @expression = Expression.new(
-          component: question_uuid,
-          page: page_with_component(question_uuid)
+          component: params[:component_id],
+          page: page_with_component(params[:component_id])
         )
 
         render partial: 'expression_answers',
