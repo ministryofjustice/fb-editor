@@ -6,7 +6,7 @@ module Api
     before_action :validate_params
 
     def show
-        @expression = Expression.new(
+        @expression = ComponentExpression.new(
           component: params[:component_id],
           page: page_with_component(params[:component_id])
         )

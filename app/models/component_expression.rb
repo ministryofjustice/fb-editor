@@ -46,12 +46,12 @@ class ComponentExpression
   end
 
   def name_attr(conditional_index:, expression_index:, attribute:)
-    "conditional_component[conditionals_attributes][#{conditional_index}]" \
+    "conditional_content[conditionals_attributes][#{conditional_index}]" \
     "[expressions_attributes][#{expression_index}][#{attribute}]"
   end
 
   def id_attr(conditional_index:, expression_index:, attribute:)
-    "conditional_component_conditionals_attributes_#{conditional_index}_" \
+    "conditional_content_conditionals_attributes_#{conditional_index}_" \
     "expressions_attributes_#{expression_index}_#{attribute}"
   end
 

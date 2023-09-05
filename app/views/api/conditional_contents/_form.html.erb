@@ -1,5 +1,5 @@
 <%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
-<%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
+<%= f.text_field :component_uuid, value: @conditional_content.component_uuid %>
 
 <div id="conditionals">
   <%= render 'form_conditionals', f: f %>

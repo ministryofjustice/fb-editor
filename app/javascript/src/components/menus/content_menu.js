@@ -78,7 +78,6 @@ class ContentMenu extends ActivatedMenu {
 
   conditionalContent(item) {
     this.component.apiUrl = item.data('apiPath')
-    console.log(this.component.apiUrl)
     $(document).trigger("ContentMenuSelectionConditionalContent", { component: this.component, selectedItem: item });
   }
 }

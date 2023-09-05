@@ -484,14 +484,21 @@ function addContentMenuListeners(view) {
 
   view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
     const {component, selectedItem } = details;
-    new DialogForm(component.apiUrl, {
+
+    const path = selectedItem.data('api-path');
+    const componentUuid = component.uuid
+    const url = stringInject(path, {component_uuid: componentUuid})
+
+    new DialogForm(url, {
       activator: selectedItem,
       remote: true,
       autoOpen: true,
       onReady: (dialog) => {
       },
+      onSuccess: (data, dialog) => {
+        component.config.conditionals = data.conditionals
+      },
       onError: (data,dialog) => {
-        console.log('error')
         var responseHtml = $.parseHTML(data.responseText);
         var $newHtml = $(responseHtml[0]).html();
         dialog.$node.html($newHtml);

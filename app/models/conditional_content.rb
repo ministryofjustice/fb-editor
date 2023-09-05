@@ -15,12 +15,12 @@ class ConditionalContent
     super
   end
 
-  def self.from_metadata(flow_object)
+  def self.from_metadata(component)
     attributes_hash = {
       'conditionals_attributes' => {}
     }
 
-    flow_object.conditionals.each_with_index do |conditional, index|
+    component.conditionals.each_with_index do |conditional, index|
       attributes_hash['conditionals_attributes'][index.to_s] = expressions_attributes(conditional)
     end
 
@@ -95,4 +95,7 @@ class ConditionalContent
       expression.errors.messages.present?
     end
   end
+  
+  
+
 end

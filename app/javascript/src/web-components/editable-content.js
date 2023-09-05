@@ -99,6 +99,11 @@ class EditableContent extends HTMLElement {
   get $node() {
     return $(this);
   }
+
+  get uuid() {
+    if(!this.isComponent) return
+    return this.config._uuid
+  }
   
   // returns the markdown content of the input after filtering it through any
   // configured filters
