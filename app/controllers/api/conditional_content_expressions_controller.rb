@@ -11,7 +11,7 @@ module Api
           page: page_with_component(params[:component_id])
         )
 
-        render partial: 'expression_answers',
+        render partial: 'expression_condition',
                locals: {
                  f: default_form_builder.new(:expression, @expression, view_context, {}),
                  expression: @expression,

@@ -12,11 +12,19 @@ require("../src/index")
 import "@hotwired/turbo-rails"
 import { Application } from "@hotwired/stimulus"
 
-import ConditionalController from '../src/controllers/conditional_controller.js'
+import DynamicFieldsController from '../src/controllers/dynamic-fields-controller.js'
+import ConditionalController from '../src/controllers/conditional-controller.js'
+import ConditionalsController from '../src/controllers/conditionals-controller.js'
+import ExpressionController from '../src/controllers/expression-controller.js'
+import ExpressionsController from '../src/controllers/expressions-controller.js'
 
 Turbo.session.drive = false
 window.Stimulus = Application.start()
+Stimulus.register("dynamic-fields", DynamicFieldsController)
 Stimulus.register("conditional", ConditionalController)
+Stimulus.register("conditionals", ConditionalsController)
+Stimulus.register("expression", ExpressionController)
+Stimulus.register("expressions", ExpressionsController)
 
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');

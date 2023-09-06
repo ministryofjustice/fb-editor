@@ -1,13 +1,13 @@
-<turbo-frame id="conditional_<%= conditional_index %>_expression_<%= expression_index %>" data-conditional-target="expression" class="answer">
+<turbo-frame id="conditional_<%= conditional_index %>_expression_<%= expression_index %>" data-expression-target="condition">
   <% if expression.component.present? %>
-      <div data-component-type="<%= expression.component_type %>">
+    <div class="expression__condition">
         <%= f.select :operators, expression.operators,
           {
             include_blank: false,
             selected: expression.operator
           },
           {
-            class: 'govuk-select',
+            class: 'govuk-select expression__operator',
             'data-expression-operator': '',
             name: expression.name_attr(
               conditional_index: conditional_index,
@@ -29,7 +29,7 @@
           selected:  expression.field
         },
         {
-          class: 'govuk-select',
+          class: 'govuk-select expression__answer',
           'data-expression-answer': '',
           name: expression.name_attr(
             conditional_index: conditional_index,

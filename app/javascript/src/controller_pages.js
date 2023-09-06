@@ -498,6 +498,7 @@ function addContentMenuListeners(view) {
       requestMethod: 'POST',
       requestData: data,
       autoOpen: true,
+      closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
       onReady: (dialog) => {
       },
       onSuccess: (data, dialog) => {

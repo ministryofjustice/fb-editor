@@ -1,11 +1,22 @@
 <%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
 <%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
 
-<div id="conditionals">
-  <%= render 'form_conditionals', f: f %>
+<div class="conditionals" data-controller="dynamic-fields conditionals">
+  <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
+    <%= render 'conditional_fields', conditional: conditional, f: f %>
+  <% end %>
+
+  <template data-dynamic-fields-target="template">
+     <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+      <%= render 'conditional_fields', conditional: conditional, f: f %>
+    <% end %>
+  </template>
+  
+  <div class="conditional">
+    <%= button_tag 'Add another rule', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+  </div>
 </div>
 
-<%= link_to 'Add another rule', new_conditional_api_service_conditional_contents_path(service.service_id, params[:component_uuid]), data: { turbo: true, turbo_method: :get, turbo_stream: '' } %>
 
 <div class="govuk-button-group">
   <button class="govuk-button fb-govuk-button" type="submit">

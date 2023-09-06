@@ -13,16 +13,18 @@
 
 
 .component-dialog-api-request {
-  button, input[type=submit] {
-    @include govuk-responsive-margin(7, "right");
-    margin-bottom: 0;
-    position: static;
+  .govuk-button-group {
+    button, input[type=submit] {
+      @include govuk-responsive-margin(7, "right");
+      margin-bottom: 0;
+      position: static;
 
-    &::before {
-      // Fixes a bug caused by GDS css
-      left: auto;
-      position: relative;
-      right: auto;
+      &::before {
+        // Fixes a bug caused by GDS css
+        left: auto;
+        position: relative;
+        right: auto;
+      }
     }
   }
 

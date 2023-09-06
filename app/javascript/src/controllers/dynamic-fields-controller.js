@@ -1,0 +1,21 @@
+import { Controller } from '@hotwired/stimulus'
+
+export default class extends Controller {
+  static targets = [ 'template' ]
+
+  connect() {
+    console.log("DynamicFieldsController", this.element)
+  }
+
+  add(event) {
+    event.preventDefault();
+    this.templateTarget.insertAdjacentHTML(
+      "beforebegin",
+      this.templateTarget.innerHTML.replace(
+        /__CHILD_INDEX__/g,
+        new Date().getTime().toString()
+      )
+    )
+  }
+  
+}

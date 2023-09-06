@@ -1,0 +1,16 @@
+.icon-button { 
+  @include icon_button;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.icon-button--remove {
+  @extend .destructive;
+
+  background-image: url("../../images/trash_can_icon_blue.svg");
+  
+  &:focus,
+  &:hover {
+    background-image: url("../../images/trash_can_icon_white.svg");
+  }
+}
