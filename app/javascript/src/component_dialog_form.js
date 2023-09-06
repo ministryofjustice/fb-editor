@@ -82,6 +82,7 @@
 const {
 mergeObjects,
 safelyActivateFunction,
+meta
 } = require('./utilities');
 
 const DialogActivator = require('./component_dialog_activator');
@@ -104,6 +105,8 @@ class DialogForm {
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
       remote: false,
+      requestMethod: 'GET',
+      requestData: {},
       disableOnSubmit: '',
       onLoad: function(dialog) {},
       onReady: function(dialog) {},
@@ -208,9 +211,8 @@ class DialogForm {
 
     if(typeof source == 'string') {
       this.#remoteSource = true;
-      $.get(source)
+      $.ajax(source, this.#requestConfig())
       .done((response) => {
-        console.log(response)
         this.$node = $(response);
         this.#build();
         // Allow a function to be specified in dialog config
@@ -233,6 +235,20 @@ class DialogForm {
 
   }
 
+  #requestConfig() {
+    let config = {
+      method: this.#config.requestMethod,
+    }
+    if(this.#config.requestMethod == 'POST') {
+      config.headers = {
+        'X-CSRF-Token': meta('csrf-token') 
+      }
+      config.data = this.#config.requestData
+    }
+
+    return config
+  }
+
   #build() {
     var dialog = this;
 
@@ -240,7 +256,6 @@ class DialogForm {
     if(this.activator) {
       this.#addActivator();
     }
-    console.log(this.$node)
     this.$node.dialog({
       autoOpen: false,
       classes: this.#config.classes,

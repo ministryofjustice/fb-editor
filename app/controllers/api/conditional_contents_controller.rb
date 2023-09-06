@@ -9,15 +9,23 @@ module Api
       render 'new', layout: false
     end
 
-    def create
-      @conditional_content = ConditionalContent.new(conditional_content_params)
-      content_visibility_creation = ContentVisibilityCreation.new(
-        conditional_content: @conditional_content,
-        latest_metadata: service_metadata
-      )
+    def edit
+      component = JSON.parse( params.require(:component), object_class: OpenStruct)
 
-      if content_visibility_creation.save
-        render json: { conditionals: content_visibility_creation.conditional_content_metadata }, status: :ok
+      if component.conditionals.present?
+        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))  
+      else
+        assign_conditional_content
+      end
+
+      render 'edit', layout: false
+    end
+
+    def update
+      @conditional_content = ConditionalContent.new(conditional_content_params)
+
+      if @conditional_content.valid? && !@conditional_content.any_errors?
+        render json: { conditionals: @conditional_content.to_metadata }, status: :ok
       else
         render :new, status: :unprocessable_entity
       end
@@ -35,6 +43,10 @@ module Api
       # end
       @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
       render 'new_conditional', layout: false
+    end
+
+    def new_conditional_expression
+      @conditional_component.conditionals[params[:conditional_index]].expressions << ComponentExpression.new
     end
 
     def require_user!

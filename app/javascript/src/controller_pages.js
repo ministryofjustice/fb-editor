@@ -488,15 +488,21 @@ function addContentMenuListeners(view) {
     const path = selectedItem.data('api-path');
     const componentUuid = component.uuid
     const url = stringInject(path, {component_uuid: componentUuid})
-
+    const data = {
+      component: JSON.stringify( component.config || {} )
+    }
+    
     new DialogForm(url, {
       activator: selectedItem,
       remote: true,
+      requestMethod: 'POST',
+      requestData: data,
       autoOpen: true,
       onReady: (dialog) => {
       },
       onSuccess: (data, dialog) => {
-        component.config.conditionals = data.conditionals
+        component.config.conditionals = data.conditionals 
+        view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
       },
       onError: (data,dialog) => {
         var responseHtml = $.parseHTML(data.responseText);

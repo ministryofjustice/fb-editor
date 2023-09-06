@@ -95,6 +95,10 @@ class ConditionalContent
       expression.errors.messages.present?
     end
   end
+
+  def to_metadata
+    conditionals.map{|c| c.to_metadata }
+  end
   
   
 
