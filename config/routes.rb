@@ -96,18 +96,9 @@ Rails.application.routes.draw do
       end
       get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
 
-      resources :conditional_contents, param: :component_uuid, only: [:edit, :update, :destroy] do
-        collection do
-          # get '/:component_uuid/new', to: 'conditional_contents#new', as: 'new'
-          post '/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit'
-          # post '/:component_uuid', to: 'conditional_contents#create', as: 'create'
-          put '/:component_uuid', to: 'conditional_contents#update', as: 'update'
-          get 'conditional_contents/:component_uuid/conditionals/new', as: :new_conditional, to: 'conditional_contents#new_conditional'
-        end
-      end
-
-      get 'conditional_contents/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', as: :conditional_content_expressions, to: 'conditional_content_expressions#show'
-
+      post 'conditional_content/components/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit_conditional_content'
+      put 'conditional_content/components/:component_uuid', to: 'conditional_contents#update', as: 'update_conditional_content'
+      get 'conditional_content/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'conditional_content_expressions#show', as: 'conditional_content_expressions'
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'

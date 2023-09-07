@@ -15,12 +15,18 @@ class ConditionalContent
     super
   end
 
+  def self.from_json(json)
+      metadata = JSON.parse(json, object_class: OpenStruct)
+      from_metadata(metadata)
+  end
+
+
   def self.from_metadata(component)
     attributes_hash = {
       'conditionals_attributes' => {}
     }
 
-    component.conditionals.each_with_index do |conditional, index|
+    component.conditionals&.each_with_index do |conditional, index|
       attributes_hash['conditionals_attributes'][index.to_s] = expressions_attributes(conditional)
     end
 
@@ -99,6 +105,7 @@ class ConditionalContent
   def to_metadata
     conditionals.map{|c| c.to_metadata }
   end
+
   
   
 

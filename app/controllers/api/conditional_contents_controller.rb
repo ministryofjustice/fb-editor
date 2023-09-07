@@ -1,19 +1,13 @@
 module Api
   class ConditionalContentsController < ApiController
     before_action :assign_conditional_content, only: %i[new_conditional]
-    # skip_before_action :authorised_access
     default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
 
-    def new
-      assign_conditional_content
-      render 'new', layout: false
-    end
-
     def edit
-      component = JSON.parse( params.require(:component), object_class: OpenStruct)
+      component = ConditionalContent.from_json(component_params)
 
-      if component.conditionals.present?
-        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))  
+      if component[:conditionals].present?
+        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(component))  
       else
         assign_conditional_content
       end
@@ -35,15 +29,6 @@ module Api
       params[:conditional_index] ? params[:conditional_index].to_i + 1 : nil
     end
     helper_method :conditional_index
-
-    def new_conditional
-      # respond_to do |format|
-      #   format.turbo_stream { render 'new_condition'}
-      #   format.html { render 'new_conditional', layout: false }
-      # end
-      @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
-      render 'new_conditional', layout: false
-    end
 
     def new_conditional_expression
       @conditional_component.conditionals[params[:conditional_index]].expressions << ComponentExpression.new
@@ -74,6 +59,10 @@ module Api
 
     def conditional_content_params
       params.require(:conditional_content).permit!.merge(conditional_content_attributes)
+    end
+
+    def component_params
+      params.require(:component)
     end
 
     def previous_flow_uuid

@@ -1,18 +1,17 @@
 .expression {
   margin-top: govuk-spacing(6);
-  padding-left: govuk-spacing(3);
+  // padding-left: govuk-spacing(3);
   position: relative;
 
   &:after {
     background-color: $govuk-border-colour;
     content: "";
     display: block;
-    height: 100%;
-    left: 12%;
     position: absolute;
-    right: calc(85% + #{govuk-spacing(1)});
     top: 0;
+    left: 10%;
     width: 5px;
+    height: 100%;
   }
 
   &.error {

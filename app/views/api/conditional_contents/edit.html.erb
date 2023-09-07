@@ -1,6 +1,7 @@
 <div class="component-dialog-api-request" id="component_validations">
   <div class="conditional-visibility edit">
-    <%= form_for @conditional_content, url: update_api_service_conditional_contents_path(service.service_id, params[:component_uuid]), method: :put do |f| %>
+    <h2 class="govuk-heading-m">Show this component...</h2>
+    <%= form_for @conditional_content, url: api_service_update_conditional_content_path(service.service_id, params[:component_uuid]), method: :put do |f| %>
       <%= render 'form', f: f %>
     <% end %> 
   </div>
