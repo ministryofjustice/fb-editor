@@ -8,8 +8,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('ExpressionsController connected')
-    console.log(this.expressionTargets)
     Promise.resolve().then(() => {
       this.connected = true
       this.ensureFirstExpressionCannotBeDeleted()
@@ -51,6 +49,4 @@ export default class extends Controller {
       }
     });
   }
-  
-
 }

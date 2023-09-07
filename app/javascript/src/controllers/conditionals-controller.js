@@ -27,13 +27,13 @@ export default class extends Controller {
 
   ensureFirstConditionalCannotBeDeleted() {
     if(this.conditionalTargets.length == 1) {
-      this.conditionalTargets[0].conditional.hideDeleteButton()
+      this.conditionalTargets[0].conditionalController.hideDeleteButton()
     }
   }
 
   allowFirstConditionalToBeDeleted() {
     if(this.conditionalTargets.length > 1) {
-      this.conditionalTargets[0].conditional.showDeleteButton() 
+      this.conditionalTargets[0].conditionalController.showDeleteButton() 
     }
   }
 }

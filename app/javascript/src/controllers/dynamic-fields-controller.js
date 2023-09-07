@@ -3,10 +3,6 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = [ 'template' ]
 
-  connect() {
-    console.log("DynamicFieldsController", this.element)
-  }
-
   add(event) {
     event.preventDefault();
     this.templateTarget.insertAdjacentHTML(
@@ -17,5 +13,4 @@ export default class extends Controller {
       )
     )
   }
-  
 }

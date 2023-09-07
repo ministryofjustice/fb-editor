@@ -5,7 +5,7 @@ export default class extends Controller {
 
   connect() {
     // Attach a reference to the controller to the element
-    this.element[this.identifier] = this
+    this.element[`${this.identifier}Controller`] = this
   }
 
   delete(event) {
