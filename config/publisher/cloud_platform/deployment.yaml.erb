@@ -20,6 +20,7 @@ spec:
       labels:
         run: <%= service_slug %>
     spec:
+      serviceAccountName: runner-irsa-<%= platform_environment %>-<%= deployment_environment %>
       containers:
       - name: <%= service_slug %>
         securityContext:
