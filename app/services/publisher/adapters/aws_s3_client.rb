@@ -25,7 +25,8 @@ class Publisher
       private
 
       def s3
-        @s3 ||= Aws::S3::Client.new(region: REGION, credentials:)
+        # @s3 ||= Aws::S3::Client.new(region: REGION, credentials:)
+        @s3 ||= Aws::S3::Client.new(region: REGION)
       end
 
       def credentials
