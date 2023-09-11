@@ -267,6 +267,9 @@ module Admin
       if unpublished?('dev') && unpublished?('production')
         flash[:success] = "Service #{service_id} to be deleted"
         MetadataApiClient::Service.delete(service_id)
+        ServiceConfiguration.where(service_id:).destroy_all
+        SubmissionSetting.where(service_id:).destroy_all
+        PublishService.where(service_id:).destroy_all
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
