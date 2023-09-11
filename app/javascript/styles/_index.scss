@@ -452,6 +452,8 @@ a[disabled] {
 }
 
 editable-content {
+  position:relative;
+
   [data-element="editable-content-input"] {
     border: none;
     display: none;
@@ -470,6 +472,14 @@ editable-content {
     [data-element="editable-content-input"]  {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
+      outline-offset: 20px;
+    }
+  }
+
+  &[conditional] {
+    [data-element="editable-content-output"] {
+        outline: 1px dashed $govuk-link-colour;
+        outline-offset: 20px;
     }
   }
 }

@@ -167,7 +167,7 @@ RSpec.describe ComponentExpression do
             expression_index: 0,
             attribute:
           )
-        ).to eq("conditional_component[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
+        ).to eq("conditional_content[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
       end
     end
   end
@@ -183,7 +183,7 @@ RSpec.describe ComponentExpression do
             expression_index: 1,
             attribute:
           )
-        ).to eq("conditional_component_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
+        ).to eq("conditional_content_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
       end
     end
   end

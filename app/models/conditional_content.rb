@@ -16,10 +16,9 @@ class ConditionalContent
   end
 
   def self.from_json(json)
-      metadata = JSON.parse(json, object_class: OpenStruct)
-      from_metadata(metadata)
+    metadata = JSON.parse(json, object_class: OpenStruct)
+    from_metadata(metadata)
   end
-
 
   def self.from_metadata(component)
     attributes_hash = {
@@ -77,7 +76,7 @@ class ConditionalContent
   end
 
   def flow_uuid
-    return component_uuid if previous_flow_uuid.blank?
+    return service.page_with_component(component_uuid)&.[](:_uuid) if previous_flow_uuid.blank?
 
     previous_flow_uuid
   end
@@ -103,10 +102,6 @@ class ConditionalContent
   end
 
   def to_metadata
-    conditionals.map{|c| c.to_metadata }
+    conditionals.map(&:to_metadata)
   end
-
-  
-  
-
 end

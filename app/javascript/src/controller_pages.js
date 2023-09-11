@@ -502,7 +502,8 @@ function addContentMenuListeners(view) {
       onReady: (dialog) => {
       },
       onSuccess: (data, dialog) => {
-        component.config.conditionals = data.conditionals 
+        console.log(component.config)
+        component.config = Object.assign(component.config, { conditionals: data.conditionals })
         view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
       },
       onError: (data,dialog) => {

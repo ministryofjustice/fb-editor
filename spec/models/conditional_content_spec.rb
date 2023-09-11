@@ -7,7 +7,7 @@ RSpec.describe ConditionalContent do
     {
       service:,
       previous_flow_uuid:,
-      conditional_content_uuid:
+      component_uuid:
     }.merge(attributes)
   end
   let(:previous_page) do
@@ -19,8 +19,8 @@ RSpec.describe ConditionalContent do
   let(:current_page) do
     service.find_page_by_url('furry')
   end
-  let(:conditional_content_uuid) { 'ac914bb1-c4b8-44a0-bacd-2d23a6597f1a' }
-  let(:component_id) { '46a49bb2-349d-47f2-bb75-eaed3892d5d7' }
+  # let(:conditional_content_uuid) { 'ac914bb1-c4b8-44a0-bacd-2d23a6597f1a' }
+  let(:component_uuid) { '46a49bb2-349d-47f2-bb75-eaed3892d5d7' }
   let(:latest_metadata) { metadata_fixture(:conditional) }
   let(:service) do
     MetadataPresenter::Service.new(latest_metadata)
@@ -28,7 +28,7 @@ RSpec.describe ConditionalContent do
 
   describe '.from_metadata' do
     let(:component) do
-      current_page.find_component_by_uuid(component_id)
+      current_page.find_component_by_uuid(component_uuid)
     end
     let(:expected_metadata) do
       {
@@ -47,9 +47,13 @@ RSpec.describe ConditionalContent do
       }
     end
 
-    it 'serialises the branch objects metadata' do
+    it 'serialises the component objects metadata' do
       expect(ConditionalContent.from_metadata(component)).to eq(expected_metadata)
     end
+  end
+
+  describe '.from_json' do
+     
   end
 
   describe '#previous_questions' do
@@ -122,7 +126,7 @@ RSpec.describe ConditionalContent do
       let(:previous_flow_uuid) { nil }
 
       it 'returns the current page in the flow' do
-        expect(conditional_content.flow_uuid).to eq(conditional_content_uuid)
+        expect(conditional_content.flow_uuid).to eq(current_page[:_uuid])
       end
     end
   end

@@ -6,24 +6,21 @@ module Api
     before_action :validate_params
 
     def show
-        @expression = ComponentExpression.new(
-          component: params[:component_id],
-          page: page_with_component(params[:component_id])
-        )
+      @expression = ComponentExpression.new(
+        component: params[:component_id],
+        page: page_with_component(params[:component_id])
+      )
 
-        render partial: 'expression_condition',
-               locals: {
-                 f: default_form_builder.new(:expression, @expression, view_context, {}),
-                 expression: @expression,
-                 conditional_index: params[:conditional_index],
-                 expression_index: params[:expression_index]
-               }
-
+      render partial: 'expression_condition',
+             locals: {
+               f: default_form_builder.new(:expression, @expression, view_context, {}),
+               expression: @expression,
+               conditional_index: params[:conditional_index],
+               expression_index: params[:expression_index]
+             }
     end
 
-    def page_with_component(uuid)
-      service.page_with_component(uuid)
-    end
+    delegate :page_with_component, to: :service
 
     def validate_params
       Integer(params[:conditional_index]) &&

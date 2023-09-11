@@ -1,13 +1,12 @@
 module Api
   class ConditionalContentsController < ApiController
-    before_action :assign_conditional_content, only: %i[new_conditional]
     default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
 
     def edit
       component = ConditionalContent.from_json(component_params)
 
       if component[:conditionals].present?
-        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(component))  
+        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(component))
       else
         assign_conditional_content
       end
@@ -44,7 +43,7 @@ module Api
 
     def assign_conditional_content
       @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))
-      unless @conditional_content.conditionals.present?
+      if @conditional_content.conditionals.blank?
         @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
       end
     end

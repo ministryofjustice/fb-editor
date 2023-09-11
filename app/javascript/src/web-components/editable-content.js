@@ -4,6 +4,10 @@ const GovukHTMLRenderer = require('govuk-markdown')
 const DOMPurify = require('dompurify')
 
 class EditableContent extends HTMLElement {
+  static get observedAttributes() { 
+    return ['data-config']
+  }
+
   constructor() {
     super() 
 
@@ -61,6 +65,7 @@ class EditableContent extends HTMLElement {
   }
 
   connectedCallback() {
+    console.log('connected')
     // connectedCallback is fired as soon as the opening element is parsed
     // setTimeount allows the child elements to be parsed before we try to read
     // the initialMarkup
@@ -68,9 +73,20 @@ class EditableContent extends HTMLElement {
       this.initialMarkup = this.innerHTML;
       this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
       this.defaultContent = this.getAttribute('default-content') || '';
-      this.config = (this.dataset.config ? JSON.parse(this.dataset.config) : undefined);
+      // this.config = (this.dataset.config ? JSON.parse(this.dataset.config) : undefined);
       this.render();
     })
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log(`${name} attribute changed`)
+    switch(name) {
+      case 'data-config':
+        if(newValue != oldValue) {
+          this.processConfigChange(newValue);
+        }
+        break
+    }
   }
 
   // Markdown content that will be saved
@@ -104,6 +120,12 @@ class EditableContent extends HTMLElement {
     if(!this.isComponent) return
     return this.config._uuid
   }
+
+  get config() {
+    if (!this.dataset.config) return
+
+    return JSON.parse(this.dataset.config)
+  }
   
   // returns the markdown content of the input after filtering it through any
   // configured filters
@@ -124,6 +146,11 @@ class EditableContent extends HTMLElement {
   // The form containing the element that will be updated on save
   set form(element) {
     this.submissionForm = element;
+  }
+
+  set config(value) {
+    console.log(value)
+    this.setAttribute('data-config', JSON.stringify(value))
   }
 
   render() {
@@ -202,6 +229,14 @@ class EditableContent extends HTMLElement {
           );
         } 
         break;
+    }
+  }
+
+  processConfigChange(value) {
+    config = JSON.parse(value)
+    console.log(config)
+    if('conditionals' in config) {
+      this.setAttribute('conditional', '')
     }
   }
 
