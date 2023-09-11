@@ -266,6 +266,7 @@ module Admin
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
       if unpublished?('dev') && unpublished?('production')
         flash[:success] = "Service #{service_id} to be deleted"
+        MetadataApiClient::Service.delete(service_id)
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end

@@ -33,5 +33,9 @@ module MetadataApiClient
     rescue Faraday::UnprocessableEntityError => e
       error_messages(e)
     end
+
+    def self.delete(service_id)
+      connection.delete("/services/#{service_id}")
+    end
   end
 end
