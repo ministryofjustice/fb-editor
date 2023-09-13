@@ -2,8 +2,10 @@ class ComponentExpression
   include ActiveModel::Model
   attr_accessor :component, :operator, :field, :page
 
-  validates :component, :operator, :page, presence: true
-  validate :unsupported_component, :blank_field
+  validates :component, presence: true 
+  validates :component, supported_component: true
+  validates :operator, presence: true, if: Proc.new { |e| e.component && e.component_supported? }
+  # validate :unsupported_component, :blank_field
 
   OPERATORS = [
     [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
@@ -45,6 +47,10 @@ class ComponentExpression
     component_object.type
   end
 
+  def component_supported?
+    component && component_object&.supports_branching?
+  end
+
   def name_attr(conditional_index:, expression_index:, attribute:)
     "conditional_content[conditionals_attributes][#{conditional_index}]" \
     "[expressions_attributes][#{expression_index}][#{attribute}]"
@@ -68,7 +74,7 @@ class ComponentExpression
   end
 
   def component_object
-    @component_object ||= page.find_component_by_uuid(component)
+    @component_object ||= page&.find_component_by_uuid(component)
   end
 
   def contains_operators

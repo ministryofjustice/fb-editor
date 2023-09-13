@@ -3,12 +3,10 @@ module Api
     default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
 
     def edit
-      component = ConditionalContent.from_json(component_params)
+      @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_json(component_params)))
 
-      if component[:conditionals].present?
-        @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(component))
-      else
-        assign_conditional_content
+      if @conditional_content.conditionals.blank?
+        @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
       end
 
       render 'edit', layout: false
@@ -20,7 +18,7 @@ module Api
       if @conditional_content.valid? && !@conditional_content.any_errors?
         render json: { conditionals: @conditional_content.to_metadata }, status: :ok
       else
-        render :edit, status: :unprocessable_entity
+        render 'edit', layout: false, status: :unprocessable_entity
       end
     end
 
@@ -41,12 +39,12 @@ module Api
 
     private
 
-    def assign_conditional_content
-      @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))
-      if @conditional_content.conditionals.blank?
-        @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
-      end
-    end
+    # def assign_conditional_content
+    #   @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))
+    #   if @conditional_content.conditionals.blank?
+    #     @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
+    #   end
+    # end
 
     def conditional_content_attributes
       {

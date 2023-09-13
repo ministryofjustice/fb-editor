@@ -11,6 +11,8 @@ const ReferencePaymentController = require('./controller_reference_payment');
 // const ContentVisibilityController = require('./controller_content_visibility');
 const GOVUKFrontend = require('govuk-frontend')
 
+window.GOVUKFrontend = GOVUKFrontend
+
 const {
   snakeToPascalCase,
 } = require('./utilities');

@@ -181,12 +181,23 @@ class DialogForm {
   }
 
   focus() {
-    var el = this.$node.parent().find('input[aria-invalid]').get(0);
-    if(!el) {
-      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), .govuk-button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
-    }
-    if(el){
-      el.focus();
+    // If there is an error summary initialize it and it sill be given focus
+    // else if there is an invalid input, place focus there
+    // else focus on the first input/button that is not hidden or disabled
+    const errorSummary = this.$form.get(0).querySelector('[data-module="govuk-error-summary"]')
+    if (errorSummary) {
+      new window.GOVUKFrontend.ErrorSummary(errorSummary).init()
+      console.log('error summary initialized')
+    } 
+    else {
+      let el = this.$node.parent().find('input[aria-invalid]').get(0);
+      if (!el) {
+        el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), .govuk-button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+      }
+
+      if (el){
+        el.focus();
+      }
     }
   }
 

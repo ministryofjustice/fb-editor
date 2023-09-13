@@ -1,29 +1,53 @@
-<%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
-<%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
 
-<div class="conditionals" data-controller="dynamic-fields conditionals">
-  <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
-    <%= render 'conditional_fields', conditional: conditional, f: f %>
+<%= form_for @conditional_content, url: api_service_update_conditional_content_path(service.service_id, params[:component_uuid]), method: :put do |f| %>
+  <%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
+  <%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
+
+  <% if f.object.any_errors? %>
+    <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <% f.object.conditionals.each_with_index do |conditional, c_index| %>
+              <% conditional.expressions.each_with_index do |expression, e_index| %>
+                <% expression.errors.each do |error| %>
+                  <li><a href="#conditional_content_conditionals_attributes_<%=c_index%>_expressions_attributes_<%=e_index%>_<%=error.attribute%>"><%= error.message %></a></li>
+                <% end %>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
   <% end %>
 
-  <template data-dynamic-fields-target="template">
-     <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+  <div class="conditionals" data-controller="dynamic-fields conditionals">
+    <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
       <%= render 'conditional_fields', conditional: conditional, f: f %>
     <% end %>
-  </template>
-  
-  <div class="conditional">
-    <%= button_tag 'Add another rule', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+
+    <template data-dynamic-fields-target="template">
+      <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+        <%= render 'conditional_fields', conditional: conditional, f: f %>
+      <% end %>
+    </template>
+
+    <div class="conditional">
+      <%= button_tag 'Add another rule', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+    </div>
   </div>
-</div>
 
 
-<div class="govuk-button-group">
-  <button class="govuk-button fb-govuk-button" type="submit">
-    <%= t('dialogs.component_validations.button') %>
-  </button>
+  <div class="govuk-button-group">
+    <button class="govuk-button fb-govuk-button" type="submit">
+      <%= t('dialogs.component_validations.button') %>
+    </button>
 
-  <button class="govuk-button govuk-button--secondary" type="button" >
-    <%= t('dialogs.button_cancel') %>
-  </button>
-</div>
+    <button class="govuk-button govuk-button--secondary" type="button" >
+      <%= t('dialogs.button_cancel') %>
+    </button>
+  </div>
+<% end %> 

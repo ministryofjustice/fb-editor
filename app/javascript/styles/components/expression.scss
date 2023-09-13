@@ -18,6 +18,12 @@
     &:after {
       background-color: $govuk-error-colour;
     }
+
+    p{
+      color: $govuk-error-colour;
+      font-weight: bold;
+      margin: govuk-spacing(3) 0 0 0;
+    }
   }
 }
 
@@ -44,11 +50,7 @@
   }
 }
 
-.expression__error {
-  color: $govuk-error-colour;
-  font-weight: bold;
-  margin: govuk-spacing(3) 0 0 0;
-}
+
 
 .expression__condition {
   clear: both;

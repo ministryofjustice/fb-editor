@@ -627,6 +627,8 @@ en:
           contains_uppercase: Your URL cannot include upper-case letters
           special_characters: Your URL cannot include special characters except hyphens
           blank: Your URL cannot be blank
+        component_expression:
+          unsupported_component: "This type of question is not currently supported to create a content rule. Please select a radio button or checkbox question."
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"

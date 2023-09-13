@@ -502,16 +502,15 @@ function addContentMenuListeners(view) {
       onReady: (dialog) => {
       },
       onSuccess: (data, dialog) => {
-        console.log(component.config)
         component.config = Object.assign(component.config, { conditionals: data.conditionals })
         view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
       },
-      onError: (data,dialog) => {
+      onError: (data, dialog) => {
         var responseHtml = $.parseHTML(data.responseText);
         var $newHtml = $(responseHtml[0]).html();
         dialog.$node.html($newHtml);
         dialog.refresh();
-
+        console.log(document.activeElement)
       }
       
     });
@@ -523,7 +522,9 @@ function addContentMenuListeners(view) {
  * added, the first element with that new component.
  **/
 function focusOnEditableComponent() {
+    console.log('setting editable page focus')
   var target = location.hash;
+  if(target)
   if(target.match(/^[#\w\d_]+$/)) {
     // Newly added component with fragment identifier so find first
     // first editable item of last component.
@@ -534,7 +535,6 @@ function focusOnEditableComponent() {
   }
   else {
     const pageTitle = $('h1.EditableElement').get(0)
-
     if(pageTitle) {
       pageTitle.focus();
     } else {
