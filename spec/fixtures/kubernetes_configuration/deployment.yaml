@@ -57,10 +57,6 @@ spec:
             value: 'sentry-dsn-test'
           - name: SENTRY_CSP_URL
             value: 'sentry-csp-url-test'
-          - name: ACCESS_KEY_ID
-            value: access-key-id
-          - name: SECRET_ACCESS_KEY
-            value: secret-access-key
           - name: BUCKET_NAME
             value: bucket-name
           - name: ENCODED_PRIVATE_KEY
