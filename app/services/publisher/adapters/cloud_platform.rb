@@ -91,7 +91,9 @@ class Publisher
 
       def aws_s3_adapter
         Publisher::Adapters::AwsS3Client.new(
-          bucket: service_provisioner.aws_s3_bucket_name
+          bucket: service_provisioner.aws_s3_bucket_name,
+          access_key_id: service_provisioner.aws_s3_access_key_id,
+          secret_access_key: service_provisioner.aws_s3_secret_access_key
         )
       end
     end

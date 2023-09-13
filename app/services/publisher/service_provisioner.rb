@@ -153,6 +153,14 @@ class Publisher
       service_configuration.select(&:secrets?)
     end
 
+    def aws_s3_access_key_id
+      ENV["AWS_S3_ACCESS_KEY_ID_#{deployment_environment_upcase}"]
+    end
+
+    def aws_s3_secret_access_key
+      ENV["AWS_S3_SECRET_ACCESS_KEY_#{deployment_environment_upcase}"]
+    end
+
     def aws_s3_bucket_name
       ENV["AWS_S3_BUCKET_#{deployment_environment_upcase}"]
     end

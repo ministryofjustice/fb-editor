@@ -71,6 +71,12 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
       .with(service_id: '0da69306-cafd-4d32-bbee-fff98cac74ce')
       .and_return(MetadataApiClient::Items.new(autocomplete_items))
     allow(ENV).to receive(:[])
+      .with('AWS_S3_ACCESS_KEY_ID_DEV')
+      .and_return('access-key-id')
+    allow(ENV).to receive(:[])
+      .with('AWS_S3_SECRET_ACCESS_KEY_DEV')
+      .and_return('secret-access-key')
+    allow(ENV).to receive(:[])
       .with('AWS_S3_BUCKET_DEV')
       .and_return('bucket-name')
   end
