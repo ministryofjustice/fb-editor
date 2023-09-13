@@ -43,6 +43,10 @@ class ComponentExpression
     is_operators
   end
 
+  def answered_operator_values
+    answered_operators.map{|operator| operator[1] }
+  end
+
   def component_type
     component_object.type
   end
@@ -89,17 +93,23 @@ class ComponentExpression
     end
   end
 
+  def answered_operators
+    @answered_operators ||= all_operators.select do |operator|
+      operator.include?(I18n.t('operators.is_answered')) || operator.include?(I18n.t('operators.is_not_answered'))
+    end
+  end
+
   def is_checkbox?
     component_type == 'checkboxes'
   end
 
-  def unsupported_component
-    if page.present? && component.present? && !component_object.supports_branching?
-      errors.add(:component, message: I18n.t(
-        'activemodel.errors.messages.unsupported_component'
-      ))
-    end
-  end
+  # def unsupported_component
+  #   if page.present? && component.present? && !component_object.supports_branching?
+  #     errors.add(:component, message: I18n.t(
+  #       'activemodel.errors.messages.unsupported_component'
+  #     ))
+  #   end
+  # end
 
   def blank_field
     if field_required? && field.nil?

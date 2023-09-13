@@ -187,7 +187,6 @@ class DialogForm {
     const errorSummary = this.$form.get(0).querySelector('[data-module="govuk-error-summary"]')
     if (errorSummary) {
       new window.GOVUKFrontend.ErrorSummary(errorSummary).init()
-      console.log('error summary initialized')
     } 
     else {
       let el = this.$node.parent().find('input[aria-invalid]').get(0);

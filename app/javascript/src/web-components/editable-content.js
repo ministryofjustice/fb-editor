@@ -65,7 +65,6 @@ class EditableContent extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log('connected')
     // connectedCallback is fired as soon as the opening element is parsed
     // setTimeount allows the child elements to be parsed before we try to read
     // the initialMarkup
@@ -79,7 +78,6 @@ class EditableContent extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(`${name} attribute changed`)
     switch(name) {
       case 'data-config':
         if(newValue != oldValue) {
@@ -149,7 +147,6 @@ class EditableContent extends HTMLElement {
   }
 
   set config(value) {
-    console.log(value)
     this.setAttribute('data-config', JSON.stringify(value))
   }
 
@@ -234,7 +231,6 @@ class EditableContent extends HTMLElement {
 
   processConfigChange(value) {
     config = JSON.parse(value)
-    console.log(config)
     if('conditionals' in config) {
       this.setAttribute('conditional', '')
     }

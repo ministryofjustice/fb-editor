@@ -401,9 +401,6 @@ function addQuestionMenuListeners(view) {
   view.$document.on("QuestionMenuSelectionMultiUpload", function(event, question) {
     var apiUrl = question.menu.selectedItem.data('apiPath');
     var maxFilesVal = question.data.max_files
-    console.log(question)
-    console.log(apiUrl)
-    console.log(maxFilesVal)
     new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
       remote: true,
@@ -510,7 +507,6 @@ function addContentMenuListeners(view) {
         var $newHtml = $(responseHtml[0]).html();
         dialog.$node.html($newHtml);
         dialog.refresh();
-        console.log(document.activeElement)
       }
       
     });
@@ -522,7 +518,6 @@ function addContentMenuListeners(view) {
  * added, the first element with that new component.
  **/
 function focusOnEditableComponent() {
-    console.log('setting editable page focus')
   var target = location.hash;
   if(target)
   if(target.match(/^[#\w\d_]+$/)) {

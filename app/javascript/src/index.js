@@ -99,8 +99,8 @@ switch(controllerAndAction()) {
     break;
 
   default:
-       console.log(controllerAndAction());
-       Controller = DefaultController;
+    //console.log(controllerAndAction());
+    Controller = DefaultController;
 }
 
 $(document).ready( () =>  {
