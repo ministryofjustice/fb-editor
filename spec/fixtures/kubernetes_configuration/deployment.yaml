@@ -20,6 +20,7 @@ spec:
       labels:
         run: acceptance-tests-date
     spec:
+      serviceAccountName: runner-irsa-test-dev
       containers:
       - name: acceptance-tests-date
         securityContext:
