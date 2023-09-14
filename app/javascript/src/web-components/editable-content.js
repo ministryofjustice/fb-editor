@@ -92,7 +92,7 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
-      this.config.content = this.value;
+      this.config = Object.assign(this.config, { content: this.value })
       return JSON.stringify(this.config);
     } else {
       return this.value == this.defaultContent ? '' : this.value;
@@ -231,7 +231,7 @@ class EditableContent extends HTMLElement {
 
   processConfigChange(value) {
     config = JSON.parse(value)
-    if('conditionals' in config) {
+    if(config.display !== 'always') {
       this.setAttribute('conditional', '')
     }
   }

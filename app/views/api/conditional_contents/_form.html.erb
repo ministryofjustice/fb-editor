@@ -23,21 +23,31 @@
       </div>
     </div>
   <% end %>
+  
+  <div data-controller="selection-reveal" data-selection-reveal-matches-value="<%= ["always", "never"].to_json %>">
+    <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-labelledby="conditional-content-title">
+      <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+        <% f.object.options_for_display.each do |option| %>
+          <%= f.govuk_radio_button :display, option[:value], label: { text: option[:text] }, data: { selection_reveal_target: "input", action: "selection-reveal#toggle" } %>
+        <% end %>
+      </div>
+    </fieldset>
 
-  <div class="conditionals" data-controller="dynamic-fields conditionals">
-    <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
-      <%= render 'conditional_fields', conditional: conditional, f: f %>
-    <% end %>
-
-    <template data-dynamic-fields-target="template">
-      <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+    <fieldset class="govuk-fieldset conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
+      <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
         <%= render 'conditional_fields', conditional: conditional, f: f %>
       <% end %>
-    </template>
 
-    <div class="conditional">
-      <%= button_tag 'Add another rule', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
-    </div>
+      <template data-dynamic-fields-target="template">
+        <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+          <%= render 'conditional_fields', conditional: conditional, f: f %>
+        <% end %>
+      </template>
+
+      <div class="conditional">
+        <%= button_tag 'Add another rule', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+      </div>
+    </fieldset>
   </div>
 
 

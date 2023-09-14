@@ -1,5 +1,7 @@
-PATH
-  remote: ../fb-metadata-presenter
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: b545c711cacd6a3364ec8b7377dfede303361092
+  branch: conditional-content-fixture
   specs:
     metadata_presenter (3.2.10)
       govspeak (~> 7.1)

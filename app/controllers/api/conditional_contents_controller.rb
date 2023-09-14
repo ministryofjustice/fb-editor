@@ -16,7 +16,7 @@ module Api
       @conditional_content = ConditionalContent.new(conditional_content_params)
 
       if @conditional_content.valid? && !@conditional_content.any_errors?
-        render json: { conditionals: @conditional_content.to_metadata }, status: :ok
+        render json: @conditional_content.to_metadata, status: :ok
       else
         render 'edit', layout: false, status: :unprocessable_entity
       end

@@ -209,6 +209,8 @@ class AddContent {
       this.saveButton.save();
     });
 
+
+
     $node.addClass("AddContent");
   }
 }
@@ -499,7 +501,7 @@ function addContentMenuListeners(view) {
       onReady: (dialog) => {
       },
       onSuccess: (data, dialog) => {
-        component.config = Object.assign(component.config, { conditionals: data.conditionals })
+        component.config = Object.assign(component.config, data)
         view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
       },
       onError: (data, dialog) => {

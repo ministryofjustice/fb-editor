@@ -460,11 +460,17 @@ editable-content {
     font: inherit;
     width: 100%;
   }
+
   [data-element="editable-content-output"] {
     padding: 2px;
     line-height: 25px;
+
     > * + * {
       margin-bottom: 25px;
+    }
+
+    > *:first-child {
+      margin-top: 25px;
     }
   }
 
@@ -472,14 +478,14 @@ editable-content {
     [data-element="editable-content-input"]  {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
-      outline-offset: 20px;
+      outline-offset: 16px;
     }
   }
 
   &[conditional] {
     [data-element="editable-content-output"] {
         outline: 1px dashed $govuk-link-colour;
-        outline-offset: 20px;
+        outline-offset: 16px;
     }
   }
 }

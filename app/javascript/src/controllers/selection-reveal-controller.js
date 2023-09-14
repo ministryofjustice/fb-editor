@@ -8,7 +8,31 @@ export default class extends Controller {
   }
 
   connect() {
-    this.selectedValue = this.inputTarget.value
+    // set initial value and visible/hidden state
+    this.selectedValue = this.value
+  }
+
+  get value() {
+    switch(this.inputTargetType) {
+      case 'select':
+        return this.inputTarget.value
+        break;
+      case 'radio':
+      case 'checkbox':
+        return this.inputTargets.find( (input) => input.checked )
+        break;
+    }
+  }
+
+  get inputTargetType() {
+    const element = this.inputTargets[0].tagName.toLowerCase()
+    if (element == 'select' ) {
+      return 'select'
+    }
+
+    if(element == 'input') {
+      return this.inputTargets[0].getAttribute('type')
+    }
   }
 
   toggle(event) {

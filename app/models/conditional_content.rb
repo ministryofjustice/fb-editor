@@ -1,11 +1,17 @@
 class ConditionalContent
   include ActiveModel::Model
   include ApplicationHelper
-  attr_accessor :previous_flow_uuid, :service, :component_uuid
+  attr_accessor :previous_flow_uuid, :service, :component_uuid, :display
   attr_reader :traversable
 
   validate :conditionals_validations
   validates :component_uuid, presence: true
+
+  DISPLAY_OPTIONS = [
+    OpenStruct.new(value: 'always', text: 'Always' ),
+    OpenStruct.new(value: 'conditional', text: 'Only if...' ),
+    OpenStruct.new(value: 'never', text: 'Never' ),
+  ].freeze
 
   def initialize(attributes)
     @service = attributes.delete(:service)
@@ -17,12 +23,14 @@ class ConditionalContent
 
   def self.from_json(json)
     metadata = JSON.parse(json, object_class: OpenStruct)
+
     from_metadata(metadata)
   end
 
   def self.from_metadata(component)
     attributes_hash = {
-      'conditionals_attributes' => {}
+      'conditionals_attributes' => {},
+      'display' => component[:display]
     }
 
     component.conditionals&.each_with_index do |conditional, index|
@@ -45,6 +53,10 @@ class ConditionalContent
     end
 
     expressions_hash
+  end
+
+  def options_for_display
+    DISPLAY_OPTIONS
   end
 
   def conditionals_validations
@@ -102,6 +114,6 @@ class ConditionalContent
   end
 
   def to_metadata
-    conditionals.map(&:to_metadata)
+      { display: display, conditionals: conditionals.map(&:to_metadata) }
   end
 end
