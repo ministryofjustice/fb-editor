@@ -39,13 +39,6 @@ module Api
 
     private
 
-    # def assign_conditional_content
-    #   @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_metadata(component)))
-    #   if @conditional_content.conditionals.blank?
-    #     @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
-    #   end
-    # end
-
     def conditional_content_attributes
       {
         service:,

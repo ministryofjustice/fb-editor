@@ -4,10 +4,11 @@
           data-activator-text="<%= t('content.menu.activator') %>">
     <ul class="govuk-navigation component-activated-menu">
       <% if ENV['CONDITIONAL_CONTENT'] == 'enabled' && moj_forms_dev? %>
-        <li data-action="conditional-content"
-          data-api-path="<%= URI.decode_www_form_component(api_service_edit_conditional_content_path(service.service_id, '#{component_uuid}'))%>">
-          <span><%= t('content.menu.show_if') %></span>
-        </li>
+        <% unless @page.type == 'page.start' %>
+          <li data-action="conditional-content">
+            <span><%= t('content.menu.show_if') %></span>
+          </li>
+        <% end %>
       <% end %>
       <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
     </ul>

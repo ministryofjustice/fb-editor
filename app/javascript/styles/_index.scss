@@ -479,7 +479,8 @@ editable-content {
     [data-element="editable-content-input"]  {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
-      outline-offset: 16px;
+      outline-offset: 12px;
+      padding-top: 26px;
     }
   }
 

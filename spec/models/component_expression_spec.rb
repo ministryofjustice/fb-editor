@@ -228,7 +228,7 @@ RSpec.describe ComponentExpression do
         expect(errors).to be_present
         expect(errors.values.first).to include(
           I18n.t(
-            'activemodel.errors.messages.unsupported_component'
+            'activemodel.errors.models.component_expression.unsupported_component'
           )
         )
       end
@@ -251,7 +251,7 @@ RSpec.describe ComponentExpression do
         expect(errors.values.first).to include(
           I18n.t(
             'activemodel.errors.messages.blank',
-            attribute: Expression.human_attribute_name(:operator)
+            attribute: ComponentExpression.human_attribute_name(:field)
           )
         )
       end

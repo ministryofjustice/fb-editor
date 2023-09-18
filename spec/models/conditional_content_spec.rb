@@ -43,7 +43,8 @@ RSpec.describe ConditionalContent do
               }
             }
           }
-        }
+        },
+        'display' => nil
       }
     end
 
@@ -53,7 +54,6 @@ RSpec.describe ConditionalContent do
   end
 
   describe '.from_json' do
-     
   end
 
   describe '#previous_questions' do

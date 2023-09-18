@@ -8,9 +8,9 @@ class ConditionalContent
   validates :component_uuid, presence: true
 
   DISPLAY_OPTIONS = [
-    OpenStruct.new(value: 'always', text: 'Always' ),
-    OpenStruct.new(value: 'conditional', text: 'Only if...' ),
-    OpenStruct.new(value: 'never', text: 'Never' ),
+    OpenStruct.new(value: 'always', text: 'Always'),
+    OpenStruct.new(value: 'conditional', text: 'Only if...'),
+    OpenStruct.new(value: 'never', text: 'Never')
   ].freeze
 
   def initialize(attributes)
@@ -114,6 +114,6 @@ class ConditionalContent
   end
 
   def to_metadata
-      { display: display, conditionals: conditionals.map(&:to_metadata) }
+    { display:, conditionals: conditionals.map(&:to_metadata) }
   end
 end

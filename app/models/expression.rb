@@ -58,7 +58,7 @@ class Expression
   private
 
   def component_object
-    @component_object ||= page.find_component_by_uuid(component)
+    @component_object ||= page&.find_component_by_uuid(component)
   end
 
   def unsupported_component

@@ -30,7 +30,7 @@ class ComponentConditional
   end
 
   def expressions_validations
-    #expressions.map(&:invalid?)
+    # expressions.map(&:invalid?)
     errors.add(:expressions, :invalid_expression) if expressions.map(&:invalid?).any?(true)
   end
 

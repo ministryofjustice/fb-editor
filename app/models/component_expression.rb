@@ -2,10 +2,17 @@ class ComponentExpression
   include ActiveModel::Model
   attr_accessor :component, :operator, :field, :page
 
-  validates :component, presence: true 
+  validates :component, presence: true
   validates :component, supported_component: true
-  validates :operator, presence: true, if: Proc.new { |e| e.component && e.component_supported? }
-  # validate :unsupported_component, :blank_field
+  validates :operator, presence: true, if: proc { |e| e.component && e.component_supported? }
+  validates_each :field do |record, attribute, _value|
+    if record.field_required? && record.field.nil?
+      record.errors.add(
+        attribute,
+        I18n.t('activemodel.errors.messages.blank', attribute: ComponentExpression.human_attribute_name(attribute))
+      )
+    end
+  end
 
   OPERATORS = [
     [I18n.t('operators.is'), 'is', { 'data-hide-answers': 'false' }],
@@ -19,7 +26,7 @@ class ComponentExpression
   def to_metadata
     {
       'operator' => operator,
-      'page' => page&.uuid,
+      'page' => @page&.uuid,
       'component' => component,
       'field' => field_answer
     }
@@ -44,7 +51,7 @@ class ComponentExpression
   end
 
   def answered_operator_values
-    answered_operators.map{|operator| operator[1] }
+    answered_operators.map { |operator| operator[1] }
   end
 
   def component_type
@@ -65,16 +72,16 @@ class ComponentExpression
     "expressions_attributes_#{expression_index}_#{attribute}"
   end
 
+  def field_required?
+    operator == I18n.t('operators.is') || operator == I18n.t('operators.is_not')
+  end
+
   private
 
   def field_answer
     return field.to_s unless field_required?
 
     field
-  end
-
-  def field_required?
-    operator == I18n.t('operators.is') || operator == I18n.t('operators.is_not')
   end
 
   def component_object
@@ -111,11 +118,11 @@ class ComponentExpression
   #   end
   # end
 
-  def blank_field
-    if field_required? && field.nil?
-      errors.add(:operator, message: I18n.t(
-        'activemodel.errors.messages.blank'
-      ))
-    end
-  end
+  # def blank_field
+  #   if field_required? && field.nil?
+  #     errors.add(:operator, message: I18n.t(
+  #       'activemodel.errors.messages.blank'
+  #     ))
+  #   end
+  # end
 end

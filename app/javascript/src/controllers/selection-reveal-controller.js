@@ -9,6 +9,7 @@ export default class extends Controller {
 
   connect() {
     // set initial value and visible/hidden state
+    console.log(this.value)
     this.selectedValue = this.value
   }
 
@@ -19,7 +20,8 @@ export default class extends Controller {
         break;
       case 'radio':
       case 'checkbox':
-        return this.inputTargets.find( (input) => input.checked )
+        const checked = this.inputTargets.find( (input) => input.checked )
+        return checked.value
         break;
     }
   }
