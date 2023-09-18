@@ -483,16 +483,18 @@ function addContentMenuListeners(view) {
 
   view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
     const {component, selectedItem } = details;
+    openConditionalContentDialog(component, selectedItem)
+  });
+}
 
-    const path = selectedItem.data('api-path');
-    const componentUuid = component.uuid
-    const url = stringInject(path, {component_uuid: componentUuid})
+function openConditionalContentDialog(component, activator) {
+    const url = component.dataset.conditionalApiPath;
     const data = {
       component: JSON.stringify( component.config || {} )
     }
     
     new DialogForm(url, {
-      activator: selectedItem,
+      activator: activator,
       remote: true,
       requestMethod: 'POST',
       requestData: data,
@@ -512,7 +514,6 @@ function addContentMenuListeners(view) {
       }
       
     });
-  });
 }
 
 
@@ -565,7 +566,10 @@ function enhanceContent(view) {
   const form = document.querySelector('#editContentForm');
   document.querySelectorAll('editable-content').forEach((element) => {
     element.form = form
-    if(element.isComponent) createContentMenu(element)
+    if(element.isComponent) {
+      createContentMenu(element)
+      createConditionalContentButton(element)
+    }
   });
 }
 
@@ -585,6 +589,19 @@ function createContentMenu(component) {
       }
     }
   });
+}
+
+function createConditionalContentButton(component) {
+  const button = document.createElement('button')
+  button.setAttribute('type', 'button')
+  button.classList.add('fb-link-button', 'show-if-button')
+  button.innerText = 'Shows if...'
+  component.insertAdjacentElement('beforeend', button)
+  button.addEventListener('click', (event) => {
+    event.preventDefault()
+    openConditionalContentDialog(component, button)
+  })
+
 }
 
 /* Add edit functionality and component enhancements to questions.
