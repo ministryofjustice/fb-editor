@@ -4,7 +4,7 @@ Capybara.register_driver :selenium do |app|
     o.add_argument '--no-sandbox'
     o.add_argument '--window-size=1920,1200'
   end
-  Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: chrome_options)
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options)
 end
 
 Capybara.default_driver = :selenium
