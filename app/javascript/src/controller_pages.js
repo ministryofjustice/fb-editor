@@ -568,7 +568,9 @@ function enhanceContent(view) {
     element.form = form
     if(element.isComponent) {
       createContentMenu(element)
-      createConditionalContentButton(element, view)
+      if(app.feature_flags.CONDITIONAL_CONTENT) {
+        createConditionalContentButton(element, view)
+      }
     }
   });
 }

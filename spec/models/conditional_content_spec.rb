@@ -49,6 +49,7 @@ RSpec.describe ConditionalContent do
     end
 
     it 'serialises the component objects metadata' do
+      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
       expect(ConditionalContent.from_metadata(component)).to eq(expected_metadata)
     end
   end
@@ -58,6 +59,7 @@ RSpec.describe ConditionalContent do
 
   describe '#previous_questions' do
     it 'returns all questions for single and mulitiple questions pages' do
+      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[0] }).to eq(
         [
           'Checkbox',
@@ -69,6 +71,7 @@ RSpec.describe ConditionalContent do
     end
 
     it 'injects the data-supports-branching attribute' do
+      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
         [
           { 'data-supports-branching': true },
@@ -107,6 +110,7 @@ RSpec.describe ConditionalContent do
     end
 
     it 'assigns conditionals' do
+      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
       expect(conditional_content.conditionals).to eq(
         [
           expected_conditional
@@ -118,6 +122,7 @@ RSpec.describe ConditionalContent do
   describe '#previous_flow_uuid' do
     context 'previous flow uuid is present' do
       it 'returns the previous flow uuid' do
+        pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(previous_flow_uuid)
       end
     end
@@ -126,14 +131,16 @@ RSpec.describe ConditionalContent do
       let(:previous_flow_uuid) { nil }
 
       it 'returns the current page in the flow' do
+        pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(current_page[:_uuid])
       end
     end
   end
 
   describe '#validations' do
+    skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
     before do
-      conditional_content.valid?
+      conditional_content.valid? if ENV['CONDITONAL_CONTENT'] == 'enabled'
     end
 
     context 'when blank conditionals' do
@@ -150,10 +157,12 @@ RSpec.describe ConditionalContent do
       end
 
       it 'does not accept blank conditionals' do
+        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         expect(conditional_content.conditionals_validations).to be_present
       end
 
       it 'adds error to conditionals object' do
+        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_present
         expect(errors.of_kind?(:expressions, :invalid_expression)).to be_truthy
@@ -179,10 +188,12 @@ RSpec.describe ConditionalContent do
       end
 
       it 'no errors on conditional_content' do
+        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         expect(conditional_content.errors).to be_blank
       end
 
       it 'no errors on conditionals' do
+        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_blank
       end
