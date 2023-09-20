@@ -483,11 +483,11 @@ function addContentMenuListeners(view) {
 
   view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
     const {component, selectedItem } = details;
-    openConditionalContentDialog(component, selectedItem)
+    openConditionalContentDialog(component, selectedItem, view)
   });
 }
 
-function openConditionalContentDialog(component, activator) {
+function openConditionalContentDialog(component, activator, view) {
     const url = component.dataset.conditionalApiPath;
     const data = {
       component: JSON.stringify( component.config || {} )
@@ -568,7 +568,7 @@ function enhanceContent(view) {
     element.form = form
     if(element.isComponent) {
       createContentMenu(element)
-      createConditionalContentButton(element)
+      createConditionalContentButton(element, view)
     }
   });
 }
@@ -591,15 +591,15 @@ function createContentMenu(component) {
   });
 }
 
-function createConditionalContentButton(component) {
+function createConditionalContentButton(component, view) {
   const button = document.createElement('button')
   button.setAttribute('type', 'button')
   button.classList.add('fb-link-button', 'show-if-button')
-  button.innerText = 'Shows if...'
+  button.innerText = view.text.content_visibility.label_show_if
   component.insertAdjacentElement('beforeend', button)
   button.addEventListener('click', (event) => {
     event.preventDefault()
-    openConditionalContentDialog(component, button)
+    openConditionalContentDialog(component, button, view)
   })
 
 }

@@ -184,7 +184,7 @@ class DialogForm {
     // If there is an error summary initialize it and it sill be given focus
     // else if there is an invalid input, place focus there
     // else focus on the first input/button that is not hidden or disabled
-    const errorSummary = this.$form.get(0).querySelector('[data-module="govuk-error-summary"]')
+    const errorSummary = this.$form.get(0)?.querySelector('[data-module="govuk-error-summary"]')
     if (errorSummary) {
       new window.GOVUKFrontend.ErrorSummary(errorSummary).init()
     } 

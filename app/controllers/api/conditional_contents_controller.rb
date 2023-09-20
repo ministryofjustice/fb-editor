@@ -48,7 +48,7 @@ module Api
     end
 
     def conditional_content_params
-      params.require(:conditional_content).permit!.merge(conditional_content_attributes)
+      params.require(:conditional_content).permit(:previous_flow_uuid, :component_uuid, :display, conditionals_attributes: {}).merge(conditional_content_attributes)
     end
 
     def component_params
