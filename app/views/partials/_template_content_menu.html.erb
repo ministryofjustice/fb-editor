@@ -1,4 +1,4 @@
-<% @page.components.each do |component| %>
+<% @page.components.concat(@page.extra_components).each do |component| %>
   <script type="text/html"
           data-component-template="ContentMenu"
           data-activator-text="<%= t('content.menu.activator') %>">

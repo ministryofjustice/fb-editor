@@ -77,7 +77,7 @@ feature 'Edit exit pages' do
   end
 
   def then_I_should_see_the_component(content)
-    expect(editor.first_component.text).to eq(content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
 
   def then_I_should_not_see_the_continue_button

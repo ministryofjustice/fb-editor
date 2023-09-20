@@ -104,14 +104,14 @@ feature 'Edit check your answers page' do
   def and_I_add_a_content_component(content:)
     editor.add_content_area_buttons.last.click
     editor.page_heading.click
-    expect(editor.first_component.text).to eq(optional_content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(optional_content)
     when_I_change_editable_content(editor.first_component, content: content)
   end
 
   def and_I_add_a_content_extra_component(content:)
     editor.add_content_area_buttons.first.click
     editor.page_heading.click
-    expect(editor.first_extra_component.text).to eq(optional_content)
+    expect(editor.first_extra_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(optional_content)
     when_I_change_editable_content(editor.first_extra_component, content: content)
   end
 
@@ -124,10 +124,10 @@ feature 'Edit check your answers page' do
   end
 
   def then_I_should_see_the_first_component(content)
-    expect(editor.first_component.text).to eq(content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
 
   def then_I_should_see_the_first_extra_component(content)
-    expect(editor.first_extra_component.text).to eq(content)
+    expect(editor.first_extra_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
 end
