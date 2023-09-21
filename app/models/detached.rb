@@ -50,7 +50,7 @@ class Detached
         service,
         start_from: uuid,
         main_flow: main_flow_uuids,
-        traverse_cap: 10000
+        traverse_cap: 1000
       )
     end
   end
