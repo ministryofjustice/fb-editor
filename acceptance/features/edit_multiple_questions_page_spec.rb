@@ -128,7 +128,7 @@ feature 'Edit multiple questions page' do
   def then_I_add_a_content_component(content:)
     and_I_add_a_component
     and_I_add_a_content_area
-    expect(editor.first_component.text).to eq(optional_content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(optional_content)
     when_I_change_editable_content(editor.first_component, content: content)
   end
 

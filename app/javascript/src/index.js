@@ -10,6 +10,8 @@ const ConfirmationEmailController = require('./controller_confirmation_email');
 const ReferencePaymentController = require('./controller_reference_payment');
 const GOVUKFrontend = require('govuk-frontend')
 
+window.GOVUKFrontend = GOVUKFrontend
+
 const {
   snakeToPascalCase,
 } = require('./utilities');
@@ -46,6 +48,13 @@ switch(controllerAndAction()) {
   case "BranchesController#edit":
   case "BranchesController#update":
        Controller = BranchesController;
+  break;
+
+  case "ConditionalContentsController#new":
+  case "ConditionalContentsController#create":
+  case "ConditionalContentsController#edit":
+  case "ConditionalContentsController#update":
+        Controller = ContentVisibilityController;
   break;
 
   case "ServicesController#index":
@@ -89,8 +98,8 @@ switch(controllerAndAction()) {
     break;
 
   default:
-       console.log(controllerAndAction());
-       Controller = DefaultController;
+    //console.log(controllerAndAction());
+    Controller = DefaultController;
 }
 
 $(document).ready( () =>  {

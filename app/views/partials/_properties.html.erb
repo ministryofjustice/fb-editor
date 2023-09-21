@@ -12,10 +12,11 @@
       // BranchAnswer      | (Expression Answers) Operator+Field
       new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{branch_index}",
       get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{branch_index}/expressions/#{condition_index}",
-      // Feaures switches here (as per example below).
-      features: {
-        /* example: <%= ENV['EXAMPLE_FEATURE'] == 'enabled' %> */
-      }
+    },
+    // Feaures switches here (as per example below).
+    feature_flags: {
+     CONDITIONAL_CONTENT: <%= ENV['CONDITIONAL_CONTENT'] == 'enabled' %>
+     
     },
     page: {
       id: "<%= params[:page_uuid] %>",
@@ -41,6 +42,11 @@
         condition_remove: "<%= t('branches.condition_remove') %>",
         label_question_and: "<%= t('branches.expression.and') %>",
         label_question_if: "<%= t('branches.expression.if') %>"
+      },
+      content_visibility: {
+        label_question_and: "<%= t('branches.expression.and') %>",
+        label_question_if: "<%= t('branches.expression.if') %>",
+        label_show_if: "<%= t('content.menu.show_if')%>"
       },
       errors: {
         branches: {

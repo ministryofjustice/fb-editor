@@ -238,6 +238,11 @@ en:
       lede: 'Choose which branch you want to keep in your form.'
       before_submit: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
       submit: 'Delete branching point'
+  conditional_content:
+    display: 
+      always: 'Always'
+      conditional: 'Only if...'
+      never: 'Never'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
@@ -299,6 +304,7 @@ en:
     menu:
       activator: 'Settings'
       remove: 'Delete...'
+      show_if: 'Show if...'
     dialog:
       heading_remove: "Delete the component?"
       affirmative: 'Yes'
@@ -626,6 +632,8 @@ en:
           contains_uppercase: Your URL cannot include upper-case letters
           special_characters: Your URL cannot include special characters except hyphens
           blank: Your URL cannot be blank
+        component_expression:
+          unsupported_component: "This type of question is not currently supported to create a content rule. Please select a radio button or checkbox question."
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"

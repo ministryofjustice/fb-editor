@@ -1,0 +1,21 @@
+<div data-controller="conditional" data-conditionals-target="conditional">
+  <div class="conditional" data-conditional-index="<%= conditional.options[:child_index] %>">
+    <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
+
+    <div class="expressions" data-controller="dynamic-fields expressions">
+      <%= conditional.fields_for :expressions do |expression| %>
+        <%= render 'expression_fields', conditional: conditional, expression: expression %>
+      <% end %>
+
+      <template data-dynamic-fields-target="template">
+        <%= conditional.fields_for :expressions, ComponentExpression.new, child_index: "__CHILD_INDEX__" do |expression| %>
+          <%= render 'expression_fields', conditional: conditional, expression: expression %>
+        <% end %>
+      </template>
+
+      <%= button_tag 'Add condition', type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+    </div>
+  </div>
+  <div class="conditional-separator">or</div>
+</div>
+

@@ -413,6 +413,28 @@ a[disabled] {
   }
 }
 
+.ContentVisibilityQuestion {
+  padding-left: 15%;
+  position: relative;
+
+  label {
+    @include govuk-font($size: 24);
+
+    display: inline-block;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    top: 5px;
+  }
+
+  select,
+  .error-message {
+    width: 100%;
+  }
+
+  @include govuk-media-query($until: tablet) {
+  }
+}
 
 /* Editable components
  * ------------------- */
@@ -430,17 +452,26 @@ a[disabled] {
 }
 
 editable-content {
+  display:block;
+  position:relative;
+
   [data-element="editable-content-input"] {
     border: none;
     display: none;
     font: inherit;
     width: 100%;
   }
+
   [data-element="editable-content-output"] {
     padding: 2px;
     line-height: 25px;
+
     > * + * {
       margin-bottom: 25px;
+    }
+
+    > *:first-child {
+      margin-top: 25px;
     }
   }
 
@@ -448,12 +479,29 @@ editable-content {
     [data-element="editable-content-input"]  {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
+      outline-offset: 12px;
+      padding-top: 26px;
     }
   }
-}
 
-editable-content {
-  display:block;
+  .show-if-button {
+    display: none;
+  }
+
+
+  &[conditional] {
+    [data-element="editable-content-output"] {
+        outline: 1px dashed $govuk-link-colour;
+        outline-offset: 16px;
+    }
+    
+    .show-if-button {
+      display: inline-block;
+      position: absolute;
+      top: -10px;
+      right: -6px;
+    }
+  }
 }
 
 .EditableCollectionFieldComponent,
@@ -712,7 +760,7 @@ editable-content,
       fill: govuk-colour('orange');
     }
   }
-  
+
 }
 
 .PageMenuActivator {
@@ -1340,7 +1388,7 @@ dl > div:not(:first-of-type){
 
 .fb-domain-input {
   position:relative;
-  
+
   .govuk-input {
     width: 85%;
   }

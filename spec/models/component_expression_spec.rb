@@ -167,7 +167,7 @@ RSpec.describe ComponentExpression do
             expression_index: 0,
             attribute:
           )
-        ).to eq("conditional_component[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
+        ).to eq("conditional_content[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
       end
     end
   end
@@ -183,7 +183,7 @@ RSpec.describe ComponentExpression do
             expression_index: 1,
             attribute:
           )
-        ).to eq("conditional_component_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
+        ).to eq("conditional_content_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
       end
     end
   end
@@ -228,7 +228,7 @@ RSpec.describe ComponentExpression do
         expect(errors).to be_present
         expect(errors.values.first).to include(
           I18n.t(
-            'activemodel.errors.messages.unsupported_component'
+            'activemodel.errors.models.component_expression.unsupported_component'
           )
         )
       end
@@ -251,7 +251,7 @@ RSpec.describe ComponentExpression do
         expect(errors.values.first).to include(
           I18n.t(
             'activemodel.errors.messages.blank',
-            attribute: Expression.human_attribute_name(:operator)
+            attribute: ComponentExpression.human_attribute_name(:field)
           )
         )
       end

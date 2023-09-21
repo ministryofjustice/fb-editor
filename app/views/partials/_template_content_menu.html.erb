@@ -1,7 +1,16 @@
-<script type="text/html"
-        data-component-template="ContentMenu"
-        data-activator-text="<%= t('content.menu.activator') %>">
-  <ul class="govuk-navigation component-activated-menu">
-    <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
-  </ul>
-</script>
+<% @page.components.concat(@page.extra_components).each do |component| %>
+  <script type="text/html"
+          data-component-template="ContentMenu"
+          data-activator-text="<%= t('content.menu.activator') %>">
+    <ul class="govuk-navigation component-activated-menu">
+      <% if ENV['CONDITIONAL_CONTENT'] == 'enabled' && moj_forms_dev? %>
+        <% unless @page.type == 'page.start' %>
+          <li data-action="conditional-content">
+            <span><%= t('content.menu.show_if') %></span>
+          </li>
+        <% end %>
+      <% end %>
+      <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
+    </ul>
+  </script>
+<% end %>

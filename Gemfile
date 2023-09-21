@@ -13,7 +13,7 @@ gem 'delayed_job_active_record'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'disclaimer-multiple-email'
+#     branch: 'conditional-content-fixture'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.2.9'
 
@@ -63,3 +63,8 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'web-console', '>= 3.3.0'
 end
+
+gem 'turbo-rails', '~> 1.4'
+
+# Use Redis for Action Cable
+gem 'redis', '~> 4.0'

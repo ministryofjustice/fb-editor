@@ -82,6 +82,7 @@
 const {
 mergeObjects,
 safelyActivateFunction,
+meta
 } = require('./utilities');
 
 const DialogActivator = require('./component_dialog_activator');
@@ -104,6 +105,8 @@ class DialogForm {
       closeOnClickSelector: 'button[type="button"]',
       submitOnClickSelector: 'button[type="submit"]',
       remote: false,
+      requestMethod: 'GET',
+      requestData: {},
       disableOnSubmit: '',
       onLoad: function(dialog) {},
       onReady: function(dialog) {},
@@ -178,12 +181,22 @@ class DialogForm {
   }
 
   focus() {
-    var el = this.$node.parent().find('input[aria-invalid]').get(0);
-    if(!el) {
-      el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), .govuk-button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
-    }
-    if(el){
-      el.focus();
+    // If there is an error summary initialize it and it sill be given focus
+    // else if there is an invalid input, place focus there
+    // else focus on the first input/button that is not hidden or disabled
+    const errorSummary = this.$form.get(0)?.querySelector('[data-module="govuk-error-summary"]')
+    if (errorSummary) {
+      new window.GOVUKFrontend.ErrorSummary(errorSummary).init()
+    } 
+    else {
+      let el = this.$node.parent().find('input[aria-invalid]').get(0);
+      if (!el) {
+        el = this.$node.parent().find('input:not([type="hidden"], [type="disabled"]), .govuk-button:not([type="disabled"])').not(".ui-dialog-titlebar-close").eq(0);
+      }
+
+      if (el){
+        el.focus();
+      }
     }
   }
 
@@ -208,7 +221,7 @@ class DialogForm {
 
     if(typeof source == 'string') {
       this.#remoteSource = true;
-      $.get(source)
+      $.ajax(source, this.#requestConfig())
       .done((response) => {
         this.$node = $(response);
         this.#build();
@@ -232,6 +245,20 @@ class DialogForm {
 
   }
 
+  #requestConfig() {
+    let config = {
+      method: this.#config.requestMethod,
+    }
+    if(this.#config.requestMethod == 'POST') {
+      config.headers = {
+        'X-CSRF-Token': meta('csrf-token') 
+      }
+      config.data = this.#config.requestData
+    }
+
+    return config
+  }
+
   #build() {
     var dialog = this;
 
@@ -239,7 +266,6 @@ class DialogForm {
     if(this.activator) {
       this.#addActivator();
     }
-
     this.$node.dialog({
       autoOpen: false,
       classes: this.#config.classes,
@@ -328,7 +354,7 @@ class DialogForm {
 
   #addActivator() {
     var $marker = $("<span></span>");
-
+    if(this.$node) {
     this.$node.before($marker);
     var activator = new DialogActivator(this.#config.activator, {
       dialog: this,
@@ -340,6 +366,7 @@ class DialogForm {
     this.activator = activator.$node;
 
     $marker.remove();
+    }
   }
 
 }

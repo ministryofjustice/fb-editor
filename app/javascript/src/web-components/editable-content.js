@@ -4,6 +4,10 @@ const GovukHTMLRenderer = require('govuk-markdown')
 const DOMPurify = require('dompurify')
 
 class EditableContent extends HTMLElement {
+  static get observedAttributes() { 
+    return ['data-config']
+  }
+
   constructor() {
     super() 
 
@@ -68,9 +72,18 @@ class EditableContent extends HTMLElement {
       this.initialMarkup = this.innerHTML;
       this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
       this.defaultContent = this.getAttribute('default-content') || '';
-      this.config = (this.dataset.config ? JSON.parse(this.dataset.config) : undefined);
       this.render();
     })
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch(name) {
+      case 'data-config':
+        if(newValue != oldValue) {
+          this.processConfigChange(newValue);
+        }
+        break
+    }
   }
 
   // Markdown content that will be saved
@@ -78,7 +91,8 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
-      this.config.content = this.value;
+      // Need to reassign config completely to trigger the 'setter' and the observed attributes
+      this.config = Object.assign(this.config, { content: this.value })
       return JSON.stringify(this.config);
     } else {
       return this.value == this.defaultContent ? '' : this.value;
@@ -98,6 +112,17 @@ class EditableContent extends HTMLElement {
 
   get $node() {
     return $(this);
+  }
+
+  get uuid() {
+    if(!this.isComponent) return
+    return this.config._uuid
+  }
+
+  get config() {
+    if (!this.dataset.config) return
+
+    return JSON.parse(this.dataset.config)
   }
   
   // returns the markdown content of the input after filtering it through any
@@ -119,6 +144,10 @@ class EditableContent extends HTMLElement {
   // The form containing the element that will be updated on save
   set form(element) {
     this.submissionForm = element;
+  }
+
+  set config(value) {
+    this.setAttribute('data-config', JSON.stringify(value))
   }
 
   render() {
@@ -197,6 +226,13 @@ class EditableContent extends HTMLElement {
           );
         } 
         break;
+    }
+  }
+
+  processConfigChange(value) {
+    config = JSON.parse(value)
+    if(config.display && config.display !== 'always') {
+      this.setAttribute('conditional', '')
     }
   }
 

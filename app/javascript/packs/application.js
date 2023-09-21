@@ -9,6 +9,25 @@ require("jquery")
 require("jquery-ui")
 require("../src/index")
 
+import "@hotwired/turbo-rails"
+import { Application } from "@hotwired/stimulus"
+
+import DynamicFieldsController from '../src/controllers/dynamic-fields-controller.js'
+import ConditionalController from '../src/controllers/conditional-controller.js'
+import ConditionalsController from '../src/controllers/conditionals-controller.js'
+import ExpressionController from '../src/controllers/expression-controller.js'
+import ExpressionsController from '../src/controllers/expressions-controller.js'
+import SelectionRevealController from '../src/controllers/selection-reveal-controller.js'
+
+Turbo.session.drive = false
+window.Stimulus = Application.start()
+Stimulus.register("dynamic-fields", DynamicFieldsController)
+Stimulus.register("conditional", ConditionalController)
+Stimulus.register("conditionals", ConditionalsController)
+Stimulus.register("expression", ExpressionController)
+Stimulus.register("expressions", ExpressionsController)
+Stimulus.register("selection-reveal", SelectionRevealController)
+
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
 const { SaveButton } = require('../src/web-components/save-button');

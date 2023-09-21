@@ -47,6 +47,8 @@ Rails.application.routes.draw do
         end
       end
 
+      
+
       resources :settings, only: [:index]
       namespace :settings do
         resources :form_information, only: [:index, :create]
@@ -92,8 +94,11 @@ Rails.application.routes.draw do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'
         get '/destroy-message', to: 'branches#destroy_message', as: :destroy_message
       end
-
       get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
+
+      post 'conditional_content/components/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit_conditional_content'
+      put 'conditional_content/components/:component_uuid', to: 'conditional_contents#update', as: 'update_conditional_content'
+      get 'conditional_content/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'conditional_content_expressions#show', as: 'conditional_content_expressions'
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'

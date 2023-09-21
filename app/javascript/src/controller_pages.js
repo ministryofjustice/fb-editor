@@ -209,6 +209,8 @@ class AddContent {
       this.saveButton.save();
     });
 
+
+
     $node.addClass("AddContent");
   }
 }
@@ -401,9 +403,6 @@ function addQuestionMenuListeners(view) {
   view.$document.on("QuestionMenuSelectionMultiUpload", function(event, question) {
     var apiUrl = question.menu.selectedItem.data('apiPath');
     var maxFilesVal = question.data.max_files
-    console.log(question)
-    console.log(apiUrl)
-    console.log(maxFilesVal)
     new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
       remote: true,
@@ -481,6 +480,41 @@ function addContentMenuListeners(view) {
       confirm: view.text.dialogs.button_delete_component
     });
   });
+
+  view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
+    const {component, selectedItem } = details;
+    openConditionalContentDialog(component, selectedItem, view)
+  });
+}
+
+function openConditionalContentDialog(component, activator, view) {
+    const url = component.dataset.conditionalApiPath;
+    const data = {
+      component: JSON.stringify( component.config || {} )
+    }
+    if(url) { 
+      new DialogForm(url, {
+        activator: activator,
+        remote: true,
+        requestMethod: 'POST',
+        requestData: data,
+        autoOpen: true,
+        closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
+        onReady: (dialog) => {
+        },
+        onSuccess: (data, dialog) => {
+          component.config = Object.assign(component.config, data)
+          view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
+        },
+        onError: (data, dialog) => {
+          var responseHtml = $.parseHTML(data.responseText);
+          var $newHtml = $(responseHtml[0]).html();
+          dialog.$node.html($newHtml);
+          dialog.refresh();
+        }
+
+      });
+    }
 }
 
 
@@ -489,6 +523,7 @@ function addContentMenuListeners(view) {
  **/
 function focusOnEditableComponent() {
   var target = location.hash;
+  if(target)
   if(target.match(/^[#\w\d_]+$/)) {
     // Newly added component with fragment identifier so find first
     // first editable item of last component.
@@ -499,7 +534,6 @@ function focusOnEditableComponent() {
   }
   else {
     const pageTitle = $('h1.EditableElement').get(0)
-
     if(pageTitle) {
       pageTitle.focus();
     } else {
@@ -533,7 +567,12 @@ function enhanceContent(view) {
   const form = document.querySelector('#editContentForm');
   document.querySelectorAll('editable-content').forEach((element) => {
     element.form = form
-    if(element.isComponent) createContentMenu(element)
+    if(element.isComponent) {
+      createContentMenu(element)
+      if(app.feature_flags.CONDITIONAL_CONTENT) {
+        createConditionalContentButton(element, view)
+      }
+    }
   });
 }
 
@@ -553,6 +592,19 @@ function createContentMenu(component) {
       }
     }
   });
+}
+
+function createConditionalContentButton(component, view) {
+  const button = document.createElement('button')
+  button.setAttribute('type', 'button')
+  button.classList.add('fb-link-button', 'show-if-button')
+  button.innerText = view.text.content_visibility.label_show_if
+  component.insertAdjacentElement('beforeend', button)
+  button.addEventListener('click', (event) => {
+    event.preventDefault()
+    openConditionalContentDialog(component, button, view)
+  })
+
 }
 
 /* Add edit functionality and component enhancements to questions.
