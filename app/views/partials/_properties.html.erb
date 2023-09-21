@@ -12,8 +12,6 @@
       // BranchAnswer      | (Expression Answers) Operator+Field
       new_conditional: "/api/services/<%= params[:id] %>/branches/<%= @branch && @branch.flow_uuid %>/conditionals/#{branch_index}",
       get_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{branch_index}/expressions/#{condition_index}",
-      new_content_conditional: "/api/services/<%= params[:id] %>/conditional-contents/<%= params[:component_uuid] %>/conditionals/#{content_visibility_index}",
-      get_conditonal_content_expression: "/api/services/<%= params[:id] %>/components/#{component_id}/conditionals/#{content_visibility_index}/expressions/#{condition_index}",
     },
     // Feaures switches here (as per example below).
     feature_flags: {

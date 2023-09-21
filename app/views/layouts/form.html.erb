@@ -10,7 +10,7 @@
     <%= javascript_pack_tag 'application' %>
   </head>
 
-  <body class="govuk-template__body govuk-body <%= "#{controller_name}-#{action_name}" %>" hx-headers='{"X-CSRF-Token": "<%= form_authenticity_token %>"}'>
+  <body class="govuk-template__body govuk-body <%= "#{controller_name}-#{action_name}" %>">
     <%= render partial: 'partials/header' %>
     <%= render partial: 'partials/form_navigation' %>
 

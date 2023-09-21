@@ -31,13 +31,11 @@ Stimulus.register("selection-reveal", SelectionRevealController)
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
 const { SaveButton } = require('../src/web-components/save-button');
-// const { ConditionalQuestionSelect } = require('../src/web-components/conditional-question-select');
 
 if ('customElements' in window) {
   customElements.define('elastic-textarea', ElasticTextarea);
   customElements.define('editable-content', EditableContent);
   customElements.define('save-button', SaveButton, { extends: 'button'});
-  // customElements.define('conditional-question-select', ConditionalQuestionSelect);
 }
 
 // Entry point for fb-editor stylesheets

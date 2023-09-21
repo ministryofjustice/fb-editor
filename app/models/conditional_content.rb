@@ -7,11 +7,9 @@ class ConditionalContent
   validate :conditionals_validations
   validates :component_uuid, presence: true
 
-  DISPLAY_OPTIONS = [
-    OpenStruct.new(value: 'always', text: 'Always'),
-    OpenStruct.new(value: 'conditional', text: 'Only if...'),
-    OpenStruct.new(value: 'never', text: 'Never')
-  ].freeze
+  DISPLAY_OPTIONS = %w[always conditional never].map { |key|
+    OpenStruct.new(value: key, text: I18n.t("conditional_content.display.#{key}"))
+  }.freeze
 
   def initialize(attributes)
     @service = attributes.delete(:service)

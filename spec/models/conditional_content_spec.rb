@@ -19,7 +19,6 @@ RSpec.describe ConditionalContent do
   let(:current_page) do
     service.find_page_by_url('furry')
   end
-  # let(:conditional_content_uuid) { 'ac914bb1-c4b8-44a0-bacd-2d23a6597f1a' }
   let(:component_uuid) { '46a49bb2-349d-47f2-bb75-eaed3892d5d7' }
   let(:latest_metadata) { metadata_fixture(:conditional) }
   let(:service) do

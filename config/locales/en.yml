@@ -238,6 +238,11 @@ en:
       lede: 'Choose which branch you want to keep in your form.'
       before_submit: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
       submit: 'Delete branching point'
+  conditional_content:
+    display: 
+      always: 'Always'
+      conditional: 'Only if...'
+      never: 'Never'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'

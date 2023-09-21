@@ -13,7 +13,6 @@ class ContentVisibilityCreation
   end
 
   def metadata
-    # conditional_content.conditionals.map{|c| c.to_metadata }
     if component_metadata.key('conditionals')
       component_metadata['conditionals'].merge!(conditional_content_metadata)
     else

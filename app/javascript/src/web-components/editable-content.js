@@ -72,7 +72,6 @@ class EditableContent extends HTMLElement {
       this.initialMarkup = this.innerHTML;
       this.initialContent = this.getAttribute('content')?.replace(/\\r\\n?|\\n/g, '\n') || '';
       this.defaultContent = this.getAttribute('default-content') || '';
-      // this.config = (this.dataset.config ? JSON.parse(this.dataset.config) : undefined);
       this.render();
     })
   }
@@ -92,6 +91,7 @@ class EditableContent extends HTMLElement {
   // as a string otherwise we return the content string
   get content() {
     if(this.isComponent) {
+      // Need to reassign config completely to trigger the 'setter' and the observed attributes
       this.config = Object.assign(this.config, { content: this.value })
       return JSON.stringify(this.config);
     } else {

@@ -8,7 +8,6 @@ const FormAnalyticsController = require('./controller_form_analytics');
 const CollectionEmailController = require('./controller_collection_email');
 const ConfirmationEmailController = require('./controller_confirmation_email');
 const ReferencePaymentController = require('./controller_reference_payment');
-// const ContentVisibilityController = require('./controller_content_visibility');
 const GOVUKFrontend = require('govuk-frontend')
 
 window.GOVUKFrontend = GOVUKFrontend

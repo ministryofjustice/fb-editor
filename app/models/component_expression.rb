@@ -109,20 +109,4 @@ class ComponentExpression
   def is_checkbox?
     component_type == 'checkboxes'
   end
-
-  # def unsupported_component
-  #   if page.present? && component.present? && !component_object.supports_branching?
-  #     errors.add(:component, message: I18n.t(
-  #       'activemodel.errors.messages.unsupported_component'
-  #     ))
-  #   end
-  # end
-
-  # def blank_field
-  #   if field_required? && field.nil?
-  #     errors.add(:operator, message: I18n.t(
-  #       'activemodel.errors.messages.blank'
-  #     ))
-  #   end
-  # end
 end
