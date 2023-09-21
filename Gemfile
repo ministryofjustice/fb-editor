@@ -11,11 +11,11 @@ gem 'delayed_job_active_record'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'disclaimer-multiple-email'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'grid-experiment'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.2.9'
+# gem 'metadata_presenter', '3.2.9'
 
 gem 'aws-sdk-s3'
 gem 'aws-sdk-sesv2'
