@@ -49,7 +49,8 @@ class Detached
       MetadataPresenter::Grid.new(
         service,
         start_from: uuid,
-        main_flow: main_flow_uuids
+        main_flow: main_flow_uuids,
+        traverse_cap: 10000
       )
     end
   end
