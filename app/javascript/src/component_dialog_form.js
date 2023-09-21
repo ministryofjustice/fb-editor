@@ -354,7 +354,7 @@ class DialogForm {
 
   #addActivator() {
     var $marker = $("<span></span>");
-
+    if(this.$node) {
     this.$node.before($marker);
     var activator = new DialogActivator(this.#config.activator, {
       dialog: this,
@@ -366,6 +366,7 @@ class DialogForm {
     this.activator = activator.$node;
 
     $marker.remove();
+    }
   }
 
 }

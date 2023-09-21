@@ -492,28 +492,29 @@ function openConditionalContentDialog(component, activator, view) {
     const data = {
       component: JSON.stringify( component.config || {} )
     }
-    
-    new DialogForm(url, {
-      activator: activator,
-      remote: true,
-      requestMethod: 'POST',
-      requestData: data,
-      autoOpen: true,
-      closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
-      onReady: (dialog) => {
-      },
-      onSuccess: (data, dialog) => {
-        component.config = Object.assign(component.config, data)
-        view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
-      },
-      onError: (data, dialog) => {
-        var responseHtml = $.parseHTML(data.responseText);
-        var $newHtml = $(responseHtml[0]).html();
-        dialog.$node.html($newHtml);
-        dialog.refresh();
-      }
-      
-    });
+    if(url) { 
+      new DialogForm(url, {
+        activator: activator,
+        remote: true,
+        requestMethod: 'POST',
+        requestData: data,
+        autoOpen: true,
+        closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
+        onReady: (dialog) => {
+        },
+        onSuccess: (data, dialog) => {
+          component.config = Object.assign(component.config, data)
+          view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
+        },
+        onError: (data, dialog) => {
+          var responseHtml = $.parseHTML(data.responseText);
+          var $newHtml = $(responseHtml[0]).html();
+          dialog.$node.html($newHtml);
+          dialog.refresh();
+        }
+
+      });
+    }
 }
 
 
