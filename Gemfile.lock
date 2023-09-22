@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 13eb1f08de1239eed545238681dcb89f283cd8f0
+  revision: 6244ad499dbcd798b4c01f6aa66deaa044223a23
   branch: grid-experiment
   specs:
     metadata_presenter (3.2.10)
