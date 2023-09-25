@@ -77,7 +77,10 @@ class ConditionalContent
         [
           component.humanised_title,
           component.uuid,
-          { 'data-supports-branching': component.supports_branching? }
+          { 
+            'data-supports-branching': component.supports_branching?,
+            'data-same-page': page.uuid == page_uuid,
+          }
         ]
       end
     end
@@ -89,6 +92,10 @@ class ConditionalContent
     return service.page_with_component(component_uuid)&.[](:_uuid) if previous_flow_uuid.blank?
 
     previous_flow_uuid
+  end
+
+  def page_uuid 
+    service.page_with_component(component_uuid)&.[](:_uuid)
   end
 
   def any_errors?
