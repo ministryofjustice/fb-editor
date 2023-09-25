@@ -38,6 +38,7 @@ export default class extends Controller {
     }
 
     this.conditionTarget.src = url
+    this.conditionTarget.reload()
     this.conditionTarget.removeAttribute('hidden')
   }
 

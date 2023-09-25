@@ -1,10 +1,10 @@
 class ComponentExpression
   include ActiveModel::Model
-  attr_accessor :component, :operator, :field, :page
-
+  attr_accessor :component, :operator, :field, :service, :page, :content_component_page
   validates :component, presence: true
   validates :component, supported_component: true
-  validates :operator, presence: true, if: proc { |e| e.component && e.component_supported? }
+  validates :component, non_same_page: true
+  # validates :operator, presence: true, if: proc { |e| e.component && e.component_supported? && !e.component_on_same_page? }
   validates_each :field do |record, attribute, _value|
     if record.field_required? && record.field.nil?
       record.errors.add(
@@ -23,10 +23,18 @@ class ComponentExpression
     [I18n.t('operators.is_not_answered'), 'is_not_answered', { 'data-hide-answers': 'true' }]
   ].freeze
 
+  def initialize(attributes)
+    @service = attributes.delete(:service)
+    @page = attributes.delete(:page)
+    # @page = service.find_page_by_uuid(@page_uuid)
+    @content_component_page = attributes.delete(:content_component_page)
+    super
+  end
+
   def to_metadata
     {
       'operator' => operator,
-      'page' => @page&.uuid,
+      'page' => page.uuid,
       'component' => component,
       'field' => field_answer
     }
@@ -59,8 +67,15 @@ class ComponentExpression
   end
 
   def component_supported?
-    component && component_object&.supports_branching?
+    component_object&.supports_branching?
   end
+  
+  def component_on_different_page?
+    Rails.logger.info "SELECTED COMPONENT PAGE UUID: #{page.uuid}"
+    Rails.logger.info "CONTENT COMPONENT PAGE UUID: #{content_component_page.uuid}"
+    !(page.uuid == content_component_page.uuid)
+  end
+  
 
   def name_attr(conditional_index:, expression_index:, attribute:)
     "conditional_content[conditionals_attributes][#{conditional_index}]" \
@@ -76,7 +91,7 @@ class ComponentExpression
     operator == I18n.t('operators.is') || operator == I18n.t('operators.is_not')
   end
 
-  private
+  # private
 
   def field_answer
     return field.to_s unless field_required?
@@ -85,8 +100,10 @@ class ComponentExpression
   end
 
   def component_object
-    @component_object ||= page&.find_component_by_uuid(component)
+    @component_object ||= page.find_component_by_uuid(component)
   end
+
+  
 
   def contains_operators
     @contains_operators ||= all_operators.select do |operator|

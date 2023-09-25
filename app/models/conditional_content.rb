@@ -44,7 +44,6 @@ class ConditionalContent
     conditional.expressions.each_with_index do |expression, expression_index|
       expressions_hash['expressions_attributes'][expression_index.to_s] = {
         'operator' => expression.operator,
-        'page' => expression.page,
         'component' => expression.component,
         'field' => expression.field
       }
@@ -67,7 +66,7 @@ class ConditionalContent
 
   def conditionals_attributes=(hash)
     hash.each do |_index, conditional_hash|
-      conditionals.push(ComponentConditional.new(conditional_hash.merge(service:)))
+      conditionals.push(ComponentConditional.new(conditional_hash.merge(service:, content_component: component_uuid)))
     end
   end
 
@@ -79,7 +78,7 @@ class ConditionalContent
           component.uuid,
           { 
             'data-supports-branching': component.supports_branching?,
-            'data-same-page': page.uuid == page_uuid,
+            'data-same-page': page.uuid == content_component_page_uuid,
           }
         ]
       end
@@ -94,7 +93,7 @@ class ConditionalContent
     previous_flow_uuid
   end
 
-  def page_uuid 
+  def content_component_page_uuid 
     service.page_with_component(component_uuid)&.[](:_uuid)
   end
 

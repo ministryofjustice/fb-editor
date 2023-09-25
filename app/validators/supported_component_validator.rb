@@ -3,7 +3,7 @@ class SupportedComponentValidator < ActiveModel::EachValidator
     if record.component.present? && !record.component_supported?
       record.errors.add(
         attribute,
-        I18n.t("activemodel.errors.models.#{record.model_name.singular}.unsupported_component")
+        I18n.t("activemodel.errors.models.#{record.model_name.singular}.unsupported")
       )
     end
   end

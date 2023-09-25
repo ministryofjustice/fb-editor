@@ -6,7 +6,7 @@ module Api
       @conditional_content = ConditionalContent.new(conditional_content_attributes.merge(ConditionalContent.from_json(component_params)))
 
       if @conditional_content.conditionals.blank?
-        @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new])
+        @conditional_content.conditionals << ComponentConditional.new(expressions: [ComponentExpression.new(service: service)])
       end
 
       render 'edit', layout: false
@@ -14,7 +14,7 @@ module Api
 
     def update
       @conditional_content = ConditionalContent.new(conditional_content_params)
-
+      
       if @conditional_content.valid? && !@conditional_content.any_errors?
         render json: @conditional_content.to_metadata, status: :ok
       else
@@ -28,7 +28,7 @@ module Api
     helper_method :conditional_index
 
     def new_conditional_expression
-      @conditional_component.conditionals[params[:conditional_index]].expressions << ComponentExpression.new
+      @conditional_component.conditionals[params[:conditional_index]].expressions << ComponentExpression.new(service: service)
     end
 
     def require_user!

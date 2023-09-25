@@ -4,12 +4,12 @@
 
     <div class="expressions" data-controller="dynamic-fields expressions">
       <%= conditional.fields_for :expressions do |expression| %>
-        <%= render 'expression_fields', conditional: conditional, expression: expression %>
+        <%= render 'expression_fields', conditional: conditional, expression: expression, component_uuid: component_uuid  %>
       <% end %>
 
       <template data-dynamic-fields-target="template">
-        <%= conditional.fields_for :expressions, ComponentExpression.new, child_index: "__CHILD_INDEX__" do |expression| %>
-          <%= render 'expression_fields', conditional: conditional, expression: expression %>
+        <%= conditional.fields_for :expressions, ComponentExpression.new(service: service), child_index: "__CHILD_INDEX__" do |expression| %>
+          <%= render 'expression_fields', conditional: conditional, expression: expression, component_uuid: component_uuid  %>
         <% end %>
       </template>
 

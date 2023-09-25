@@ -35,12 +35,12 @@
 
     <fieldset class="govuk-fieldset conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
       <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
-        <%= render 'conditional_fields', conditional: conditional, f: f %>
+        <%= render 'conditional_fields', conditional: conditional, f: f, component_uuid: f.object.component_uuid %>
       <% end %>
 
       <template data-dynamic-fields-target="template">
-        <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
-          <%= render 'conditional_fields', conditional: conditional, f: f %>
+        <%= f.fields_for :conditionals, ComponentConditional.new(expressions: [ComponentExpression.new(service: service)]), child_index: "__CHILD_INDEX__" do |conditional| %>
+          <%= render 'conditional_fields', conditional: conditional, f: f, component_uuid: f.object.component_uuid %>
         <% end %>
       </template>
 

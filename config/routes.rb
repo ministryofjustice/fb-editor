@@ -98,7 +98,7 @@ Rails.application.routes.draw do
 
       post 'conditional_content/components/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit_conditional_content'
       put 'conditional_content/components/:component_uuid', to: 'conditional_contents#update', as: 'update_conditional_content'
-      get 'conditional_content/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'conditional_content_expressions#show', as: 'conditional_content_expressions'
+      get 'conditional_content/components/:content_component_uuid/conditionals/:conditional_index/expressions/:expression_index/component/:component_uuid', to: 'conditional_content_expressions#show', as: 'conditional_content_expressions'
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'

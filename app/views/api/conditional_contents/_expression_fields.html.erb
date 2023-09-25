@@ -24,7 +24,7 @@
         data: {
           action: 'change->expression#getCondition',
           expression_target: 'question',
-          expression_url_param: api_service_conditional_content_expressions_path(service.service_id, '--componentId--', conditional.options[:child_index], expression.options[:child_index]),
+          expression_url_param: api_service_conditional_content_expressions_path(service.service_id, component_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
         },
       }
     %> 
