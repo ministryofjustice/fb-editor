@@ -158,7 +158,6 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: web
-            BUILD_WORKER: 'false'
           command: ./deploy-scripts/bin/build
       - slack/status: &testable_slack_status
           fail_only: true
@@ -187,7 +186,6 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
-            BUILD_WORKER: 'true'
           command: './deploy-scripts/bin/build'
       - run:
           name: Restore env
@@ -253,7 +251,6 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: web
-            BUILD_WORKER: 'false'
           command: './deploy-scripts/bin/build'
       - slack/status: *slack_status
   build_workers_image:
@@ -279,7 +276,6 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
-            BUILD_WORKER: 'true'
           command: './deploy-scripts/bin/build'
       - run:
           name: Restore env
