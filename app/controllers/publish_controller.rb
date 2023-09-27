@@ -2,8 +2,11 @@ class PublishController < FormController
   before_action :assign_form_objects
 
   def index
-    @published_dev = PublishServicePresenter.new(publishes_dev, service)
-    @published_production = PublishServicePresenter.new(publishes_production, service)
+    Rails.logger.info('***************** creating publish presenters')
+    @published_dev ||= PublishServicePresenter.new(publishes_dev, service)
+    Rails.logger.info('***************** dev publish presenter created')
+    @published_production ||= PublishServicePresenter.new(publishes_production, service)
+    Rails.logger.info('***************** prod publish presenter created')
   end
 
   def create
@@ -49,18 +52,24 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_page_presenter_dev = PublishingPagePresenter.new(
+    Rails.logger.info('***************** creating publish presenters')
+
+    @publish_page_presenter_dev ||= PublishingPagePresenter.new(
       service:,
       deployment_environment: 'dev',
       service_autocomplete_items:,
       grid:
     )
-    @publish_page_presenter_production = PublishingPagePresenter.new(
+    Rails.logger.info('***************** dev publish presenter created')
+
+    @publish_page_presenter_production ||= PublishingPagePresenter.new(
       service:,
       deployment_environment: 'production',
       service_autocomplete_items:,
       grid:
     )
+    Rails.logger.info('***************** prod publish presenter created')
+
   end
 
   def publishes_dev
