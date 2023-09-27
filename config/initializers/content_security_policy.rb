@@ -16,7 +16,8 @@ Rails.application.configure do
                        "https://*.hotjar.com"
     policy.style_src   :self,
                        "https://*.hotjar.com",
-                       'unsafe-inline'
+                       'unsafe-inline',
+                       'inline'
     policy.connect_src :self,
                        "*.sentry.io",
                        "https://*.hotjar.com",
