@@ -69,7 +69,6 @@ class PublishController < FormController
       grid:
     )
     Rails.logger.info('***************** prod publish presenter created')
-
   end
 
   def publishes_dev
