@@ -1,6 +1,7 @@
 class ComponentExpression
   include ActiveModel::Model
   attr_accessor :component, :operator, :field, :service, :page, :content_component_page
+
   validates :component, presence: true
   validates :component, supported_component: true
   validates :component, non_same_page: true
@@ -26,7 +27,6 @@ class ComponentExpression
   def initialize(attributes)
     @service = attributes.delete(:service)
     @page = attributes.delete(:page)
-    # @page = service.find_page_by_uuid(@page_uuid)
     @content_component_page = attributes.delete(:content_component_page)
     super
   end
@@ -69,13 +69,10 @@ class ComponentExpression
   def component_supported?
     component_object&.supports_branching?
   end
-  
+
   def component_on_different_page?
-    Rails.logger.info "SELECTED COMPONENT PAGE UUID: #{page.uuid}"
-    Rails.logger.info "CONTENT COMPONENT PAGE UUID: #{content_component_page.uuid}"
-    !(page.uuid == content_component_page.uuid)
+    page.uuid != content_component_page.uuid
   end
-  
 
   def name_attr(conditional_index:, expression_index:, attribute:)
     "conditional_content[conditionals_attributes][#{conditional_index}]" \
@@ -102,8 +99,6 @@ class ComponentExpression
   def component_object
     @component_object ||= page.find_component_by_uuid(component)
   end
-
-  
 
   def contains_operators
     @contains_operators ||= all_operators.select do |operator|

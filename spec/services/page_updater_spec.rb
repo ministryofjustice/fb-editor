@@ -84,6 +84,7 @@ RSpec.describe PageUpdater do
               '_type': 'content',
               '_uuid': "Dead or alive you're coming with me",
               'content': '[Optional content]',
+              'display': 'always',
               'name': 'confirmation_content_1'
             })
           end
@@ -269,6 +270,7 @@ RSpec.describe PageUpdater do
               '_type': 'content',
               '_uuid' => "Dead or alive you're coming with me",
               'content': '[Optional content]',
+              'display': 'always',
               'name': 'check-answers_content_3'
             })
           end

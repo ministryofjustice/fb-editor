@@ -1,7 +1,5 @@
-
 class NonSamePageValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, _value)
-    # byebug
     if record.component.present? && !record.component_on_different_page?
       record.errors.add(
         attribute,
