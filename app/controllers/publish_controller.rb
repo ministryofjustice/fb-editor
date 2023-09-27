@@ -62,7 +62,7 @@ class PublishController < FormController
       deployment_environment: 'production',
       service_autocomplete_items:,
       grid:
-    ) 
+    )
   end
 
   def publish_page_presenter_dev
