@@ -47,7 +47,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '4.8.0'
+  gem 'selenium-webdriver', '4.13.1'
   gem 'shoulda-matchers'
   gem 'site_prism'
   gem 'webmock'
