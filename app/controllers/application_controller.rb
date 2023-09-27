@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   helper_method :service
 
   def grid
+    Rails.logger.info('***************** calling grid traversal')
+    if @grid.presence Rails.logger.info('***************** returning memoised grid!!!!')
     @grid ||= MetadataPresenter::Grid.new(service)
   end
   helper_method :grid
