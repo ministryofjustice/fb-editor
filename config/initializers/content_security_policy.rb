@@ -16,13 +16,14 @@ Rails.application.configure do
                        "https://*.hotjar.com"
     policy.style_src   :self,
                        "https://*.hotjar.com",
-                       'unsafe-inline',
-                       'inline'
+                       'unsafe-inline'
     policy.connect_src :self,
                        "*.sentry.io",
                        "https://*.hotjar.com",
                        "https://*.hotjar.io",
                        "wss://*.hotjar.com"
+    policy.style_src_attr 'unsafe-inline'
+    policy.style_src_elem 'unsafe-inline'
 
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
