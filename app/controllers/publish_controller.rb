@@ -2,9 +2,9 @@ class PublishController < FormController
   before_action :assign_form_objects
 
   def index
-    Rails.logger.info('***************** creating publish presenters')
-    @published_dev ||= PublishServicePresenter.new(publishes_dev, service)
-    Rails.logger.info('***************** dev publish presenter created')
+    # Rails.logger.info('***************** creating publish presenters')
+    # @published_dev ||= PublishServicePresenter.new(publishes_dev, service)
+    # Rails.logger.info('***************** dev publish presenter created')
     @published_production ||= PublishServicePresenter.new(publishes_production, service)
     Rails.logger.info('***************** prod publish presenter created')
   end
@@ -52,7 +52,7 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    publish_page_presenter_dev
+    # publish_page_presenter_dev
     publish_page_presenter_production
   end
 
