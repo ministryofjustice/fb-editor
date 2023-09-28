@@ -13,6 +13,7 @@ class PublishingPagePresenter
   delegate :no_service_output?, to: :publish_creation
 
   def submission_warnings
+    Rails.logger.info('***************** determine dev submission warnings')
     @submission_warnings ||= SubmissionWarningsPresenter.new(
       submission_warning_presenters,
       deployment_environment
@@ -20,6 +21,7 @@ class PublishingPagePresenter
   end
 
   def autocomplete_warning
+    Rails.logger.info('***************** determine dev autocompletes')
     @autocomplete_warning ||= AutocompleteItemsPresenter.new(
       @grid,
       service_autocomplete_items,
@@ -28,6 +30,7 @@ class PublishingPagePresenter
   end
 
   def service_output_warning
+    Rails.logger.info('***************** determine dev service output warnings')
     @service_output_warning ||= ServiceOutputWarningPresenter.new(
       service_id: service.service_id,
       deployment_environment:,
@@ -44,6 +47,7 @@ class PublishingPagePresenter
   private
 
   def set_publish_creation
+    Rails.logger.info('***************** setting dev publish creation')
     PublishServiceCreation.new(
       service_id: service.service_id,
       deployment_environment:
@@ -51,6 +55,7 @@ class PublishingPagePresenter
   end
 
   def submission_pages_presenter
+    Rails.logger.info('***************** dev sumission pages presenter? USES GRID')
     SubmissionPagesPresenter.new(
       service,
       I18n.t("warnings.submission_pages.#{deployment_environment}"),
