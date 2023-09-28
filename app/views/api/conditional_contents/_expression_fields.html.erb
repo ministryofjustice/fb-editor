@@ -24,11 +24,12 @@
         data: {
           action: 'change->expression#getCondition',
           expression_target: 'question',
-          expression_url_param: api_service_conditional_content_expressions_path(service.service_id, '--componentId--', conditional.options[:child_index], expression.options[:child_index]),
+          expression_url_param: api_service_conditional_content_expressions_path(service.service_id, component_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
         },
       }
     %> 
-    <p class="expression__error" data-expression-target="errorMessage" hidden><%= t('activemodel.errors.messages.unsupported') %></p> 
+    <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' hidden><%= t('activemodel.errors.models.component_expression.unsupported') %></p> 
+    <p class="expression__error" data-expression-target="errorMessage" data-error-type='samepage' hidden><%= t('activemodel.errors.models.component_expression.same_page') %></p> 
   </div>
     
     <%= render partial: 'expression_condition',

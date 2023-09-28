@@ -11,16 +11,47 @@ RSpec.describe ConditionalContent do
     }.merge(attributes)
   end
   let(:previous_page) do
-    service.find_page_by_url('pets')
+    service.find_page_by_url('multiple')
   end
   let(:previous_flow_uuid) do
     previous_page.uuid
   end
   let(:current_page) do
-    service.find_page_by_url('furry')
+    service.find_page_by_url('best-content')
   end
-  let(:component_uuid) { '46a49bb2-349d-47f2-bb75-eaed3892d5d7' }
+  let(:component_uuid) { 'f7208ed7-ed10-4c53-9271-ab075f6d3e3c' }
   let(:latest_metadata) { metadata_fixture(:conditional) }
+  let(:component_json) do
+    '{
+      "display": "conditional",
+      "conditionals": [
+        {
+          "_uuid":"6b1dea31-abbd-4053-8e6f-6211534dcd3b",
+          "_type":"if",
+          "expressions":[
+            {
+              "operator":"is",
+              "page":"00cc353e-51c5-4462-88bc-c357e344cd4d",
+              "component":"db99d122-17e4-47b1-b5a4-d6e8bf70fa86",
+              "field":"38492ffc-b18c-4b0b-94fe-c1addd854738"
+            }
+          ]
+        },
+        {
+          "_uuid":"291df640-16b0-4b7d-876e-92662d95e7a5",
+          "_type":"if",
+          "expressions":[
+            {
+              "operator":"is",
+              "page":"00cc353e-51c5-4462-88bc-c357e344cd4d",
+              "component":"db99d122-17e4-47b1-b5a4-d6e8bf70fa86",
+              "field":"f0c1585e-7b23-461a-8644-4da3b2e1ebc4"
+            }
+          ]
+        }
+      ]
+    }'
+  end
   let(:service) do
     MetadataPresenter::Service.new(latest_metadata)
   end
@@ -35,50 +66,110 @@ RSpec.describe ConditionalContent do
           '0' => {
             'expressions_attributes' => {
               '0' => {
-                'page' => '07635f6d-34a8-45c8-884f-87696eba6a1f',
-                'field' => '46c218d5-018a-482a-a66d-0d84be80f543',
-                'operator' => 'is_not',
-                'component' => '612f5bc2-8766-4296-9b9c-47f92bdc4b62'
+                'field' => '38492ffc-b18c-4b0b-94fe-c1addd854738',
+                'operator' => 'is',
+                'component' => 'db99d122-17e4-47b1-b5a4-d6e8bf70fa86'
+              }
+            }
+          },
+          '1' => {
+            'expressions_attributes' => {
+              '0' => {
+                'field' => 'f0c1585e-7b23-461a-8644-4da3b2e1ebc4',
+                'operator' => 'is',
+                'component' => 'db99d122-17e4-47b1-b5a4-d6e8bf70fa86'
               }
             }
           }
         },
-        'display' => nil
+        'display' => 'conditional'
       }
     end
 
     it 'serialises the component objects metadata' do
-      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(ConditionalContent.from_metadata(component)).to eq(expected_metadata)
     end
   end
 
   describe '.from_json' do
+    skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+    let(:component) do
+      current_page.find_component_by_uuid(component_uuid)
+    end
+    let(:expected_metadata) do
+      {
+        'conditionals_attributes' => {
+          '0' => {
+            'expressions_attributes' => {
+              '0' => {
+                'field' => '38492ffc-b18c-4b0b-94fe-c1addd854738',
+                'operator' => 'is',
+                'component' => 'db99d122-17e4-47b1-b5a4-d6e8bf70fa86'
+              }
+            }
+          },
+          '1' => {
+            'expressions_attributes' => {
+              '0' => {
+                'field' => 'f0c1585e-7b23-461a-8644-4da3b2e1ebc4',
+                'operator' => 'is',
+                'component' => 'db99d122-17e4-47b1-b5a4-d6e8bf70fa86'
+              }
+            }
+          }
+        },
+        'display' => 'conditional'
+      }
+    end
+
+    it 'seriualizes the component metadat from json' do
+      expect(ConditionalContent.from_json(component_json)).to eq(expected_metadata)
+    end
   end
 
   describe '#previous_questions' do
     it 'returns all questions for single and mulitiple questions pages' do
-      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[0] }).to eq(
         [
-          'Checkbox',
-          'Colours',
-          'Pet choice',
-          'Email address question'
+          'Single Radios',
+          'radio',
+          'checkbox (optional)',
+          'name'
         ]
       )
     end
 
     it 'injects the data-supports-branching attribute' do
-      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
         [
-          { 'data-supports-branching': true },
-          { 'data-supports-branching': true },
-          { 'data-supports-branching': true },
-          { 'data-supports-branching': false }
+          { 'data-supports-branching': true, 'data-same-page': false },
+          { 'data-supports-branching': true, 'data-same-page': false },
+          { 'data-supports-branching': true, 'data-same-page': false },
+          { 'data-supports-branching': false, 'data-same-page': false }
         ]
       )
+    end
+
+    context 'content component on same page' do
+      let(:current_page) do
+        service.find_page_by_url('multiple')
+      end
+      let(:component_uuid) { '73869807-f82f-4000-8204-fcb3f62718a2' }
+
+      it 'injects the data-same-page attribute' do
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+        expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
+          [
+            { 'data-supports-branching': true, 'data-same-page': false },
+            { 'data-supports-branching': true, 'data-same-page': true },
+            { 'data-supports-branching': true, 'data-same-page': true },
+            { 'data-supports-branching': false, 'data-same-page': true }
+          ]
+        )
+      end
     end
   end
 
@@ -109,7 +200,7 @@ RSpec.describe ConditionalContent do
     end
 
     it 'assigns conditionals' do
-      pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.conditionals).to eq(
         [
           expected_conditional
@@ -121,7 +212,7 @@ RSpec.describe ConditionalContent do
   describe '#previous_flow_uuid' do
     context 'previous flow uuid is present' do
       it 'returns the previous flow uuid' do
-        pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(previous_flow_uuid)
       end
     end
@@ -130,16 +221,16 @@ RSpec.describe ConditionalContent do
       let(:previous_flow_uuid) { nil }
 
       it 'returns the current page in the flow' do
-        pending('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(current_page[:_uuid])
       end
     end
   end
 
   describe '#validations' do
-    skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+    skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
     before do
-      conditional_content.valid? if ENV['CONDITONAL_CONTENT'] == 'enabled'
+      conditional_content.valid? if ENV['CONDITIONAL_CONTENT'] == 'enabled'
     end
 
     context 'when blank conditionals' do
@@ -156,12 +247,12 @@ RSpec.describe ConditionalContent do
       end
 
       it 'does not accept blank conditionals' do
-        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.conditionals_validations).to be_present
       end
 
       it 'adds error to conditionals object' do
-        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_present
         expect(errors.of_kind?(:expressions, :invalid_expression)).to be_truthy
@@ -175,10 +266,9 @@ RSpec.describe ConditionalContent do
             '0' => {
               'expressions_attributes' => {
                 '0' => {
-                  'page' => '07635f6d-34a8-45c8-884f-87696eba6a1f',
-                  'field' => '46c218d5-018a-482a-a66d-0d84be80f543',
+                  'field' => '63dce510-a641-4649-906c-334262c37673',
                   'operator' => 'is_not',
-                  'component' => '612f5bc2-8766-4296-9b9c-47f92bdc4b62'
+                  'component' => 'db99d122-17e4-47b1-b5a4-d6e8bf70fa86'
                 }
               }
             }
@@ -187,12 +277,12 @@ RSpec.describe ConditionalContent do
       end
 
       it 'no errors on conditional_content' do
-        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.errors).to be_blank
       end
 
       it 'no errors on conditionals' do
-        skip('Conditional content presenter update') unless ENV['CONDITONAL_CONTENT'] == 'enabled'
+        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_blank
       end

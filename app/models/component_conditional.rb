@@ -1,6 +1,6 @@
 class ComponentConditional
   include ActiveModel::Model
-  attr_accessor :service
+  attr_accessor :service, :content_component
   attr_writer :expressions
 
   validate :expressions_validations
@@ -10,6 +10,7 @@ class ComponentConditional
 
   def initialize(attributes)
     @service = attributes.delete(:service)
+    @content_component = attributes.delete(:content_component)
     super
   end
 
@@ -40,7 +41,8 @@ class ComponentConditional
       expressions.push(
         ComponentExpression.new(
           expression_hash.merge(
-            page: service.page_with_component(expression_hash['component'])
+            page: service.page_with_component(expression_hash['component']),
+            content_component_page: service.page_with_component(content_component)
           )
         )
       )

@@ -27,11 +27,18 @@ export default class extends Controller {
 
     if (option.dataset.supportsBranching == 'false') {
       this.conditionTarget.setAttribute('hidden', '')
-      this.showError()
+      this.showError('unsupported')
+      return
+    }
+
+    if (option.dataset.samePage == 'true') {
+      this.conditionTarget.setAttribute('hidden', '')
+      this.showError('samepage')
       return
     }
 
     this.conditionTarget.src = url
+    this.conditionTarget.reload()
     this.conditionTarget.removeAttribute('hidden')
   }
 
@@ -40,14 +47,15 @@ export default class extends Controller {
   }
 
 
-  showError() {
+  showError(errorType) {
     this.element.classList.add(this.errorClass)
-    this.errorMessageTarget.removeAttribute('hidden')
+    this.errorMessageTargets.filter((el) => el.dataset.errorType == errorType)
+                            .forEach((el) => el.removeAttribute('hidden') )
   }
 
   clearError() {
     this.element.classList.remove(this.errorClass)
-    this.errorMessageTarget.setAttribute('hidden', '')
+    this.errorMessageTargets.forEach((el) => el.setAttribute('hidden', ''))
   }
 
   hideDeleteButton(){
