@@ -2,6 +2,10 @@ class ApplicationController < ActionController::Base
   include Auth0Helper
 
   def service
+    Rails.logger.info('***************** asking for service object')
+    if @service.presence
+      Rails.logger.info('***************** returning memoised service object!!!')
+    end
     @service ||= MetadataPresenter::Service.new(service_metadata, editor: editable?)
   end
   helper_method :service
@@ -50,6 +54,10 @@ class ApplicationController < ActionController::Base
   end
 
   def service_metadata
+    Rails.logger.info('***************** requesting service metadata')
+    if @service_metadata.presence
+      Rails.logger.info('***************** returning service metadata memoised!!!!')
+    end
     @service_metadata ||= MetadataApiClient::Service.latest_version(service_id_param)
   end
 
