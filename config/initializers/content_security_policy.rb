@@ -22,11 +22,9 @@ Rails.application.configure do
                        "https://*.hotjar.com",
                        "https://*.hotjar.io",
                        "wss://*.hotjar.com"
-    policy.style_src_attr 'unsafe-inline'
-    policy.style_src_elem 'unsafe-inline'
 
     # Specify URI for violation reports
-    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
+    # policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts
