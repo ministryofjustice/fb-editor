@@ -25,6 +25,8 @@ class DestroyQuestionModal
   private
 
   def used_for_conditional_content?
+    return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+
     content_expressions.map(&:component).include?(question.uuid)
   end
 

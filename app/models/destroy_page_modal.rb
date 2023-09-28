@@ -25,6 +25,8 @@ class DestroyPageModal
   end
 
   def delete_page_used_for_conditional_content?
+    return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+
     page.uuid.in?(content_expressions.map(&:page))
   end
 
