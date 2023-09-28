@@ -4,10 +4,11 @@ class DestroyPageModal
 
   attr_accessor :service, :page
 
-  delegate :expressions, :branches, to: :service
+  delegate :expressions, :branches, :pages, :content_expressions, to: :service
 
   PARTIALS = {
     delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
+    delete_page_used_for_conditional_content?: 'delete_page_used_for_conditional_content',
     potential_stacked_branches?: 'stack_branches_not_supported',
     delete_page_used_for_branching?: 'delete_page_used_for_branching_not_supported',
     branch_destination_with_default_next?: 'delete_branch_destination_page',
@@ -21,6 +22,10 @@ class DestroyPageModal
     end
 
     "api/pages/#{result[1]}_modal"
+  end
+
+  def delete_page_used_for_conditional_content?
+    page.uuid.in?(content_expressions.map(&:page))
   end
 
   def delete_page_used_for_branching?
