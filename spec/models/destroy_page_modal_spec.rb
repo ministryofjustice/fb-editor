@@ -52,6 +52,27 @@ RSpec.describe DestroyPageModal do
       end
     end
 
+    context 'conditional_content' do
+      let(:service_metadata) { metadata_fixture(:conditional_content_2) }
+      let(:page) { service.find_page_by_url('chocolate') }
+
+      context 'when there is conditional content that depends on the page' do
+        it 'returns the delete conditional content modal' do
+          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+          expect(partial).to eq('api/pages/delete_page_used_for_conditional_content_modal')
+        end
+      end
+
+      context 'when there is conditional content and branching that depends on the page' do
+        let(:page) { service.find_page_by_url('coffee') }
+
+        it 'returns the delete conditional content modal' do
+          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+          expect(partial).to eq('api/pages/delete_page_used_for_conditional_content_modal')
+        end
+      end
+    end
+
     context 'confirmation email' do
       let(:service_metadata) { metadata_fixture(:version) }
       let(:page) { service.find_page_by_url('email-address') }

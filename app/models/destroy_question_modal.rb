@@ -6,13 +6,12 @@ class DestroyQuestionModal
 
   delegate :expressions, :conditionals, :content_expressions, to: :service
 
-
-  PARTIALS = { 
+  PARTIALS = {
     used_for_conditional_content?: 'delete_question_used_for_conditional_content',
     used_for_branching?: 'delete_question_used_for_branching',
     used_for_confirmation_email?: 'delete_question_used_for_confirmation_email',
     default?: 'delete_question'
-  }
+  }.freeze
 
   def to_partial_path
     result = PARTIALS.find do |method_name, _|

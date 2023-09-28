@@ -4,13 +4,13 @@ class DestroyQuestionOptionModal
 
   delegate :expressions, :conditionals, :content_expressions, to: :service
 
-  PARTIALS = { 
+  PARTIALS = {
     used_for_conditional_content?: 'delete_option_used_for_conditional_content',
     used_for_branching?: 'delete_option_used_for_branching',
-    default?: 'delete_option' 
-  }
+    default?: 'delete_option'
+  }.freeze
 
-    def to_partial_path
+  def to_partial_path
     result = PARTIALS.find do |method_name, _|
       method(method_name).call.present?
     end
@@ -22,7 +22,7 @@ class DestroyQuestionOptionModal
 
   def used_for_conditional_content?
     return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-    
+
     option.present? && content_expressions.map(&:field).include?(option.uuid)
   end
 
