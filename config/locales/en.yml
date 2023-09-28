@@ -246,7 +246,8 @@ en:
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
-      can_not_delete_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first.'
+      delete_question_used_for_branching_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first.'
+      delete_question_used_for_conditional_content_message: 'You cannot delete this question because it is used in a conditional content rule. Update the content rule first.'
       can_not_delete_message_confirmation_email: 'You cannot delete this question because it is required by the confirmation email. Update the email settings first.'
   question_items:
     delete_modal:
