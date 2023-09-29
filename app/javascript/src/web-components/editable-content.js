@@ -233,6 +233,8 @@ class EditableContent extends HTMLElement {
     config = JSON.parse(value)
     if(config.display && config.display !== 'always') {
       this.setAttribute('conditional', '')
+    } else {
+      this.removeAttribute('conditional')
     }
   }
 

@@ -7,8 +7,9 @@ module Api
 
     def show
       @expression = ComponentExpression.new(
-        component: params[:component_id],
-        page: page_with_component(params[:component_id])
+        component: params[:component_uuid],
+        page: page_with_component(params[:component_uuid]),
+        content_component_page: page_with_component(params[:content_component_uuid])
       )
 
       render partial: 'expression_condition',
