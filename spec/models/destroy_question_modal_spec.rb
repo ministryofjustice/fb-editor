@@ -16,14 +16,14 @@ RSpec.describe DestroyQuestionModal do
 
     context 'branching questions' do
       before do
-        allow(destroy_question_modal).to receive(:used_in_confirmation_email?).and_return(false)
+        allow(destroy_question_modal).to receive(:used_for_confirmation_email?).and_return(false)
       end
 
       context 'when there is a branch that depends on the question' do
         let(:page) { service.find_page_by_url('page-b') }
 
         it 'returns can not delete the question modal' do
-          expect(partial).to eq('api/questions/cannot_delete_modal')
+          expect(partial).to eq('api/questions/delete_question_used_for_branching_modal')
         end
       end
 
@@ -31,14 +31,48 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('page-d') }
 
         it 'returns default delete question modal' do
-          expect(partial).to eq('api/questions/destroy_message_modal')
+          expect(partial).to eq('api/questions/delete_question_modal')
+        end
+      end
+    end
+
+    context 'conditional content questions' do
+      let(:service_metadata) { metadata_fixture(:conditional_content_2) }
+      let(:question) { page.components.first }
+
+      context 'when there is conditional content that depends on the question' do
+        let(:page) { service.find_page_by_url('multiple') }
+
+        it 'returns the delete conditional content modal' do
+          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+          expect(partial).to eq('api/questions/delete_question_used_for_conditional_content_modal')
+        end
+      end
+
+      context 'when there is not conditional content that depends on the question' do
+        let(:page) { service.find_page_by_url('multiple') }
+        let(:question) { page.components[2] }
+
+        it 'returns the default delete modal' do
+          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+          expect(partial).to eq('api/questions/delete_question_modal')
+        end
+      end
+
+      context 'when there is conditional content and branching that depends on the question' do
+        let(:page) { service.find_page_by_url('multiple') }
+        let(:question) { page.components.last }
+
+        it 'returns the delete conditional content modal' do
+          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+          expect(partial).to eq('api/questions/delete_question_used_for_conditional_content_modal')
         end
       end
     end
 
     context 'confirmation email questions' do
       let(:service_metadata) { metadata_fixture(:branching_12) }
-      let(:default_destroy_partial) { 'api/questions/destroy_message_modal' }
+      let(:default_destroy_partial) { 'api/questions/delete_question_modal' }
       let(:service_configuration) do
         create(
           :service_configuration,
@@ -59,7 +93,7 @@ RSpec.describe DestroyQuestionModal do
           end
 
           it 'returns can not delete the question modal' do
-            expect(partial).to eq('api/questions/cannot_delete_confirmation_email_modal')
+            expect(partial).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
           end
         end
 
@@ -97,7 +131,7 @@ RSpec.describe DestroyQuestionModal do
           end
 
           it 'returns can not delete the question modal' do
-            expect(partial).to eq('api/questions/cannot_delete_confirmation_email_modal')
+            expect(partial).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
           end
         end
 
