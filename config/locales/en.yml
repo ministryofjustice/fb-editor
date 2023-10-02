@@ -320,6 +320,8 @@ en:
       heading_remove: "Delete the component?"
       affirmative: 'Yes'
       negative: 'No'
+      conditional:
+        heading: Show this component...
   question:
     optional_flag: '(optional)'
     menu:

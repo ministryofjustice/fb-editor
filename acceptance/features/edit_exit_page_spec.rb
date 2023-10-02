@@ -70,11 +70,7 @@ feature 'Edit exit pages' do
     when_I_add_the_page
   end
 
-  def and_I_add_a_content_component(content:)
-    editor.add_content_area_buttons.first.click
-    and_the_content_component_has_the_optional_content
-    when_I_change_editable_content(editor.first_component, content: content)
-  end
+
 
   def then_I_should_see_the_component(content)
     expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
@@ -84,14 +80,7 @@ feature 'Edit exit pages' do
     expect(page).not_to have_content(I18n.t('actions.continue'))
   end
 
-  def and_the_content_component_has_the_optional_content
-    editor.service_name.click # click outside to close the editable component
 
-    # the output element p tag of a content component is the thing which has
-    # the actual text in it
-    output_component = editor.first_component.find('[data-element="editable-content-output"]', visible: false)
-    expect(output_component.text).to eq(optional_content)
-  end
 
   def when_I_preview_the_form_until_the_exit_page
     and_I_return_to_flow_page

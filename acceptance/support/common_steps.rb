@@ -263,6 +263,11 @@ module CommonSteps
     expect(editor).not_to have_css('span', text: I18n.t('question.menu.remove'))
   end
 
+  def when_I_want_to_edit_content_component_properties(component)
+    element_output(component).click
+    component.find('.ActivatedMenuActivator', visible: true).click
+  end
+
   def and_I_want_to_set_a_question_optional
     editor.required_question.click
   end
@@ -311,6 +316,10 @@ module CommonSteps
     and_I_preview_the_form
   end
 
+  def when_I_focus_editable_content(element)
+    element_output(element).click
+  end
+
   def when_I_change_editable_content(element, content:)
     # activate the input element for the content component by clicking on the
     # output element tag first
@@ -334,6 +343,22 @@ module CommonSteps
 
   def then_I_should_not_see_optional_text
     OPTIONAL_TEXT.each { |optional| expect(page).not_to have_content(optional) }
+  end
+
+  def and_I_add_a_content_component(content:)
+    editor.add_content_area_buttons.first.click
+    component = editor.editable_content_areas.last
+    and_the_content_component_has_the_optional_content(component)
+    when_I_change_editable_content(component, content: content)
+  end
+
+  def and_the_content_component_has_the_optional_content(component)
+    editor.service_name.click # click outside to close the editable component
+
+    # the output element p tag of a content component is the thing which has
+    # the actual text in it
+    output_component = component.find('[data-element="editable-content-output"]', visible: false)
+    expect(output_component.text).to eq(optional_content)
   end
 
   def then_I_should_see_an_error_message(*fields)
