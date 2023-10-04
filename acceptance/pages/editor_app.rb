@@ -1,4 +1,5 @@
 require_relative '../support/data_content_id'
+require_relative '../sections/conditional_content_modal'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
@@ -191,6 +192,11 @@ class EditorApp < SitePrism::Page
   data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
   elements :editable_content_areas, 'editable-content[data-config]'
+  element :last_editable_content_area, 'editable-content[data-config]:last-of-type'
+
+  def content_area(content)
+    editable_content_areas.select { |a| a.text.include?(content) }
+  end
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
@@ -237,5 +243,12 @@ class EditorApp < SitePrism::Page
   end
 
   element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
-  element :conditional_content_modal, 'ui-dialog', text: I18n.t('content.dialog.conditional.heading')
+  element :show_if_button, :button, text: I18n.t('content.menu.show_if')
+  section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog' do
+
+
+  element :update_button, :button, I18n.t('dialogs.button_update')
+  end
+
+
 end

@@ -246,6 +246,8 @@ en:
       always: 'Always'
       conditional: 'Only if...'
       never: 'Never'
+    add_another_rule: 'Add another rule'
+    add_condition: 'Add condition'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
