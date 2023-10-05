@@ -144,16 +144,16 @@ module Admin
     def approve
       service_id = params[:service_id]
       approval = ServiceConfiguration.find_or_initialize_by(
-        service_id: service_id,
+        service_id:,
         deployment_environment: 'production',
         name: 'APPROVED_TO_GO_LIVE',
         value: '1'
       )
 
       if approval.save!
-        flash[:success] = "Service approved for go live"
+        flash[:success] = 'Service approved for go live'
       else
-        flash[:error] = "Service approval failed to save"
+        flash[:error] = 'Service approval failed to save'
       end
 
       redirect_to admin_service_path(service_id)
