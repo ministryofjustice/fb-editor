@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
       resources :api_submission, only: [:create, :index]
       resources :versions, only: [:update, :edit, :show]
+
+      post 'approve/:service_id', to 'services#approve', as :approve
     end
     resources :users
     resources :publish_services
@@ -40,6 +42,7 @@ Rails.application.routes.draw do
   resources :services, only: [:index, :edit, :update, :create] do
     member do
       resources :publish, only: [:index, :create]
+      post '/publish_for_review', to: 'publish#publish_for_review', as: 'publish_for_review'
       resources :pages, param: :page_uuid, only: [:create, :edit, :update, :destroy]
       resources :branches, param: :branch_uuid, only: [:create, :edit, :update, :destroy] do
         collection do

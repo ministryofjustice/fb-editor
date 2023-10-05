@@ -29,6 +29,63 @@ class PublishController < FormController
     end
   end
 
+  def publish_for_review
+    declarations = publish_for_review_params['declarations_checkboxes'].compact
+    @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except("authenticity_token", "declarations_checkboxes"))
+    if declarations.length != 7
+      update_form_objects
+      @errors = [I18n.t('publish.declarations.error')]
+      render :index, status: :unprocessable_entity and return
+    end
+
+    if @publish_service_creation.valid?
+      update_form_objects
+      @show_confirmation = true
+      render :index
+    end
+  end
+
+  def can_publish_to_live
+    # moj_forms_admin? ||
+    # moj_forms_dev? ||
+    
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'APPROVED_FOR_LIVE'
+    ).present? ||
+
+    PublishService.find_by(
+      service_id: service.service_id,
+      deployment_environment: 'production'
+    ).present?
+  end
+  helper_method :can_publish_to_live
+
+  def prod_tab_active?
+    
+  end
+  helper_method :prod_tab_active?
+
+  def declaration_errors
+    if @errors.present? 
+      if @errors.any?
+        byebug
+        @errors
+      end
+    else
+      []
+    end
+  end
+  helper_method :declaration_errors
+
+  def show_confirmation
+    if @show_confirmation
+      @show_confirmation = nil
+      return true
+    end
+  end
+  helper_method :show_confirmation
+
   private
 
   def service_autocomplete_items
@@ -42,6 +99,21 @@ class PublishController < FormController
       :password,
       :deployment_environment
     ).merge(
+      service_id: service.service_id,
+      user_id: current_user.id,
+      version_id: service.version_id
+    )
+  end
+
+  def publish_for_review_params
+    params.permit(
+      :authenticity_token,
+      :declarations_checkboxes => [],
+    ).merge(
+      require_authentication: '1',
+      username: 'FIXME123',
+      password: 'FIXME123',
+      deployment_environment: 'production',
       service_id: service.service_id,
       user_id: current_user.id,
       version_id: service.version_id
