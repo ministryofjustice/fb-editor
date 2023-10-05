@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       post '/republish/:publish_service_id/:deployment_environment',
         to: 'services#republish', as: :republish
 
+      get '/approve/:service_id', to: 'services#approve', as: :approve
+
       resources :api_submission, only: [:create, :index]
       resources :versions, only: [:update, :edit, :show]
     end

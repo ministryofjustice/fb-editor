@@ -16,6 +16,16 @@
     </a>
 
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
+
+    <% if is_already_approved? %>
+      <a href="<%= admin_service_approve_path(@service.service_id) %>" class="govuk-button fb-govuk-button" disabled>
+        Already approved to go live
+      </a>
+    <% else %>
+      <a href="<%= admin_service_approve_path(@service.service_id) %>" class="govuk-button fb-govuk-button">
+        Approve to go live
+      </a>
+    <% end %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">

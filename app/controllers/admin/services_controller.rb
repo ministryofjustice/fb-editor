@@ -141,6 +141,33 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def approve
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_or_initialize_by(
+        service_id: service_id,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE',
+        value: '1'
+      )
+
+      if approval.save!
+        flash[:success] = "Service approved for go live"
+      else
+        flash[:error] = "Service approval failed to save"
+      end
+
+      redirect_to admin_service_path(service_id)
+    end
+
+    def is_already_approved?
+      ServiceConfiguration.find_by(
+        service_id: params[:id],
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      ).present?
+    end
+    helper_method :is_already_approved?
+
     def search_term
       params[:search] || ''
     end
