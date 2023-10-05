@@ -135,6 +135,13 @@ class PagesController < FormController
   end
   helper_method :pages_presenters
 
+  def single_page_preview?
+    return true if request.referrer.blank?
+
+    !URI(request.referrer).path.split('/').include?('preview')
+  end
+  helper_method :single_page_preview?
+
   private
 
   # The metadata presenter gem requires this objects to render a page
