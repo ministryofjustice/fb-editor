@@ -335,10 +335,10 @@ module CommonSteps
 
   def element_output(element)
     # content component elements
-    element.find('[data-element="editable-content-output"] p', visible: false)
+    element.find('[data-element="editable-content-output"] p', visible: :all, wait: 2)
   rescue Capybara::ElementNotFound
     # body elements
-    element.find('[data-element="editable-content-output"]', visible: false)
+    element.find('[data-element="editable-content-output"]', visible: :all, wait: 2)
   end
 
   def then_I_should_not_see_optional_text

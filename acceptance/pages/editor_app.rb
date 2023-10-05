@@ -244,11 +244,7 @@ class EditorApp < SitePrism::Page
 
   element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
   element :show_if_button, :button, text: I18n.t('content.menu.show_if')
-  section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog' do
-
-
-  element :update_button, :button, I18n.t('dialogs.button_update')
-  end
+  section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog'
 
 
 end
