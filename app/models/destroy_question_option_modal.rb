@@ -1,6 +1,6 @@
 class DestroyQuestionOptionModal
   include ActiveModel::Model
-  attr_accessor :service, :page, :question, :option, :label
+  attr_accessor :service, :page, :question, :option, :pages
 
   delegate :expressions, :conditionals, :content_expressions, to: :service
 
@@ -10,20 +10,26 @@ class DestroyQuestionOptionModal
     default?: 'delete_option'
   }.freeze
 
-  def to_partial_path
-    result = PARTIALS.find do |method_name, _|
-      method(method_name).call.present?
-    end
+  def initialize(service:, page:, question:, option:)
+    @service = service
+    @page = page
+    @question = question
+    @option = option
+    @partial = PARTIALS.select { |method_name, _| method(method_name).call.present? }.values.first
+  end
 
-    "api/question_options/#{result[1]}_modal"
+  def to_partial_path
+    "api/question_options/#{@partial}_modal"
   end
 
   private
 
   def used_for_conditional_content?
     return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
+    return false unless option.present?
 
-    option.present? && content_expressions.map(&:field).include?(option.uuid)
+    @pages = service.pages_with_conditional_content_for_question_option(option.uuid)
+    @pages.any?
   end
 
   def used_for_branching?
