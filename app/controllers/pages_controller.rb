@@ -136,6 +136,10 @@ class PagesController < FormController
   helper_method :pages_presenters
 
   def single_page_preview?
+    Rails.logger.info('********************')
+    Rails.logger.info('Request referrer')
+    Rails.logger.info(request.referer)
+    Rails.logger.info('********************')
     return true if request.referer.blank?
 
     !URI(request.referer).path.split('/').include?('preview')
