@@ -5,7 +5,11 @@
     <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
   </h3>
   <p data-node="content">
-    <%= t('pages.delete_modal.delete_page_used_for_conditional_content_message') %>
+    <% if pages.size > 1 %>
+      <%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_multiple', titles: pages.map(&:heading).map{|text| "'#{text}'"}.to_sentence) %>
+    <% else %>
+      <%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_single', title: pages.first.heading) %>
+    <% end %>
   </p>
 
   <div class="govuk-button-group">

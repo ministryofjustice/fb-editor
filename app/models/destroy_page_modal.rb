@@ -2,9 +2,9 @@ class DestroyPageModal
   include ActiveModel::Model
   include ConfirmationEmailModalHelper
 
-  attr_accessor :service, :page
+  attr_accessor :service, :page, :pages
 
-  delegate :expressions, :branches, :pages, :content_expressions, to: :service
+  delegate :expressions, :branches, to: :service
 
   PARTIALS = {
     delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
@@ -16,18 +16,21 @@ class DestroyPageModal
     default?: 'delete'
   }.freeze
 
-  def to_partial_path
-    result = PARTIALS.find do |method_name, _|
-      method(method_name).call.present?
-    end
+  def initialize(service:, page:)
+    @service = service
+    @page = page
+    @partial = PARTIALS.select { |method_name, _| method(method_name).call.present? }.values.first
+  end
 
-    "api/pages/#{result[1]}_modal"
+  def to_partial_path
+    "api/pages/#{@partial}_modal"
   end
 
   def delete_page_used_for_conditional_content?
     return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-
-    page.uuid.in?(content_expressions.map(&:page))
+    
+    @pages = service.pages_with_conditional_content_for_page(page.uuid)
+    @pages.any?
   end
 
   def delete_page_used_for_branching?

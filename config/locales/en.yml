@@ -247,13 +247,15 @@ en:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
       delete_question_used_for_branching_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first.'
-      delete_question_used_for_conditional_content_message: 'You cannot delete this question because it is used in a conditional content rule. Update the content rule first.'
+      delete_question_used_for_conditional_content_message_single: "You cannot delete this question because it is used in a conditional content rule. Update the page '%{title}' first."
+      delete_question_used_for_conditional_content_message_multiple: "You cannot delete this question because it is used in a conditional content rule. Update the pages %{titles} first."
       can_not_delete_message_confirmation_email: 'You cannot delete this question because it is required by the confirmation email. Update the email settings first.'
   question_items:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this option yet'
       delete_option_used_for_branching_message: 'You cannot delete this option because it is used in a branching condition. Update the branching point first, then try again.'
-      delete_option_used_for_conditional_content_message: 'You cannot delete this option because it is used in a conditional content rule. Update the content rule first, then try again.'
+      delete_option_used_for_conditional_content_message_single: "You cannot delete this option because it is used in a conditional content rule. Update the page '%{title}' first."
+      delete_option_used_for_conditional_content_message_multiple: "You cannot delete this option because it is used in a conditional content rule. Update the pages %{titles} first."
     min_items_modal:
       can_not_delete_radios_message: 'Radio buttons require a minimum of 2 options'
       can_not_delete_checkboxes_message: 'Checkboxes require a minimum of 1 option'
@@ -274,7 +276,8 @@ en:
       delete_and_update_branching: 'Delete and update branching'
       you_cannot_delete_this_page: 'You cannot delete this page yet'
       delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first.'
-      delete_page_used_for_conditional_content_message: 'You cannot delete this page because it is used in a conditional content rule. Update the content rule first.'
+      delete_page_used_for_conditional_content_message_single: "You cannot delete this page because it is used in a conditional content rule. Update the page '%{title}' first."
+      delete_page_used_for_conditional_content_message_multiple: "You cannot delete this page because it is used in conditional content rules. Update the pages %{titles} first."
       stack_branches_not_supported_message: 'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
       can_not_delete_email_page_heading: 'You cannot delete this page yet'
       can_not_delete_email_page_message: 'You cannot delete this page because it is required by the confirmation email. Update the email settings first.'
