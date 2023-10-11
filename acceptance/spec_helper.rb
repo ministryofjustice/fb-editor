@@ -10,6 +10,7 @@ Dir[File.join('acceptance', 'pages', '*')].each { |f| require File.expand_path(f
 Dir[File.join('acceptance', 'support', '*')].each { |f| require File.expand_path(f) }
 
 puts "Accessing Editor in: #{ENV['ACCEPTANCE_TESTS_EDITOR_APP']}"
+puts "Conditional content feature flag: #{ENV['CONDITIONAL_CONTENT']}"
 
 RSpec.configure do |config|
   config.before(:all) do
