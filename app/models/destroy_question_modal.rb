@@ -12,7 +12,7 @@ class DestroyQuestionModal
     used_for_confirmation_email?: 'delete_question_used_for_confirmation_email',
     default?: 'delete_question'
   }.freeze
-  
+
   def initialize(service:, page:, question:)
     @service = service
     @page = page

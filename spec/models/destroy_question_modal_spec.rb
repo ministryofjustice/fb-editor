@@ -11,7 +11,6 @@ RSpec.describe DestroyQuestionModal do
   describe '#to_partial_path' do
     let(:question) { page.components.first }
 
-
     context 'branching questions' do
       before do
         allow(destroy_question_modal).to receive(:used_for_confirmation_email?).and_return(false)

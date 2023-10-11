@@ -140,7 +140,7 @@ RSpec.describe ConditionalContent do
           'What is your favourite cheese?',
           'Choose your top 3 crisp flavours',
           'Which is the best sweet?',
-          'What do you put in your coffee?',
+          'What do you put in your coffee?'
         ]
       )
     end
@@ -170,16 +170,16 @@ RSpec.describe ConditionalContent do
       it 'injects the data-same-page attribute' do
         skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
-        [
-          { 'data-supports-branching': false, 'data-same-page': false },
-          { 'data-supports-branching': true, 'data-same-page': false },
-          { 'data-supports-branching': true, 'data-same-page': false },
-          { 'data-supports-branching': true, 'data-same-page': false },
-          { 'data-supports-branching': true, 'data-same-page': true },
-          { 'data-supports-branching': true, 'data-same-page': true },
-          { 'data-supports-branching': true, 'data-same-page': true },
-          { 'data-supports-branching': true, 'data-same-page': false }
-        ]
+          [
+            { 'data-supports-branching': false, 'data-same-page': false },
+            { 'data-supports-branching': true, 'data-same-page': false },
+            { 'data-supports-branching': true, 'data-same-page': false },
+            { 'data-supports-branching': true, 'data-same-page': false },
+            { 'data-supports-branching': true, 'data-same-page': true },
+            { 'data-supports-branching': true, 'data-same-page': true },
+            { 'data-supports-branching': true, 'data-same-page': true },
+            { 'data-supports-branching': true, 'data-same-page': false }
+          ]
         )
       end
     end
