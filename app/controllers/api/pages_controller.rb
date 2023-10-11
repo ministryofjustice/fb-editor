@@ -10,8 +10,8 @@ module Api
 
     def destroy_message
       @page = service.find_page_by_uuid(params[:page_id])
-      
-      modal =  DestroyPageModal.new(service:, page: @page)
+
+      modal = DestroyPageModal.new(service:, page: @page)
       render modal, locals: { pages: modal.pages }
     end
   end

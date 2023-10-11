@@ -10,9 +10,9 @@ module Api
         service:,
         page: @page,
         question: @question,
-        option: @option,
+        option: @option
       )
-       render modal, locals: { pages: modal.pages }
+      render modal, locals: { pages: modal.pages }
     end
   end
 end
