@@ -136,6 +136,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :editor_preview?
 
+  def single_page_preview?
+    return true if request.referer.blank?
+
+    !URI(request.referer).path.split('/').include?('preview')
+  end
+  helper_method :single_page_preview?
+
   def service_slug
     return service_slug_config if service_slug_config.present?
 
