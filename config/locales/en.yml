@@ -449,9 +449,18 @@ en:
     first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away.'
     first_publish_success: 'Your form has been published.'
     publish_for_review:
-      button: 'Publish for review'
+      button: 'Request a final check'
+      confirmation:
+        heading: 'Final check requested'
+        text: 'We will be in touch shortly'
     declarations:
       error: 'You must confirm each of the declarations'
+      one: 'I have read the guidance on assessments and taken any appropriate actions for my form'
+      two: "I have performed a basic accessibility check and completed my form's accessibility statement"
+      three: "I have read the guidance on data protection and completed my form's privacy statement"
+      four: 'I have tested my form and confirmed that it works as intended and is sending responses correctly (advice on testing your form)'
+      five: 'I have checked and confirmed all settings for the Live site are correct'
+      six: 'I have read and agree to the MoJ Forms Terms of Use'
     autocomplete_items:
       dev:
         icon_fallback: 'Warning'

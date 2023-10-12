@@ -7,6 +7,7 @@ class PublishController < FormController
   end
 
   def create
+    return unless can_publish_to_live
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     if @publish_service_creation.save
@@ -32,6 +33,7 @@ class PublishController < FormController
   def publish_for_review
     declarations = publish_for_review_params['declarations_checkboxes'].compact
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except("authenticity_token", "declarations_checkboxes"))
+    # TODO: is checking the length enough?
     if declarations.length != 7
       update_form_objects
       @errors = [I18n.t('publish.declarations.error')]
@@ -39,9 +41,27 @@ class PublishController < FormController
     end
 
     if @publish_service_creation.valid?
-      update_form_objects
-      @show_confirmation = true
-      render :index
+      if @publish_service_creation.save
+        # not sure if it should ever be present
+        if previous_service_slug.present?
+          UnpublishServiceJob.perform_later(
+            publish_service_id: published_service.id,
+            service_slug: previous_service_slug.decrypt_value
+          )
+  
+          all_previous_service_slugs.destroy_all
+        end
+  
+        PublishServiceJob.perform_later(
+          publish_service_id: @publish_service_creation.publish_service_id
+        )
+        update_form_objects
+        @show_confirmation = true
+        render :index
+      else
+        update_form_objects
+        render :index
+      end
     end
   end
 
@@ -51,7 +71,7 @@ class PublishController < FormController
     
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      name: 'APPROVED_FOR_LIVE'
+      name: 'APPROVED_TO_GO_LIVE'
     ).present? ||
 
     PublishService.find_by(
@@ -69,7 +89,6 @@ class PublishController < FormController
   def declaration_errors
     if @errors.present? 
       if @errors.any?
-        byebug
         @errors
       end
     else

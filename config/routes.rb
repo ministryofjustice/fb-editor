@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       resources :api_submission, only: [:create, :index]
       resources :versions, only: [:update, :edit, :show]
 
-      post 'approve/:service_id', to 'services#approve', as :approve
     end
     resources :users
     resources :publish_services

@@ -1,15 +1,8 @@
-  <div class="width-responsive-two-thirds">
+  <div class="width-responsive">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-0"><%= t('publish.heading') %></h1>
-    <p id="publish-intro">
-      You are publishing the version from <span class="date version">
-        <%= l(service.created_at.to_time.in_time_zone('London'), format: :date) %></span>
-      <span class="time version">
-        <%= l(service.created_at.to_time.in_time_zone('London'), format: :time) %></span>.
-    </p>
-
     <div id="publish-environments">
-      <%= govuk_tabs(title: 'Publish environment tabs') do |c|
-        c.with_tab(label: 'dev fixme') do %>
+      <%= govuk_tabs(title: 'Publish environment tabs', classes: ['moj-forms-tabs']) do |c|
+        c.with_tab(label: 'Publish to Test') do %>
           <%= render 'publish_environment',
             environment: 'dev',
             presenter: @publish_page_presenter_dev,
@@ -20,7 +13,7 @@
             <p><%= t('publish.dev.inset_text') %></p>
           <% end %>
         <% end %>
-        <% c.with_tab(label: 'prod fixme') do %>
+        <% c.with_tab(label: 'Publish to Live') do %>
           <% if can_publish_to_live %>
             <%= render 'publish_environment',
               environment: 'production',

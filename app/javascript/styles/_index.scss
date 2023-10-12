@@ -200,6 +200,57 @@ a[disabled] {
   }
 }
 
+.bold-label {
+  font-weight: bold;
+}
+
+.moj-forms-tabs {
+  .govuk-tabs__panel {
+    border: 0px;
+  }
+
+  .govuk-tabs__list {
+    border: 0px;
+    border-bottom: 1px solid #b1b4b6;
+    display: inline-block;
+  }
+
+  .govuk-tabs__tab {
+    text-decoration: none;
+  }
+
+  .govuk-tabs__tab:visited {
+    color: #1d70b8;
+  }
+
+  .govuk-tabs__list-item {
+    border-bottom: 0px;
+    background-color: transparent;
+    font-size: x-large;
+      & a {
+        color: #1d70b8;
+      }
+  }
+
+  .govuk-tabs__list-item--selected {
+    border: 0px;
+    border-bottom: 3px solid #1d70b8;
+      & a {
+        color: #0b0c0c !important;
+      }
+  }
+
+  .govuk-fieldset {
+    margin-top: 35px;
+  }
+
+  .govuk-fieldset__legend {
+    margin-bottom: 30px;
+  }
+
+  border: 0px;
+}
+
 
 /* Branching
  * ------------------- */
@@ -1409,4 +1460,3 @@ dl > div:not(:first-of-type){
     }
   }
 }
-
