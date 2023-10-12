@@ -8,6 +8,7 @@ class PublishController < FormController
 
   def create
     return unless can_publish_to_live
+
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     if @publish_service_creation.save
@@ -32,7 +33,7 @@ class PublishController < FormController
 
   def publish_for_review
     declarations = publish_for_review_params['declarations_checkboxes'].compact
-    @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except("authenticity_token", "declarations_checkboxes"))
+    @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
     # TODO: is checking the length enough?
     if declarations.length != 7
       update_form_objects
@@ -48,46 +49,43 @@ class PublishController < FormController
             publish_service_id: published_service.id,
             service_slug: previous_service_slug.decrypt_value
           )
-  
+
           all_previous_service_slugs.destroy_all
         end
-  
+
         PublishServiceJob.perform_later(
           publish_service_id: @publish_service_creation.publish_service_id
         )
         update_form_objects
         @show_confirmation = true
-        render :index
       else
         update_form_objects
-        render :index
       end
+      render :index
     end
   end
 
   def can_publish_to_live
     # moj_forms_admin? ||
     # moj_forms_dev? ||
-    
+
     ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'APPROVED_TO_GO_LIVE'
     ).present? ||
 
-    PublishService.find_by(
-      service_id: service.service_id,
-      deployment_environment: 'production'
-    ).present?
+      PublishService.find_by(
+        service_id: service.service_id,
+        deployment_environment: 'production'
+      ).present?
   end
   helper_method :can_publish_to_live
 
-  def prod_tab_active?
-    
-  end
+  def prod_tab_active?; end
   helper_method :prod_tab_active?
 
   def declaration_errors
-    if @errors.present? 
+    if @errors.present?
       if @errors.any?
         @errors
       end
@@ -100,7 +98,7 @@ class PublishController < FormController
   def show_confirmation
     if @show_confirmation
       @show_confirmation = nil
-      return true
+      true
     end
   end
   helper_method :show_confirmation
@@ -127,7 +125,7 @@ class PublishController < FormController
   def publish_for_review_params
     params.permit(
       :authenticity_token,
-      :declarations_checkboxes => [],
+      declarations_checkboxes: []
     ).merge(
       require_authentication: '1',
       username: ENV['PUBLISH_FOR_REVIEW_USERNAME'],
