@@ -4,13 +4,17 @@
   <h3 data-node="heading" class="govuk-label govuk-label--m">
     <%= t('pages.delete_modal.you_cannot_delete_this_page') %>
   </h3>
-  <p data-node="content">
     <% if pages.size > 1 %>
-      <%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_multiple', titles: pages.map(&:heading).map{|text| "'#{text}'"}.to_sentence) %>
+      <p><%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_multiple') %></p>
+      <ul>
+      <% pages.each do |page| %>
+        <li><%= page[:heading] %></li>
+      <% end %>
+      </ul>
     <% else %>
-      <%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_single', title: pages.first.heading) %>
+      <p><%= t('pages.delete_modal.delete_page_used_for_conditional_content_message_single', title: pages.first.heading) %></p>
     <% end %>
-  </p>
+  <p><%= t('pages.delete_modal.update_content_areas') %></p>
 
   <div class="govuk-button-group">
     <button class="govuk-button fb-govuk-button"><%= t('dialogs.button_understood') %></button>
