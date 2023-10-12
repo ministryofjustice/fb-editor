@@ -177,8 +177,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :is_confirmation_email_question?
 
-  def load_conditional_content
-    @page.content_components.map(&:uuid)
-  end
-  helper_method :load_conditional_content
+  def in_runner?; end
+  helper_method :in_runner?
 end
