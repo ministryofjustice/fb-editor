@@ -130,8 +130,8 @@ class PublishController < FormController
       :declarations_checkboxes => [],
     ).merge(
       require_authentication: '1',
-      username: 'FIXME123',
-      password: 'FIXME123',
+      username: ENV['PUBLISH_FOR_REVIEW_USERNAME'],
+      password: ENV['PUBLISH_FOR_REVIEW_PASSWORD'],
       deployment_environment: 'production',
       service_id: service.service_id,
       user_id: current_user.id,

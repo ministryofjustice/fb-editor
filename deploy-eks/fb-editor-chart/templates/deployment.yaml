@@ -164,6 +164,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: aws_ses_access_key_id
+          - name: PUBLISH_FOR_REVIEW_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: publish_for_review_username
+          - name: PUBLISH_FOR_REVIEW_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: publish_for_review_password
       volumes:
         - name: tmp-files
           emptyDir: {}
