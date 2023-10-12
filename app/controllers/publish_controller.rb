@@ -56,8 +56,15 @@ class PublishController < FormController
         PublishServiceJob.perform_later(
           publish_service_id: @publish_service_creation.publish_service_id
         )
+
+        ServiceConfiguration.find_or_initialize_by(
+          service_id: service.service_id,
+          deployment_environment: 'production',
+          name: 'AWAITING_APPROVAL',
+          value: '1'
+        ).save!
+
         update_form_objects
-        @show_confirmation = true
       else
         update_form_objects
       end
@@ -69,20 +76,39 @@ class PublishController < FormController
     # moj_forms_admin? ||
     # moj_forms_dev? ||
 
-    ServiceConfiguration.find_by(
+    if ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'APPROVED_TO_GO_LIVE'
-    ).present? ||
-
-      PublishService.find_by(
+    ).present?
+      true
+    elsif ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'AWAITING_APPROVAL'
+    ).present?
+      false
+    else
+      return PublishService.find_by(
         service_id: service.service_id,
         deployment_environment: 'production'
       ).present?
+    end
   end
   helper_method :can_publish_to_live
 
   def prod_tab_active?; end
   helper_method :prod_tab_active?
+
+  def show_confirmation?
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'AWAITING_APPROVAL'
+    ).present? &&
+      !ServiceConfiguration.find_by(
+        service_id: service.service_id,
+        name: 'APPROVED_TO_GO_LIVE'
+      ).present?
+  end
+  helper_method :show_confirmation?
 
   def declaration_errors
     if @errors.present?
