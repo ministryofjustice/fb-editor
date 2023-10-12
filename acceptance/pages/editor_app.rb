@@ -245,6 +245,7 @@ class EditorApp < SitePrism::Page
   element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
   element :show_if_button, :button, text: I18n.t('content.menu.show_if')
   section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog'
-
+  
+  element :conditional_content_notice, '.govuk-notification-banner', text: I18n.t('presenter.conditional_content.notification')
 
 end
