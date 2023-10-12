@@ -64,10 +64,8 @@ class PublishController < FormController
           value: '1'
         ).save!
 
-        update_form_objects
-      else
-        update_form_objects
       end
+      update_form_objects
       render :index
     end
   end
@@ -87,7 +85,7 @@ class PublishController < FormController
     ).present?
       false
     else
-      return PublishService.find_by(
+      PublishService.find_by(
         service_id: service.service_id,
         deployment_environment: 'production'
       ).present?
@@ -103,10 +101,10 @@ class PublishController < FormController
       service_id: service.service_id,
       name: 'AWAITING_APPROVAL'
     ).present? &&
-      !ServiceConfiguration.find_by(
+      ServiceConfiguration.find_by(
         service_id: service.service_id,
         name: 'APPROVED_TO_GO_LIVE'
-      ).present?
+      ).blank?
   end
   helper_method :show_confirmation?
 
