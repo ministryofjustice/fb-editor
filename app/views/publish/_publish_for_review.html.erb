@@ -1,0 +1,80 @@
+<section class="publish-environment publish-environment--<%=environment%>">
+  <% if show_confirmation %>
+    <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+    <div class="govuk-panel govuk-panel--confirmation">
+      <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h1>
+      <p><%= t("publish.publish_for_review.confirmation.text") %></p>
+    </div>
+  <% else %>
+    <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+    <p><span class="bold-label">Your form name: </span><%= service.service_name %><br/>
+    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= [service.service_slug, '.', root_url].join %></p>
+
+    <br/>
+
+    <% if presenter.service_output_warning.present? %>
+      <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
+    <% end %>
+
+    <% if environment == 'production' %>
+      <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
+        <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
+      <% end %>
+    <% end %>
+
+    <%= form_with url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |form| %>
+    
+      <% declaration_errors.each do |message| %>
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+          <div role="alert">
+            <h2 class="govuk-error-summary__title">
+              There is a problem
+            </h2>
+            <div class="govuk-error-summary__body">
+              <ul class="govuk-list govuk-error-summary__list">
+                <li>
+                  <a href='#'><%= message %></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <%= form.govuk_check_boxes_fieldset :declarations_checkboxes, legend: { text: "Confirm you have taken all of the following actions to request your final check", size: "s" } do %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
+          link_errors: true,
+          label: { text: t('publish.declarations.one') },
+          checked: false
+        %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_2,
+          link_errors: true,
+          label: { text: t('publish.declarations.two') },
+          checked: false
+        %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_3,
+          link_errors: true,
+          label: { text: t('publish.declarations.three') },
+          checked: false
+        %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_4,
+          link_errors: true,
+          label: { text: t('publish.declarations.four') },
+          checked: false
+        %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
+          link_errors: true,
+          label: { text: t('publish.declarations.five') },
+          checked: false
+        %>
+        <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
+          link_errors: true,
+          label: { text: t('publish.declarations.six') },
+          checked: false
+        %>
+      <% end %>
+      <%= form.govuk_submit t('publish.publish_for_review.button'), class: 'fb-govuk-button' %>
+    <% end %>
+  <% end %>
+</section>
