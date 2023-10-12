@@ -239,6 +239,7 @@ en:
       before_submit: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
       submit: 'Delete branching point'
   conditional_content:
+    heading: Show this content...
     display: 
       always: 'Always'
       conditional: 'Only if...'
