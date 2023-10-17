@@ -22,6 +22,7 @@ class Publisher
     validates :service_configuration, private_public_key: true
 
     LIVE_PRODUCTION = 'live-production'.freeze
+    TEST_PRODUCTION = 'test-production'.freeze
 
     def service_metadata
       service.to_json
@@ -138,6 +139,10 @@ class Publisher
 
     def live_production?
       platform_deployment == LIVE_PRODUCTION
+    end
+
+    def dev_production?
+      platform_deployment == TEST_PRODUCTION
     end
 
     def config_map
