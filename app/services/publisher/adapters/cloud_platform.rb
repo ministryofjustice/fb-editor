@@ -55,9 +55,9 @@ class Publisher
       end
 
       def completed
-        if (live_production? || dev_production?) && published_for_review?
-          NotificationService.notify(review_message, webhook: ENV['SLACK_REVIEW_WEBHOOK']) and return
-        end
+        # if (live_production? || dev_production?) && published_for_review?
+        #   NotificationService.notify(review_message, webhook: ENV['SLACK_REVIEW_WEBHOOK']) and return
+        # end
 
         if live_production? && first_published?
           NotificationService.notify(message)
@@ -90,9 +90,9 @@ class Publisher
         "#{service_name} has been published to #{namespace}.\n#{hostname}"
       end
 
-      def review_message
-        "#{service_name} has been published for review to #{namespace} using the review credentials.\n#{hostname}"
-      end
+      # def review_message
+      #   "#{service_name} has been published for review to #{namespace} using the review credentials.\n#{hostname}"
+      # end
 
       def create_config_dir
         FileUtils.mkdir_p(config_dir)

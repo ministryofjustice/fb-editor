@@ -64,6 +64,7 @@ class PublishController < FormController
           value: '1'
         ).save!
         # byebug
+        NotificationService.notify(review_message(form_url('production')), webhook: ENV['SLACK_REVIEW_WEBHOOK'])
         update_form_objects
         redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
       end
@@ -97,6 +98,10 @@ class PublishController < FormController
 
   def prod_tab_active?; end
   helper_method :prod_tab_active?
+
+  def review_message(url)
+    "#{service.service_name} has been published for review using the review credentials.\n#{url}"
+  end
 
   def show_confirmation?
     ServiceConfiguration.find_by(
