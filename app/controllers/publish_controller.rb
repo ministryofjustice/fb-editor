@@ -63,10 +63,12 @@ class PublishController < FormController
           name: 'AWAITING_APPROVAL',
           value: '1'
         ).save!
-
+        # byebug
+        update_form_objects
+        redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
       end
       update_form_objects
-      render :index
+      redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
     end
   end
 
@@ -119,13 +121,14 @@ class PublishController < FormController
   end
   helper_method :declaration_errors
 
-  def show_confirmation
-    if @show_confirmation
-      @show_confirmation = nil
-      true
+  def form_url(environment)
+    if environment == 'dev'
+      ['https://', service.service_slug, '.dev.', root_url.gsub('https://', '')].join
+    else
+      ['https://', service.service_slug, '.', root_url.gsub('https://', '')].join
     end
   end
-  helper_method :show_confirmation
+  helper_method :form_url
 
   private
 

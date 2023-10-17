@@ -144,6 +144,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
+          - name: SLACK_REVIEW_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_review_webhook
           - name: PINGDOM_TOKEN
             valueFrom:
               secretKeyRef:
@@ -301,6 +306,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
+          - name: SLACK_REVIEW_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_review_webhook
           - name: AWS_S3_BUCKET_DEV
             valueFrom:
               secretKeyRef:

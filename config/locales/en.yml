@@ -455,12 +455,22 @@ en:
         text: 'We will be in touch shortly'
     declarations:
       error: 'You must confirm each of the declarations'
-      one: 'I have read the guidance on assessments and taken any appropriate actions for my form'
-      two: "I have performed a basic accessibility check and completed my form's accessibility statement"
-      three: "I have read the guidance on data protection and completed my form's privacy statement"
-      four: 'I have tested my form and confirmed that it works as intended and is sending responses correctly (advice on testing your form)'
+      one: 'I have read the %{href} and taken any appropriate actions for my form'
+      one_link_text: 'guidance on assessments'
+      one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#timescales'
+      two: "I have performed a %{href} and completed my form's accessibility statement"
+      two_link_text: 'basic accessibility check'
+      two_link_ref: 'https://moj-forms.service.justice.gov.uk/accessibility/'
+      three: "I have read the %{href} and completed my form's privacy statement"
+      three_link_text: 'guidance on data protection'
+      three_link_ref: 'https://moj-forms.service.justice.gov.uk/data-protection/'
+      four: 'I have tested my form and confirmed that it works as intended and is sending responses correctly (%{href})'
+      four_link_text: 'advice on testing your form'
+      four_link_ref: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#test-checks'
       five: 'I have checked and confirmed all settings for the Live site are correct'
-      six: 'I have read and agree to the MoJ Forms Terms of Use'
+      six: 'I have read and agree to the %{href}'
+      six_link_text: 'MoJ Forms Terms of Use'
+      six_link_ref: 'https://moj-forms.service.justice.gov.uk/terms-of-use/'
     autocomplete_items:
       dev:
         icon_fallback: 'Warning'

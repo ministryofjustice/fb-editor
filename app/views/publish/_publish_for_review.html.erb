@@ -10,7 +10,7 @@
     <p class="description"><%= t("publish.#{environment}.description") %></p>
 
     <p><span class="bold-label">Your form name: </span><%= service.service_name %><br/>
-    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= [service.service_slug, '.', root_url].join %></p>
+    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= form_url(environment) %></p>
 
     <br/>
 
@@ -45,22 +45,22 @@
       <%= form.govuk_check_boxes_fieldset :declarations_checkboxes, legend: { text: "Confirm you have taken all of the following actions to request your final check", size: "s" } do %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
           link_errors: true,
-          label: { text: t('publish.declarations.one') },
+          label: { text: t('publish.declarations.one', href: govuk_link_to(t('publish.declarations.one_link_text'), t('publish.declarations.one_link_ref'))).html_safe },
           checked: false
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_2,
           link_errors: true,
-          label: { text: t('publish.declarations.two') },
+          label: { text: t('publish.declarations.two', href: govuk_link_to(t('publish.declarations.two_link_text'), t('publish.declarations.two_link_ref'))).html_safe },
           checked: false
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_3,
           link_errors: true,
-          label: { text: t('publish.declarations.three') },
+          label: { text: t('publish.declarations.three', href: govuk_link_to(t('publish.declarations.three_link_text'), t('publish.declarations.three_link_ref'))).html_safe },
           checked: false
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_4,
           link_errors: true,
-          label: { text: t('publish.declarations.four') },
+          label: { text: t('publish.declarations.four', href: govuk_link_to(t('publish.declarations.four_link_text'), t('publish.declarations.four_link_ref'))).html_safe },
           checked: false
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
@@ -70,7 +70,7 @@
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
           link_errors: true,
-          label: { text: t('publish.declarations.six') },
+          label: { text: t('publish.declarations.six', href: govuk_link_to(t('publish.declarations.six_link_text'), t('publish.declarations.six_link_ref'))).html_safe },
           checked: false
         %>
       <% end %>

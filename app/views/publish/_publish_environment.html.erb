@@ -2,11 +2,7 @@
   <p class="description"><%= t("publish.#{environment}.description") %></p>
 
   <p><span class="bold-label">Your form name is: </span><%= service.service_name %><br/>
-  <% if environment == 'dev' %>
-    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= [service.service_slug, '.', 'dev', '.', root_url].join %></p>
-  <% else %>
-    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= [service.service_slug, '.', root_url].join %></p>
-  <% end %>
+  <span class="bold-label">Your <%= environment %> form will be published to: </span><%= form_url(environment) %></p>
 
   <% if published_service.published? %>
     <%= render('first_publish_message', environment: environment, service_id: service.service_id) if published_service.first_publish? %>
