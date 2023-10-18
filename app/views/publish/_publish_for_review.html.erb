@@ -9,9 +9,6 @@
   <% else %>
     <p class="description"><%= t("publish.#{environment}.description") %></p>
 
-    <p><span class="bold-label">Your form name: </span><%= service.service_name %><br/>
-    <span class="bold-label">Your <%= environment %> form will be published to: </span><%= form_url(environment) %></p>
-
     <br/>
 
     <% if presenter.service_output_warning.present? %>
@@ -23,6 +20,11 @@
         <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
       <% end %>
     <% end %>
+
+    <h3><%= t('publish.publish_for_review.info.heading') %></h3>
+
+    <p><%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %></p>
+    <br/>
 
     <%= form_with url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |form| %>
     

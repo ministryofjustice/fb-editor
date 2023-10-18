@@ -130,14 +130,14 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
           end
 
           it 'sends a notification to the slack channel' do
-            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published for review using the review credentials.\nsam-or-frodo.service.justice.gov.uk", webhook: ENV['SLACK_REVIEW_WEBHOOK'])
             cloud_platform.completed
           end
         end
 
         context 'when publish directly to live production' do
           it 'sends a notification to the slack channel' do
-            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published for review using the review credentials.\nsam-or-frodo.service.justice.gov.uk", webhook: ENV['SLACK_REVIEW_WEBHOOK'])
             cloud_platform.completed
           end
         end

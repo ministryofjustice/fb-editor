@@ -449,6 +449,11 @@ en:
     first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away.'
     first_publish_success: 'Your form has been published.'
     publish_for_review:
+      info:
+        heading: 'Request a final check to unlock publishing'
+        content: 'Your form must go through a %{href} before you can publish to Live. This is to ensure it meets the MoJ Forms Terms of Use and is ready to go live.'
+        link_text: 'final check'
+        link_url: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/'
       button: 'Request a final check'
       confirmation:
         heading: 'Final check requested'
