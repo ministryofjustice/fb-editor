@@ -346,7 +346,12 @@ module CommonSteps
   end
 
   def and_I_add_a_content_component(content:)
-    editor.add_content_area_buttons.first.click
+    if editor.has_add_content_area_buttons?(wait: 1)
+      editor.add_content_area_buttons.last.click
+    else
+      and_I_add_a_multiple_page_content_component
+    end
+      
     component = editor.editable_content_areas.last
     and_the_content_component_has_the_optional_content(component)
     when_I_change_editable_content(component, content: content)

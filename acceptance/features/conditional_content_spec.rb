@@ -102,7 +102,7 @@ feature 'Conditional content' do
       when_I_commit_my_changes
 
       then_the_component_config_includes(editor.last_editable_content_area, 'display' => 'never')
-      then_I_can_see_the_show_if_button_for(editor.last_editable_content_area)
+      then_I_can_see_the_hidden_button_for(editor.last_editable_content_area)
     end
 
     scenario 'setting to conditionally display' do
@@ -329,7 +329,7 @@ def then_I_should_see_the_conditional_content_menu_option
 end
 
 def and_I_want_to_set_content_visibility
-  editor.show_if_link.click 
+    editor.show_if_link.click 
 end
 
 def and_I_want_to_edit_content_visibility_for(component)
@@ -400,11 +400,15 @@ def then_the_component_config_has_key(component, key)
 end
 
 def then_I_cannot_see_the_show_if_button_for(component)
-  expect(component).to have_no_button(I18n.t('content.menu.show_if'))
+  expect(component).to have_no_button(I18n.t('conditional_content.show_if_button_label'))
 end
 
 def then_I_can_see_the_show_if_button_for(component)
-  expect(component).to have_button(I18n.t('content.menu.show_if'))
+  expect(component).to have_button(I18n.t('conditional_content.show_if_button_label'))
+end
+
+def then_I_can_see_the_hidden_button_for(component)
+  expect(component).to have_button(I18n.t('conditional_content.hidden_button_label'))
 end
 
 def when_I_select_a_component(expression, label)
