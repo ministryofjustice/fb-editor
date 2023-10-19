@@ -246,6 +246,8 @@ en:
       always: 'Always'
       conditional: 'Only if...'
       never: 'Never'
+    add_another_rule: 'Add another rule'
+    add_condition: 'Add condition'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
@@ -320,6 +322,8 @@ en:
       heading_remove: "Delete the component?"
       affirmative: 'Yes'
       negative: 'No'
+      conditional:
+        heading: Show this component...
   question:
     optional_flag: '(optional)'
     menu:
@@ -654,7 +658,6 @@ en:
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
         unsupported: This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.
-        unsupported_component: "This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question for Branch "
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'

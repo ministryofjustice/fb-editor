@@ -1,4 +1,5 @@
 require_relative '../support/data_content_id'
+require_relative '../sections/conditional_content_modal'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
@@ -106,6 +107,8 @@ class EditorApp < SitePrism::Page
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
+  element :change_destination_link, :link, I18n.t('actions.change_destination')
+  element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
 
   def main_flow_titles
     flow_titles(main_flow)
@@ -180,6 +183,7 @@ class EditorApp < SitePrism::Page
   data_content_id :page_heading, 'page[heading]'
   data_content_id :page_lede, 'page[lede]'
   data_content_id :page_body, 'page[body]'
+  data_content_id :page_before_you_start, 'page[before_you_start]'
   data_content_id :page_send_heading, 'page[send_heading]'
   data_content_id :page_send_body, 'page[send_body]'
 
@@ -187,6 +191,12 @@ class EditorApp < SitePrism::Page
   data_content_id :first_component, 'page[components[0]]'
   data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
+  elements :editable_content_areas, 'editable-content[data-config]'
+  element :last_editable_content_area, 'editable-content[data-config]:last-of-type'
+
+  def content_area(content)
+    editable_content_areas.select { |a| a.text.include?(content) }
+  end
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
@@ -210,9 +220,6 @@ class EditorApp < SitePrism::Page
   element :delete_branching_point_button, :button, I18n.t('branches.delete_modal.submit')
   element :delete_and_update_branching_link, :button, I18n.t('pages.delete_modal.delete_and_update_branching')
 
-  element :change_destination_link, :link, I18n.t('actions.change_destination')
-  element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
-
   elements :main_flow, '#flow-overview .flow-item'
   elements :detached_flow, '.flow-detached-group .flow-item'
 
@@ -234,4 +241,11 @@ class EditorApp < SitePrism::Page
   def last_condition_remover
     all('.condition-remover').last
   end
+
+  element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
+  element :show_if_button, :button, text: I18n.t('conditional_content.show_if_button_label')
+  section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog'
+  
+  element :conditional_content_notice, '.govuk-notification-banner', text: I18n.t('presenter.conditional_content.notification')
+
 end
