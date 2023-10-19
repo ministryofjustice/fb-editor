@@ -70,8 +70,6 @@ feature 'Edit exit pages' do
     when_I_add_the_page
   end
 
-
-
   def then_I_should_see_the_component(content)
     expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
@@ -79,8 +77,6 @@ feature 'Edit exit pages' do
   def then_I_should_not_see_the_continue_button
     expect(page).not_to have_content(I18n.t('actions.continue'))
   end
-
-
 
   def when_I_preview_the_form_until_the_exit_page
     and_I_return_to_flow_page

@@ -9,8 +9,6 @@ RSpec.describe DestroyPageModal do
   let(:page) { service.find_page_by_url('page-h') }
 
   describe '#to_partial_path' do
-    # subject(:partial) { subject.to_partial_path }
-
     context 'branching' do
       # branch destinations
       context 'when after branch' do

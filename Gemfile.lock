@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: da6cdd76dbc327d18241571fe125384b0c93d9a6
+  revision: b21648d482822cdca9030ce4e05c8df20e2ec659
   branch: conditional-content-fixture
   specs:
     metadata_presenter (3.2.10)
