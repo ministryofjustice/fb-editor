@@ -7,7 +7,7 @@ class PublishController < FormController
   end
 
   def create
-    return unless can_publish_to_live
+    return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
@@ -53,7 +53,7 @@ class PublishController < FormController
           all_previous_service_slugs.destroy_all
         end
 
-        if ENV['CI'].blank?
+        if ENV['CI'].blank? && ENV['RAILS_ENV'] != 'development'
           PublishServiceJob.perform_later(
             publish_service_id: @publish_service_creation.publish_service_id
           )
@@ -65,12 +65,11 @@ class PublishController < FormController
           name: 'AWAITING_APPROVAL',
           value: '1'
         ).save!
-
         update_form_objects
-        redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
+        redirect_to publish_index_path(service.service_id)+'#publish-to-live'
       end
       update_form_objects
-      redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
+      redirect_to publish_index_path(service.service_id)+'#publish-to-live'
     end
   end
 
@@ -96,9 +95,6 @@ class PublishController < FormController
     end
   end
   helper_method :can_publish_to_live
-
-  def prod_tab_active?; end
-  helper_method :prod_tab_active?
 
   def show_confirmation?
     ServiceConfiguration.find_by(

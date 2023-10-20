@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   resources :services, only: [:index, :edit, :update, :create] do
     member do
       resources :publish, only: [:index, :create]
-      post '/publish_for_review', to: 'publish#publish_for_review', as: 'publish_for_review'
+      post '/publish_for_review', to: 'publish#publish_for_review'
       resources :pages, param: :page_uuid, only: [:create, :edit, :update, :destroy]
       resources :branches, param: :branch_uuid, only: [:create, :edit, :update, :destroy] do
         collection do
