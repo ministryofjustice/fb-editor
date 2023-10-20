@@ -53,7 +53,7 @@ class PublishController < FormController
           all_previous_service_slugs.destroy_all
         end
 
-        if ENV['CI'].blank? && ENV['RAILS_ENV'] != 'development'
+        if ENV['CI_MODE'].blank? && ENV['RAILS_ENV'] != 'development'
           PublishServiceJob.perform_later(
             publish_service_id: @publish_service_creation.publish_service_id
           )
