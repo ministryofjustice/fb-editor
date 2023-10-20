@@ -216,6 +216,11 @@ class EditorApp < SitePrism::Page
   elements :main_flow, '#flow-overview .flow-item'
   elements :detached_flow, '.flow-detached-group .flow-item'
 
+  # publisher tabs
+  element :dev_tab, :link, 'Publish to Test'
+  element :production_tab, :link, 'Publish to Live'
+  element :publish_for_review, :button, 'Request a final check'
+
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end

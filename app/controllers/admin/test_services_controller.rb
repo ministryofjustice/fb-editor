@@ -19,6 +19,13 @@ module Admin
         ).create_version
 
         if test_service_version
+          ServiceConfiguration.find_or_initialize_by(
+            service_id: service_creation.service_id,
+            deployment_environment: 'production',
+            name: 'APPROVED_TO_GO_LIVE',
+            value: test_service_name
+          ).save! unless test_service_name =~ /no_approval/
+
           redirect_to edit_service_path(service_creation.service_id)
         else
           render json: {
