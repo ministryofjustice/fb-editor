@@ -53,7 +53,7 @@ class PublishController < FormController
           all_previous_service_slugs.destroy_all
         end
 
-        if ENV['CI_MODE'].blank? && ENV['RAILS_ENV'] != 'development'
+        unless current_user.email == 'fb-acceptance-tests@digital.justice.gov.uk'
           PublishServiceJob.perform_later(
             publish_service_id: @publish_service_creation.publish_service_id
           )
