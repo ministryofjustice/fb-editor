@@ -66,10 +66,10 @@ class PublishController < FormController
           value: '1'
         ).save!
         update_form_objects
-        redirect_to publish_index_path(service.service_id)+'#publish-to-live'
+        redirect_to "#{publish_index_path(service.service_id)}#publish-to-live"
       end
       update_form_objects
-      redirect_to publish_index_path(service.service_id)+'#publish-to-live'
+      redirect_to "#{publish_index_path(service.service_id)}#publish-to-live"
     end
   end
 
