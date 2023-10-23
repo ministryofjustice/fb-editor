@@ -1,18 +1,3 @@
-GIT
-  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: b21648d482822cdca9030ce4e05c8df20e2ec659
-  branch: conditional-content-fixture
-  specs:
-    metadata_presenter (3.2.10)
-      govspeak (~> 7.1)
-      govuk_design_system_formbuilder (>= 2.1.5)
-      json-schema (= 2.8.1)
-      kramdown (>= 2.4.0)
-      rails (>= 7.0.0)
-      sassc-rails (= 2.1.2)
-      sprockets
-      sprockets-rails
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -288,6 +273,15 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
+    metadata_presenter (3.2.11)
+      govspeak (~> 7.1)
+      govuk_design_system_formbuilder (>= 2.1.5)
+      json-schema (= 2.8.1)
+      kramdown (>= 2.4.0)
+      rails (>= 7.0.0)
+      sassc-rails (= 2.1.2)
+      sprockets
+      sprockets-rails
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.20.0)
@@ -530,6 +524,7 @@ GEM
       racc
     pg (1.5.4)
     plek (5.0.0)
+    prism (0.15.1)
     prometheus_exporter (2.0.8)
       webrick
     public_suffix (5.0.3)
@@ -635,6 +630,10 @@ GEM
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
+    ruby-lsp (0.12.0)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 0.15.1, < 0.16)
+      sorbet-runtime (>= 0.5.5685)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -675,6 +674,7 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
+    sorbet-runtime (0.5.11090)
     spring (4.1.1)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -729,6 +729,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-darwin-21
   x86_64-linux
 
 DEPENDENCIES
@@ -754,7 +755,7 @@ DEPENDENCIES
   govuk_design_system_formbuilder
   hashie
   listen (~> 3.8)
-  metadata_presenter!
+  metadata_presenter (= 3.2.11)
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
@@ -765,6 +766,7 @@ DEPENDENCIES
   rspec_junit_formatter
   rubocop (~> 1.55.0)
   rubocop-govuk
+  ruby-lsp
   sass-rails (>= 6)
   selenium-webdriver (= 4.8.0)
   sentry-delayed_job (~> 5.11.0)
