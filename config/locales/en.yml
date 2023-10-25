@@ -147,7 +147,8 @@ en:
       admin: Admin
       forms: Your forms
       sign_out: Sign out %{user_name}
-      user_guide: "User guide"
+      user_guide: "Support"
+      send_feedback: "Send feedback"
       home_url: "https://moj-forms.service.justice.gov.uk/"
       user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
@@ -241,8 +242,8 @@ en:
   conditional_content:
     heading: Show this content...
     show_if_button_label: Shows if...
-    hidden_button_label: Hidden 
-    display: 
+    hidden_button_label: Hidden
+    display:
       always: 'Always'
       conditional: 'Only if...'
       never: 'Never'

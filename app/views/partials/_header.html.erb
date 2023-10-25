@@ -18,7 +18,10 @@
             <%= link_to t('.forms'), services_path %>
           </li>
           <li>
-            <%= link_to t('.user_guide'), t('.user_guide_url'), target: :_blank %>
+            <%= link_to t('.user_guide'), t('.user_guide_url'), target: :_blank, noreferrer: true, nofollow: true %>
+          </li>
+          <li>
+            <%= link_to t('.send_feedback'), ENV['FEEDBACK_FORM_URL'], target: :_blank, noreferrer: true, nofollow: true %>
           </li>
           <% if moj_forms_dev? || moj_forms_admin? %>
             <li>
