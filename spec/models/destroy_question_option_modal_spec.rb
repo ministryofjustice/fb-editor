@@ -4,8 +4,7 @@ RSpec.describe DestroyQuestionOptionModal do
       service:,
       page:,
       question:,
-      option:,
-      label: 'option label'
+      option:
     )
   end
   let(:service_metadata) { metadata_fixture(:branching_2) }

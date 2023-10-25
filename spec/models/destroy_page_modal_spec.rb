@@ -1,5 +1,5 @@
 RSpec.describe DestroyPageModal do
-  subject(:destroy_page_modal) do
+  subject(:subject) do
     described_class.new(
       service:,
       page:
@@ -9,8 +9,6 @@ RSpec.describe DestroyPageModal do
   let(:page) { service.find_page_by_url('page-h') }
 
   describe '#to_partial_path' do
-    subject(:partial) { destroy_page_modal.to_partial_path }
-
     context 'branching' do
       # branch destinations
       context 'when after branch' do
@@ -19,7 +17,7 @@ RSpec.describe DestroyPageModal do
             let(:page) { service.find_page_by_url('page-c') }
 
             it 'returns deleting branch destination page partial' do
-              expect(partial).to eq('api/pages/delete_branch_destination_page_modal')
+              expect(subject.to_partial_path).to eq('api/pages/delete_branch_destination_page_modal')
             end
           end
         end
@@ -29,7 +27,7 @@ RSpec.describe DestroyPageModal do
           let(:page) { service.find_page_by_url('page-g') }
 
           it 'returns deleting branch destination page partial' do
-            expect(partial).to eq('api/pages/delete_branch_destination_page_no_default_next_modal')
+            expect(subject.to_partial_path).to eq('api/pages/delete_branch_destination_page_no_default_next_modal')
           end
         end
 
@@ -37,7 +35,7 @@ RSpec.describe DestroyPageModal do
           let(:page) { service.find_page_by_url('page-j') }
 
           it 'returns not supported stack branches partial' do
-            expect(partial).to eq('api/pages/stack_branches_not_supported_modal')
+            expect(subject.to_partial_path).to eq('api/pages/stack_branches_not_supported_modal')
           end
         end
       end
@@ -47,7 +45,7 @@ RSpec.describe DestroyPageModal do
         let(:page) { service.find_page_by_url('page-b') }
 
         it 'returns delete page used for branching not supported' do
-          expect(partial).to eq('api/pages/delete_page_used_for_branching_not_supported_modal')
+          expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_branching_not_supported_modal')
         end
       end
     end
@@ -59,7 +57,7 @@ RSpec.describe DestroyPageModal do
       context 'when there is conditional content that depends on the page' do
         it 'returns the delete conditional content modal' do
           skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-          expect(partial).to eq('api/pages/delete_page_used_for_conditional_content_modal')
+          expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_conditional_content_modal')
         end
       end
 
@@ -68,7 +66,7 @@ RSpec.describe DestroyPageModal do
 
         it 'returns the delete conditional content modal' do
           skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-          expect(partial).to eq('api/pages/delete_page_used_for_conditional_content_modal')
+          expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_conditional_content_modal')
         end
       end
     end
@@ -94,11 +92,11 @@ RSpec.describe DestroyPageModal do
 
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns delete_page_used_for_confirmation_email' do
-            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+            expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
           end
         end
 
@@ -107,11 +105,11 @@ RSpec.describe DestroyPageModal do
 
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns the default delete partial' do
-            expect(partial).to eq(default_delete_partial)
+            expect(subject.to_partial_path).to eq(default_delete_partial)
           end
         end
       end
@@ -123,11 +121,11 @@ RSpec.describe DestroyPageModal do
 
           before do
             create(:submission_setting, :production, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns the default delete partial' do
-            expect(partial).to eq(default_delete_partial)
+            expect(subject.to_partial_path).to eq(default_delete_partial)
           end
         end
       end
@@ -148,11 +146,11 @@ RSpec.describe DestroyPageModal do
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
             create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns delete_page_used_for_confirmation_email' do
-            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+            expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
           end
         end
 
@@ -160,11 +158,11 @@ RSpec.describe DestroyPageModal do
           before do
             create(:submission_setting, :dev, send_confirmation_email: nil, service_id: service.service_id)
             create(:submission_setting, :production, send_confirmation_email: nil, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
           end
 
           it 'returns the default delete partial' do
-            expect(partial).to eq(default_delete_partial)
+            expect(subject.to_partial_path).to eq(default_delete_partial)
           end
         end
       end
@@ -179,11 +177,11 @@ RSpec.describe DestroyPageModal do
 
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns delete_page_used_for_confirmation_email' do
-            expect(partial).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
+            expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_confirmation_email_modal')
           end
         end
 
@@ -192,18 +190,18 @@ RSpec.describe DestroyPageModal do
 
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_page_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyPageModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns deleting branch destination page partial' do
-            expect(partial).to eq('api/pages/delete_branch_destination_page_modal')
+            expect(subject.to_partial_path).to eq('api/pages/delete_branch_destination_page_modal')
           end
         end
       end
 
       context 'when deleting a page without any consequences' do
         it 'returns the default delete partial' do
-          expect(partial).to eq(default_delete_partial)
+          expect(subject.to_partial_path).to eq(default_delete_partial)
         end
       end
 
@@ -214,7 +212,7 @@ RSpec.describe DestroyPageModal do
         end
 
         it 'returns the default delete partial' do
-          expect(partial).to eq(default_delete_partial)
+          expect(subject.to_partial_path).to eq(default_delete_partial)
         end
       end
     end

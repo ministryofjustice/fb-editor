@@ -2,9 +2,9 @@ class DestroyQuestionModal
   include ActiveModel::Model
   include ConfirmationEmailModalHelper
 
-  attr_accessor :service, :page, :question
+  attr_accessor :service, :page, :question, :pages
 
-  delegate :expressions, :conditionals, :content_expressions, to: :service
+  delegate :expressions, to: :service
 
   PARTIALS = {
     used_for_conditional_content?: 'delete_question_used_for_conditional_content',
@@ -13,12 +13,15 @@ class DestroyQuestionModal
     default?: 'delete_question'
   }.freeze
 
-  def to_partial_path
-    result = PARTIALS.find do |method_name, _|
-      method(method_name).call.present?
-    end
+  def initialize(service:, page:, question:)
+    @service = service
+    @page = page
+    @question = question
+    @partial = PARTIALS.select { |method_name, _| method(method_name).call.present? }.values.first
+  end
 
-    "api/questions/#{result[1]}_modal"
+  def to_partial_path
+    "api/questions/#{@partial}_modal"
   end
 
   private
@@ -26,7 +29,8 @@ class DestroyQuestionModal
   def used_for_conditional_content?
     return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
 
-    content_expressions.map(&:component).include?(question.uuid)
+    @pages = service.pages_with_conditional_content_for_question(question.uuid)
+    @pages.any?
   end
 
   def used_for_branching?

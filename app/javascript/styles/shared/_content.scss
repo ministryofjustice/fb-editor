@@ -76,6 +76,22 @@
 
 // Apply GOVUk link styles to all links in editable content areas
 editable-content {
+  h1 {
+    @extend .govuk-heading-xl
+  }
+
+  h2 {
+    @extend .govuk-heading-l
+  }
+
+  h3 {
+    @extend .govuk-heading-m
+  }
+
+  h4, h5, h6 {
+    @extend .govuk-heading-s
+  }
+
   a {
     @extend %govuk-link;
   }

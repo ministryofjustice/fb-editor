@@ -2,9 +2,20 @@
   <h3 data-node="heading" class="govuk-label govuk-label--m">
     <%= t('questions.delete_modal.can_not_delete_heading') %>
   </h3>
-  <p data-node="content">
-    <%= t('questions.delete_modal.delete_question_used_for_conditional_content_message') %>
-  </p>
+
+  <% if pages.size > 1 %>
+    <p><%= t('questions.delete_modal.delete_question_used_for_conditional_content_message_multiple') %></p>
+    <ul>
+    <% pages.each do |page| %>
+      <li><%= page[:heading] %></li>
+    <% end %>
+    </ul>
+    <p><%= t('pages.delete_modal.update_content_areas') %></p>
+  <% else %>
+    <p><%= t('questions.delete_modal.delete_question_used_for_conditional_content_message_single', title: pages.first.heading) %></p>
+    <p><%= t('pages.delete_modal.update_content_area') %></p>
+  <% end %>
+
 
   <div class="govuk-button-group">
     <button class="govuk-button fb-govuk-button"><%= t('dialogs.button_understood') %></button>

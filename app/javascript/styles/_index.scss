@@ -484,24 +484,29 @@ editable-content {
     }
   }
 
-  .show-if-button {
+  .show-if-button, .hidden-button {
     display: none;
   }
 
-
-  &[conditional] {
-    [data-element="editable-content-output"] {
+  &[conditional] [data-element="editable-content-output"] {
         outline: 1px dashed $govuk-link-colour;
         outline-offset: 16px;
     }
-    
-    .show-if-button {
+ 
+  &[conditional="conditional"] .show-if-button {
       display: inline-block;
       position: absolute;
       top: -10px;
       right: -6px;
-    }
   }
+  
+  &[conditional="never"] .hidden-button {
+      display: inline-block;
+      position: absolute;
+      top: -10px;
+      right: -6px;
+  }
+  
 }
 
 .EditableCollectionFieldComponent,
@@ -550,10 +555,6 @@ editable-content,
 
     legend {
       display: contents;
-    }
-
-    .ActivatedMenuActivator {
-      top: 45px;
     }
   }
 }
