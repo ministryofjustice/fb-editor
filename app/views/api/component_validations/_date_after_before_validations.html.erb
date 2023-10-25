@@ -11,9 +11,10 @@
                  name="component_validation[<%=field%>]"
                  pattern="[0-9]*"
                  inputmode="numeric"
-                 aria-describedby="<%= has_error ? "component_validation_#{field}_error" : ""%>"
+                 aria-describedby="<%= has_error ? "component_validation_#{field}_error" : ""%> hint-text-prompt"
                  value="<%= @component_validation.send("answered_#{field}") %>">
         </div>
       </div>
     <% end %>
 </div>
+<p id="hint-text-prompt"><%= t('dialogs.component_validations.hint_text_prompt') %></p>

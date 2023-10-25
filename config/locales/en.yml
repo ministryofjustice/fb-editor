@@ -98,6 +98,7 @@ en:
       redo:
         content: We were unable to redo your last action.
     component_validations:
+      hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
       date:
         day: Day
         month: Month
