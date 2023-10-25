@@ -27,8 +27,6 @@ class DestroyPageModal
   end
 
   def delete_page_used_for_conditional_content?
-    return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-
     @pages = service.pages_with_conditional_content_for_page(page.uuid)
     @pages.any?
   end

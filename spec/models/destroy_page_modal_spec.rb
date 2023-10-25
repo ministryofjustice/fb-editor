@@ -56,7 +56,6 @@ RSpec.describe DestroyPageModal do
 
       context 'when there is conditional content that depends on the page' do
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
           expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_conditional_content_modal')
         end
       end
@@ -65,7 +64,6 @@ RSpec.describe DestroyPageModal do
         let(:page) { service.find_page_by_url('coffee') }
 
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
           expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_conditional_content_modal')
         end
       end
