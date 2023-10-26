@@ -148,10 +148,11 @@ en:
       forms: Your forms
       sign_out: Sign out %{user_name}
       user_guide: "Support"
-      send_feedback: "Send feedback"
+      send_feedback: "Feedback"
       home_url: "https://moj-forms.service.justice.gov.uk/"
       user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
+      feedback_form_url: "https://mojf-in-service-feedback-form.form.service.justice.gov.uk"
   home:
     show:
       phase: beta
