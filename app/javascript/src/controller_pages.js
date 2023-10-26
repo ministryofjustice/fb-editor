@@ -492,7 +492,7 @@ function openConditionalContentDialog(component, activator, view) {
     const data = {
       component: JSON.stringify( component.config || {} )
     }
-    if(url) { 
+    if(url) {
       new DialogForm(url, {
         activator: activator,
         remote: true,
@@ -569,7 +569,6 @@ function enhanceContent(view) {
     element.form = form
     if(element.isComponent) {
       createContentMenu(element)
-      if(app.feature_flags.CONDITIONAL_CONTENT) {
         createConditionalContentButton(view, {
           component: element,
           label: view.text.content_visibility.label_show_if,
@@ -580,7 +579,6 @@ function enhanceContent(view) {
           label: view.text.content_visibility.label_hidden,
           className: 'hidden-button'
         })
-      }
     }
   });
 }

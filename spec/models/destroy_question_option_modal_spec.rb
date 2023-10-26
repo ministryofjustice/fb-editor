@@ -40,7 +40,6 @@ RSpec.describe DestroyQuestionOptionModal do
       let(:option) { question.items.first }
 
       it 'returns the delete conditional content modal' do
-        skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(partial).to eq('api/question_options/delete_option_used_for_conditional_content_modal')
       end
     end
@@ -51,7 +50,6 @@ RSpec.describe DestroyQuestionOptionModal do
       let(:option) { question.items.first }
 
       it 'returns the delete conditional content modal' do
-        skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(partial).to eq('api/question_options/delete_option_used_for_conditional_content_modal')
       end
     end

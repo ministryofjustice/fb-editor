@@ -25,7 +25,6 @@ class DestroyQuestionOptionModal
   private
 
   def used_for_conditional_content?
-    return false unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
     return false if option.blank?
 
     @pages = service.pages_with_conditional_content_for_question_option(option.uuid)
