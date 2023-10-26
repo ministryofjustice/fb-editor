@@ -5,11 +5,12 @@ module Api
       @question = @page.find_component_by_uuid(params[:question_id])
       @option = @question.find_item_by_uuid(params[:option_id])
 
-      render DestroyQuestionModal.new(
+      modal = DestroyQuestionModal.new(
         service:,
         page: @page,
         question: @question
       )
+      render modal, locals: { pages: modal.pages }
     end
   end
 end

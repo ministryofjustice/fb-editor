@@ -28,7 +28,7 @@ class ConditionalContent
   def self.from_metadata(component)
     attributes_hash = {
       'conditionals_attributes' => {},
-      'display' => component[:display]
+      'display' => component[:display] || 'always'
     }
 
     component.conditionals&.each_with_index do |conditional, index|
