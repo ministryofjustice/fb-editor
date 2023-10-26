@@ -9,7 +9,7 @@
           </strong>
           <span class="govuk-phase-banner__text">
             <%= t('.phase_banner',
-              feedback_link: govuk_link_to( t('.feedback_link_text'), 'mailto:moj-forms@digital.justice.gov.uk')
+              feedback_link: govuk_link_to( t('.feedback_link_text'), ENV['FEEDBACK_FORM_URL'] )
                  ).html_safe %>
           </span>
         </p>
