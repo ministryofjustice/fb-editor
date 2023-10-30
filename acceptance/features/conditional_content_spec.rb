@@ -30,7 +30,7 @@ feature 'Conditional content' do
     end
 
     scenario 'to multiple question page' do
-      when_I_edit_the_page(title: 'Multiple') 
+      when_I_edit_the_page(title: 'Multiple')
       and_I_add_a_multiple_page_content_component
       when_I_want_to_edit_content_component_properties(editor.editable_content_areas.last)
       then_I_should_see_the_conditional_content_menu_option
@@ -77,7 +77,7 @@ feature 'Conditional content' do
   context 'editing conditional content' do
 
     scenario 'setting to always display' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will always see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
 
@@ -91,7 +91,7 @@ feature 'Conditional content' do
     end
 
     scenario 'setting to never display' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will never see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
 
@@ -106,7 +106,7 @@ feature 'Conditional content' do
     end
 
     scenario 'setting to conditionally display' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
 
@@ -115,7 +115,7 @@ feature 'Conditional content' do
       then_I_should_see_the_conditionals(count: 1)
 
       editor.conditional_content_modal.conditionals.first.within do |conditional|
-        conditional.expressions.first.within do |expression| 
+        conditional.expressions.first.within do |expression|
           when_I_select_a_component(expression, checkbox_question)
 
           then_I_can_see_the_expression_conditions(expression)
@@ -152,13 +152,13 @@ feature 'Conditional content' do
     end
 
     scenario 'loads state from component config' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
       and_I_set_display_to_conditional
 
       editor.conditional_content_modal.conditionals.first.within do |conditional|
-        conditional.expressions.first.within do |expression| 
+        conditional.expressions.first.within do |expression|
           when_I_select_a_component(expression, checkbox_question)
           and_I_select_an_operator(expression, 'does not contain')
           and_I_select_an_answer(expression, 'milk')
@@ -168,11 +168,11 @@ feature 'Conditional content' do
       when_I_commit_my_changes
 
       editor.show_if_button.click
-      then_I_should_see_the_conditional_content_modal 
+      then_I_should_see_the_conditional_content_modal
       then_I_should_see_one_conditional
 
       editor.conditional_content_modal.conditionals.first.within do |conditional|
-        conditional.expressions.first.within do |expression| 
+        conditional.expressions.first.within do |expression|
           then_the_expression_has_the_values(
             expression:,
             component: '1c3bc32c-46d3-4393-98eb-d35b4de50a4f',
@@ -184,7 +184,7 @@ feature 'Conditional content' do
     end
 
     scenario 'adding and removing conditions and expressions' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
       and_I_set_display_to_conditional
@@ -224,16 +224,16 @@ feature 'Conditional content' do
 
   context 'errors' do
     scenario 'when there is no question (component) selected' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
       and_I_set_display_to_conditional
 
       when_I_commit_my_changes
-      
+
       then_I_should_see_the_error_summary_with(I18n.t('activemodel.errors.messages.blank', attribute: 'Component'))
       then_the_component_field_should_be_in_error(editor.conditional_content_modal.conditional(0).expression(0))
-    
+
       editor.conditional_content_modal.within do |modal|
         when_I_select_a_component(modal.conditional(0).expression(0), 'Do you like chocolate?')
       end
@@ -243,7 +243,7 @@ feature 'Conditional content' do
     end
 
     scenario 'when an unsupported question (component) is selected' do
-      when_I_edit_the_page(title: 'Conditional content') 
+      when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
       and_I_set_display_to_conditional
@@ -275,7 +275,7 @@ feature 'Conditional content' do
     end
 
     scenario 'when a component (question) on the same page is selected' do
-      when_I_edit_the_page(title: 'Multiple') 
+      when_I_edit_the_page(title: 'Multiple')
       and_I_add_a_multiquestion_page_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
       and_I_set_display_to_conditional
@@ -329,7 +329,7 @@ def then_I_should_see_the_conditional_content_menu_option
 end
 
 def and_I_want_to_set_content_visibility
-    editor.show_if_link.click 
+    editor.show_if_link.click
 end
 
 def and_I_want_to_edit_content_visibility_for(component)
@@ -348,11 +348,11 @@ def then_I_should_not_see_the_conditional_content_modal
 end
 
 def and_I_set_display_to_conditional
-  editor.conditional_content_modal.display_conditional_radio.choose() 
+  editor.conditional_content_modal.display_conditional_radio.choose()
 end
 
 def and_I_set_display_to_never
-  editor.conditional_content_modal.display_never_radio.choose() 
+  editor.conditional_content_modal.display_never_radio.choose()
 end
 
 def then_the_display_radio_selected_is(label)
@@ -417,8 +417,8 @@ def when_I_select_a_component(expression, label)
 end
 
 def when_I_commit_my_changes
-  editor.conditional_content_modal.update_button.click 
-  sleep(0.5)
+  editor.conditional_content_modal.update_button.click
+  sleep(1)
 end
 
 def then_I_can_see_the_expression_conditions(expression)
@@ -453,12 +453,12 @@ def when_I_add_a_conditional
 end
 
 def when_I_delete_a_conditional(conditional)
- conditional.delete_button.click 
+ conditional.delete_button.click
 end
 
 def then_the_expression_question_has_the_correct_label(expression,index)
   if index == 0
-    expect(expression.question_label.text).to eq I18n.t('branches.expression.if')   
+    expect(expression.question_label.text).to eq I18n.t('branches.expression.if')
   else
     expect(expression.question_label.text).to eq I18n.t('branches.expression.and')
   end
@@ -495,12 +495,12 @@ def and_the_expressions_have_the_correct_label(conditional)
 end
 
 def when_I_add_another_expression(conditional)
-  conditional.add_condition.click 
+  conditional.add_condition.click
   sleep(0.5)
 end
 
 def when_I_delete_an_expression(expression)
-  expression.delete_button.click 
+  expression.delete_button.click
   sleep(0.5)
 end
 
@@ -520,18 +520,18 @@ def then_the_component_field_should_be_in_error(expression)
 end
 
 def then_I_should_see_the_unsupported_error(expression)
-    expect(expression).to have_unsupported_error 
+    expect(expression).to have_unsupported_error
 end
 
 def then_I_should_not_see_the_unsupported_error(expression)
-    expect(expression).not_to have_unsupported_error 
+    expect(expression).not_to have_unsupported_error
 end
 def then_I_should_see_the_same_page_error(expression)
-    expect(expression).to have_same_page_error 
+    expect(expression).to have_same_page_error
 end
 
 def then_I_should_not_see_the_same_page_error(expression)
-    expect(expression).not_to have_same_page_error 
+    expect(expression).not_to have_same_page_error
 end
 
 def then_I_should_see_the_answer_field(expression)
