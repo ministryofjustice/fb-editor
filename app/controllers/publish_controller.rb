@@ -76,8 +76,12 @@ class PublishController < FormController
   def can_publish_to_live
     # moj_forms_admin? ||
     # moj_forms_dev? ||
-
     if ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'REVOKED'
+    ).present?
+      false
+    elsif ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'APPROVED_TO_GO_LIVE'
     ).present?
@@ -99,8 +103,12 @@ class PublishController < FormController
   def show_confirmation?
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      name: 'AWAITING_APPROVAL'
-    ).present? &&
+      name: 'REVOKED'
+    ).blank? &&
+      ServiceConfiguration.find_by(
+        service_id: service.service_id,
+        name: 'AWAITING_APPROVAL'
+      ).present? &&
       ServiceConfiguration.find_by(
         service_id: service.service_id,
         name: 'APPROVED_TO_GO_LIVE'
