@@ -159,6 +159,24 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def revoke_approval
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE',
+        value: '1'
+      )
+
+      if approval.delete!
+        flash[:success] = 'Service approveal revoked'
+      else
+        flash[:error] = 'Service approval vould not be revoked'
+      end
+
+      redirect_to admin_service_path(service_id)
+    end
+
     def is_already_approved?
       ServiceConfiguration.find_by(
         service_id: params[:id],
