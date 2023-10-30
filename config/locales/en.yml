@@ -98,6 +98,7 @@ en:
       redo:
         content: We were unable to redo your last action.
     component_validations:
+      hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
       date:
         day: Day
         month: Month
@@ -147,10 +148,12 @@ en:
       admin: Admin
       forms: Your forms
       sign_out: Sign out %{user_name}
-      user_guide: "User guide"
+      user_guide: "Support"
+      send_feedback: "Feedback"
       home_url: "https://moj-forms.service.justice.gov.uk/"
       user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
+      feedback_form_url: "https://mojf-in-service-feedback-form.form.service.justice.gov.uk"
   home:
     show:
       phase: beta
@@ -239,21 +242,28 @@ en:
       before_submit: 'Any pages that are left without a connection to your form will be moved to the unconnected pages section.'
       submit: 'Delete branching point'
   conditional_content:
-    display: 
+    heading: Show this content...
+    show_if_button_label: Shows if...
+    hidden_button_label: Hidden
+    display:
       always: 'Always'
       conditional: 'Only if...'
       never: 'Never'
+    add_another_rule: 'Add another rule'
+    add_condition: 'Add condition'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
       delete_question_used_for_branching_message: 'You cannot delete this question because it is used in a branching condition. Update the branching point first.'
-      delete_question_used_for_conditional_content_message: 'You cannot delete this question because it is used in a conditional content rule. Update the content rule first.'
+      delete_question_used_for_conditional_content_message_single: "You cannot delete this question because it is used in a content area visibility rule on the page '%{title}'"
+      delete_question_used_for_conditional_content_message_multiple: "You cannot delete this question because it is used in content area visibility rules on the following pages:"
       can_not_delete_message_confirmation_email: 'You cannot delete this question because it is required by the confirmation email. Update the email settings first.'
   question_items:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this option yet'
       delete_option_used_for_branching_message: 'You cannot delete this option because it is used in a branching condition. Update the branching point first, then try again.'
-      delete_option_used_for_conditional_content_message: 'You cannot delete this option because it is used in a conditional content rule. Update the content rule first, then try again.'
+      delete_option_used_for_conditional_content_message_single: "You cannot delete this option because it is used in a content area visibility rule on the page '%{title}'"
+      delete_option_used_for_conditional_content_message_multiple: "You cannot delete this option because it is used in content area visibility rules on the following pages:"
     min_items_modal:
       can_not_delete_radios_message: 'Radio buttons require a minimum of 2 options'
       can_not_delete_checkboxes_message: 'Checkboxes require a minimum of 1 option'
@@ -274,7 +284,10 @@ en:
       delete_and_update_branching: 'Delete and update branching'
       you_cannot_delete_this_page: 'You cannot delete this page yet'
       delete_page_used_for_branching_not_supported_message: 'You cannot delete this page because it is used in a branching condition. Update the branching point first.'
-      delete_page_used_for_conditional_content_message: 'You cannot delete this page because it is used in a conditional content rule. Update the content rule first.'
+      delete_page_used_for_conditional_content_message_single: "You cannot delete this page because it is used in a content area visibility rule on the page '%{title}'"
+      delete_page_used_for_conditional_content_message_multiple: "You cannot delete this page because it is used in content area visibility rules on the following pages:"
+      update_content_area: "You will need to update the content area first."
+      update_content_areas: "You will need to update the content areas first."
       stack_branches_not_supported_message: 'Deleting this page would result in 2 branching points in a row, which is not currently possible. Try combining your branching rules into 1 branching point.'
       can_not_delete_email_page_heading: 'You cannot delete this page yet'
       can_not_delete_email_page_message: 'You cannot delete this page because it is required by the confirmation email. Update the email settings first.'
@@ -312,6 +325,8 @@ en:
       heading_remove: "Delete the component?"
       affirmative: 'Yes'
       negative: 'No'
+      conditional:
+        heading: Show this component...
   question:
     optional_flag: '(optional)'
     menu:
@@ -646,7 +661,6 @@ en:
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
         unsupported: This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.
-        unsupported_component: "This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question for Branch "
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'

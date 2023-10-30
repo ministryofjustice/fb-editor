@@ -27,6 +27,12 @@ RSpec.describe EmailSettings do
         ).for(:service_email_output)
       end
 
+      it 'allows domains case insensitive' do
+        should allow_values(
+          'frodo@digital.Justice.gov.uk'
+        ).for(:service_email_output)
+      end
+
       it 'do not allow malformed emails' do
         should_not allow_values(
           'organa', 'leia'

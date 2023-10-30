@@ -492,7 +492,7 @@ function openConditionalContentDialog(component, activator, view) {
     const data = {
       component: JSON.stringify( component.config || {} )
     }
-    if(url) { 
+    if(url) {
       new DialogForm(url, {
         activator: activator,
         remote: true,
@@ -569,9 +569,16 @@ function enhanceContent(view) {
     element.form = form
     if(element.isComponent) {
       createContentMenu(element)
-      if(app.feature_flags.CONDITIONAL_CONTENT) {
-        createConditionalContentButton(element, view)
-      }
+        createConditionalContentButton(view, {
+          component: element,
+          label: view.text.content_visibility.label_show_if,
+          className: 'show-if-button'
+        })
+        createConditionalContentButton(view, {
+          component: element,
+          label: view.text.content_visibility.label_hidden,
+          className: 'hidden-button'
+        })
     }
   });
 }
@@ -594,17 +601,19 @@ function createContentMenu(component) {
   });
 }
 
-function createConditionalContentButton(component, view) {
+function createConditionalContentButton(view, config ) {
+  const { component, className, label } = config
+
   const button = document.createElement('button')
   button.setAttribute('type', 'button')
-  button.classList.add('fb-link-button', 'show-if-button')
-  button.innerText = view.text.content_visibility.label_show_if
+  button.classList.add('fb-link-button', className)
+  button.innerText = label
   component.insertAdjacentElement('beforeend', button)
+
   button.addEventListener('click', (event) => {
     event.preventDefault()
     openConditionalContentDialog(component, button, view)
   })
-
 }
 
 /* Add edit functionality and component enhancements to questions.

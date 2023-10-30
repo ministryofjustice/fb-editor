@@ -10,9 +10,6 @@ RSpec.describe DestroyQuestionModal do
 
   describe '#to_partial_path' do
     let(:question) { page.components.first }
-    subject(:partial) do
-      destroy_question_modal.to_partial_path
-    end
 
     context 'branching questions' do
       before do
@@ -23,7 +20,7 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('page-b') }
 
         it 'returns can not delete the question modal' do
-          expect(partial).to eq('api/questions/delete_question_used_for_branching_modal')
+          expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_branching_modal')
         end
       end
 
@@ -31,7 +28,7 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('page-d') }
 
         it 'returns default delete question modal' do
-          expect(partial).to eq('api/questions/delete_question_modal')
+          expect(subject.to_partial_path).to eq('api/questions/delete_question_modal')
         end
       end
     end
@@ -44,8 +41,7 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('multiple') }
 
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-          expect(partial).to eq('api/questions/delete_question_used_for_conditional_content_modal')
+          expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_conditional_content_modal')
         end
       end
 
@@ -54,8 +50,7 @@ RSpec.describe DestroyQuestionModal do
         let(:question) { page.components[2] }
 
         it 'returns the default delete modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-          expect(partial).to eq('api/questions/delete_question_modal')
+          expect(subject.to_partial_path).to eq('api/questions/delete_question_modal')
         end
       end
 
@@ -64,8 +59,7 @@ RSpec.describe DestroyQuestionModal do
         let(:question) { page.components.last }
 
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
-          expect(partial).to eq('api/questions/delete_question_used_for_conditional_content_modal')
+          expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_conditional_content_modal')
         end
       end
     end
@@ -89,11 +83,11 @@ RSpec.describe DestroyQuestionModal do
         context 'and confirmation email depends on a question' do
           before do
             create(:submission_setting, :dev, :send_confirmation_email, service_id: service.service_id)
-            allow(destroy_question_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
+            allow_any_instance_of(DestroyQuestionModal).to receive(:confirmation_email_component_ids).and_return([service_configuration])
           end
 
           it 'returns can not delete the question modal' do
-            expect(partial).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
+            expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
           end
         end
 
@@ -105,7 +99,7 @@ RSpec.describe DestroyQuestionModal do
           end
 
           it 'returns default delete partial' do
-            expect(partial).to eq(default_destroy_partial)
+            expect(subject.to_partial_path).to eq(default_destroy_partial)
           end
         end
       end
@@ -122,7 +116,7 @@ RSpec.describe DestroyQuestionModal do
         end
 
         before do
-          allow(destroy_question_modal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
+          allow_any_instance_of(DestroyQuestionModal).to receive(:confirmation_email_component_ids).and_return([service_configuration, service_configuration_production])
         end
 
         context 'and confirmation email is checked in dev only' do
@@ -131,7 +125,7 @@ RSpec.describe DestroyQuestionModal do
           end
 
           it 'returns can not delete the question modal' do
-            expect(partial).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
+            expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_confirmation_email_modal')
           end
         end
 
@@ -142,7 +136,7 @@ RSpec.describe DestroyQuestionModal do
           end
 
           it 'returns default delete partial' do
-            expect(partial).to eq(default_destroy_partial)
+            expect(subject.to_partial_path).to eq(default_destroy_partial)
           end
         end
       end
@@ -151,7 +145,7 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('email') }
 
         it 'returns default delete partial' do
-          expect(partial).to eq(default_destroy_partial)
+          expect(subject.to_partial_path).to eq(default_destroy_partial)
         end
       end
 
@@ -162,7 +156,7 @@ RSpec.describe DestroyQuestionModal do
         end
 
         it 'returns default delete partial' do
-          expect(partial).to eq(default_destroy_partial)
+          expect(subject.to_partial_path).to eq(default_destroy_partial)
         end
       end
     end

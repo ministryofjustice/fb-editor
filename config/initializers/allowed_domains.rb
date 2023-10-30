@@ -4,6 +4,7 @@ ALLOWED_DOMAINS = [
   'cica.gov.uk',
   'ccrc.gov.uk',
   'judicialappointments.gov.uk',
+  'judicialombudsman.gov.uk',
   'ospt.gov.uk',
   'gov.sscl.com'
 ].freeze

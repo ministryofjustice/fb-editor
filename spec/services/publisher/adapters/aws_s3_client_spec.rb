@@ -17,7 +17,7 @@ RSpec.describe Publisher::Adapters::AwsS3Client do
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'aws-sdk-ruby3/3.181.0',
+          'User-Agent' => /aws-sdk-ruby3\/[\d.]*/,
           'X-Aws-Ec2-Metadata-Token-Ttl-Seconds' => '21600'
         }
       )
@@ -27,7 +27,7 @@ RSpec.describe Publisher::Adapters::AwsS3Client do
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent' => 'aws-sdk-ruby3/3.181.0'
+          'User-Agent' => /aws-sdk-ruby3\/[\d.]*/
         }
       )
       .to_return(status: 200, body: '', headers: {})
