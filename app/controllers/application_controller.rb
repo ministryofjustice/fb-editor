@@ -136,6 +136,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :editor_preview?
 
+  def single_page_preview?
+    return true if request.referer.blank?
+
+    !URI(request.referer).path.split('/').include?('preview')
+  end
+  helper_method :single_page_preview?
+
   def service_slug
     return service_slug_config if service_slug_config.present?
 
@@ -170,8 +177,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :is_confirmation_email_question?
 
-  def load_conditional_content
-    @page.content_components.map(&:uuid)
-  end
-  helper_method :load_conditional_content
+  def in_runner?; end
+  helper_method :in_runner?
 end
