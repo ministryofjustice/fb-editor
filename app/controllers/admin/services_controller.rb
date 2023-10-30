@@ -149,6 +149,16 @@ module Admin
         name: 'APPROVED_TO_GO_LIVE',
         value: '1'
       )
+      revoke = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED',
+        value: '1'
+      )
+
+      if revoke.present?
+        revoke.delete!
+      end
 
       if approval.save!
         flash[:success] = 'Service approved for go live'
@@ -167,9 +177,15 @@ module Admin
         name: 'APPROVED_TO_GO_LIVE',
         value: '1'
       )
+      revoke = ServiceConfiguration.find_or_initialize_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED',
+        value: '1'
+      )
 
-      if approval.delete!
-        flash[:success] = 'Service approveal revoked'
+      if approval.delete! && revoke.save!
+        flash[:success] = 'Service approval revoked'
       else
         flash[:error] = 'Service approval vould not be revoked'
       end
