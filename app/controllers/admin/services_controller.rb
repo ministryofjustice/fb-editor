@@ -166,10 +166,10 @@ module Admin
         approval.save!
       end
       if revoke.present?
-        revoke.delete!
+        revoke.delete
       end
       if awaiting.present?
-        awaiting.delete!
+        awaiting.delete
       end
 
       flash[:success] = 'Service approved for go live'
@@ -202,10 +202,10 @@ module Admin
         revoke.save!
       end
       if approval.present?
-        approval.delete!
+        approval.delete
       end
       if awaiting.present?
-        awaiting.delete!
+        awaiting.delete
       end
 
       redirect_to admin_service_path(service_id)
