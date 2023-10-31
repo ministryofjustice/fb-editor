@@ -156,12 +156,16 @@ module Admin
         value: '1'
       )
 
-      if revoke.present?
-        revoke.delete!
-      end
-
       if approval.save!
-        flash[:success] = 'Service approved for go live'
+        if revoke.present?
+          if revoke.delete!
+            flash[:success] = 'Service approved for go live'
+          else
+            flash[:error] = 'Service approval failed to save'
+          end
+        else
+          flash[:success] = 'Service approved for go live'
+        end
       else
         flash[:error] = 'Service approval failed to save'
       end
@@ -184,12 +188,16 @@ module Admin
         value: '1'
       )
 
-      if approval.present?
-        approval.delete!
-      end
-
       if revoke.save!
-        flash[:success] = 'Service approval revoked'
+        if approval.present?
+          if approval.delete!
+            flash[:success] = 'Service approval revoked'
+          else
+            flash[:error] = 'Service approval vould not be revoked'
+          end
+        else
+          flash[:success] = 'Service approval revoked'
+        end
       else
         flash[:error] = 'Service approval vould not be revoked'
       end
