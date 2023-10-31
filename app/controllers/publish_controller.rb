@@ -65,7 +65,7 @@ class PublishController < FormController
           name: 'AWAITING_APPROVAL',
           value: '1'
         )
-        if approval.new_record? || approval.has_changed?
+        if approval.new_record?
           approval.save
         end
 
@@ -105,18 +105,21 @@ class PublishController < FormController
   helper_method :can_publish_to_live
 
   def show_confirmation?
+    if ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name: 'APPROVED_TO_GO_LIVE'
+    ).present?
+      return false
+    end
+
     ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'REVOKED'
-    ).blank? &&
+    ).present? ||
       ServiceConfiguration.find_by(
         service_id: service.service_id,
         name: 'AWAITING_APPROVAL'
-      ).present? &&
-      ServiceConfiguration.find_by(
-        service_id: service.service_id,
-        name: 'APPROVED_TO_GO_LIVE'
-      ).blank?
+      ).present?
   end
   helper_method :show_confirmation?
 
