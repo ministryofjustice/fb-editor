@@ -184,7 +184,11 @@ module Admin
         value: '1'
       )
 
-      if approval.delete! && revoke.save!
+      if approval.present?
+        approval.delete!
+      end
+
+      if revoke.save!
         flash[:success] = 'Service approval revoked'
       else
         flash[:error] = 'Service approval vould not be revoked'
