@@ -65,7 +65,9 @@ class PublishController < FormController
           name: 'AWAITING_APPROVAL',
           value: '1'
         )
-        approval.save! if approval.new_record?
+        if approval.new_record? || approval.has_changed?
+          approval.save
+        end
 
         update_form_objects
         redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
