@@ -1,6 +1,6 @@
 module Admin
   class PublishServicesController < Admin::ApplicationController
-    def valid_action?(name, resource = resource_class)
+    def existing_action?(resource, name)
       %w[destroy new].exclude?(name.to_s) && super
     end
 
