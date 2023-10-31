@@ -162,7 +162,7 @@ module Admin
         value: '1'
       )
 
-      if approval.new_record? || approval.has_changed?
+      if approval.new_record?
         approval.save!
       end
       if revoke.present?
@@ -198,7 +198,7 @@ module Admin
         value: '1'
       )
 
-      if revoke.new_record? || revoke.has_changed?
+      if revoke.new_record?
         revoke.save!
       end
       if approval.present?
