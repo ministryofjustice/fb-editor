@@ -155,20 +155,24 @@ module Admin
         name: 'REVOKED',
         value: '1'
       )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL',
+        value: '1'
+      )
 
-      if approval.save!
-        if revoke.present?
-          if revoke.delete!
-            flash[:success] = 'Service approved for go live'
-          else
-            flash[:error] = 'Service approval failed to save'
-          end
-        else
-          flash[:success] = 'Service approved for go live'
-        end
-      else
-        flash[:error] = 'Service approval failed to save'
+      if approval.new_record? || approval.has_changed?
+        approval.save!
       end
+      if revoke.present?
+        revoke.delete!
+      end
+      if awaiting.present?
+        awaiting.delete!
+      end
+
+      flash[:success] = 'Service approved for go live'
 
       redirect_to admin_service_path(service_id)
     end
@@ -187,19 +191,21 @@ module Admin
         name: 'REVOKED',
         value: '1'
       )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL',
+        value: '1'
+      )
 
-      if revoke.save!
-        if approval.present?
-          if approval.delete!
-            flash[:success] = 'Service approval revoked'
-          else
-            flash[:error] = 'Service approval vould not be revoked'
-          end
-        else
-          flash[:success] = 'Service approval revoked'
-        end
-      else
-        flash[:error] = 'Service approval vould not be revoked'
+      if revoke.new_record? || revoke.has_changed?
+        revoke.save!
+      end
+      if approval.present?
+        approval.delete!
+      end
+      if awaiting.present?
+        awaiting.delete!
       end
 
       redirect_to admin_service_path(service_id)
