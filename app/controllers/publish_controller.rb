@@ -59,12 +59,14 @@ class PublishController < FormController
           )
         end
 
-        ServiceConfiguration.find_or_initialize_by(
+        approval = ServiceConfiguration.find_or_initialize_by(
           service_id: service.service_id,
           deployment_environment: 'production',
           name: 'AWAITING_APPROVAL',
           value: '1'
-        ).save!
+        )
+        approval.save! if approval.new_record?
+
         update_form_objects
         redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
       end
