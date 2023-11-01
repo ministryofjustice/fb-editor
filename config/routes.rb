@@ -103,7 +103,8 @@ Rails.application.routes.draw do
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
-      get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
+      get '/versions/previous/:operation/:undoable_action', to: 'undo#show', as: :previous_version,
+          constraints: { operation: /undo|redo/ }
 
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
     end
