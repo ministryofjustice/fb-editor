@@ -146,17 +146,17 @@ module Admin
       approval = ServiceConfiguration.find_or_initialize_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'APPROVED_TO_GO_LIVE',
+        name: 'APPROVED_TO_GO_LIVE'
       )
       revoke = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'REVOKED',
+        name: 'REVOKED'
       )
       awaiting = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'AWAITING_APPROVAL',
+        name: 'AWAITING_APPROVAL'
       )
 
       if approval.new_record?
@@ -181,17 +181,17 @@ module Admin
       approval = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'APPROVED_TO_GO_LIVE',
+        name: 'APPROVED_TO_GO_LIVE'
       )
       revoke = ServiceConfiguration.find_or_initialize_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'REVOKED',
+        name: 'REVOKED'
       )
       awaiting = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
-        name: 'AWAITING_APPROVAL',
+        name: 'AWAITING_APPROVAL'
       )
 
       if revoke.new_record?
