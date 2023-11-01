@@ -62,10 +62,10 @@ class PublishController < FormController
         approval = ServiceConfiguration.find_or_initialize_by(
           service_id: service.service_id,
           deployment_environment: 'production',
-          name: 'AWAITING_APPROVAL',
-          value: '1'
+          name: 'AWAITING_APPROVAL'
         )
         if approval.new_record?
+          approval.value = '1'
           approval.save
         end
 
@@ -108,18 +108,18 @@ class PublishController < FormController
     if ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'APPROVED_TO_GO_LIVE'
-    ).present?
+    ).present? ||
+        ServiceConfiguration.find_by(
+          service_id: service.service_id,
+          name: 'REVOKED'
+        ).present?
       return false
     end
 
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      name: 'REVOKED'
-    ).present? ||
-      ServiceConfiguration.find_by(
-        service_id: service.service_id,
-        name: 'AWAITING_APPROVAL'
-      ).present?
+      name: 'AWAITING_APPROVAL'
+    ).present?
   end
   helper_method :show_confirmation?
 
