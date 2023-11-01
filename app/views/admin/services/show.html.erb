@@ -18,15 +18,15 @@
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
 
     <% if is_already_approved? %>
-      <a href="<%= admin_service_approve_path(@service.service_id) %>" class="govuk-button fb-govuk-button" disabled>
+      <a href="<%= admin_service_approve_path(:service_id => @service.service_id) %>" class="govuk-button fb-govuk-button" disabled>
         Already approved to go live
       </a>
     <% else %>
-      <a href="<%= admin_service_approve_path(@service.service_id) %>" class="govuk-button fb-govuk-button">
+      <a href="<%= admin_service_approve_path(:service_id => @service.service_id) %>" class="govuk-button fb-govuk-button">
         Approve to go live
       </a>
     <% end %>
-    <a href="<%= admin_service_revoke_approval_path(@service.service_id) %>" class="govuk-button fb-govuk-button">
+    <a href="<%= admin_service_revoke_approval_path(:service_id => @service.service_id) %>" class="govuk-button fb-govuk-button">
       Revoke approval to go live
     </a>
     <dl class="govuk-summary-list">
