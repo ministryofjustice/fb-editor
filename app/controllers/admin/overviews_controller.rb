@@ -13,14 +13,6 @@ module Admin
           value: active_sessions
         },
         {
-          name: 'Pending jobs',
-          value: Delayed::Job.where('attempts = 0').count
-        },
-        {
-          name: 'Failed jobs',
-          value: Delayed::Job.where('attempts > 0').count
-        },
-        {
           name: 'Published to Live',
           value: published('production').count
         },
