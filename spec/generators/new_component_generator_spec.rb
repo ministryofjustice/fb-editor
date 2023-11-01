@@ -97,6 +97,32 @@ RSpec.describe NewComponentGenerator do
         end
       end
 
+      context 'non collection input components after deletion' do
+        %w[text textarea email date number upload autocomplete].each do |component|
+          context "when #{component} component" do
+            let(:component_type) { component }
+            let(:components) do
+              [
+                {
+                  '_id' => "#{page_url}_#{component}_2",
+                  '_type' => component,
+                  'name' => "#{page_url}_#{component}_2"
+                },
+                {
+                  '_id' => "#{page_url}_#{component}_3",
+                  '_type' => component,
+                  'name' => "#{page_url}_#{component}_3"
+                }
+              ]
+            end
+
+            it 'should increment the newly created component id' do
+              expect(generator.to_metadata['_id']).to eq("#{page_url}_#{component}_4")
+            end
+          end
+        end
+      end
+
       context 'collection input components' do
         let(:components) { [] }
 
