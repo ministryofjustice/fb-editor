@@ -147,22 +147,21 @@ module Admin
         service_id:,
         deployment_environment: 'production',
         name: 'APPROVED_TO_GO_LIVE',
-        value: '1'
       )
       revoke = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
         name: 'REVOKED',
-        value: '1'
       )
       awaiting = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
         name: 'AWAITING_APPROVAL',
-        value: '1'
       )
 
       if approval.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        approval.value = '1'
         approval.save!
       end
       if revoke.present?
@@ -183,22 +182,21 @@ module Admin
         service_id:,
         deployment_environment: 'production',
         name: 'APPROVED_TO_GO_LIVE',
-        value: '1'
       )
       revoke = ServiceConfiguration.find_or_initialize_by(
         service_id:,
         deployment_environment: 'production',
         name: 'REVOKED',
-        value: '1'
       )
       awaiting = ServiceConfiguration.find_by(
         service_id:,
         deployment_environment: 'production',
         name: 'AWAITING_APPROVAL',
-        value: '1'
       )
 
       if revoke.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        revoke.value = '1'
         revoke.save!
       end
       if approval.present?
