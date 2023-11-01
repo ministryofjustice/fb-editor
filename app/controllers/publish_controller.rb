@@ -105,17 +105,6 @@ class PublishController < FormController
   helper_method :can_publish_to_live
 
   def show_confirmation?
-    if ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'APPROVED_TO_GO_LIVE'
-    ).present? ||
-        ServiceConfiguration.find_by(
-          service_id: service.service_id,
-          name: 'REVOKED'
-        ).present?
-      return false
-    end
-
     ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'AWAITING_APPROVAL'
