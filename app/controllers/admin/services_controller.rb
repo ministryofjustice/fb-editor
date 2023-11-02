@@ -220,7 +220,7 @@ module Admin
 
     def unpublish_review_service(service_id)
       if queued?
-        return true
+        true
       else
         publish_service = PublishService.find(service_id)
         version_metadata = get_version_metadata(publish_service)
@@ -235,9 +235,9 @@ module Admin
             publish_service_id: publish_service_creation.publish_service_id,
             service_slug: service_slug(publish_service.service_id, version_metadata)
           )
-          return true
+          true
         else
-          return false
+          false
         end
       end
     end
