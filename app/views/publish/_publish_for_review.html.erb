@@ -49,32 +49,40 @@
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
           link_errors: true,
           label: { text: t('publish.declarations.one', href: govuk_link_to(t('publish.declarations.one_link_text'), t('publish.declarations.one_link_ref'))).html_safe },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.one', href: t('publish.declarations.one_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_2,
           link_errors: true,
           label: { text: t('publish.declarations.two', href: govuk_link_to(t('publish.declarations.two_link_text'), t('publish.declarations.two_link_ref'))).html_safe },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.two', href: t('publish.declarations.two_link_text')).html_safe
+
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_3,
           link_errors: true,
           label: { text: t('publish.declarations.three', href: govuk_link_to(t('publish.declarations.three_link_text'), t('publish.declarations.three_link_ref'))).html_safe },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.three', href: t('publish.declarations.three_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_4,
           link_errors: true,
           label: { text: t('publish.declarations.four', href: govuk_link_to(t('publish.declarations.four_link_text'), t('publish.declarations.four_link_ref'))).html_safe },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.four', href: t('publish.declarations.four_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
           link_errors: true,
           label: { text: t('publish.declarations.five') },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.five', href: t('publish.declarations.five_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
           link_errors: true,
           label: { text: t('publish.declarations.six', href: govuk_link_to(t('publish.declarations.six_link_text'), t('publish.declarations.six_link_ref'))).html_safe },
-          checked: false
+          checked: false,
+          'aria-label':  t('publish.declarations.six', href: t('publish.declarations.six_link_text')).html_safe
+
         %>
       <% end %>
       <%= form.govuk_submit t('publish.publish_for_review.button'), class: 'fb-govuk-button' %>
