@@ -227,7 +227,7 @@ module Admin
         publish_service_creation = PublishServiceCreation.new(
           service_id: publish_service.service_id,
           version_id: version_metadata['version_id'],
-          deployment_environment: params[:deployment_environment],
+          deployment_environment: 'production',
           user_id: current_user.id
         )
         if publish_service_creation.save
