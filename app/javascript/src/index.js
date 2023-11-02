@@ -12,21 +12,16 @@ const GOVUKFrontend = require('govuk-frontend')
 
 window.GOVUKFrontend = GOVUKFrontend
 
-const {
-    snakeToPascalCase,
-} = require('./utilities');
-
-
-// Determine the controller we need to use
-function controllerAndAction() {
-    var controller = snakeToPascalCase(app.page.controller);
-    return controller + "Controller#" + app.page.action;
+function parseUrl(resource) {
+    const url = new URL(resource)
+    const parts = url.pathname.split('/').filter(p => p)
+    return parts
 }
 
 // Fetch JSON data from server
 function loadPageData(app) {
     $.ajax({
-        url: app.page.data_url,
+        url: '/api/services/:id/pages/:page_uuid',
         async: false,
         dataType: "json",
         success: function(data) {
@@ -35,79 +30,76 @@ function loadPageData(app) {
     });
 }
 
-
 // Set the controller we want to use.
 // Initialise using doc.ready so everything is in place.
 // app is global set inside app/view/partials/properties
 //
-var Controller;
+let Controller;
 
-switch (controllerAndAction()) {
-    case "BranchesController#new":
-    case "BranchesController#create":
-    case "BranchesController#edit":
-    case "BranchesController#update":
-        Controller = BranchesController;
-        break;
+const setController = () => {
+    const urlParts = parseUrl(window.location);
 
-    case "ConditionalContentsController#new":
-    case "ConditionalContentsController#create":
-    case "ConditionalContentsController#edit":
-    case "ConditionalContentsController#update":
-        Controller = ContentVisibilityController;
-        break;
+    const urlContains = (...needles) => {
+        return needles.every((needle) => urlParts.indexOf(needle) !== -1)
+    }
 
-    case "ServicesController#index":
-    case "ServicesController#create":
-        Controller = FormListPage;
-        break;
+    switch (true) {
+        case urlContains('branches'):
+            Controller = BranchesController;
+            app.page.action = 'create'
+            break;
 
-    case "ServicesController#edit":
-        Controller = ServicesController;
-        break;
+        case urlContains('pages'):
+            Controller = PagesController;
+            app.page.action = 'edit'
+            loadPageData(app);
+            break;
 
-    case "PagesController#edit":
-    case "PagesController#create":
-        Controller = PagesController;
-        loadPageData(app);
-        break;
+        case urlContains('publish'):
+            Controller = PublishController;
+            app.page.action = 'create'
+            break;
 
-    case "PublishController#index":
-    case "PublishController#create":
-        Controller = PublishController;
-        break;
+        case urlContains('form_analytics'):
+            Controller = FormAnalyticsController;
+            app.page.action = 'index'
+            break;
 
-    case "FormAnalyticsController#create":
-    case "FormAnalyticsController#index":
-        Controller = FormAnalyticsController;
-        break;
+        case urlContains('submission', 'email'):
+            Controller = CollectionEmailController;
+            app.page.action = 'index'
+            break;
 
-    case "EmailController#index":
-    case "EmailController#create":
-        Controller = CollectionEmailController;
-        break;
+        case urlContains('submission', 'confirmation_email'):
+            Controller = ConfirmationEmailController;
+            app.page.action = 'index'
+            break;
 
-    case "ConfirmationEmailController#index":
-    case "ConfirmationEmailController#create":
-        Controller = ConfirmationEmailController;
-        break;
+        case urlContains('reference_payment'):
+            Controller = ReferencePaymentController;
+            app.page.action = 'index'
+            break;
 
-    case "ReferencePaymentController#index":
-    case "ReferencePaymentController#create":
-        Controller = ReferencePaymentController;
-        break;
+        case urlContains('services', 'edit'):
+            Controller = ServicesController;
+            app.page.action = 'edit'
+            break;
 
-    default:
-        //console.log(controllerAndAction());
-        Controller = DefaultController;
+        case urlContains('services') && urlParts.length == 1:
+            Controller = FormListPage;
+            break;
+
+        default:
+            Controller = DefaultController;
+    }
 }
 
+setController()
+
 document.addEventListener('turbo:load', () => {
+    setController()
+    console.log(Controller.name)
     new Controller(app);
     GOVUKFrontend.initAll();
 });
 
-document.addEventListener("turbo:before-render", (event) => {
-
-    console.log(event)
-})
