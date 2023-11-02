@@ -44,6 +44,7 @@
           </div>
         </div>
       <% end %>
+
       <%= form.govuk_check_boxes_fieldset :declarations_checkboxes, legend: { text: "Confirm you have taken all of the following actions to request your final check", size: "s" }, class: 'checklist' do %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
           link_errors: true,
