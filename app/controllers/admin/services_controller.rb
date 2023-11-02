@@ -322,7 +322,7 @@ module Admin
 
     def review_service_queued?(service_id)
       publish_service = PublishService.where(
-        service_id: service_id,
+        service_id:,
         deployment_environment: 'production'
       ).last
       publish_service.queued? || publish_service.unpublishing?
