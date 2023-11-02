@@ -171,7 +171,11 @@ module Admin
         awaiting.delete
       end
 
-      flash[:success] = 'Service approved for go live'
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service approved for go live - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
 
       redirect_to admin_service_path(service_id)
     end
@@ -206,7 +210,36 @@ module Admin
         awaiting.delete
       end
 
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service requires changes - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
       redirect_to admin_service_path(service_id)
+    end
+
+    def unpublish_review_service(service_id)
+      if queued?
+        return true
+      else
+        publish_service = PublishService.find(service_id)
+        version_metadata = get_version_metadata(publish_service)
+        publish_service_creation = PublishServiceCreation.new(
+          service_id: publish_service.service_id,
+          version_id: version_metadata['version_id'],
+          deployment_environment: params[:deployment_environment],
+          user_id: current_user.id
+        )
+        if publish_service_creation.save
+          UnpublishServiceJob.perform_later(
+            publish_service_id: publish_service_creation.publish_service_id,
+            service_slug: service_slug(publish_service.service_id, version_metadata)
+          )
+          return true
+        else
+          return false
+        end
+      end
     end
 
     def is_already_approved?
