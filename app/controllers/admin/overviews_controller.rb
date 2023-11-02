@@ -1,6 +1,7 @@
 module Admin
   class OverviewsController < Admin::ApplicationController
     require 'csv'
+    ACCEPTANCE_TEST_USER_ID = 'a5833e7a-a210-4447-904c-df050d198e33'.freeze
     # new-runner-acceptance-tests and Acceptance Tests - Branching Fixture 10 service IDs
     RUNNER_ACCEPTANCE_TEST_FORMS = %w[
       cd75ad76-1d4b-4ce5-8a9e-035262cd2683
@@ -19,19 +20,19 @@ module Admin
         },
         {
           name: 'Currently Published to Live',
-          value: published('production').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.select(&:published?).count
-        },
-        {
-          name: 'Currently Published to Test',
-          value: published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.select(&:published?).count
-        },
-        {
-          name: 'Ever published to Live',
           value: published('production').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         },
         {
-          name: 'Ever published to Test',
+          name: 'Currently Published to Test',
           value: published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
+        },
+        {
+          name: 'Ever published to Live',
+          value: ever_published('production').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
+        },
+        {
+          name: 'Ever published to Test',
+          value: ever_published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         }
       ]
     end
@@ -61,7 +62,7 @@ module Admin
     def services_to_export
       User.all.each_with_object([]) do |user, array|
         # skip any services created by the acceptance tests user
-        next if user.id == 'a5833e7a-a210-4447-904c-df050d198e33'
+        next if user.id == ACCEPTANCE_TEST_USER_ID
 
         MetadataApiClient::Service.all(user_id: user.id).each do |service|
           meta = service.metadata
@@ -100,7 +101,7 @@ module Admin
     end
 
     def user_ids
-      User.all.map { |user| user.id if user.email.in?(team_emails) }.compact
+      User.all.map { |user| user.id if user.email.in?(team_emails) }.compact.push(ACCEPTANCE_TEST_USER_ID)
     end
 
     def team_emails

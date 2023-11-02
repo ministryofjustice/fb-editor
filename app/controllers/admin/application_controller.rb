@@ -28,10 +28,20 @@ module Admin
                     .select(&:published?)
     end
 
+    def ever_published(environment)
+      PublishService.where(deployment_environment: environment)
+                    .group_by(&:service_id)
+                    .map(&:last)
+                    .map { |p| p.select(&:published?) }
+                    .map(&:last)
+                    .compact
+    end
+
     # Override this value to specify the number of elements to display at a time
     # on index pages. Defaults to 20.
     # def records_per_page
     #   params[:per_page] || 20
     # end
+    #
   end
 end
