@@ -222,7 +222,7 @@ module Admin
       if review_service_queued?(service_id)
         true
       else
-        publish_service = PublishService.find(service_id)
+        publish_service = PublishService.find_by(service_id:)
         version_metadata = get_version_metadata(publish_service)
         publish_service_creation = PublishServiceCreation.new(
           service_id: publish_service.service_id,
