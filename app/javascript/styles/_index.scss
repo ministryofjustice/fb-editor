@@ -173,35 +173,63 @@ a[disabled] {
 }
 
 .publish-environment {
-  margin-bottom: govuk-spacing(8);
+    margin-bottom: govuk-spacing(8);
 
-  h2 {
-    margin-bottom: govuk-spacing(1);
-  }
+    h2 {
+        margin-bottom: govuk-spacing(1);
+    }
 
-  .description {
-    margin-top: 0;
-  }
+    .govuk-warning-text {
+        margin-bottom: govuk-spacing(2);
+    }
 
-  .govuk-warning-text {
-    margin-bottom: govuk-spacing(2);
-  }
+    .description {
+        margin-top: 0;
+    }
 
-  &__issues-list {
-    @extend .govuk-list;
-    @extend .govuk-list--bullet;
-    @extend .govuk-list--spaced;
+    &.publish-environment--dev {
+        .description {
+            margin-bottom: govuk-spacing(6);
+        }
+    }
 
-    margin-left: govuk-spacing(7);
-  }
+    &.publish-environment--production {
+        .description {
+            margin-bottom: govuk-spacing(9);
+        }
+    }
 
-  button[data-fb-action="publish"] {
-    margin-top: govuk-spacing(6);
-  }
-}
 
-.bold-label {
-  font-weight: bold;
+    .warnings {
+        .govuk-warning-text::last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .review {
+        margin-top: govuk-spacing(9);
+        margin-bottom: govuk-spacing(6);
+    }
+
+    .checklist {
+        max-width: 58ch;
+    }
+
+    .govuk-checkboxes__item {
+        margin-bottom: govuk-spacing(5);
+    }
+
+    &__issues-list {
+        @extend .govuk-list;
+        @extend .govuk-list--bullet;
+        @extend .govuk-list--spaced;
+
+        margin-left: govuk-spacing(7);
+    }
+
+    button[data-fb-action="publish"] {
+        margin-top: govuk-spacing(6);
+    }
 }
 
 .moj-forms-tabs {
