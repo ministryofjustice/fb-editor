@@ -219,7 +219,7 @@ module Admin
     end
 
     def unpublish_review_service(service_id)
-      if queued?
+      if review_service_queued?(service_id)
         true
       else
         publish_service = PublishService.find(service_id)
@@ -316,6 +316,14 @@ module Admin
       publish_service = PublishService.where(
         service_id: params[:service_id],
         deployment_environment: params[:deployment_environment]
+      ).last
+      publish_service.queued? || publish_service.unpublishing?
+    end
+
+    def review_service_queued?(service_id)
+      publish_service = PublishService.where(
+        service_id: service_id,
+        deployment_environment: 'production'
       ).last
       publish_service.queued? || publish_service.unpublishing?
     end
