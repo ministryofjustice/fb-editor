@@ -41,7 +41,7 @@ services:
 
   editor-metadata-app:
     build:
-      context: https://github.com/ministryofjustice/fb-metadata-api.git#main
+      context: https://github.com/ministryofjustice/fb-metadata-api.git
       args:
         BUNDLE_ARGS: ''
     tty: true

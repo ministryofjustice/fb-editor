@@ -19,7 +19,7 @@ import ExpressionController from '../src/controllers/expression-controller.js'
 import ExpressionsController from '../src/controllers/expressions-controller.js'
 import SelectionRevealController from '../src/controllers/selection-reveal-controller.js'
 
-Turbo.session.drive = false
+// Turbo.session.drive = false
 window.Stimulus = Application.start()
 Stimulus.register("dynamic-fields", DynamicFieldsController)
 Stimulus.register("conditional", ConditionalController)
@@ -33,9 +33,9 @@ const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
 const { SaveButton } = require('../src/web-components/save-button');
 
 if ('customElements' in window) {
-  customElements.define('elastic-textarea', ElasticTextarea);
-  customElements.define('editable-content', EditableContent);
-  customElements.define('save-button', SaveButton, { extends: 'button'});
+    customElements.define('elastic-textarea', ElasticTextarea);
+    customElements.define('editable-content', EditableContent);
+    customElements.define('save-button', SaveButton, { extends: 'button' });
 }
 
 // Entry point for fb-editor stylesheets
