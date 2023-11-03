@@ -34,10 +34,10 @@ class PublishController < FormController
 
   def publish_for_review
     declarations
-    declarations.checked(publish_for_review_params['declarations_checkboxes'].reject { |d| d.blank? })
+    declarations.checked(publish_for_review_params['declarations_checkboxes'].reject(&:blank?))
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
 
-    if !@declarations.valid?
+    unless @declarations.valid?
       update_form_objects
       render :index, status: :unprocessable_entity and return
     end
