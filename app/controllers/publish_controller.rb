@@ -4,6 +4,7 @@ class PublishController < FormController
   def index
     @published_dev = PublishServicePresenter.new(publishes_dev, service)
     @published_production = PublishServicePresenter.new(publishes_production, service)
+    declarations
   end
 
   def create
@@ -32,12 +33,12 @@ class PublishController < FormController
   end
 
   def publish_for_review
-    declarations = publish_for_review_params['declarations_checkboxes'].compact
+    declarations
+    declarations.checked(publish_for_review_params['declarations_checkboxes'].reject(&:blank?))
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
-    # TODO: is checking the length enough?
-    if declarations.length != 7
+
+    unless @declarations.valid?
       update_form_objects
-      @errors = [I18n.t('publish.declarations.error')]
       render :index, status: :unprocessable_entity and return
     end
 
@@ -152,7 +153,7 @@ class PublishController < FormController
   end
 
   def publish_for_review_params
-    params.permit(
+    params.require(:publish_for_review_declarations).permit(
       :authenticity_token,
       declarations_checkboxes: []
     ).merge(
@@ -201,6 +202,10 @@ class PublishController < FormController
     else
       @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
+  end
+
+  def declarations
+    @declarations ||= PublishForReviewDeclarations.new
   end
 
   def published_service
