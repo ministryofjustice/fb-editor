@@ -4,28 +4,28 @@
 
     <div class="govuk-panel govuk-panel--confirmation">
       <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h1>
-      <p><%= t("publish.publish_for_review.confirmation.text") %></p>
+      <p class="govuk-panel__body"><%= t("publish.publish_for_review.confirmation.text") %></p>
     </div>
   <% else %>
     <p class="description"><%= t("publish.#{environment}.description") %></p>
 
-    <br/>
-
-    <% if presenter.service_output_warning.present? %>
-      <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
-    <% end %>
-
-    <% if environment == 'production' %>
-      <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
-        <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
+    <div class="warnings">
+      <% if presenter.service_output_warning.present? %>
+        <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
       <% end %>
-    <% end %>
 
-    <h3><%= t('publish.publish_for_review.info.heading') %></h3>
+      <% if environment == 'production' %>
+        <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
+          <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
+        <% end %>
+      <% end %>
+    </div>
 
-    <p><%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %></p>
-    <br/>
+    <div class="review">
+      <h3><%= t('publish.publish_for_review.info.heading') %></h3>
 
+      <p><%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %></p>
+    </div>
     <%= form_for(@declarations, url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |form| %>
 
       <%= form.govuk_error_summary link_base_errors_to: :declarations_checkboxes %>
@@ -33,32 +33,38 @@
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
           link_errors: true,
           label: { text: t('publish.declarations.one', href: govuk_link_to(t('publish.declarations.one_link_text'), t('publish.declarations.one_link_ref'))).html_safe },
-          checked: @declarations.declaration_1
+          checked: @declarations.declaration_1,
+          'aria-label':  t('publish.declarations.one', href: t('publish.declarations.one_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_2,
           link_errors: true,
           label: { text: t('publish.declarations.two', href: govuk_link_to(t('publish.declarations.two_link_text'), t('publish.declarations.two_link_ref'))).html_safe },
-          checked: @declarations.declaration_2
+          checked: @declarations.declaration_2,
+          'aria-label':  t('publish.declarations.two', href: t('publish.declarations.two_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_3,
           link_errors: true,
           label: { text: t('publish.declarations.three', href: govuk_link_to(t('publish.declarations.three_link_text'), t('publish.declarations.three_link_ref'))).html_safe },
-          checked: @declarations.declaration_3
+          checked: @declarations.declaration_3,
+          'aria-label':  t('publish.declarations.three', href: t('publish.declarations.three_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_4,
           link_errors: true,
           label: { text: t('publish.declarations.four', href: govuk_link_to(t('publish.declarations.four_link_text'), t('publish.declarations.four_link_ref'))).html_safe },
-          checked: @declarations.declaration_4
+          checked: @declarations.declaration_4,
+          'aria-label':  t('publish.declarations.four', href: t('publish.declarations.four_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
           link_errors: true,
           label: { text: t('publish.declarations.five') },
-          checked: @declarations.declaration_5
+          hecked: @declarations.declaration_5,
+          'aria-label':  t('publish.declarations.five', href: t('publish.declarations.five_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
           link_errors: true,
           label: { text: t('publish.declarations.six', href: govuk_link_to(t('publish.declarations.six_link_text'), t('publish.declarations.six_link_ref'))).html_safe },
-          checked: @declarations.declaration_6
+          checked: @declarations.declaration_6,
+          'aria-label':  t('publish.declarations.six', href: t('publish.declarations.six_link_text')).html_safe
         %>
       <% end %>
       <%= form.govuk_submit t('publish.publish_for_review.button'), class: 'fb-govuk-button' %>

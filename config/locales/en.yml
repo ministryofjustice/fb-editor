@@ -521,7 +521,7 @@ en:
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
       inset_text_label: 'Is your form ready to go live?'
-      inset_text: 'Your form must go through a final check by the MoJ Forms team before you can publish to Live. Go to Publish to Live to find out more.'      
+      inset_text_html: "Your form must go through a final check by the MoJ Forms team before you can publish to Live. Go to <a href='#publish-to-live'>Publish to Live</a> to find out more."
     production:
       button: Publish to Live
       heading: 'Live site'
