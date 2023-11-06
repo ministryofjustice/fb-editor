@@ -6,7 +6,7 @@ RSpec.describe NewComponentGenerator do
       components:
     )
   end
-  input_components = %w[text textarea email number radios checkboxes upload autocomplete]
+  input_components = %w[text textarea email number radios checkboxes date upload autocomplete]
   non_input_components = %w[content]
 
   before do
