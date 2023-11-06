@@ -9,7 +9,7 @@ ruby '3.1.3'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'conditional-content-fixture'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.2.11'
+gem 'metadata_presenter', '3.3.0'
 
 gem 'activerecord-session_store'
 gem 'administrate'
