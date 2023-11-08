@@ -124,16 +124,37 @@ class PublishController < FormController
   end
   helper_method :declaration_errors
 
-  def form_url(environment)
-    if environment == 'dev'
-      ['https://', service.service_slug, '.dev.', root_url.gsub('https://', '')].join
-    else
-      ['https://', service.service_slug, '.', root_url.gsub('https://', '')].join
-    end
+  def text_for_environment(env)
+    env == 'dev' ? 'Test' : 'Live'
+  end
+  helper_method :text_for_environment
+
+  def form_url(env)
+    # if environment == 'dev'
+    #   ['https://', service.service_slug, '.dev.', root_url.gsub('https://', '')].join
+    # else
+    #   ['https://', service.service_slug, '.', root_url.gsub('https://', '')].join
+    # end
+    "https://#{hostname(env)}"
   end
   helper_method :form_url
 
   private
+
+  def hostname(env)
+    root_url = Rails.application.config
+      .platform_environments[platform_environment][:url_root]
+
+    if env == 'production'
+      [service_slug, '.', root_url].join
+    else
+      [service_slug, '.', 'dev', '.', root_url].join
+    end
+  end
+
+  def platform_environment
+    ENV['PLATFORM_ENV']
+  end
 
   def service_autocomplete_items
     @service_autocomplete_items ||= MetadataApiClient::Items.all(service_id: service.service_id)
