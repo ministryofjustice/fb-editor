@@ -474,7 +474,7 @@ en:
         heading: 'Final check requested'
         text: 'We will be in touch shortly'
     declarations:
-      error: 'You must confirm each of the declarations'
+      error: 'Check all of the statements to confirm you have read them and taken the appropriate actions.'
       one: 'I have read the %{href} and taken any appropriate actions for my form'
       one_link_text: 'guidance on assessments'
       one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#timescales'

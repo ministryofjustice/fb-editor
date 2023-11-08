@@ -7,28 +7,27 @@
       <p class="govuk-panel__body"><%= t("publish.publish_for_review.confirmation.text") %></p>
     </div>
   <% else %>
-    <p class="description"><%= t("publish.#{environment}.description") %></p>
-
-    <div class="warnings">
-      <% if presenter.service_output_warning.present? %>
-        <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
-      <% end %>
-
-      <% if environment == 'production' %>
-        <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
-          <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
-        <% end %>
-      <% end %>
-    </div>
-
-    <div class="review">
-      <h3><%= t('publish.publish_for_review.info.heading') %></h3>
-
-      <p><%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %></p>
-    </div>
     <%= form_for(@declarations, url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |form| %>
-
       <%= form.govuk_error_summary link_base_errors_to: :declarations_checkboxes %>
+      <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+      <div class="warnings">
+        <% if presenter.service_output_warning.present? %>
+          <%= render('publish/warnings/service_output', warning: presenter.service_output_warning) %>
+        <% end %>
+  
+        <% if environment == 'production' %>
+          <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
+            <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
+          <% end %>
+        <% end %>
+      </div>
+  
+      <div class="review">
+        <h3><%= t('publish.publish_for_review.info.heading') %></h3>
+  
+        <p><%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %></p>
+      </div>
       <%= form.govuk_check_boxes_fieldset :declarations_checkboxes, legend: { text: "Confirm you have taken all of the following actions to request your final check", size: "s" } do %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
           link_errors: true,
