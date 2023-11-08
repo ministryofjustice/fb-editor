@@ -2,7 +2,7 @@
   <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
   <% if @undo_redo_button.present?%>
-    <%= button_to api_service_previous_version_path(service.service_id, action: @undo_redo_button[:action],undoable_action: @undo_redo_button[:undoable_action]),
+    <%= button_to api_service_previous_version_path(service.service_id, operation: @undo_redo_button[:action],undoable_action: @undo_redo_button[:undoable_action]),
       method: :get,
       class: 'fb-govuk-button fb-govuk-button-inverted fb-govuk-button--inline',
       data: { element: 'undo-redo-button' } do
