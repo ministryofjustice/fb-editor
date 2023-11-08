@@ -225,7 +225,7 @@ class EditorApp < SitePrism::Page
 
   # publisher tabs
   element :dev_tab, :link, 'Publish to Test'
-  element :production_tab, :link, 'Publish to Live'
+  element :production_tab, :link, 'Publish to Live', match: :first
   element :publish_for_review, :button, 'Request a final check'
 
   def edit_service_link(service_name)
