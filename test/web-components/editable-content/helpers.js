@@ -5,15 +5,15 @@ async function createComponent(element, html) {
   await new Promise(resolve => setTimeout(resolve, 0));
 }
 
-function createTemplate(id, defaultContent='', markdown='', html='', config='') {
+function createTemplate(id, defaultContent = '', markdown = '', html = '', config = '') {
   //N.B. the lack of quotes around the data-config attribute is deliberate.  It
   //is valid HTML and adding them in breaks the tests, Works fine IRL with or
-  //without them. 
+  //without them.
   return `
   <form id="${id}-form">
     <button type=submit>Save</button>
   </form>
-  <editable-content id="${id}" default-content="${defaultContent}" content="${markdown}" data-config=${config}>
+  <editable-content id="${id}" default-content="${defaultContent}" content="${markdown}" data-fb-content-id="${id}" data-config=${config} >
     ${html}
   </editable-content>`
 }

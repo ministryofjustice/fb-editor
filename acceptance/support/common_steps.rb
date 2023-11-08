@@ -264,6 +264,7 @@ module CommonSteps
   end
 
   def when_I_want_to_edit_content_component_properties(component)
+    editor.service_name.click #in case component is already focused
     element_output(component).click
     component.find('.ActivatedMenuActivator', visible: true).click
   end
@@ -321,6 +322,8 @@ module CommonSteps
   end
 
   def when_I_change_editable_content(element, content:)
+    editor.service_name.click #in case component is already focused
+
     # activate the input element for the content component by clicking on the
     # output element tag first
     element_output(element).click
@@ -351,7 +354,7 @@ module CommonSteps
     else
       and_I_add_a_multiple_page_content_component
     end
-      
+
     component = editor.editable_content_areas.last
     and_the_content_component_has_the_optional_content(component)
     when_I_change_editable_content(component, content: content)
