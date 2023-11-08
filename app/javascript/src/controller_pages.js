@@ -13,10 +13,10 @@
  **/
 
 
-const  {
+const {
   updateHiddenInputOnForm,
   stringInject,
-}  = require('./utilities');
+} = require('./utilities');
 
 const {
   htmlAdjustment,
@@ -51,7 +51,7 @@ class PagesController extends DefaultController {
   constructor(app) {
     super(app);
 
-    switch(app.page.action) {
+    switch (app.page.action) {
       case "edit":
         PagesController.edit.call(this);
         break;
@@ -86,27 +86,27 @@ PagesController.edit = function() {
   enhanceQuestions(view);
 
   // Handle page-specific view customisations here.
-  switch(view.type) {
+  switch (view.type) {
     case "page.multiplequestions":
-         editPageMultipleQuestionsViewCustomisations.call(view);
-         break;
+      editPageMultipleQuestionsViewCustomisations.call(view);
+      break;
 
     case "page.singlequestion":
-         editPageSingleQuestionViewCustomisations.call(view);
-         break;
+      editPageSingleQuestionViewCustomisations.call(view);
+      break;
 
     case "page.content":
-         editPageContentViewCustomisations.call(view);
-         break;
+      editPageContentViewCustomisations.call(view);
+      break;
 
     case "page.confirmation":
-         // No customisations required for this view.
-         editPageConfirmationViewCustomisations(view);
-         break;
+      // No customisations required for this view.
+      editPageConfirmationViewCustomisations(view);
+      break;
 
     case "page.checkanswers":
-         editPageCheckAnswersViewCustomisations.call(view);
-         break;
+      editPageCheckAnswersViewCustomisations.call(view);
+      break;
   }
 
   // Enhance any Add Content buttons
@@ -116,7 +116,7 @@ PagesController.edit = function() {
   });
 
   // Enhance any Add Component buttons.
-  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view) );
+  view.$document.on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(view));
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node, { form: view.saveButton.$form });
@@ -133,9 +133,9 @@ PagesController.edit = function() {
   addContentMenuListeners(view);
   addEditableComponentItemMenuListeners(view);
 
-  this.$document.on("SaveRequired", () => this.saveButton.saveRequired = true );
-  this.$document.on("MaxFilesSave", () => this.saveButton.save() );
-  this.saveButton.$form.on("submit", () => this.updateComponents() );
+  this.$document.on("SaveRequired", () => this.saveButton.saveRequired = true);
+  this.$document.on("MaxFilesSave", () => this.saveButton.save());
+  this.saveButton.$form.on("submit", () => this.updateComponents());
 
   // Bit hacky: Cookies page is going through this controller but content is static.
   // The static content is wrapped in [fb-content-type=static] to help identify it.
@@ -187,7 +187,7 @@ class AddComponent {
  **/
 AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
-  if( action != "none" ) {
+  if (action != "none") {
     updateHiddenInputOnForm(this.saveButton.$form, "page[add_component]", action);
     this.saveButton.save();
   }
@@ -236,14 +236,14 @@ function addQuestionMenuListeners(view) {
         // Find and correct (make work!) any method:delete links
         dialog.$node.find("[data-method=delete]").on("click", function(e) {
           e.preventDefault();
-      // Workaround solution that doesn't require extra backend work
-      // 1. First remove component from view
+          // Workaround solution that doesn't require extra backend work
+          // 1. First remove component from view
           question.$node.hide();
-      // 2. Update form (in case anything else has changed)
+          // 2. Update form (in case anything else has changed)
           view.updateComponents();
-      // 3. Remove corresponding component from form
+          // 3. Remove corresponding component from form
           question.remove();
-      // 4. Trigger save required (to enable Save button)
+          // 4. Trigger save required (to enable Save button)
           view.saveButton.saveRequired = true;
         });
       }
@@ -258,12 +258,12 @@ function addQuestionMenuListeners(view) {
     html = html.replace(regex, "$1 checked=\"true\"");
     view.dialogConfiguration.onConfirm = (dialog) => { question.required = dialog.content.content };
     view.dialogConfiguration.open({
-        content: html
-      });
+      content: html
+    });
   });
 
   view.$document.on("QuestionMenuSelectionValidation", function(event, details) {
-    const {question, validation} = details;
+    const { question, validation } = details;
     var apiUrl = question.menu.selectedItem.data('apiPath');
 
     new DialogForm(apiUrl, {
@@ -271,12 +271,12 @@ function addQuestionMenuListeners(view) {
       remote: true,
       autoOpen: true,
       /*
-       * Function runs after the modal content has been returned by the api
-       * as it is possible to open and edit the validations multiple times
-       * before saving.  We need to load the current validation state from the
-       * question data and apply it to the form.  As the values from the api
-       * could be out of date
-       */
+                   * Function runs after the modal content has been returned by the api
+                   * as it is possible to open and edit the validations multiple times
+                   * before saving.  We need to load the current validation state from the
+                   * question data and apply it to the form.  As the values from the api
+                   * could be out of date
+                   */
       onLoad: function(dialog) {
         // Find fields that may be in the dialog
         var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
@@ -287,12 +287,12 @@ function addQuestionMenuListeners(view) {
         var $charsRadio = dialog.$node.find('input[id="component_validation_characters"]');
         var $wordsRadio = dialog.$node.find('input[id="component_validation_words"]');
 
-        switch(validation) {
+        switch (validation) {
           case 'date_before':
           case 'date_after':
             // Destructure date value and use to populate or clear date fields in modal
             var currentValue = question.data.validation[validation];
-            if(currentValue) {
+            if (currentValue) {
               let [currentYear, currentMonth, currentDay] = currentValue.split('-');
               $dayField.val(currentDay);
               $monthField.val(currentMonth);
@@ -306,20 +306,20 @@ function addQuestionMenuListeners(view) {
           case 'min_string_length':
             // Check the appropriate radio in the modal based on the validation type
             var currentValue = question.data.validation['min_length'] || question.data.validation['min_word'];
-            if( question.data.validation.hasOwnProperty('min_length')) {
+            if (question.data.validation.hasOwnProperty('min_length')) {
               $charsRadio.prop('checked', true);
             }
-            if( question.data.validation.hasOwnProperty('min_word')) {
+            if (question.data.validation.hasOwnProperty('min_word')) {
               $wordsRadio.prop('checked', true);
             }
             break;
           case 'max_string_length':
             // Check the appropriate radio in the modal based on the validation type
             var currentValue = question.data.validation['max_length'] || question.data.validation['max_word'];
-            if( question.data.validation.hasOwnProperty('max_length')) {
+            if (question.data.validation.hasOwnProperty('max_length')) {
               $charsRadio.prop('checked', true);
             }
-            if( question.data.validation.hasOwnProperty('max_word')) {
+            if (question.data.validation.hasOwnProperty('max_word')) {
               $wordsRadio.prop('checked', true);
             }
             break;
@@ -329,12 +329,12 @@ function addQuestionMenuListeners(view) {
         }
 
         // If its a standard validationl just set the value filed to the current value
-        if($valueField) {
-          $valueField.val( currentValue ?? '');
+        if ($valueField) {
+          $valueField.val(currentValue ?? '');
         }
 
         // Presence of current value indicates whether the validation is enabled/disabled
-        if(currentValue) {
+        if (currentValue) {
           $statusField.prop('checked', true);
         } else {
           $statusField.prop('checked', false);
@@ -355,8 +355,8 @@ function addQuestionMenuListeners(view) {
         var $statusInput = dialog.$node.find('input[name="component_validation[status]"]');
         var $resettableInputs = dialog.$node.find('.Expander input').not('input[name*="string_length"]');
         $statusInput.on('change', () => {
-          if(!$statusInput.prop('checked')) {
-            $resettableInputs.each( function() {
+          if (!$statusInput.prop('checked')) {
+            $resettableInputs.each(function() {
               $(this).value = '';
             })
           }
@@ -386,7 +386,7 @@ function addQuestionMenuListeners(view) {
       disableOnSubmit: view.text.dialogs.autocomplete.button_disabled,
       onSuccess: function() {
         var $success = question.$node.find('[data-fb-status="autocomplete-success"]');
-        var $warning =  question.$node.find('[data-fb-status="autocomplete-warning"]');
+        var $warning = question.$node.find('[data-fb-status="autocomplete-warning"]');
         var $successMessage = question.$node.find('[data-fb-template="autocomplete-success-message"]').first().html();
         $success.html($successMessage);
         $warning.remove();
@@ -418,19 +418,19 @@ function addEditableComponentItemMenuListeners(view) {
     var dialog = view.dialog;
     var path = selectedItem.data('api-path');
 
-    var questionUuid =  collectionItem.component.data._uuid;
-    var optionUuid =  collectionItem.data._uuid;
+    var questionUuid = collectionItem.component.data._uuid;
+    var optionUuid = collectionItem.data._uuid;
 
     var url = stringInject(path, {
       'question_uuid': questionUuid,
       'option_uuid': optionUuid ?? 'new',
     });
 
-    if( !optionUuid ) {
-      url = url + '&label=' + encodeURIComponent( collectionItem.$node.find('label').text() );
+    if (!optionUuid) {
+      url = url + '&label=' + encodeURIComponent(collectionItem.$node.find('label').text());
     }
 
-    if( collectionItem.component.canHaveItemsRemoved() ) {
+    if (collectionItem.component.canHaveItemsRemoved()) {
       new DialogApiRequest(url, {
         activator: selectedItem,
         closeOnClickSelector: ".govuk-button",
@@ -482,39 +482,39 @@ function addContentMenuListeners(view) {
   });
 
   view.$document.on("ContentMenuSelectionConditionalContent", function(event, details) {
-    const {component, selectedItem } = details;
+    const { component, selectedItem } = details;
     openConditionalContentDialog(component, selectedItem, view)
   });
 }
 
 function openConditionalContentDialog(component, activator, view) {
-    const url = component.dataset.conditionalApiPath;
-    const data = {
-      component: JSON.stringify( component.config || {} )
-    }
-    if(url) {
-      new DialogForm(url, {
-        activator: activator,
-        remote: true,
-        requestMethod: 'POST',
-        requestData: data,
-        autoOpen: true,
-        closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
-        onReady: (dialog) => {
-        },
-        onSuccess: (data, dialog) => {
-          component.config = Object.assign(component.config, data)
-          view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
-        },
-        onError: (data, dialog) => {
-          var responseHtml = $.parseHTML(data.responseText);
-          var $newHtml = $(responseHtml[0]).html();
-          dialog.$node.html($newHtml);
-          dialog.refresh();
-        }
+  const url = component.dataset.conditionalApiPath;
+  const data = {
+    component: JSON.stringify(component.config || {})
+  }
+  if (url) {
+    new DialogForm(url, {
+      activator: activator,
+      remote: true,
+      requestMethod: 'POST',
+      requestData: data,
+      autoOpen: true,
+      closeOnClickSelector: 'button[type="button"]:not(.prevent-modal-close)',
+      onReady: (dialog) => {
+      },
+      onSuccess: (data, dialog) => {
+        component.config = Object.assign(component.config, data)
+        view.saveButton.saveRequired = true; // 4. Trigger save required (to enable Save button)
+      },
+      onError: (data, dialog) => {
+        var responseHtml = $.parseHTML(data.responseText);
+        var $newHtml = $(responseHtml[0]).html();
+        dialog.$node.html($newHtml);
+        dialog.refresh();
+      }
 
-      });
-    }
+    });
+  }
 }
 
 
@@ -522,24 +522,31 @@ function openConditionalContentDialog(component, activator, view) {
  * added, the first element with that new component.
  **/
 function focusOnEditableComponent() {
-  var target = location.hash;
-  if(target)
-  if(target.match(/^[#\w\d_]+$/)) {
-    // Newly added component with fragment identifier so find first
-    // first editable item of last component.
-    let $newComponent = $(target);
-    if($newComponent.length) {
-      $newComponent.data("instance").focus();
-    }
-  }
-  else {
-    const pageTitle = $('h1.EditableElement').get(0)
-    if(pageTitle) {
-      pageTitle.focus();
+  const target = location.hash
+  setTimeout(() => {
+    if (target && target.match(/^[#\w\d_]+$/)) {
+      console.log(target)
+      // Newly added component with fragment identifier so find first
+      // first editable item of last component.
+      let $newComponent = $(target);
+      if ($newComponent.length) {
+        console.log($newComponent)
+        if ($newComponent.prop('tagName').toLowerCase() == 'editable-content') {
+          console.log('you added editable content');
+          $newComponent.get(0).root.focus();
+        } else {
+          $newComponent.data("instance").focus();
+        }
+      }
     } else {
-      $(".fb-editable").eq(0).focus();
+      const pageTitle = $('h1.EditableElement').get(0)
+      if (pageTitle) {
+        pageTitle.focus();
+      } else {
+        $(".fb-editable").eq(0).focus();
+      }
     }
-  }
+  })
 }
 
 
@@ -567,18 +574,18 @@ function enhanceContent(view) {
   const form = document.querySelector('#editContentForm');
   document.querySelectorAll('editable-content').forEach((element) => {
     element.form = form
-    if(element.isComponent) {
+    if (element.isComponent) {
       createContentMenu(element)
-        createConditionalContentButton(view, {
-          component: element,
-          label: view.text.content_visibility.label_show_if,
-          className: 'show-if-button'
-        })
-        createConditionalContentButton(view, {
-          component: element,
-          label: view.text.content_visibility.label_hidden,
-          className: 'hidden-button'
-        })
+      createConditionalContentButton(view, {
+        component: element,
+        label: view.text.content_visibility.label_show_if,
+        className: 'show-if-button'
+      })
+      createConditionalContentButton(view, {
+        component: element,
+        label: view.text.content_visibility.label_hidden,
+        className: 'hidden-button'
+      })
     }
   });
 }
@@ -601,7 +608,7 @@ function createContentMenu(component) {
   });
 }
 
-function createConditionalContentButton(view, config ) {
+function createConditionalContentButton(view, config) {
   const { component, className, label } = config
 
   const button = document.createElement('button')
@@ -681,8 +688,8 @@ function enhanceQuestions(view) {
         // with onItemAdd (provides an opportunity for clean up).
         view.dialogConfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            confirm: view.text.dialogs.button_delete_option
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          confirm: view.text.dialogs.button_delete_option
         });
       }
     });
@@ -711,8 +718,8 @@ function enhanceQuestions(view) {
         // with onItemAdd (provides an opportunity for clean up).
         view.dialogconfirmationDelete.onConfirm = () => { item.component.removeItem(item) };
         view.dialogConfirmationDelete.open({
-            heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
-            confirm: view.text.dialogs.button_delete_option
+          heading: view.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
+          confirm: view.text.dialogs.button_delete_option
         });
       }
 
@@ -781,7 +788,7 @@ function editPageCheckAnswersViewCustomisations() {
 function editPageConfirmationViewCustomisations() {
   var $payButton = $('[data-component="pay-button"]');
   var $addContentButton = $('[data-component="add-content"]');
-  if($payButton && $addContentButton) {
+  if ($payButton && $addContentButton) {
     $addContentButton.after($payButton);
     $payButton.attr('disabled', 'disabled');
     $payButton.attr('tabindex', '-1');
@@ -824,7 +831,7 @@ function accessibilityQuestionViewEnhancements(view) {
  **/
 function supportGovUkStaticContent() {
   var content = document.querySelectorAll("[data-fb-content-type=static]");
-  for( var c=0; c<content.length; ++c) {
+  for (var c = 0; c < content.length; ++c) {
     content[c].innerHTML = htmlAdjustment(content[c].innerHTML);
   }
 }
