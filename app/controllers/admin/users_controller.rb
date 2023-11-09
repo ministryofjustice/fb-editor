@@ -3,7 +3,7 @@ module Admin
   class UsersController < Admin::ApplicationController
     before_action :assign_user_services, only: :show
 
-    def valid_action?(name, resource = resource_class)
+    def existing_action?(resource, name)
       %w[destroy edit new].exclude?(name.to_s) && super
     end
 

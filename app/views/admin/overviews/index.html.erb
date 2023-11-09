@@ -47,7 +47,7 @@ It renders the `_table` partial to display details about the resources.
     <% end %>
   </dl>
 
-  <a href="<%= admin_export_services_path %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
+  <a href="<%= admin_export_services_path(format: :csv) %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
     Export Services
   </a>
 </section>

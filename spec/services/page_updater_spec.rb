@@ -266,12 +266,12 @@ RSpec.describe PageUpdater do
           let(:page_url) { 'check-answers' }
           let(:expected_created_component) do
             ActiveSupport::HashWithIndifferentAccess.new({
-              '_id': 'check-answers_content_3',
+              '_id': 'check-answers_content_2',
               '_type': 'content',
               '_uuid' => "Dead or alive you're coming with me",
               'content': '[Optional content]',
               'display': 'always',
-              'name': 'check-answers_content_3'
+              'name': 'check-answers_content_2'
             })
           end
           let(:expected_updated_page) do

@@ -1,6 +1,12 @@
 module Admin
   class OverviewsController < Admin::ApplicationController
     require 'csv'
+    ACCEPTANCE_TEST_USER_ID = 'a5833e7a-a210-4447-904c-df050d198e33'.freeze
+    # new-runner-acceptance-tests and Acceptance Tests - Branching Fixture 10 service IDs
+    RUNNER_ACCEPTANCE_TEST_FORMS = %w[
+      cd75ad76-1d4b-4ce5-8a9e-035262cd2683
+      e68dca75-20b8-468e-9436-e97791a914c5
+    ].freeze
 
     def index
       @stats = [
@@ -13,31 +19,35 @@ module Admin
           value: active_sessions
         },
         {
-          name: 'Pending jobs',
-          value: Delayed::Job.where('attempts = 0').count
+          name: 'Currently Published to Live',
+          value: published('production').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         },
         {
-          name: 'Failed jobs',
-          value: Delayed::Job.where('attempts > 0').count
+          name: 'Currently Published to Test',
+          value: published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         },
         {
-          name: 'Published to Live',
-          value: published('production').count
+          name: 'Ever published to Live',
+          value: ever_published('production').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         },
         {
-          name: 'Published to Test',
-          value: published('dev').count
+          name: 'Ever published to Test',
+          value: ever_published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         }
       ]
     end
 
     def export_services
-      @headers = ['Service name', 'User email', 'Published Test', 'Published Live']
-      @services = services_to_export.sort_by { |s| s[:name] }
+      respond_to do |format|
+        format.csv do
+          @headers = ['Service name', 'User email', 'Published Test', 'Published Live']
+          @services = services_to_export.sort_by { |s| s[:name] }
 
-      response.headers['Content-Type'] = 'text/csv'
-      response.headers['Content-Disposition'] = "attachment; filename=#{csv_filename}"
-      render template: '/admin/overviews/export_services.csv.erb'
+          response.headers['Content-Type'] = 'text/csv'
+          response.headers['Content-Disposition'] = "attachment; filename=#{csv_filename}"
+          render '/admin/overviews/export_services'
+        end
+      end
     end
 
     private
@@ -52,7 +62,7 @@ module Admin
     def services_to_export
       User.all.each_with_object([]) do |user, array|
         # skip any services created by the acceptance tests user
-        next if user.id == 'a5833e7a-a210-4447-904c-df050d198e33'
+        next if user.id == ACCEPTANCE_TEST_USER_ID
 
         MetadataApiClient::Service.all(user_id: user.id).each do |service|
           meta = service.metadata
@@ -80,6 +90,22 @@ module Admin
 
     def csv_filename
       "#{ENV['PLATFORM_ENV']}-services-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+    end
+
+    def moj_forms_team_service_ids
+      @moj_forms_team_service_ids ||= team_services.map(&:id) + RUNNER_ACCEPTANCE_TEST_FORMS
+    end
+
+    def team_services
+      user_ids.map { |id| MetadataApiClient::Service.all(user_id: id) }.flatten
+    end
+
+    def user_ids
+      User.all.map { |user| user.id if user.email.in?(team_emails) }.compact.push(ACCEPTANCE_TEST_USER_ID)
+    end
+
+    def team_emails
+      @team_emails ||= Rails.application.config.moj_forms_team
     end
   end
 end
