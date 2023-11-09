@@ -8,13 +8,13 @@ RSpec.describe PublishForReviewDeclarations, type: :model do
 
     context 'valid' do
       let(:params) do
-        [
-          'declaration_1',
-          'declaration_2',
-          'declaration_3',
-          'declaration_4',
-          'declaration_5',
-          'declaration_6'
+        %w[
+          declaration_1
+          declaration_2
+          declaration_3
+          declaration_4
+          declaration_5
+          declaration_6
         ]
       end
 
@@ -25,8 +25,8 @@ RSpec.describe PublishForReviewDeclarations, type: :model do
 
     context 'invalid' do
       let(:params) do
-        [
-          'declaration_1',
+        %w[
+          declaration_1
         ]
       end
 
@@ -38,13 +38,13 @@ RSpec.describe PublishForReviewDeclarations, type: :model do
 
   describe 'set declarations from params' do
     let(:params) do
-      [
-        'declaration_1',
-        'declaration_2',
-        'declaration_3',
-        'declaration_4',
-        'declaration_5',
-        'declaration_6'
+      %w[
+        declaration_1
+        declaration_2
+        declaration_3
+        declaration_4
+        declaration_5
+        declaration_6
       ]
     end
 
