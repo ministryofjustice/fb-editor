@@ -1,5 +1,5 @@
 {{- if eq .Values.environmentName "test" }}
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: fb-editor-cron-unpublish-test-services-rails-7-{{ .Values.environmentName }}
