@@ -18,6 +18,7 @@ import ConditionalsController from '../src/controllers/conditionals-controller.j
 import ExpressionController from '../src/controllers/expression-controller.js'
 import ExpressionsController from '../src/controllers/expressions-controller.js'
 import SelectionRevealController from '../src/controllers/selection-reveal-controller.js'
+import DefaultHintText from '../src/controllers/default-hint-text-controller.js'
 
 Turbo.session.drive = false
 window.Stimulus = Application.start()
@@ -27,15 +28,16 @@ Stimulus.register("conditionals", ConditionalsController)
 Stimulus.register("expression", ExpressionController)
 Stimulus.register("expressions", ExpressionsController)
 Stimulus.register("selection-reveal", SelectionRevealController)
+Stimulus.register("default-hint-text", DefaultHintText)
 
 const { EditableContent } = require('../src/web-components/editable-content');
 const { ElasticTextarea } = require('../src/web-components/elastic-textarea');
 const { SaveButton } = require('../src/web-components/save-button');
 
 if ('customElements' in window) {
-  customElements.define('elastic-textarea', ElasticTextarea);
-  customElements.define('editable-content', EditableContent);
-  customElements.define('save-button', SaveButton, { extends: 'button'});
+    customElements.define('elastic-textarea', ElasticTextarea);
+    customElements.define('editable-content', EditableContent);
+    customElements.define('save-button', SaveButton, { extends: 'button' });
 }
 
 // Entry point for fb-editor stylesheets

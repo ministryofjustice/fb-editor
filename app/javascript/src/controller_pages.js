@@ -81,7 +81,6 @@ PagesController.edit = function() {
   this.dialogConfiguration = createDialogConfiguration.call(this);
 
 
-  workaroundForDefaultText(view);
   enhanceContent(view);
   enhanceQuestions(view);
 
@@ -271,12 +270,12 @@ function addQuestionMenuListeners(view) {
       remote: true,
       autoOpen: true,
       /*
-                   * Function runs after the modal content has been returned by the api
-                   * as it is possible to open and edit the validations multiple times
-                   * before saving.  We need to load the current validation state from the
-                   * question data and apply it to the form.  As the values from the api
-                   * could be out of date
-                   */
+       * Function runs after the modal content has been returned by the api
+       * as it is possible to open and edit the validations multiple times
+       * before saving.  We need to load the current validation state from the
+       * question data and apply it to the form.  As the values from the api
+       * could be out of date
+       */
       onLoad: function(dialog) {
         // Find fields that may be in the dialog
         var $statusField = dialog.$node.find('input[name="component_validation[status]"]');
@@ -745,23 +744,6 @@ function createDialogConfiguration() {
     }
   });
 }
-
-
-/* Due to limitations in using the GDS templates, we cannot
- * add appropriate HTML attributes to relevant elements in
- * both radio and checkbox hints. This is a workaround to
- * add them, so fixes missing default text without affecting
- * the current method of finding them view fb-default-text
- * attribute.
- **/
-function workaroundForDefaultText(view) {
-  $(".govuk-radios__item, .govuk-checkboxes__item").each(function() {
-    var $this = $(this);
-    var $hint = $this.find(".govuk-hint");
-    $hint.attr("data-" + ATTRIBUTE_DEFAULT_TEXT, view.text.defaults.option_hint);
-  });
-}
-
 
 /**************************************************************/
 /* View customisations for PageController.edit actions follow */
