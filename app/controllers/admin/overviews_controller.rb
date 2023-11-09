@@ -40,7 +40,7 @@ module Admin
     def export_services
       respond_to do |format|
         format.csv do
-          @headers = ['Service name', 'User email', 'Published Test', 'Published Live']
+          @headers = ['Service name', 'User email', 'Published Test', 'Published Live', 'First Published']
           @services = services_to_export.sort_by { |s| s[:name] }
 
           response.headers['Content-Type'] = 'text/csv'
@@ -71,7 +71,8 @@ module Admin
             name: meta['service_name'],
             user: user.email,
             published_test: published_state(meta['service_id'], 'dev'),
-            published_live: published_state(meta['service_id'], 'production')
+            published_live: published_state(meta['service_id'], 'production'),
+            published_date: currently_published?(meta['service_id'], 'production') ? first_publish_date(meta['service_id'], 'production') : ''
           }
         end
       end
@@ -86,6 +87,13 @@ module Admin
         service_id:,
         deployment_environment: environment
       ).last&.published?
+    end
+
+    def first_publish_date(service_id, environment)
+      PublishService.where(
+        service_id:,
+        deployment_environment: environment
+      ).published.first&.created_at
     end
 
     def csv_filename
