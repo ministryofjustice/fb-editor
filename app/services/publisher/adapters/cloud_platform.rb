@@ -56,23 +56,11 @@ class Publisher
 
       def completed
         if live_production? && first_published?
-          NotificationService.notify(review_message, webhook: ENV['SLACK_REVIEW_WEBHOOK'])
+          NotificationService.notify(message)
         end
       end
 
       private
-
-      def published_for_review?
-        ServiceConfiguration.find_by(
-          service_id:,
-          name: 'AWAITING_APPROVAL'
-        ).present? &&
-          ServiceConfiguration.find_by(
-            service_id:,
-            name: 'APPROVED_TO_GO_LIVE'
-          ).blank? &&
-          first_published?
-      end
 
       def first_published?
         PublishService.completed
@@ -84,10 +72,6 @@ class Publisher
 
       def message
         "#{service_name} has been published to #{namespace}.\n#{hostname}"
-      end
-
-      def review_message
-        "#{service_name} has been published for review using the review credentials.\n#{hostname}"
       end
 
       def create_config_dir

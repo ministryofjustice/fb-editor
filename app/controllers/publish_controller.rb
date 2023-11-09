@@ -58,6 +58,7 @@ class PublishController < FormController
           PublishServiceJob.perform_later(
             publish_service_id: @publish_service_creation.publish_service_id
           )
+          NotificationService.notify(review_message, webhook: ENV['SLACK_REVIEW_WEBHOOK'])
         end
 
         approval = ServiceConfiguration.find_or_initialize_by(
@@ -130,11 +131,6 @@ class PublishController < FormController
   helper_method :text_for_environment
 
   def form_url(env)
-    # if environment == 'dev'
-    #   ['https://', service.service_slug, '.dev.', root_url.gsub('https://', '')].join
-    # else
-    #   ['https://', service.service_slug, '.', root_url.gsub('https://', '')].join
-    # end
     "https://#{hostname(env)}"
   end
   helper_method :form_url
@@ -186,6 +182,14 @@ class PublishController < FormController
       user_id: current_user.id,
       version_id: service.version_id
     )
+  end
+
+  def review_message
+    if platform_environment == 'test'
+      "#{service.service_name} has been published for review *in the test environment* using the review credentials.\n#{hostname('production')}"
+    else
+      "#{service.service_name} has been published for review using the review credentials.\n#{hostname('production')}"
+    end
   end
 
   def assign_form_objects
