@@ -315,12 +315,12 @@ end
   end
 
   def then_I_accept_the_declarations
-    check 'publish-for-review-declarations-checkboxes-declaration-1-field', visible: false
-    check 'publish-for-review-declarations-checkboxes-declaration-2-field', visible: false
-    check 'publish-for-review-declarations-checkboxes-declaration-3-field', visible: false
-    check 'publish-for-review-declarations-checkboxes-declaration-4-field', visible: false
-    check 'publish-for-review-declarations-checkboxes-declaration-5-field', visible: false
-    check 'publish-for-review-declarations-checkboxes-declaration-6-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-1-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-2-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-3-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-4-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-5-field', visible: false
+    check 'publish-for-review-declarations-declarations-checkboxes-declaration-6-field', visible: false
   end
 
   def then_I_should_see_the_confirmation
