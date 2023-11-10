@@ -12,7 +12,7 @@
           <div class="govuk-grid-column-two-thirds">
             <%= govuk_inset_text do %>
               <label class="govuk-label govuk-label--s"><%= t('publish.dev.inset_text_label') %></label>
-              <p><%= t('publish.dev.inset_text_html') %></p>
+              <p><%= t('publish.dev.inset_text_html', href: govuk_link_to(t('publish.dev.inset_text_link_text'), t('publish.dev.inset_text_href'))) %></p>
             <% end %>
           </div>
         </div>

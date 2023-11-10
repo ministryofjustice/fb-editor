@@ -521,7 +521,9 @@ en:
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
       inset_text_label: 'Is your form ready to go live?'
-      inset_text_html: "Your form must go through a final check by the MoJ Forms team before you can publish to Live. Go to <a href='#publish-to-live'>Publish to Live</a> to find out more."
+      inset_text_html: "Your form must go through a %{href} by the MoJ Forms team before you can publish to Live. Go to <a href='#publish-to-live'>Publish to Live</a> to find out more."
+      inset_text_link_text: 'final check'
+      inset_text_href:  'https://formbuilder-product-page-staging.apps.live.cloud-platform.service.justice.gov.uk/testing-and-publishing/#final-check'
     production:
       button: Publish to Live
       heading: 'Live site'
