@@ -277,7 +277,7 @@ feature 'First publish for approval' do
       then_I_should_see_the_declarations_checkboxes
       then_I_click_request_a_final_check
       then_I_should_see_the_declarations_error
-      then_I_accept_the_declarations
+      then_I_accept_the_declarations_with_error_summary
       then_I_click_request_a_final_check
       then_I_should_see_the_confirmation
       and_I_return_to_flow_page
@@ -314,13 +314,12 @@ end
     expect(page).to have_text(I18n.t('publish.declarations.error'))
   end
 
-  def then_I_accept_the_declarations
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-1-field', visible: false
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-2-field', visible: false
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-3-field', visible: false
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-4-field', visible: false
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-5-field', visible: false
-    check 'publish-for-review-declarations-declarations-checkboxes-declaration-6-field', visible: false
+  def then_I_accept_the_declarations_with_error_summary
+    # we've got an error on the page so the checkboxes all get the same error id for linking
+    checkboxes = page.find_all(:css, '#publish-for-review-declarations-declarations-checkboxes-field-error', visible: false)
+    checkboxes.each do | checkbox |
+      checkbox.check
+    end
   end
 
   def then_I_should_see_the_confirmation

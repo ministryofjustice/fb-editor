@@ -27,6 +27,8 @@ services:
       METADATA_API_URL: "http://editor-metadata-app:3000/"
       PLATFORM_ENV: "local"
       SECRET_KEY_BASE: "2de1e1ddc4dc9eebb238d35d6b131cd76c481adb6371ded658fa259411379431391e9431e6257d1ea9dccb80df5d693904b6a4ed3bec7984647fd79c86bf4db5"
+      PUBLISH_FOR_REVIEW_USERNAME: 'mojforms'
+      PUBLISH_FOR_REVIEW_PASSWORD: 'mojforms'
     depends_on:
       - editor-db
       - editor-metadata-app
