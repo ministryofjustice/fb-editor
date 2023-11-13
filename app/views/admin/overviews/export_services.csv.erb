@@ -1,2 +1,0 @@
-<%= CSV.generate_line @headers -%>
-<%- @services.each do |service| -%><%= CSV.generate_line(["#{service[:name]}".strip,service[:user],service[:published_test],service[:published_live],(service[:published_date].present? ? service[:published_date].strftime('%d/%m/%Y') : nil),]) -%><%- end -%>

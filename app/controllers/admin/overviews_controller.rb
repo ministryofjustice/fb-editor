@@ -40,12 +40,16 @@ module Admin
     def export_services
       respond_to do |format|
         format.csv do
-          @headers = ['Service name', 'User email', 'Published Test', 'Published Live', 'First Published']
-          @services = services_to_export.sort_by { |s| s[:name] }
+          services = services_to_export.sort_by { |s| s[:name] }
 
-          response.headers['Content-Type'] = 'text/csv'
-          response.headers['Content-Disposition'] = "attachment; filename=#{csv_filename}"
-          render '/admin/overviews/export_services'
+          csv_data = CSV.generate do |csv|
+            csv << ['Service name', 'User email', 'Published Test', 'Published Live', 'First Published']
+            services.each do |service|
+              csv << service.values.map(&:strip)
+            end
+          end
+
+          send_data csv_data, filename: csv_filename, type: 'text/csv'
         end
       end
     end
@@ -72,7 +76,7 @@ module Admin
             user: user.email,
             published_test: published_state(meta['service_id'], 'dev'),
             published_live: published_state(meta['service_id'], 'production'),
-            published_date: currently_published?(meta['service_id'], 'production') ? first_publish_date(meta['service_id'], 'production') : ''
+            published_date: currently_published?(meta['service_id'], 'production') ? first_publish_date(meta['service_id'], 'production').strftime('%d/%m/%Y') : ''
           }
         end
       end
