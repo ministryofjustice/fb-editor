@@ -1,11 +1,23 @@
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 <%= f.hidden_field :branch_uuid, value: @branch.branch_uuid %>
-<%= render 'form_conditionals', f: f %>
-<p class="branch-or">or</p>
 
-<div class="branch-actions">
-  <button class="govuk-link fb-link-button" id="add-another-branch"><%= t('branches.branch_add') %></button>
+
+<div class="conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
+  <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
+    <%= render 'conditional_fields', conditional: conditional, f: f, branch_uuid: @branch.branch_uuid %>
+  <% end %>
+
+  <template data-dynamic-fields-target="template">
+    <%= f.fields_for :conditionals, Conditional.new(expressions: [Expression.new]), child_index: "__CHILD_INDEX__" do |conditional| %>
+      <%= render 'conditional_fields', conditional: conditional, f: f, branch_uuid: @branch.branch_uuid %>
+    <% end %>
+  </template>
+
+  <div class="conditional">
+    <%= button_tag I18n.t('branches.branch_add'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+  </div>
 </div>
+
 <p class="branch-or">or</p>
 
 <div class="branch" id="branch-otherwise">
@@ -13,12 +25,12 @@
     <%= t('branches.title_otherwise') %>
     <span class="name govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
   </h3>
-  <div class="destination govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
+  <div class="govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
     <% @branch.errors[:default_next].each do |message| %>
       <p class="govuk-error-message"><%= message %></p>
     <% end %>
 
-    <div class="fields">
+    <div class="conditional__question">
       <label class="govuk-label" for="branch_default_next"><%= t('branches.goto') %></label>
       <select class="govuk-select" name="branch[default_next]" id="branch_default_next">
         <%= render partial: "destinations_list",

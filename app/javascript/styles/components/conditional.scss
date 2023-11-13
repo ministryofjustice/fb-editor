@@ -9,9 +9,28 @@
   padding-bottom: govuk-spacing(4);
   padding-right: 100px;
   position: relative;
-  
+
   &:last-child {
     margin-bottom: govuk-spacing(6);
+  }
+}
+
+.conditional__question {
+  padding-left: 15%;
+  position: relative;
+
+  label {
+    @include govuk-font($size: 24);
+
+    display: inline-block;
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    top: 5px;
+  }
+
+  select {
+    width: 100%;
   }
 }
 

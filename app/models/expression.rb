@@ -39,6 +39,10 @@ class Expression
     component_object.type
   end
 
+  def component_supported?
+    component_object&.supports_branching?
+  end
+
   def name_attr(conditional_index:, expression_index:, attribute:)
     "branch[conditionals_attributes][#{conditional_index}]" \
     "[expressions_attributes][#{expression_index}][#{attribute}]"
@@ -53,6 +57,10 @@ class Expression
     return contains_operators if is_checkbox?
 
     is_operators
+  end
+
+  def answered_operator_values
+    answered_operators.map { |operator| operator[1] }
   end
 
   private
@@ -96,6 +104,12 @@ class Expression
   def is_operators
     @is_operators ||= all_operators.select do |operator|
       operator.exclude?(I18n.t('operators.contains')) && operator.exclude?(I18n.t('operators.does_not_contain'))
+    end
+  end
+
+  def answered_operators
+    @answered_operators ||= all_operators.select do |operator|
+      operator.include?(I18n.t('operators.is_answered')) || operator.include?(I18n.t('operators.is_not_answered'))
     end
   end
 
