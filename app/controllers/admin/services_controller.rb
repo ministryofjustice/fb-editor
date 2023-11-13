@@ -264,8 +264,8 @@ module Admin
       Rails.logger.info "Service #{service_id} to delete"
       @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-      if unpublished?('dev') && unpublished?('production')
-        flash[:success] = "Service #{service_id} to be deleted"
+      if unpublished?('dev') && unpublished?('production') || Rails.env == 'development'
+        flash[:success] = "Service #{service_id} has been deleted"
         MetadataApiClient::Service.delete(service_id)
         ServiceConfiguration.where(service_id:).destroy_all
         SubmissionSetting.where(service_id:).destroy_all
@@ -273,7 +273,7 @@ module Admin
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
-      redirect_to admin_service_path(service_id)
+      redirect_to admin_services_path
     end
 
     private
