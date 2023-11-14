@@ -16,8 +16,7 @@ module Admin
     end
 
     def show
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      load_service_and_metadata_corresponding_to_id(params[:id])
       @service_creator = User.find(@service.created_by)
       @version_creator = version_creator
       @published_to_live = published('production')
@@ -59,9 +58,7 @@ module Admin
     end
 
     def edit
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id(params[:id])
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         service_id: @service.service_id,
         deployment_environment: 'production'
@@ -69,9 +66,7 @@ module Admin
     end
 
     def update
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id(params[:id])
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
       )
@@ -261,8 +256,7 @@ module Admin
 
     def destroy
       service_id = params[:id]
-      @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      load_service_and_metadata_corresponding_to_id(service_id)
       if has_ever_been_live?
         flash[:error] = 'We cannot delete a form that has ever been live'
       elsif unpublished?('dev') || Rails.env.development?
@@ -401,6 +395,11 @@ module Admin
 
     def service_slug(service_id, version_metadata)
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
+    end
+
+    def load_service_and_metadata_corresponding_to_id(service_id)
+      @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
     end
 
     def webhook
