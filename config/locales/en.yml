@@ -468,7 +468,7 @@ en:
         heading: 'Request a final check to unlock publishing'
         content: 'Your form must go through a %{href} before you can publish to Live. This is to ensure it meets the MoJ Forms Terms of Use and is ready to go live.'
         link_text: 'final check'
-        link_url: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/'
+        link_url: 'https://formbuilder-product-page-staging.apps.live.cloud-platform.service.justice.gov.uk/testing-and-publishing/#final-check'
       button: 'Request a final check'
       confirmation:
         heading: 'Final check requested'
