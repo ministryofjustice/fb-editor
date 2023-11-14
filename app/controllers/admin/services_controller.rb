@@ -261,10 +261,11 @@ module Admin
 
     def destroy
       service_id = params[:id]
-      Rails.logger.info "Service #{service_id} to delete"
       @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-      if (unpublished?('dev') && unpublished?('production')) || Rails.env.development?
+      if has_ever_been_live?
+        flash[:error] = 'We cannot delete a form that has ever been live'
+      elsif unpublished?('dev') || Rails.env.development?
         MetadataApiClient::Service.delete(service_id:)
         ServiceConfiguration.where(service_id:).destroy_all
         SubmissionSetting.where(service_id:).destroy_all
@@ -400,6 +401,10 @@ module Admin
 
     def service_slug(service_id, version_metadata)
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
+    end
+
+    def has_ever_been_live?
+      PublishService.where(service_id: @service.service_id, deployment_environment: 'production').last&.present?
     end
   end
 end
