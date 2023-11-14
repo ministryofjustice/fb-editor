@@ -273,10 +273,10 @@ module Admin
         message = "Service #{service_id} has been deleted"
         flash[:success] = message
         NotificationService.notify(message, webhook:) if webhook.present?
+        redirect_to admin_services_path
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
-      redirect_to admin_services_path
     end
 
     private
