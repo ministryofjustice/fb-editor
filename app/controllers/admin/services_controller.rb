@@ -269,7 +269,9 @@ module Admin
         ServiceConfiguration.where(service_id:).destroy_all
         SubmissionSetting.where(service_id:).destroy_all
         PublishService.where(service_id:).destroy_all
-        flash[:success] = "Service #{service_id} has been deleted"
+        message = "Service #{service_id} has been deleted"
+        flash[:success] = message
+        NotificationService.notify(message)
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
