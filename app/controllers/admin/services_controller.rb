@@ -272,7 +272,7 @@ module Admin
         PublishService.where(service_id:).destroy_all
         message = "Service #{service_id} has been deleted"
         flash[:success] = message
-        NotificationService.notify(message)
+        NotificationService.notify(message, webhook:) if webhook.present?
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
@@ -401,6 +401,10 @@ module Admin
 
     def service_slug(service_id, version_metadata)
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
+    end
+
+    def webhook
+      ENV['SLACK_PUBLISH_WEBHOOK']
     end
 
     def has_ever_been_live?
