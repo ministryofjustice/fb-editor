@@ -35,7 +35,7 @@ module MetadataApiClient
     end
 
     def self.delete(service_id)
-      connection.delete("/services/#{service_id}")
+      connection.delete(ActionController::Base.helpers.sanitize("/services/#{service_id}"))
     end
   end
 end

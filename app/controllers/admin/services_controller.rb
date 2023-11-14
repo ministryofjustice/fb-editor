@@ -265,11 +265,11 @@ module Admin
       @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
       if (unpublished?('dev') && unpublished?('production')) || Rails.env.development?
-        flash[:success] = "Service #{service_id} has been deleted"
-        MetadataApiClient::Service.delete(service_id)
+        MetadataApiClient::Service.delete(service_id:)
         ServiceConfiguration.where(service_id:).destroy_all
         SubmissionSetting.where(service_id:).destroy_all
         PublishService.where(service_id:).destroy_all
+        flash[:success] = "Service #{service_id} has been deleted"
       else
         flash[:error] = 'Please unpublish before deleting a service'
       end
