@@ -1,9 +1,9 @@
 <div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Rule">
-  <section class="conditional" data-conditional-index="<%= conditional.options[:child_index] %>">
+  <section class="conditional">
     <h3 class="govuk-heading-l" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
-    <div class="expressions" data-controller="dynamic-fields expressions">
+    <div class="conditional__expressions" data-controller="dynamic-fields expressions">
       <%= conditional.fields_for :expressions do |expression| %>
         <%= render 'expression_fields', conditional: conditional, expression: expression, component_uuid: component_uuid  %>
       <% end %>

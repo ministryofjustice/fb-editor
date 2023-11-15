@@ -22,7 +22,8 @@
     p{
       color: $govuk-error-colour;
       font-weight: bold;
-      margin: govuk-spacing(3) 0 0 0;
+      margin-top: govuk-spacing(3);
+      margin-bottom: govuk-spacing(1);
     }
   }
 }

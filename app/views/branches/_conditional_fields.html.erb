@@ -1,9 +1,9 @@
 <div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch">
-  <section class="branch conditional" data-conditional-index="<%= conditional.options[:child_index] %>" >
+  <section class="branch conditional">
     <h3 class="govuk-heading-l" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h3>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
-    <div class="expressions" data-controller="dynamic-fields expressions">
+    <div class="conditional__expressions" data-controller="dynamic-fields expressions">
       <%= conditional.fields_for :expressions do |expression| %>
         <%= render 'expression_fields', conditional: conditional, expression: expression, branch_uuid: branch_uuid  %>
       <% end %>
@@ -18,11 +18,18 @@
 
       <div class="conditional__question govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error' : '' %>">
 
+        <% if conditional.object.errors[:next].any? %>
+          <p id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next_error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span>
+            <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
+          </p>
+        <% end %>
         <%= conditional.label :next, t('branches.goto') %>
 
         <select class="govuk-select"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
-                id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next">
+                id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
+                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",
             locals: {

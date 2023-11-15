@@ -13,11 +13,17 @@
   &:last-child {
     margin-bottom: govuk-spacing(6);
   }
+
+}
+
+.conditional__expressions {
+  margin-left: govuk-spacing(4);
 }
 
 .conditional__question {
   padding-left: 15%;
   position: relative;
+
 
   label {
     @include govuk-font($size: 24);

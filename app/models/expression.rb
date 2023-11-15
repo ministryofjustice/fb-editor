@@ -72,7 +72,7 @@ class Expression
   def unsupported_component
     if page.present? && component.present? && !component_object.supports_branching?
       errors.add(:component, message: I18n.t(
-        'activemodel.errors.messages.unsupported_component'
+        'activemodel.errors.models.expression.unsupported'
       ))
     end
   end

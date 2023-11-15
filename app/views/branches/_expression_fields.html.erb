@@ -1,3 +1,4 @@
+
 <div  class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
       data-expressions-target="expression"
       data-controller="expression"
@@ -7,30 +8,37 @@
 
   <%= button_tag 'Delete condition', type: "button", data: { action: "expression#delete", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
 
-  <div class="conditional__question">
-    <%= expression.label  :component,
-      t('branches.expression.if'),
-      {
-        class: "govuk-label",
-        data: {
-          expression_target: 'label'
+
+    <div class="conditional__question">
+      <% if expression.object.errors[:component].any? %>
+        <p id="condition_<%= conditional.options[:child_index] %>_expression_<%= expression.options[:child_index] %>_component_error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span>
+          <%= expression.object.errors[:component].first %>
+        </p>
+      <% end %>
+      <%= expression.label  :component,
+        t('branches.expression.if'),
+        {
+          class: "govuk-label",
+          data: {
+            expression_target: 'label'
+          }
         }
-      }
-    %>
-    <%= expression.select :component,
-      @branch.previous_questions,
-      { include_blank: t('branches.select_question') },
-      { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
-        data: {
-          action: 'change->expression#getCondition',
-          expression_target: 'question',
-          expression_url_param: api_service_branch_expressions_path(service.service_id, @branch.branch_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
-        },
-      }
-    %>
-    <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' hidden><%= t('activemodel.errors.models.component_expression.unsupported') %></p>
-    <p class="expression__error" data-expression-target="errorMessage" data-error-type='samepage' hidden><%= t('activemodel.errors.models.component_expression.same_page') %></p>
-  </div>
+      %>
+      <%= expression.select :component,
+        @branch.previous_questions,
+        { include_blank: t('branches.select_question') },
+        { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
+          'aria-describedby': ( "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error" if expression.object.errors[:component].any? ),
+          data: {
+            action: 'change->expression#getCondition',
+            expression_target: 'question',
+            expression_url_param: api_service_branch_expressions_path(service.service_id, @branch.branch_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
+          },
+        }
+      %>
+      <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' role="alert" hidden><%= t('activemodel.errors.messages.unsupported') %></p>
+    </div>
 
     <%= render partial: 'expression_condition',
       locals: {
