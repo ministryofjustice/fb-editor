@@ -33,7 +33,7 @@
           data: {
             action: 'change->expression#getCondition',
             expression_target: 'question',
-            expression_url_param: api_service_branch_expressions_path(service.service_id, @branch.branch_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
+            expression_url_param: api_service_branch_expressions_path(service.service_id, @branch.flow_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
           },
         }
       %>
