@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['deleteButton']
+  static targets = ['title', 'deleteButton']
+  static values = {
+    title: String
+  }
 
   connect() {
     // Attach a reference to the controller to the element
@@ -12,11 +15,15 @@ export default class extends Controller {
     this.element.remove()
   }
 
-  hideDeleteButton(){
+  hideDeleteButton() {
     this.deleteButtonTarget.setAttribute('hidden', '')
   }
 
   showDeleteButton() {
     this.deleteButtonTarget.removeAttribute('hidden')
+  }
+
+  setTitle(index) {
+    this.titleTarget.innerText = `${this.titleValue} ${index}`
   }
 }

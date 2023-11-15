@@ -5,7 +5,7 @@
     padding-right: govuk-spacing(5);
   }
 
-  padding-top: govuk-spacing(6);
+  padding-top: govuk-spacing(3);
   padding-bottom: govuk-spacing(4);
   padding-right: 100px;
   position: relative;
@@ -32,12 +32,20 @@
   select {
     width: 100%;
   }
+
+  &.govuk-form-group--error {
+    border-left: none;
+  }
+
+  > h3 {
+    margin-top: 0;
+  }
 }
 
 .conditional__remover {
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 16px;
+  top: 16px;
 }
 
 .conditional-separator {
