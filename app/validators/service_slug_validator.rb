@@ -73,7 +73,8 @@ class ServiceSlugValidator < ActiveModel::EachValidator
   def current_service_slug_config(service_id:)
     ServiceConfiguration.find_by(
       service_id:,
-      name: 'SERVICE_SLUG'
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
     )&.decrypt_value
   end
 end
