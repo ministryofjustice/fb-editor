@@ -2,7 +2,7 @@ require_relative './conditional_section'
 
 class BranchesSection < SitePrism::Section
     element :conditionals_container, '.conditionals'
-    sections :conditionals, ConditionalSection, '.conditional'
+    sections :conditionals, ConditionalSection, '[data-controller="conditional"]'
     element :add_another_rule, :button, I18n.t('conditional_content.add_another_rule')
 
     def first_conditional

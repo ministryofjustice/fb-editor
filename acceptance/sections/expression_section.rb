@@ -1,5 +1,5 @@
 class ExpressionSection < SitePrism::Section
-      element :question_label, '.expression__question label'
+      element :question_label, '.conditional__question label'
       element :component_select, '.expression__component'
       element :operator_select, '.expression__operator'
       elements :operator_select_options, '.expression__operator option'

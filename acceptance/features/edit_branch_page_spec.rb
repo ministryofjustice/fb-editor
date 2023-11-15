@@ -19,11 +19,11 @@ feature 'New branch page' do
 
     and_I_select_the_destination_page_dropdown
     then_I_should_not_see_unconnected_pages
-    editor.branches.first_conditional.destination_select.select('Favourite hiking destination')
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
 
 
     and_I_select_the_condition_dropdown
-    editor.branches.first_conditional.first_expression.component_select.select('What is your favourite hobby?')
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
 
     then_I_should_see_the_add_condition_link
 
@@ -38,11 +38,11 @@ feature 'New branch page' do
     then_I_should_be_on_the_correct_branch_page('edit')
     then_I_can_add_conditionals_and_expressions
 
-    editor.branches.first_conditional.second_expression.component_select.select('What is your favourite hobby?')
+    editor.branches.conditional(0).expression(1).component_select.select('What is your favourite hobby?')
     sleep(0.5)
 
-    editor.branches.first_conditional.second_expression.operator_select.select('is not')
-    editor.branches.first_conditional.second_expression.answer_select.select('Sewing')
+    editor.branches.conditional(0).expression(1).operator_select.select('is not')
+    editor.branches.conditional(0).expression(1).answer_select.select('Sewing')
 
     when_I_save_my_changes
     then_I_should_not_see_an_error_summary
@@ -69,7 +69,7 @@ feature 'New branch page' do
 
     then_I_can_delete_conditionals_and_expressions
 
-    editor.branches.first_conditional.first_expression.operator_select.select('is answered')
+    editor.branches.conditional(0).expression(0).operator_select.select('is answered')
     then_I_should_not_see_field_options('branch[conditionals_attributes][0][expressions_attributes][0][field]')
 
     and_I_choose_an_option(
@@ -107,10 +107,10 @@ feature 'New branch page' do
 
     and_I_select_the_destination_page_dropdown
     then_I_should_not_see_unconnected_pages
-    editor.branches.first_conditional.destination_select.select('Favourite hiking destination')
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
 
     and_I_select_the_condition_dropdown
-    editor.branches.first_conditional.first_expression.component_select.select('What is your favourite hobby?')
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
 
     then_I_should_see_the_add_condition_link
 
@@ -132,10 +132,10 @@ feature 'New branch page' do
     then_I_should_see_no_errors
 
     then_I_should_have_unconnected_pages
-    editor.branches.first_conditional.destination_select.select('Favourite hiking destination')
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
 
     and_I_select_the_condition_dropdown
-    editor.branches.first_conditional.first_expression.component_select.select('What is your favourite hobby?')
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
 
     then_I_should_see_the_add_condition_link
 

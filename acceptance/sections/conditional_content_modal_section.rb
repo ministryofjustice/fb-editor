@@ -5,7 +5,7 @@ class ConditionalContentModalSection < SitePrism::Section
     element :display_never_radio, '#conditional-content-display-never-field', visible: :all
     element :display_conditional_radio, '#conditional-content-display-conditional-field', visible: :all
     element :conditionals_container, '.conditionals'
-    sections :conditionals, ConditionalSection, '.conditional'
+    sections :conditionals, ConditionalSection, '[data-controller="conditional"]'
     element :add_another_rule, :button, I18n.t('conditional_content.add_another_rule')
     element :update_button, :button, I18n.t('dialogs.button_update')
 
