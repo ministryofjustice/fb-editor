@@ -1,5 +1,6 @@
-<div data-controller="conditional" data-conditionals-target="conditional">
-  <div class="conditional" data-conditional-index="<%= conditional.options[:child_index] %>">
+<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Rule">
+  <section class="conditional" data-conditional-index="<%= conditional.options[:child_index] %>">
+    <h3 class="govuk-heading-l" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
     <div class="expressions" data-controller="dynamic-fields expressions">
@@ -15,7 +16,7 @@
 
       <%= button_tag I18n.t('conditional_content.add_condition'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
     </div>
-  </div>
+  </section>
   <div class="conditional-separator">or</div>
 </div>
 
