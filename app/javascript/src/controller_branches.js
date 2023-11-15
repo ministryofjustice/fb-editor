@@ -47,7 +47,7 @@ class BranchesController extends DefaultController {
     super(app);
     this.api = app.api;
 
-    switch(app.page.action) {
+    switch (app.page.action) {
       case "new":
       case "create":
       case "edit":
@@ -72,16 +72,16 @@ class BranchesController extends DefaultController {
    * Setup view for the create (new) action
    **/
   create() {
-    var $branches = this.branchNodes;
-    var $injectors = $(BRANCH_INJECTOR_SELECTOR);
-    var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
+    // var $branches = this.branchNodes;
+    // var $injectors = $(BRANCH_INJECTOR_SELECTOR);
+    // var $otherwise = $(BRANCH_OTHERWISE_SELECTOR + " " + BRANCH_DESTINATION_SELECTOR);
 
-    this.branchConditionTemplate = createBranchConditionTemplate($branches.eq(0));
+    /*     this.branchConditionTemplate = createBranchConditionTemplate($branches.eq(0)); */
 
     BranchesController.addBranchEventListeners(this)
-    BranchesController.enhanceCurrentBranches.call(this, $branches);
-    BranchesController.enhanceBranchInjectors.call(this, $injectors);
-    BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
+    // BranchesController.enhanceCurrentBranches.call(this, $branches);
+    // BranchesController.enhanceBranchInjectors.call(this, $injectors);
+    // BranchesController.enhanceBranchOtherwise.call(this, $otherwise);
   }
 }
 
@@ -134,7 +134,7 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
  * Creates a new branch from a passed element and keeps
  * track of number of branches
  **/
- function createBranch(view, $node) {
+function createBranch(view, $node) {
   var branch = new Branch($node, {
     index: view.branchIndex,
     css_classes_error: CSS_CLASS_ERRORS,
@@ -167,8 +167,8 @@ BranchesController.enhanceBranchOtherwise = function($otherwise) {
   // instead of IF, AND. This listener will correct found
   // incorrect labelling situations.
   branch.$node.on(EVENT_BRANCH_UPDATE_CONDITIONS, function() {
-    for(var i=0; i<branch.conditions.length; ++i) {
-      if(i == 0) {
+    for (var i = 0; i < branch.conditions.length; ++i) {
+      if (i == 0) {
         branch.conditions[i].question.label = view.text.branches.label_question_if;
       }
       else {
@@ -221,7 +221,7 @@ function updateBranches(view) {
   //    functionality that currently just adds a relevant class name so it's appearance can be
   //    altered to suit. For now, to cater for the more radical 'hide the whole menu' approach, this
   //    code is also adding a specific (rubbish jQuery/DOM based) alteration to achieve the design.
-  if(view.branchNodes.length > 1) {
+  if (view.branchNodes.length > 1) {
     $first.find(".ActivatedMenuActivator").show();
     $first.data("instance").remover.enable();
   }
@@ -256,7 +256,7 @@ function removeBranchCombinator($node) {
 /* Add document level listeners for adjusting the view based on Branch events.
  **/
 BranchesController.addBranchEventListeners = function(view) {
-  view.$document.on("Branch_Destroy", function(event, branch){
+  view.$document.on("Branch_Destroy", function(event, branch) {
     updateBranches(view);
   });
 
@@ -272,7 +272,7 @@ BranchesController.addBranchEventListeners = function(view) {
     utilities.updateDomByApiRequest(url, {
       target: view.branchNodes.last(),
       type: "after",
-      done: function ($node) {
+      done: function($node) {
         createBranch(view, $node);
         updateBranches(view);
       }
@@ -280,8 +280,8 @@ BranchesController.addBranchEventListeners = function(view) {
   });
 
   // We want to present a Confirmation Dialog before removing the Branch.
-  view.$document.on(EVENT_BRANCH_REMOVER_CONFIRM, function(event, data) {
-    view.dialogConfirmationDelete.onConfirm = data.action;
+  view.$document.on("ConfirmBranchConditionalRemoval", function(event) {
+    view.dialogConfirmationDelete.onConfirm = event.detail.action;
     view.dialogConfirmationDelete.open({
       heading: view.text.dialogs.heading_delete_branch,
       content: view.text.dialogs.message_delete_branch,
@@ -289,8 +289,17 @@ BranchesController.addBranchEventListeners = function(view) {
     });
   });
 
+  view.$document.on("ConfirmBranchExpressionRemoval", function(event) {
+    view.dialogConfirmationDelete.onConfirm = event.detail.action;
+    view.dialogConfirmationDelete.open({
+      heading: view.text.dialogs.heading_delete_condition,
+      content: view.text.dialogs.message_delete_condition,
+      confirm: view.text.dialogs.button_delete_condition
+    });
+  });
+
   view.$document.on(EVENT_QUESTION_CHANGE, function(event, branch) {
-    if(branch.$node.find(".BranchAnswer").length > 0) {
+    if (branch.$node.find(".BranchAnswer").length > 0) {
       branch.$node.find(".BranchConditionInjector").show();
     }
     else {
@@ -325,12 +334,12 @@ function createBranchConditionTemplate($node) {
   var html = "";
 
   // See IMPORTANT, above.
-  if($condition.length == 0) {
+  if ($condition.length == 0) {
     $condition = $(".condition").clone();
   }
 
   // We hope to have something but wrapping in test just in case we do not.
-  if($condition.length) {
+  if ($condition.length) {
 
     // First clean up some stuff.
     $condition.find(".govuk-error-message").remove();
@@ -349,11 +358,11 @@ function createBranchConditionTemplate($node) {
   // the number (index) parts with a finder label the FE code can search and replace on
   // when we build new BranchConditions from this template html.
   html = html.replace(
-          /branch_conditionals_attributes_0_expressions_attributes_0_(component|operator|field)/mig,
-          "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_$1");
+    /branch_conditionals_attributes_0_expressions_attributes_0_(component|operator|field)/mig,
+    "branch_conditionals_attributes_#{branch_index}_expressions_attributes_#{condition_index}_$1");
   html = html.replace(
-          /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[(component|operator|field)\]/mig,
-          "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][$1]");
+    /branch\[conditionals_attributes\]\[0\]\[expressions_attributes\]\[0\]\[(component|operator|field)\]/mig,
+    "branch[conditionals_attributes][#{branch_index}][expressions_attributes][#{condition_index}][$1]");
   return html;
 }
 

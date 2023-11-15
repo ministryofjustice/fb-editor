@@ -15,6 +15,14 @@ export default class extends Controller {
     this.element.remove()
   }
 
+  deleteWithConfirmation(event) {
+    document.dispatchEvent(new CustomEvent('ConfirmBranchConditionalRemoval', {
+      detail: {
+        action: () => { this.element.remove() }
+      }
+    }))
+  }
+
   hideDeleteButton() {
     this.deleteButtonTarget.setAttribute('hidden', '')
   }

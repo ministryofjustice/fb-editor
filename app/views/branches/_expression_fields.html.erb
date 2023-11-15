@@ -6,7 +6,7 @@
       data-expression-first-label-value="<%= t('branches.expression.if') %>"
       data-expression-other-label-value="<%= t('branches.expression.and') %>">
 
-  <%= button_tag 'Delete condition', type: "button", data: { action: "expression#delete", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
+  <%= button_tag 'Delete condition', type: "button", data: { action: "expression#deleteWithConfirmation", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
 
 
     <div class="conditional__question">

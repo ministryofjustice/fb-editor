@@ -1,7 +1,7 @@
-<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch">
+<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" >
   <section class="branch conditional">
     <h3 class="govuk-heading-l" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h3>
-    <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
+    <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#deleteWithConfirmation", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
     <div class="conditional__expressions" data-controller="dynamic-fields expressions">
       <%= conditional.fields_for :expressions do |expression| %>

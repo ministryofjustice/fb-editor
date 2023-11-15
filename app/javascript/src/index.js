@@ -43,12 +43,12 @@ function loadPageData(app) {
 var Controller;
 
 switch (controllerAndAction()) {
-  // case "BranchesController#new":
-  // case "BranchesController#create":
-  // case "BranchesController#edit":
-  // case "BranchesController#update":
-  //    Controller = BranchesController;
-  //   break;
+  case "BranchesController#new":
+  case "BranchesController#create":
+  case "BranchesController#edit":
+  case "BranchesController#update":
+    Controller = BranchesController;
+    break;
 
   case "ConditionalContentsController#new":
   case "ConditionalContentsController#create":
@@ -98,7 +98,7 @@ switch (controllerAndAction()) {
     break;
 
   default:
-    //console.log(controllerAndAction());
+    console.log(controllerAndAction());
     Controller = DefaultController;
 }
 
