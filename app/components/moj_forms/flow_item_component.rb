@@ -1,12 +1,11 @@
 module MojForms
   class FlowItemComponent < ViewComponent::Base
-    include ApplicationHelper
-    delegate :payment_link_enabled?, to: :helpers
-    attr_reader :item, :service
+    with_collection_parameter :item
+    delegate :service, to: :helpers
+    attr_reader :item
 
-    def initialize(item:, service:)
+    def initialize(item:)
       @item = item
-      @service = service
     end
 
     def type
@@ -16,15 +15,15 @@ module MojForms
     def call
       case type
       when 'spacer'
-        render(MojForms::FlowItems::SpacerComponent.new(item:, service:))
+        render(MojForms::FlowItems::SpacerComponent.new(item:))
       when 'pointer'
-        render(MojForms::FlowItems::PointerComponent.new(item:, service:))
+        render(MojForms::FlowItems::PointerComponent.new(item:))
       when 'warning'
-        render(MojForms::FlowItems::WarningComponent.new(item:, service:))
+        render(MojForms::FlowItems::WarningComponent.new(item:))
       when 'flow.branch'
-        render(MojForms::FlowItems::BranchComponent.new(item:, service:))
+        render(MojForms::FlowItems::BranchComponent.new(item:))
       else
-        render(MojForms::FlowItems::PageComponent.new(item:, service:))
+        render(MojForms::FlowItems::PageComponent.new(item:))
       end
     end
   end

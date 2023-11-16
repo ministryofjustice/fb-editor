@@ -1,0 +1,5 @@
+<% @flow.each do |items| %>
+  <div class="column">
+    <%= render(MojForms::FlowItemComponent.with_collection(items)) %>
+  </div>
+<% end %>
