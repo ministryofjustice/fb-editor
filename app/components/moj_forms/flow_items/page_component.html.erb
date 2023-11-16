@@ -1,0 +1,20 @@
+<% if @item[:next].empty? %>
+  <%# Likely to be items like the end of a path (e.g. Confirmation page) %>
+  <article id="<%= @item[:uuid] %>" class="flow-item flow-page" aria-label="<%= @item[:title] %>" data-fb-id="<%= @item[:uuid] %>" <%= !(@item[:type] =~ /page.(confirmation|exit)/) ? 'data-next=trailing-route' : ''  -%> >
+    <%= flow_thumbnail_link(@item) %>
+    <%= flow_text_link(@item) %>
+    <%= render partial: 'services/flow_page_menu', locals: { item: @item } %>
+    <% unless (@item[:type] =~ /page.(confirmation|exit)/) %>
+      <%= render partial: 'services/connection_menu', locals: { item: @item } %>
+    <% end %>
+  </article>
+<% else %>
+  <article id="<%= @item[:uuid] %>" class="flow-item flow-page" aria-label="<%= @item[:title] %>" data-fb-id="<%= @item[:uuid] %>" data-next="<%= @item[:next] %>">
+    <%= flow_thumbnail_link(@item) %>
+    <%= flow_text_link(@item) %>
+    <%= render partial: 'services/flow_page_menu', locals: { item: @item } %>
+    <% unless (@item[:type] =~ /page.(confirmation|exit)/) || (@item[:type] == 'page.checkanswers' && @service.confirmation_page.present?) %>
+        <%= render partial: 'services/connection_menu', locals: { item: @item } %>
+      <% end %>
+  </article>
+<% end %>

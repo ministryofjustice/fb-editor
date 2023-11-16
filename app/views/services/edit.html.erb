@@ -22,7 +22,7 @@
   <% @pages_flow.each do |collection| %>
     <div class="column">
       <% collection.each_with_index do |item, index| %>
-        <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
+        <%= render(MojForms::FlowItemComponent.new(item:, service:)) %>
       <% end %>
     </div>
   <% end %>
