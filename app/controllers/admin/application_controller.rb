@@ -12,8 +12,10 @@ module Admin
   end
 
   class ApplicationController < Administrate::ApplicationController
+    include SetCurrentRequestDetails
     include ApplicationHelper
     include Auth0Helper
+
     before_action :require_user!
     before_action :authenticate_admin
 
