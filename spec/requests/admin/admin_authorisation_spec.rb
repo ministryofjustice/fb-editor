@@ -9,6 +9,10 @@ RSpec.describe 'Admin authorisation spec', type: :request do
     ).to receive(:current_user).and_return(current_user)
   end
 
+  it_behaves_like 'a controller that stores the current request details' do
+    let(:path) { admin_root_path }
+  end
+
   shared_examples 'an authorisation action' do
     context 'when admin user' do
       before do

@@ -10,6 +10,10 @@ RSpec.describe 'Authorisation spec', type: :request do
     allow(MetadataApiClient::Items).to receive(:all).and_return({})
   end
 
+  it_behaves_like 'a controller that stores the current request details' do
+    let(:path) { root_path }
+  end
+
   context 'all services page' do
     let(:request) { get '/services' }
 

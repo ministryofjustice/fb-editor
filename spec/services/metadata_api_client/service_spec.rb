@@ -7,6 +7,12 @@ RSpec.describe MetadataApiClient::Service do
       ]
     }
   end
+  let(:expected_headers) do
+    {
+      'User-Agent' => 'Editor',
+      'X-Request-Id' => '12345'
+    }
+  end
   let(:service_attributes) do
     {
       "service_name": 'basset',
@@ -17,6 +23,7 @@ RSpec.describe MetadataApiClient::Service do
   before do
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with('METADATA_API_URL').and_return(metadata_api_url)
+    allow(Current).to receive(:request_id).and_return('12345')
   end
 
   describe '.all_services' do
@@ -38,6 +45,7 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
+        .with(headers: expected_headers)
         .to_return(status: 200, body: expected_body.to_json, headers: {})
     end
 
@@ -52,6 +60,7 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
+        .with(headers: expected_headers)
         .to_return(status: 200, body: expected_body.to_json, headers: {})
     end
 
@@ -72,6 +81,7 @@ RSpec.describe MetadataApiClient::Service do
     context 'when created' do
       before do
         stub_request(:post, expected_url)
+          .with(headers: expected_headers)
           .to_return(status: 201, body: expected_body.to_json, headers: {})
       end
 
@@ -93,6 +103,7 @@ RSpec.describe MetadataApiClient::Service do
 
       before do
         stub_request(:post, expected_url)
+          .with(headers: expected_headers)
           .to_return(status: 422, body: expected_body.to_json, headers: {})
       end
 
@@ -116,6 +127,7 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
+        .with(headers: expected_headers)
         .to_return(status: 200, body: expected_body.to_json, headers: {})
     end
 
