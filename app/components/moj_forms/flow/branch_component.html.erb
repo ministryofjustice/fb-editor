@@ -3,7 +3,7 @@
   <map name="thumbnail-<%= @item[:uuid] %>" aria-hidden="true">
     <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= @item[:title]-%>" role="presentation" href="<%= edit_branch_path(service.service_id, @item[:uuid]) %>" tabindex="-1">
   </map>
-  <%= flow_branch_link(@item) %>
+  <%= render(MojForms::Flow::FlowBranchLink.new(title:, url: edit_path )) %>
   <%= render partial: 'services/flow_branch_menu', locals: { item: @item } %>
   <ul class="flow-conditions">
     <% @item[:conditionals].each_with_index do |condition, index| %>
