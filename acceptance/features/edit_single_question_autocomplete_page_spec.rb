@@ -77,7 +77,7 @@ feature 'Edit single question autocomplete page' do
   def then_I_should_see_my_changes_in_the_form(preview_form, change)
     within_window(preview_form) do
       page.find('.autocomplete__input').click
-      sleep(1) # allow time for page to load
+      sleep(5) # allow time for page to load
       expect(page).to have_content(change)
     end
   end
