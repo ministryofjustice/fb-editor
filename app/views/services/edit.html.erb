@@ -18,24 +18,7 @@
 </div>
 
 <%# Flow overview layout for pages, branches, and conditions %>
-<section id="flow-overview">
-  <%= render(MojForms::FlowComponent.new(flow: @pages_flow)) %>
-</section>
-
-<% if @detached_flows.present? %>
-  <section id="flow-detached" data-component="Expander">
-    <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
-    <p class="help">
-      <a target="_blank" href="https://moj-forms.service.justice.gov.uk/branching#reconnect-unconnected" class="govuk-link"><%= t('pages.flow.reconnect_hint') -%></a>
-    </p>
-    <% @detached_flows.each do |detached_flow| %>
-      <div class="flow-detached-group">
-        <%= render(MojForms::FlowComponent.new(flow: detached_flow)) %>
-      </div>
-    <% end %>
-  </section>
-<% end %>
-
+<%= render partial: 'services/flow_layout', locals: {main_flow: @pages_flow, detached_flows: @detached_flows } %>
 
 <%# Section for static/standalone pages (e.g. T&Cs) %>
 <%= render partial: 'partials/standalone' %>
