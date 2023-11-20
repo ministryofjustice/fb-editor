@@ -1,6 +1,18 @@
 module MojForms
   module Flow
     class PageComponent < MojForms::Flow::FlowItemComponent
+      def default_attributes
+        super.deep_merge({
+          data: {
+            next: next_uuid
+          }.compact
+        })
+      end
+
+      def type_classname
+        'flow-page'
+      end
+
       def next_uuid
         if item[:next].present?
           item[:next]

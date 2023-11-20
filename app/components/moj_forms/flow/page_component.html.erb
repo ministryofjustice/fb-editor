@@ -1,8 +1,6 @@
-  <article id="<%= uuid %>" class="flow-item flow-page" aria-label="<%= title %>" data-fb-id="<%= uuid %>" <%= next_uuid.present? ?  "data-next=\"#{next_uuid}\"" : '' %>>
+  <%= tag.article **html_attributes do %>
     <%= render(MojForms::Flow::FlowItemThumbnail.new(title:, thumbnail:, url: edit_path )) %>
     <%= render(MojForms::Flow::FlowItemLink.new(title:, url: edit_path )) %>
     <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
-    <% if show_connection_menu? %>
-        <%= render partial: 'services/connection_menu', locals: { item: item } %>
-      <% end %>
-  </article>
+    <%= render(partial: 'services/connection_menu', locals: { item: item }) if show_connection_menu? %>
+  <% end %>

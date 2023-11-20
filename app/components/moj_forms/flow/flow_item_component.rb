@@ -1,13 +1,27 @@
 module MojForms
   module Flow
-    class FlowItemComponent < ViewComponent::Base
+    class FlowItemComponent < GovukComponent::Base
       with_collection_parameter :item
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
       attr_reader :item
 
-      def initialize(item:)
+      def initialize(item:, classes: [], html_attributes: {})
         @item = item
+        super(classes:, html_attributes:)
+      end
+
+      def default_attributes
+        {
+          id: uuid,
+          class: "flow-item #{type_classname}",
+          data: {
+            fb_id: uuid
+          },
+          aria: {
+            label: title
+          }
+        }
       end
 
       def uuid
@@ -16,6 +30,10 @@ module MojForms
 
       def type
         item[:type].gsub('page.', '').gsub('flow.', '')
+      end
+
+      def type_classname
+        "flow-#{type}"
       end
 
       def thumbnail
@@ -36,7 +54,7 @@ module MojForms
         else
           types.include?(type)
         end
-      end 
+      end
 
       def edit_path
         if type == 'branch'
@@ -49,7 +67,7 @@ module MojForms
       def call
         case type
         when 'spacer'
-          render(MojForms::Flow::SpacerComponent.new(item:))
+          render(MojForms::Flow::SpacerComponent.new(item:, html_attributes: { 'aria-hidden': true }))
         when 'pointer'
           render(MojForms::Flow::PointerComponent.new(item:))
         when 'warning'
