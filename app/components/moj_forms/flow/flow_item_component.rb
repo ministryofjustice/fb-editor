@@ -4,10 +4,12 @@ module MojForms
       with_collection_parameter :item
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
-      attr_reader :item
+      attr_reader :item, :html_attributes
 
       def initialize(item:, classes: [], html_attributes: {})
         @item = item
+        @html_attributes = html_attributes
+
         super(classes:, html_attributes:)
       end
 
@@ -26,15 +28,20 @@ module MojForms
         end
       end
 
+      def before_render
+        @html_attributes = {
+          aria: {
+            label: title
+          }
+        }.deep_merge(html_attributes)
+      end
+
       def default_attributes
         {
           id: uuid,
           class: "flow-item #{type_classname}",
           data: {
             fb_id: uuid
-          },
-          aria: {
-            label: title
           }
         }
       end
@@ -56,7 +63,7 @@ module MojForms
       end
 
       def title
-        return item[:title] unless type == 'page.confirmation'
+        return item[:title] unless type == 'confirmation'
         return item[:title] unless payment_link_enabled?
         return item[:title] unless item[:title] == I18n.t('presenter.confirmation.application_complete')
 
