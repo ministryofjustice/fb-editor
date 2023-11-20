@@ -11,6 +11,21 @@ module MojForms
         super(classes:, html_attributes:)
       end
 
+      def call
+        case type
+        when 'spacer'
+          render(MojForms::Flow::SpacerComponent.new(item:, html_attributes: { 'aria-hidden': true }))
+        when 'pointer'
+          render(MojForms::Flow::PointerComponent.new(item:))
+        when 'warning'
+          render(MojForms::Flow::WarningComponent.new(item:))
+        when 'branch'
+          render(MojForms::Flow::BranchComponent.new(item:))
+        else
+          render(MojForms::Flow::PageComponent.new(item:))
+        end
+      end
+
       def default_attributes
         {
           id: uuid,
@@ -61,21 +76,6 @@ module MojForms
           edit_branch_path(service.service_id, item[:uuid])
         else
           edit_page_path(service.service_id, item[:uuid])
-        end
-      end
-
-      def call
-        case type
-        when 'spacer'
-          render(MojForms::Flow::SpacerComponent.new(item:, html_attributes: { 'aria-hidden': true }))
-        when 'pointer'
-          render(MojForms::Flow::PointerComponent.new(item:))
-        when 'warning'
-          render(MojForms::Flow::WarningComponent.new(item:))
-        when 'branch'
-          render(MojForms::Flow::BranchComponent.new(item:))
-        else
-          render(MojForms::Flow::PageComponent.new(item:))
         end
       end
     end
