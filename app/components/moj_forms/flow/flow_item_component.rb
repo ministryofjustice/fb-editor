@@ -15,7 +15,7 @@ module MojForms
       end
 
       def type
-        item[:type]
+        item[:type].gsub('page.', '').gsub('flow.', '')
       end
 
       def thumbnail
@@ -30,8 +30,16 @@ module MojForms
         I18n.t('presenter.confirmation.payment_enabled')
       end
 
+      def type_is?(*types)
+        if types.length == 1
+          type == types.first
+        else
+          types.include?(type)
+        end
+      end 
+
       def edit_path
-        if type == 'flow.branch'
+        if type == 'branch'
           edit_branch_path(service.service_id, item[:uuid])
         else
           edit_page_path(service.service_id, item[:uuid])
@@ -46,7 +54,7 @@ module MojForms
           render(MojForms::Flow::PointerComponent.new(item:))
         when 'warning'
           render(MojForms::Flow::WarningComponent.new(item:))
-        when 'flow.branch'
+        when 'branch'
           render(MojForms::Flow::BranchComponent.new(item:))
         else
           render(MojForms::Flow::PageComponent.new(item:))
