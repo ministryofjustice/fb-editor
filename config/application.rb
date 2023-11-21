@@ -37,5 +37,6 @@ module FbEditor
     config.autoload_paths << "#{root}/app/models/component_validations"
 
     config.active_model.i18n_customize_full_message = true
+    config.action_dispatch.ip_spoofing_check = false
   end
 end
