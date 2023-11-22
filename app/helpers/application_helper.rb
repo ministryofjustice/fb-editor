@@ -91,10 +91,4 @@ module ApplicationHelper
 
     response.metadata['items'].present?
   end
-
-  # Remove once hotjar testing is complete
-  def live_platform?
-    ENV['PLATFORM_ENV'] == 'live'
-  end
-  # Remove once hotjar testing is complete
 end
