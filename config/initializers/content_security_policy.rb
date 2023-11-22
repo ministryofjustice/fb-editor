@@ -13,15 +13,10 @@ Rails.application.configure do
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
-                       "https://*.hotjar.com"
     policy.style_src   :self,
                        :unsafe_inline,
-                       "https://*.hotjar.com"
     policy.connect_src :self,
                        "*.sentry.io",
-                       "https://*.hotjar.com",
-                       "https://*.hotjar.io",
-                       "wss://*.hotjar.com"
 
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
