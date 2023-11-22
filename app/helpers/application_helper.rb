@@ -17,36 +17,12 @@ module ApplicationHelper
     end
   end
 
-  # Used on service flow page
-  def flow_text_link(item)
-    link_to (if item[:type] == 'flow.branch'
-               edit_branch_path(service.service_id, item[:uuid])
-             else
-               edit_page_path(service.service_id, item[:uuid])
-             end), class: 'govuk-link flow-item__title' do
-      concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(flow_item_title(item), class: 'text')
-    end
-  end
-
   def flow_item_title(item)
     return item[:title] unless item[:type] == 'page.confirmation'
     return item[:title] unless payment_link_enabled?
     return item[:title] unless item[:title] == I18n.t('presenter.confirmation.application_complete')
 
     I18n.t('presenter.confirmation.payment_enabled')
-  end
-
-  def flow_branch_link(item)
-    link_to edit_branch_path(service.service_id, item[:uuid]), class: 'govuk-link flow-item__title' do
-      concat(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 125" tabindex="-1" focusable="false">
-          <polygon fill="" points="1,62.5 100,1 199,62.5 100,124" stroke="" stroke-width="2"/>
-          </svg>'.html_safe
-      )
-      concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(item[:title], class: 'text')
-    end
   end
 
   # rubocop:disable Rails/HelperInstanceVariable

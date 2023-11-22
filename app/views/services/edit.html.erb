@@ -18,36 +18,7 @@
 </div>
 
 <%# Flow overview layout for pages, branches, and conditions %>
-<section id="flow-overview">
-  <% @pages_flow.each do |collection| %>
-    <div class="column">
-      <% collection.each_with_index do |item, index| %>
-        <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
-      <% end %>
-    </div>
-  <% end %>
-</section>
-
-<% if @detached_flows.present? %>
-  <section id="flow-detached" data-component="Expander">
-    <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
-    <p class="help">
-      <a target="_blank" href="https://moj-forms.service.justice.gov.uk/branching#reconnect-unconnected" class="govuk-link"><%= t('pages.flow.reconnect_hint') -%></a>
-    </p>
-    <% @detached_flows.each do |detached_flow| %>
-          <div class="flow-detached-group">
-        <% detached_flow.each do |column| %>
-          <div class="column">
-            <% column.each_with_index do |flow, index| %>
-              <%= render partial: 'services/flow_layout', locals: { item: flow, index: index } %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </section>
-<% end %>
-
+<%= render partial: 'services/flow_layout', locals: {main_flow: @pages_flow, detached_flows: @detached_flows } %>
 
 <%# Section for static/standalone pages (e.g. T&Cs) %>
 <%= render partial: 'partials/standalone' %>
