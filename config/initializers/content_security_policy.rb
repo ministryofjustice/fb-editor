@@ -12,11 +12,11 @@ Rails.application.configure do
     policy.object_src  :none
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
-                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
+                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"
     policy.style_src   :self,
-                       :unsafe_inline,
+                       :unsafe_inline
     policy.connect_src :self,
-                       "*.sentry.io",
+                       "*.sentry.io"
 
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
