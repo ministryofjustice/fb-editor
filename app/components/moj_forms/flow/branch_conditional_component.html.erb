@@ -1,0 +1,7 @@
+<li class="flow-condition" data-from="<%= "#{branch_uuid}-#{index}" %>" data-next="<%= conditional[:next] %>">
+  <div class="flow-expressions">
+    <%= render MojForms::Flow::BranchExpressionComponent.with_collection(expressions) %>
+  </div>
+  <%= render partial: 'services/connection_menu', locals: { item: branch, condition: conditional } %>
+</li>
+

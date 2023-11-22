@@ -968,6 +968,7 @@ editable-content,
 }
 
 // Bit complicated but necessary for correct Activator hover (without JS intervention)
+.flow-branch h2:hover ~ .ActivatedMenuActivator,
 .flow-branch a:hover ~ .ActivatedMenuActivator,
 .flow-branch map:hover ~ .ActivatedMenuActivator,
 .flow-branch .ActivatedMenuActivator:hover,

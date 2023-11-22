@@ -1,6 +1,6 @@
 module MojForms
   module Flow
-    class FlowItemThumbnail < ViewComponent::Base
+    class ItemThumbnailComponent < ViewComponent::Base
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
       attr_reader :title, :thumbnail, :url
