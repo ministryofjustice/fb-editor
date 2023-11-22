@@ -897,7 +897,7 @@ editable-content,
     width: inherit;
   }
 
-  & > a {
+  & > h2 a {
     box-sizing: border-box;
     color: govuk-colour("black");
     display: block;
@@ -923,7 +923,7 @@ editable-content,
     }
 
     // make the link fill the whole area and clip it
-    & > a {
+    & > h2 a {
      clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
      top: 0;
      left: 0;
@@ -954,7 +954,7 @@ editable-content,
       box-shadow: none;
     }
 
-    & > a:focus svg polygon  {
+    & > h2 a:focus svg polygon  {
       fill: govuk-colour('yellow');
       stroke: govuk-colour('black');
     }

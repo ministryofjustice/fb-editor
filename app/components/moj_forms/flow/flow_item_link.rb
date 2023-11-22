@@ -10,9 +10,11 @@ module MojForms
       end
 
       def call
-        link_to url, class: 'govuk-link flow-item__title' do
-          concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-          concat tag.span(title, class: 'text')
+        tag.h2 class: 'govuk-body' do
+          link_to url, class: 'govuk-link flow-item__title' do
+            concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
+            concat tag.span(title, class: 'text')
+          end
         end
       end
     end
