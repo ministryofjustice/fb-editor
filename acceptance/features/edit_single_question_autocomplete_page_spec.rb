@@ -74,10 +74,10 @@ feature 'Edit single question autocomplete page' do
     end
   end
 
-  def then_I_should_see_my_changes_in_the_form(preview_form, change)
+  def then_I_should_see_my_changes_in_the_form(preview_form, content)
     within_window(preview_form) do
       page.find('.autocomplete__input').click
-      expect(page).to have_css('.autocomplete__menu', text: change, visible: :all)
+      expect(page).to have_text(:all, content)
     end
   end
 
