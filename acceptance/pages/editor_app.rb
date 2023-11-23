@@ -1,5 +1,6 @@
 require_relative '../support/data_content_id'
-require_relative '../sections/conditional_content_modal'
+require_relative '../sections/conditional_content_modal_section'
+require_relative '../sections/branches_section'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
@@ -234,18 +235,20 @@ class EditorApp < SitePrism::Page
   end
 
   def branch_title(index)
-    find("div[data-conditional-index='#{index}'] h3")
+    find("section[data-conditional-index='#{index}'] h3")
   end
 
   # When two BranchConditions visible we have two BranchRemover (bin icons) available
   def last_condition_remover
-    all('.condition-remover').last
+    all('.expression__remover').last
   end
+
+  section :branches, BranchesSection, '.branches'
 
   element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
   element :show_if_button, :button, text: I18n.t('conditional_content.show_if_button_label')
-  section :conditional_content_modal, ConditionalContentModal, '#conditional_content_dialog'
-  
+  section :conditional_content_modal, ConditionalContentModalSection, '#conditional_content_dialog'
+
   element :conditional_content_notice, '.govuk-notification-banner', text: I18n.t('presenter.conditional_content.notification')
 
 end

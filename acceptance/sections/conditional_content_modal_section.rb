@@ -1,14 +1,14 @@
-require_relative './content_conditional'
+require_relative './conditional_section'
 
-class ConditionalContentModal < SitePrism::Section
-    element :display_always_radio, '#conditional-content-display-always-field', visible: :all 
+class ConditionalContentModalSection < SitePrism::Section
+    element :display_always_radio, '#conditional-content-display-always-field', visible: :all
     element :display_never_radio, '#conditional-content-display-never-field', visible: :all
     element :display_conditional_radio, '#conditional-content-display-conditional-field', visible: :all
     element :conditionals_container, '.conditionals'
-    sections :conditionals, ContentConditional, '.conditional[data-conditional-index]'
+    sections :conditionals, ConditionalSection, '[data-controller="conditional"]'
     element :add_another_rule, :button, I18n.t('conditional_content.add_another_rule')
     element :update_button, :button, I18n.t('dialogs.button_update')
-    
+
     section :error_summary, '.govuk-error-summary' do
       element :error_summary_title, '.govuk-error-summary__title', text: I18n.t('activemodel.errors.summary_title')
       element :component_error_message, :link, text: I18n.t('activemodel.errors.messages.blank', attribute: 'Component')

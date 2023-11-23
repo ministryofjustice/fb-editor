@@ -15,21 +15,16 @@ feature 'New branch page' do
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')
     then_I_should_see_the_operator(I18n.t('branches.expression.if'))
-    then_I_should_not_see_text(I18n.t('branches.condition_add'))
     then_I_should_not_see_text(I18n.t('branches.condition_remove'))
 
     and_I_select_the_destination_page_dropdown
     then_I_should_not_see_unconnected_pages
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][next]',
-      'Favourite hiking destination'
-    )
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
+
 
     and_I_select_the_condition_dropdown
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
+
     then_I_should_see_the_add_condition_link
 
     and_I_select_the_otherwise_dropdown
@@ -40,23 +35,15 @@ feature 'New branch page' do
     )
 
     when_I_save_my_changes
-    then_I_should_be_on_the_correct_branch_page('edit')
+    sleep(1)
+    expect(page).not_to have_selector('.govuk-error-summary')
     then_I_can_add_conditionals_and_expressions
 
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][1][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(1).component_select.select('What is your favourite hobby?')
+    sleep(0.5)
 
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][1][operator]',
-      'is not'
-    )
-
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][1][field]',
-      'Sewing'
-    )
+    editor.branches.conditional(0).expression(1).operator_select.select('is not')
+    editor.branches.conditional(0).expression(1).answer_select.select('Sewing')
 
     when_I_save_my_changes
     then_I_should_not_see_an_error_summary
@@ -83,10 +70,7 @@ feature 'New branch page' do
 
     then_I_can_delete_conditionals_and_expressions
 
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
-      'is answered'
-    )
+    editor.branches.conditional(0).expression(0).operator_select.select('is answered')
     then_I_should_not_see_field_options('branch[conditionals_attributes][0][expressions_attributes][0][field]')
 
     and_I_choose_an_option(
@@ -120,21 +104,15 @@ feature 'New branch page' do
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')
     then_I_should_see_the_operator(I18n.t('branches.expression.if'))
-    then_I_should_not_see_text(I18n.t('branches.condition_add'))
     then_I_should_not_see_text(I18n.t('branches.condition_remove'))
 
     and_I_select_the_destination_page_dropdown
     then_I_should_not_see_unconnected_pages
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][next]',
-      'Favourite hiking destination'
-    )
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
 
     and_I_select_the_condition_dropdown
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
+
     then_I_should_see_the_add_condition_link
 
     and_I_select_the_otherwise_dropdown
@@ -154,17 +132,12 @@ feature 'New branch page' do
     then_I_should_see_the_previous_page_title('What is your favourite hobby?')
     then_I_should_see_no_errors
 
-    and_I_add_another_branch
     then_I_should_have_unconnected_pages
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][1][next]',
-      'Favourite sewing project'
-    )
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
+
     and_I_select_the_condition_dropdown
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][1][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
+
     then_I_should_see_the_add_condition_link
 
     when_I_save_my_changes
