@@ -40,12 +40,15 @@ feature 'Edit single question autocomplete page' do
     when_I_click_autocomplete_options_in_three_dots_menu
     then_I_should_see_upload_options_modal
     when_I_upload_a_csv_file(valid_csv_one_column)
-    then_I_should_see_confrmation_message
+    then_I_should_see_confirmation_message
     when_I_click_autocomplete_options_in_three_dots_menu
     then_I_should_see_upload_options_modal
     then_I_should_see_overwrite_options_warning
     when_I_upload_a_csv_file(valid_csv)
-    then_I_should_see_confrmation_message
+    sleep(1)
+    when_I_save_my_changes
+    then_I_should_see_confirmation_message
+    when_I_save_my_changes
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview(autocomplete_option)
   end
@@ -124,7 +127,7 @@ feature 'Edit single question autocomplete page' do
     expect(page).to have_content(upload_modal_warning)
   end
 
-  def then_I_should_see_confrmation_message
+  def then_I_should_see_confirmation_message
     expect(page).to have_content(upload_success)
   end
 
