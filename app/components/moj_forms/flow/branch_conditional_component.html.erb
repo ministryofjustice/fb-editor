@@ -1,7 +1,9 @@
 <li class="flow-condition" data-from="<%= "#{branch_uuid}-#{index}" %>" data-next="<%= conditional[:next] %>">
-  <div class="flow-expressions">
+  <h3 class="govuk-body flow-expressions">
+      <a href="#<%= conditional[:next] %>" class="govuk-link govuk-link--no-underline">
     <%= render MojForms::Flow::BranchExpressionComponent.with_collection(expressions) %>
-  </div>
+      </a>
+  </h3>
   <%= render partial: 'services/connection_menu', locals: { item: branch, condition: conditional, condition_title: title  } %>
 </li>
 
