@@ -272,6 +272,12 @@ en:
       heading: 'Pages flow'
       detached: 'Unconnected pages'
       reconnect_hint: 'How do I reconnect these?'
+      page_types:
+        start: 'Start page'
+        singlequestion: 'Single question page'
+        multiplequestions: 'Single question page'
+        content: 'Content page'
+        exit: 'Exit page'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
