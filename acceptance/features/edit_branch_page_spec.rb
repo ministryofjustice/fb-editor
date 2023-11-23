@@ -33,8 +33,8 @@ feature 'New branch page' do
       'branch[default_next]',
       'Which flavours of ice cream have you eaten?'
     )
-
     sleep(1)
+
     when_I_save_my_changes
     then_I_should_see_no_errors
     then_I_can_add_conditionals_and_expressions
@@ -121,6 +121,7 @@ feature 'New branch page' do
       'branch[default_next]',
       'Check your answers'
     )
+    sleep(1)
 
     when_I_save_my_changes
     then_I_should_be_on_the_correct_branch_page('edit')
