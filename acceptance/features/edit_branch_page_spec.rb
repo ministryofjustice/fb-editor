@@ -34,9 +34,9 @@ feature 'New branch page' do
       'Which flavours of ice cream have you eaten?'
     )
 
-    when_I_save_my_changes
     sleep(1)
-    expect(page).not_to have_selector('.govuk-error-summary')
+    when_I_save_my_changes
+    then_I_should_see_no_errors
     then_I_can_add_conditionals_and_expressions
 
     editor.branches.conditional(0).expression(1).component_select.select('What is your favourite hobby?')
