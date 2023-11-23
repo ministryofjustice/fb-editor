@@ -15,6 +15,21 @@ module MojForms
         conditional[:expressions]
       end
 
+      def title
+        title = 'If '
+        expressions.each_with_index do |expression, idx|
+          if expression[:operator].blank? && expression[:answer].blank?
+            title << expression[:question]
+          else
+            title << "#{expression[:question]} #{expression[:operator]} #{expression[:answer]}"
+          end
+          if idx + 1 < expressions.size
+            title << ' and '
+          end
+        end
+        title
+      end
+
       def branch_uuid
         branch[:uuid]
       end

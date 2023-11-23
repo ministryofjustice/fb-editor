@@ -2,6 +2,6 @@
   <div class="flow-expressions">
     <%= render MojForms::Flow::BranchExpressionComponent.with_collection(expressions) %>
   </div>
-  <%= render partial: 'services/connection_menu', locals: { item: branch, condition: conditional } %>
+  <%= render partial: 'services/connection_menu', locals: { item: branch, condition: conditional, condition_title: title  } %>
 </li>
 

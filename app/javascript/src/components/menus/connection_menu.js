@@ -1,65 +1,79 @@
 const {
-  mergeObjects,
-  post,
-  updateHiddenInputOnForm
+    mergeObjects,
+    post,
+    updateHiddenInputOnForm
 } = require('../../utilities');
 const ActivatedMenu = require('./activated_menu');
 const DialogForm = require('../../component_dialog_form');
 
 class ConnectionMenu extends ActivatedMenu {
-  constructor($node, config) {
-    super($node, mergeObjects({
-      activator_classname: $node.data("activator-classname"),
-      container_id: $node.data("activated-menu-container-id"),
-      activator_text: $node.data("activator-text")
-    }, config));
+    constructor($node, config) {
+        super($node, mergeObjects({
+            activator_classname: $node.data("activator-classname"),
+            container_id: $node.data("activated-menu-container-id"),
+            activator_text: $node.data("activator-text")
+        }, config));
 
-    // Register event handler for selection of menu item.
-    $node.on("menuselect", (event, ui) => {
-      this.selection(event, ui.item);
-    });
+        // Register event handler for selection of menu item.
+        $node.on("menuselect", (event, ui) => {
+            this.selection(event, ui.item);
+        });
 
-    this.activator.$node.addClass("ConnectionMenuActivator");
-    this.container.$node.addClass("ConnectionMenu");
-    this.title = $node.data("title");
-    this.addPageAfter = $node.data("uuid");
-    this.addPageAfterCondition = $node.data("condition-uuid");
-  }
+        this.activator.$node.addClass("ConnectionMenuActivator");
+        this.container.$node.addClass("ConnectionMenu");
+        this.title = $node.data("title");
+        this.addPageAfter = $node.data("uuid");
+        this.addPageAfterCondition = $node.data("condition-uuid");
 
-  selection(event, item) {
+        this.setAccessibleLabel()
+    }
 
-    var action = item.data("action");
-    
-    switch(action) {
-      case "none":
-        // null action e.g. when we show submenu
-        break;
-      case "link": 
-        this.link(item);
-        break;
-      case "destination":
-        this.changeDestination(item); 
-        break;
-      case "reconnect-confirmation":
-        this.reconnectConfirmation(item);
-        break;
-      default:
-        this.addPage(item);
-        break;
-      }
+    setAccessibleLabel() {
+        var nextUuid = this.$node.data('next-uuid')
+        console.log(nextUuid)
+        var nextItem = document.getElementById(nextUuid)
+        console.log(nextItem)
+        if (nextItem) {
+            var nextTitle = nextItem.querySelector('h2 .text').innerHTML
+            console.log(nextTitle)
+            this.activator.$node.text(this.activator.$node.text() + ' to ' + nextTitle)
+        }
+    }
+
+    selection(event, item) {
+
+        var action = item.data("action");
+
+        switch (action) {
+            case "none":
+                // null action e.g. when we show submenu
+                break;
+            case "link":
+                this.link(item);
+                break;
+            case "destination":
+                this.changeDestination(item);
+                break;
+            case "reconnect-confirmation":
+                this.reconnectConfirmation(item);
+                break;
+            default:
+                this.addPage(item);
+                break;
+        }
 
     }
 
-    addPage(element) { 
+    addPage(element) {
         var dialog = this.config.view.pageAdditionDialog;
         var $form = dialog.$form;
-      
+
         // Set the 'add_page_here' value to mark point of new page inclusion.
         // Should be a uuid of previous page or blank if at end of form.
         // If we are on a branch condition, then also set the condition uuid 
         updateHiddenInputOnForm($form, "page[add_page_after]", this.addPageAfter);
-        if(this.addPageAfterCondition) {
-          updateHiddenInputOnForm($form, "page[conditional_uuid]", this.addPageAfterCondition);
+        if (this.addPageAfterCondition) {
+            updateHiddenInputOnForm($form, "page[conditional_uuid]", this.addPageAfterCondition);
         }
 
         // Then add any required values.
@@ -67,30 +81,30 @@ class ConnectionMenu extends ActivatedMenu {
         updateHiddenInputOnForm($form, "page[component_type]", element.data("component-type"));
 
         this.config.view.pageAdditionDialog.open();
-    } 
-    
+    }
+
     link(element) {
-      var $link = element.find("> a");
-      location.href = $link.attr("href");
+        var $link = element.find("> a");
+        location.href = $link.attr("href");
     }
 
     // Open an API request dialog to change destination
     changeDestination(element) {
-      var $link = element.find("> a");
-      new DialogForm($link.attr("href"), {
-        activator: $link,
-        autoOpen: true,
-        remote: false,
-      });
+        var $link = element.find("> a");
+        new DialogForm($link.attr("href"), {
+            activator: $link,
+            autoOpen: true,
+            remote: false,
+        });
     }
 
     reconnectConfirmation(element) {
-      var url = element.data('url');
-      var destinationUuid = element.data('destination-uuid');
+        var url = element.data('url');
+        var destinationUuid = element.data('destination-uuid');
 
-      post(url, {
-        'destination_uuid': destinationUuid,
-      });
+        post(url, {
+            'destination_uuid': destinationUuid,
+        });
     }
-  }
+}
 module.exports = ConnectionMenu; 

@@ -278,10 +278,13 @@ en:
         multiplequestions: 'Single question page'
         content: 'Content page'
         exit: 'Exit page'
+        checkanswers: 'Check your answers page'
+        confirmation: 'Confirmation page'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
-    actions: 'Actions'
+    flow_item_menu_label: "Actions for %{title}"
+    connection_menu_label: "Actions, for connection from %{source}"
     footer: 'Form footer'
     delete_modal:
       delete_page: 'Deletes "%{title}"'
