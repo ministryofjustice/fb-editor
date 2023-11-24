@@ -6,11 +6,7 @@
     <div class="govuk-error-summary__body">
        <ul class="govuk-list govuk-error-summary__list">
         <% @branch.conditionals.each_with_index do |conditional, conditional_index| %>
-          <% conditional.errors.each do |error| %>
-            <li class="govuk-error-message">
-              <a href="#branch_conditionals_attributes_<%= conditional_index %>_<%= error.attribute %>"><%= error.message + (conditional_index + 1).to_s %></a>
-            </li>
-          <% end %>
+
           <% conditional.expressions.each_with_index do |expression, expression_index| %>
             <% expression.errors.each do |error| %>
               <% if error.attribute == :component %>
@@ -20,11 +16,16 @@
                       expression_index: expression_index,
                       attribute: error.attribute
                     ) %>">
-                    <%= error.message + (conditional_index + 1).to_s %>
+                    <%= error.message %> for the <%= t("ordinals.n_#{expression_index+1}") %> condition in Branch <%= (conditional_index+1).to_s %>
                   </a>
                 </li>
               <% end %>
             <% end %>
+          <% end %>
+          <% conditional.errors.each do |error| %>
+            <li class="govuk-error-message">
+              <a href="#branch_conditionals_attributes_<%= conditional_index %>_<%= error.attribute %>"><%= error.message + (conditional_index + 1).to_s %></a>
+            </li>
           <% end %>
         <% end %>
         <% @branch.errors.each do |error| %>

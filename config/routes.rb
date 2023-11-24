@@ -49,7 +49,7 @@ Rails.application.routes.draw do
         end
       end
 
-      
+
 
       resources :settings, only: [:index]
       namespace :settings do
@@ -95,8 +95,8 @@ Rails.application.routes.draw do
       resources :branches, param: :previous_flow_uuid do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'
         get '/destroy-message', to: 'branches#destroy_message', as: :destroy_message
+        get '/conditionals/:conditional_index/expressions/:expression_index/component/:component_uuid', to: 'expressions#show', as: 'expressions'
       end
-      get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
 
       post 'conditional_content/components/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit_conditional_content'
       put 'conditional_content/components/:component_uuid', to: 'conditional_contents#update', as: 'update_conditional_content'

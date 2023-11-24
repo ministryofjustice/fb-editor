@@ -1,13 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ 'question', 'condition', 'deleteButton', 'label', 'errorMessage']
-  static classes = [ 'error' ]
+  static targets = ['question', 'condition', 'deleteButton', 'label', 'errorMessage']
+  static classes = ['error']
   static values = {
     firstLabel: String,
     otherLabel: String
   }
-  
+
   connect() {
     // Attach a reference to the controller to the element
     this.element[`${this.identifier}Controller`] = this
@@ -20,10 +20,10 @@ export default class extends Controller {
 
     this.clearError()
 
-    if(value == '') {
+    if (value == '') {
       this.conditionTarget.setAttribute('hidden', '')
       return
-    } 
+    }
 
     if (option.dataset.supportsBranching == 'false') {
       this.conditionTarget.setAttribute('hidden', '')
@@ -46,11 +46,19 @@ export default class extends Controller {
     this.element.remove();
   }
 
+  deleteWithConfirmation() {
+    document.dispatchEvent(new CustomEvent('ConfirmBranchExpressionRemoval', {
+      detail: {
+        action: () => { this.element.remove() }
+      }
+    }))
+  }
+
 
   showError(errorType) {
     this.element.classList.add(this.errorClass)
     this.errorMessageTargets.filter((el) => el.dataset.errorType == errorType)
-                            .forEach((el) => el.removeAttribute('hidden') )
+      .forEach((el) => el.removeAttribute('hidden'))
   }
 
   clearError() {
@@ -58,7 +66,7 @@ export default class extends Controller {
     this.errorMessageTargets.forEach((el) => el.setAttribute('hidden', ''))
   }
 
-  hideDeleteButton(){
+  hideDeleteButton() {
     this.deleteButtonTarget.setAttribute('hidden', '')
   }
 

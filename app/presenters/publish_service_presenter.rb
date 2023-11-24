@@ -40,7 +40,8 @@ class PublishServicePresenter
   def service_slug_config
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      name: 'SERVICE_SLUG'
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
     )&.decrypt_value
   end
 

@@ -627,7 +627,8 @@ en:
         conditional:
           blank: "Select a destination for Branch "
         expression:
-          blank: "Select a question for the condition for Branch "
+          blank: "Select a question "
+          unsupported: "Select a radio button or checkbox question "
         base_component_validation:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
@@ -705,3 +706,24 @@ en:
     does_not_contain: does not contain
     is_answered: is answered
     is_not_answered: is not answered
+  ordinals:
+    n_0: zeroth
+    n_1: first
+    n_2: second
+    n_3: third
+    n_4: fourth
+    n_5: fifth
+    n_6: sixth
+    n_7: seventh
+    n_8: eighth
+    n_9: ninth
+    n_10: tenth
+    n_11: eleventh
+    n_12: twelfth
+    n_13: thirteenth
+    n_14: fourteenth
+    n_15: fifteenth
+    n_16: sixteenth
+    n_17: seventeenth
+    n_18: eigthteenth
+    n_19: nineteenth

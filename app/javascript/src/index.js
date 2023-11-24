@@ -42,50 +42,50 @@ function loadPageData(app) {
 //
 var Controller;
 
-switch(controllerAndAction()) {
+switch (controllerAndAction()) {
   case "BranchesController#new":
   case "BranchesController#create":
   case "BranchesController#edit":
   case "BranchesController#update":
-       Controller = BranchesController;
-  break;
+    Controller = BranchesController;
+    break;
 
   case "ConditionalContentsController#new":
   case "ConditionalContentsController#create":
   case "ConditionalContentsController#edit":
   case "ConditionalContentsController#update":
-        Controller = ContentVisibilityController;
-  break;
+    Controller = ContentVisibilityController;
+    break;
 
   case "ServicesController#index":
   case "ServicesController#create":
-       Controller = FormListPage;
-  break;
+    Controller = FormListPage;
+    break;
 
   case "ServicesController#edit":
-       Controller = ServicesController;
-  break;
+    Controller = ServicesController;
+    break;
 
   case "PagesController#edit":
   case "PagesController#create":
-       Controller = PagesController;
-       loadPageData(app);
-  break;
+    Controller = PagesController;
+    loadPageData(app);
+    break;
 
   case "PublishController#index":
   case "PublishController#create":
-       Controller = PublishController;
-  break;
+    Controller = PublishController;
+    break;
 
   case "FormAnalyticsController#create":
   case "FormAnalyticsController#index":
-       Controller = FormAnalyticsController;
-  break;
+    Controller = FormAnalyticsController;
+    break;
 
   case "EmailController#index":
   case "EmailController#create":
-      Controller = CollectionEmailController;
-  break;
+    Controller = CollectionEmailController;
+    break;
 
   case "ConfirmationEmailController#index":
   case "ConfirmationEmailController#create":
@@ -98,11 +98,11 @@ switch(controllerAndAction()) {
     break;
 
   default:
-    //console.log(controllerAndAction());
+    console.log(controllerAndAction());
     Controller = DefaultController;
 }
 
-$(document).ready( () =>  {
+$(document).ready(() => {
   new Controller(app);
   GOVUKFrontend.initAll();
 });
