@@ -3,9 +3,19 @@
     <p class="description"><%= t("publish.#{environment}.description") %></p>
 
     <div class="govuk-panel govuk-panel--confirmation">
-      <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h1>
-      <p class="govuk-panel__body"><%= t("publish.publish_for_review.confirmation.text") %></p>
+      <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h3>
     </div>
+    <h3 class="govuk-heading-s"><%= t("publish.publish_for_review.confirmation.subheading") %></h3>
+
+    <p><%= t("publish.publish_for_review.confirmation.text_1") %></p>
+    <p><%= t("publish.publish_for_review.confirmation.text_2") %></p>
+    <p><%= t("publish.publish_for_review.confirmation.ul") %></p>
+    <ul>
+      <li><%= t("publish.publish_for_review.confirmation.li_1") %></li>
+      <li><%= t("publish.publish_for_review.confirmation.li_2") %></li>
+    </ul>
+    <p><%= t("publish.publish_for_review.confirmation.text_3") %></p>
+    <p class="description"><%= t("publish.publish_for_review.confirmation.text_4") %></p>
   <% else %>
     <%= form_for(@declarations, url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |form| %>
       <%= form.govuk_error_summary link_base_errors_to: :declarations_checkboxes %>
@@ -55,8 +65,8 @@
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
           link_errors: true,
-          label: { text: t('publish.declarations.five') },
-          hecked: @declarations.declaration_5,
+          label: { text: t('publish.declarations.five',  href: govuk_link_to(t('publish.declarations.five_link_text'), settings_path)).html_safe },
+          checked: @declarations.declaration_5,
           'aria-label':  t('publish.declarations.five', href: t('publish.declarations.five_link_text')).html_safe
         %>
         <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
