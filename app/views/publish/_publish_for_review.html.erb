@@ -5,17 +5,18 @@
     <div class="govuk-panel govuk-panel--confirmation">
       <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h3>
     </div>
-    <h3 class="govuk-heading-s"><%= t("publish.publish_for_review.confirmation.subheading") %></h3>
-
-    <p><%= t("publish.publish_for_review.confirmation.text_1") %></p>
-    <p><%= t("publish.publish_for_review.confirmation.text_2") %></p>
-    <p><%= t("publish.publish_for_review.confirmation.ul") %></p>
-    <ul>
-      <li><%= t("publish.publish_for_review.confirmation.li_1") %></li>
-      <li><%= t("publish.publish_for_review.confirmation.li_2") %></li>
-    </ul>
-    <p><%= t("publish.publish_for_review.confirmation.text_3") %></p>
-    <p class="description"><%= t("publish.publish_for_review.confirmation.text_4") %></p>
+    <p class="description">
+      <h3 class="govuk-heading-m"><%= t("publish.publish_for_review.confirmation.subheading") %></h3>
+      <p><%= t("publish.publish_for_review.confirmation.text_1") %></p>
+      <p><%= t("publish.publish_for_review.confirmation.text_2") %></p>
+      <p><%= t("publish.publish_for_review.confirmation.ul") %></p>
+      <ul>
+        <li><%= t("publish.publish_for_review.confirmation.li_1") %></li>
+        <li><%= t("publish.publish_for_review.confirmation.li_2") %></li>
+      </ul>
+      <p><%= t("publish.publish_for_review.confirmation.text_3") %></p>
+      <p><%= t("publish.publish_for_review.confirmation.text_4") %></p>
+    </p>
   <% else %>
     <%= form_for(@declarations, url: publish_for_review_service_path(service.service_id)+'#publish-to-live', action: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |form| %>
       <%= form.govuk_error_summary link_base_errors_to: :declarations_checkboxes %>
