@@ -302,7 +302,7 @@ end
     expect(page).to have_text(I18n.t('publish.declarations.two', href: I18n.t('publish.declarations.two_link_text')))
     expect(page).to have_text(I18n.t('publish.declarations.three', href: I18n.t('publish.declarations.three_link_text')))
     expect(page).to have_text(I18n.t('publish.declarations.four', href: I18n.t('publish.declarations.four_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.five'))
+    expect(page).to have_text(I18n.t('publish.declarations.five', href: I18n.t('publish.declarations.five_link_text')))
     expect(page).to have_text(I18n.t('publish.declarations.six', href: I18n.t('publish.declarations.six_link_text')))
   end
 
