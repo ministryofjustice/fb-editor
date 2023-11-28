@@ -227,7 +227,7 @@ class EditorApp < SitePrism::Page
   # publisher tabs
   element :dev_tab, :link, 'Publish to Test'
   element :production_tab, :link, 'Publish to Live', match: :first
-  element :publish_for_review, :button, I18m.t('publish.publish_for_review.button')
+  element :publish_for_review, :button, I18n.t('publish.publish_for_review.button')
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
