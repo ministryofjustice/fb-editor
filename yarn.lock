@@ -939,15 +939,25 @@
     webpack-cli "^3.3.12"
     webpack-sources "^1.4.3"
 
-"@sentry/browser@^7.28.1":
-  version "7.38.0"
-  resolved "https://registry.npmjs.org/@sentry/browser/-/browser-7.38.0.tgz"
+"@sentry-internal/tracing@7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.82.0.tgz#70a4578d6eb6905c30e3e5a99d594c5175c1ff17"
+  integrity sha512-kgZVHYbZCeOb5apTDZJG9bioaKNPImmHTggZSWMmZj1Q037ft4481EleIVtKWOUvJzmEndEmD91mglkXBGPQwA==
   dependencies:
-    "@sentry/core" "7.38.0"
-    "@sentry/replay" "7.38.0"
-    "@sentry/types" "7.38.0"
-    "@sentry/utils" "7.38.0"
-    tslib "^1.9.3"
+    "@sentry/core" "7.82.0"
+    "@sentry/types" "7.82.0"
+    "@sentry/utils" "7.82.0"
+
+"@sentry/browser@^7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.82.0.tgz#239d7d6b31af31d624acb1bd4b3fd54a60fecc74"
+  integrity sha512-u5QMnkuI1Xl6yLKIIyGPoLorVzsqwmMhGTxDbZ3r3Khr1au9BV+7P87L1jqaUC5uz7lmQ6T3U8jwY3zC4t3yiw==
+  dependencies:
+    "@sentry-internal/tracing" "7.82.0"
+    "@sentry/core" "7.82.0"
+    "@sentry/replay" "7.82.0"
+    "@sentry/types" "7.82.0"
+    "@sentry/utils" "7.82.0"
 
 "@sentry/cli@^1.74.6":
   version "1.74.6"
@@ -961,32 +971,35 @@
     proxy-from-env "^1.1.0"
     which "^2.0.2"
 
-"@sentry/core@7.38.0":
-  version "7.38.0"
-  resolved "https://registry.npmjs.org/@sentry/core/-/core-7.38.0.tgz"
+"@sentry/core@7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.82.0.tgz#6292e88f6375733dee98b3313d935f088cce4f4e"
+  integrity sha512-Wc+AYPzDIgFbuKkyYd/8tFm4E8CQboDkxefsz26N66CU1Ueqlk0RA8nVbzhbklhO/SuPJeR+fVOOx1spXYoybg==
   dependencies:
-    "@sentry/types" "7.38.0"
-    "@sentry/utils" "7.38.0"
-    tslib "^1.9.3"
+    "@sentry/types" "7.82.0"
+    "@sentry/utils" "7.82.0"
 
-"@sentry/replay@7.38.0":
-  version "7.38.0"
-  resolved "https://registry.npmjs.org/@sentry/replay/-/replay-7.38.0.tgz"
+"@sentry/replay@7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.82.0.tgz#0de1b3bf1051b6cfe1f11723032b908db4fa5a5c"
+  integrity sha512-GisaYEudkVC87UV9DnrDuliuczixmq0UusPfBvp3LPJoJcV8v1d/jM2wE9GJr1eclZvctGV01aD8yBx7w8xFYQ==
   dependencies:
-    "@sentry/core" "7.38.0"
-    "@sentry/types" "7.38.0"
-    "@sentry/utils" "7.38.0"
+    "@sentry-internal/tracing" "7.82.0"
+    "@sentry/core" "7.82.0"
+    "@sentry/types" "7.82.0"
+    "@sentry/utils" "7.82.0"
 
-"@sentry/types@7.38.0":
-  version "7.38.0"
-  resolved "https://registry.npmjs.org/@sentry/types/-/types-7.38.0.tgz"
+"@sentry/types@7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.82.0.tgz#8f12f089069306bfe04d00f471fa1607a96eed80"
+  integrity sha512-mWiSaWXas2zAyO7Kt5Eb9/W2vEiDiTw56NGRjKWsZnmKyl9bK3Mnxuk0TR7M6F+q8OoAFZPK1rECnyGIcb0fqQ==
 
-"@sentry/utils@7.38.0":
-  version "7.38.0"
-  resolved "https://registry.npmjs.org/@sentry/utils/-/utils-7.38.0.tgz"
+"@sentry/utils@7.82.0":
+  version "7.82.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.82.0.tgz#0047db67ca8ad5f336dfa2994fd1a717a2941fbb"
+  integrity sha512-Tba4yemyePW+bwKO/UR5/hlY3CBuBWc/PiKMLLfE6VNhFgZN/Ei9T/Wfp2ld/ANhfC0imqSd2iCv2rUuDPNRpQ==
   dependencies:
-    "@sentry/types" "7.38.0"
-    tslib "^1.9.3"
+    "@sentry/types" "7.82.0"
 
 "@sentry/webpack-plugin@^1.20.0":
   version "1.20.0"
@@ -5881,10 +5894,6 @@ tr46@~0.0.3:
 ts-pnp@^1.1.6:
   version "1.2.0"
   resolved "https://registry.npmjs.org/ts-pnp/-/ts-pnp-1.2.0.tgz"
-
-tslib@^1.9.3:
-  version "1.14.1"
-  resolved "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
 
 tty-browserify@0.0.0:
   version "0.0.0"
