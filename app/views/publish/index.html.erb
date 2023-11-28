@@ -3,13 +3,13 @@
     <div id="publish-environments">
       <%= govuk_tabs(title: 'Publish environment tabs', classes: ['moj-forms-tabs']) do |c|
         c.with_tab(label: 'Publish to Test') do %>
-          <%= render 'publish_environment',
-            environment: 'dev',
-            presenter: @publish_page_presenter_dev,
-            published_service: @published_dev
-          %>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <%= render 'publish_environment',
+                environment: 'dev',
+                presenter: @publish_page_presenter_dev,
+                published_service: @published_dev
+              %>
             <%= govuk_inset_text do %>
               <label class="govuk-label govuk-label--s"><%= t('publish.dev.inset_text_label') %></label>
               <p><%= t('publish.dev.inset_text_html', href: govuk_link_to(t('publish.dev.inset_text_link_text'), t('publish.dev.inset_text_href'))) %></p>

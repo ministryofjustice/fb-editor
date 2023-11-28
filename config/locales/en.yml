@@ -465,10 +465,11 @@ en:
     first_publish_success: 'Your form has been published.'
     publish_for_review:
       info:
-        heading: 'Request a final check to unlock publishing'
-        content: 'You need to apply to %{href}. This can take up to 3 working days. You should only do this when you think your form is ready.\n\nWe will check your form against the MoJ Forms terms of use and let you know when publishing is unlocked.'
+        heading: 'Unlock publishing to Live'
+        content: 'You need to apply to %{href}. This can take up to 3 working days. You should only do this when you think your form is ready.'
+        content_2: 'We will check your form against the MoJ Forms terms of use and let you know when publishing is unlocked.'
         link_text: 'unlock the ability to publish to Live'
-        link_url: 'https://formbuilder-product-page-staging.apps.live.cloud-platform.service.justice.gov.uk/testing-and-publishing/#final-check'
+        link_url: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#final-check'
       button: 'Apply to unlock publishing'
       confirmation:
         heading: 'We are reviewing your request to unlock publishing'
@@ -479,12 +480,15 @@ en:
         li_1: 'unlock your ability to publish to Live and let you know by email'
         li_2: 'contact you to discuss any issues'
         text_3: 'Once publishing is unlocked, you will be able to return to this page to publish your form to Live.'
-        text_4: 'Contact us if you have any questions or concerns about this process.'
+        text_4: '%{href} if you have any questions or concerns about this process.'
+        text_4_link_text: 'Contact us'
+        text_4_link_ref: 'https://moj-forms.service.justice.gov.uk/contact/'
     declarations:
-      error: 'Confirm you have taken all of the following actions to unlock publishing'
+      label: 'Confirm you have taken the following actions to unlock publishing'
+      error: 'Check all of the statements to confirm you have read them and taken the appropriate actions.'
       one: 'I have read the %{href} and taken any appropriate actions for my form'
       one_link_text: 'guidance on assessments'
-      one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#timescales'
+      one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#assessment'
       two: "I taken the %{href} into account and completed my form's accessibility statement"
       two_link_text: 'accessibility guidance'
       two_link_ref: 'https://moj-forms.service.justice.gov.uk/accessibility/'
@@ -496,9 +500,9 @@ en:
       four_link_ref: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#test-checks'
       five: 'I have checked and confirmed all %{href} for the Live site are correct'
       five_link_text: 'settings'
-      five_link_ref: ''
+      five_link_ref: 'https://moj-forms.service.justice.gov.uk/settings/'
       six: 'I have read and agree to the %{href}'
-      six_link_text: 'MoJ Forms Terms of Use'
+      six_link_text: 'MoJ Forms Terms of use'
       six_link_ref: 'https://moj-forms.service.justice.gov.uk/terms-of-use/'
     autocomplete_items:
       dev:
