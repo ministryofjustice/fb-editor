@@ -90,7 +90,7 @@ module Admin
     def service_slug_config(service_id)
       ServiceConfiguration.find_by(
         service_id:,
-        deployment_environment: 'production',
+        deployment_environment: 'dev',
         name: 'SERVICE_SLUG'
       )&.decrypt_value
     end

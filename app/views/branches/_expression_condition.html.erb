@@ -1,0 +1,57 @@
+<turbo-frame id="conditional_<%= conditional_index %>_expression_<%= expression_index %>" data-expression-target="condition">
+  <% if expression.component.present? && expression.component_supported? &&  %>
+    <div class="expression__condition" data-controller="selection-reveal" data-selection-reveal-matches-value="<%= expression.answered_operator_values.to_json %>">
+        <%= f.select :operators, expression.operators,
+          {
+            include_blank: false,
+            selected: expression.operator
+          },
+          {
+            class: "govuk-select expression__operator #{ expression.errors[:operator].any? ? 'govuk-select--error' : '' }",
+            data: {
+              selection_reveal_target: 'input',
+              action: "selection-reveal#toggle"
+            },
+            name: expression.name_attr(
+              conditional_index: conditional_index,
+              expression_index: expression_index,
+              attribute: 'operator',
+            ),
+            id: expression.id_attr(
+              conditional_index: conditional_index,
+              expression_index: expression_index,
+              attribute: 'operator',
+
+            )
+          }
+        %>
+
+      <%= f.select :answers, expression.answers,
+        {
+          include_blank: false,
+          selected:  expression.field
+        },
+        {
+          class: "govuk-select expression__answer #{ expression.errors[:answer].any? ? 'govuk-select--error' : '' }",
+          data: {
+            selection_reveal_target: 'reveal',
+          },
+          name: expression.name_attr(
+            conditional_index: conditional_index,
+            expression_index: expression_index,
+            attribute: 'field',
+
+          ),
+          id: expression.id_attr(
+            conditional_index: conditional_index,
+            expression_index: expression_index,
+            attribute: 'field',
+
+          )
+        }
+
+      %>
+
+    </div>
+  <% end %>
+</turbo-frame>

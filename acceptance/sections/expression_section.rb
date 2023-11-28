@@ -1,5 +1,5 @@
-class ContentConditionalExpression < SitePrism::Section
-    element :question_label, '.expression__question label'
+class ExpressionSection < SitePrism::Section
+      element :question_label, '.conditional__question label'
       element :component_select, '.expression__component'
       element :operator_select, '.expression__operator'
       elements :operator_select_options, '.expression__operator option'
@@ -9,7 +9,7 @@ class ContentConditionalExpression < SitePrism::Section
       element :unsupported_error, '.expression__error[data-error-type="unsupported"]'
       element :same_page_error, '.expression__error[data-error-type="samepage"]'
 
-      
+
     def operator_select_values
       operator_select_options.map{|option| option['value'] }
     end
