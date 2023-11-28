@@ -367,7 +367,6 @@ end
   end
 
   def then_I_click_the_collecting_information_by_email_link
-    # environment_section.find(:css,'.govuk-link').click
     environment_section.find('a', text: 'collecting information by email').click
   end
 

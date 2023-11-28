@@ -80,8 +80,6 @@ class PublishController < FormController
   end
 
   def can_publish_to_live
-    # moj_forms_admin? ||
-    # moj_forms_dev? ||
     if ServiceConfiguration.find_by(
       service_id: service.service_id,
       name: 'REVOKED'
