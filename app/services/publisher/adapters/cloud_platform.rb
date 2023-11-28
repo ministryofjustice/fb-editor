@@ -12,6 +12,7 @@ class Publisher
                :service_name,
                :deployment_environment,
                :live_production?,
+               :dev_production?,
                to: :service_provisioner
 
       def initialize(service_provisioner)

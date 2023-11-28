@@ -1,11 +1,16 @@
 <section class="publish-environment publish-environment--<%=environment%>">
-  <h2 class="govuk-heading-l"><%= t("publish.#{environment}.heading") %></h2>
   <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+  <p><span class="govuk-!-font-weight-bold">Your form name is: </span><%= service.service_name %><br/>
 
   <% if published_service.published? %>
     <%= render('first_publish_message', environment: environment, service_id: service.service_id) if published_service.first_publish? %>
-
-    <p><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
+    <p><span class="govuk-!-font-weight-bold">Your <%= text_for_environment(environment) %> form is at: </span><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
+  <% else %>
+    <span class="govuk-!-font-weight-bold">Your <%= text_for_environment(environment) %> form will be published to: </span><%= form_url(environment) %><br/>
+    <% if environment == 'dev' %>
+      <%= govuk_link_to 'Change', settings_form_name_url_index_path %></p>
+    <% end %>
   <% end %>
 
   <% if presenter.service_output_warning.present? %>

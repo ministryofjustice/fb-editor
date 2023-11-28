@@ -463,6 +463,47 @@ en:
     heading: 'Publishing'
     first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away.'
     first_publish_success: 'Your form has been published.'
+    publish_for_review:
+      info:
+        heading: 'Unlock publishing to Live'
+        content: 'You need to apply to %{href}. This can take up to 3 working days. You should only do this when you think your form is ready.'
+        content_2: 'We will check your form against the MoJ Forms terms of use and let you know when publishing is unlocked.'
+        link_text: 'unlock the ability to publish to Live'
+        link_url: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#final-check'
+      button: 'Apply to unlock publishing'
+      confirmation:
+        heading: 'We are reviewing your request to unlock publishing'
+        subheading: 'What happens next?'
+        text_1: 'A member of the MoJ Forms team will review your form against the terms of use to confirm it is ready to go live.'
+        text_2: 'This can take up to 3 working days.'
+        ul: 'We will then either:'
+        li_1: 'unlock your ability to publish to Live and let you know by email'
+        li_2: 'contact you to discuss any issues'
+        text_3: 'Once publishing is unlocked, you will be able to return to this page to publish your form to Live.'
+        text_4: '%{href} if you have any questions or concerns about this process.'
+        text_4_link_text: 'Contact us'
+        text_4_link_ref: 'https://moj-forms.service.justice.gov.uk/contact/'
+    declarations:
+      label: 'Confirm you have taken the following actions to unlock publishing'
+      error: 'Check all of the statements to confirm you have read them and taken the appropriate actions.'
+      one: 'I have read the %{href} and taken any appropriate actions for my form'
+      one_link_text: 'guidance on assessments'
+      one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#assessment'
+      two: "I taken the %{href} into account and completed my form's accessibility statement"
+      two_link_text: 'accessibility guidance'
+      two_link_ref: 'https://moj-forms.service.justice.gov.uk/accessibility/'
+      three: "I have read the %{href} and completed my form's privacy statement"
+      three_link_text: 'guidance on data protection'
+      three_link_ref: 'https://moj-forms.service.justice.gov.uk/data-protection/'
+      four: 'I have tested my form and confirmed that it works as intended and is sending responses correctly (%{href})'
+      four_link_text: 'advice on testing your form'
+      four_link_ref: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#test-checks'
+      five: 'I have checked and confirmed all %{href} for the Live site are correct'
+      five_link_text: 'settings'
+      five_link_ref: 'https://moj-forms.service.justice.gov.uk/settings/'
+      six: 'I have read and agree to the %{href}'
+      six_link_text: 'MoJ Forms Terms of use'
+      six_link_ref: 'https://moj-forms.service.justice.gov.uk/terms-of-use/'
     autocomplete_items:
       dev:
         icon_fallback: 'Warning'
@@ -492,6 +533,10 @@ en:
       version: 'Version: Latest  -'
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
+      inset_text_label: 'Is your form ready to go live?'
+      inset_text_html: "You will need to apply to unlock the ability to publish to Live. This can take up to 3 working days. Go to <a href='#publish-to-live'>Publish to Live</a> to find out more."
+      inset_text_link_text: 'final check'
+      inset_text_href:  'https://formbuilder-product-page-staging.apps.live.cloud-platform.service.justice.gov.uk/testing-and-publishing/#final-check'
     production:
       button: Publish to Live
       heading: 'Live site'
