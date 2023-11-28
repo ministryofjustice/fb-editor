@@ -324,7 +324,7 @@ end
 
   def then_I_should_see_the_confirmation
     expect(page).to have_text(I18n.t('publish.publish_for_review.confirmation.heading'))
-    expect(page).to have_text(I18n.t('publish.publish_for_review.confirmation.text'))
+    expect(page).to have_text(I18n.t('publish.publish_for_review.confirmation.text_1'))
   end
 
   def then_I_should_see_the_default_no_service_output_warning_message
