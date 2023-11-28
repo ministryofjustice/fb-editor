@@ -141,6 +141,116 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def approve
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_or_initialize_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      )
+      revoke = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED'
+      )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL'
+      )
+
+      if approval.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        approval.value = '1'
+        approval.save!
+      end
+      if revoke.present?
+        revoke.delete
+      end
+      if awaiting.present?
+        awaiting.delete
+      end
+
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service approved for go live - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
+
+      redirect_to admin_service_path(service_id)
+    end
+
+    def revoke_approval
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      )
+      revoke = ServiceConfiguration.find_or_initialize_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED'
+      )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL'
+      )
+
+      if revoke.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        revoke.value = '1'
+        revoke.save!
+      end
+      if approval.present?
+        approval.delete
+      end
+      if awaiting.present?
+        awaiting.delete
+      end
+
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service requires changes - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
+      redirect_to admin_service_path(service_id)
+    end
+
+    def unpublish_review_service(service_id)
+      if review_service_queued?(service_id)
+        true
+      else
+        publish_service = PublishService.find_by(service_id:)
+        version_metadata = get_version_metadata(publish_service)
+        publish_service_creation = PublishServiceCreation.new(
+          service_id: publish_service.service_id,
+          version_id: version_metadata['version_id'],
+          deployment_environment: 'production',
+          user_id: current_user.id
+        )
+        if publish_service_creation.save
+          UnpublishServiceJob.perform_later(
+            publish_service_id: publish_service_creation.publish_service_id,
+            service_slug: service_slug(publish_service.service_id, version_metadata)
+          )
+          true
+        else
+          false
+        end
+      end
+    end
+
+    def is_already_approved?
+      ServiceConfiguration.find_by(
+        service_id: params[:id],
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      ).present?
+    end
+    helper_method :is_already_approved?
+
     def search_term
       params[:search] || ''
     end
@@ -206,6 +316,14 @@ module Admin
       publish_service = PublishService.where(
         service_id: params[:service_id],
         deployment_environment: params[:deployment_environment]
+      ).last
+      publish_service.queued? || publish_service.unpublishing?
+    end
+
+    def review_service_queued?(service_id)
+      publish_service = PublishService.where(
+        service_id:,
+        deployment_environment: 'production'
       ).last
       publish_service.queued? || publish_service.unpublishing?
     end

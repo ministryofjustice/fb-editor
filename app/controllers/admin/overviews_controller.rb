@@ -33,6 +33,10 @@ module Admin
         {
           name: 'Ever published to Test',
           value: ever_published('dev').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
+        },
+        {
+          name: 'Awaiting approval for go live',
+          value: ServiceConfiguration.where(name: 'AWAITING_APPROVAL').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
         }
       ]
     end

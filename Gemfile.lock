@@ -85,8 +85,8 @@ GEM
       selectize-rails (~> 0.6)
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.843.0)
-    aws-sdk-core (3.185.1)
+    aws-partitions (1.848.0)
+    aws-sdk-core (3.186.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -124,13 +124,13 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    cgi (0.3.6)
+    cgi (0.4.0)
     concurrent-ruby (1.2.2)
     crack (0.4.5)
       rexml
     crass (1.0.6)
     daemons (1.4.1)
-    date (3.3.3)
+    date (3.3.4)
     debug_inspector (1.1.0)
     delayed_job (4.1.11)
       activesupport (>= 3.0, < 8.0)
@@ -181,9 +181,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (3.25.0)
-    google-protobuf (3.25.0-x86_64-darwin)
-    google-protobuf (3.25.0-x86_64-linux)
-    googleapis-common-protos-types (1.9.0)
+    googleapis-common-protos-types (1.10.0)
       google-protobuf (~> 3.18)
     govspeak (7.1.1)
       actionview (>= 6)
@@ -219,7 +217,7 @@ GEM
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (35.21.2)
+    govuk_publishing_components (35.21.3)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -291,22 +289,18 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.3.0)
-    net-imap (0.4.3)
+    net-imap (0.4.4)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.4.0)
       net-protocol
     nio4r (2.5.9)
     nokogiri (1.15.4)
       mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -529,13 +523,13 @@ GEM
       racc
     pg (1.5.4)
     plek (5.0.0)
-    prism (0.15.1)
+    prism (0.17.1)
     prometheus_exporter (2.0.8)
       webrick
     public_suffix (5.0.3)
     puma (6.4.0)
       nio4r (~> 2.0)
-    racc (1.7.2)
+    racc (1.7.3)
     rack (2.2.8)
     rack-protection (3.1.0)
       rack (~> 2.2, >= 2.2.4)
@@ -635,9 +629,9 @@ GEM
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
-    ruby-lsp (0.12.1)
+    ruby-lsp (0.12.3)
       language_server-protocol (~> 3.17.0)
-      prism (>= 0.15.1, < 0.16)
+      prism (>= 0.17.1, < 0.18)
       sorbet-runtime (>= 0.5.5685)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
@@ -679,7 +673,7 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
-    sorbet-runtime (0.5.11108)
+    sorbet-runtime (0.5.11120)
     spring (4.1.1)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -694,7 +688,7 @@ GEM
     statsd-ruby (1.5.0)
     thor (1.3.0)
     tilt (2.3.0)
-    timeout (0.4.0)
+    timeout (0.4.1)
     turbo-rails (1.5.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -734,9 +728,6 @@ GEM
 
 PLATFORMS
   ruby
-  x86_64-darwin-20
-  x86_64-darwin-21
-  x86_64-linux
 
 DEPENDENCIES
   activerecord-session_store
