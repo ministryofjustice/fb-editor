@@ -259,8 +259,9 @@ module Admin
       load_service_and_metadata_corresponding_to_id(service_id)
       if has_ever_been_live?
         flash[:error] = 'We cannot delete a form that has ever been live'
+        redirect_to admin_service_path(service_id)
       elsif unpublished?('dev') || Rails.env.development?
-        MetadataApiClient::Service.delete(service_id:)
+        MetadataApiClient::Service.delete(service_id)
         ServiceConfiguration.where(service_id:).destroy_all
         SubmissionSetting.where(service_id:).destroy_all
         PublishService.where(service_id:).destroy_all
@@ -270,6 +271,7 @@ module Admin
         redirect_to admin_services_path
       else
         flash[:error] = 'Please unpublish before deleting a service'
+        redirect_to admin_service_path(service_id)
       end
     end
 
