@@ -30,13 +30,10 @@ class ConnectionMenu extends ActivatedMenu {
 
     setAccessibleLabel() {
         var nextUuid = this.$node.data('next-uuid')
-        console.log(nextUuid)
         var nextItem = document.getElementById(nextUuid)
-        console.log(nextItem)
         if (nextItem) {
             var nextTitle = nextItem.querySelector('h2 .text').innerHTML
-            console.log(nextTitle)
-            this.activator.$node.text(this.activator.$node.text() + ' to ' + nextTitle)
+            this.activator.$node.text(this.activator.$node.text() + ' and ' + nextTitle)
         }
     }
 

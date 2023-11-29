@@ -284,7 +284,7 @@ en:
     create: 'Add page'
     cancel: 'Cancel'
     flow_item_menu_label: "Actions for %{title}"
-    connection_menu_label: "Actions, for connection from %{source}"
+    connection_menu_label: "Actions for connection between pages %{source}"
     footer: 'Form footer'
     delete_modal:
       delete_page: 'Deletes "%{title}"'
