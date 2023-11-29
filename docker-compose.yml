@@ -48,7 +48,7 @@ services:
 
   editor-metadata-app:
     build:
-      context: https://github.com/ministryofjustice/fb-metadata-api.git#delete-service-button
+      context: https://github.com/ministryofjustice/fb-metadata-api.git#main
       args:
         BUNDLE_ARGS: ''
     tty: true
