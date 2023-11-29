@@ -35,7 +35,7 @@ class ActivatedMenuItem {
     }
 
     activate() {
-        if (this.hasSubmenu) {
+        if (this.hasSubmenu()) {
             this.submenu.open();
             this.submenu.focus();
         } else {
