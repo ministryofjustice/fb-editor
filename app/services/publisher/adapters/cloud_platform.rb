@@ -54,11 +54,7 @@ class Publisher
         )
       end
 
-      def completed
-        if live_production? && first_published?
-          NotificationService.notify(message)
-        end
-      end
+      def completed; end
 
       private
 
@@ -68,10 +64,6 @@ class Publisher
           service_id:,
           deployment_environment:
         ).count == 1
-      end
-
-      def message
-        "#{service_name} has been published to #{namespace}.\n#{hostname}"
       end
 
       def create_config_dir
