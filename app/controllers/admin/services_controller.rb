@@ -16,7 +16,7 @@ module Admin
     end
 
     def show
-      load_service_and_metadata_corresponding_to_id(params[:id])
+      load_service_and_metadata_corresponding_to_id
       @service_creator = User.find(@service.created_by)
       @version_creator = version_creator
       @published_to_live = published('production')
@@ -58,7 +58,7 @@ module Admin
     end
 
     def edit
-      load_service_and_metadata_corresponding_to_id(params[:id])
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         service_id: @service.service_id,
         deployment_environment: 'production'
@@ -66,7 +66,7 @@ module Admin
     end
 
     def update
-      load_service_and_metadata_corresponding_to_id(params[:id])
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
       )
@@ -256,7 +256,7 @@ module Admin
 
     def destroy
       service_id = params[:id]
-      load_service_and_metadata_corresponding_to_id(service_id)
+      load_service_and_metadata_corresponding_to_id
       if has_ever_been_live?
         flash[:error] = 'We cannot delete a form that has ever been live'
         redirect_to admin_service_path(service_id)
@@ -399,7 +399,8 @@ module Admin
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
     end
 
-    def load_service_and_metadata_corresponding_to_id(service_id)
+    def load_service_and_metadata_corresponding_to_id
+      service_id = params[:id]
       @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
     end
@@ -409,7 +410,7 @@ module Admin
     end
 
     def has_ever_been_live?
-      PublishService.where(service_id: @service.service_id, deployment_environment: 'production').last&.present?
+      PublishService.exists?(service_id: @service.service_id, deployment_environment: 'production')
     end
   end
 end
