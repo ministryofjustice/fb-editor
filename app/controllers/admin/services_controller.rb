@@ -16,13 +16,15 @@ module Admin
     end
 
     def show
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      load_service_and_metadata_corresponding_to_id
       @service_creator = User.find(@service.created_by)
       @version_creator = version_creator
       @published_to_live = published('production')
       @published_to_test = published('dev')
       @versions = MetadataApiClient::Version.all(@service.service_id)
+      if %w[test local].include?(ENV['PLATFORM_ENV'])
+        @show_delete_button = true
+      end
     end
 
     def create
@@ -56,9 +58,7 @@ module Admin
     end
 
     def edit
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         service_id: @service.service_id,
         deployment_environment: 'production'
@@ -66,9 +66,7 @@ module Admin
     end
 
     def update
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
       )
@@ -256,6 +254,27 @@ module Admin
     end
     helper_method :search_term
 
+    def destroy
+      service_id = params[:id]
+      load_service_and_metadata_corresponding_to_id
+      if has_ever_been_live?
+        flash[:error] = 'We cannot delete a form that has ever been live'
+        redirect_to admin_service_path(service_id)
+      elsif unpublished?('dev') || Rails.env.development?
+        MetadataApiClient::Service.delete(service_id)
+        ServiceConfiguration.where(service_id:).destroy_all
+        SubmissionSetting.where(service_id:).destroy_all
+        PublishService.where(service_id:).destroy_all
+        message = "Service #{service_id} has been deleted"
+        flash[:success] = message
+        NotificationService.notify(message, webhook:) if webhook.present?
+        redirect_to admin_services_path
+      else
+        flash[:error] = 'Please unpublish before deleting a service'
+        redirect_to admin_service_path(service_id)
+      end
+    end
+
     private
 
     def version_creator
@@ -378,6 +397,20 @@ module Admin
 
     def service_slug(service_id, version_metadata)
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
+    end
+
+    def load_service_and_metadata_corresponding_to_id
+      service_id = params[:id]
+      @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+    end
+
+    def webhook
+      ENV['SLACK_PUBLISH_WEBHOOK']
+    end
+
+    def has_ever_been_live?
+      PublishService.exists?(service_id: @service.service_id, deployment_environment: 'production')
     end
   end
 end
