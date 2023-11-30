@@ -160,7 +160,6 @@ class ActivatedMenu {
         }
         this.container.$node.position(this.state.position);
         this.container.$node.show();
-        this.activator.$node.addClass("active");
         this.activator.$node.attr("aria-expanded", true);
         this.focus()
         this.#state.open = true;
@@ -170,7 +169,6 @@ class ActivatedMenu {
         this.closeAllSubmenus();
         this.#state.open = false;
         this.container.$node.hide();
-        this.activator.$node.removeClass("active");
         this.activator.$node.removeAttr("aria-expanded");
         this.activator.$node.focus();
 
@@ -244,6 +242,7 @@ class ActivatedMenu {
         const component = this;
 
         this.$node.on("mouseout", (event) => {
+            console.log('mouseout')
             // event.currentTarget will be the menu (UL) element.
             // check if relatedTarget is not a child element.
             this.#state.close = true;
