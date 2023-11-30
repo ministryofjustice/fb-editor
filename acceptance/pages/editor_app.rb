@@ -121,18 +121,18 @@ class EditorApp < SitePrism::Page
 
   def flow_titles(flow_items)
     find('#main-content', visible: true)
-    flow = flow_items.map { |element| element.find('.text').text }
+    flow = flow_items.map { |element| element.first('.text').text }
     flow.flatten.reject do |title|
       title == I18n.t('pages.create') || title == I18n.t('pages.actions')
     end
   end
 
   def flow_thumbnail(title)
-    preview_page_images.find { |p| p.text.include?(title) }
+    preview_page_images.find { |p| p.find('.title').text.include?(title) }
   end
 
   def flow_article(title)
-    flow_items.find { |p| p.find('h2 .text').text.include?(title) } 
+    flow_items.find { |p| p.first('.text').text.include?(title) } 
   end
 
   def connection_menu(title)

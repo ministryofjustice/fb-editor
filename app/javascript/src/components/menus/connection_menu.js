@@ -32,7 +32,7 @@ class ConnectionMenu extends ActivatedMenu {
         var nextUuid = this.$node.data('next-uuid')
         var nextItem = document.getElementById(nextUuid)
         if (nextItem) {
-            var nextTitle = nextItem.querySelector('h2 .text').innerHTML
+            var nextTitle = nextItem.querySelector('.text')?.innerHTML
             this.activator.$node.text(this.activator.$node.text() + ' and ' + nextTitle)
         }
     }

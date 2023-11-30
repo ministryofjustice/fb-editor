@@ -46,9 +46,7 @@ feature 'Edit single question autocomplete page' do
     then_I_should_see_overwrite_options_warning
     when_I_upload_a_csv_file(valid_csv)
     sleep(1)
-    when_I_save_my_changes
     then_I_should_see_confirmation_message
-    when_I_save_my_changes
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview(autocomplete_option)
   end
