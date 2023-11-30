@@ -20,7 +20,7 @@ module MojForms
         link_to url, class: "flow-thumbnail #{thumbnail} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
           concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
           concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-          concat tag.span(title, class: 'text')
+          concat tag.span(title, class: 'title')
           concat image_pack_tag(thumbnail_path, class: 'body', alt: '')
         end
       end

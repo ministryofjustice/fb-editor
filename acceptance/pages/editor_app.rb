@@ -121,7 +121,7 @@ class EditorApp < SitePrism::Page
 
   def flow_titles(flow_items)
     find('#main-content', visible: true)
-    flow = flow_items.map { |element| element.text.gsub("Edit:\n", '').split("\n").uniq }
+    flow = flow_items.map { |element| element.find('.text').text }
     flow.flatten.reject do |title|
       title == I18n.t('pages.create') || title == I18n.t('pages.actions')
     end
@@ -132,7 +132,7 @@ class EditorApp < SitePrism::Page
   end
 
   def flow_article(title)
-    flow_items.find { |p| p.text.include?(title) }
+    flow_items.find { |p| p.find('h2 .text').text.include?(title) } 
   end
 
   def connection_menu(title)
