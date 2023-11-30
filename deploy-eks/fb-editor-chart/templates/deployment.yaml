@@ -51,6 +51,7 @@ spec:
           initialDelaySeconds: {{ .Values.livenessProbe.web.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.web.periodSeconds }}
           successThreshold: {{ .Values.livenessProbe.web.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.web.failureThreshold }}
         readinessProbe:
           httpGet:
             path: /readiness
