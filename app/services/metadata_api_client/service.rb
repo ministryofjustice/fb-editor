@@ -36,6 +36,8 @@ module MetadataApiClient
 
     def self.delete(service_id)
       connection.delete(ActionController::Base.helpers.sanitize("/services/#{service_id}"))
+    rescue Faraday::BadRequestError => e
+      error_messages(e)
     end
   end
 end

@@ -7,16 +7,20 @@ RSpec.describe MetadataApiClient::Service do
       ]
     }
   end
+
   let(:expected_headers) do
     {
       'User-Agent' => 'Editor',
       'X-Request-Id' => '12345'
     }
   end
+
+  let(:service_id) { '634aa3d5-a3b3-4d0f-9078-bb754542a1d3' }
+
   let(:service_attributes) do
     {
       "service_name": 'basset',
-      "service_id": '634aa3d5-a3b3-4d0f-9078-bb754542a1d3'
+      "service_id": service_id
     }
   end
 
@@ -133,6 +137,32 @@ RSpec.describe MetadataApiClient::Service do
 
     it 'returns latest metadata' do
       expect(described_class.latest_version('12345')).to eq(expected_body)
+    end
+  end
+
+  describe '.delete' do
+    let(:expected_url) { "#{metadata_api_url}/services/#{service_id}" }
+
+    context 'when we can delete the service' do
+      before do
+        stub_request(:delete, expected_url).to_return(status: 200, headers: {})
+      end
+
+      it 'does not add any errors message' do
+        assert_raises(NoMethodError) { described_class.delete(service_id).error? }
+      end
+    end
+
+    context 'when we cannot delete the service' do
+      let(:expected_body) { { 'message' => ['the server responded with status 400'] } }
+
+      before do
+        stub_request(:delete, expected_url).to_return(status: 400, body: expected_body.to_json, headers: {})
+      end
+
+      it 'rescue error if client has an issue' do
+        expect(described_class.delete(service_id).errors?).to be_truthy
+      end
     end
   end
 end
