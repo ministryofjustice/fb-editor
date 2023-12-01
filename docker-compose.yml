@@ -66,7 +66,7 @@ services:
   editor-service-token-cache-app:
     container_name: editor-service-token-cache-app
     build:
-      context: https://github.com/ministryofjustice/fb-service-token-cache.git
+      context: https://github.com/ministryofjustice/fb-service-token-cache.git#main
     environment:
       SENTRY_DSN: sentry-dsn
       RAILS_ENV: test
