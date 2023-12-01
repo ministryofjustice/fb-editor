@@ -28,14 +28,6 @@ module MojForms
         end
       end
 
-      def before_render
-        @html_attributes = {
-          aria: {
-            label: title
-          }
-        }.deep_merge(html_attributes)
-      end
-
       def default_attributes
         {
           id: uuid,

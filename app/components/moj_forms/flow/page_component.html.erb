@@ -1,6 +1,6 @@
   <%= tag.article **html_attributes do %>
-    <%= render(MojForms::Flow::FlowItemThumbnail.new(title:, thumbnail:, url: edit_path )) %>
-    <%= render(MojForms::Flow::FlowItemLink.new(title:, url: edit_path )) %>
+    <%= render(MojForms::Flow::ItemThumbnailComponent.new(title:, thumbnail:, url: edit_path )) %>
+    <%= render(MojForms::Flow::ItemLinkComponent.new(title:, type:, url: edit_path )) %>
     <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
     <%= render(partial: 'services/connection_menu', locals: { item: item }) if show_connection_menu? %>
   <% end %>

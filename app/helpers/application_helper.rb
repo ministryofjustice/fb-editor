@@ -11,8 +11,7 @@ module ApplicationHelper
       service.service_id, item[:uuid]
     ), class: "flow-thumbnail #{item[:thumbnail]} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
       concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
-      concat tag.span("#{t('actions.edit')}: ", class: 'govuk-visually-hidden')
-      concat tag.span(flow_item_title(item), class: 'text')
+      concat tag.span(flow_item_title(item), class: 'title')
       concat image_pack_tag("thumbnails/thumbs_#{item[:thumbnail]}.jpg", class: 'body', alt: '')
     end
   end

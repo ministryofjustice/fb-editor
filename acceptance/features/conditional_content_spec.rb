@@ -418,7 +418,7 @@ end
 
 def when_I_commit_my_changes
   editor.conditional_content_modal.update_button.click
-  sleep(1)
+  sleep(2)
 end
 
 def then_I_can_see_the_expression_conditions(expression)

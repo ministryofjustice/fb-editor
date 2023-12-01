@@ -15,9 +15,9 @@ feature 'Create a service' do
     # page url links have the word "Edit" as a visually hidden span element
     # associated with them for added accessibility
     [
-      "Edit:\nService name goes here",
-      "Edit:\nCheck your answers",
-      "Edit:\nApplication complete"
+      "Service name goes here\n, Start page",
+      "Check your answers\n, Check your answers page",
+      "Application complete\n, Confirmation page"
     ]
   end
 
@@ -67,6 +67,7 @@ feature 'Create a service' do
     when_I_create_the_service
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
+    editor.service_name.click
     then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
     and_I_add_a_content_page('Content Page')
     given_I_add_an_exit_page
