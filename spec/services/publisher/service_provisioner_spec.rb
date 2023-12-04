@@ -34,7 +34,7 @@ RSpec.describe Publisher::ServiceProvisioner do
 
     it 'returns slug using the service name' do
       expect(service_provisioner.service_metadata).to eq(
-        JSON.generate(service_metadata)
+        service_metadata.to_json
       )
     end
   end
