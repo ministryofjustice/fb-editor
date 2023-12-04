@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 7619da075788585f094a4d2acc830c39639472ef
+  revision: d46cc7352b14f6c76c273d4f1623cfe5fb5df0a8
   branch: accessibility-statement
   specs:
     metadata_presenter (3.3.5)
@@ -196,7 +196,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     google-protobuf (3.25.1)
-    googleapis-common-protos-types (1.10.0)
+    googleapis-common-protos-types (1.11.0)
       google-protobuf (~> 3.18)
     govspeak (7.1.1)
       actionview (>= 6)
@@ -232,7 +232,7 @@ GEM
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (36.0.1)
+    govuk_publishing_components (36.0.2)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -304,7 +304,7 @@ GEM
       timeout
     net-smtp (0.4.0)
       net-protocol
-    nio4r (2.6.1)
+    nio4r (2.7.0)
     nokogiri (1.15.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
