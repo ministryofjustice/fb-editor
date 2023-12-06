@@ -18,20 +18,7 @@ class PagesFlow
     detached = Detached.new(service:, main_flow_uuids: grid.flow_uuids)
     detached.detached_flows.map do |detached_flow|
       detached_flow.map do |column|
-        column.filter_map do |item|
-          # Eliminate multiple pointers in detached flows
-          # If the previous items uuid is in both the detached flow and the main flow
-          # it is a pointer, so skip it. This introduces nils, so we filter_map
-          # to ensure they are removed
-          if grid.flow_uuids.include? item.uuid
-            previous_uuid = base_props(item)[:previous_uuid]
-            previous_flow_object = service.flow_object(previous_uuid)
-            if in_detached_and_main_flow(column, previous_flow_object, previous_uuid)
-              next
-            end
-          end
-          convert_flow_object(item)
-        end
+        column.filter_map { |item| convert_flow_object(item) }
       end
     end
   end
@@ -187,19 +174,5 @@ class PagesFlow
     )
     Sentry.capture_exception(error)
     raise error
-  end
-
-  def in_detached_and_main_flow(detached_flow, previous_flow_object, previous_uuid)
-    find_uuid_in_detached_flow(detached_flow, previous_uuid) &&
-      (grid.flow_uuids.include? previous_flow_object.uuid)
-  end
-
-  def find_uuid_in_detached_flow(detached_flow, uuid)
-    detached_flow.each do |flow|
-      if flow.uuid == uuid
-        return true
-      end
-    end
-    false
   end
 end
