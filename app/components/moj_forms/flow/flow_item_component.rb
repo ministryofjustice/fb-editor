@@ -1,7 +1,6 @@
 module MojForms
   module Flow
     class FlowItemComponent < GovukComponent::Base
-      with_collection_parameter :item
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
       attr_reader :item, :html_attributes
@@ -14,6 +13,8 @@ module MojForms
       end
 
       def call
+        return if item.blank?
+
         case type
         when 'spacer'
           render(MojForms::Flow::SpacerComponent.new(item:, html_attributes: { 'aria-hidden': true }))
