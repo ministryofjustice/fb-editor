@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['title', 'deleteButton']
+  static targets = ['title', 'deleteButton', 'expression']
   static values = {
     index: Number,
     title: String,
@@ -16,6 +16,9 @@ export default class extends Controller {
   indexValueChanged() {
     this.updateTitle()
     this.updateDeleteButtonLabel()
+    setTimeout(() => {
+      this.updateFieldLabelsForExpressions()
+    })
   }
 
   get title() {
@@ -48,5 +51,11 @@ export default class extends Controller {
 
   updateDeleteButtonLabel() {
     this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`
+  }
+
+  updateFieldLabelsForExpressions() {
+    this.expressionTargets.forEach((element) => {
+      element.expressionController.updateFieldLabels()
+    })
   }
 }

@@ -9,6 +9,7 @@
           {
             class: "govuk-select expression__operator #{ expression.errors[:operator].any? ? 'govuk-select--error' : '' }",
             data: {
+              expression_target: "operator",
               selection_reveal_target: 'input',
               action: "selection-reveal#toggle"
             },
@@ -22,7 +23,8 @@
               expression_index: expression_index,
               attribute: 'operator',
 
-            )
+            ),
+            'aria-label': 'Operator',
           }
         %>
 
@@ -34,6 +36,7 @@
         {
           class: "govuk-select expression__answer #{ expression.errors[:answer].any? ? 'govuk-select--error' : '' }",
           data: {
+            expression_target: "answer",
             selection_reveal_target: 'reveal',
           },
           name: expression.name_attr(
@@ -46,12 +49,10 @@
             conditional_index: conditional_index,
             expression_index: expression_index,
             attribute: 'field',
-
-          )
+          ),
+          'aria-label': 'Answer',
         }
-
       %>
-
     </div>
   <% end %>
 </turbo-frame>

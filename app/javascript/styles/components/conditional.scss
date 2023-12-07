@@ -25,7 +25,7 @@
   position: relative;
 
 
-  label {
+  .label {
     @include govuk-font($size: 24);
 
     display: inline-block;

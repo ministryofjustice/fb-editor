@@ -42,7 +42,6 @@ export default class extends Controller {
 
   updateConditionalIndices() {
     this.conditionalTargets.forEach((conditional, index) => {
-      console.log(index)
       conditional.conditionalController.indexValue = index + 1
     })
   }
