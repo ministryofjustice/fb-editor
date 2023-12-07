@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 9dbc5ddf7abc0a0a3a021ce13e9f897f973517e1
+  revision: da545d505da9ef567e5f95be162e892515f7ef71
   branch: fix-extra-pointers-in-detached-flows
   specs:
     metadata_presenter (3.3.5)
