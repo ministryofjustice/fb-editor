@@ -5,11 +5,11 @@ ruby '3.1.3'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-gem 'metadata_presenter',
-    github: 'ministryofjustice/fb-metadata-presenter',
-    branch: 'fix-extra-pointers-in-detached-flows'
+# gem 'metadata_presenter',
+#     github: 'ministryofjustice/fb-metadata-presenter',
+#     branch: 'fix-extra-pointers-in-detached-flows'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-# gem 'metadata_presenter', '3.3.5'
+gem 'metadata_presenter', '3.3.6'
 
 gem 'activerecord-session_store'
 gem 'administrate'
