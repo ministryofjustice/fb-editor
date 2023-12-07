@@ -12,20 +12,20 @@ export default class extends Controller {
       this.connected = true
       this.ensureFirstConditionalCannotBeDeleted();
       this.allowFirstConditionalToBeDeleted();
-      this.updateTitles();
+      this.updateConditionalIndices();
     })
   }
 
   conditionalTargetDisconnected(element) {
     this.ensureFirstConditionalCannotBeDeleted();
-    this.updateTitles();
+    this.updateConditionalIndices();
   }
 
   conditionalTargetConnected(element) {
     if (!this.connected) return;
 
     this.allowFirstConditionalToBeDeleted();
-    this.updateTitles();
+    this.updateConditionalIndices();
   }
 
   ensureFirstConditionalCannotBeDeleted() {
@@ -40,9 +40,10 @@ export default class extends Controller {
     }
   }
 
-  updateTitles() {
+  updateConditionalIndices() {
     this.conditionalTargets.forEach((conditional, index) => {
-      conditional.conditionalController.setTitle(index + 1)
+      console.log(index)
+      conditional.conditionalController.indexValue = index + 1
     })
   }
 }

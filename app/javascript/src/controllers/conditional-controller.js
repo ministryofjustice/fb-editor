@@ -3,12 +3,23 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ['title', 'deleteButton']
   static values = {
-    title: String
+    index: Number,
+    title: String,
+    deleteLabel: String
   }
 
   connect() {
     // Attach a reference to the controller to the element
     this.element[`${this.identifier}Controller`] = this
+  }
+
+  indexValueChanged() {
+    this.updateTitle()
+    this.updateDeleteButtonLabel()
+  }
+
+  get title() {
+    return `${this.titleValue} ${this.indexValue}`
   }
 
   delete(event) {
@@ -31,7 +42,11 @@ export default class extends Controller {
     this.deleteButtonTarget.removeAttribute('hidden')
   }
 
-  setTitle(index) {
-    this.titleTarget.innerText = `${this.titleValue} ${index}`
+  updateTitle() {
+    this.titleTarget.innerText = this.title
+  }
+
+  updateDeleteButtonLabel() {
+    this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`
   }
 }

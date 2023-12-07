@@ -1,5 +1,5 @@
-<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" >
-  <section class="branch conditional" data-conditional-index="<%= conditional.options[:child_index]%>">
+<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" data-conditional-delete-label-value="Remove">
+  <section class="branch conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
     <h3 class="govuk-heading-l" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h3>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#deleteWithConfirmation", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
