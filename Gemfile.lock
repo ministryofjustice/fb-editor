@@ -272,7 +272,7 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-    metadata_presenter (3.3.5)
+    metadata_presenter (3.3.6)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (>= 2.1.5)
       json-schema (~> 4.1.1)
@@ -752,7 +752,7 @@ DEPENDENCIES
   govuk_design_system_formbuilder
   hashie
   listen (~> 3.8)
-  metadata_presenter (= 3.3.5)
+  metadata_presenter (= 3.3.6)
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
