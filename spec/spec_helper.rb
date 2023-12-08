@@ -127,7 +127,6 @@ SimpleCov.start do
   add_group('Validators', 'app/validators')
   add_group('Views', 'app/views')
   enable_coverage(:branch)
-  enable_coverage_for_eval
 end
 
 SimpleCov.minimum_coverage 72
