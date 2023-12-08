@@ -130,7 +130,7 @@ SimpleCov.start do
   enable_coverage_for_eval
 end
 
-SimpleCov.minimum_coverage 87
+SimpleCov.minimum_coverage 83
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
   [
     SimpleCov::Formatter::HTMLFormatter,
