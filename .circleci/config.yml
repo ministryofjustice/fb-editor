@@ -17,7 +17,7 @@ parameters:
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.0.0-node'
     steps:
       - checkout
       - aws-cli/setup:
@@ -36,7 +36,7 @@ jobs:
             - bash.env
   build:
     docker: &docker_image
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.0.0-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -48,8 +48,8 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            nvm install v18.18.2
-            nvm alias default 18.18.2
+            nvm install v18.14.0
+            nvm alias default 18.14.0
 
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
@@ -63,7 +63,7 @@ jobs:
    
   lint:
     docker:
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.2.0-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -73,7 +73,7 @@ jobs:
       - slack/status: *slack_status
   security:
     docker:
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.2.0-node'
     steps:
       - checkout
       - ruby/install-deps
@@ -81,7 +81,7 @@ jobs:
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.2.0-node'
       - environment:
           POSTGRES_DB: editor_local
           POSTGRES_PASSWORD: password
@@ -121,7 +121,7 @@ jobs:
       - slack/status: *slack_status
   js_test:
     docker:
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.2.0-node'
     steps:
       - checkout
       - run: *node_version
@@ -222,7 +222,7 @@ jobs:
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
-      - image: 'cimg/ruby:3.2.2-node'
+      - image: 'cimg/ruby:3.2.0-node'
     steps:
       - checkout
       - ruby/install-deps

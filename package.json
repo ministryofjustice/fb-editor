@@ -2,7 +2,7 @@
   "name": "fb_editor",
   "private": true,
   "engines": {
-    "node": "^18.18.2"
+    "node": "^18.14.0"
   },
   "scripts": {
     "jstest": "mocha --recursive"
