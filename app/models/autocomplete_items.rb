@@ -22,9 +22,16 @@ class AutocompleteItems
 
   def file_contents
     @file_contents ||= begin
-      contents = File.read(file.path, encoding: 'bom|utf-8').strip
+      utf8_content = File.read(file.path, encoding: 'bom|utf-8')
+      contents = utf8_content.strip
       CSV.parse(contents)
     end
+    rescue Encoding::CompatibilityError
+      errors.add(
+        :message,
+        I18n.t('activemodel.errors.models.autocomplete_items.encoding_error')
+      )
+      CSV.parse(utf8_content)
   end
 
   def has_virus?

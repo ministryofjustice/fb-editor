@@ -679,6 +679,7 @@ en:
         autocomplete_items:
           invalid_type: The selected file must be a CSV
           incorrect_format: The selected file must be formatted correctly
+          encoding_error: The selected file contains some invalid data
           empty: The selected file must contain some data
           format: "%{message}"
           virus_found: "'%{attribute}' contains a virus - choose a different file"
