@@ -1002,7 +1002,7 @@
     type-detect "4.0.8"
 
 "@sinonjs/commons@^3.0.0":
-  version "3.2.0"
+  version "3.0.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-3.0.0.tgz#beb434fe875d965265e04722ccfc21df7f755d72"
   dependencies:
     type-detect "4.0.8"
