@@ -1,9 +1,12 @@
 class PublishController < FormController
   before_action :assign_form_objects
+  # skip_before_action :assign_form_objects, only: [:index]
 
   def index
+    Rails.logger.info('************** another presenter - for the published dev one?')
     @published_dev = PublishServicePresenter.new(publishes_dev, service)
-    @published_production = PublishServicePresenter.new(publishes_production, service)
+    Rails.logger.info('************** another presenter - for the published prod one?')
+    # @published_production = PublishServicePresenter.new(publishes_production, service)
     declarations
   end
 
@@ -191,18 +194,20 @@ class PublishController < FormController
   end
 
   def assign_form_objects
-    @publish_page_presenter_dev = PublishingPagePresenter.new(
+    Rails.logger.info('************** creating dev presenter')
+    @publish_page_presenter_dev ||= PublishingPagePresenter.new(
       service:,
       deployment_environment: 'dev',
       service_autocomplete_items:,
       grid:
     )
-    @publish_page_presenter_production = PublishingPagePresenter.new(
-      service:,
-      deployment_environment: 'production',
-      service_autocomplete_items:,
-      grid:
-    )
+    Rails.logger.info('************** creating prod presenter')
+    # @publish_page_presenter_production ||= PublishingPagePresenter.new(
+    #   service:,
+    #   deployment_environment: 'production',
+    #   service_autocomplete_items:,
+    #   grid:
+    # )
   end
 
   def publishes_dev

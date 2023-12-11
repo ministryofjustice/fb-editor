@@ -17,21 +17,6 @@
           </div>
         </div>
         <% end %>
-        <% c.with_tab(label: 'Publish to Live') do %>
-          <% if can_publish_to_live %>
-            <%= render 'publish_environment',
-              environment: 'production',
-              presenter: @publish_page_presenter_production,
-              published_service: @published_production
-            %>
-          <% else %>
-            <%= render 'publish_for_review',
-              environment: 'production',
-              presenter: @publish_page_presenter_production,
-              published_service: @published_production
-            %>
-          <% end %>
-        <% end %>
       <% end %>
     </div>
   </div>
