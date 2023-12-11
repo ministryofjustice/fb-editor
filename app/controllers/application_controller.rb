@@ -8,9 +8,6 @@ class ApplicationController < ActionController::Base
   helper_method :service
 
   def grid
-    if @grid.presence
-      Rails.logger.info('******* Loaded memoised grid')
-    end
     @grid ||= MetadataPresenter::Grid.new(service)
   end
   helper_method :grid
