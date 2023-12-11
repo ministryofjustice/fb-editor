@@ -193,6 +193,7 @@ class PublishController < FormController
     end
   end
 
+  # rubocop:disable Naming/MemoizedInstanceVariableName
   def assign_form_objects
     Rails.logger.info('************** creating dev presenter')
     @publish_page_presenter_dev ||= PublishingPagePresenter.new(
@@ -209,6 +210,7 @@ class PublishController < FormController
       grid:
     )
   end
+  # rubocop:enable Naming/MemoizedInstanceVariableName
 
   def publishes_dev
     @publishes_dev ||= PublishService.where(
