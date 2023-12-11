@@ -13,12 +13,6 @@
     <% end %>
   <% end %>
 
-  <% if environment == 'dev' %>
-    <% if presenter.service_output_warning.blank? %>
-      <%= render 'publish/warnings/submission', warning: presenter.submission_warnings, environment: environment %>
-    <% end %>
-    <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
-  <% end %>
 
   <% if environment == 'production' %>
     <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
