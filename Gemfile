@@ -50,6 +50,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'selenium-webdriver', '4.15.0'
   gem 'shoulda-matchers'
+  gem 'simplecov'
+  gem 'simplecov-console'
   gem 'site_prism'
   gem 'webmock'
 end
