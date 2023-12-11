@@ -6,7 +6,7 @@ class PublishController < FormController
     Rails.logger.info('************** another presenter - for the published dev one?')
     @published_dev = PublishServicePresenter.new(publishes_dev, service)
     Rails.logger.info('************** another presenter - for the published prod one?')
-    # @published_production = PublishServicePresenter.new(publishes_production, service)
+    @published_production = PublishServicePresenter.new(publishes_production, service)
     declarations
   end
 
@@ -202,12 +202,12 @@ class PublishController < FormController
       grid:
     )
     Rails.logger.info('************** creating prod presenter')
-    # @publish_page_presenter_production ||= PublishingPagePresenter.new(
-    #   service:,
-    #   deployment_environment: 'production',
-    #   service_autocomplete_items:,
-    #   grid:
-    # )
+    @publish_page_presenter_production ||= PublishingPagePresenter.new(
+      service:,
+      deployment_environment: 'production',
+      service_autocomplete_items:,
+      grid:
+    )
   end
 
   def publishes_dev
