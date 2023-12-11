@@ -7,9 +7,9 @@ ruby '3.1.3'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'accessibility-statement'
+#     branch: 'fix-extra-pointers-in-detached-flows'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.5'
+gem 'metadata_presenter', '3.3.6'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -50,6 +50,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'selenium-webdriver', '4.15.0'
   gem 'shoulda-matchers'
+  gem 'simplecov'
+  gem 'simplecov-console'
   gem 'site_prism'
   gem 'webmock'
 end

@@ -2498,16 +2498,6 @@ RSpec.describe PagesFlow do
               type: 'pointer',
               uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
               title: 'Question'
-            }],
-            [{
-              type: 'pointer',
-              uuid: '5afcfd29-75b9-4ce0-8e74-5000cd175154',
-              title: 'Check your answers'
-            }],
-            [{
-              type: 'pointer',
-              uuid: 'e184ce91-0b0e-4fb0-b05b-f2113281ea94',
-              title: 'Application complete'
             }]
           ],
           [
@@ -2539,16 +2529,6 @@ RSpec.describe PagesFlow do
               type: 'pointer',
               uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
               title: 'Question'
-            }],
-            [{
-              type: 'pointer',
-              uuid: '5afcfd29-75b9-4ce0-8e74-5000cd175154',
-              title: 'Check your answers'
-            }],
-            [{
-              type: 'pointer',
-              uuid: 'e184ce91-0b0e-4fb0-b05b-f2113281ea94',
-              title: 'Application complete'
             }]
           ]
         ]
