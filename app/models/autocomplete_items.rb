@@ -22,7 +22,8 @@ class AutocompleteItems
 
   def file_contents
     @file_contents ||= begin
-      contents = File.read(file.path, encoding: 'bom|utf-8').strip
+      utf8_content = File.read(file.path, encoding: 'bom|utf-8')
+      contents = utf8_content.strip
       CSV.parse(contents)
     end
   end
