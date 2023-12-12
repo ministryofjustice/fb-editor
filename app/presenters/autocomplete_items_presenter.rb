@@ -51,7 +51,8 @@ class AutocompleteItemsPresenter
   end
 
   def pages_in_main_flow
-    @pages_in_main_flow ||= grid.service.pages.select { |page| page.uuid.in?(main_flow_uuids) }
+    @pages_in_main_flow ||= grid.service.pages
+    # @pages_in_main_flow ||= grid.service.pages.select { |page| page.uuid.in?(main_flow_uuids) }
   end
 
   def main_flow_uuids
