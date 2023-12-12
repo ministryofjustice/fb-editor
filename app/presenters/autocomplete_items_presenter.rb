@@ -21,7 +21,7 @@ class AutocompleteItemsPresenter
 
   def pages_with_autocomplete_component
     @pages_with_autocomplete_component ||=
-      pages_in_main_flow.select { |page| page.components.any?(&:autocomplete?) }
+      pages_in_main_flow.select { |page| page._id == 'page.autocomplete' }
   end
 
   def messages
@@ -52,6 +52,6 @@ class AutocompleteItemsPresenter
 
   def pages_in_main_flow
     main_flow_uuids = grid.page_uuids
-    grid.service.pages.select { |page| page.uuid.in?(main_flow_uuids) }
+    @pages_in_main_flow ||= grid.service.pages.select { |page| page.uuid.in?(main_flow_uuids) }
   end
 end
