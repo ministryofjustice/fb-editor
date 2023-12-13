@@ -10,6 +10,7 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 120
       template:
         metadata:
           labels:
@@ -18,10 +19,7 @@ spec:
           containers:
           - name: "fb-editor-workers-{{ .Values.environmentName }}"
             image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
-            args:
-            - /bin/sh
-            - -c
-            - bundle exec rake remove:test_services_configs
+            command: ['bin/rails', 'remove:test_services_configs']
             securityContext:
               runAsUser: 1001
             imagePullPolicy: Always

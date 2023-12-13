@@ -7,7 +7,7 @@ class TestServicesConfigsRemover
 
   def call
     models.each do |model|
-      model.where.not(service_id: moj_forms_team_service_ids).destroy_all
+      model.where.not(service_id: moj_forms_team_service_ids).in_batches.destroy_all
     end
   end
 
@@ -22,11 +22,11 @@ class TestServicesConfigsRemover
   end
 
   def user_ids
-    User.all.map { |user| user.id if user.email.in?(team_emails) }.compact
+    User.all.filter_map { |user| user.id if user.email.in?(team_emails) }
   end
 
   def team_emails
-    @team_emails ||= Rails.application.config.moj_forms_team
+    Rails.application.config.moj_forms_team
   end
 
   def models
