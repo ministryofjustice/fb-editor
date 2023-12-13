@@ -32,11 +32,11 @@ class NewComponentGenerator
   end
 
   def increment
-    existing_components = components_of_type(component_type)
-    if existing_components.empty?
+    components = components_of_type(component_type)
+    if components.empty?
       1
     else
-      component_index(existing_components.last).to_i + 1
+      max_component_index(components) + 1
     end
   end
 
@@ -44,7 +44,11 @@ class NewComponentGenerator
     components.select { |c| c['_type'] == type }
   end
 
+  def max_component_index(components)
+    components.map { |c| component_index(c) }.max
+  end
+
   def component_index(component)
-    component['_id'].split('_').last
+    component['_id'].split('_').last.to_i
   end
 end
