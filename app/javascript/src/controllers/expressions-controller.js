@@ -16,12 +16,12 @@ export default class extends Controller {
         })
     }
 
-    expressionTargetDisconnected(element) {
+    expressionTargetDisconnected() {
         this.ensureFirstExpressionCannotBeDeleted()
         this.updateExpressionIndices()
     }
 
-    expressionTargetConnected(element) {
+    expressionTargetConnected() {
         if (!this.connected) return
 
         this.allowFirstExpressionToBeDeleted();

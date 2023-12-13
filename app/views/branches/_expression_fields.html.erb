@@ -1,14 +1,20 @@
-<div  class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
-      data-expressions-target="expression"
-      data-conditional-target="expression"
-      data-controller="expression"
-      data-expression-error-class="error"
-      data-expression-index-value=""
-      data-expression-first-label-value="<%= t('branches.expression.if') %>"
-      data-expression-other-label-value="<%= t('branches.expression.and') %>">
+<fieldset class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
+          aria-labelledby="conditional_<%= conditional.options[:child_index] %>_exression_<%=expression.options[:child_index]%>_legend"
+          data-expressions-target="expression"
+          data-conditional-target="expression"
+          data-controller="expression"
+          data-expression-error-class="error"
+          data-expression-index-value="0"
+          data-expression-title-value="condition"
+          data-expression-first-label-value="<%= t('branches.expression.if') %>"
+          data-expression-other-label-value="<%= t('branches.expression.and') %>">
+  
+    <p id="conditional_<%= conditional.options[:child_index] %>_exression_<%=expression.options[:child_index]%>_legend"
+        class="govuk-visually-hidden"
+        data-expression-target="heading"
+        > Condition <%= expression.options[:child_index].to_i+1 %>, branch <%= conditional.options[:child_index].to_i+1%></p>
 
-  <%= button_tag 'Delete condition', type: "button", data: { action: "expression#deleteWithConfirmation", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
-
+    
 
     <div class="conditional__question">
       <% if expression.object.errors[:component].any? %>
@@ -18,7 +24,10 @@
         </p>
       <% end %>
 
-      <div class="label" data-expression-target="label"><%= t('branches.expression.if') %></div>
+      <div class="label" data-expression-target="label">
+        <%= t('branches.expression.if') %>
+      </div>
+
       <%= expression.select :component,
         @branch.previous_questions,
         { include_blank: t('branches.select_question') },
@@ -42,5 +51,12 @@
         conditional_index: conditional.options[:child_index],
         expression_index: expression.options[:child_index]
       }
-    %>
-</div>
+      %>
+    <%= button_tag 'Delete condition',  
+      type: "button", 
+      data: { 
+        action: "expression#deleteWithConfirmation", 
+        expression_target: "deleteButton"
+      }, 
+      class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
+</fieldset>

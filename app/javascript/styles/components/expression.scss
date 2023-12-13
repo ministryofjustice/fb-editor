@@ -2,6 +2,7 @@
   margin-top: govuk-spacing(6);
   // padding-left: govuk-spacing(3);
   position: relative;
+  border: none;
 
   &:after {
     background-color: $govuk-border-colour;
@@ -9,7 +10,7 @@
     display: block;
     position: absolute;
     top: 0;
-    left: 10%;
+    left: 13%;
     width: 5px;
     height: 100%;
   }

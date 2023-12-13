@@ -1,34 +1,44 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ['question', 'condition', 'operator', 'answer', 'deleteButton', 'label', 'errorMessage']
+    static targets = ['question', 'condition', 'operator', 'answer', 'deleteButton', 'label', 'heading', 'errorMessage']
     static classes = ['error']
     static values = {
         index: Number,
+        title: String,
         firstLabel: String,
         otherLabel: String
     }
 
+    // A reference to the parent conditional stimulus controller
+    get conditionalController() {
+        return this.element.closest('[data-controller~=conditional]').conditionalController
+    }
+
+    // the title attribute for the parent conditional
+    // e.g. 'branch'
+    get conditionalTitle() {
+        return `${this.conditionalController.title.toLowerCase()}`
+    }
+
+    // the title for this expression including its index
+    // e.g. 'condition 1'
+    get title() {
+        return `${this.titleValue} ${this.indexValue}`
+    }
+
     connect() {
-        // Attach a reference to the controller to the element
+        // Attach a reference to this controller to the element
         this.element[`${this.identifier}Controller`] = this
     }
 
-    indexValueChanged(value, previous) {
-        this.updateLabel()
-        this.updateFieldLabels()
-    }
-
-    operatorTargetConnected() {
-        this.updateFieldLabels()
-    }
-
-    answerTargetConnected() {
-        this.updateFieldLabels()
-    }
-
-    get conditionalController() {
-        return this.element.closest('[data-controller~=conditional]').conditionalController
+    indexValueChanged(newValue, oldValue) {
+        if (newValue !== oldValue) {
+            this.updateLabel()
+            this.updateDeleteButtonLabel()
+            // this.updateFieldLabels()
+            this.updateHeading()
+        }
     }
 
     getCondition(event) {
@@ -36,28 +46,28 @@ export default class extends Controller {
         const option = event.currentTarget.querySelector(`option[value="${value}"]`)
         const url = event.params.url.replace('--componentId--', value)
 
-        this.clearError()
+        this.clearErrors()
 
         if (value == '') {
-            this.conditionTarget.setAttribute('hidden', '')
+            this.hideCondition()
             return
         }
 
         if (option.dataset.supportsBranching == 'false') {
-            this.conditionTarget.setAttribute('hidden', '')
+            this.hideCondition()
             this.showError('unsupported')
             return
         }
 
         if (option.dataset.samePage == 'true') {
-            this.conditionTarget.setAttribute('hidden', '')
+            this.hideCondition()
             this.showError('samepage')
             return
         }
 
         this.conditionTarget.src = url
         this.conditionTarget.reload()
-        this.conditionTarget.removeAttribute('hidden')
+        this.showCondition()
     }
 
     delete() {
@@ -72,16 +82,12 @@ export default class extends Controller {
         }))
     }
 
-
-    showError(errorType) {
-        this.element.classList.add(this.errorClass)
-        this.errorMessageTargets.filter((el) => el.dataset.errorType == errorType)
-            .forEach((el) => el.removeAttribute('hidden'))
+    hideCondition() {
+        this.conditionTarget.setAttribute('hidden', '')
     }
 
-    clearError() {
-        this.element.classList.remove(this.errorClass)
-        this.errorMessageTargets.forEach((el) => el.setAttribute('hidden', ''))
+    showCondition() {
+        this.conditionTarget.removeAttribute('hidden')
     }
 
     hideDeleteButton() {
@@ -92,36 +98,39 @@ export default class extends Controller {
         this.deleteButtonTarget.removeAttribute('hidden')
     }
 
+    clearErrors() {
+        this.element.classList.remove(this.errorClass)
+        this.errorMessageTargets.forEach((el) => el.setAttribute('hidden', ''))
+    }
+
+    showError(errorType) {
+        this.element.classList.add(this.errorClass)
+        this.errorMessageTargets.filter((el) => el.dataset.errorType == errorType)
+            .forEach((el) => el.removeAttribute('hidden'))
+    }
+
     updateLabel() {
+        console.log(this.indexValue)
         this.labelTarget.innerText = this.indexValue == 1 ? this.firstLabelValue : this.otherLabelValue
     }
 
-    updateFieldLabels() {
-        this.updateFieldLabel(this.questionTarget)
-        if (this.hasOperatorTarget) {
-            this.updateFieldLabel(this.operatorTarget)
-        }
-        if (this.hasAnswerTarget) {
-            this.updateFieldLabel(this.answerTarget)
-        }
+    updateDeleteButtonLabel() {
+        console.log('updating delete button label')
+        this.deleteButtonTarget.innerText = `${this.conditionalController.deleteLabelValue} ${this.conditionalTitle} ${this.title}`
     }
 
-    updateFieldLabel(field) {
-        const currentValue = field.getAttribute('aria-label')
+    updateHeading() {
+        const currentValue = this.headingTarget.innerText
         let newValue = ''
-        if (!currentValue.includes('condition')) {
-            // We've not updated this before, update the whole string
-            newValue = `${currentValue} for branch ${this.conditionalController.indexValue} condition ${this.indexValue}`
-        } else {
-            // just update the numbers in the string with new values
-            const replacements = [this.conditionalController.indexValue, this.indexValue]
-            let idx = 0
-            newValue = currentValue.replace(/\d+/g, () => {
-                const replacement = replacements[idx]
-                idx++
-                return replacement
-            })
-        }
-        field.setAttribute('aria-label', `${newValue}`)
+        console.log(currentValue)
+        // just update the numbers in the string with new values
+        const replacements = [this.indexValue, this.conditionalController.indexValue]
+        let idx = 0
+        newValue = currentValue.replace(/\d+/g, () => {
+            const replacement = replacements[idx]
+            idx++
+            return replacement
+        })
+        this.headingTarget.innerText = newValue
     }
 }

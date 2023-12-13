@@ -1,6 +1,8 @@
 <div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" data-conditional-delete-label-value="Remove">
-  <section class="branch conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
-    <h3 class="govuk-heading-l" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h3>
+  <fieldset class="govuk-fieldset branch conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h2>
+    </legend>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#deleteWithConfirmation", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
     <div class="conditional__expressions" data-controller="dynamic-fields expressions">
@@ -24,11 +26,14 @@
             <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
           </p>
         <% end %>
-        <%= conditional.label :next, t('branches.goto') %>
+        <div class="label">
+          <%= t('branches.goto') %>
+        </div>
 
         <select class="govuk-select conditional__destination"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                 id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
+                aria-label="Destination page"
                 aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",
@@ -51,7 +56,7 @@
       </div>
 
     </div>
-  </section>
+  </fieldset>
   <div class="conditional-separator">or</div>
 </div>
 
