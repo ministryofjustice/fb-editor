@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = [ 'template' ]
+  static targets = ['template']
 
   add(event) {
     event.preventDefault();
@@ -12,5 +12,6 @@ export default class extends Controller {
         new Date().getTime().toString()
       )
     )
+    this.dispatch('fieldsAdded', { detail: { element: this.templateTarget.previousElementSibling } })
   }
 }

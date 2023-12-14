@@ -1,5 +1,4 @@
 .conditional {
-  @include container_panel;
   border: none;
 
   @include govuk-media-query($until: tablet) {
@@ -20,6 +19,14 @@
     top: 14px
   }
 
+}
+
+.conditional--otherwise {
+  padding-top: govuk-spacing(3);
+
+  > h2 span {
+    display: inline;
+  }
 }
 
 .conditional__expressions {

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ['question', 'condition', 'operator', 'answer', 'deleteButton', 'label', 'heading', 'errorMessage']
+    static targets = ['question', 'condition', 'operator', 'answer', 'deleteButton', 'label', 'fieldsetLabel', 'errorMessage']
     static classes = ['error']
     static values = {
         index: Number,
@@ -34,10 +34,7 @@ export default class extends Controller {
 
     indexValueChanged(newValue, oldValue) {
         if (newValue !== oldValue) {
-            this.updateLabel()
-            this.updateDeleteButtonLabel()
-            // this.updateFieldLabels()
-            this.updateHeading()
+            this.updateLabels()
         }
     }
 
@@ -109,20 +106,23 @@ export default class extends Controller {
             .forEach((el) => el.removeAttribute('hidden'))
     }
 
+    updateLabels() {
+        this.updateLabel()
+        this.updateDeleteButtonLabel()
+        this.updateFieldsetLabel()
+    }
+
     updateLabel() {
-        console.log(this.indexValue)
         this.labelTarget.innerText = this.indexValue == 1 ? this.firstLabelValue : this.otherLabelValue
     }
 
     updateDeleteButtonLabel() {
-        console.log('updating delete button label')
         this.deleteButtonTarget.innerText = `${this.conditionalController.deleteLabelValue} ${this.conditionalTitle} ${this.title}`
     }
 
-    updateHeading() {
-        const currentValue = this.headingTarget.innerText
+    updateFieldsetLabel() {
+        const currentValue = this.fieldsetLabelTarget.innerText
         let newValue = ''
-        console.log(currentValue)
         // just update the numbers in the string with new values
         const replacements = [this.indexValue, this.conditionalController.indexValue]
         let idx = 0
@@ -131,6 +131,6 @@ export default class extends Controller {
             idx++
             return replacement
         })
-        this.headingTarget.innerText = newValue
+        this.fieldsetLabelTarget.innerText = newValue
     }
 }

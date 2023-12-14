@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['title', 'deleteButton', 'expression']
+  static targets = ['title', 'deleteButton', 'expression', 'destination']
   static values = {
     index: Number,
     title: String,
-    deleteLabel: String
+    deleteLabel: String,
+    destinationLabel: String,
   }
 
   connect() {
@@ -13,12 +14,22 @@ export default class extends Controller {
     this.element[`${this.identifier}Controller`] = this
   }
 
-  indexValueChanged() {
-    this.updateTitle()
-    this.updateDeleteButtonLabel()
-    setTimeout(() => {
-      this.updateFieldLabelsForExpressions()
+  focusNewExpression(event) {
+    const element = event.detail.element
+    Promise.resolve().then(() => {
+      element.expressionController.questionTarget.focus()
     })
+  }
+
+  indexValueChanged(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.updateTitle()
+      this.updateDeleteButtonLabel()
+      this.updateDestinationLabel()
+      Promise.resolve().then(() => {
+        this.updateFieldLabelsForExpressions()
+      })
+    }
   }
 
   get title() {
@@ -53,9 +64,13 @@ export default class extends Controller {
     this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`
   }
 
+  updateDestinationLabel() {
+    this.destinationTarget.setAttribute('aria-label', `${this.destinationLabelValue} ${this.title}`)
+  }
+
   updateFieldLabelsForExpressions() {
     this.expressionTargets.forEach((element) => {
-      element.expressionController.updateFieldLabels()
+      element.expressionController.updateLabels()
     })
   }
 }

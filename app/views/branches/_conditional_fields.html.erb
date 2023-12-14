@@ -1,5 +1,10 @@
-<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" data-conditional-delete-label-value="Remove">
-  <fieldset class="govuk-fieldset branch conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
+<div  data-controller="conditional" 
+      data-conditionals-target="conditional" 
+      data-conditional-title-value="Branch" 
+      data-conditional-delete-label-value="Remove" 
+      data-conditional-destination-label-value="Destination page for "
+      data-action="dynamic-fields:fieldsAdded->conditional#focusNewExpression">
+  <fieldset class="govuk-fieldset panel conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h2>
     </legend>
@@ -19,13 +24,13 @@
       <%= button_tag I18n.t('conditional_content.add_condition'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
 
       <div class="conditional__question govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error' : '' %>">
-
         <% if conditional.object.errors[:next].any? %>
           <p id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next_error" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span>
+          <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
             <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
           </p>
         <% end %>
+
         <div class="label">
           <%= t('branches.goto') %>
         </div>
@@ -33,8 +38,9 @@
         <select class="govuk-select conditional__destination"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                 id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
-                aria-label="Destination page"
-                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>">
+                aria-label="Destination page for "
+                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>"
+                data-conditional-target="destination">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",
             locals: {

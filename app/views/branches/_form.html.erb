@@ -1,7 +1,6 @@
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 <%= f.hidden_field :branch_uuid, value: @branch.branch_uuid %>
 
-
 <div class="conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
   <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
     <%= render 'conditional_fields', conditional: conditional, f: f, branch_uuid: @branch.branch_uuid %>
@@ -13,44 +12,49 @@
     <% end %>
   </template>
 
-  <div class="conditional">
+  <div class="panel">
     <%= button_tag I18n.t('branches.branch_add'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
   </div>
 </div>
 
 <p class="branch-or">or</p>
 
-<div class="branch" id="branch-otherwise">
-  <h3 class="name govuk-heading-l">
+<div class="panel conditional conditional--otherwise">
+  <h2 class="govuk-heading-l">
     <%= t('branches.title_otherwise') %>
-    <span class="name govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
-  </h3>
-  <div class="govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
-    <% @branch.errors[:default_next].each do |message| %>
-      <p class="govuk-error-message"><%= message %></p>
+    <span class="govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
+  </h2>
+
+  <div class="conditional__question govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
+    <% if @branch.errors[:default_next].any? %>
+      <p id="branch_default_next_error" class="govuk-error-message">
+        <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
+        <%= @branch.errors[:default_next].first.message %>
+      </p>
     <% end %>
 
-    <div class="conditional__question">
-      <label class="govuk-label" for="branch_default_next"><%= t('branches.goto') %></label>
-      <select class="govuk-select" name="branch[default_next]" id="branch_default_next" class="conditional__destination">
-        <%= render partial: "destinations_list",
-                  locals: {
-                    destinations: branch_destinations,
-                    selected: @branch.previous_flow_default_next
-                  }
-        %>
-        <% if branch_detached_destinations.present? %>
-          <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
-            <%= render partial: "destinations_list",
-                      locals: {
-                        destinations: branch_detached_destinations,
-                        selected: @branch.previous_flow_default_next
-                      }
-            %>
-          </optgroup>
-        <% end %>
-      </select>
+    <div class="label">
+      <%= t('branches.goto') %>
     </div>
+
+    <select class="govuk-select" name="branch[default_next]" id="branch_default_next" class="conditional__destination" aria-label="Destination page" aria-describedby="branch_default_next_error">
+      <%= render partial: "destinations_list",
+        locals: {
+          destinations: branch_destinations,
+          selected: @branch.previous_flow_default_next
+        }
+      %>
+      <% if branch_detached_destinations.present? %>
+        <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
+          <%= render partial: "destinations_list",
+            locals: {
+              destinations: branch_detached_destinations,
+              selected: @branch.previous_flow_default_next
+            }
+          %>
+        </optgroup>
+      <% end %>
+    </select>
   </div>
 </div>
 
