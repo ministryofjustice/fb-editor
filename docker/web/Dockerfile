@@ -53,8 +53,6 @@ RUN ./bin/webpack
 # The real ones in the kubernetes pods are injected into the environment.
 RUN RAILS_ENV=${RAILS_ENV} \
     SECRET_KEY_BASE=needed_for_assets_precompile \
-    ENCRYPTION_KEY=needed_for_assets_precompile \
-    ENCRYPTION_SALT=needed_for_assets_precompile \
     rails assets:precompile --trace
 
 CMD bundle exec rake db:migrate:ignore_concurrent && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
