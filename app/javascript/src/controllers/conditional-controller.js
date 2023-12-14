@@ -32,6 +32,7 @@ export default class extends Controller {
   }
 
   focusNewExpression(event) {
+    if (event.detail.additionType != 'expression') return
     const element = event.detail.element
     Promise.resolve().then(() => {
       element.expressionController.questionTarget.focus()

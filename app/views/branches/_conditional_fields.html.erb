@@ -21,7 +21,7 @@
         <% end %>
       </template>
 
-      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
+      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
         <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
       <% end %>
 

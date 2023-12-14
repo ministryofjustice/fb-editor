@@ -1,7 +1,7 @@
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 <%= f.hidden_field :branch_uuid, value: @branch.branch_uuid %>
 
-<div class="conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
+<div class="conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal" data-action="dynamic-fields:fieldsAdded->conditionals#update">
   <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
     <%= render 'conditional_fields', conditional: conditional, f: f, branch_uuid: @branch.branch_uuid %>
   <% end %>
@@ -13,7 +13,7 @@
   </template>
 
   <div class="panel">
-    <%= button_tag I18n.t('branches.branch_add'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+    <%= button_tag I18n.t('branches.branch_add'), type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'conditional'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
   </div>
 </div>
 

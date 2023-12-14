@@ -10,31 +10,33 @@ export default class extends Controller {
   connect() {
     Promise.resolve().then(() => {
       this.connected = true
-      this.ensureFirstConditionalCannotBeDeleted();
-      this.allowFirstConditionalToBeDeleted();
+      this.preventFirstConditionalDeletion();
+      this.allowFirstConditionalDeletion();
       this.updateConditionalIndices();
     })
   }
 
-  conditionalTargetDisconnected(element) {
-    this.ensureFirstConditionalCannotBeDeleted();
+  conditionalTargetDisconnected() {
+    this.preventFirstConditionalDeletion();
     this.updateConditionalIndices();
   }
 
-  conditionalTargetConnected(element) {
-    if (!this.connected) return;
+  update(event) {
+    if (event.detail.additionType != 'conditional') return
 
-    this.allowFirstConditionalToBeDeleted();
-    this.updateConditionalIndices();
+    Promise.resolve().then(() => {
+      this.allowFirstConditionalDeletion();
+      this.updateConditionalIndices();
+    })
   }
 
-  ensureFirstConditionalCannotBeDeleted() {
+  preventFirstConditionalDeletion() {
     if (this.conditionalTargets.length == 1) {
       this.conditionalTargets[0].conditionalController.hideDeleteButton()
     }
   }
 
-  allowFirstConditionalToBeDeleted() {
+  allowFirstConditionalDeletion() {
     if (this.conditionalTargets.length > 1) {
       this.conditionalTargets[0].conditionalController.showDeleteButton()
     }
