@@ -32,6 +32,15 @@ export default class extends Controller {
         this.element[`${this.identifier}Controller`] = this
     }
 
+    operatorTargetConnected(element) {
+        this.updateFieldLabel(element)
+    }
+
+    answerTargetConnected(element) {
+        this.updateFieldLabel(element)
+    }
+
+
     indexValueChanged(newValue, oldValue) {
         if (newValue !== oldValue) {
             this.updateLabels()
@@ -109,7 +118,7 @@ export default class extends Controller {
     updateLabels() {
         this.updateLabel()
         this.updateDeleteButtonLabel()
-        this.updateFieldsetLabel()
+        this.updateFieldLabels()
     }
 
     updateLabel() {
@@ -120,17 +129,28 @@ export default class extends Controller {
         this.deleteButtonTarget.innerText = `${this.conditionalController.deleteLabelValue} ${this.conditionalTitle} ${this.title}`
     }
 
-    updateFieldsetLabel() {
-        const currentValue = this.fieldsetLabelTarget.innerText
+    updateFieldLabels() {
+        if (this.hasQuestionTarget) this.updateFieldLabel(this.questionTarget)
+        if (this.hasOperatorTarget) this.updateFieldLabel(this.operatorTarget)
+        if (this.hasAnswerTarget) this.updateFieldLabel(this.answerTarget)
+    }
+
+    updateFieldLabel(element) {
+        console.log(element)
+        const currentValue = element.getAttribute('aria-label')
         let newValue = ''
-        // just update the numbers in the string with new values
-        const replacements = [this.indexValue, this.conditionalController.indexValue]
-        let idx = 0
-        newValue = currentValue.replace(/\d+/g, () => {
-            const replacement = replacements[idx]
-            idx++
-            return replacement
-        })
-        this.fieldsetLabelTarget.innerText = newValue
+        if (!currentValue.includes('condition')) {
+            newValue = `${currentValue} for ${this.conditionalTitle} ${this.title}`
+        } else {
+            // just update the numbers in the string with new values
+            const replacements = [this.conditionalController.indexValue, this.indexValue]
+            let idx = 0
+            newValue = currentValue.replace(/\d+/g, () => {
+                const replacement = replacements[idx]
+                idx++
+                return replacement
+            })
+        }
+        element.setAttribute('aria-label', newValue)
     }
 }

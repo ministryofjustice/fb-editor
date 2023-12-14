@@ -1,5 +1,4 @@
-<fieldset class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
-          aria-labelledby="conditional_<%= conditional.options[:child_index] %>_expression_<%=expression.options[:child_index]%>_legend"
+<div class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
           data-expressions-target="expression"
           data-conditional-target="expression"
           data-controller="expression"
@@ -9,11 +8,6 @@
           data-expression-first-label-value="<%= t('branches.expression.if') %>"
           data-expression-other-label-value="<%= t('branches.expression.and') %>">
   
-    <p id="conditional_<%= conditional.options[:child_index] %>_expression_<%=expression.options[:child_index]%>_legend"
-        class="govuk-visually-hidden"
-        data-expression-target="fieldsetLabel"
-        > Condition <%= expression.options[:child_index].to_i+1 %>, branch <%= conditional.options[:child_index].to_i+1%></p>
-
     <div class="conditional__question">
       <% if expression.object.errors[:component].any? %>
         <p id="condition_<%= conditional.options[:child_index] %>_expression_<%= expression.options[:child_index] %>_component_error" class="govuk-error-message">
@@ -57,4 +51,4 @@
         expression_target: "deleteButton"
       }, 
       class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
-</fieldset>
+</div>

@@ -21,7 +21,9 @@
         <% end %>
       </template>
 
-      <%= button_tag I18n.t('conditional_content.add_condition'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
+        <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
+      <% end %>
 
       <div class="conditional__question govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error' : '' %>">
         <% if conditional.object.errors[:next].any? %>
@@ -35,11 +37,12 @@
           <%= t('branches.goto') %>
         </div>
 
+        <p class="govuk-visually-hidden" id="conditional_<%=conditional.options[:child_index]%>_next_hint">The page that will be displayed if all of the conditions for this branch are met</p>
         <select class="govuk-select conditional__destination"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                 id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
                 aria-label="Destination page for "
-                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>"
+                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> conditional_<%=conditional.options[:child_index]%>_next_hint"
                 data-conditional-target="destination">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",

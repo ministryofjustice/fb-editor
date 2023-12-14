@@ -251,6 +251,7 @@ en:
       never: 'Never'
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
+    condition_target: ' to %{type} %{index}'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'

@@ -14,10 +14,9 @@ export default class extends Controller {
     this.element[`${this.identifier}Controller`] = this
   }
 
-  focusNewExpression(event) {
-    const element = event.detail.element
+  expressionTargetConnected() {
     Promise.resolve().then(() => {
-      element.expressionController.questionTarget.focus()
+      this.updateFieldLabelsForExpressions()
     })
   }
 
@@ -30,6 +29,13 @@ export default class extends Controller {
         this.updateFieldLabelsForExpressions()
       })
     }
+  }
+
+  focusNewExpression(event) {
+    const element = event.detail.element
+    Promise.resolve().then(() => {
+      element.expressionController.questionTarget.focus()
+    })
   }
 
   get title() {

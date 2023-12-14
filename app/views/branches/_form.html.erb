@@ -36,8 +36,8 @@
     <div class="label">
       <%= t('branches.goto') %>
     </div>
-
-    <select class="govuk-select" name="branch[default_next]" id="branch_default_next" class="conditional__destination" aria-label="Destination page" aria-describedby="branch_default_next_error">
+    <p class="govuk-visually-hidden" id="branch_default_next_hint">The page that will be displayed if none of the branches have their conditions matched</p>
+    <select class="govuk-select" name="branch[default_next]" id="branch_default_next" class="conditional__destination" aria-label="Destination page" aria-describedby="branch_default_next_error branch_default_next_hint">
       <%= render partial: "destinations_list",
         locals: {
           destinations: branch_destinations,
