@@ -5,7 +5,7 @@ export default class extends Controller {
 
   add(event) {
     event.preventDefault();
-    console.log(event.params)
+
     this.templateTarget.insertAdjacentHTML(
       "beforebegin",
       this.templateTarget.innerHTML.replace(
@@ -13,10 +13,11 @@ export default class extends Controller {
         new Date().getTime().toString()
       )
     )
+
     this.dispatch('fieldsAdded', {
       detail: {
         element: this.templateTarget.previousElementSibling,
-        additionType: event.params.type
+        additionType: event.params.type ?? ''
       }
     })
   }

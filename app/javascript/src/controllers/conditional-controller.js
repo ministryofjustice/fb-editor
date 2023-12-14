@@ -1,7 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ['title', 'deleteButton', 'expression', 'destination']
+  static targets = [
+    'title',
+    'deleteButton',
+    'expression',
+    'destination'
+  ]
+
   static values = {
     index: Number,
     title: String,
@@ -33,6 +39,7 @@ export default class extends Controller {
 
   focusNewExpression(event) {
     if (event.detail.additionType != 'expression') return
+
     const element = event.detail.element
     Promise.resolve().then(() => {
       element.expressionController.questionTarget.focus()

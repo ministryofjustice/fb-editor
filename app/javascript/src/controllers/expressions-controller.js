@@ -10,31 +10,34 @@ export default class extends Controller {
     connect() {
         Promise.resolve().then(() => {
             this.connected = true
-            this.ensureFirstExpressionCannotBeDeleted()
-            this.allowFirstExpressionToBeDeleted()
+            this.preventFirstExpressionDeletion()
+            this.allowFirstExpressionDeletion()
             this.updateExpressionIndices()
         })
     }
 
     expressionTargetDisconnected() {
-        this.ensureFirstExpressionCannotBeDeleted()
+        this.preventFirstExpressionDeletion()
         this.updateExpressionIndices()
     }
 
-    expressionTargetConnected() {
-        if (!this.connected) return
+    update(event) {
+        if (event.detail.additionType != 'expression') return
 
-        this.allowFirstExpressionToBeDeleted();
-        this.updateExpressionIndices()
+        Promise.resolve().then(() => {
+            this.allowFirstExpressionDeletion();
+            this.updateExpressionIndices();
+        })
     }
 
-    ensureFirstExpressionCannotBeDeleted() {
+
+    preventFirstExpressionDeletion() {
         if (this.expressionTargets.length == 1) {
             this.expressionTargets[0].expressionController.hideDeleteButton()
         }
     }
 
-    allowFirstExpressionToBeDeleted() {
+    allowFirstExpressionDeletion() {
         if (this.expressionTargets.length > 1) {
             this.expressionTargets[0].expressionController.showDeleteButton()
         }

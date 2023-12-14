@@ -1,8 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ['question', 'condition', 'operator', 'answer', 'deleteButton', 'label', 'fieldsetLabel', 'errorMessage']
+    static targets = [
+        'question',
+        'condition',
+        'operator',
+        'answer',
+        'deleteButton',
+        'label',
+        'fieldsetLabel',
+        'errorMessage'
+    ]
+
     static classes = ['error']
+
     static values = {
         index: Number,
         title: String,
@@ -55,25 +66,25 @@ export default class extends Controller {
         this.clearErrors()
 
         if (value == '') {
-            this.hideCondition()
+            this.hide(this.conditionTarget)
             return
         }
 
         if (option.dataset.supportsBranching == 'false') {
-            this.hideCondition()
+            this.hide(this.conditionTarget)
             this.showError('unsupported')
             return
         }
 
         if (option.dataset.samePage == 'true') {
-            this.hideCondition()
+            this.hide(this.conditionTarget)
             this.showError('samepage')
             return
         }
 
         this.conditionTarget.src = url
         this.conditionTarget.reload()
-        this.showCondition()
+        this.show(this.conditionTarget)
     }
 
     delete() {
@@ -88,12 +99,12 @@ export default class extends Controller {
         }))
     }
 
-    hideCondition() {
-        this.conditionTarget.setAttribute('hidden', '')
+    hide(element) {
+        element.setAttribute('hidden', '')
     }
 
-    showCondition() {
-        this.conditionTarget.removeAttribute('hidden')
+    show(element) {
+        element.removeAttribute('hidden')
     }
 
     hideDeleteButton() {
@@ -106,13 +117,13 @@ export default class extends Controller {
 
     clearErrors() {
         this.element.classList.remove(this.errorClass)
-        this.errorMessageTargets.forEach((el) => el.setAttribute('hidden', ''))
+        this.errorMessageTargets.forEach((el) => this.hide(el))
     }
 
     showError(errorType) {
         this.element.classList.add(this.errorClass)
         this.errorMessageTargets.filter((el) => el.dataset.errorType == errorType)
-            .forEach((el) => el.removeAttribute('hidden'))
+            .forEach((el) => this.show(el))
     }
 
     updateLabels() {
@@ -136,7 +147,6 @@ export default class extends Controller {
     }
 
     updateFieldLabel(element) {
-        console.log(element)
         const currentValue = element.getAttribute('aria-label')
         let newValue = ''
         if (!currentValue.includes('condition')) {
