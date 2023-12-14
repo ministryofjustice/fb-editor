@@ -42,11 +42,6 @@ spec:
                   secretKeyRef:
                     name: rds-instance-formbuilder-editor-{{ .Values.environmentName }}
                     key: url
-              - name: EDITOR_SERVICE_ACCOUNT_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: {{ .Values.bearer_token }}
-                    key: token
               - name: ENCODED_PRIVATE_KEY
                 valueFrom:
                   secretKeyRef:
