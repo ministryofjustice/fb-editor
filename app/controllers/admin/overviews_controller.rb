@@ -3,9 +3,13 @@ module Admin
     require 'csv'
     ACCEPTANCE_TEST_USER_ID = 'a5833e7a-a210-4447-904c-df050d198e33'.freeze
     # new-runner-acceptance-tests and Acceptance Tests - Branching Fixture 10 service IDs
+    # Save-and-return v2 - Conditional Content - API Submission JSON acceptance tests
     RUNNER_ACCEPTANCE_TEST_FORMS = %w[
       cd75ad76-1d4b-4ce5-8a9e-035262cd2683
       e68dca75-20b8-468e-9436-e97791a914c5
+      759716eb-b4fb-413e-b883-f7016e2a9feb
+      11744bdf-86e3-4be3-b2cc-86434dc08ef2
+      1ef15479-5a2c-4426-a5bf-54253031d9be
     ].freeze
 
     def index

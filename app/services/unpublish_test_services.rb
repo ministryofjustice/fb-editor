@@ -4,6 +4,7 @@ class UnpublishTestServices
     'cd75ad76-1d4b-4ce5-8a9e-035262cd2683', # New Runner Service
     'e68dca75-20b8-468e-9436-e97791a914c5', # Branching Fixture 10 Service
     '759716eb-b4fb-413e-b883-f7016e2a9feb', # Save and Return v2 Service
+    '11744bdf-86e3-4be3-b2cc-86434dc08ef2', # Conditional content Service
     '1ef15479-5a2c-4426-a5bf-54253031d9be'  # API Submission JSON Output v2 Service
   ].freeze
   ENVIRONMENTS = %i[dev production].freeze
