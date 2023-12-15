@@ -1,6 +1,12 @@
-<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Rule">
-  <section class="conditional">
-    <h3 class="govuk-heading-l" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
+<div  data-controller="conditional" 
+      data-conditionals-target="conditional" 
+      data-conditional-title-value="Rule"
+      data-conditional-delete-label-value="Remove" 
+      data-action="dynamic-fields:fieldsAdded->conditional#focusNewExpression">
+  <fieldset class="panel conditional">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
+    </legend>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#delete", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
     <div class="conditional__expressions" data-controller="dynamic-fields expressions">
@@ -14,7 +20,9 @@
         <% end %>
       </template>
 
-      <%= button_tag I18n.t('conditional_content.add_condition'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
+        <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'rule', index: conditional.options[:child_index].to_i+1)%></span>
+      <% end %>
     </div>
   </section>
   <div class="conditional-separator">or</div>

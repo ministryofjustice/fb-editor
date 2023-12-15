@@ -13,7 +13,14 @@
   </template>
 
   <div class="panel">
-    <%= button_tag I18n.t('branches.branch_add'), type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'conditional'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+    <%= button_tag I18n.t('branches.branch_add'), 
+      type: 'button', 
+      data: {
+        action: 'dynamic-fields#add',
+        dynamic_fields_type_param: 'conditional'
+      },
+      class: 'govuk-link fb-link-button prevent-modal-close'
+    %>
   </div>
 </div>
 

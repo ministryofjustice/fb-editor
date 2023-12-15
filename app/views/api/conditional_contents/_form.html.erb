@@ -33,7 +33,7 @@
       </div>
     </fieldset>
 
-    <fieldset class="govuk-fieldset conditionals" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal">
+    <fieldset class="govuk-fieldset conditionals govuk-!-margin-bottom-6" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal" data-action="dynamic-fields:fieldsAdded->conditionals#update">
       <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
         <%= render 'conditional_fields', conditional: conditional, f: f, component_uuid: f.object.component_uuid %>
       <% end %>
@@ -44,8 +44,15 @@
         <% end %>
       </template>
 
-      <div class="conditional">
-        <%= button_tag I18n.t('conditional_content.add_another_rule'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+      <div class="panel">
+        <%= button_tag I18n.t('conditional_content.add_another_rule'), 
+          type: 'button', 
+          data: { 
+            action: 'dynamic-fields#add', 
+            dynamic_fields_type_param: 'conditional'
+          }, 
+          class: 'govuk-link fb-link-button prevent-modal-close'
+        %>
       </div>
     </fieldset>
   </div>

@@ -30,7 +30,9 @@ export default class extends Controller {
     if (newValue !== oldValue) {
       this.updateTitle()
       this.updateDeleteButtonLabel()
-      this.updateDestinationLabel()
+      if (this.hasDestinationTarget) {
+        this.updateDestinationLabel()
+      }
       Promise.resolve().then(() => {
         this.updateFieldLabelsForExpressions()
       })
