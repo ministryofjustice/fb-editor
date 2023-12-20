@@ -19,14 +19,17 @@ export default class extends Controller {
   conditionalTargetDisconnected() {
     this.preventFirstConditionalDeletion();
     this.updateConditionalIndices();
+    this.element.focus()
   }
 
-  update(event) {
+  newConditionalAdded(event) {
     if (event.detail.additionType != 'conditional') return
 
     Promise.resolve().then(() => {
       this.allowFirstConditionalDeletion();
       this.updateConditionalIndices();
+      // place focus on the newly added conditional fieldset
+      this.conditionalTargets[this.conditionalTargets.length - 1].conditionalController.fieldsetTarget.focus()
     })
   }
 

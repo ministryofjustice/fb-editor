@@ -1,10 +1,11 @@
 <div  data-controller="conditional" 
       data-conditionals-target="conditional" 
+      data-conditional-branch-status-outlet="#branch-status"
       data-conditional-title-value="Branch" 
       data-conditional-delete-label-value="Remove" 
       data-conditional-destination-label-value="Destination page for "
       data-action="dynamic-fields:fieldsAdded->conditional#focusNewExpression">
-  <fieldset class="govuk-fieldset panel conditional" data-conditional-index-value="<%= conditional.options[:child_index]%>">
+  <fieldset class="govuk-fieldset panel conditional" data-conditional-target="fieldset" data-conditional-index-value="<%= conditional.options[:child_index]%>" tabindex="-1">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h2>
     </legend>

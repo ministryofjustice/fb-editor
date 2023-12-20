@@ -2,10 +2,15 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [
+    'fieldset',
     'title',
     'deleteButton',
     'expression',
     'destination'
+  ]
+
+  static outlets = [
+    'branch-status',
   ]
 
   static values = {
@@ -24,6 +29,10 @@ export default class extends Controller {
     Promise.resolve().then(() => {
       this.updateFieldLabelsForExpressions()
     })
+  }
+
+  expressionTargetDisconnected(element) {
+    this.fieldsetTarget.focus()
   }
 
   indexValueChanged(newValue, oldValue) {
@@ -52,14 +61,14 @@ export default class extends Controller {
     return `${this.titleValue} ${this.indexValue}`
   }
 
-  delete(event) {
-    this.element.remove()
+  delete() {
+    this.#destroy()
   }
 
-  deleteWithConfirmation(event) {
+  deleteWithConfirmation() {
     document.dispatchEvent(new CustomEvent('ConfirmBranchConditionalRemoval', {
       detail: {
-        action: () => { this.element.remove() }
+        action: () => { this.#destroy() }
       }
     }))
   }
@@ -88,5 +97,10 @@ export default class extends Controller {
     this.expressionTargets.forEach((element) => {
       element.expressionController.updateLabels()
     })
+  }
+
+  #destroy() {
+    this.branchStatusOutlet.update(`${this.title} removed`)
+    this.element.remove()
   }
 }
