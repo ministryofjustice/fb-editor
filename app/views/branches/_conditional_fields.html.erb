@@ -39,12 +39,11 @@
           <%= t('branches.goto') %>
         </div>
 
-        <p class="govuk-visually-hidden" id="conditional_<%=conditional.options[:child_index]%>_next_hint">The page that will be displayed if all of the conditions for this branch are met</p>
         <select class="govuk-select conditional__destination"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                 id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
                 aria-label="Destination page for "
-                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> conditional_<%=conditional.options[:child_index]%>_next_hint"
+                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> destination_hint"
                 data-conditional-target="destination">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",
