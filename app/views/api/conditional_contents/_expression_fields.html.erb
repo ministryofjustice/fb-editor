@@ -19,7 +19,7 @@
       { include_blank: t('branches.select_question') },
       { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
         'aria-label': 'Source question',
-        'aria-describedby': ( "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error" if expression.object.errors[:component].any? ),
+        'aria-describedby': ( expression.object.errors[:component].any? ? "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error" : "") + "source_question_hint",
         data: {
           action: 'change->expression#getCondition',
           expression_target: 'question',

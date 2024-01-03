@@ -258,6 +258,10 @@ en:
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
     condition_target: ' to %{type} %{index}'
+    hints:
+      question: The question whose answer will be used in this rule
+      operator: The type of comparison that will be made to the answer of the source question
+      value: The value to which the answer to the source question will be compared to
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
