@@ -38,4 +38,17 @@
         class: 'destructive delete' %>
     </li>
   <% end %>
+
+  <% if item[:type] == 'page.start' && !using_external_start_page? %>
+    <li data-action="toggle-external-start-page"
+      data-url="<%= api_service_external_start_page_path(service.service_id, item[:uuid]) -%>">
+      <a href="<%= api_service_remove_external_start_page_path(service.service_id) -%>"><%= t('actions.enable_external_start_page') %></a>
+    </li>
+    <% end %>
+    <% if item[:type] == 'page.start' && using_external_start_page? %>
+      <li data-action="disable-external-start-page"
+        data-url="<%= api_service_remove_external_start_page_path(service.service_id, item[:uuid]) -%>">
+        <a href="<%= api_service_remove_external_start_page_path(service.service_id) -%>"><%= t('actions.enable_external_start_page') %></a>
+    </li>
+  <% end %>
 </ul>

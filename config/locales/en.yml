@@ -219,6 +219,8 @@ en:
       undo_move: 'Undo move'
       redo_change_next_page: 'Redo change next page'
       redo_move: 'Redo move'
+    enable_external_start_page: 'Enable FIXME'
+    disable_external_start_page: 'Disable FIXME'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
@@ -251,6 +253,12 @@ en:
       never: 'Never'
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
+  external_start_page_url:
+    title: 'FIXME title'
+    label: 'FIXME label'
+    hint: 'FIXME hint'
+    confirm: 'Use this URL as a start page'
+    cancel: 'Cancel'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'

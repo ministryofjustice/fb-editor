@@ -123,6 +123,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :save_and_return_enabled?
 
+  def using_external_start_page?
+    external_start_page_config.present?
+  end
+  helper_method :using_external_start_page?
+
   def show_save_and_return
     @page.upload_components.none?
   end
@@ -130,6 +135,10 @@ class ApplicationController < ActionController::Base
 
   def save_and_return_config
     @save_and_return_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'SAVE_AND_RETURN')
+  end
+
+  def external_start_page_config
+    @external_start_page_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'EXTERNAL_START_PAGE_URL', deployment_environment: 'production')
   end
 
   def editor_preview?

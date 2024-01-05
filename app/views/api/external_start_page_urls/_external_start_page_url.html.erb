@@ -1,0 +1,16 @@
+<div class="component-dialog-api-request" id="external_start_page_url">
+  <%= form_for @external_url, url: api_service_set_external_start_page_path(service.service_id), method: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+    <div class="govuk-form-group">
+      <h2 class="govuk-heading-s"><%= t('external_start_page_url.title') %></h2>
+      <p class="govuk-hint"><%= t('external_start_page_url.hint') %></p>
+      
+      <%= f.govuk_text_field :url, label: { text: t('external_start_page_url.label') } %>
+      
+      <%= f.govuk_submit t('external_start_page_url.confirm') %>
+
+      <button class="govuk-button govuk-button--secondary" type="button" >
+        <%= t('dialogs.button_cancel') %>
+      </button>
+    </div>
+  <% end %>
+</div>
