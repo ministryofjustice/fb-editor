@@ -1012,6 +1012,7 @@ function editableComponent($node, config) {
       klass = EditableTextareaFieldComponent;
       break;
     case "date":
+    case "address":
       klass = EditableGroupFieldComponent;
       break;
     case "radios":
