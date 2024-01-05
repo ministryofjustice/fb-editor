@@ -1,3 +1,18 @@
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: 508d361b3ed561da030ef8a37d4b40be5a8a9631
+  branch: address-component
+  specs:
+    metadata_presenter (3.3.8)
+      govspeak (~> 7.1)
+      govuk_design_system_formbuilder (~> 4.1.1)
+      json-schema (~> 4.1.1)
+      kramdown (~> 2.4.0)
+      rails (~> 7.0.0)
+      sassc-rails (= 2.1.2)
+      sprockets
+      sprockets-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -274,15 +289,6 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-    metadata_presenter (3.3.7)
-      govspeak (~> 7.1)
-      govuk_design_system_formbuilder (>= 2.1.5)
-      json-schema (~> 4.1.1)
-      kramdown (>= 2.4.0)
-      rails (>= 7.0.0)
-      sassc-rails (= 2.1.2)
-      sprockets
-      sprockets-rails
     method_source (1.0.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
@@ -766,7 +772,7 @@ DEPENDENCIES
   govuk_design_system_formbuilder
   hashie
   listen (~> 3.8)
-  metadata_presenter (= 3.3.7)
+  metadata_presenter!
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
