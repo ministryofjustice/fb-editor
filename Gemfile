@@ -31,6 +31,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
 gem 'rails', '~> 7.0', '< 7.1'
 # Use Redis for Action Cable
+gem 'byebug'
 gem 'redis', '~> 4.0'
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.14'
@@ -39,7 +40,6 @@ gem 'sentry-ruby', '~> 5.14'
 gem 'turbo-rails', '~> 1.4'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
-gem 'byebug'
 
 group :development, :test do
   gem 'brakeman'
