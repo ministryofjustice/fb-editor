@@ -128,6 +128,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :using_external_start_page?
 
+  def external_url
+    return '' unless using_external_start_page?
+
+    external_start_page_config.decrypt_value
+  end
+  helper_method :external_url
+
   def show_save_and_return
     @page.upload_components.none?
   end

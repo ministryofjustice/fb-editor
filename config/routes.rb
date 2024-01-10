@@ -112,10 +112,11 @@ Rails.application.routes.draw do
           constraints: { operation: /undo|redo/ }
 
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
-      get '/external_start_page', to: 'external_start_page#show'
-      post '/external_start_page', to: 'external_start_page#create', as: :set_external_start_page
+      resources :external_start_page, only:  [:new, :create]
+      # get '/external_start_page', to: 'external_start_page#new'
+      # post '/external_start_page', to: 'external_start_page#create'
       delete '/external_start_page', to: 'external_start_page#destroy', as: :remove_external_start_page
-
+      get '/external_start_page/preview', to: 'external_start_page#preview', as: :preview_external_start_page
     end
   end
 

@@ -3,5 +3,5 @@ class ExternalStartPageUrl
 
   attr_accessor :url
 
-  validates :url, presence: true
+  validates_with ExternalUrlValidator
 end

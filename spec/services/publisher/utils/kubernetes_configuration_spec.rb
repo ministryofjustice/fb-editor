@@ -12,7 +12,8 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: public_key),
         build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
         build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
-        build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret)
+        build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret),
+        build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url)
       ]
     )
   end
@@ -35,6 +36,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   let(:service_secret) do
     EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')
   end
+  let(:external_start_page_url) { EncryptionService.new.encrypt('external-url.com') }
   let(:autocomplete_items) do
     {
       'items' => {
