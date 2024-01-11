@@ -1,6 +1,11 @@
   <%= tag.article **html_attributes do %>
-    <%= render(MojForms::Flow::ItemThumbnailComponent.new(title:, thumbnail:, url: edit_path )) %>
-    <%= render(MojForms::Flow::ItemLinkComponent.new(title:, type:, url: edit_path )) %>
+    <% if @item[:type] == 'page.start' && using_external_start_page? %>
+      <%= render(MojForms::Flow::ExternalStartPageThumbnailComponent.new) %>
+      <h2 class="govuk-body flow-item__title"><%= t('external_start_page_url.link') %></h2>
+    <% else %>
+      <%= render(MojForms::Flow::ItemThumbnailComponent.new(title:, thumbnail:, url: edit_path )) %>
+      <%= render(MojForms::Flow::ItemLinkComponent.new(title:, type:, url: edit_path )) %>
+    <% end %>
     <%= render partial: 'services/flow_page_menu', locals: { item: item } %>
     <%= render(partial: 'services/connection_menu', locals: { item: item }) if show_connection_menu? %>
   <% end %>

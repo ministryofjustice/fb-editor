@@ -11,7 +11,7 @@ module Api
       if external_url.valid?
         external_url_config.value = @external_url.url
         if external_url_config.save!
-          redirect_to edit_service_path(external_url_params['service_id'])
+          redirect_to edit_service_path(service.service_id)
         else
           render external_url, layout: false, status: :unprocessable_entity
         end

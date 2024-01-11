@@ -256,6 +256,7 @@ en:
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
   external_start_page_url:
+    link: 'External Start Page'
     title: 'Would you like to use an external start page instead?'
     content: 'If your form is linked from an external start page, you can indicate it here to avoid duplicating start pages.'
     label: 'External start page URL'

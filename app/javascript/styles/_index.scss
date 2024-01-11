@@ -1080,6 +1080,49 @@ editable-content,
   }
 }
 
+.external-thumbnail {
+  background-color: govuk-colour("white");
+  display: block;
+  height: 121px;
+  margin-bottom: govuk-spacing(2);
+  overflow: hidden;
+  text-decoration: none;
+  width: 196px;
+
+  &:hover {
+    border-color: $govuk-link-hover-colour;
+  }
+
+  img {
+    display: block;
+    width: inherit;
+  }
+
+  .title {
+    box-sizing: border-box;
+    color: govuk-colour("black");
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 15px 10px 15px;
+  }
+
+  /* Special case for styling the title */
+  &.confirmation {
+    span {
+      background-color: $govuk-success-colour;
+      color: govuk-colour("white");
+      max-width: 72%;
+      padding: 10px 5px;
+      text-align: center;
+    }
+
+    .body {
+      display: none;
+    }
+  }
+}
+
 .flow-thumbnail {
   background-color: govuk-colour("white");
   border:  $govuk-link-colour solid 2px;
