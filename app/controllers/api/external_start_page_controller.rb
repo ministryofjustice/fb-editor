@@ -39,6 +39,20 @@ module Api
       render 'api/external_start_page_urls/preview', layout: false
     end
 
+    def external_start_page_url
+      value = external_url_config.decrypt_value
+      # ensure url is absolute - we limit to only gov.uk urls which will be https
+      unless value[/\Ahttps:\/\//]
+        "https://#{value}"
+      end
+    end
+    helper_method :external_start_page_url
+
+    def first_page_url
+      File.join(preview_service_path(service.service_id), service.pages[1].url)
+    end
+    helper_method :first_page_url
+
     private
 
     def assign_url

@@ -58,7 +58,7 @@
     <% if item[:type] == 'page.start' && !using_external_start_page? %>
       <li data-action="toggle-external-start-page"
         data-url="<%= new_api_service_external_start_page_path(service.service_id, item[:uuid]) -%>">
-        <a href="<%= new_api_service_external_start_page_path(service.service_id) -%>"><%= t('actions.edit_external_start_page') %></a>
+        <a href="<%= new_api_service_external_start_page_path(service.service_id) -%>"><%= t('actions.enable_external_start_page') %></a>
       </li>
     <% end %>
   <% end %>

@@ -120,6 +120,12 @@ class PageMenu extends ActivatedMenu {
             activator: $link,
             autoOpen: true,
             remote: true,
+            onError: function(data, dialog) {
+                var responseHtml = $.parseHTML(data.responseText);
+                var $newHtml = $(responseHtml[0]).html();
+                dialog.$node.html($newHtml);
+                dialog.refresh();
+              }
         });
     }
 
