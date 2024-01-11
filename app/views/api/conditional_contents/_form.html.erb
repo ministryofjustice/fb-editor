@@ -3,6 +3,7 @@
   <%= f.hidden_field :previous_flow_uuid, value: @conditional_content.previous_flow_uuid %>
   <%= f.hidden_field :component_uuid, value: @conditional_content.component_uuid %>
   
+  <div id="conditionals-status" class="govuk-visually-hidden" data-controller="conditionals-status" role="alert"></div>
   <p id="source_question_hint" hidden><%= t('conditional_content.hints.question') %></p>
   <p id="operator_hint" hidden><%= t('conditional_content.hints.operator') %></p>
   <p id="value_hint" hidden><%= t('conditional_content.hints.value') %></p>
@@ -37,7 +38,7 @@
       </div>
     </fieldset>
 
-    <fieldset class="govuk-fieldset conditionals govuk-!-margin-bottom-6" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal" data-action="dynamic-fields:fieldsAdded->conditionals#update">
+    <fieldset class="govuk-fieldset conditionals govuk-!-margin-bottom-6" data-controller="dynamic-fields conditionals" data-selection-reveal-target="reveal" data-action="dynamic-fields:fieldsAdded->conditionals#newConditionalAdded">
       <%= f.fields_for :conditionals, child_index: conditional_index do |conditional| %>
         <%= render 'conditional_fields', conditional: conditional, f: f, component_uuid: f.object.component_uuid %>
       <% end %>

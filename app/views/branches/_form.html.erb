@@ -1,7 +1,7 @@
 <%= f.hidden_field :previous_flow_uuid, value: @branch.previous_flow_uuid %>
 <%= f.hidden_field :branch_uuid, value: @branch.branch_uuid %>
 
-<div id="branch-status" class="govuk-visually-hidden" data-controller="branch-status" role="alert"></div>
+<div id="conditionals-status" class="govuk-visually-hidden" data-controller="conditionals-status" role="alert"></div>
 <p id="source_question_hint" hidden><%= t('branches.hints.question') %></p>
 <p id="operator_hint" hidden><%= t('branches.hints.operator') %></p>
 <p id="value_hint" hidden><%= t('branches.hints.value') %></p>

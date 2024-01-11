@@ -1,106 +1,111 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = [
-    'fieldset',
-    'title',
-    'deleteButton',
-    'expression',
-    'destination'
-  ]
+    "fieldset",
+    "title",
+    "deleteButton",
+    "expression",
+    "destination",
+  ];
 
-  static outlets = [
-    'branch-status',
-  ]
+  static outlets = ["conditionals-status"];
 
   static values = {
     index: Number,
     title: String,
     deleteLabel: String,
     destinationLabel: String,
-  }
+  };
 
   connect() {
     // Attach a reference to the controller to the element
-    this.element[`${this.identifier}Controller`] = this
+    this.element[`${this.identifier}Controller`] = this;
   }
 
   expressionTargetConnected() {
     Promise.resolve().then(() => {
-      this.updateFieldLabelsForExpressions()
-    })
+      this.updateFieldLabelsForExpressions();
+    });
   }
 
   expressionTargetDisconnected(element) {
-    this.fieldsetTarget.focus()
+    this.fieldsetTarget.focus();
   }
 
   indexValueChanged(newValue, oldValue) {
     if (newValue !== oldValue) {
-      this.updateTitle()
-      this.updateDeleteButtonLabel()
+      this.updateTitle();
+      this.updateDeleteButtonLabel();
       if (this.hasDestinationTarget) {
-        this.updateDestinationLabel()
+        this.updateDestinationLabel();
       }
       Promise.resolve().then(() => {
-        this.updateFieldLabelsForExpressions()
-      })
+        this.updateFieldLabelsForExpressions();
+      });
     }
   }
 
   focusNewExpression(event) {
-    if (event.detail.additionType != 'expression') return
+    if (event.detail.additionType != "expression") return;
 
-    const element = event.detail.element
+    const element = event.detail.element;
     Promise.resolve().then(() => {
-      element.expressionController.questionTarget.focus()
-    })
+      element.expressionController.questionTarget.focus();
+    });
   }
 
   get title() {
-    return `${this.titleValue} ${this.indexValue}`
+    return `${this.titleValue} ${this.indexValue}`;
   }
 
   delete() {
-    this.#destroy()
+    this.#destroy();
   }
 
   deleteWithConfirmation() {
-    document.dispatchEvent(new CustomEvent('ConfirmBranchConditionalRemoval', {
-      detail: {
-        action: () => { this.#destroy() }
-      }
-    }))
+    document.dispatchEvent(
+      new CustomEvent("ConfirmBranchConditionalRemoval", {
+        detail: {
+          action: () => {
+            this.#destroy();
+          },
+        },
+      }),
+    );
   }
 
   hideDeleteButton() {
-    this.deleteButtonTarget.setAttribute('hidden', '')
+    this.deleteButtonTarget.setAttribute("hidden", "");
   }
 
   showDeleteButton() {
-    this.deleteButtonTarget.removeAttribute('hidden')
+    this.deleteButtonTarget.removeAttribute("hidden");
   }
 
   updateTitle() {
-    this.titleTarget.innerText = this.title
+    this.titleTarget.innerText = this.title;
   }
 
   updateDeleteButtonLabel() {
-    this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`
+    this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`;
   }
 
   updateDestinationLabel() {
-    this.destinationTarget.setAttribute('aria-label', `${this.destinationLabelValue} ${this.title}`)
+    this.destinationTarget.setAttribute(
+      "aria-label",
+      `${this.destinationLabelValue} ${this.title}`,
+    );
   }
 
   updateFieldLabelsForExpressions() {
     this.expressionTargets.forEach((element) => {
-      element.expressionController.updateLabels()
-    })
+      element.expressionController.updateLabels();
+    });
   }
 
   #destroy() {
-    this.branchStatusOutlet.update(`${this.title} removed`)
-    this.element.remove()
+    this.conditionalsStatusOutlet.update(`${this.title} removed`);
+    this.element.remove();
   }
 }

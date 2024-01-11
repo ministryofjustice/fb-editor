@@ -44,7 +44,7 @@ module BranchingSteps
     then_I_should_see_the_branch_title(index: 1, title: 'Branch 2')
 
     and_I_delete_the_branch(1)
-    then_I_should_not_see_text('Branch 2')
+    expect( editor.branches ).to have_conditionals(count: 1)
   end
 
   def when_I_update_the_question_name(question_name)
@@ -157,7 +157,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_operator(text)
-    page_with_css('.expression .conditional__question label', text)
+    page_with_css('.expression [data-expression-target="label"]', text)
   end
 
   def page_with_css(element, text)
