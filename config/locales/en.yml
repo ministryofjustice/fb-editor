@@ -3,9 +3,10 @@ en:
     answers: Answers
     hint: Question Hint
     question: Question
-    section_heading: Section Heading
+    section_heading: Optional section heading
     flow_thumbnail: 'Form page'
     disabled_save_description: 'No changes to save'
+    optional_content_description: 'This will not be displayed if left unchanged'
     page:
       start: Start page
       singlequestion: Single question page
@@ -384,7 +385,7 @@ en:
   question:
     optional_flag: '(optional)'
     menu:
-      activator: 'Properties'
+      activator: 'Question properties'
       remove: 'Delete...'
       required: 'Required...'
       date_after: 'Earliest date...'

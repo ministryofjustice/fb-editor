@@ -891,9 +891,15 @@ function editPageSingleQuestionViewCustomisations() {
  * safely assume full JS availability.
  **/
 function accessibilityQuestionViewEnhancements(view) {
-  $(".fb-section_heading").attr("aria-label", view.text.aria.section_header);
-  $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
-  $(".govuk-hint").attr("aria-label", view.text.aria.hint);
+  $(".fb-section_heading").attr("aria-label", view.text.aria.section_heading);
+
+  $(".fb-section_heading").attr(
+    "aria-describedby",
+    "optional_content_description",
+  );
+
+  // $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
+  // $(".govuk-hint").attr("aria-label", view.text.aria.hint);
 }
 
 /* Enhances the static content should it require special formatting

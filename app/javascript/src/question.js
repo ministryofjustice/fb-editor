@@ -60,6 +60,18 @@ class Question {
       this.setRequiredFlag.bind(this);
     });
     this.setRequiredFlag();
+
+    this.$heading.attr("aria-label", conf.type + " question title");
+    this.$node
+      .find(".govuk-hint")
+      .first()
+      .attr("aria-label", "Optional hint text for question");
+    this.$node
+      .find(".govuk-hint")
+      .first()
+      .attr("aria-describedby", "optional_content_description");
+
+    this.$node.find("label.govuk-label").attr("aria-label", "Question");
   }
 
   get required() {
