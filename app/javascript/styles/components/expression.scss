@@ -2,6 +2,8 @@
   margin-top: govuk-spacing(6);
   // padding-left: govuk-spacing(3);
   position: relative;
+  border: none;
+  padding: 0;
 
   &:after {
     background-color: $govuk-border-colour;
@@ -9,7 +11,7 @@
     display: block;
     position: absolute;
     top: 0;
-    left: 10%;
+    left: 12%;
     width: 5px;
     height: 100%;
   }
@@ -19,7 +21,7 @@
       background-color: $govuk-error-colour;
     }
 
-    p{
+    p {
       color: $govuk-error-colour;
       font-weight: bold;
       margin-top: govuk-spacing(3);

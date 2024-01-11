@@ -89,7 +89,7 @@
 @mixin container_panel {
   background-color: govuk-colour("light-grey");
   border-radius: 15px;
-  padding: govuk-spacing(3) govuk-spacing(4) 1px govuk-spacing(4);
+  padding: govuk-spacing(3) govuk-spacing(4);
 }
 
 @mixin icon_button {

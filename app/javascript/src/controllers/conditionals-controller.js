@@ -10,39 +10,44 @@ export default class extends Controller {
   connect() {
     Promise.resolve().then(() => {
       this.connected = true
-      this.ensureFirstConditionalCannotBeDeleted();
-      this.allowFirstConditionalToBeDeleted();
-      this.updateTitles();
+      this.preventFirstConditionalDeletion();
+      this.allowFirstConditionalDeletion();
+      this.updateConditionalIndices();
     })
   }
 
-  conditionalTargetDisconnected(element) {
-    this.ensureFirstConditionalCannotBeDeleted();
-    this.updateTitles();
+  conditionalTargetDisconnected() {
+    this.preventFirstConditionalDeletion();
+    this.updateConditionalIndices();
+    this.element.focus()
   }
 
-  conditionalTargetConnected(element) {
-    if (!this.connected) return;
+  newConditionalAdded(event) {
+    if (event.detail.additionType != 'conditional') return
 
-    this.allowFirstConditionalToBeDeleted();
-    this.updateTitles();
+    Promise.resolve().then(() => {
+      this.allowFirstConditionalDeletion();
+      this.updateConditionalIndices();
+      // place focus on the newly added conditional fieldset
+      this.conditionalTargets[this.conditionalTargets.length - 1].conditionalController.fieldsetTarget.focus()
+    })
   }
 
-  ensureFirstConditionalCannotBeDeleted() {
+  preventFirstConditionalDeletion() {
     if (this.conditionalTargets.length == 1) {
       this.conditionalTargets[0].conditionalController.hideDeleteButton()
     }
   }
 
-  allowFirstConditionalToBeDeleted() {
+  allowFirstConditionalDeletion() {
     if (this.conditionalTargets.length > 1) {
       this.conditionalTargets[0].conditionalController.showDeleteButton()
     }
   }
 
-  updateTitles() {
+  updateConditionalIndices() {
     this.conditionalTargets.forEach((conditional, index) => {
-      conditional.conditionalController.setTitle(index + 1)
+      conditional.conditionalController.indexValue = index + 1
     })
   }
 }

@@ -1,37 +1,111 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ['title', 'deleteButton']
+  static targets = [
+    "fieldset",
+    "title",
+    "deleteButton",
+    "expression",
+    "destination",
+  ];
+
+  static outlets = ["conditionals-status"];
+
   static values = {
-    title: String
-  }
+    index: Number,
+    title: String,
+    deleteLabel: String,
+    destinationLabel: String,
+  };
 
   connect() {
     // Attach a reference to the controller to the element
-    this.element[`${this.identifier}Controller`] = this
+    this.element[`${this.identifier}Controller`] = this;
   }
 
-  delete(event) {
-    this.element.remove()
+  expressionTargetConnected() {
+    Promise.resolve().then(() => {
+      this.updateFieldLabelsForExpressions();
+    });
   }
 
-  deleteWithConfirmation(event) {
-    document.dispatchEvent(new CustomEvent('ConfirmBranchConditionalRemoval', {
-      detail: {
-        action: () => { this.element.remove() }
+  expressionTargetDisconnected(element) {
+    this.fieldsetTarget.focus();
+  }
+
+  indexValueChanged(newValue, oldValue) {
+    if (newValue !== oldValue) {
+      this.updateTitle();
+      this.updateDeleteButtonLabel();
+      if (this.hasDestinationTarget) {
+        this.updateDestinationLabel();
       }
-    }))
+      Promise.resolve().then(() => {
+        this.updateFieldLabelsForExpressions();
+      });
+    }
+  }
+
+  focusNewExpression(event) {
+    if (event.detail.additionType != "expression") return;
+
+    const element = event.detail.element;
+    Promise.resolve().then(() => {
+      element.expressionController.questionTarget.focus();
+    });
+  }
+
+  get title() {
+    return `${this.titleValue} ${this.indexValue}`;
+  }
+
+  delete() {
+    this.#destroy();
+  }
+
+  deleteWithConfirmation() {
+    document.dispatchEvent(
+      new CustomEvent("ConfirmBranchConditionalRemoval", {
+        detail: {
+          action: () => {
+            this.#destroy();
+          },
+        },
+      }),
+    );
   }
 
   hideDeleteButton() {
-    this.deleteButtonTarget.setAttribute('hidden', '')
+    this.deleteButtonTarget.setAttribute("hidden", "");
   }
 
   showDeleteButton() {
-    this.deleteButtonTarget.removeAttribute('hidden')
+    this.deleteButtonTarget.removeAttribute("hidden");
   }
 
-  setTitle(index) {
-    this.titleTarget.innerText = `${this.titleValue} ${index}`
+  updateTitle() {
+    this.titleTarget.innerText = this.title;
+  }
+
+  updateDeleteButtonLabel() {
+    this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`;
+  }
+
+  updateDestinationLabel() {
+    this.destinationTarget.setAttribute(
+      "aria-label",
+      `${this.destinationLabelValue} ${this.title}`,
+    );
+  }
+
+  updateFieldLabelsForExpressions() {
+    this.expressionTargets.forEach((element) => {
+      element.expressionController.updateLabels();
+    });
+  }
+
+  #destroy() {
+    this.conditionalsStatusOutlet.update(`${this.title} removed`);
+    this.element.remove();
   }
 }
