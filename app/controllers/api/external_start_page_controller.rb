@@ -11,6 +11,10 @@ module Api
       if external_url.valid?
         external_url_config.value = @external_url.url
         if external_url_config.save!
+          # also create a dev env setting
+          dev_external_url_config.url = external_url_params['external_start_page_url']['url']
+          dev_external_url_config.save!
+
           redirect_to edit_service_path(service.service_id)
         else
           render external_url, layout: false, status: :unprocessable_entity
@@ -29,6 +33,9 @@ module Api
 
       if external_url_config.present?
         external_url_config.delete
+
+        # also clean up dev env config
+        dev_external_url_config.delete
       end
       redirect_to edit_service_path(external_url_params['service_id'])
     end
@@ -69,6 +76,14 @@ module Api
       @external_url_config ||= ServiceConfiguration.find_or_initialize_by(
         service_id: external_url_params['service_id'],
         deployment_environment: 'production',
+        name: 'EXTERNAL_START_PAGE_URL'
+      )
+    end
+
+    def dev_external_url_config
+      @dev_external_url_config ||= ServiceConfiguration.find_or_initialize_by(
+        service_id: external_url_params['service_id'],
+        deployment_environment: 'dev',
         name: 'EXTERNAL_START_PAGE_URL'
       )
     end
