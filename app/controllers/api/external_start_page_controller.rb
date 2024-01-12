@@ -12,7 +12,7 @@ module Api
         external_url_config.value = @external_url.url
         if external_url_config.save!
           # also create a dev env setting
-          dev_external_url_config.url = external_url_params['external_start_page_url']['url']
+          dev_external_url_config.value = external_url_params['external_start_page_url']['url']
           dev_external_url_config.save!
 
           redirect_to edit_service_path(service.service_id)
