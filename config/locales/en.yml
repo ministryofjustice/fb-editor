@@ -689,8 +689,8 @@ en:
           too_small: "%{label} cannot be less than 1"
           too_big: "%{label} cannot be larger than 10"
         external_url_validation:
-          missing: "FIXME missing validation"
-          invalid: "The  external URL must be from a GOV.UK page."
+          missing: "Please enter a URL"
+          invalid: "The external URL must be from a GOV.UK page."
         form_analytics_settings:
           blank: Enter at least one tracking ID
           ua: A Universal Analytics ID must start with UA
