@@ -219,10 +219,10 @@ en:
       undo_move: 'Undo move'
       redo_change_next_page: 'Redo change next page'
       redo_move: 'Redo move'
-    enable_external_start_page: 'Use external start page'
-    edit_external_start_page: 'Edit URL'
-    preview_external_start_page: 'Preview URL'
-    disable_external_start_page: 'Use MoJF start page'
+    enable_external_start_page: 'Switch to a GOV.UK start page '
+    edit_external_start_page: 'Edit start page URL'
+    preview_external_start_page: 'Open start page'
+    disable_external_start_page: 'Switch to form start page'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
@@ -256,19 +256,22 @@ en:
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
   external_start_page_url:
-    link: 'External Start Page'
-    title: 'Would you like to use an external start page instead?'
-    content: 'If your form is linked from an external start page, you can indicate it here to avoid duplicating start pages.'
-    label: 'External start page URL'
-    hint: 'Only URL from GOV.UK pages will be accepted'
-    confirm: 'Use this URL as a start page'
+    link: 'GOV.UK Start Page'
+    title: 'Switch to a GOV.UK start page'
+    editing_title: 'Edit GOV.UK start page'
+    content: 'This will remove the current start page from your form. Use this option if you want to link to your form from a GOV.UK start page.'
+    help_link_text: 'Which type of start page do I need?'
+    label: 'GOV.UK start page URL'
+    confirm: 'Use this as my start page'
+    done: 'Done'
     cancel: 'Cancel'
     preview:
-      title: 'Preview the external  URL'
-      content_one: 'Please note that the page at the external URL will links to the published version of the form, which may not have changes currently in the Editor.'
-      content_two: 'To preview the rest of your form in its current version, select “preview page” on the first actual page of your form instead.'
-      confirm: 'Preview External URL page'
-      cancel: 'Preview first form page'
+      title: 'Open your GOV.UK start page'
+      content_one: 'This will open the GOV.UK link you have set as your start page.'
+      content_two: 'The start page should include a link to %{href}. This may not work as expected if you have not published your form to Live yet or have changes in draft.'
+      link_text: "your form's live URL"
+      confirm: 'Open GOV.UK start page'
+      cancel: 'cancel'
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
@@ -689,8 +692,8 @@ en:
           too_small: "%{label} cannot be less than 1"
           too_big: "%{label} cannot be larger than 10"
         external_url_validation:
-          missing: "Please enter a URL"
-          invalid: "The external URL must be from a GOV.UK page."
+          missing: 'Enter a valid URL which includes "gov.uk"'
+          invalid: 'Enter a valid URL which includes "gov.uk"'
         form_analytics_settings:
           blank: Enter at least one tracking ID
           ua: A Universal Analytics ID must start with UA

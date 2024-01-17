@@ -60,6 +60,11 @@ module Api
     end
     helper_method :first_page_url
 
+    def editing?
+      external_url_config.value.presence
+    end
+    helper_method :editing?
+
     private
 
     def assign_url

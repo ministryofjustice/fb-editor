@@ -1,14 +1,14 @@
 <div class="component-dialog-api-request" id="external_start_page_preview">
   <h2 class="govuk-heading-m"><%= t('external_start_page_url.preview.title') %></h2>
   <p class="description"><%= t('external_start_page_url.preview.content_one') %></p>
-  <p class="description"><%= t('external_start_page_url.preview.content_two') %></p>
+  <p class="description"><%= t('external_start_page_url.preview.content_two', href: govuk_link_to(t('external_start_page_url.preview.link_text'), settings_form_name_url_index_path(service.service_id))).html_safe %></p>
 
   <div class="govuk-button-group">
     <a href=<%= external_start_page_url.html_safe %> class="govuk-button fb-govuk-button" target="_blank">
       <%= t('external_start_page_url.preview.confirm') %>
     </a>
-    <a href=<%= first_page_url %> class="govuk-button govuk-button--secondary" target="_blank">
-      <%= t('external_start_page_url.preview.cancel') %>
-    </a>
+    <button class="govuk-button govuk-button--secondary" type="button" >
+      <%= t('dialogs.button_cancel') %>
+    </button>
   </div>
 </div>
