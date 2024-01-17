@@ -201,7 +201,7 @@ RSpec.describe Branch do
           'Upload your best dog photo',
           'Upload your best dog photos',
           'Countries',
-          'Address question'
+          'Confirm your postal address'
         ]
       )
     end

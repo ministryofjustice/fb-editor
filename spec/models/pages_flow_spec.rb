@@ -171,7 +171,7 @@ RSpec.describe PagesFlow do
           [
             {
               type: 'page.singlequestion',
-              title: 'Address question',
+              title: 'Confirm your postal address',
               uuid: '6984b0a4-d432-4628-89b7-410170b6f148',
               next: 'e337070b-f636-49a3-a65c-f506675265f0',
               previous_uuid: 'c7755991-436b-4495-afa6-803db58cefbc',
