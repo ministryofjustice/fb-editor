@@ -148,6 +148,16 @@ class ApplicationController < ActionController::Base
     @external_start_page_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'EXTERNAL_START_PAGE_URL', deployment_environment: 'production')
   end
 
+  def first_page?
+    previous_page = PreviousPage.new(
+      service:,
+      user_data: load_user_data,
+      current_page: @page,
+      referrer: request.referrer
+    ).page
+    !previous_page.present?
+  end
+
   def editor_preview?
     request.script_name.include?('preview')
   end
