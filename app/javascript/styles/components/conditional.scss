@@ -1,11 +1,11 @@
 .conditional {
-  @include container_panel;
+  border: none;
 
   @include govuk-media-query($until: tablet) {
     padding-right: govuk-spacing(5);
   }
 
-  padding-top: govuk-spacing(3);
+  padding-top: govuk-spacing(9);
   padding-bottom: govuk-spacing(4);
   padding-right: 100px;
   position: relative;
@@ -14,6 +14,25 @@
     margin-bottom: govuk-spacing(6);
   }
 
+  > legend {
+    position:absolute;
+    top: 14px
+  }
+
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline-offset: 0;
+    box-shadow: inset 0 0 0 $govuk-border-width-form-element;
+  }
+
+}
+
+.conditional--otherwise {
+  padding-top: govuk-spacing(3);
+
+  > h2 span {
+    display: inline;
+  }
 }
 
 .conditional__expressions {
@@ -25,7 +44,7 @@
   position: relative;
 
 
-  label {
+  .label {
     @include govuk-font($size: 24);
 
     display: inline-block;

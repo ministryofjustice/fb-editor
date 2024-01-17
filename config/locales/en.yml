@@ -240,6 +240,12 @@ en:
     title_otherwise: 'Otherwise,'
     hint_otherwise: 'if none of the above'
     detached_list: 'Unconnected page'
+    hints:
+      question: The question whose answer will be used in this conditon
+      operator: The type of comparison that will be made to the answer of the source question
+      value: The value to which the answer to the source question will be compared to
+      destination: ", The page that will be displayed if the conditions for branch one are met"
+      destination_otherwise: ", The page that will be displayed none of branches have their condition met"
     delete_modal:
       destinations: 'Go to:'
       lede: 'Choose which branch you want to keep in your form.'
@@ -272,6 +278,11 @@ en:
       link_text: "your form's live URL"
       confirm: 'Open GOV.UK start page'
       cancel: 'cancel'
+    condition_target: ' to %{type} %{index}'
+    hints:
+      question: The question whose answer will be used in this rule
+      operator: The type of comparison that will be made to the answer of the source question
+      value: The value to which the answer to the source question will be compared to
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
@@ -653,6 +664,7 @@ en:
         default_next: Otherwise
     errors:
       summary_title: There is a problem
+      assistive_prefix: 'Error: '
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com

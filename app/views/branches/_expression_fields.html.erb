@@ -1,14 +1,14 @@
-
-<div  class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
-      data-expressions-target="expression"
-      data-controller="expression"
-      data-expression-error-class="error"
-      data-expression-first-label-value="<%= t('branches.expression.if') %>"
-      data-expression-other-label-value="<%= t('branches.expression.and') %>">
-
-  <%= button_tag 'Delete condition', type: "button", data: { action: "expression#deleteWithConfirmation", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
-
-
+<div class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
+          data-expressions-target="expression"
+          data-conditional-target="expression"
+          data-controller="expression"
+          data-expression-error-class="error"
+          data-expression-conditionals-status-outlet="#conditionals-status"
+          data-expression-index-value="0"
+          data-expression-title-value="condition"
+          data-expression-first-label-value="<%= t('branches.expression.if') %>"
+          data-expression-other-label-value="<%= t('branches.expression.and') %>">
+  
     <div class="conditional__question">
       <% if expression.object.errors[:component].any? %>
         <p id="condition_<%= conditional.options[:child_index] %>_expression_<%= expression.options[:child_index] %>_component_error" class="govuk-error-message">
@@ -16,20 +16,17 @@
           <%= expression.object.errors[:component].first %>
         </p>
       <% end %>
-      <%= expression.label  :component,
-        t('branches.expression.if'),
-        {
-          class: "govuk-label",
-          data: {
-            expression_target: 'label'
-          }
-        }
-      %>
+
+      <div class="label" data-expression-target="label">
+        <%= t('branches.expression.if') %>
+      </div>
+
       <%= expression.select :component,
         @branch.previous_questions,
         { include_blank: t('branches.select_question') },
         { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
-          'aria-describedby': ( "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error" if expression.object.errors[:component].any? ),
+          'aria-label': 'Source question',
+          'aria-describedby': ( expression.object.errors[:component].any? ? "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error " : ""  ) + "source_question_hint",
           data: {
             action: 'change->expression#getCondition',
             expression_target: 'question',
@@ -47,5 +44,12 @@
         conditional_index: conditional.options[:child_index],
         expression_index: expression.options[:child_index]
       }
-    %>
+      %>
+    <%= button_tag 'Delete condition',  
+      type: "button", 
+      data: { 
+        action: "expression#deleteWithConfirmation", 
+        expression_target: "deleteButton"
+      }, 
+      class: 'icon-button icon-button--remove expression__remover' %>
 </div>
