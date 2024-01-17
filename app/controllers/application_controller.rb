@@ -148,16 +148,6 @@ class ApplicationController < ActionController::Base
     @external_start_page_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'EXTERNAL_START_PAGE_URL', deployment_environment: 'production')
   end
 
-  def first_page?
-    previous_page = PreviousPage.new(
-      service:,
-      user_data: load_user_data,
-      current_page: @page,
-      referrer: request.referrer
-    ).page
-    !previous_page.present?
-  end
-
   def editor_preview?
     request.script_name.include?('preview')
   end
@@ -207,4 +197,27 @@ class ApplicationController < ActionController::Base
 
   def in_runner?; end
   helper_method :in_runner?
+
+  def first_page?
+    @page.url == service.pages[1].url
+  end
+  helper_method :first_page?
+
+  def use_external_start_page?
+    external_start_page_config.present?
+  end
+  helper_method :use_external_start_page?
+
+  def external_start_page_url
+    if external_start_page_config.present?
+      value = external_start_page_config.decrypt_value
+      unless value[/\Ahttps:\/\//]
+        return "https://#{value}"
+      end
+      value
+    else
+      ''
+    end
+  end
+  helper_method :external_start_page_url
 end
