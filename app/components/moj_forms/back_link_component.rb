@@ -10,7 +10,7 @@ module MojForms
     end
 
     def before_render
-      @text = (@text.presence || t('actions.back'))
+      @text = @text.presence || t('actions.back')
     end
 
     def call

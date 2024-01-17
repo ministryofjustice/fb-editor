@@ -44,7 +44,7 @@ class Publisher
     delegate :service_name, to: :service
 
     def service_slug
-      (service_slug_config.presence || service.service_slug)
+      service_slug_config.presence || service.service_slug
     end
 
     def external_start_page_url

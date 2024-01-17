@@ -11,7 +11,7 @@ class PublishServicePresenter
   end
 
   def service_slug
-    (previous_service_slug.presence || service_slug_config.presence || service.service_slug)
+    previous_service_slug.presence || service_slug_config.presence || service.service_slug
   end
 
   def latest

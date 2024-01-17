@@ -214,6 +214,7 @@ class ApplicationController < ActionController::Base
       unless value[/\Ahttps:\/\//]
         return "https://#{value}"
       end
+
       value
     else
       ''

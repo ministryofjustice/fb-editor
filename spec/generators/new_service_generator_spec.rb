@@ -78,7 +78,7 @@ RSpec.describe NewServiceGenerator do
         expect(service_metadata['standalone_pages'].count).to eq(3)
 
         urls = service_metadata['standalone_pages'].map { |page| page['url'] }
-        I18n.t('presenter.footer').each do |_, page|
+        I18n.t('presenter.footer').each_value do |page|
           expect(urls).to include(page[:url])
         end
       end
