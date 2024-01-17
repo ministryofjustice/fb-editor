@@ -19,6 +19,8 @@ import ConditionalsController from "../src/controllers/conditionals-controller.j
 import ExpressionController from "../src/controllers/expression-controller.js";
 import ExpressionsController from "../src/controllers/expressions-controller.js";
 import SelectionRevealController from "../src/controllers/selection-reveal-controller.js";
+import QuestionsController from "../src/controllers/questions-controller.js";
+import QuestionController from "../src/controllers/question-controller.js";
 
 Turbo.session.drive = false;
 window.Stimulus = Application.start();
@@ -29,6 +31,8 @@ Stimulus.register("conditionals", ConditionalsController);
 Stimulus.register("expression", ExpressionController);
 Stimulus.register("expressions", ExpressionsController);
 Stimulus.register("selection-reveal", SelectionRevealController);
+Stimulus.register("questions", QuestionsController);
+Stimulus.register("question", QuestionController);
 
 const { EditableContent } = require("../src/web-components/editable-content");
 const { ElasticTextarea } = require("../src/web-components/elastic-textarea");
