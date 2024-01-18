@@ -595,4 +595,10 @@ module CommonSteps
     input = editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field")
     input.fill_in(with: email)
   end
+
+  #Address component
+  def given_I_add_a_single_question_page_with_address
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.address')).click
+  end
 end
