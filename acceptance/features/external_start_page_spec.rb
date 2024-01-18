@@ -11,6 +11,14 @@ feature 'External start page' do
     ]
   end
 
+  let(:external_start_page_menu_items) do
+    [
+      I18n.t('actions.edit_external_start_page'),
+      I18n.t('actions.preview_external_start_page'),
+      I18n.t('actions.disable_external_start_page')
+    ]
+  end
+
   let(:start_page) { 'Service name goes here' }
 
   background do
@@ -42,14 +50,36 @@ feature 'External start page' do
     and_I_add_a_url('gov.uk')
     and_I_confirm_url
     then_I_should_see_the_external_start_page_is_set
+    and_I_click_on_the_external_start_page_menu
+    then_I_should_see_the_expected_menu_items(start_page, external_start_page_menu_items)
+    and_I_click_on_preview_external_start_page
+    then_I_should_see_the_preview_external_start_page_modal
+    new_window = window_opened_by do
+      click_preview_external_start_page
+    end
+    within_window new_window do
+      assert_current_path 'https://www.gov.uk/'
+    end 
   end
 
   def and_I_click_on_use_external_start_page
     page.click_on I18n.t('actions.enable_external_start_page')
   end
 
+  def and_I_click_on_preview_external_start_page
+    page.click_on I18n.t('actions.preview_external_start_page')
+  end
+
   def then_I_should_see_the_external_start_page_modal
     expect(page).to have_content(I18n.t('external_start_page_url.title'))
+    expect(page).to have_content(I18n.t('external_start_page_url.content'))
+    expect(page).to have_content(I18n.t('external_start_page_url.help_link_text'))
+  end
+
+  def then_I_should_see_the_preview_external_start_page_modal
+    expect(page).to have_content(I18n.t('external_start_page_url.preview.title'))
+    expect(page).to have_content(I18n.t('external_start_page_url.preview.content_one'))
+    expect(page).to have_content(I18n.t('external_start_page_url.preview.confirm'))
   end
 
   def and_I_add_a_url(text)
@@ -57,11 +87,15 @@ feature 'External start page' do
   end
 
   def and_I_re_enter_a_url(text)
-    page.first('#external-start-page-url-url-field-error').set text
+    page.find('#external-start-page-url-url-field-error').set text
   end
 
   def and_I_confirm_url
     page.click_button I18n.t('external_start_page_url.confirm')
+  end
+
+  def click_preview_external_start_page
+    page.click_link I18n.t('external_start_page_url.preview.confirm')
   end
 
   def then_I_should_see_an_error_message(error_message)
@@ -75,6 +109,7 @@ feature 'External start page' do
 
   def then_I_should_see_the_external_start_page_is_set
     visit current_path
+    sleep 1
     expect(page).to have_content(I18n.t('external_start_page_url.link'))
   end
 end

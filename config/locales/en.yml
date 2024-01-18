@@ -219,7 +219,7 @@ en:
       undo_move: 'Undo move'
       redo_change_next_page: 'Redo change next page'
       redo_move: 'Redo move'
-    enable_external_start_page: 'Switch to a GOV.UK start page '
+    enable_external_start_page: 'Switch to a GOV.UK start page'
     edit_external_start_page: 'Edit start page URL'
     preview_external_start_page: 'Open start page'
     disable_external_start_page: 'Switch to form start page'
