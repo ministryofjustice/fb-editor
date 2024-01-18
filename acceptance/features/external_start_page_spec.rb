@@ -40,6 +40,10 @@ feature 'External start page' do
     and_I_re_enter_a_url('gov.uk')
     and_I_confirm_url
     then_I_should_see_the_external_start_page_is_set
+    and_I_click_on_the_external_start_page_menu
+    and_I_click_on_use_internal_start_page
+    and_I_click_on_the_page_menu(start_page)
+    then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
   end
 
   scenario 'preview external start page' do
@@ -59,7 +63,28 @@ feature 'External start page' do
     end
     within_window new_window do
       assert_current_path 'https://www.gov.uk/'
-    end 
+    end
+  end
+
+  scenario 'update external start page url' do
+    and_I_click_on_the_page_menu(start_page)
+    then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
+    and_I_click_on_use_external_start_page
+    then_I_should_see_the_external_start_page_modal
+    and_I_add_a_url('gov.uk')
+    and_I_confirm_url
+    then_I_should_see_the_external_start_page_is_set
+    and_I_click_on_the_external_start_page_menu
+    then_I_should_see_the_expected_menu_items(start_page, external_start_page_menu_items)
+    and_I_click_on_update_external_start_page_url
+    and_I_should_see_the_update_modal
+    and_I_add_a_url('gov.uk/updated')
+    and_I_click_done
+    sleep 2
+    and_I_click_on_the_external_start_page_menu
+    then_I_should_see_the_expected_menu_items(start_page, external_start_page_menu_items)
+    and_I_click_on_update_external_start_page_url
+    and_I_should_see_the_updated_value('gov.uk/updated')
   end
 
   def and_I_click_on_use_external_start_page
@@ -94,12 +119,33 @@ feature 'External start page' do
     page.click_button I18n.t('external_start_page_url.confirm')
   end
 
+  def and_I_click_done
+    page.click_button I18n.t('external_start_page_url.done')
+  end
+
   def click_preview_external_start_page
     page.click_link I18n.t('external_start_page_url.preview.confirm')
   end
 
+  def and_I_click_on_update_external_start_page_url
+    page.click_on I18n.t('actions.edit_external_start_page')
+  end
+
+  def and_I_click_on_use_internal_start_page
+    page.click_on I18n.t('actions.disable_external_start_page')
+  end
+
+  def and_I_should_see_the_update_modal
+    expect(page).to have_content(I18n.t('external_start_page_url.editing_title'))
+    expect(page).to have_content(I18n.t('external_start_page_url.done'))
+  end
+
   def then_I_should_see_an_error_message(error_message)
     expect(page).to have_content(error_message)
+  end
+
+  def and_I_should_see_the_updated_value(value)
+    expect(page.find('#external-start-page-url-url-field').value).to eq(value)
   end
 
   def then_I_should_see_the_expected_menu_items(flow_title, expected_menu_items)
@@ -108,8 +154,10 @@ feature 'External start page' do
   end
 
   def then_I_should_see_the_external_start_page_is_set
+    # a little sleep here seems to make this much less flaky
+    sleep 3
     visit current_path
-    sleep 1
+    sleep 3
     expect(page).to have_content(I18n.t('external_start_page_url.link'))
   end
 end
