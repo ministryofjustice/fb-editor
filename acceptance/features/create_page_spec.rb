@@ -224,6 +224,7 @@ feature 'Create page' do
 
   def and_I_should_see_default_address_created
     expect(editor.all('input[type="text"]').size).to be(6)
+    expect(editor.all('input[type="text"]').last).to have_content('United-Kingdom')
   end
 
   def then_I_should_see_the_edit_multiple_question_page
