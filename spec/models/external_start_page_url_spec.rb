@@ -11,7 +11,7 @@ RSpec.describe ExternalStartPageUrl do
         'subdomain.gov.uk',
         'www.gov.uk',
         'https://gov.uk',
-        'https://www.gov.uk',
+        'https://www.gov.uk'
       ]
     end
 
