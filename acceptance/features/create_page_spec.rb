@@ -183,7 +183,7 @@ feature 'Create page' do
   end
 
   def then_I_should_see_the_edit_single_question_address_page
-    and_I_should_be_on_the_edit_page
+    and_I_should_be_on_the_address_edit_page
     and_I_should_see_default_address_created
   end
 
@@ -193,12 +193,18 @@ feature 'Create page' do
     and_I_should_see_the_save_button_disabled
   end
 
+  def and_I_should_be_on_the_address_edit_page
+    and_I_should_see_default_values_created('Address question')
+    and_I_should_see_the_save_button_visible
+    and_I_should_see_the_save_button_disabled
+  end
+
   def and_I_should_see_three_inputs_for_day_month_and_year
     expect(editor.all('input[type="text"]').size).to be(3)
   end
 
-  def and_I_should_see_default_values_created
-    expect(editor).to have_content('Question')
+  def and_I_should_see_default_values_created(legend_or_label = 'Question')
+    expect(editor).to have_content(legend_or_label)
     expect(editor).to have_content('[Optional hint text]')
   end
 
@@ -224,7 +230,7 @@ feature 'Create page' do
 
   def and_I_should_see_default_address_created
     expect(editor.all('input[type="text"]').size).to be(6)
-    expect(editor.all('input[type="text"]').last).to have_content('United-Kingdom')
+    expect(editor.all('input[type="text"]').last.value).to have_content('United Kingdom')
   end
 
   def then_I_should_see_the_edit_multiple_question_page
