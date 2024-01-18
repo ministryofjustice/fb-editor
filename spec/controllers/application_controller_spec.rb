@@ -380,4 +380,67 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe 'external start page' do
+    context '#using_external_start_page?' do
+      context 'not using' do
+        before do
+          allow(controller).to receive(:external_start_page_config).and_return(nil)
+        end
+
+        it 'is false' do
+          expect(controller.using_external_start_page?).to be(false)
+        end
+      end
+
+      context 'using' do
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :production,
+            :external_start_page_url,
+            service_id: service.service_id
+          )
+        end
+        before do
+          allow(controller).to receive(:external_start_page_config).and_return(service_configuration)
+        end
+
+        it 'is true' do
+          expect(controller.using_external_start_page?).to be(true)
+        end
+      end
+    end
+
+    context '#external_url' do
+      context 'present' do
+        let!(:service_configuration) do
+          create(
+            :service_configuration,
+            :production,
+            :external_start_page_url,
+            service_id: service.service_id
+          )
+        end
+
+        before do
+          allow(controller).to receive(:external_start_page_config).and_return(service_configuration)
+        end
+
+        it 'returns the config value' do
+          expect(controller.external_start_page_url).to eq('https://gov.uk')
+        end
+      end
+
+      context 'not present' do
+        before do
+          allow(controller).to receive(:external_start_page_config).and_return(nil)
+        end
+
+        it 'returns blank' do
+          expect(controller.external_start_page_url).to eq('')
+        end
+      end
+    end
+  end
 end
