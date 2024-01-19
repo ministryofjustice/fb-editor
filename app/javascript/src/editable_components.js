@@ -476,8 +476,6 @@ class EditableComponentBase extends EditableBase {
       ),
       hint: new EditableElement($node.find(config.selectorElementHint), config),
     };
-
-    $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
   }
 
   get content() {
@@ -812,6 +810,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
           component,
           $(this),
           itemConfig,
+          i + 1,
         );
         component.items.push(item);
       }
@@ -867,23 +866,33 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       this,
       $clone,
       this.$itemTemplate.data("config"),
+      this.items.length + 1,
     );
     this.items.push(item);
     this.#updateItems();
 
     safelyActivateFunction(this._config.onItemAdd, $clone);
     this.emitSaveRequired();
+    this.items[this.items.length - 1].$node
+      .find(".EditableElement")
+      .first()
+      .focus();
   }
 
   // Dynamically removes an item to the components collection
   removeItem(item) {
     if (this.canHaveItemsRemoved()) {
       var index = this.items.indexOf(item);
-      safelyActivateFunction(this._config.onItemRemove, item);
+      safelyActivateFunction(this._config.beforeItemRemove, item);
       this.items.splice(index, 1);
       item.$node.remove();
+      safelyActivateFunction(this._config.afterItemRemove, this.items);
       this.#updateItems();
       this.emitSaveRequired();
+      const focusIndex = index == 0 ? index : index - 1;
+      queueMicrotask(() => {
+        this.items[focusIndex].$node.find(".EditableElement").first().focus();
+      });
     }
   }
 
@@ -911,7 +920,8 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  *
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
-  constructor(editableCollectionFieldComponent, $node, config) {
+  constructor(editableCollectionFieldComponent, $node, config, index) {
+    console.log("editable collection item class constructor");
     super(
       $node,
       mergeObjects(
@@ -923,8 +933,8 @@ class EditableComponentCollectionItem extends EditableComponentBase {
       ),
     );
 
-    this.menu = createEditableCollectionItemMenu(this, config);
-
+    this.menu = createEditableCollectionItemMenu(this, config, index);
+    console.log("adding events to editable collection item");
     $node.on("focus.EditableComponentCollectionItem", "*", function () {
       $node.addClass(config.editClassname);
     });
@@ -974,14 +984,14 @@ class EditableCollectionItemInjector {
   }
 }
 
-function createEditableCollectionItemMenu(item, config) {
+function createEditableCollectionItemMenu(item, config, index) {
   var template = $("[data-component-template=EditableCollectionItemMenu]");
   var $ul = $(template.html());
 
   item.$node.append($ul);
 
   return new EditableCollectionItemMenu($ul, {
-    activator_text: config.text.edit,
+    activator_text: config.text.edit + ` option ${index}`,
     container_id: uniqueString("activatedMenu-"),
     collectionItem: item,
     view: config.view,

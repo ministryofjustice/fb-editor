@@ -898,6 +898,12 @@ function accessibilityQuestionViewEnhancements(view) {
     "optional_content_description",
   );
 
+  $('#new_answers .govuk-button[aria-disabled="true"]')
+    .attr("aria-describedby", "disabled_input_description")
+    .on("click", (e) => {
+      e.preventDefault();
+    });
+
   // $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
   // $(".govuk-hint").attr("aria-label", view.text.aria.hint);
 }

@@ -23,6 +23,7 @@ const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
 class Question {
   constructor($node, config) {
+    console.log("question class constructor");
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects(
       {
@@ -61,17 +62,61 @@ class Question {
     });
     this.setRequiredFlag();
 
+    // Set an accessible label for the editable heading
     this.$heading.attr("aria-label", conf.type + " question title");
+
+    // Remove the description from the fieldset element as it is confusing when editing
+    this.$node.find("fieldset").removeAttr("aria-describedby");
+
+    // We add this so that in the editor the text in the legend is not used as
+    // the group label, as it gets confusing
+    this.$node
+      .find("fieldset > legend")
+      .attr("aria-label", `Edit ${conf.type} question`);
+
+    // Accessible label and description for the question hint text (where present)
     this.$node
       .find(".govuk-hint")
       .first()
-      .attr("aria-label", "Optional hint text for question");
-    this.$node
-      .find(".govuk-hint")
-      .first()
+      .attr("aria-label", "Optional hint text for question")
       .attr("aria-describedby", "optional_content_description");
 
-    this.$node.find("label.govuk-label").attr("aria-label", "Question");
+    // For the label wrapping the heading we provide an accessible group name
+    // Remove the 'for' attribute, otherwise clicking will focus the questions
+    // form field
+    if (!this.$node.find("fieldset").length > 0) {
+      this.$node
+        .find("label.govuk-label")
+        .first()
+        // .attr("aria-label", "Question")
+        .attr("for", "");
+    }
+
+    // Accessibly prevent input in editor mode
+    // 1. aria-disabled : communicate disabled state to AT
+    // 2. readonly : prevent text input
+    // 3. aria-label : provide an screen-reader label for the field
+    // 4. aria-describedby : explain why field is disabled
+    // 5. pointer-events : mouse interaction (required for <select>)
+    // 6. prevent click events
+    // 7. prevent space or enter triggering field (required for <select>)
+    $node
+      .find(SELECTOR_DISABLED)
+      .attr("aria-disabled", true)
+      .attr("readonly", "")
+      .attr("aria-label", "Answer field")
+      .attr("aria-describedby", "disabled_input_description")
+      .css("pointer-events", "none")
+      .on("click", (e) => {
+        e.preventDefault();
+        return false;
+      })
+      .on("keydown", (e) => {
+        if (e.key == " " || e.key == "Enter") {
+          e.preventDefault();
+          return false;
+        }
+      });
   }
 
   get required() {
