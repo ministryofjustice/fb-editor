@@ -82,6 +82,16 @@ feature 'Edit single question page' do
     then_I_should_see_my_changes_on_preview
   end
 
+  scenario 'when editing address component' do
+    given_I_have_a_single_question_page_with_address
+    and_I_have_optional_section_heading_text
+    then_the_save_button_should_be_disabled
+    when_I_update_the_question_name
+    when_I_update_the_optional_section_heading
+    when_I_delete_the_optional_section_heading_text
+    and_I_return_to_flow_page
+    then_I_should_see_my_changes_on_preview
+  end
   def given_I_have_a_single_question_page_with_textarea
     given_I_add_a_single_question_page_with_text_area
     and_I_add_a_page_url
@@ -100,9 +110,14 @@ feature 'Edit single question page' do
     when_I_add_the_page
   end
 
-
   def given_I_have_a_single_question_page_with_email
     given_I_add_a_single_question_page_with_email
+    and_I_add_a_page_url
+    when_I_add_the_page
+  end
+
+  def given_I_have_a_single_question_page_with_address
+    given_I_add_a_single_question_page_with_address
     and_I_add_a_page_url
     when_I_add_the_page
   end
