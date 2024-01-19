@@ -262,6 +262,21 @@ feature 'Create page' do
     expect(editor.save_page_button[:'aria-disabled']).to eq("true")
   end
 
+  def given_I_add_a_single_question_page_with_text_area
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.textarea')).click
+  end
+
+  def given_I_add_a_single_question_page_with_number
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.number')).click
+  end
+
+  def given_I_add_a_single_question_page_with_date
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.date')).click
+  end
+
   def add_existing_url(url = nil)
     and_I_edit_the_service
     given_I_add_a_single_question_page_with_text

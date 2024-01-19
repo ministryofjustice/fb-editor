@@ -92,26 +92,6 @@ module CommonSteps
     editor.add_component(component_name).click
   end
 
-  def given_I_add_a_single_question_page_with_text_area
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.textarea')).click
-  end
-
-  def given_I_add_a_single_question_page_with_number
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.number')).click
-  end
-
-  def given_I_add_a_single_question_page_with_upload
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.upload')).click
-  end
-
-  def given_I_add_a_single_question_page_with_date
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.date')).click
-  end
-
   def given_I_add_a_single_question_page_with_radio
     given_I_want_to_add_a_single_question_page
     editor.add_component(I18n.t('components.list.radios')).click
@@ -291,6 +271,11 @@ module CommonSteps
     given_I_add_a_single_question_page_with_radio
     and_I_add_a_page_url
     when_I_add_the_page
+  end
+
+  def given_I_add_a_single_question_page_with_upload
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.upload')).click
   end
 
   def and_I_preview_the_form
