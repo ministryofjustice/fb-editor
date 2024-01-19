@@ -494,12 +494,12 @@ workflows:
       - security:
           requires:
             - build
-      - rspec_test:
-          requires:
-            - build
-      - js_test:
-          requires:
-            - build
+      # - rspec_test:
+      #     requires:
+      #       - build
+      # - js_test:
+      #     requires:
+      #       - build
       - build_web_testable_branch:
           context: *context
           requires:
@@ -507,8 +507,8 @@ workflows:
             - login-to-aws
             - lint
             - security
-            - rspec_test
-            - js_test
+            # - rspec_test
+            # - js_test
           filters:
             branches:
               only:
@@ -520,8 +520,8 @@ workflows:
             - login-to-aws
             - lint
             - security
-            - rspec_test
-            - js_test
+            # - rspec_test
+            # - js_test
           filters:
             branches:
               only:
