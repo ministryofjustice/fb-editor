@@ -403,6 +403,7 @@ a[disabled] {
       background-color: Canvas; /*[2]*/
     }
   }
+
   .flow-titlebar {
     z-index: 1;
     margin-bottom: govuk-spacing(8);
@@ -624,6 +625,7 @@ a[disabled] {
     // make the link fill the whole area and clip it
     & > h2 a {
       clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+
       top: 0;
       left: 0;
       right: 0;
