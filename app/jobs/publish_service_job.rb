@@ -1,5 +1,5 @@
 class PublishServiceJob < ApplicationJob
-  queue_as :default
+  queue_as :testable-external-start-page
 
   def perform(publish_service_id:)
     publish_service = PublishService.find(publish_service_id)
