@@ -66,10 +66,15 @@ module CommonSteps
     editor.create_service_button.click
   end
 
-  def given_I_have_a_single_question_page_with_text
-    given_I_add_a_single_question_page_with_text
+  def given_I_have_a_single_question_page_with(component_name)
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(component_name).click
     and_I_add_a_page_url
     when_I_add_the_page
+  end
+
+  def given_I_have_a_single_question_page_with_text
+    given_I_have_a_single_question_page_with(I18n.t('components.list.text'))
   end
 
   def given_I_have_a_single_question_page_with_upload
@@ -79,8 +84,12 @@ module CommonSteps
   end
 
   def given_I_add_a_single_question_page_with_text
+    given_I_add_a_single_question_page_with(I18n.t('components.list.text'))
+  end
+
+  def given_I_add_a_single_question_page_with(component_name)
     given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.text')).click
+    editor.add_component(component_name).click
   end
 
   def given_I_add_a_single_question_page_with_text_area
