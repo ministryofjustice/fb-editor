@@ -575,14 +575,11 @@ function focusOnEditableComponent() {
   const target = location.hash;
   setTimeout(() => {
     if (target && target.match(/^[#\w\d_]+$/)) {
-      console.log(target);
       // Newly added component with fragment identifier so find first
       // first editable item of last component.
       let $newComponent = $(target);
       if ($newComponent.length) {
-        console.log($newComponent);
         if ($newComponent.prop("tagName").toLowerCase() == "editable-content") {
-          console.log("you added editable content");
           $newComponent.get(0).root.focus();
         } else {
           $newComponent.data("instance").focus();
