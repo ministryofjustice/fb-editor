@@ -50,6 +50,7 @@ class Question {
     this.$heading = $heading;
     this.editable = editableComponent($node, conf);
     this.menu = createQuestionMenu.call(this);
+    this.labels = this.config.view.text.aria.question;
 
     // Check view state on element edit or interaction and set initial state.
     this.$heading.on("focus", () => {
@@ -152,9 +153,11 @@ class Question {
   }
 
   addAccessibleLabels() {
-    console.log("question superclass accessible labels");
     // Set an accessible label for the editable heading
-    this.$heading.attr("aria-label", this.config.type + " question title");
+    this.$heading.attr(
+      "aria-label",
+      this.labels.title.replace("{{type}}", this.config.type),
+    );
 
     // Remove the description from the fieldset element as it is confusing when editing
     this.$node.find("fieldset").removeAttr("aria-describedby");
@@ -163,24 +166,23 @@ class Question {
     // the group label, as it gets confusing
     this.$node
       .find("fieldset > legend")
-      .attr("aria-label", `Edit ${this.config.type} question`);
+      .attr(
+        "aria-label",
+        this.labels.legend.replace("{{type}}", this.config.type),
+      );
 
     // Accessible label and description for the question hint text (where present)
     this.$node
       .find(".govuk-hint")
       .first()
-      .attr("aria-label", "Optional hint text for question")
+      .attr("aria-label", this.labels.hint)
       .attr("aria-describedby", "optional_content_description");
 
     // For the label wrapping the heading we provide an accessible group name
     // Remove the 'for' attribute, otherwise clicking will focus the questions
     // form field
     if (!this.$node.find("fieldset").length > 0) {
-      this.$node
-        .find("label.govuk-label")
-        .first()
-        // .attr("aria-label", "Question")
-        .attr("for", "");
+      this.$node.find("label.govuk-label").first().attr("for", "");
     }
 
     // Accessibly prevent input in editor mode
@@ -195,7 +197,7 @@ class Question {
       .find(SELECTOR_DISABLED)
       .attr("aria-disabled", true)
       .attr("readonly", "")
-      .attr("aria-label", "Answer field")
+      .attr("aria-label", this.labels.answer)
       .attr("aria-describedby", "disabled_input_description")
       .css("pointer-events", "none")
       .on("click", (e) => {

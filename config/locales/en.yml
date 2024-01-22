@@ -1,13 +1,10 @@
 en:
   aria:
-    answers: Answers
     hint: Question Hint
     question: Question
     section_heading: Optional section heading
     flow_thumbnail: 'Form page'
     disabled_save_description: 'No changes to save'
-    optional_content_description: 'This will not be displayed if left unchanged'
-    disabled_input_description: 'Only active when published or previewed'
     page:
       start: Start page
       singlequestion: Single question page
@@ -16,6 +13,19 @@ en:
       confirmation: Confirmation page
       content: Content page
       exit: Exit page
+    question:
+      title: "{{type}} question title"
+      legend: "Edit {{type}} question"
+      hint: "Optional hint text for question"
+      answers: Answers
+      answer: "Answer field"
+      items:
+        label: "Label for option"
+        hint: "Optional hint text for option"
+        answer: "Answer field for option"
+        menu_button: "Edit option"
+      optional_content_description: 'This will not be displayed if left unchanged'
+      disabled_input_description: 'Only active when published or previewed'
   assistive_text:
     warning: warning
     incomplete: incomplete

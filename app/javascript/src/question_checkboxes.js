@@ -19,8 +19,8 @@ const Question = require("./question");
 const SELECTOR_HINT = "fieldset > .govuk-hint";
 const SELECTOR_LABEL = "legend > :first-child";
 const SELECTOR_ITEM = ".govuk-checkboxes__item";
-const SELECTOR_ITEM_HINT = ".govuk-hint";
-const SELECTOR_ITEM_LABEL = "label";
+const SELECTOR_ITEM_HINT = ".govuk-checkboxes__hint";
+const SELECTOR_ITEM_LABEL = ".govuk-checkboxes__label";
 const SELECTOR_DISABLED = "input:not(:hidden)";
 
 class CheckboxesQuestion extends Question {
@@ -61,43 +61,14 @@ class CheckboxesQuestion extends Question {
             activatedMenu.container.$node.remove();
           }
         },
-        afterItemRemove: function (items) {
-          items.forEach(function (item, index) {
-            item.$node
-              .find(".govuk-checkboxes__label")
-              .attr("aria-label", `Label for option ${index + 1}`);
-            item.$node
-              .find(SELECTOR_DISABLED)
-              .attr("aria-disabled", true)
-              .attr("aria-label", `Answer option ${index + 1}`)
-              .attr("aria-describedby", "disabled_input_description")
-              .on("click", (e) => {
-                e.preventDefault();
-              });
-            item.$node
-              .find(".govuk-checkboxes__hint")
-              .attr("aria-label", `Optional hint text for option ${index + 1}`)
-              .attr("aria-describedby", "optional_content_description");
-            item.$node.find("button").text(`Edit option ${index + 1}`);
+        afterItemRemove: (items) => {
+          items.forEach((item, index) => {
+            this.updateItemAccessibleLabels(item.$node, index + 1);
           });
         },
-        onItemAdd: function ($node) {
+        onItemAdd: ($node) => {
           const index = $node.data("instance").component.items.length;
-          $node
-            .find(".govuk-checkboxes__label")
-            .attr("aria-label", `Label for option ${index}`);
-          $node
-            .find(SELECTOR_DISABLED)
-            .attr("aria-disabled", true)
-            .attr("aria-label", `Answer option ${index}`)
-            .attr("aria-describedby", "disabled_input_description")
-            .on("click", (e) => {
-              e.preventDefault();
-            });
-          $node
-            .find(".govuk-checkboxes__hint")
-            .attr("aria-label", `Optional hint text for option ${index}`)
-            .attr("aria-describedby", "optional_content_description");
+          this.updateItemAccessibleLabels($node, index);
         },
         onItemRemoveConfirmation: function (item) {
           // @item (EditableComponentItem) Item to be deleted.
@@ -115,34 +86,48 @@ class CheckboxesQuestion extends Question {
 
   addAccessibleLabels() {
     super.addAccessibleLabels();
-    console.log("checkboxes accessible labels");
-    // Similarly we add a group label for the answers section
-    this.$node
-      .find(".EditableComponentCollectionItem")
-      .first()
-      .parent()
-      .attr("aria-label", this.config.text.aria.answers);
+    // Add a group label for the answers section
+    this.$node.find(".EditableComponentCollectionItem").first().parent().attr({
+      "aria-role": "group",
+      "aria-label": this.labels.answers,
+    });
 
+    // Update the labels for all of the items
+    this.$node
+      .find(SELECTOR_ITEM)
+      .toArray()
+      .forEach((item, index) => {
+        this.updateItemAccessibleLabels($(item), index + 1);
+      });
+  }
+
+  updateItemAccessibleLabels($node, index) {
     // Add labels for each of the contentEditable checkbox <label> elements
     // remove 'for' attribute to prevent AT reading this for the field itself
-    this.$node.find(".govuk-checkboxes__label").each(function (index) {
-      $(this)
-        .attr("aria-label", `Label for option ${index + 1}`)
-        .removeAttr("for");
-    });
+    $node
+      .find(SELECTOR_ITEM_LABEL)
+      .attr("aria-label", `${this.labels.items.label} ${index}`)
+      .removeAttr("for");
 
     // Provide labels with indexes for input options
-    this.$node.find(SELECTOR_DISABLED).each(function (index) {
-      $(this).attr("aria-label", `Answer option ${index + 1}`);
-    });
+    $node
+      .find(SELECTOR_DISABLED)
+      .attr("aria-disabled", true)
+      .attr("aria-label", `${this.labels.items.answer} ${index}`)
+      .attr("aria-describedby", "disabled_input_description")
+      .on("click", (e) => {
+        e.preventDefault();
+      });
 
     // Add labels for the hint text elements for each option
     // Add the describedyby for optional content too
-    this.$node.find(".govuk-checkboxes__hint").each(function (index) {
-      $(this)
-        .attr("aria-label", `Optional hint text for option ${index + 1}`)
-        .attr("aria-describedby", "optional_content_description");
-    });
+    $node
+      .find(SELECTOR_ITEM_HINT)
+      .attr("aria-label", `${this.labels.items.hint} ${index}`)
+      .attr("aria-describedby", "optional_content_description");
+
+    // Add index to item three-dot button
+    $node.find("button").text(`${this.labels.items.menu_button} ${index}`);
   }
 }
 
