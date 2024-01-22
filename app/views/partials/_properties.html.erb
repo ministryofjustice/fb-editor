@@ -27,11 +27,22 @@
     },
     text: {
       aria: {
-        answers: "<%= t('aria.answers') %>",
         hint: "<%= t('aria.hint') %>",
-        question: "<%= t('aria.question') %>",
         section_heading: "<%= t('aria.section_heading') %>",
         disabled_save_description: "<%= t('aria.disabled_save_description') %>",
+        question: {
+          title: "<%=t('aria.question.title')%>",
+          legend: "<%=t('aria.question.legend')%>",
+          hint: "<%=t('aria.question.hint')%>",
+          answers: "<%= t('aria.question.answers') %>",
+          answer: "<%=t('aria.question.answer')%>",
+          items: {
+            label: "<%=t('aria.question.items.label')%>", 
+            hint:"<%=t('aria.question.items.hint')%>",
+            answer:"<%=t('aria.question.items.answer')%>", 
+            menu_button:"<%=t('aria.question.items.menu_button')%>", 
+          },
+        },
       },
       branches: {
         branch_edit: "<%= t('branches.branch_edit') %>",
