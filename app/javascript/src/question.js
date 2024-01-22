@@ -49,7 +49,7 @@ class Question {
     this.$heading = $heading;
     this.editable = editableComponent($node, conf);
     this.menu = createQuestionMenu.call(this);
-    this.labels = this.config.view.text.aria.question;
+    this.labels = this.config.text.aria.question;
 
     // Check view state on element edit or interaction and set initial state.
     $heading.on("blur", this.setRequiredFlag.bind(this));
