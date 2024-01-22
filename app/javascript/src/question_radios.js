@@ -24,13 +24,11 @@ const SELECTOR_DISABLED = "input:not(:hidden)";
 
 class RadiosQuestion extends Question {
   constructor($node, config) {
-    console.log("radio question class constructor");
     // // When the labels are <label> elements they won't have an aria-label
     // // announced by Voiceover
     // $node.find(".govuk-radios__label").each(function () {
     //   changeTag(this, "div");
     // });
-    console.log("labels turned into spans");
     let conf = mergeObjects(
       {
         // Add stuff here if you want to set defaults
@@ -69,7 +67,6 @@ class RadiosQuestion extends Question {
         },
         afterItemRemove: function (items) {
           items.forEach(function (item, index) {
-            console.log(item.$node.find("button"));
             item.$node
               .find(".govuk-radios__label")
               .attr("aria-label", `Label for option ${index + 1}`);
@@ -89,7 +86,6 @@ class RadiosQuestion extends Question {
           });
         },
         onItemAdd: function ($node) {
-          console.log($node.data("instance").component.items.length);
           const index = $node.data("instance").component.items.length;
           $node
             .find(".govuk-radios__label")
