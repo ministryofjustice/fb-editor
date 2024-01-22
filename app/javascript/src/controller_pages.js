@@ -684,6 +684,9 @@ function enhanceQuestions(view) {
         text: {
           default_content: view.text.defaults.content,
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+          },
         },
       });
     });
@@ -696,6 +699,9 @@ function enhanceQuestions(view) {
         text: {
           default_content: view.text.defaults.content,
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+          },
         },
       });
     });
@@ -705,6 +711,9 @@ function enhanceQuestions(view) {
       form: view.saveButton.$form,
       text: {
         optionalFlag: view.text.question_optional_flag,
+        aria: {
+          question: view.text.aria.question,
+        },
       },
     });
   });
@@ -727,6 +736,9 @@ function enhanceQuestions(view) {
         form: view.saveButton.$form,
         text: {
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+          },
         },
       });
     });
@@ -745,7 +757,7 @@ function enhanceQuestions(view) {
           optionHint: view.text.defaults.option_hint,
           optionalFlag: view.text.question_optional_flag,
           aria: {
-            answers: view.text.aria.answers,
+            question: view.text.aria.question,
           },
         },
 
@@ -782,7 +794,7 @@ function enhanceQuestions(view) {
           optionHint: view.text.defaults.option_hint,
           optionalFlag: view.text.question_optional_flag,
           aria: {
-            answers: view.text.aria.answers,
+            question: view.text.aria.question,
           },
         },
 
