@@ -44,7 +44,7 @@ class Question {
     );
 
     $node.addClass("Question");
-    this._config = conf;
+    this.config = conf;
     this.data = $node.data("fb-content-data");
     this.$node = $node;
     this.$heading = $heading;
@@ -60,62 +60,7 @@ class Question {
       this.setRequiredFlag.bind(this);
     });
     this.setRequiredFlag();
-
-    // Set an accessible label for the editable heading
-    this.$heading.attr("aria-label", conf.type + " question title");
-
-    // Remove the description from the fieldset element as it is confusing when editing
-    this.$node.find("fieldset").removeAttr("aria-describedby");
-
-    // We add this so that in the editor the text in the legend is not used as
-    // the group label, as it gets confusing
-    this.$node
-      .find("fieldset > legend")
-      .attr("aria-label", `Edit ${conf.type} question`);
-
-    // Accessible label and description for the question hint text (where present)
-    this.$node
-      .find(".govuk-hint")
-      .first()
-      .attr("aria-label", "Optional hint text for question")
-      .attr("aria-describedby", "optional_content_description");
-
-    // For the label wrapping the heading we provide an accessible group name
-    // Remove the 'for' attribute, otherwise clicking will focus the questions
-    // form field
-    if (!this.$node.find("fieldset").length > 0) {
-      this.$node
-        .find("label.govuk-label")
-        .first()
-        // .attr("aria-label", "Question")
-        .attr("for", "");
-    }
-
-    // Accessibly prevent input in editor mode
-    // 1. aria-disabled : communicate disabled state to AT
-    // 2. readonly : prevent text input
-    // 3. aria-label : provide an screen-reader label for the field
-    // 4. aria-describedby : explain why field is disabled
-    // 5. pointer-events : mouse interaction (required for <select>)
-    // 6. prevent click events
-    // 7. prevent space or enter triggering field (required for <select>)
-    $node
-      .find(SELECTOR_DISABLED)
-      .attr("aria-disabled", true)
-      .attr("readonly", "")
-      .attr("aria-label", "Answer field")
-      .attr("aria-describedby", "disabled_input_description")
-      .css("pointer-events", "none")
-      .on("click", (e) => {
-        e.preventDefault();
-        return false;
-      })
-      .on("keydown", (e) => {
-        if (e.key == " " || e.key == "Enter") {
-          e.preventDefault();
-          return false;
-        }
-      });
+    this.addAccessibleLabels();
   }
 
   get required() {
@@ -172,7 +117,7 @@ class Question {
    * This function is to handle the adding the extra element.
    **/
   setRequiredFlag() {
-    var text = this._config.text.optionalFlag;
+    var text = this.config.text.optionalFlag;
     // Escape the parentheses
     var escapedTextWithSpace = " " + text.replace(/(\(|\))/gim, "\\$1");
     // $ - must be at the end of the string
@@ -204,6 +149,65 @@ class Question {
   save() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.save();
+  }
+
+  addAccessibleLabels() {
+    console.log("question superclass accessible labels");
+    // Set an accessible label for the editable heading
+    this.$heading.attr("aria-label", this.config.type + " question title");
+
+    // Remove the description from the fieldset element as it is confusing when editing
+    this.$node.find("fieldset").removeAttr("aria-describedby");
+
+    // We add this so that in the editor the text in the legend is not used as
+    // the group label, as it gets confusing
+    this.$node
+      .find("fieldset > legend")
+      .attr("aria-label", `Edit ${this.config.type} question`);
+
+    // Accessible label and description for the question hint text (where present)
+    this.$node
+      .find(".govuk-hint")
+      .first()
+      .attr("aria-label", "Optional hint text for question")
+      .attr("aria-describedby", "optional_content_description");
+
+    // For the label wrapping the heading we provide an accessible group name
+    // Remove the 'for' attribute, otherwise clicking will focus the questions
+    // form field
+    if (!this.$node.find("fieldset").length > 0) {
+      this.$node
+        .find("label.govuk-label")
+        .first()
+        // .attr("aria-label", "Question")
+        .attr("for", "");
+    }
+
+    // Accessibly prevent input in editor mode
+    // 1. aria-disabled : communicate disabled state to AT
+    // 2. readonly : prevent text input
+    // 3. aria-label : provide an screen-reader label for the field
+    // 4. aria-describedby : explain why field is disabled
+    // 5. pointer-events : mouse interaction (required for <select>)
+    // 6. prevent click events
+    // 7. prevent space or enter triggering field (required for <select>)
+    this.$node
+      .find(SELECTOR_DISABLED)
+      .attr("aria-disabled", true)
+      .attr("readonly", "")
+      .attr("aria-label", "Answer field")
+      .attr("aria-describedby", "disabled_input_description")
+      .css("pointer-events", "none")
+      .on("click", (e) => {
+        e.preventDefault();
+        return false;
+      })
+      .on("keydown", (e) => {
+        if (e.key == " " || e.key == "Enter") {
+          e.preventDefault();
+          return false;
+        }
+      });
   }
 }
 

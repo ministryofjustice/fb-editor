@@ -120,6 +120,7 @@ class RadiosQuestion extends Question {
   }
 
   addAccessibleLabels() {
+    super.addAccessibleLabels();
     // Similarly we add a group label for the answers section
     this.$node
       .find(".EditableComponentCollectionItem")

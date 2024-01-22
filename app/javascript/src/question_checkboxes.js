@@ -111,10 +111,11 @@ class CheckboxesQuestion extends Question {
     this.config = conf;
     this._preservedItemCount = 1;
     $node.addClass("CheckboxesQuestion");
-    this.addAccessibleLabels();
   }
 
   addAccessibleLabels() {
+    super.addAccessibleLabels();
+    console.log("checkboxes accessible labels");
     // Similarly we add a group label for the answers section
     this.$node
       .find(".EditableComponentCollectionItem")
