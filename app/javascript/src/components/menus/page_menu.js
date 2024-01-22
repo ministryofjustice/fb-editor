@@ -125,7 +125,10 @@ class PageMenu extends ActivatedMenu {
                 var $newHtml = $(responseHtml[0]).html();
                 dialog.$node.html($newHtml);
                 dialog.refresh();
-              }
+              },
+              onSuccess: function() {
+                window.location.reload()
+              },
         });
     }
 
