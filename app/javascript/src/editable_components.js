@@ -921,7 +921,6 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
   constructor(editableCollectionFieldComponent, $node, config, index) {
-    console.log("editable collection item class constructor");
     super(
       $node,
       mergeObjects(
@@ -934,7 +933,6 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     );
 
     this.menu = createEditableCollectionItemMenu(this, config, index);
-    console.log("adding events to editable collection item");
     $node.on("focus.EditableComponentCollectionItem", "*", function () {
       $node.addClass(config.editClassname);
     });

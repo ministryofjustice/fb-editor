@@ -23,7 +23,6 @@ const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
 class Question {
   constructor($node, config) {
-    console.log("question class constructor");
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects(
       {
