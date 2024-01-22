@@ -262,9 +262,9 @@ en:
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
   external_start_page_url:
-    link: 'GOV.UK Start Page'
+    link: 'GOV.UK start page'
     title: 'Switch to a GOV.UK start page'
-    editing_title: 'Edit GOV.UK start page'
+    editing_title: 'Edit GOV.UK start page URL'
     content: 'This will remove the current start page from your form. Use this option if you want to link to your form from a GOV.UK start page.'
     help_link_text: 'Which type of start page do I need?'
     label: 'GOV.UK start page URL'
