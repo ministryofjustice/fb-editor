@@ -1,28 +1,31 @@
 <div class="component-dialog-api-request" id="external_start_page_url">
   <%= form_for @external_url, url: api_service_external_start_page_index_path(service.service_id), method: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
-    <div class="govuk-form-group">
-      <h2 class="govuk-heading-m"><%= editing? ? t('external_start_page_url.editing_title') : t('external_start_page_url.title') %></h2>
-      
-      <% if !editing? %>
-        <p class="description"><%= t('external_start_page_url.content') %></p>
+    <h2 class="govuk-heading-m"><%= editing? ? t('external_start_page_url.editing_title') : t('external_start_page_url.title') %></h2>
+    
+    <% if !editing? %>
+      <p class="description"><%= t('external_start_page_url.content') %></p>
 
-        <p class="description"><%= govuk_link_to t('external_start_page_url.help_link_text'), 'https://moj-forms.service.justice.gov.uk/user-guide' %></p>
-      <% end %>
-      
+      <p class="description"><%= govuk_link_to t('external_start_page_url.help_link_text'), 'https://moj-forms.service.justice.gov.uk/user-guide' %></p>
+      <br/>
       <%= f.govuk_text_field :url,
         label: { text: t('external_start_page_url.label'), size: 's', tag: 'h3' },
         class: @external_url.errors.any? ? 'govuk-input--error' : ''
       %>
-      
-      <div class="govuk-button-group">
-        <button class="govuk-button fb-govuk-button" type="submit">
-          <%= editing? ? t('external_start_page_url.done') : t('external_start_page_url.confirm') %>
-        </button>
+    <% else %>
+      <%= f.govuk_text_field :url,
+        label: { text: t('external_start_page_url.label'), size: 's', tag: 'h3' },
+        class: @external_url.errors.any? ? 'govuk-input--error editing-external-url' : 'editing-external-url'
+      %>
+    <% end %>
+    
+    <div class="govuk-button-group">
+      <button class="govuk-button fb-govuk-button" type="submit">
+        <%= editing? ? t('external_start_page_url.done') : t('external_start_page_url.confirm') %>
+      </button>
 
-        <button class="govuk-button govuk-button--secondary" type="button" >
-          <%= t('dialogs.button_cancel') %>
-        </button>
-      </div>
+      <button class="govuk-button govuk-button--secondary" type="button" >
+        <%= t('dialogs.button_cancel') %>
+      </button>
     </div>
   <% end %>
 </div>
