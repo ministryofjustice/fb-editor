@@ -52,6 +52,7 @@ module Api
       unless value[/\Ahttps:\/\//]
         return "https://#{value}"
       end
+
       value
     end
     helper_method :external_start_page_url
