@@ -20,6 +20,8 @@ metadata:
       SecRuleEngine DetectionOnly
       SecDefaultAction "phase:2,pass,log,tag:github_team=form-builder"
       SecRuleRemoveById 941100
+      SecRuleUpdateTargetByTag attack-xss !REQUEST_COOKIES:_fb_runner_session
+      SecRuleUpdateTargetByTag attack-sqli !REQUEST_COOKIES:_fb_runner_session
 spec:
   ingressClassName: modsec
   tls:
