@@ -50,8 +50,9 @@ module Api
       value = external_url_config.decrypt_value
       # ensure url is absolute - we limit to only gov.uk urls which will be https
       unless value[/\Ahttps:\/\//]
-        "https://#{value}"
+        return "https://#{value}"
       end
+      value
     end
     helper_method :external_start_page_url
 
