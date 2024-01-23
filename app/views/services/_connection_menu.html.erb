@@ -21,8 +21,10 @@
               data-component-type="number"><span><%= t('components.list.number') -%></span></li>
           <li data-page-type="singlequestion"
               data-component-type="date"><span><%= t('components.list.date') -%></span></li>
+          <% if FeatureFlags.address_component.enabled? %>
           <li data-page-type="singlequestion"
               data-component-type="address"><span><%= t('components.list.address') -%></span></li>
+          <% end %>
           <li data-page-type="singlequestion"
               data-component-type="radios"><span><%= t('components.list.radios') -%></span></li>
           <li data-page-type="singlequestion"
