@@ -1,9 +1,18 @@
-<div data-controller="conditional" data-conditionals-target="conditional" data-conditional-title-value="Branch" >
-  <section class="branch conditional" data-conditional-index="<%= conditional.options[:child_index]%>">
-    <h3 class="govuk-heading-l" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h3>
+<div  data-controller="conditional" 
+      data-conditionals-target="conditional" 
+      data-conditional-conditionals-status-outlet="#conditionals-status"
+      data-conditional-title-value="Branch" 
+      data-conditional-delete-label-value="Remove" 
+      data-conditional-destination-label-value="Destination page for "
+      data-action="dynamic-fields:fieldsAdded->conditional#focusNewExpression">
+  <fieldset class="govuk-fieldset panel conditional" data-conditional-target="fieldset" data-conditional-index-value="<%= conditional.options[:child_index]%>" tabindex="-1">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h2>
+    </legend>
     <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#deleteWithConfirmation", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
 
-    <div class="conditional__expressions" data-controller="dynamic-fields expressions">
+    <div class="conditional__expressions" data-controller="dynamic-fields expressions" data-action="dynamic-fields:fieldsAdded->expressions#update">
+
       <%= conditional.fields_for :expressions do |expression| %>
         <%= render 'expression_fields', conditional: conditional, expression: expression, branch_uuid: branch_uuid  %>
       <% end %>
@@ -14,22 +23,28 @@
         <% end %>
       </template>
 
-      <%= button_tag I18n.t('conditional_content.add_condition'), type: 'button', data: { action: 'dynamic-fields#add'}, class: 'govuk-link fb-link-button prevent-modal-close' %>
+      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
+        <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
+      <% end %>
 
       <div class="conditional__question govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error' : '' %>">
-
         <% if conditional.object.errors[:next].any? %>
           <p id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next_error" class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span>
+          <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
             <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
           </p>
         <% end %>
-        <%= conditional.label :next, t('branches.goto') %>
+
+        <div class="label">
+          <%= t('branches.goto') %>
+        </div>
 
         <select class="govuk-select conditional__destination"
                 name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                 id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
-                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %>">
+                aria-label="Destination page for "
+                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> destination_hint"
+                data-conditional-target="destination">
           <option value=""><%= t('branches.select_destination') %></option>
           <%= render partial: "destinations_list",
             locals: {
@@ -51,7 +66,7 @@
       </div>
 
     </div>
-  </section>
+  </fieldset>
   <div class="conditional-separator">or</div>
 </div>
 

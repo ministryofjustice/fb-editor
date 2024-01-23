@@ -1,10 +1,11 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = [ 'template' ]
+  static targets = ['template']
 
   add(event) {
     event.preventDefault();
+
     this.templateTarget.insertAdjacentHTML(
       "beforebegin",
       this.templateTarget.innerHTML.replace(
@@ -12,5 +13,12 @@ export default class extends Controller {
         new Date().getTime().toString()
       )
     )
+
+    this.dispatch('fieldsAdded', {
+      detail: {
+        element: this.templateTarget.previousElementSibling,
+        additionType: event.params.type ?? ''
+      }
+    })
   }
 }
