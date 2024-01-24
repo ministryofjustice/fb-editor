@@ -33,6 +33,7 @@ const SubmitHandler = require('./submit_handler');
 const CheckboxesQuestion = require('./question_checkboxes');
 const RadiosQuestion = require('./question_radios');
 const DateQuestion = require('./question_date');
+const AddressQuestion = require('./question_address');
 const TextQuestion = require('./question_text');
 const TextareaQuestion = require('./question_textarea');
 const AutocompleteQuestion = require('./question_autocomplete');
@@ -646,9 +647,17 @@ function enhanceQuestions(view) {
     });
   });
 
-
   view.$editable.filter("[data-fb-content-type=date]").each(function(i, node) {
     new DateQuestion($(this), {
+      form: view.saveButton.$form,
+      text: {
+        optionalFlag: view.text.question_optional_flag
+      }
+    });
+  });
+
+  view.$editable.filter("[data-fb-content-type=address]").each(function(i, node) {
+    new AddressQuestion($(this), {
       form: view.saveButton.$form,
       text: {
         optionalFlag: view.text.question_optional_flag

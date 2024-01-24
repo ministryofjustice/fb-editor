@@ -14,6 +14,10 @@ feature 'Edit multiple questions page' do
   let(:email_component_question) do
     'What is your email address?'
   end
+  let(:address_component_question) do
+    'What is your postal address?'
+  end
+
   let(:radio_component_question) do
     'How old is Yoda when he dies?'
   end
@@ -47,6 +51,7 @@ feature 'Edit multiple questions page' do
       and_I_add_the_component(I18n.t('components.list.email'))
       and_I_add_the_component(I18n.t('components.list.radios'))
       and_I_add_the_component(I18n.t('components.list.checkboxes'))
+      and_I_add_the_component(I18n.t('components.list.address'))
       then_the_save_button_should_be_disabled
       and_I_update_the_components
       then_I_should_be_warned_when_leaving_page
@@ -144,6 +149,9 @@ feature 'Edit multiple questions page' do
         with: 'healthy.harold@justice.gov.uk'
       page.choose '900 years old', visible: false
       page.check 'Prequels', visible: false
+      page.fill_in 'Address line 1', with: '999'
+      page.fill_in 'Town or city', with: 'Bat city'
+      page.fill_in 'Postcode', with: 'SW1H 9AJ'
       page.click_button 'Continue'
       expect(page).to have_content("Check your answers")
     end

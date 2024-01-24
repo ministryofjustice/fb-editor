@@ -41,6 +41,7 @@ module MultipleQuestionsPageHelper
       checkboxes_component_question,
       options: checkboxes_component_options
     )
+    and_I_change_the_address_component(address_component_question)
   end
 
   def and_I_change_the_text_component(question, component: 0)
@@ -61,6 +62,10 @@ module MultipleQuestionsPageHelper
 
   def and_I_change_the_checkboxes_component(question, component: 4, options:)
     and_I_change_the_component(question, component: component, tag: 'legend', options: options)
+  end
+
+  def and_I_change_the_address_component(question, component: 5)
+    and_I_change_the_component(question, component: component, tag: 'legend')
   end
 
   def and_I_change_the_component(question, component:, tag:, options: nil)

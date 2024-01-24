@@ -12,43 +12,45 @@ feature 'Edit single question page' do
   end
   let(:section_heading) { 'I open at the close' }
   let(:default_section_heading) { I18n.t('default_text.section_heading') }
+  let(:new_hint) { 'This is a hint' }
+  let(:default_hint) { I18n.t('default_text.hint') }
 
   background do
     given_I_am_logged_in
     given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
   end
 
-  scenario 'when editing text component' do
-    given_I_have_a_single_question_page_with_text
-    and_I_have_optional_section_heading_text
-    then_the_save_button_should_be_disabled
-    when_I_update_the_question_name
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    then_I_should_see_my_changes_on_preview
+  shared_examples 'editing a component' do
+    scenario 'editing heading, section and hint text' do
+      given_I_have_a_single_question_page_with(component_name)
+      and_I_have_optional_section_heading_text
+      then_the_save_button_should_be_disabled
+      when_I_update_the_question_name
+      when_I_update_the_optional_section_heading
+      when_I_delete_the_optional_section_heading_text
+      when_I_update_the_optional_hint_text
+      when_I_delete_the_optional_hint_text
+      and_I_return_to_flow_page
+      then_I_should_see_my_changes_on_preview
+    end
   end
 
-  scenario 'when editing textarea component' do
-    given_I_have_a_single_question_page_with_textarea
-    and_I_have_optional_section_heading_text
-    then_the_save_button_should_be_disabled
-    when_I_update_the_question_name
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    then_I_should_see_my_changes_on_preview
+  context 'when editing a text component' do
+    let(:component_name) { I18n.t('components.list.text') }
+
+    it_behaves_like 'editing a component'
   end
 
-  scenario 'when editing number component' do
-    given_I_have_a_single_question_page_with_number
-    and_I_have_optional_section_heading_text
-    then_the_save_button_should_be_disabled
-    when_I_update_the_question_name
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    then_I_should_see_my_changes_on_preview
+  context 'when editing a textarea component' do
+    let(:component_name) { I18n.t('components.list.textarea') }
+
+    it_behaves_like 'editing a component'
+  end
+
+  context 'when editing a number component' do
+    let(:component_name) { I18n.t('components.list.number') }
+
+    it_behaves_like 'editing a component'
   end
 
   scenario 'when editing upload component' do
@@ -60,51 +62,22 @@ feature 'Edit single question page' do
     then_I_should_see_my_changes_on_preview
   end
 
-  scenario 'when editing date component' do
-    given_I_have_a_single_question_page_with_date
-    and_I_have_optional_section_heading_text
-    then_the_save_button_should_be_disabled
-    when_I_update_the_question_name
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    then_I_should_see_my_changes_on_preview
+  context 'when editing a date component' do
+    let(:component_name) { I18n.t('components.list.date') }
+
+    it_behaves_like 'editing a component'
   end
 
-  scenario 'when editing email component' do
-    given_I_have_a_single_question_page_with_email
-    and_I_have_optional_section_heading_text
-    then_the_save_button_should_be_disabled
-    when_I_update_the_question_name
-    when_I_update_the_optional_section_heading
-    when_I_delete_the_optional_section_heading_text
-    and_I_return_to_flow_page
-    then_I_should_see_my_changes_on_preview
+  context 'when editing a email component' do
+    let(:component_name) { I18n.t('components.list.email') }
+
+    it_behaves_like 'editing a component'
   end
 
-  def given_I_have_a_single_question_page_with_textarea
-    given_I_add_a_single_question_page_with_text_area
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
+  context 'when editing a address component' do
+    let(:component_name) { I18n.t('components.list.address') }
 
-  def given_I_have_a_single_question_page_with_number
-    given_I_add_a_single_question_page_with_number
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
-  def given_I_have_a_single_question_page_with_date
-    given_I_add_a_single_question_page_with_date
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
-
-  def given_I_have_a_single_question_page_with_email
-    given_I_add_a_single_question_page_with_email
-    and_I_add_a_page_url
-    when_I_add_the_page
+    it_behaves_like 'editing a component'
   end
 
   def and_I_edit_the_question
@@ -122,6 +95,15 @@ feature 'Edit single question page' do
   def then_I_should_see_the_default_section_heading
     editor.service_name.click
     expect(editor.section_heading_hint.text).to eq(default_section_heading)
+  end
+
+  def then_I_should_see_the_default_hint_text
+    editor.service_name.click
+    expect(editor.question_hint.text).to eq(default_hint)
+  end
+
+  def then_I_should_see_my_updated_hint_text
+    expect(editor).to have_content(new_hint)
   end
 
   def and_I_go_to_the_page_that_I_edit(preview_form)
@@ -150,16 +132,22 @@ feature 'Edit single question page' do
     then_I_should_see_my_updated_section_heading
   end
 
-  def when_I_update_first_the_optional_hint_text
-    and_I_edit_the_first_optional_hint_text
-    when_I_save_my_changes
-    then_I_should_see_my_updated_optional_hint_text
-  end
-
   def when_I_delete_the_optional_section_heading_text
     editor.section_heading_hint.set(' ')
     when_I_save_my_changes
     then_I_should_see_the_default_section_heading
+  end
+
+  def when_I_update_the_optional_hint_text
+    editor.question_hint.set(new_hint)
+    when_I_save_my_changes
+    then_I_should_see_my_updated_hint_text
+  end
+
+  def when_I_delete_the_optional_hint_text
+    editor.question_hint.set(' ')
+    when_I_save_my_changes
+    then_I_should_see_the_default_hint_text
   end
 
   def and_I_edit_the_options

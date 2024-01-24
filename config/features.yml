@@ -3,3 +3,7 @@ feature_flags:
     local: true
     test: true   # formbuilder-saas-test
     live: false  # formbuilder-saas-live
+  address_component:
+    local: true
+    test: true
+    live: false
