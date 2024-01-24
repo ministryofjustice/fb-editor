@@ -5,11 +5,11 @@ ruby '3.1.3'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-gem 'metadata_presenter',
-    github: 'ministryofjustice/fb-metadata-presenter',
-    branch: 'test-start-page'
+# gem 'metadata_presenter',
+#     github: 'ministryofjustice/fb-metadata-presenter',
+#     branch: 'address-testing-feedback'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-# gem 'metadata_presenter', '3.3.9'
+gem 'metadata_presenter', '3.3.9'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -31,7 +31,6 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
 gem 'rails', '~> 7.0', '< 7.1'
 # Use Redis for Action Cable
-gem 'byebug'
 gem 'redis', '~> 4.0'
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.14'
@@ -43,7 +42,7 @@ gem 'webpacker', '~> 5.4'
 
 group :development, :test do
   gem 'brakeman'
-  # gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
