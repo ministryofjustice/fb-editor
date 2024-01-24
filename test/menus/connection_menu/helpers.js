@@ -37,6 +37,7 @@ const constants = {
   TEXT_PAGE_TYPE_EMAIL: "email",
   TEXT_PAGE_TYPE_NUMBER: "number",
   TEXT_PAGE_TYPE_DATE: "date",
+  TEXT_PAGE_TYPE_ADDRESS: "address",
   TEXT_PAGE_TYPE_RADIO: "radios",
   TEXT_PAGE_TYPE_CHECKBOX: "checkboxes",
   TEXT_PAGE_TYPE_AUTOCOMPLETE: "autocomplete",
@@ -122,6 +123,7 @@ function setupView(id) {
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_EMAIL + `"><span>` + constants.TEXT_PAGE_TYPE_EMAIL + `</span></li>
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_NUMBER + `"><span>` + constants.TEXT_PAGE_TYPE_NUMBER + `</span></li>
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_DATE + `"><span>` + constants.TEXT_PAGE_TYPE_DATE + `</span></li>
+                <li data-component-type="` + constants.TEXT_PAGE_TYPE_ADDRESS + `"><span>` + constants.TEXT_PAGE_TYPE_ADDRESS + `</span></li>
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_RADIO + `"><span>` + constants.TEXT_PAGE_TYPE_RADIO + `</span></li>
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_CHECKBOX + `"><span>` + constants.TEXT_PAGE_TYPE_CHECKBOX + `</span></li>
                 <li data-component-type="` + constants.TEXT_PAGE_TYPE_AUTOCOMPLETE + `"><span>` + constants.TEXT_PAGE_TYPE_AUTOCOMPLETE + `</span></li>

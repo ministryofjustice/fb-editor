@@ -200,7 +200,8 @@ RSpec.describe Branch do
           "What is The Mandalorian's real name?",
           'Upload your best dog photo',
           'Upload your best dog photos',
-          'Countries'
+          'Countries',
+          'Confirm your postal address'
         ]
       )
     end
@@ -218,6 +219,7 @@ RSpec.describe Branch do
           { 'data-supports-branching': true },
           { 'data-supports-branching': false },
           { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
           { 'data-supports-branching': false },
           { 'data-supports-branching': false },
           { 'data-supports-branching': false }
