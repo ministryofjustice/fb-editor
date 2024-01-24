@@ -7,9 +7,9 @@ ruby '3.1.3'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'fix-extra-pointers-in-detached-flows'
+#     branch: 'address-testing-feedback'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.7'
+gem 'metadata_presenter', '3.3.9'
 
 gem 'activerecord-session_store'
 gem 'administrate'

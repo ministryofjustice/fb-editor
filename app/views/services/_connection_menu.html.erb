@@ -21,6 +21,10 @@
               data-component-type="number"><span><%= t('components.list.number') -%></span></li>
           <li data-page-type="singlequestion"
               data-component-type="date"><span><%= t('components.list.date') -%></span></li>
+          <% if FeatureFlags.address_component.enabled? %>
+          <li data-page-type="singlequestion"
+              data-component-type="address"><span><%= t('components.list.address') -%></span></li>
+          <% end %>
           <li data-page-type="singlequestion"
               data-component-type="radios"><span><%= t('components.list.radios') -%></span></li>
           <li data-page-type="singlequestion"
@@ -51,7 +55,7 @@
           <li data-action="reconnect-confirmation"
               data-url="<%= api_service_flow_destinations_path(service.service_id, item[:uuid]) -%>"
               data-destination-uuid="<%= service.confirmation_page.uuid -%>">
-              <a href="#reconnect-confirmation"><%= t('actions.reconnect_confirmation') -%></span>
+              <a href="#reconnect-confirmation"><%= t('actions.reconnect_confirmation') -%></a>
           </li>
         <% end %>
       <% else %>

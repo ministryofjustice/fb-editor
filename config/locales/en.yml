@@ -331,6 +331,7 @@ en:
       upload: 'File upload'
       multi_upload: 'Multiple File upload'
       autocomplete: 'Autocomplete'
+      address: 'Address'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
