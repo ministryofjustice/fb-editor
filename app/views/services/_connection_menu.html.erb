@@ -1,5 +1,5 @@
 <ul class="govuk-navigation component-activated-menu"
-    data-activator-text="<%= t('pages.connection_menu_label', source: (item[:type] == 'flow.branch' ? item[:title] + ', ' + condition_title : item[:title] ) ) %>"
+    data-activator-text="<%= t('pages.connection_menu_label', source: item[:type] == 'flow.branch' ? connection_activator_text(item, condition_title) : connection_activator_text(item) ) %>"
     data-activator-classname="<%= item[:type] == 'flow.branch' ? 'branch-' : '' -%>connection-menu-activator"
     data-component="ConnectionMenu"
     data-title="<%= item[:title] %>"

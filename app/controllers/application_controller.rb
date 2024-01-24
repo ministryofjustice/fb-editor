@@ -135,6 +135,12 @@ class ApplicationController < ActionController::Base
   end
   helper_method :external_url
 
+  def connection_activator_text(item, condition_title = '')
+    title = using_external_start_page? ? I18n.t('external_start_page_url.link') : item[:title]
+    (item[:type] == 'flow.branch' ? "#{title}, #{condition_title}" : title)
+  end
+  helper_method :connection_activator_text
+
   def show_save_and_return
     @page.upload_components.none?
   end

@@ -1,5 +1,5 @@
 <ul class="govuk-navigation component-activated-menu"
-    data-activator-text="<%= t('pages.flow_page_menu_label', title: item[:title]) %>"
+    data-activator-text="<%= using_external_start_page? ? t('external_start_page_url.link_aria_text') : t('pages.flow_page_menu_label', title: item[:title]) %>"
     data-activator-classname="flow-menu-activator"
     data-component="ItemActionMenu"
     data-title="<%= item[:title] %>"

@@ -263,6 +263,7 @@ en:
     add_condition: 'Add condition'
   external_start_page_url:
     link: 'GOV.UK start page'
+    link_aria_text: 'action for GOV.UK start page'
     title: 'Switch to a GOV.UK start page'
     editing_title: 'Edit GOV.UK start page URL'
     content: 'This will remove the current start page from your form. Use this option if you want to link to your form from a GOV.UK start page.'
