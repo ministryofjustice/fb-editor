@@ -1,9 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 import { useControllerName } from "../mixins/use-controller-name";
+import { useAncestry } from "../mixins/use-ancestry";
 import { namespaceCamelize } from "../utilities/string-helpers";
 
 export default class extends Controller {
   static targets = ["upButton", "downButton"];
+  static ancestor = "movable-items";
 
   initialize() {
     this.element.insertAdjacentHTML(
@@ -17,86 +19,13 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log("moveable-item controller connected");
     useControllerName(this);
-    this.connectAncestor();
+    useAncestry(this);
   }
 
   disconnect() {
     this.removeChild(this);
-  }
-
-  connectAncestor() {
-    console.log("connecting ancestors");
-    console.log(this.ancestorIdentifier);
-    console.log(this.ancestorElement);
-    if (this.ancestorElement) {
-      console.log("ancestors found");
-      this[this.ancestorControllerKey] =
-        this.application.getControllerForElementAndIdentifier(
-          this.ancestorElement,
-          this.ancestorIdentifier,
-        );
-    }
-    console.log(this[this.ancestorControllerKey]);
-    if (this.hasAncestorController) {
-      this[this.ancestorControllerKey]?.addChild(this);
-    }
-  }
-
-  get ancestorElement() {
-    return this.element.closest(
-      `[data-controller*="${this.ancestorIdentifier}"]`,
-    );
-  }
-
-  get hasAncestorController() {
-    return this[this.ancestorControllerKey] !== "undefined";
-  }
-
-  get _childControllers() {
-    return this[this.childControllersKey];
-  }
-
-  get ancestorControllerKey() {
-    return `${this.ancestorName}Controller`;
-  }
-
-  get childControllersKey() {
-    return `${this.childName}Controllers`;
-  }
-
-  get ancestorIdentifier() {
-    return this.constructor.ancestor || `${this.identifier}s`;
-  }
-
-  get childIdentifier() {
-    return (
-      this.constructor.children ||
-      `${this.identifier.slice(0, this.identifier.length - 1)}`
-    );
-  }
-
-  get ancestorName() {
-    return namespaceCamelize(this.ancestorIdentifier);
-  }
-
-  get childName() {
-    return namespaceCamelize(this.childIdentifier);
-  }
-
-  addChild(childController) {
-    this[this.childControllersKey] = [
-      ...(this._childControllers || []),
-      childController,
-    ];
-  }
-
-  removeChild(childController) {
-    const index = this._childControllers.indexOf(childController);
-
-    if (index > -1) {
-      this._childControllers.splice(index, 1);
-    }
   }
 
   upButtonTargetConnected() {
@@ -118,12 +47,7 @@ export default class extends Controller {
       : this.downButtonTarget.removeAttribute("hidden");
   }
 
-  get parentController() {
-    const el = this.element.closest('[data-controller*="movable-items"]');
-    return el.movableItemsController;
-  }
-
   get maxIndexValue() {
-    return this.parentController.movableItemTargets.length - 1;
+    return this.selfAndSiblingControllers.length - 1;
   }
 }

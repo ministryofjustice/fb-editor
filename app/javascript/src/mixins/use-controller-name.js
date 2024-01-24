@@ -12,19 +12,6 @@
  **/
 import { namespaceCamelize } from "../utilities/string-helpers";
 export const useControllerName = (controller) => {
-  // turn a stimulus controller name into a camelized string
-  // see: https://leastbad.com/stimulus-power-move
-
-  // const camelize = (str) => {
-  //   return str
-  //     .split("--")
-  //     .slice(-1)[0]
-  //     .split(/[-_]/)
-  //     .map((w) => w.replace(/./, (m) => m.toUpperCase()))
-  //     .join("")
-  //     .replace(/^\w/, (c) => c.toLowerCase());
-  // };
-
   Object.defineProperty(controller, "controllerName", {
     get() {
       return namespaceCamelize(controller.identifier) + "Controller";
