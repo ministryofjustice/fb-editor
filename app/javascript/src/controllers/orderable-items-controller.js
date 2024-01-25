@@ -1,24 +1,19 @@
 import { Controller } from "@hotwired/stimulus";
-import {  useControllerName } from "../mixins/use-controller-name"
+import { useControllerName } from "../mixins/use-controller-name";
+import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
   static targets = ["orderableItem"];
+  static children = "orderable-item";
 
   connect() {
-    console.log('orderable-items-connected')
-    console.log(this.identifier)
     useControllerName(this);
-    console.log(this.controllerName)
-    // this.element[`${this.identifier}Controller`] = this;
+    useAncestry(this);
   }
 
-  orderableItemDisconnected() {
-    this.updateOrder();
-  }
-
-  updateOrder() {
-    this.orderableItemTargets.forEach((item, idx) => {
-      item.orderableItemController.indexValue = idx;
+  reorder() {
+    this.orderableItemTargets.forEach((element, idx) => {
+      element.orderableItemController.orderValue = idx;
     });
   }
 }

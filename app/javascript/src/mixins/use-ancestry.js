@@ -29,6 +29,10 @@ export const useAncestry = (controller) => {
     return `${childName()}Controllers`;
   };
 
+  const siblingControllersKey = () => {
+    return `${namespaceCamelize(controller.identifier)}Controllers`;
+  };
+
   const ancestorIdentifier = () => {
     if (controller.constructor.ancestor) {
       return controller.constructor.ancestor;
@@ -44,7 +48,7 @@ export const useAncestry = (controller) => {
       return controller.constructor.children;
     } else {
       throw new Error(
-        `Missing children property for "${controller.indentifier}" controller`,
+        `Missing children property for "${controller.identifier}" controller`,
       );
     }
   };
@@ -86,12 +90,6 @@ export const useAncestry = (controller) => {
       if (index > -1) {
         childControllers().splice(index, 1);
       }
-    },
-  });
-
-  Object.defineProperty(controller, "selfAndSiblingsControllers", {
-    get() {
-      return controller[ancestorControllerKey()][childControllersKey()];
     },
   });
 

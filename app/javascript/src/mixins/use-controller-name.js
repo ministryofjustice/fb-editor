@@ -12,11 +12,13 @@
  **/
 import { namespaceCamelize } from "../utilities/string-helpers";
 export const useControllerName = (controller) => {
-  Object.defineProperty(controller, "controllerName", {
-    get() {
-      return namespaceCamelize(controller.identifier) + "Controller";
-    },
-  });
+  if (!controller.hasOwnProperty("controllerName")) {
+    Object.defineProperty(controller, "controllerName", {
+      get() {
+        return namespaceCamelize(controller.identifier) + "Controller";
+      },
+    });
+  }
 
   controller.element[`${controller.controllerName}`] = controller;
 };

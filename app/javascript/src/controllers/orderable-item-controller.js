@@ -1,51 +1,25 @@
 import { Controller } from "@hotwired/stimulus";
+import { useControllerName } from "../mixins/use-controller-name";
+import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
   static values = {
-    index: Number,
+    order: Number,
   };
+  static ancestor = "orderable-items";
 
   connect() {
-    console.log("orderable-item-connected");
-    console.log(this.identifier);
-
-    this.element[`${this.identifier}Controller`] = this;
-    const el = this.element.closest('[data-controller*="orderable-items"]');
-    console.log(el);
-    Promise.resolve().then(() => {
-      this.parentController = el.orderableItemsController;
-      console.log(this.parentController);
-    });
+    useControllerName(this);
+    useAncestry(this);
   }
 
-  increment() {
-    if (this.indexValue == this.maxIndexValue) return;
-    if (this.nextSibling) this.nextSibling.orderableItemController.indexValue--;
-    this.indexValue++;
+  disconnect() {
+    this.orderableItemsController.removeChild(this);
+    this.orderableItemsController.reorder();
   }
 
-  decrement() {
-    if (this.indexValue == 0) return;
-    if (this.previousSibling)
-      this.previousSibling.orderableItemController.indexValue++;
-    this.indexValue--;
-  }
-
-  get previous() {
-    if (this.indexValue - 1 < 0) return;
-    this.siblings[this.indexValue - 1];
-  }
-
-  get next() {
-    if (this.indexValue + 1 > this.maxIndexValue) return;
-    this.siblings[this.indexValue + 1];
-  }
-
-  get siblings() {
-    this.parentController.movableItemTargets;
-  }
-
-  get maxIndexValue() {
-    return this.parentController.orderableItemTargets.length - 1;
+  orderValueChanged(newValue, oldValue) {
+    if (newValue != oldValue)
+      this.dispatch("orderUpdated", { detail: { order: newValue } });
   }
 }
