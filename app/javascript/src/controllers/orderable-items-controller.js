@@ -11,8 +11,13 @@ export default class extends Controller {
     useAncestry(this);
   }
 
+  orderableItemTargetDisconnected() {
+    this.reorder();
+  }
+
   reorder() {
     this.orderableItemTargets.forEach((element, idx) => {
+      // element.orderableItemController.updateOrderValue(idx);
       element.orderableItemController.orderValue = idx;
     });
   }

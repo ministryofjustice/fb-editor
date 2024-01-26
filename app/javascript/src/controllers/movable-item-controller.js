@@ -6,45 +6,44 @@ export default class extends Controller {
   static targets = ["upButton", "downButton"];
   static ancestor = "movable-items";
 
-  initialize() {
-    this.element.insertAdjacentHTML(
-      "beforeend",
-      `<button type="button" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
-    );
-    this.element.insertAdjacentHTML(
-      "beforeend",
-      `<button type="button" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
-    );
-  }
-
   connect() {
     useControllerName(this);
     useAncestry(this);
+    Promise.resolve().then(() => {
+      this.render();
+    });
   }
 
   disconnect() {
     this.movableItemsController.removeChild(this);
   }
 
-  upButtonTargetConnected() {
+  render() {
+    console.log("movable-item render");
+    if (!this.hasUpButtonTarget) {
+      this.element.insertAdjacentHTML(
+        "beforeend",
+        `<button type="button" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
+      );
+    }
+    if (!this.hasDownButtonTarget) {
+      this.element.insertAdjacentHTML(
+        "beforeend",
+        `<button type="button" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
+      );
+    }
     requestAnimationFrame(() => {
-      this.updateButtonVisibilty();
-    });
-  }
-
-  downButtonConnected() {
-    requestAnimationFrame(() => {
-      this.updateButtonVisibilty();
+      this.movableItemsController.updateButtonVisibilty();
     });
   }
 
   moveDown(event) {
     const button = event.target;
-    const currentIndex = this.siblingElements.indexOf(this.element);
-    const newIndex = currentIndex + 1;
+    const newIndex = this.currentIndex + 1;
     const nextItem = this.siblingElements[newIndex];
 
     nextItem.after(this.element);
+    this.movableItemsController.updateButtonVisibilty();
     button.focus();
 
     this.dispatch("move");
@@ -52,24 +51,19 @@ export default class extends Controller {
 
   moveUp(event) {
     const button = event.target;
-    const currentIndex = this.siblingElements.indexOf(this.element);
-    const newIndex = currentIndex - 1;
+    const newIndex = this.currentIndex - 1;
     const previousItem = this.siblingElements[newIndex];
 
     previousItem.before(this.element);
+    this.movableItemsController.updateButtonVisibilty();
+
     button.focus();
 
     this.dispatch("move");
   }
 
-  updateButtonVisibilty() {
-    const index = this.siblingElements.indexOf(this.element);
-    index == 0
-      ? this.upButtonTarget.setAttribute("hidden", "")
-      : this.upButtonTarget.removeAttribute("hidden");
-    index == this.maxIndexValue
-      ? this.downButtonTarget.setAttribute("hidden", "")
-      : this.downButtonTarget.removeAttribute("hidden");
+  get currentIndex() {
+    return this.siblingElements.indexOf(this.element);
   }
 
   get maxIndexValue() {

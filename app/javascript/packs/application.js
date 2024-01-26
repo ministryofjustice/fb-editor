@@ -23,11 +23,12 @@ import OrderableItemsController from "../src/controllers/orderable-items-control
 import OrderableItemController from "../src/controllers/orderable-item-controller.js";
 import MovableItemsController from "../src/controllers/movable-items-controller.js";
 import MovableItemController from "../src/controllers/movable-item-controller.js";
-import QuestionsController from "../src/controllers/questions-controller.js";
-import QuestionController from "../src/controllers/question-controller.js";
+import ComponentsController from "../src/controllers/components-controller.js";
+import ComponentController from "../src/controllers/component-controller.js";
 
 Turbo.session.drive = false;
 window.Stimulus = Application.start();
+Stimulus.debug = true;
 Stimulus.register("dynamic-fields", DynamicFieldsController);
 Stimulus.register("conditionals-status", ConditionalsStatusController);
 Stimulus.register("conditional", ConditionalController);
@@ -39,8 +40,8 @@ Stimulus.register("orderable-items", OrderableItemsController);
 Stimulus.register("orderable-item", OrderableItemController);
 Stimulus.register("movable-items", MovableItemsController);
 Stimulus.register("movable-item", MovableItemController);
-Stimulus.register("questions", QuestionsController);
-Stimulus.register("question", QuestionController);
+Stimulus.register("components", ComponentsController);
+Stimulus.register("component", ComponentController);
 
 const { EditableContent } = require("../src/web-components/editable-content");
 const { ElasticTextarea } = require("../src/web-components/elastic-textarea");
