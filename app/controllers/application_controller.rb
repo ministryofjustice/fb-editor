@@ -231,4 +231,5 @@ class ApplicationController < ActionController::Base
   def start_page_url
     external_start_page_url.empty? ? root_path : external_start_page_url
   end
+  helper_method :start_page_url
 end
