@@ -66,6 +66,21 @@ feature 'External start page' do
     end
   end
 
+  scenario 'preview form first page' do
+    and_I_click_on_the_page_menu(start_page)
+    then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
+    and_I_click_on_use_external_start_page
+    then_I_should_see_the_external_start_page_modal
+    and_I_add_a_url('gov.uk')
+    and_I_confirm_url
+    then_I_should_see_the_external_start_page_is_set
+    preview_form = and_I_preview_the_form
+
+    within_window preview_form do
+      then_I_should_see_the_preview_info_panel
+    end
+  end
+
   scenario 'update external start page url' do
     and_I_click_on_the_page_menu(start_page)
     then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
@@ -105,6 +120,10 @@ feature 'External start page' do
     expect(page).to have_content(I18n.t('external_start_page_url.preview.title'))
     expect(page).to have_content(I18n.t('external_start_page_url.preview.content_one'))
     expect(page).to have_content(I18n.t('external_start_page_url.preview.confirm'))
+  end
+
+  def then_I_should_see_the_preview_info_panel
+    expect(page).to have_content("Your form has a GOV.UK start page. Links to your form's 'home' page, such as your form's name in the header, will not work until the GOV.UK page has been published.")
   end
 
   def and_I_add_a_url(text)

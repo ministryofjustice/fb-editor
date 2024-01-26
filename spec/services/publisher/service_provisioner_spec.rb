@@ -262,6 +262,27 @@ RSpec.describe Publisher::ServiceProvisioner do
       end
     end
 
+    context 'external_start_page_url' do
+      context 'not configured' do
+        it 'does not include external start page url' do
+          expect(service_provisioner.external_start_page_url).to eq('')
+        end
+      end
+
+      context 'configured' do
+        let(:external_url_config) { build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url) }
+        let(:external_start_page_url) { EncryptionService.new.encrypt('gov.uk') }
+
+        before do
+          allow(ServiceConfiguration).to receive(:find_by).and_return(external_url_config)
+        end
+
+        it 'does include external start page url' do
+          expect(service_provisioner.external_start_page_url).to eq('gov.uk')
+        end
+      end
+    end
+
     context 'do_not_send_submission' do
       context 'when send_email is present' do
         before do

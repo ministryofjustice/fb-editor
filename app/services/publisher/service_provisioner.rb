@@ -48,11 +48,7 @@ class Publisher
     end
 
     def external_start_page_url
-      if external_start_page_config.present?
-        external_start_page_config.decrypt_value
-      else
-        ''
-      end
+      external_start_page_config.presence || ''
     end
 
     def container_port
