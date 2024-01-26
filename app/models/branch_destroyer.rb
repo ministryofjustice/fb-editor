@@ -29,7 +29,7 @@ class BranchDestroyer
     metadata = latest_metadata.to_h.deep_dup
 
     metadata.tap do
-      metadata['flow'].each do |_flow_id, flow_hash|
+      metadata['flow'].each_value do |flow_hash|
         if flow_hash['next'] && flow_hash['next']['default'] == branch_uuid
           flow_hash['next']['default'] = destination_uuid
         end

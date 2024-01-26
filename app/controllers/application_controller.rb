@@ -123,6 +123,24 @@ class ApplicationController < ActionController::Base
   end
   helper_method :save_and_return_enabled?
 
+  def using_external_start_page?
+    external_start_page_config.present?
+  end
+  helper_method :using_external_start_page?
+
+  def external_url
+    return '' unless using_external_start_page?
+
+    external_start_page_config.decrypt_value
+  end
+  helper_method :external_url
+
+  def connection_activator_text(item, condition_title = '')
+    title = using_external_start_page? ? I18n.t('external_start_page_url.link') : item[:title]
+    (item[:type] == 'flow.branch' ? "#{title}, #{condition_title}" : title)
+  end
+  helper_method :connection_activator_text
+
   def show_save_and_return
     @page.upload_components.none?
   end
@@ -130,6 +148,10 @@ class ApplicationController < ActionController::Base
 
   def save_and_return_config
     @save_and_return_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'SAVE_AND_RETURN')
+  end
+
+  def external_start_page_config
+    @external_start_page_config ||= ServiceConfiguration.find_by(service_id: service.service_id, name: 'EXTERNAL_START_PAGE_URL', deployment_environment: 'production')
   end
 
   def editor_preview?
@@ -181,4 +203,33 @@ class ApplicationController < ActionController::Base
 
   def in_runner?; end
   helper_method :in_runner?
+
+  def first_page?
+    @page.url == service.pages[1].url
+  end
+  helper_method :first_page?
+
+  def use_external_start_page?
+    external_start_page_config.present?
+  end
+  helper_method :use_external_start_page?
+
+  def external_start_page_url
+    if external_start_page_config.present?
+      value = external_start_page_config.decrypt_value
+      unless value[/\Ahttps:\/\//]
+        return "https://#{value}"
+      end
+
+      value
+    else
+      ''
+    end
+  end
+  helper_method :external_start_page_url
+
+  def start_page_url
+    external_start_page_url.empty? ? root_path : external_start_page_url
+  end
+  helper_method :start_page_url
 end

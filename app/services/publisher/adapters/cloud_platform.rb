@@ -8,6 +8,7 @@ class Publisher
       delegate :service_id,
                :namespace,
                :service_slug,
+               :external_start_page_url,
                :hostname,
                :service_name,
                :deployment_environment,

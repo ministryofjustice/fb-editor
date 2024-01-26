@@ -125,6 +125,11 @@ FactoryBot.define do
       value { '1' }
     end
 
+    trait :external_start_page_url do
+      name { 'EXTERNAL_START_PAGE_URL' }
+      value { 'gov.uk' }
+    end
+
     trait :service_slug do
       name { 'SERVICE_SLUG' }
       value { 'eat-slugs-malfoy' }

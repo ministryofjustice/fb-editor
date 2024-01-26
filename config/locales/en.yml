@@ -219,6 +219,10 @@ en:
       undo_move: 'Undo move'
       redo_change_next_page: 'Redo change next page'
       redo_move: 'Redo move'
+    enable_external_start_page: 'Switch to a GOV.UK start page'
+    edit_external_start_page: 'Edit start page URL'
+    preview_external_start_page: 'Open start page'
+    disable_external_start_page: 'Switch to form start page'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
@@ -257,6 +261,24 @@ en:
       never: 'Never'
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
+  external_start_page_url:
+    link: 'GOV.UK start page'
+    link_aria_text: 'action for GOV.UK start page'
+    title: 'Switch to a GOV.UK start page'
+    editing_title: 'Edit GOV.UK start page URL'
+    content: 'This will remove the current start page from your form. Use this option if you want to link to your form from a GOV.UK start page.'
+    help_link_text: 'Which type of start page do I need?'
+    label: 'GOV.UK start page URL'
+    confirm: 'Use this as my start page'
+    done: 'Done'
+    cancel: 'Cancel'
+    preview:
+      title: 'Open your GOV.UK start page'
+      content_one: 'This will open the GOV.UK link you have set as your start page.'
+      content_two: 'The start page should include a link to %{href}. This may not work as expected if you have not published your form to Live yet or have changes in draft.'
+      link_text: "your form's live URL"
+      confirm: 'Open GOV.UK start page'
+      cancel: 'cancel'
     condition_target: ' to %{type} %{index}'
     hints:
       question: The question whose answer will be used in this rule
@@ -683,6 +705,9 @@ en:
         max_files_validation:
           too_small: "%{label} cannot be less than 1"
           too_big: "%{label} cannot be larger than 10"
+        external_url_validation:
+          missing: 'Enter a valid URL which includes "gov.uk"'
+          invalid: 'Enter a valid URL which includes "gov.uk"'
         form_analytics_settings:
           blank: Enter at least one tracking ID
           ua: A Universal Analytics ID must start with UA

@@ -44,7 +44,11 @@ class Publisher
     delegate :service_name, to: :service
 
     def service_slug
-      (service_slug_config.presence || service.service_slug)
+      service_slug_config.presence || service.service_slug
+    end
+
+    def external_start_page_url
+      external_start_page_config.presence || ''
     end
 
     def container_port
@@ -208,6 +212,14 @@ class Publisher
         service_id:,
         name: 'SERVICE_SLUG',
         deployment_environment: 'dev'
+      )&.decrypt_value
+    end
+
+    def external_start_page_config
+      ServiceConfiguration.find_by(
+        service_id:,
+        name: 'EXTERNAL_START_PAGE_URL',
+        deployment_environment: 'production'
       )&.decrypt_value
     end
   end

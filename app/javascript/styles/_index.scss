@@ -1080,6 +1080,10 @@ editable-content,
   }
 }
 
+.editing-external-url {
+  margin-top: 30px;
+}
+
 .flow-thumbnail {
   background-color: govuk-colour("white");
   border:  $govuk-link-colour solid 2px;
@@ -1089,6 +1093,10 @@ editable-content,
   overflow: hidden;
   text-decoration: none;
   width: 196px;
+
+  .external-url-thumbnail {
+    border: black solid 2px;
+  }
 
   &:hover {
     border-color: $govuk-link-hover-colour;

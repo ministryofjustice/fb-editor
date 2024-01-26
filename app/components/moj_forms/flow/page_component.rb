@@ -1,6 +1,8 @@
 module MojForms
   module Flow
     class PageComponent < MojForms::Flow::FlowItemComponent
+      delegate :using_external_start_page?, to: :helpers
+
       def default_attributes
         super.deep_merge({
           data: {

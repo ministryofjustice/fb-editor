@@ -395,6 +395,11 @@ module CommonSteps
     and_I_click_on_the_three_dots
   end
 
+  def and_I_click_on_the_external_start_page_menu
+    editor.external_start_page_thumbnail.hover
+    and_I_click_on_the_three_dots
+  end
+
   def and_I_click_on_the_branching_point_menu(branch_title)
     editor.hover_branch(branch_title)
     and_I_click_on_the_three_dots

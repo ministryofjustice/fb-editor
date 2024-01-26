@@ -46,6 +46,18 @@ class PageMenu extends ActivatedMenu {
                 this.moveItemApi(item);
                 break;
 
+            case "toggle-external-start-page":
+                this.toggleExternalStartPage(item);
+                break;
+
+            case "disable-external-start-page":
+                this.disableExternalStartPage(item);
+                break;
+
+            case "preview-external-start-page":
+                this.previewExternalStartPage(item);
+                break;
+
             default: this.link(item);
         }
     }
@@ -99,6 +111,38 @@ class PageMenu extends ActivatedMenu {
                     dialog.$node.find("#move_target_conditional_uuid").val(conditionalUuid)
                 });
             }
+        });
+    }
+
+    toggleExternalStartPage(element) {
+        var $link = element.find("> a");
+        new DialogForm($link.attr("href"), {
+            activator: $link,
+            autoOpen: true,
+            remote: true,
+            onError: function(data, dialog) {
+                var responseHtml = $.parseHTML(data.responseText);
+                var $newHtml = $(responseHtml[0]).html();
+                dialog.$node.html($newHtml);
+                dialog.refresh();
+              },
+              onSuccess: function() {
+                window.location.reload()
+              },
+        });
+    }
+
+    disableExternalStartPage(element) {
+        var $link = element.find("> a");
+        post($link.attr("href"), { _method: "delete" });
+    }
+
+    previewExternalStartPage(element) {
+        var $link = element.find("> a");
+        new DialogForm($link.attr("href"), {
+            activator: $link,
+            autoOpen: true,
+            remote: true,
         });
     }
 }

@@ -131,6 +131,10 @@ class EditorApp < SitePrism::Page
     preview_page_images.find { |p| p.find('.title').text.include?(title) }
   end
 
+  def external_start_page_thumbnail
+    page.find('.external-thumbnail')
+  end
+
   def flow_article(title)
     flow_items.find { |p| p.first('.text').text.include?(title) } 
   end
