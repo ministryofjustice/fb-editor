@@ -1,4 +1,4 @@
-<% if ['checkanswers', 'confirmation', 'content', 'exit'].include? @page._type.gsub('page.', '') %>
+<% if ['checkanswers', 'confirmation', 'content', 'exit','singlequestion'].include? @page._type.gsub('page.', '') %>
   <% if @page.supported_content_components.present? %>
     <div class="component add-content" data-component="add-content">
       <%# TODO: This will be basis of v2 code %>
