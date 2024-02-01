@@ -76,7 +76,7 @@ module Admin
         # skip any services created by the acceptance tests user
         next if user.id == ACCEPTANCE_TEST_USER_ID
 
-        MetadataApiClient::Service.all(user_id: user.id).find_each do |service|
+        MetadataApiClient::Service.all(user_id: user.id).find_all do |service|
           meta = service.metadata
 
           array << {
