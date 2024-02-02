@@ -44,20 +44,6 @@ RSpec.describe SaveAndReturnSettingsUpdater do
               name: 'SAVE_AND_RETURN'
             )
           ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL'
-            )
-          ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL_SUBJECT'
-            )
-          ).to be_empty
         end
       end
     end
@@ -80,64 +66,10 @@ RSpec.describe SaveAndReturnSettingsUpdater do
           expect(
             ServiceConfiguration.find_by(
               service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL',
-              deployment_environment: 'dev'
-            )
-          ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL_SUBJECT',
-              deployment_environment: 'dev'
-            )
-          ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
               name: 'SAVE_AND_RETURN',
               deployment_environment: 'production'
             )
           ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL',
-              deployment_environment: 'production'
-            )
-          ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL_SUBJECT',
-              deployment_environment: 'production'
-            )
-          ).to be_present
-        end
-
-        context 'for a Welsh form' do
-          let(:locale) { :cy }
-
-          before do
-            Current.form_locale = locale
-          end
-
-          it 'creates the save and return settings localised in Welsh' do
-            expect(I18n).to receive(:t).with(
-              'default_values.save_and_return_email',
-              locale:, service_name: service.service_name
-            ).twice.and_call_original
-
-            expect(I18n).to receive(:t).with(
-              'default_values.save_and_return_email_subject',
-              locale:, service_name: service.service_name
-            ).twice.and_call_original
-
-            save_and_return_settings_updater.create_or_update!
-          end
         end
       end
 
@@ -151,20 +83,6 @@ RSpec.describe SaveAndReturnSettingsUpdater do
             ServiceConfiguration.where(
               service_id: service.service_id,
               name: 'SAVE_AND_RETURN'
-            )
-          ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL'
-            )
-          ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL_SUBJECT'
             )
           ).to be_empty
         end
