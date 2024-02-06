@@ -1,6 +1,8 @@
 class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
+
   before_action :assign_required_objects, only: %i[edit update destroy]
+  around_action :switch_locale, only: %i[edit update]
 
   COMPONENTS = 'components'.freeze
   EXTRA_COMPONENTS = 'extra_components'.freeze

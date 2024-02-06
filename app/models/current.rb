@@ -5,5 +5,9 @@
 # https://edgeapi.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html
 #
 class Current < ActiveSupport::CurrentAttributes
-  attribute :request_id
+  attribute :request_id, :form_locale
+
+  def form_locale
+    super || I18n.default_locale
+  end
 end

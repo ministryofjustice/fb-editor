@@ -7,9 +7,9 @@ ruby '3.1.3'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'test-start-page'
+#     branch: 'main'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.10'
+gem 'metadata_presenter', '3.3.11'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -22,7 +22,7 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
-gem 'govuk-components'
+gem 'govuk-components', '< 5.0.0'
 gem 'govuk_design_system_formbuilder'
 gem 'hashie'
 gem 'omniauth-auth0', '~> 3.1.0'
