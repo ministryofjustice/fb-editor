@@ -120,7 +120,7 @@ RSpec.describe PagesFlow do
               uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
               next: '80420693-d6f2-4fce-a860-777ca774a6f5',
               previous_uuid: '0c022e95-0748-4dda-8ba5-12fd1d2f596b',
-              thumbnail: 'text',
+              thumbnail: 'radios',
               url: 'star-wars-knowledge'
             }
           ],
