@@ -16,4 +16,6 @@ Rails.application.config.enabled_validations = %w[
   upload
   virus_scan
   max_files
+  address
+  postcode
 ]
