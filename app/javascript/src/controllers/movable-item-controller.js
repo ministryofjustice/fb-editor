@@ -23,43 +23,44 @@ export default class extends Controller {
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
+        `<button type="button" class="" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
       );
     }
     if (!this.hasDownButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
+        `<button type="button" class="" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
       );
     }
-    requestAnimationFrame(() => {
-      this.movableItemsController.updateButtonVisibilty();
-    });
   }
 
   moveDown(event) {
     const button = event.target;
+    console.log(button);
     const newIndex = this.currentIndex + 1;
     const nextItem = this.siblingElements[newIndex];
 
-    nextItem.after(this.element);
-    this.movableItemsController.updateButtonVisibilty();
-    button.focus();
+    this.element.classList.add("moving");
 
+    nextItem.after(this.element);
     this.dispatch("move");
+    button.focus();
+    this.element.classList.remove("moving");
   }
 
   moveUp(event) {
     const button = event.target;
+    console.log(button);
     const newIndex = this.currentIndex - 1;
     const previousItem = this.siblingElements[newIndex];
 
-    previousItem.before(this.element);
-    this.movableItemsController.updateButtonVisibilty();
+    this.element.classList.add("moving");
 
-    button.focus();
+    previousItem.before(this.element);
 
     this.dispatch("move");
+    button.focus();
+    this.element.classList.remove("moving");
   }
 
   get currentIndex() {

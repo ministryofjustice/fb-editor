@@ -17,7 +17,6 @@ export default class extends Controller {
 
   reorder() {
     this.orderableItemTargets.forEach((element, idx) => {
-      // element.orderableItemController.updateOrderValue(idx);
       element.orderableItemController.orderValue = idx;
     });
   }

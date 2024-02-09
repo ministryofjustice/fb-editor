@@ -11,9 +11,12 @@ export default class extends Controller {
     useAncestry(this);
   }
 
-  updateButtonVisibilty() {
-    console.log("updating button visiblilty");
+  movableItemTargetDisconnected(element) {
+    console.log("movable item disconnect");
+    console.log(element.movableItemController);
+  }
 
+  updateButtonVisibilty() {
     this.movableItemTargets.forEach((element, index) => {
       index == 0
         ? element.movableItemController.upButtonTarget.setAttribute(

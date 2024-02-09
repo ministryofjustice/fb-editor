@@ -7,12 +7,15 @@ export default class extends Controller {
   static values = {
     content: Object,
   };
-
   static ancestor = "components";
 
   connect() {
     useControllerName(this);
     useAncestry(this);
+
+    this.saveRequiredEvent = new CustomEvent("SaveRequired", {
+      bubbles: true,
+    });
   }
 
   update(event) {
@@ -25,17 +28,23 @@ export default class extends Controller {
       this.updateContentConfig(orderValue);
     }
 
-    document.dispatchEvent(
-      new CustomEvent("SaveRequired", {
-        bubbles: true,
-      }),
-    );
+    this.element.dispatchEvent(this.saveRequiredEvent);
+  }
+
+  destroy(event) {
+    console.log("the question/content area was destroyed");
+    this.element.dispatchEvent(this.saveRequiredEvent);
+    this.element.remove();
   }
 
   updateQuestionData(orderValue) {
     const data = JSON.parse(this.questionTarget.dataset.fbContentData);
     const newData = Object.assign(data, { order: orderValue });
-    this.questionTarget.dataset.fbContentData = JSON.stringify(newData);
+    const editableInstance = $(this.questionTarget).data("instance"); // A reference to the EditableComponent instance
+
+    if (editableInstance) {
+      editableInstance.data = newData;
+    }
   }
 
   updateContentConfig(orderValue) {

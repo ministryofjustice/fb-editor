@@ -63,6 +63,8 @@ class EditableBase {
   }
 
   save() {
+    console.log('Editable base save')
+    console.log(this.content)
     updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }
 

@@ -13,9 +13,6 @@ export default class extends Controller {
   connect() {
     useControllerName(this);
     useAncestry(this);
-    // requestAnimationFrame(() => {
-    //   this.updateOrderValue(this.orderValue, true);
-    // });
   }
 
   disconnect() {
@@ -23,6 +20,7 @@ export default class extends Controller {
   }
 
   orderValueChanged(newValue, oldValue) {
+    console.log(`order value changed from ${oldValue} to ${newValue}`);
     if (newValue !== oldValue) {
       requestAnimationFrame(() => {
         this.dispatch("orderUpdated", { detail: { order: newValue } });

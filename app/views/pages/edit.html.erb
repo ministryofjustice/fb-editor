@@ -7,30 +7,30 @@
 <% end %>
 
 <%= render template: @page.template %>
+
 <%= render partial: 'partials/add_component_button' %>
 <%= render partial: 'partials/add_content_button' %>
+
+<%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), html: { id: "editContentForm" }, method: :patch do |f| %>
+  <% @page.editable_attributes.each do |key, value| %>
+    <% if key == :components || key == :extra_components %>
+      <% value.each_with_index do |hash, index| %>
+        <%= f.hidden_field "#{key}[#{index}]", value: hash.to_json, id: "#{key}_#{index}" %>
+      <% end %>
+    <% else %>
+      <%= f.hidden_field key, value: value %>
+    <% end %>
+  <% end %>
+ 
+  <%= mojf_save_button(form: f, text: t('actions.save'), html_attributes: {id: 'fb-editor-save', 'prevent-unload': true}) %>
+<% end %>
+
 <%= render partial: 'partials/template_component_question_menu' %>
 <%= render partial: 'partials/template_content_menu' %>
 <%= render partial: 'partials/template_editable_collection_item_menu' %>
 <%= render partial: 'partials/template_dialog_configuration' %>
 <%= render partial: 'partials/template_content_property_fields' %>
 <%= render partial: 'partials/template_question_property_fields' %>
-
-<%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), html: { id: "editContentForm" }, method: :patch do |f| %>
-  <% @page.editable_attributes.each do |key, value| %>
-    <% if key == :components || key == :extra_components %>
-      <% value.each_with_index do |hash, index| %>
-        <%= f.hidden_field "#{key}[#{index}]", value: hash.to_json %>
-      <% end %>
-    <% else %>
-      <%= f.hidden_field key, value: value %>
-    <% end %>
-  <% end %>
-
-
-    <%= mojf_save_button(form: f, text: t('actions.save'), html_attributes: {id: 'fb-editor-save', 'prevent-unload': true}) %>
-
-  <% end %>
 
 <% # app.page is initialised in partials/properties. %>
 <% # JS object should exist at this point so we're not checking for existence. %>
