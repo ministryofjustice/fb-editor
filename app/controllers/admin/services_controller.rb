@@ -342,7 +342,7 @@ module Admin
         deployment_environment: 'production'
       ).last
 
-      return false if publish_service.nil?
+      return true if publish_service.nil?
 
       publish_service.queued? || publish_service.unpublishing?
     end
