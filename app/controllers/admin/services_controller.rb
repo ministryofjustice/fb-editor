@@ -343,6 +343,7 @@ module Admin
       ).last
 
       return true if publish_service.nil?
+
       publish_service.queued? || publish_service.unpublishing?
     end
 
