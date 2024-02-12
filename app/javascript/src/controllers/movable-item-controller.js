@@ -20,7 +20,6 @@ export default class extends Controller {
   }
 
   render() {
-    console.log("movable-item render");
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",

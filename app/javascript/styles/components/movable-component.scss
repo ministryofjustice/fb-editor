@@ -1,6 +1,4 @@
 [data-controller*="movable-item "] {
-  position: relative;
-
   [data-movable-item-target="upButton"],
   [data-movable-item-target="downButton"] {
     display: none;
@@ -13,7 +11,7 @@
     }
   }
 
-  &:hover,
+  // &:hover,
   &:focus-within {
     [data-movable-item-target="upButton"],
     [data-movable-item-target="downButton"] {

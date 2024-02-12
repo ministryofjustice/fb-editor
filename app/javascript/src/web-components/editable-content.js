@@ -67,17 +67,21 @@ class EditableContent extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log("editable content connected");
     // connectedCallback is fired as soon as the opening element is parsed
     // setTimeount allows the child elements to be parsed before we try to read
     // the initialMarkup
-    Promise.resolve().then(() => {
-      this.initialMarkup = this.innerHTML;
-      this.initialContent =
-        this.getAttribute("content")?.replace(/\\r\\n?|\\n/g, "\n") || "";
-      this.defaultContent = this.getAttribute("default-content") || "";
-      this.render();
-    });
+    setTimeout(() => {
+      const rendered = this.querySelector(
+        '[data-element="editable-content-root"]',
+      );
+
+      if (!rendered) {
+        this.initialize();
+        this.render();
+      } else {
+        this.afterRender();
+      }
+    }, 0);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -158,20 +162,28 @@ class EditableContent extends HTMLElement {
     this.setAttribute("data-config", JSON.stringify(value));
   }
 
+  initialize() {
+    this.initialMarkupContainer = this.querySelector(".html");
+    this.initialMarkup = this.initialMarkupContainer.innerHTML;
+    this.initialContent =
+      this.getAttribute("content")?.replace(/\\r\\n?|\\n/g, "\n") || "";
+    this.defaultContent = this.getAttribute("default-content") || "";
+  }
+
   render() {
     const initialContent = this.initialContent || this.defaultContent;
     const initialMarkup =
       this.initialMarkup.trim() != ""
         ? this.sanitize(this.initialMarkup)
         : this.defaultContent;
-    this.innerHTML = `
+    this.initialMarkupContainer.outerHTML = `
 <div class="editable-content" data-element="editable-content-root">
   <elastic-textarea>
     <textarea class="" data-element="editable-content-input" rows="8" hidden>${initialContent}</textarea>
   </elastic-textarea>
   <div data-element="editable-content-output">${initialMarkup}</div>
 </div>`;
-    console.log("editableContent rendered");
+
     this.afterRender();
   }
 

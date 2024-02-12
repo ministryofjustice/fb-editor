@@ -1,17 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 import { useControllerName } from "../mixins/use-controller-name";
-import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
-  // static targets = ["question", "content"];
   static values = {
     content: Object,
   };
-  static ancestor = "components";
+
+  get isEditableContent() {
+    return this.element.tagName == "EDITABLE-CONTENT";
+  }
 
   connect() {
     useControllerName(this);
-    useAncestry(this);
 
     this.saveRequiredEvent = new CustomEvent("SaveRequired", {
       bubbles: true,
@@ -22,19 +22,19 @@ export default class extends Controller {
     const keyboardEvent = event.detail == 0;
     if (keyboardEvent) return;
 
-    const editable = this.element.querySelector(".EditableElement");
-    if (editable) {
-      editable.focus();
+    if (this.isEditableContent) {
+      this.element.input.focus();
+    } else {
+      this.element.querySelector(".EditableElement")?.focus();
     }
   }
 
   update(event) {
     const orderValue = event.detail.order;
 
-    this.updateQuestionData(orderValue);
-    // if (this.hasContentTarget) {
-    //   this.updateContentConfig(orderValue);
-    // }
+    this.isEditableContent
+      ? this.updateContentConfig(orderValue)
+      : this.updateQuestionData(orderValue);
 
     this.element.dispatchEvent(this.saveRequiredEvent);
   }
@@ -55,8 +55,9 @@ export default class extends Controller {
   }
 
   updateContentConfig(orderValue) {
-    const data = JSON.parse(this.contentTarget.dataset.config);
+    const data = JSON.parse(this.element.dataset.config);
     const newData = Object.assign(data, { order: orderValue });
-    this.contentTarget.dataset.config = JSON.stringify(newData);
+
+    this.element.dataset.config = JSON.stringify(newData);
   }
 }

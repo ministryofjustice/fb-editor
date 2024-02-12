@@ -16,24 +16,24 @@ export default class extends Controller {
     console.log(element.movableItemController);
   }
 
-  updateButtonVisibilty() {
-    this.movableItemTargets.forEach((element, index) => {
-      index == 0
-        ? element.movableItemController.upButtonTarget.setAttribute(
-            "hidden",
-            "",
-          )
-        : element.movableItemController.upButtonTarget.removeAttribute(
-            "hidden",
-          );
-      index == this.movableItemTargets.length - 1
-        ? element.movableItemController.downButtonTarget.setAttribute(
-            "hidden",
-            "",
-          )
-        : element.movableItemController.downButtonTarget.removeAttribute(
-            "hidden",
-          );
-    });
-  }
+  // updateButtonVisibilty() {
+  //   this.movableItemTargets.forEach((element, index) => {
+  //     index == 0
+  //       ? element.movableItemController.upButtonTarget.setAttribute(
+  //           "hidden",
+  //           "",
+  //         )
+  //       : element.movableItemController.upButtonTarget.removeAttribute(
+  //           "hidden",
+  //         );
+  //     index == this.movableItemTargets.length - 1
+  //       ? element.movableItemController.downButtonTarget.setAttribute(
+  //           "hidden",
+  //           "",
+  //         )
+  //       : element.movableItemController.downButtonTarget.removeAttribute(
+  //           "hidden",
+  //         );
+  //   });
+  // }
 }
