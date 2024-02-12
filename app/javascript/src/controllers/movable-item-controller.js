@@ -4,6 +4,7 @@ import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
   static targets = ["upButton", "downButton"];
+  static classes = ["moving"];
   static ancestor = "movable-items";
 
   connect() {
@@ -23,44 +24,55 @@ export default class extends Controller {
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
+        `<button type="button" class="icon-button icon-button--up" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
       );
     }
     if (!this.hasDownButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
+        `<button type="button" class="icon-button icon-button--down" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
       );
     }
   }
 
   moveDown(event) {
-    const button = event.target;
-    console.log(button);
+    const keyboardEvent = event.detail == 0;
     const newIndex = this.currentIndex + 1;
     const nextItem = this.siblingElements[newIndex];
 
-    this.element.classList.add("moving");
-
+    this.element.classList.add(this.movingClass);
     nextItem.after(this.element);
     this.dispatch("move");
-    button.focus();
-    this.element.classList.remove("moving");
+
+    if (keyboardEvent) {
+      if (newIndex == this.siblingElements.length - 1) {
+        this.upButtonTarget.focus();
+      } else {
+        this.downButtonTarget.focus();
+      }
+    }
+
+    this.element.classList.remove(this.movingClass);
   }
 
   moveUp(event) {
-    const button = event.target;
-    console.log(button);
+    const keyboardEvent = event.detail == 0;
     const newIndex = this.currentIndex - 1;
     const previousItem = this.siblingElements[newIndex];
 
-    this.element.classList.add("moving");
-
+    this.element.classList.add(this.movingClass);
     previousItem.before(this.element);
-
     this.dispatch("move");
-    button.focus();
-    this.element.classList.remove("moving");
+
+    if (keyboardEvent) {
+      if (newIndex == 0) {
+        this.downButtonTarget.focus();
+      } else {
+        this.upButtonTarget.focus();
+      }
+    }
+
+    this.element.classList.remove(this.movingClass);
   }
 
   get currentIndex() {

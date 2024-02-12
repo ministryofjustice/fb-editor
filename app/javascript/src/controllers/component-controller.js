@@ -3,7 +3,7 @@ import { useControllerName } from "../mixins/use-controller-name";
 import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
-  static targets = ["question", "content"];
+  // static targets = ["question", "content"];
   static values = {
     content: Object,
   };
@@ -18,29 +18,36 @@ export default class extends Controller {
     });
   }
 
+  focus(event) {
+    const keyboardEvent = event.detail == 0;
+    if (keyboardEvent) return;
+
+    const editable = this.element.querySelector(".EditableElement");
+    if (editable) {
+      editable.focus();
+    }
+  }
+
   update(event) {
     const orderValue = event.detail.order;
 
-    if (this.hasQuestionTarget) {
-      this.updateQuestionData(orderValue);
-    }
-    if (this.hasContentTarget) {
-      this.updateContentConfig(orderValue);
-    }
+    this.updateQuestionData(orderValue);
+    // if (this.hasContentTarget) {
+    //   this.updateContentConfig(orderValue);
+    // }
 
     this.element.dispatchEvent(this.saveRequiredEvent);
   }
 
   destroy(event) {
-    console.log("the question/content area was destroyed");
     this.element.dispatchEvent(this.saveRequiredEvent);
     this.element.remove();
   }
 
   updateQuestionData(orderValue) {
-    const data = JSON.parse(this.questionTarget.dataset.fbContentData);
+    const data = JSON.parse(this.element.dataset.fbContentData);
     const newData = Object.assign(data, { order: orderValue });
-    const editableInstance = $(this.questionTarget).data("instance"); // A reference to the EditableComponent instance
+    const editableInstance = $(this.element).data("instance"); // A reference to the EditableComponent instance
 
     if (editableInstance) {
       editableInstance.data = newData;

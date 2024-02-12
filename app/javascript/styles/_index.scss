@@ -3,11 +3,9 @@
  * Specific customisations for the MOJ form builder Editor.
  **/
 
-
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
 }
-
 
 /* General rules
  * ------------- */
@@ -65,7 +63,6 @@ a[disabled] {
   position: relative;
   min-height: 55vh;
 }
-
 
 /* FB-Editor styles
  * ---------------- */
@@ -151,8 +148,6 @@ a[disabled] {
   box-shadow: none; // 0 1px 0 #002d18;
 }
 
-
-
 /* Publishing
  * ------------------- */
 .publish-form {
@@ -173,63 +168,62 @@ a[disabled] {
 }
 
 .publish-environment {
-    margin-bottom: govuk-spacing(8);
+  margin-bottom: govuk-spacing(8);
 
-    h2 {
-        margin-bottom: govuk-spacing(1);
-    }
+  h2 {
+    margin-bottom: govuk-spacing(1);
+  }
 
-    .govuk-warning-text {
-        margin-bottom: govuk-spacing(2);
-    }
+  .govuk-warning-text {
+    margin-bottom: govuk-spacing(2);
+  }
 
+  .description {
+    margin-top: 0;
+  }
+
+  &.publish-environment--dev {
     .description {
-        margin-top: 0;
+      margin-bottom: govuk-spacing(6);
     }
+  }
 
-    &.publish-environment--dev {
-        .description {
-            margin-bottom: govuk-spacing(6);
-        }
+  &.publish-environment--production {
+    .description {
+      margin-bottom: govuk-spacing(9);
     }
+  }
 
-    &.publish-environment--production {
-        .description {
-            margin-bottom: govuk-spacing(9);
-        }
+  .warnings {
+    .govuk-warning-text::last-child {
+      margin-bottom: 0;
     }
+  }
 
+  .review {
+    margin-top: govuk-spacing(9);
+    margin-bottom: govuk-spacing(6);
+  }
 
-    .warnings {
-        .govuk-warning-text::last-child {
-            margin-bottom: 0;
-        }
-    }
+  .checklist {
+    max-width: 58ch;
+  }
 
-    .review {
-        margin-top: govuk-spacing(9);
-        margin-bottom: govuk-spacing(6);
-    }
+  .govuk-checkboxes__item {
+    margin-bottom: govuk-spacing(5);
+  }
 
-    .checklist {
-        max-width: 58ch;
-    }
+  &__issues-list {
+    @extend .govuk-list;
+    @extend .govuk-list--bullet;
+    @extend .govuk-list--spaced;
 
-    .govuk-checkboxes__item {
-        margin-bottom: govuk-spacing(5);
-    }
+    margin-left: govuk-spacing(7);
+  }
 
-    &__issues-list {
-        @extend .govuk-list;
-        @extend .govuk-list--bullet;
-        @extend .govuk-list--spaced;
-
-        margin-left: govuk-spacing(7);
-    }
-
-    button[data-fb-action="publish"] {
-        margin-top: govuk-spacing(6);
-    }
+  button[data-fb-action="publish"] {
+    margin-top: govuk-spacing(6);
+  }
 }
 
 .moj-forms-tabs {
@@ -263,7 +257,9 @@ a[disabled] {
     outline: 3px solid transparent;
     color: #0b0c0c;
     background-color: #ffdd00;
-    box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+    box-shadow:
+      0 -2px #ffdd00,
+      0 4px #0b0c0c;
     text-decoration: none;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
@@ -311,7 +307,6 @@ a[disabled] {
   border: 0px;
 }
 
-
 /* Branching
  * ------------------- */
 .branch-or {
@@ -349,7 +344,8 @@ a[disabled] {
   }
 
   .govuk-form-group {
-    border-left: $govuk-border-width-form-group-error solid govuk-colour("light-grey");
+    border-left: $govuk-border-width-form-group-error solid
+      govuk-colour("light-grey");
     margin-bottom: govuk-spacing(7);
   }
 
@@ -518,7 +514,6 @@ a[disabled] {
   h1 {
     margin-bottom: govuk-spacing(7);
   }
-
 }
 
 .ContentVisibilityQuestion {
@@ -546,8 +541,8 @@ a[disabled] {
 
 /* Editable components
  * ------------------- */
-[data-component=add-component] ul {
-    display: none;
+[data-component="add-component"] ul {
+  display: none;
 }
 
 .AddComponent,
@@ -564,8 +559,8 @@ a[disabled] {
 }
 
 editable-content {
-  display:block;
-  position:relative;
+  display: block;
+  position: relative;
 
   [data-element="editable-content-input"] {
     border: none;
@@ -588,7 +583,7 @@ editable-content {
   }
 
   & > [mode="edit"] {
-    [data-element="editable-content-input"]  {
+    [data-element="editable-content-input"] {
       display: block;
       outline: $govuk-focus-width solid $govuk-focus-colour;
       outline-offset: 12px;
@@ -596,29 +591,29 @@ editable-content {
     }
   }
 
-  .show-if-button, .hidden-button {
+  .show-if-button,
+  .hidden-button {
     display: none;
   }
 
   &[conditional] [data-element="editable-content-output"] {
-        outline: 1px dashed $govuk-link-colour;
-        outline-offset: 16px;
-    }
+    outline: 1px dashed $govuk-link-colour;
+    outline-offset: 16px;
+  }
 
   &[conditional="conditional"] .show-if-button {
-      display: inline-block;
-      position: absolute;
-      top: -10px;
-      right: -6px;
+    display: inline-block;
+    position: absolute;
+    top: -10px;
+    right: -6px;
   }
 
   &[conditional="never"] .hidden-button {
-      display: inline-block;
-      position: absolute;
-      top: -10px;
-      right: -6px;
+    display: inline-block;
+    position: absolute;
+    top: -10px;
+    right: -6px;
   }
-
 }
 
 .EditableCollectionFieldComponent,
@@ -639,19 +634,19 @@ editable-content,
   position: relative;
 
   .ActivatedMenuActivator {
-    left: -40px;
+    left: -46px;
     opacity: 0;
     position: absolute;
     top: 0;
   }
 
-  &.active {
+  &:focus-within,
+  &:hover {
     .ActivatedMenuActivator {
       opacity: 1;
     }
   }
 }
-
 
 .EditableTextareaFieldComponent {
   .govuk-character-count__message {
@@ -659,14 +654,49 @@ editable-content,
   }
 }
 
-
 // Not nice but trying to work around some margin annoyance caused by GDS css
 [data-fb-pagetype="page.multiplequestions"] {
   .EditableCollectionFieldComponent legend,
   .EditableGroupFieldComponent {
-
     legend {
       display: contents;
+    }
+  }
+
+  .Question {
+    // &:hover:before,
+    // &:hover:after,
+    &:focus-within:before,
+    &:focus-within:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: $govuk-link-colour;
+    }
+
+    // &:hover:before,
+    &:focus-within:before {
+      left: -6px;
+    }
+    // &:hover:after,
+    &:focus-within:after {
+      right: -10px;
+    }
+
+    [data-movable-item-target] {
+      border: 1px red important;
+      position: absolute;
+      right: -50px;
+    }
+
+    [data-movable-item-target*="upButton"] {
+      top: 0;
+    }
+
+    [data-movable-item-target*="downButton"] {
+      bottom: 0;
     }
   }
 }
@@ -685,7 +715,6 @@ editable-content,
     width: auto;
   }
 }
-
 
 /* Injected/dynamic components
  * --------------------------- */
@@ -711,16 +740,14 @@ editable-content,
   }
 }
 
-.EditableCollectionFieldComponent + [type=submit] {
+.EditableCollectionFieldComponent + [type="submit"] {
   // Workaround to compensate for GDS CSS issues
   margin-top: 55px;
 }
 
-
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .services-edit {
-
   .flow-titlebar {
     z-index: 1;
     margin-bottom: govuk-spacing(8);
@@ -733,7 +760,7 @@ editable-content,
       margin-right: govuk-spacing(3);
       margin-bottom: 0;
       &:last-child {
-        margin-right: 0
+        margin-right: 0;
       }
     }
 
@@ -778,7 +805,7 @@ editable-content,
   }
 
   .FlowItem {
-    z-index: 3
+    z-index: 3;
   }
 
   .ConnectionMenuActivator {
@@ -806,8 +833,6 @@ editable-content,
       pointer-events: all;
     }
   }
-
-
 }
 
 .FlowConnectorLine,
@@ -850,7 +875,7 @@ editable-content,
   &.active,
   &.selected {
     path {
-      stroke-width:4px;
+      stroke-width: 4px;
     }
   }
 
@@ -866,14 +891,13 @@ editable-content,
 
   &.selected {
     path {
-      stroke: govuk-colour('orange');
+      stroke: govuk-colour("orange");
     }
 
     .arrowPath {
-      fill: govuk-colour('orange');
+      fill: govuk-colour("orange");
     }
   }
-
 }
 
 .PageMenuActivator {
@@ -904,7 +928,7 @@ editable-content,
     position: absolute;
     top: 30px;
     left: 48px;
-    right:48px;
+    right: 48px;
     bottom: 30px;
     text-align: center;
     text-decoration: none;
@@ -915,7 +939,7 @@ editable-content,
     display: none;
   }
 
-  @supports(clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%)) {
+  @supports (clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%)) {
     // if the browser supports clip-path we don't need the imagemap
     & img,
     & map {
@@ -924,12 +948,12 @@ editable-content,
 
     // make the link fill the whole area and clip it
     & > h2 a {
-     clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
-     top: 0;
-     left: 0;
-     right:0;
-     bottom: 0;
-     padding: 30px 48px; // keep text area same as without clip-path
+      clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 30px 48px; // keep text area same as without clip-path
     }
 
     // show the svg and make it fill the container
@@ -954,9 +978,9 @@ editable-content,
       box-shadow: none;
     }
 
-    & > h2 a:focus svg polygon  {
-      fill: govuk-colour('yellow');
-      stroke: govuk-colour('black');
+    & > h2 a:focus svg polygon {
+      fill: govuk-colour("yellow");
+      stroke: govuk-colour("black");
     }
   }
 
@@ -990,14 +1014,14 @@ editable-content,
   }
 
   &::after {
-    content: url('../images/plus-blue.svg');
+    content: url("../images/plus-blue.svg");
     top: 0;
   }
   &:hover::after {
-    content: url('../images/plus-white.svg');
+    content: url("../images/plus-white.svg");
   }
   &:focus::after {
-    content:url('../images/plus-black.svg')
+    content: url("../images/plus-black.svg");
   }
 }
 
@@ -1008,7 +1032,8 @@ editable-content,
   text-align: center;
   width: 300px;
 
-  a, span {
+  a,
+  span {
     @include govuk-font($size: 16);
 
     color: $govuk-secondary-text-colour;
@@ -1017,7 +1042,7 @@ editable-content,
     width: auto;
   }
 
- .operator {
+  .operator {
     color: $govuk-secondary-text-colour;
     font-weight: bold;
   }
@@ -1051,10 +1076,10 @@ editable-content,
       color: $govuk-link-colour;
     }
     &:hover {
-      color:  $govuk-link-hover-colour;
+      color: $govuk-link-hover-colour;
     }
     &:active {
-      color:  $govuk-link-active-colour;
+      color: $govuk-link-active-colour;
     }
     &:focus {
       color: $govuk-focus-text-colour;
@@ -1086,7 +1111,7 @@ editable-content,
 
 .flow-thumbnail {
   background-color: govuk-colour("white");
-  border:  $govuk-link-colour solid 2px;
+  border: $govuk-link-colour solid 2px;
   display: block;
   height: 121px;
   margin-bottom: govuk-spacing(2);
@@ -1138,13 +1163,13 @@ editable-content,
   }
 
   &.standalone {
-    border:  $govuk-link-colour solid 2px;
+    border: $govuk-link-colour solid 2px;
     box-sizing: border-box;
     height: 125px;
   }
 }
 
-.flow-warning{
+.flow-warning {
   padding-top: 25px;
   width: 330px;
 }
@@ -1198,12 +1223,12 @@ editable-content,
   z-index: 0; // prevents very tall first flow conditions breaking out and overlapping header/preview button
 }
 
-
 /* govuk-navigation does not appear to exist
  * so adding something simple here.
  * ----------------------------------------- */
 .govuk-navigation {
-  &, li {
+  &,
+  li {
     @include list_reset;
   }
 }
@@ -1232,19 +1257,20 @@ editable-content,
       min-width: 55%;
       width: auto;
     }
-
   }
 
   a {
     &,
     &:hover {
       @include govuk-font($size: 19);
-      border-bottom:  govuk-colour("light-grey") solid 4px;
+      border-bottom: govuk-colour("light-grey") solid 4px;
       color: $govuk-link-colour;
       display: block;
       font: inherit;
       padding: govuk-spacing(2);
-      padding-bottom: calc(#{govuk-spacing(2)} - 4px); // Calc to compensate for border
+      padding-bottom: calc(
+        #{govuk-spacing(2)} - 4px
+      ); // Calc to compensate for border
       text-decoration: none;
     }
 
@@ -1266,7 +1292,7 @@ editable-content,
 
     &.current {
       a {
-        border-color:  govuk-colour("blue");
+        border-color: govuk-colour("blue");
 
         &:focus {
           border-color: $govuk-text-colour;
@@ -1322,12 +1348,10 @@ editable-content,
   }
 }
 
-
 /* Override or enhance GovUK styles
  * -------------------------------- */
 .govuk-form-group--error,
 .error {
-
   option {
     color: $govuk-text-colour;
     font-weight: normal;
@@ -1428,16 +1452,19 @@ editable-content,
 
   &:focus {
     background-color: transparent;
-    box-shadow: 0 -2px transparent, 0 4px transparent
+    box-shadow:
+      0 -2px transparent,
+      0 4px transparent;
   }
 
   &:focus &__text {
     background-color: govuk-colour("red");
     color: govuk-colour("white");
-    box-shadow: 0 -2px $govuk-error-colour, 0 4px #0b0c0c
+    box-shadow:
+      0 -2px $govuk-error-colour,
+      0 4px #0b0c0c;
   }
 }
-
 
 .govuk-header {
   // Try to get consistency between with/without page navigation bars
@@ -1462,7 +1489,9 @@ editable-content,
   }
 
   .govuk-panel__title {
-    margin-bottom: govuk-spacing(6); // Counter other rules to get back to original.
+    margin-bottom: govuk-spacing(
+      6
+    ); // Counter other rules to get back to original.
   }
 }
 
@@ -1473,7 +1502,7 @@ editable-content,
 
 .govuk-radios__input:disabled + .govuk-radios__label,
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
-	opacity: 1;
+  opacity: 1;
 }
 
 .govuk-select {
@@ -1488,7 +1517,7 @@ editable-content,
 }
 
 dl {
-  @extend %govuk-list
+  @extend %govuk-list;
 }
 
 dl dt {
@@ -1500,7 +1529,7 @@ dl dd {
 }
 
 dl > dt:not(:first-of-type),
-dl > div:not(:first-of-type){
+dl > div:not(:first-of-type) {
   margin-top: govuk-spacing(7);
 }
 
@@ -1509,7 +1538,7 @@ dl > div:not(:first-of-type){
 }
 
 .fb-domain-input {
-  position:relative;
+  position: relative;
 
   .govuk-input {
     width: 85%;

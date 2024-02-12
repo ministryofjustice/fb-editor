@@ -4,7 +4,6 @@
  * MOJ form builder (Editor) environment.
  **/
 
-
 @mixin responsive_width($width: full, $at: tablet) {
   @if $at != desktop {
     width: 100%;
@@ -67,8 +66,8 @@
 
   &:hover,
   &[disabled],
-  &[disabled='disabled'],
-  &[disabled='disabled']:hover,
+  &[disabled="disabled"],
+  &[disabled="disabled"]:hover,
   &[aria-disabled="true"]:hover {
     background-color: govuk-colour("dark-blue");
   }
@@ -108,11 +107,10 @@
 
   &:focus {
     @include focus;
-    border-color: $govuk-focus-colour;
+    // border-color: $govuk-focus-colour;
+    border-color: $govuk-text-colour;
     outline: none;
   }
-
-
 
   &.destructive:focus,
   &.destructive:hover {
