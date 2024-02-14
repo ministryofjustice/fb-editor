@@ -576,7 +576,7 @@ editable-content,
   position: relative;
 
   .ActivatedMenuActivator {
-    left: -46px;
+    left: -50px;
     opacity: 0;
     position: absolute;
     top: 0;
@@ -620,7 +620,7 @@ editable-content,
 
     // &:hover:before,
     &:focus-within:before {
-      left: -8px;
+      left: -12px;
     }
     // &:hover:after,
     &:focus-within:after {
