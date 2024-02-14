@@ -35,7 +35,7 @@ as well as a link to its edit page.
 <section class="main-content__body">
 
   <dl>
-    <% page.attributes.each do |attribute| %>
+    <% page.attributes.flatten.reject!{ |a| a.is_a?(String) && a.empty? }.flatten.each do |attribute| %>
       <dt class="govuk-!-margin-top-0 attribute-label" id="<%= attribute.name %>">
       <%= t(
         "helpers.label.#{resource_name}.#{attribute.name}",
