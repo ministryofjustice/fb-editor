@@ -41,7 +41,7 @@ as well as a link to its edit page.
           <legend><%= t "helpers.label.#{page.resource_name}.#{title}", default: title %></legend>
         <% end %>
         <% attributes.each do |attribute| %>
-          <dt class="attribute-label" id="<%= attribute.name %>">
+          <dt class="govuk-!-margin-top-0 attribute-label" id="<%= attribute.name %>">
           <%= t(
             "helpers.label.#{resource_name}.#{attribute.name}",
             default: page.resource.class.human_attribute_name(attribute.name),
