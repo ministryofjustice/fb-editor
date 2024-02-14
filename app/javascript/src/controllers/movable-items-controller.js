@@ -11,11 +11,6 @@ export default class extends Controller {
     useAncestry(this);
   }
 
-  movableItemTargetDisconnected(element) {
-    console.log("movable item disconnect");
-    console.log(element.movableItemController);
-  }
-
   // updateButtonVisibilty() {
   //   this.movableItemTargets.forEach((element, index) => {
   //     index == 0

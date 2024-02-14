@@ -203,7 +203,15 @@ class EditableContent extends HTMLElement {
       this.root.addEventListener("click", () => (this.state.mode = "edit"));
       this.root.addEventListener("focus", () => (this.state.mode = "edit"));
       this.addEventListener("focusout", (event) => {
-        if (this.contains(event.relatedTarget)) return;
+        // The buttons are within the editable-content element, but we still
+        // want to change state when focus moves to them
+        if (
+          this.contains(event.relatedTarget) &&
+          !event.relatedTarget.matches("button")
+        ) {
+          return;
+        }
+
         this.state.mode = "read";
       });
 
@@ -220,6 +228,7 @@ class EditableContent extends HTMLElement {
 
     switch (this.state.mode) {
       case "edit":
+        this.root.removeAttribute("tabindex");
         this._contentBeforeEditing = this.input.value.trim();
         this.show(this.input);
         this.hide(this.output);
@@ -232,6 +241,7 @@ class EditableContent extends HTMLElement {
         break;
       case "read":
       case "initial":
+        this.root.setAttribute("tabindex", "0");
         if (this.valueIsDefault()) this.value = "";
         this.updateOutput();
 

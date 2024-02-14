@@ -3,8 +3,8 @@ import { useControllerName } from "../mixins/use-controller-name";
 import { useAncestry } from "../mixins/use-ancestry";
 
 export default class extends Controller {
-  // Default order set so that all items dispatch the orderUpdted event
-  // when connected.
+  // Default order set so that the first item (index 0) still dispatches an
+  // orderUpdated event when connected.
   static values = {
     order: { type: Number, default: 9999 },
   };
@@ -20,7 +20,6 @@ export default class extends Controller {
   }
 
   orderValueChanged(newValue, oldValue) {
-    console.log(`order value changed from ${oldValue} to ${newValue}`);
     if (newValue !== oldValue) {
       requestAnimationFrame(() => {
         this.dispatch("orderUpdated", { detail: { order: newValue } });

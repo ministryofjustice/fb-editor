@@ -28,7 +28,9 @@ import ComponentController from "../src/controllers/component-controller.js";
 
 Turbo.session.drive = false;
 window.Stimulus = Application.start();
-Stimulus.debug = true;
+
+// Stimulus.debug = true;
+
 Stimulus.register("dynamic-fields", DynamicFieldsController);
 Stimulus.register("conditionals-status", ConditionalsStatusController);
 Stimulus.register("conditional", ConditionalController);
