@@ -6,7 +6,6 @@
           <span><%= t('components.menu.question') %></span>
           <ul class="govuk-navigation">
             <% @page.supported_input_components.each do |component| %>
-              <% next if component.eql?('address') && FeatureFlags.address_component.disabled? %>
               <li data-action="<%= component %>">
                 <a href="#add_component">
                   <%= t("components.list.#{component.underscore}") %>
