@@ -55,6 +55,7 @@ export default class extends Controller {
   }
 
   moveUp(event) {
+    console.log("move up");
     const keyboardEvent = event.detail == 0;
     const newIndex = this.currentIndex - 1;
     const previousItem = this.siblingElements[newIndex];

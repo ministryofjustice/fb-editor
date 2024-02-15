@@ -23,6 +23,8 @@ export default class extends Controller {
     if (keyboardEvent) return;
 
     if (this.isEditableContent) {
+      // We don't leave edit mode of the <editable-content>, so we focus directly back into the input
+      // element.
       this.element.input.focus();
     } else {
       this.element.querySelector(".EditableElement")?.focus();
