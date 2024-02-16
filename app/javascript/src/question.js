@@ -12,37 +12,35 @@
  *
  **/
 
-
-const {
-  mergeObjects,
-  filterObject,
-}  = require('./utilities');
-const editableComponent = require('./editable_components').editableComponent;
-const  QuestionMenu = require('./components/menus/question_menu');
+const { mergeObjects, filterObject } = require("./utilities");
+const editableComponent = require("./editable_components").editableComponent;
+const QuestionMenu = require("./components/menus/question_menu");
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED = "input:not(:hidden), textarea:not([data-element]), select";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
 
-
 class Question {
   constructor($node, config) {
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
-    var conf = mergeObjects({
-      // Config defaults
-      attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
-      data: $node.data("fb-content-data"), // TODO: Phase this out because Question should control data
-      editClassname: "active",
-      id: $node.data("fb-content-id"),
-      selectorDisabled: SELECTOR_DISABLED,
-      text: {
-        // optionalFlag: Replaced with design requirement
+    var conf = mergeObjects(
+      {
+        // Config defaults
+        attributeDefaultText: ATTRIBUTE_DEFAULT_TEXT,
+        data: $node.data("fb-content-data"), // TODO: Phase this out because Question should control data
+        editClassname: "active",
+        id: $node.data("fb-content-id"),
+        selectorDisabled: SELECTOR_DISABLED,
+        text: {
+          // optionalFlag: Replaced with design requirement
+        },
+        type: $node.data("fb-content-type"),
+        defaultLabelValue: $node.data("fb-default-value"),
+        defaultItemLabelValue: $node.data("fb-default-item-value"),
+        view: {},
       },
-      type: $node.data("fb-content-type"),
-      defaultLabelValue: $node.data('fb-default-value'),
-      defaultItemLabelValue: $node.data('fb-default-item-value'),
-      view: {}
-    }, config);
+      config,
+    );
 
     $node.addClass("Question");
     this._config = conf;
@@ -53,7 +51,13 @@ class Question {
     this.menu = createQuestionMenu.call(this);
 
     // Check view state on element edit or interaction and set initial state.
-    $heading.on("blur", this.setRequiredFlag.bind(this));
+    this.$heading.on("focus", () => {
+      this.$node.addClass("active");
+    });
+    $heading.on("blur", () => {
+      this.$node.removeClass("active");
+      this.setRequiredFlag.bind(this);
+    });
     this.setRequiredFlag();
   }
 
@@ -63,8 +67,8 @@ class Question {
 
   set required(content) {
     var arr = content.find("form").serializeArray();
-    for(var i=0; i < arr.length; ++i) {
-      this.data.validation[arr[i].name] = (arr[i].value == "true" ? true : false);
+    for (var i = 0; i < arr.length; ++i) {
+      this.data.validation[arr[i].name] = arr[i].value == "true" ? true : false;
     }
 
     this.menu.setEnabledValidations();
@@ -72,34 +76,34 @@ class Question {
   }
 
   /*
-  * Applies the validation settings to the questions data.validations key
-  * @param {Object} config - the settings for the validation to be applied
-  *                          expected format: { validationName: value }
-  *
-  */
+   * Applies the validation settings to the questions data.validations key
+   * @param {Object} config - the settings for the validation to be applied
+   *                          expected format: { validationName: value }
+   *
+   */
   set validation(config) {
     let [validationName, _] = Object.entries(config)[0];
     let data = this.data.validation;
 
     // Merge our new validation data with the current data on the question
-    data =  mergeObjects(data, config);
+    data = mergeObjects(data, config);
     // Remove keys with empty values
-    data = filterObject(data, ([_, val]) => val != '' );
+    data = filterObject(data, ([_, val]) => val != "");
 
     // Ensure we don't have conflicting min_length/word and max_length/word keys
-    switch(validationName) {
-      case 'min_length':
-        data = filterObject(data, ([key, _]) => key != 'min_word');
+    switch (validationName) {
+      case "min_length":
+        data = filterObject(data, ([key, _]) => key != "min_word");
         break;
-      case 'min_word':
-        data = filterObject(data, ([key, _]) => key != 'min_length');
+      case "min_word":
+        data = filterObject(data, ([key, _]) => key != "min_length");
         break;
-      case 'max_length':
-        data = filterObject(data, ([key, _]) => key != 'max_word');
-      break;
-      case 'max_word':
-        data = filterObject(data, ([key, _]) => key != 'max_length');
-      break;
+      case "max_length":
+        data = filterObject(data, ([key, _]) => key != "max_word");
+        break;
+      case "max_word":
+        data = filterObject(data, ([key, _]) => key != "max_length");
+        break;
     }
 
     this.data.validation = data;
@@ -107,22 +111,21 @@ class Question {
     this.editable.emitSaveRequired();
   }
 
-
   /* The design calls for a visual indicator that the question is optional.
    * This function is to handle the adding the extra element.
    **/
   setRequiredFlag() {
     var text = this._config.text.optionalFlag;
     // Escape the parentheses
-    var escapedTextWithSpace = " " + text.replace(/(\(|\))/mig, "\\$1");
+    var escapedTextWithSpace = " " + text.replace(/(\(|\))/gim, "\\$1");
     // $ - must be at the end of the string
     // i - case insensitive
-    var regex = new RegExp(escapedTextWithSpace + "$", "i"); 
+    var regex = new RegExp(escapedTextWithSpace + "$", "i");
 
-    if(this.required) {
-      this.$heading.text(this.$heading.text().replace(regex, ''))
+    if (this.required) {
+      this.$heading.text(this.$heading.text().replace(regex, ""));
     } else {
-      if(!this.$heading.text().match(regex)) {
+      if (!this.$heading.text().match(regex)) {
         this.$heading.text(`${this.$heading.text()} ${text}`);
       }
     }
@@ -147,12 +150,13 @@ class Question {
   }
 }
 
-
 /* Create a menu for Question property editing.
  **/
 function createQuestionMenu() {
   var question = this;
-  var template = $("[data-component-template=QuestionMenu_"+question.data._uuid+"]");
+  var template = $(
+    "[data-component-template=QuestionMenu_" + question.data._uuid + "]",
+  );
   var $ul = $(template.html());
 
   // Need to make sure $ul is added to body before we try to create a QuestionMenu out of it.
@@ -166,11 +170,9 @@ function createQuestionMenu() {
       position: {
         my: "left top",
         at: "left top",
-      }
-    }
+      },
+    },
   });
 }
-
-
 
 module.exports = Question;

@@ -6,7 +6,7 @@ editable-content {
     border: none;
     display: none;
     font: inherit;
-    width: 100%;
+    width: 99.28%; /* [1] */
   }
 
   [data-element="editable-content-output"] {
@@ -22,31 +22,30 @@ editable-content {
     }
   }
 
-  & > [mode="edit"] {
-    [data-element="editable-content-input"] {
-      display: block;
-      outline: $govuk-focus-width solid $govuk-focus-colour;
-      outline-offset: 0px;
-      padding-top: 26px;
-    }
-  }
-
   .show-if-button,
   .hidden-button {
     display: none;
   }
+}
 
-  &[conditional] [data-element="editable-content-output"] {
-    outline: 1px dashed $govuk-link-colour;
-    outline-offset: 10px;
-
+editable-content > [mode="edit"] {
+  [data-element="editable-content-input"] {
+    display: block;
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline-offset: 0px;
+    padding-top: 26px;
   }
+}
 
-  &[conditional="conditional"] .show-if-button,
-  &[conditional="never"] .hidden-button {
-    display: inline-block;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-  }
+editable-content[conditional] [data-element="editable-content-output"] {
+  outline: 1px dashed $govuk-link-colour;
+  outline-offset: 10px;
+}
+
+editable-content[conditional="conditional"] .show-if-button,
+editable-content[conditional="never"] .hidden-button {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }

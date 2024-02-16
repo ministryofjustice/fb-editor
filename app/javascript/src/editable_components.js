@@ -907,7 +907,7 @@ class EditableCollectionItemInjector {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ itemAdd: 'add' }, config.text);
     var $node = $(createElement("button", text.itemAdd, conf.classes));
-    editableCollectionFieldComponent.$node.append($node);
+    editableCollectionFieldComponent.$node.find('.govuk-form-group').after($node);
     $node.addClass("EditableCollectionItemInjector");
     $node.attr("type", "button");
     $node.data("instance", this);

@@ -23,13 +23,13 @@ export default class extends Controller {
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="icon-button icon-button--up" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
+        `<button type="button" class="icon-button icon-button--move icon-button--up" data-movable-item-target="upButton" data-action="movable-item#moveUp:prevent">Up</button>`,
       );
     }
     if (!this.hasDownButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="icon-button icon-button--down" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
+        `<button type="button" class="icon-button icon-button--move icon-button--down" data-movable-item-target="downButton" data-action="movable-item#moveDown:prevent">Down</button>`,
       );
     }
   }
