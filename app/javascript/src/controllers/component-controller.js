@@ -12,10 +12,6 @@ export default class extends Controller {
 
   connect() {
     useControllerName(this);
-
-    this.saveRequiredEvent = new CustomEvent("SaveRequired", {
-      bubbles: true,
-    });
   }
 
   focus(event) {
@@ -38,11 +34,11 @@ export default class extends Controller {
       ? this.updateContentConfig(orderValue)
       : this.updateQuestionData(orderValue);
 
-    this.element.dispatchEvent(this.saveRequiredEvent);
+    this.triggerSaveRequired();
   }
 
   destroy(event) {
-    this.element.dispatchEvent(this.saveRequiredEvent);
+    this.triggerSaveRequired();
     this.element.remove();
   }
 
@@ -61,5 +57,13 @@ export default class extends Controller {
     const newData = Object.assign(data, { order: orderValue });
 
     this.element.dataset.config = JSON.stringify(newData);
+  }
+
+  triggerSaveRequired() {
+    this.element.dispatchEvent(
+      new CustomEvent("SaveRequired", {
+        bubbles: true,
+      }),
+    );
   }
 }
