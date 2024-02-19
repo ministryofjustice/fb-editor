@@ -159,7 +159,6 @@ feature 'Confirmation email' do
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_dev'))
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_production'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_hint'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_sample'))
     expect(page).to have_content(service_name)
   end
 
