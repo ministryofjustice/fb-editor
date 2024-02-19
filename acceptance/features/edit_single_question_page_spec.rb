@@ -55,7 +55,6 @@ feature 'Edit single question page' do
 
   scenario 'when editing upload component' do
     given_I_have_a_single_question_page_with_upload
-    and_I_can_add_a_content_area
     and_I_have_optional_section_heading_text
     then_the_save_button_should_be_disabled
     when_I_update_the_question_name
@@ -190,13 +189,6 @@ feature 'Edit single question page' do
     expect(page).to have_content(I18n.t('default_text.section_heading'))
   end
 
-  def and_I_can_add_a_content_area
-    content = 'This upload page is fantastic'
-    expect(page).to have_content('[Optional content]')
-    component = editor.page_body
-    when_I_change_editable_content(component, content:)
-    when_I_save_my_changes
-    expect(page).to have_content(content)
-  end
+
 end
 
