@@ -29,7 +29,7 @@ RSpec.describe NewPageGenerator do
         'section_heading' => '',
         'heading' => '',
         'lede' => '',
-        'body' => 'Body section',
+        'body' => '',
         'components' => [
           {
             '_id' => "#{page_url}_#{component_type}_1",
