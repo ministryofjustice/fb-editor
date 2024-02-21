@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     resources :publish_services
     get '/test-service/:test_service_name/(:fixture)', to: 'test_services#create', as: :test_service
     get '/export-services', to: 'overviews#export_services'
+    get '/export_dev_summary', to: 'overviews#export_dev_form_summary'
+    get '/export_prod_summary', to: 'overviews#export_live_form_summary'
 
     root to: "overviews#index"
   end
