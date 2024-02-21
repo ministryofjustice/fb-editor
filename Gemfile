@@ -45,6 +45,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
+  gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', branch: 'main'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'

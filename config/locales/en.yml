@@ -356,6 +356,8 @@ en:
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
+      move_up: 'Move component {{index}} up'
+      move_down: 'Move component {{index}} down'
     menu:
       question: 'Question'
       content_area: 'Content area'

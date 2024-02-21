@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/citizensadvice/capybara_accessible_selectors
+  revision: 621e394ff9bafb420fb15792c3a3e3334a618687
+  branch: main
+  specs:
+    capybara_accessible_selectors (0.11.0)
+      capybara (~> 3.36)
+
+GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
   revision: 612d251a393430d005f58f0e7db5a1bb709b35e2
   branch: move-components
@@ -770,6 +778,7 @@ DEPENDENCIES
   brakeman
   byebug
   capybara
+  capybara_accessible_selectors!
   daemons
   delayed_job_active_record
   dotenv-rails
