@@ -335,7 +335,7 @@ jobs:
             echo $TESTFILES
             echo '***********'
 
-            bundle exec rspec --format progress \
+            bundle exec rspec --fail-fast --format progress \
               --format RspecJunitFormatter \
               --out ~/acceptance/acceptance.xml \
               $TESTFILES
@@ -377,7 +377,7 @@ jobs:
             echo $TESTFILES
             echo '***********'
 
-            bundle exec rspec --format progress \
+            bundle exec rspec --fail-fast --format progress \
               --format RspecJunitFormatter \
               --out ~/acceptance/acceptance.xml \
               $TESTFILES
