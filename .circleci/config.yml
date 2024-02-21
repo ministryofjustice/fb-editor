@@ -3,7 +3,7 @@ orbs:
   slack: circleci/slack@3.4.2
   ruby: circleci/ruby@1.4.0
   node: circleci/node@5.1.0
-  browser-tools: circleci/browser-tools@1.4.3
+  browser-tools: circleci/browser-tools@1.4.7
   kubernetes: circleci/kubernetes@0.12.0
   aws-cli: circleci/aws-cli@4.0.0 # use v4 of this orb
   aws-ecr: circleci/aws-ecr@8.2.1 # this orb doesn't support OIDC v2, so we use aws-cli to authenticate
@@ -112,12 +112,9 @@ jobs:
       - run:
           name: Running the tests
           command: |
-            TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=name)
-            echo '***********'
-            echo $TESTFILES
-            echo '***********'
-
-            bundle exec rspec $TESTFILES --profile 10
+            circleci tests glob "spec/**/*_spec.rb" | circleci tests run \
+              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" \
+              --verbose --split-by=timings
       - slack/status: *slack_status
   js_test:
     docker:
@@ -309,9 +306,7 @@ jobs:
       - checkout
       - ruby/install-deps
       - run: sudo apt-get update
-      - browser-tools/install-chrome:
-          # TODO remove following line when fixed https://github.com/CircleCI-Public/browser-tools-orb/issues/90
-          chrome-version: 116.0.5845.96
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -330,15 +325,9 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
-            echo '***********'
-            echo $TESTFILES
-            echo '***********'
-
-            bundle exec rspec --fail-fast --format progress \
-              --format RspecJunitFormatter \
-              --out ~/acceptance/acceptance.xml \
-              $TESTFILES
+            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run \
+              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \ 
+              --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
       - slack/status: *slack_status
@@ -351,9 +340,7 @@ jobs:
       - checkout
       - ruby/install-deps
       - run: sudo apt-get update
-      - browser-tools/install-chrome:
-          # TODO remove following line when fixed https://github.com/CircleCI-Public/browser-tools-orb/issues/90
-          chrome-version: 116.0.5845.96      
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -372,15 +359,9 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            TESTFILES=$(circleci tests glob "acceptance/**/*_spec.rb" | circleci tests split --split-by=timings --timings-type=filename)
-            echo '***********'
-            echo $TESTFILES
-            echo '***********'
-
-            bundle exec rspec --fail-fast --format progress \
-              --format RspecJunitFormatter \
-              --out ~/acceptance/acceptance.xml \
-              $TESTFILES
+            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run \
+              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \ 
+              --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
