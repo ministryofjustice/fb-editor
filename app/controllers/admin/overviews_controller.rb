@@ -85,7 +85,7 @@ module Admin
           summary = service_summary('production')
 
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Uplaod (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
+            csv << ['Service id', 'Service name', 'Locale', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Uplaod (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
             summary.each do |s|
               csv << s.each_value { |_k, v| to_csv_value(v) }
             end
@@ -140,6 +140,7 @@ module Admin
         result << {
           service_id: id,
           service_name: metadata['service_name'],
+          locale: metadata['locale'],
           page_counts: page_type_counts(metadata['pages']),
           component_counts: component_type_counts(metadata['pages']),
           confirmation_email_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'CONFIRMATION_EMAIL_COMPONENT_ID').present?,
@@ -165,25 +166,38 @@ module Admin
     end
 
     def component_type_counts(pages)
-      pages.each do |page, _addresses, _autocompletes, _checkboxes, _contents, _dates, _emails, _uploads, _multiuploads, _numbers, _radios, _texts, _textareas|
+      addresses = 0
+      autocompletes = 0
+      checkboxes = 0
+      contents = 0
+      dates = 0
+      emails = 0
+      uploads = 0
+      multiuploads = 0
+      numbers = 0
+      radios = 0
+      texts = 0
+      textareas = 0
+
+      pages.each do |page|
         next if page['components'].blank?
 
-        page['components'].select { |c| c['_type'] == 'address' }.count
-        page['components'].select { |c| c['_type'] == 'autocomplete' }.count
-        page['components'].select { |c| c['_type'] == 'checkboxes' }.count
-        page['components'].select { |c| c['_type'] == 'content' }.count
-        page['components'].select { |c| c['_type'] == 'date' }.count
-        page['components'].select { |c| c['_type'] == 'email' }.count
-        page['components'].select { |c| c['_type'] == 'upload' }.count
-        page['components'].select { |c| c['_type'] == 'multiupload' }.count
-        page['components'].select { |c| c['_type'] == 'number' }.count
-        page['components'].select { |c| c['_type'] == 'radios' }.count
-        page['components'].select { |c| c['_type'] == 'text' }.count
-        page['components'].select { |c| c['_type'] == 'textarea' }.count
+        addresses += page['components'].select { |c| c['_type'] == 'address' }.count
+        autocompletes += page['components'].select { |c| c['_type'] == 'autocomplete' }.count
+        checkboxes += page['components'].select { |c| c['_type'] == 'checkboxes' }.count
+        contents += page['components'].select { |c| c['_type'] == 'content' }.count
+        dates += page['components'].select { |c| c['_type'] == 'date' }.count
+        emails += page['components'].select { |c| c['_type'] == 'email' }.count
+        uploads += page['components'].select { |c| c['_type'] == 'upload' }.count
+        multiuploads += page['components'].select { |c| c['_type'] == 'multiupload' }.count
+        numbers += page['components'].select { |c| c['_type'] == 'number' }.count
+        radios += page['components'].select { |c| c['_type'] == 'radios' }.count
+        texts += page['components'].select { |c| c['_type'] == 'text' }.count
+        textareas += page['components'].select { |c| c['_type'] == 'textarea' }.count
       end
 
       {
-        addresses, autocompletes, checkboxes, contents, dates, emails, uploads, multiuploads, numbers, radios, texts, textareas
+        addresses:, autocompletes:, checkboxes:, contents:, dates:, emails:, uploads:, multiuploads:, numbers:, radios:, texts:, textareas:
       }
     end
 
