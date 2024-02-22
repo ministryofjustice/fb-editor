@@ -136,7 +136,7 @@ module Admin
       published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
 
       published_service_ids.each do |id, result|
-        metadata = MetadataApiClient::Service.latest_version(service_id)
+        metadata = MetadataApiClient::Service.latest_version(id)
         result << {
           service_id: id,
           service_name: metadata['service_name'],
