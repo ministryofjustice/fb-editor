@@ -134,8 +134,9 @@ module Admin
 
     def service_summary(env)
       published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
+      result = []
 
-      published_service_ids.each do |id, result|
+      published_service_ids.each do |id|
         metadata = MetadataApiClient::Service.latest_version(id)
         result << {
           service_id: id,
@@ -151,6 +152,8 @@ module Admin
           external_start_page_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: 'production', name: 'EXTERNAL_START_PAGE_URL').present?
         }
       end
+
+      result
     end
 
     def page_type_counts(pages)
