@@ -105,7 +105,7 @@ module Admin
         if v.is_a?(String)
           v.strip
         else
-          v.values.map!(&:strip)
+          v.values.map! { |v| v.is_a?(String) ? v.strip : v }
         end
       end
     end
