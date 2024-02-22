@@ -99,6 +99,8 @@ module Admin
     private
 
     def to_csv_value(value)
+      return '' if value.blank?
+
       if value.is_a?(String)
         value.strip
       else
