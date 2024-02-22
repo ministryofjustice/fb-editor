@@ -166,6 +166,8 @@ module Admin
 
     def component_type_counts(pages)
       pages.each do |page, _addresses, _autocompletes, _checkboxes, _contents, _dates, _emails, _uploads, _multiuploads, _numbers, _radios, _texts, _textareas|
+        next if page['components'].blank?
+
         page['components'].select { |c| c['_type'] == 'address' }.count
         page['components'].select { |c| c['_type'] == 'autocomplete' }.count
         page['components'].select { |c| c['_type'] == 'checkboxes' }.count
