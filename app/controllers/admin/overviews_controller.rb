@@ -183,7 +183,7 @@ module Admin
       end
 
       {
-        addresses:, autocompletes:, checkboxes:, contents:, dates:, emails:, uploads:, multiuploads:, numbers:, radios:, texts:, textareas:
+        addresses, autocompletes, checkboxes, contents, dates, emails, uploads, multiuploads, numbers, radios, texts, textareas
       }
     end
 
