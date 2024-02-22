@@ -70,8 +70,7 @@ module Admin
           csv_data = CSV.generate do |csv|
             csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
             summary.each do |s|
-              Rails.logger.info(s)
-              csv << s.each do { |s| to_csv_value(s) }
+              csv << to_csv_value(s)
             end
           end
 
@@ -82,13 +81,13 @@ module Admin
 
     def export_live_form_summary
       respond_to do |format|
-        format.csv do
-          summary = service_summary('production')
+        summary = service_summary('production')
 
+        format.csv do
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Locale', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Uplaod (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
+            csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
             summary.each do |s|
-              csv << s.each_value { |_k, v| to_csv_value(v) }
+              csv << to_csv_value(s)
             end
           end
 
@@ -99,13 +98,15 @@ module Admin
 
     private
 
-    def to_csv_value(value)
-      return '' if value.blank?
+    def to_csv_value(summary)
+      summary.each_value do |v|
+        next if v.blank?
 
-      if value.is_a?(String)
-        value.strip
-      else
-        value.values.map!(&:strip)
+        if v.is_a?(String)
+          v.strip
+        else
+          v.values.map!(&:strip)
+        end
       end
     end
 
