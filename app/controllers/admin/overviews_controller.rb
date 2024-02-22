@@ -65,13 +65,13 @@ module Admin
     def export_dev_form_summary
       respond_to do |format|
         summary = service_summary('dev')
-        Rails.logger.info(summary)
 
         format.csv do
           csv_data = CSV.generate do |csv|
             csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload (old) components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
             summary.each do |s|
-              csv << s.each_value { |_k, v| to_csv_value(v) }
+              Rails.logger.info(s)
+              csv << s.each do { |s| to_csv_value(s) }
             end
           end
 
