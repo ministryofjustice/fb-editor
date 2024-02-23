@@ -1,3 +1,39 @@
+/**
+ * Allows us to setup parent child relationships between controllers
+ * Needs to be declared on both the parent and child controllers.
+ *
+ * The parent controller must have a static `children` property set to the
+ * child controller name (kebab cased)
+ *
+ * The child controller must have a static `ancestor` property set to the
+ * child controller name (kebab cased)
+ *
+ * Controllers now have access to the following methods:
+ * addChild()
+ * removeCHild()
+ * childControllers()
+ * ancestorController()
+ *
+ * Example
+ * -------
+ * #list-controller.js
+ * export default class extends Controller {
+ *   static children = 'list-item'
+ *
+ *   connect() {
+ *    useAncestry(this)
+ *   }
+ * }
+ *
+ * #list-item-controller.js
+ * export default class extends Controller {
+ *   static ancestor = 'list'
+ *
+ *   connect() {
+ *    useAncestry(this)
+ *   }
+ * }
+ * */
 import { namespaceCamelize } from "../utilities/string-helpers";
 
 export const useAncestry = (controller) => {

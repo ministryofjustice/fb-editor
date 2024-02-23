@@ -15,10 +15,11 @@ export default class extends Controller {
     useControllerName(this);
     useAncestry(this);
 
+    // GLOBAL ALERT! app is a global object set in partials/_properties.html.erb
     this.labels = app.text.components;
 
     queueMicrotask(() => {
-      this.render();
+      this.appendButtons();
     });
   }
 
@@ -35,7 +36,12 @@ export default class extends Controller {
     }
   }
 
-  render() {
+  /**
+   * Adds the move buttons to the element
+   * Check for existence first, as the move action itself removes and reinserts
+   * the elementinto the DOM causing connect() to be called again.
+   **/
+  appendButtons() {
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
@@ -50,16 +56,28 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Handler for the move down button
+   * @param {Event} event
+   * 1. This class is needed to ensure the buttons remain visible during the
+   * move (when focus leaves the comopnent), so that they can be refocused after
+   * moving
+   *
+   * 2. If navigating using the keyboard we keep the focus on the button to
+   * facilitate repeated moves. If we reach the start/end focus is placed on the
+   * opposite button as the trigger button will no longer be visible
+   **/
   moveDown(event) {
     const keyboardEvent = event.detail == 0;
     const newIndex = this.currentIndex + 1;
     const nextItem = this.siblingElements[newIndex];
 
-    this.element.classList.add(this.movingClass);
+    this.element.classList.add(this.movingClass); // [1]
     nextItem.after(this.element);
     this.dispatch("move");
 
     if (keyboardEvent) {
+      // [2]
       if (newIndex == this.siblingElements.length - 1) {
         this.upButtonTarget.focus();
       } else {
@@ -70,16 +88,28 @@ export default class extends Controller {
     this.element.classList.remove(this.movingClass);
   }
 
+  /**
+   * Handler for the move up button
+   * @param {Event} event
+   * 1. This class is needed to ensure the buttons remain visible during the
+   * move (when focus leaves the comopnent), so that they can be refocused after
+   * moving
+   *
+   * 2. If navigating using the keyboard we keep the focus on the button to
+   * facilitate repeated moves. If we reach the start/end focus is placed on the
+   * opposite button as the trigger button will no longer be visible
+   **/
   moveUp(event) {
     const keyboardEvent = event.detail == 0;
     const newIndex = this.currentIndex - 1;
     const previousItem = this.siblingElements[newIndex];
 
-    this.element.classList.add(this.movingClass);
+    this.element.classList.add(this.movingClass); // [1]
     previousItem.before(this.element);
     this.dispatch("move");
 
     if (keyboardEvent) {
+      // [2]
       if (newIndex == 0) {
         this.downButtonTarget.focus();
       } else {
@@ -90,6 +120,11 @@ export default class extends Controller {
     this.element.classList.remove(this.movingClass);
   }
 
+  /**
+   * Updates the (hidden) labels for the buttons for assistive tech users
+   * Conditionals are required, as the orderValueChanged() callback is run before
+   * connect() and thus the buttons won't have been inserted into the DOM yet
+   **/
   updateLabels() {
     if (this.hasUpButtonTarget)
       this.upButtonTarget.innerText = this.upButtonLabel;
@@ -98,10 +133,12 @@ export default class extends Controller {
   }
 
   get upButtonLabel() {
+    // Label from translations folder contains {{index}} placeholder
     return this.labels.move_up.replace("{{index}}", this.orderValue + 1);
   }
 
   get downButtonLabel() {
+    // Label from translations folder contains {{index}} placeholder
     return this.labels.move_down.replace("{{index}}", this.orderValue + 1);
   }
 

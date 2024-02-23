@@ -9,6 +9,19 @@
  *  - Adds a `controllerName` property onto the controller
  *  - Adds a reference to the controller instance onto the element ussing the
  *  controllerName
+ *
+ * Given:
+ * <button data-controller="copy"></button>
+ *
+ * #copy-controller.js
+ * connect() {
+ *  useControllerName()
+ * }
+ *
+ * Allows us to do
+ * document.querySelector('button').copyController
+ *
+ * and receive the stimulus controller instance.
  **/
 import { namespaceCamelize } from "../utilities/string-helpers";
 export const useControllerName = (controller) => {

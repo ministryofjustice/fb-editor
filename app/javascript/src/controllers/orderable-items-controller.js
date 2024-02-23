@@ -11,6 +11,9 @@ export default class extends Controller {
     useAncestry(this);
   }
 
+  /**
+   * When an item is disconnected we need to update the order of all items
+   **/
   orderableItemTargetDisconnected() {
     this.reorder();
   }

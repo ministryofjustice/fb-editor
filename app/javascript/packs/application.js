@@ -21,9 +21,6 @@ import ExpressionsController from "../src/controllers/expressions-controller.js"
 import SelectionRevealController from "../src/controllers/selection-reveal-controller.js";
 import OrderableItemsController from "../src/controllers/orderable-items-controller.js";
 import OrderableItemController from "../src/controllers/orderable-item-controller.js";
-import MovableItemsController from "../src/controllers/movable-items-controller.js";
-import MovableItemController from "../src/controllers/movable-item-controller.js";
-import ComponentsController from "../src/controllers/components-controller.js";
 import ComponentController from "../src/controllers/component-controller.js";
 
 Turbo.session.drive = false;
@@ -40,9 +37,6 @@ Stimulus.register("expressions", ExpressionsController);
 Stimulus.register("selection-reveal", SelectionRevealController);
 Stimulus.register("orderable-items", OrderableItemsController);
 Stimulus.register("orderable-item", OrderableItemController);
-Stimulus.register("movable-items", MovableItemsController);
-Stimulus.register("movable-item", MovableItemController);
-Stimulus.register("components", ComponentsController);
 Stimulus.register("component", ComponentController);
 
 const { EditableContent } = require("../src/web-components/editable-content");
