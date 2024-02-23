@@ -111,7 +111,9 @@ module Admin
         end
       end.collect
 
+      Rails.logger.info('***************************************')
       Rails.logger.info(flattened_summary)
+      Rails.logger.info('***************************************')
       flattened_summary
     end
 
