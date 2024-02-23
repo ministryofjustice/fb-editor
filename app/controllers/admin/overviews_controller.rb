@@ -109,12 +109,12 @@ module Admin
         else
           v.values.map! { |v| v.is_a?(String) ? v.strip : v }
         end
-      end.collect
+      end
 
       Rails.logger.info('***************************************')
       Rails.logger.info(flattened_summary)
       Rails.logger.info('***************************************')
-      flattened_summary
+      flattened_summary.collect
     end
 
     def active_sessions
