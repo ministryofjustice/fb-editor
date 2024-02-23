@@ -118,7 +118,7 @@ module Admin
       Rails.logger.info('***************************************')
       Rails.logger.info(flattened_summary)
       Rails.logger.info('***************************************')
-      flattened_summary
+      result
     end
 
     def active_sessions
