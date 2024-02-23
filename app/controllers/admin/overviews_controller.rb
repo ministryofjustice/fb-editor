@@ -70,9 +70,7 @@ module Admin
           csv_data = CSV.generate do |csv|
             csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
             summary.each do |s|
-              stuff = to_csv_value(s)
-              Rails.logger.info(stuff)
-              csv << stuff.flatten.collect
+              csv << to_csv_value(s)
             end
           end
 
@@ -103,7 +101,7 @@ module Admin
     private
 
     def to_csv_value(summary)
-      summary.each_value do |v|
+      flattened_summary = summary.each_value do |v|
         next if v.blank?
 
         if v.is_a?(String)
@@ -112,6 +110,9 @@ module Admin
           v.values.map! { |v| v.is_a?(String) ? v.strip : v }
         end
       end
+
+      Rails.logger.info(flattened_summary)
+      flattened_summary
     end
 
     def active_sessions
