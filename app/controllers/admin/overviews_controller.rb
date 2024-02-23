@@ -106,6 +106,8 @@ module Admin
 
         if v.is_a?(String)
           result << v.strip
+        elsif !!v == v # is boolean
+          v.to_string
         else
           v.values.map! { |v| result << (v.is_a?(String) ? v.strip : v) }
         end
