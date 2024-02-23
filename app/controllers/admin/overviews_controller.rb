@@ -101,9 +101,9 @@ module Admin
     def to_csv_value(summary)
       result = []
 
-      summary.each_value do |v|
-        result << v.is_a?(Hash) ? v.values.map!(&:to_s) : v.to_s
-      end
+      # rubocop:disable Style/ConditionalAssignment
+      summary.each_value { |v| v.is_a?(Hash) ? result << v.values.map!(&:to_s) : result << v.to_s }
+      # rubocop:enable Style/ConditionalAssignment
 
       result.flatten
     end
