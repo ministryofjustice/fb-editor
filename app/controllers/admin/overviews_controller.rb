@@ -103,13 +103,13 @@ module Admin
     def to_csv_value(summary)
       result = []
 
-      summary.each do |_k, v|
+      summary.each_value do |v|
         next if v.blank?
 
         if v.is_a?(String)
           result << v.strip
         else
-          v.values.map! { |v| v.is_a?(String) ? result << v.strip : result << v }
+          v.values.map! { |v| result << (v.is_a?(String) ? v.strip : v) }
         end
       end
 
