@@ -1,5 +1,5 @@
 /**
- * A custom element that extends an HTML Button element to accessibly disable 
+ * A custom element that extends an HTML Button element to accessibly disable
  * itself according to the state of the form. Can also optionally be configured
  * to add page unload prevention.
  *
@@ -7,7 +7,7 @@
  * <button is="save-button">Label</button>
  *
  * Complete markup
- * <button is="save-button" 
+ * <button is="save-button"
  *         data-assistive-text="No changes to save"
  *         data-saved-label="Saved"
  *         data-unsaved-label="Save"
@@ -18,7 +18,7 @@
  * </button>
  *
  * Attributes:
- * prevent-unload - adds page unload protection.  If there are changes to save, 
+ * prevent-unload - adds page unload protection.  If there are changes to save,
  *                  attempting to leave the page will cause a browser prompt.
  *
  * save-required - controls the state of the button.  If present, the button
@@ -39,7 +39,7 @@ class SaveButton extends HTMLButtonElement {
   #enabled;
 
   static get observedAttributes() {
-    return ['save-required']
+    return ["save-required"];
   }
 
   constructor() {
@@ -48,63 +48,66 @@ class SaveButton extends HTMLButtonElement {
 
   connectedCallback() {
     this.text = {
-      saved: this.dataset.savedLabel || '',
-      unsaved: this.dataset.unsavedLabel || '',
-      saving: this.dataset.savingLabel || '',
+      saved: this.dataset.savedLabel || "",
+      unsaved: this.dataset.unsavedLabel || "",
+      saving: this.dataset.savingLabel || "",
     };
     this.assistiveText = this.dataset.assistiveText;
     this.initialized = true;
 
     setTimeout(() => {
       this.render();
-    })
+    });
   }
 
   attributeChangedCallback(attribute, oldValue, newValue) {
     // In some cases this callback can be called before connectedCallback which
     // would fail without this guard
-    if(!this.initialized) return;
-    if(newValue == oldValue) return;
+    if (!this.initialized) return;
+    if (newValue == oldValue) return;
 
-    if(attribute == 'save-required') {
+    if (attribute == "save-required") {
       this.#setState();
     }
   }
 
   get describedBy() {
-    return this.form.querySelector(`#${this.getAttribute('aria-describedby')}`);
+    return this.form.querySelector(`#${this.getAttribute("aria-describedby")}`);
   }
-  
+
   get $form() {
-    return $(this.form)
+    return $(this.form);
   }
 
   get preventUnload() {
-    return this.hasAttribute('prevent-unload');
+    return this.hasAttribute("prevent-unload");
   }
 
   get saveRequired() {
-    return this.hasAttribute('save-required');
+    return this.hasAttribute("save-required");
   }
 
   set saveRequired(value) {
-    switch(value) {
-      case '':
-      case 'true':
+    switch (value) {
+      case "":
+      case "true":
       case true:
-        this.setAttribute('save-required', value);
+        this.setAttribute("save-required", value);
         break;
       default:
-        this.removeAttribute('save-required');
+        this.removeAttribute("save-required");
     }
   }
 
   render() {
-    this.setAttribute('type', 'submit'); // ensure type is submit
+    this.setAttribute("type", "submit"); // ensure type is submit
 
-    if(this.assistiveText) {
-      this.insertAdjacentHTML('afterend', `<span class="sr-only" id="${this.form.id}-save-description"></span>`);
-      this.setAttribute('aria-describedby', `${this.form.id}-save-description`);
+    if (this.assistiveText) {
+      this.insertAdjacentHTML(
+        "afterend",
+        `<span class="sr-only" id="${this.form.id}-save-description"></span>`,
+      );
+      this.setAttribute("aria-describedby", `${this.form.id}-save-description`);
     }
 
     this.#setState();
@@ -112,22 +115,25 @@ class SaveButton extends HTMLButtonElement {
   }
 
   afterRender() {
-      this.form.addEventListener('input', (event) => this.saveRequired = 'true');
-      this.form.addEventListener('submit', (event) => this.#handleSubmit(event));
+    this.form.addEventListener(
+      "input",
+      (event) => (this.saveRequired = "true"),
+    );
+    this.form.addEventListener("submit", (event) => this.#handleSubmit(event));
 
-      this.addEventListener('click', (event) => this.#handleClick(event));
+    this.addEventListener("click", (event) => this.#handleClick(event));
   }
 
   // Enables programatically submitting the form, regardless of the state of the
   // button, and bypassing unload prevention.
   save() {
     this.#enabled = true;
-    this.form.dispatchEvent(new Event('submit')) // Trigger submit event listeners
+    this.form.dispatchEvent(new Event("submit")); // Trigger submit event listeners
     this.form.submit();
   }
 
   #handleClick(event) {
-    if(this.saveRequired) {
+    if (this.saveRequired) {
       this.innerText = this.text.saving;
     } else {
       event.preventDefault();
@@ -135,7 +141,7 @@ class SaveButton extends HTMLButtonElement {
   }
 
   #handleSubmit(event) {
-    if(this.#enabled) {
+    if (this.#enabled) {
       this.#removeBeforeUnloadListener();
     } else {
       event.preventDefault();
@@ -145,18 +151,22 @@ class SaveButton extends HTMLButtonElement {
 
   #beforeUnloadListener(event) {
     event.preventDefault();
-    return event.returnValue = 'Changes you have made will not be submitted';
+    return (event.returnValue = "Changes you have made will not be submitted");
   }
 
   #addBeforeUnloadListener() {
-    if(this.preventUnload) {
-      window.addEventListener('beforeunload', this.#beforeUnloadListener, {capture: true});
+    if (this.preventUnload) {
+      window.addEventListener("beforeunload", this.#beforeUnloadListener, {
+        capture: true,
+      });
     }
   }
 
   #removeBeforeUnloadListener() {
-    if(this.preventUnload) {
-      window.removeEventListener('beforeunload', this.#beforeUnloadListener, {capture: true});
+    if (this.preventUnload) {
+      window.removeEventListener("beforeunload", this.#beforeUnloadListener, {
+        capture: true,
+      });
     }
   }
 
@@ -169,7 +179,7 @@ class SaveButton extends HTMLButtonElement {
     this.innerText = this.text.unsaved;
     this.setAttribute("aria-disabled", false);
 
-    if(this.describedBy) {
+    if (this.describedBy) {
       this.describedBy.innerText = "";
     }
 
@@ -181,7 +191,7 @@ class SaveButton extends HTMLButtonElement {
     this.innerText = this.text.saved;
     this.setAttribute("aria-disabled", true);
 
-    if(this.describedBy) {
+    if (this.describedBy) {
       this.describedBy.innerText = this.assistiveText;
     }
 
@@ -189,5 +199,4 @@ class SaveButton extends HTMLButtonElement {
   }
 }
 
-module.exports = { SaveButton }
-
+module.exports = { SaveButton };

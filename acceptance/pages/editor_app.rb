@@ -1,6 +1,7 @@
 require_relative '../support/data_content_id'
 require_relative '../sections/conditional_content_modal_section'
 require_relative '../sections/branches_section'
+require_relative '../sections/components_section'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
@@ -174,6 +175,8 @@ class EditorApp < SitePrism::Page
   # End pages flow
 
   element :save_page_button,  '#fb-editor-save'
+  element :disabled_save_button,  '#fb-editor-save', aria: { disabled: true }
+  element :enabled_save_button,  '#fb-editor-save', aria: { disabled: false }
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
@@ -201,6 +204,10 @@ class EditorApp < SitePrism::Page
 
   def content_area(content)
     editable_content_areas.select { |a| a.text.include?(content) }
+  end
+
+  section :components_container, ComponentsSection, '.components' do
+    
   end
 
   element :add_condition, :button, I18n.t('branches.condition_add')

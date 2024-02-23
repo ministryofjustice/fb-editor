@@ -17,7 +17,7 @@ export default class extends Controller {
 
     this.labels = app.text.components;
 
-    Promise.resolve().then(() => {
+    queueMicrotask(() => {
       this.render();
     });
   }
@@ -29,7 +29,7 @@ export default class extends Controller {
   orderValueChanged(newValue, oldValue) {
     if (newValue !== oldValue) {
       this.updateLabels();
-      requestAnimationFrame(() => {
+      queueMicrotask(() => {
         this.dispatch("orderUpdated", { detail: { order: newValue } });
       });
     }
