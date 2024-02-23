@@ -101,20 +101,24 @@ module Admin
     private
 
     def to_csv_value(summary)
-      flattened_summary = summary.each_value do |v|
+      result = []
+
+      summary.each do |_k, v|
         next if v.blank?
 
         if v.is_a?(String)
-          v.strip
+          result << v.strip
         else
-          v.values.map! { |v| v.is_a?(String) ? v.strip : v }
+          v.values.map! { |v| v.is_a?(String) ? result << v.strip : result << v }
         end
       end
+
+      flattened_summary = result.join(',')
 
       Rails.logger.info('***************************************')
       Rails.logger.info(flattened_summary)
       Rails.logger.info('***************************************')
-      flattened_summary.collect
+      flattened_summary
     end
 
     def active_sessions
