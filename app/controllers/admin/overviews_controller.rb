@@ -102,7 +102,7 @@ module Admin
       result = []
 
       summary.each_value do |v|
-        r << v.is_a?(Hash) ? v.values.map!(&:to_s) : v.to_s
+        result << v.is_a?(Hash) ? v.values.map!(&:to_s) : v.to_s
       end
 
       result.flatten
