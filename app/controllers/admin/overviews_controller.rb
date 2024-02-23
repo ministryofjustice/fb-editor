@@ -68,7 +68,7 @@ module Admin
 
         format.csv do
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled']
+            csv << ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
             summary.each do |s|
               csv << to_csv_value(s)
             end
@@ -85,7 +85,7 @@ module Admin
 
         format.csv do
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components']
+            csv << ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Standalone pages', 'Exit pages', 'Single Question pages', 'Multiple Question pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
             summary.each do |s|
               csv << to_csv_value(s)
             end
@@ -151,7 +151,10 @@ module Admin
           collect_information_by_email_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_EMAIL_BODY').present?,
           send_to_json_api_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_OUTPUT_JSON_ENDPOINT').present?,
           receive_csv_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_CSV_OUTPUT').present?,
-          external_start_page_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: 'production', name: 'EXTERNAL_START_PAGE_URL').present?
+          external_start_page_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: 'production', name: 'EXTERNAL_START_PAGE_URL').present?,
+          analytics_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'GA4').present?,
+          reference_number_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'REFERENCE_NUMBER').present?,
+          payment_link_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'PAYMENT_LINK').present?
         }
       end
 
