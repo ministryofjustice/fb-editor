@@ -109,7 +109,7 @@ module Admin
         else
           v.values.map! { |v| v.is_a?(String) ? v.strip : v }
         end
-      end
+      end.collect
 
       Rails.logger.info(flattened_summary)
       flattened_summary
