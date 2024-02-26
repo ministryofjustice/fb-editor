@@ -74,7 +74,7 @@ module Admin
             end
           end
 
-          send_data csv_data, filename: 'dev_forms_summary.csv', type: 'text/csv'
+          send_data csv_data, filename: summary_csv_filename('test'), type: 'text/csv'
         end
       end
     end
@@ -91,7 +91,7 @@ module Admin
             end
           end
 
-          send_data csv_data, filename: 'live_forms_summary.csv', type: 'text/csv'
+          send_data csv_data, filename: summary_csv_filename('live'), type: 'text/csv'
         end
       end
     end
@@ -135,8 +135,7 @@ module Admin
     end
 
     def service_summary(env)
-      # published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
-      published_service_ids = MetadataApiClient::Service.all(user_id: 'a727de30-f231-4a76-9823-c1504a052a70').map!(&:id)
+      published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
       result = []
 
       published_service_ids.each do |id|
@@ -171,15 +170,6 @@ module Admin
         types << page['_type']
       end
 
-      # {
-      #   start_pages: pages.select { |p| p['_type'] == 'page.start' }.count,
-      #   confirmation_pages: pages.select { |p| p['_type'] == 'page.confirmation' }.count,
-      #   checkanswers_pages: pages.select { |p| p['_type'] == 'page.checkanswers' }.count,
-      #   singlequestion_pages: pages.select { |p| p['_type'] == 'page.singlequestion' }.count,
-      #   multiplequestions_pages: pages.select { |p| p['_type'] == 'page.multiplequestions' }.count,
-      #   exit_pages: pages.select { |p| p['_type'] == 'page.exit' }.count,
-      #   standalone_pages: pages.select { |p| p['_type'] == 'page.standalone' }.count
-      # }
       counts = types.tally
 
       {
@@ -230,19 +220,6 @@ module Admin
         radios += counts.fetch('radios', 0)
         texts += counts.fetch('text', 0)
         textareas += counts.fetch('textarea', 0)
-
-        # addresses += page['components'].select { |c| c['_type'] == 'address' }.count
-        # autocompletes += page['components'].select { |c| c['_type'] == 'autocomplete' }.count
-        # checkboxes += page['components'].select { |c| c['_type'] == 'checkboxes' }.count
-        # contents += page['components'].select { |c| c['_type'] == 'content' }.count
-        # dates += page['components'].select { |c| c['_type'] == 'date' }.count
-        # emails += page['components'].select { |c| c['_type'] == 'email' }.count
-        # uploads += page['components'].select { |c| c['_type'] == 'upload' }.count
-        # multiuploads += page['components'].select { |c| c['_type'] == 'multiupload' }.count
-        # numbers += page['components'].select { |c| c['_type'] == 'number' }.count
-        # radios += page['components'].select { |c| c['_type'] == 'radios' }.count
-        # texts += page['components'].select { |c| c['_type'] == 'text' }.count
-        # textareas += page['components'].select { |c| c['_type'] == 'textarea' }.count
       end
 
       {
@@ -274,6 +251,10 @@ module Admin
 
     def csv_filename
       "#{ENV['PLATFORM_ENV']}-services-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+    end
+
+    def summary_csv_filename(humanised_env)
+      "#{humanised_env}-services-feature-summary-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
     end
 
     def moj_forms_team_service_ids
