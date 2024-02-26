@@ -2,7 +2,6 @@ require_relative './component_section'
 
 class ComponentsSection < SitePrism::Section
   sections :components, ComponentSection, '[data-controller*="component"]'
-  # elements :question_components, '.Question'
 
   def component_titles
     components.map do |c|

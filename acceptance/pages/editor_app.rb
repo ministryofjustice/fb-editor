@@ -208,9 +208,7 @@ class EditorApp < SitePrism::Page
     editable_content_areas.select { |a| a.text.include?(content) }
   end
 
-  section :components_container, ComponentsSection, '.components' do
-    
-  end
+  section :components_container, ComponentsSection, '.components'
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
