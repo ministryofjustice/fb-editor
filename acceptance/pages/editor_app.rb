@@ -30,12 +30,13 @@ class EditorApp < SitePrism::Page
   ########
 
   # Your forms
-  element :service_name, '#form-navigation-heading'
+  element :services_link, :link, I18n.t('partials.header.forms')
   element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
   element :create_service_button, :button, I18n.t('services.create')
   # End Your forms
 
   # Pages flow
+  element :service_name, '#form-navigation-heading'
   element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'Cookies', class: 'govuk-link'
   element :privacy_link, :link, 'Privacy', class: 'govuk-link'
@@ -111,6 +112,7 @@ class EditorApp < SitePrism::Page
   element :branching_link, :link, I18n.t('actions.add_branch')
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
+  element :modal_dialog, '.ui-dialog'
 
   def main_flow_titles
     flow_titles(main_flow)

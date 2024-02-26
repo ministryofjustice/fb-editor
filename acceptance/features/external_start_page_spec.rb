@@ -39,6 +39,7 @@ feature 'External start page' do
     then_I_should_see_an_error_message(I18n.t('activemodel.errors.models.external_url_validation.missing'))
     and_I_re_enter_a_url('gov.uk')
     and_I_confirm_url
+    editor.wait_until_modal_dialog_invisible(wait: 30)
     then_I_should_see_the_external_start_page_is_set
     and_I_click_on_the_external_start_page_menu
     and_I_click_on_use_internal_start_page
@@ -95,7 +96,7 @@ feature 'External start page' do
     and_I_should_see_the_update_modal
     and_I_add_a_url('gov.uk/updated')
     and_I_click_done
-    sleep 2
+    editor.wait_until_modal_dialog_invisible(wait: 30)
     and_I_click_on_the_external_start_page_menu
     then_I_should_see_the_expected_menu_items(start_page, external_start_page_menu_items)
     and_I_click_on_update_external_start_page_url
