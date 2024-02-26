@@ -182,13 +182,13 @@ module Admin
       counts = types.tally
 
       {
-        start_pages: counts['page.start'],
-        confirmation_pages: counts['page.confirmation'],
-        checkanswers_pages: counts['page.checkanswers'],
-        singlequestion_pages: counts['page.singlequestion'],
-        multiplequestions_pages: counts['page.multiplequestions'],
-        exit_pages: counts['page.exit'],
-        standalone_pages: counts['page.standalone']
+        start_pages: counts.fetch('page.start', 0),
+        confirmation_pages: counts.fetch('page.confirmation', 0),
+        checkanswers_pages: counts.fetch('page.checkanswers', 0),
+        singlequestion_pages: counts.fetch('page.singlequestion', 0),
+        multiplequestions_pages: counts.fetch('page.multiplequestions', 0),
+        exit_pages: counts.fetch('page.exit', 0),
+        standalone_pages: counts.fetch('page.standalone', 0)
       }
     end
 
@@ -217,18 +217,18 @@ module Admin
 
         counts = types.tally
 
-        addresses += counts['address']
-        autocompletes += counts['autocomplete']
-        checkboxes += counts['checkboxes']
-        contents += counts['content']
-        dates += counts['date']
-        emails += counts['email']
-        uploads += counts['upload']
-        multiuploads += counts['multiupload']
-        numbers += counts['number']
-        radios += counts['radios']
-        texts += counts['text']
-        textareas += counts['textarea']
+        addresses += counts.fetch('address', 0)
+        autocompletes += counts.fetch('autocomplete', 0)
+        checkboxes += counts.fetch('checkboxes', 0)
+        contents += counts.fetch('content', 0)
+        dates += counts.fetch('date', 0)
+        emails += counts.fetch('email', 0)
+        uploads += counts.fetch('upload', 0)
+        multiuploads += counts.fetch('multiupload', 0)
+        numbers += counts.fetch('number', 0)
+        radios += counts.fetch('radios', 0)
+        texts += counts.fetch('text', 0)
+        textareas += counts.fetch('textarea', 0)
 
         # addresses += page['components'].select { |c| c['_type'] == 'address' }.count
         # autocompletes += page['components'].select { |c| c['_type'] == 'autocomplete' }.count
