@@ -68,7 +68,7 @@ module Admin
 
         format.csv do
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Standalone pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+            csv << service_summary_headers
             summary.each do |s|
               csv << to_csv_value(s)
             end
@@ -85,7 +85,7 @@ module Admin
 
         format.csv do
           csv_data = CSV.generate do |csv|
-            csv << ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Standalone pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+            csv << service_summary_headers
             summary.each do |s|
               csv << to_csv_value(s)
             end
@@ -140,21 +140,23 @@ module Admin
 
       published_service_ids.each do |id|
         metadata = MetadataApiClient::Service.latest_version(id)
+        features = ServiceConfiguration.where(service_id: id, deployment_environment: env).pluck(:name)
+
         result << {
           service_id: id,
           service_name: metadata['service_name'],
           locale: metadata['locale'],
           page_counts: page_type_counts(metadata['pages']),
           component_counts: component_type_counts(metadata['pages']),
-          confirmation_email_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'CONFIRMATION_EMAIL_COMPONENT_ID').present?,
-          save_and_return_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SAVE_AND_RETURN').present?,
-          collect_information_by_email_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_EMAIL_BODY').present?,
-          send_to_json_api_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_OUTPUT_JSON_ENDPOINT').present?,
-          receive_csv_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'SERVICE_CSV_OUTPUT').present?,
-          external_start_page_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: 'production', name: 'EXTERNAL_START_PAGE_URL').present?,
-          analytics_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'GA4').present?,
-          reference_number_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'REFERENCE_NUMBER').present?,
-          payment_link_enabled: ServiceConfiguration.find_by(service_id: id, deployment_environment: env, name: 'PAYMENT_LINK').present?
+          confirmation_email_enabled: features.include?('CONFIRMATION_EMAIL_COMPONENT_ID'),
+          save_and_return_enabled: features.include?('SAVE_AND_RETURN'),
+          collect_information_by_email_enabled: features.include?('SERVICE_EMAIL_BODY'),
+          send_to_json_api_enabled: features.include?('SERVICE_OUTPUT_JSON_ENDPOINT'),
+          receive_csv_enabled: features.include?('SERVICE_CSV_OUTPUT'),
+          external_start_page_enabled: features.include?('EXTERNAL_START_PAGE_URL'),
+          analytics_enabled: features.include?('GA4'),
+          reference_number_enabled: features.include?('REFERENCE_NUMBER'),
+          payment_link_enabled: features.include?('PAYMENT_LINK')
         }
       end
 
@@ -162,14 +164,29 @@ module Admin
     end
 
     def page_type_counts(pages)
+      pages.each do |page, types|
+        types << page['_type']
+      end
+
+      # {
+      #   start_pages: pages.select { |p| p['_type'] == 'page.start' }.count,
+      #   confirmation_pages: pages.select { |p| p['_type'] == 'page.confirmation' }.count,
+      #   checkanswers_pages: pages.select { |p| p['_type'] == 'page.checkanswers' }.count,
+      #   singlequestion_pages: pages.select { |p| p['_type'] == 'page.singlequestion' }.count,
+      #   multiplequestions_pages: pages.select { |p| p['_type'] == 'page.multiplequestions' }.count,
+      #   exit_pages: pages.select { |p| p['_type'] == 'page.exit' }.count,
+      #   standalone_pages: pages.select { |p| p['_type'] == 'page.standalone' }.count
+      # }
+      counts = types.tally
+
       {
-        start_pages: pages.select { |p| p['_type'] == 'page.start' }.count,
-        confirmation_pages: pages.select { |p| p['_type'] == 'page.confirmation' }.count,
-        checkanswers_pages: pages.select { |p| p['_type'] == 'page.checkanswers' }.count,
-        singlequestion_pages: pages.select { |p| p['_type'] == 'page.singlequestion' }.count,
-        multiplequestions_pages: pages.select { |p| p['_type'] == 'page.multiplequestions' }.count,
-        exit_pages: pages.select { |p| p['_type'] == 'page.exit' }.count,
-        standalone_pages: pages.select { |p| p['_type'] == 'page.standalone' }.count
+        start_pages: counts['page.start'],
+        confirmation_pages: counts['page.confirmation'],
+        checkanswers_pages: counts['page.checkanswers'],
+        singlequestion_pages: counts['page.singlequestion'],
+        multiplequestions_pages: counts['page.multiplequestions'],
+        exit_pages: counts['page.exit'],
+        standalone_pages: counts['page.standalone']
       }
     end
 
@@ -190,23 +207,46 @@ module Admin
       pages.each do |page|
         next if page['components'].blank?
 
-        addresses += page['components'].select { |c| c['_type'] == 'address' }.count
-        autocompletes += page['components'].select { |c| c['_type'] == 'autocomplete' }.count
-        checkboxes += page['components'].select { |c| c['_type'] == 'checkboxes' }.count
-        contents += page['components'].select { |c| c['_type'] == 'content' }.count
-        dates += page['components'].select { |c| c['_type'] == 'date' }.count
-        emails += page['components'].select { |c| c['_type'] == 'email' }.count
-        uploads += page['components'].select { |c| c['_type'] == 'upload' }.count
-        multiuploads += page['components'].select { |c| c['_type'] == 'multiupload' }.count
-        numbers += page['components'].select { |c| c['_type'] == 'number' }.count
-        radios += page['components'].select { |c| c['_type'] == 'radios' }.count
-        texts += page['components'].select { |c| c['_type'] == 'text' }.count
-        textareas += page['components'].select { |c| c['_type'] == 'textarea' }.count
+        page['components'].each do |component, types|
+          types << component['_type']
+        end
+
+        counts = types.tally
+
+        addresses += counts['address']
+        autocompletes += counts['autocomplete']
+        checkboxes += counts['checkboxes']
+        contents += counts['content']
+        dates += counts['date']
+        emails += counts['email']
+        uploads += counts['upload']
+        multiuploads += counts['multiupload']
+        numbers += counts['number']
+        radios += counts['radios']
+        texts += counts['text']
+        textareas += counts['textarea']
+
+        # addresses += page['components'].select { |c| c['_type'] == 'address' }.count
+        # autocompletes += page['components'].select { |c| c['_type'] == 'autocomplete' }.count
+        # checkboxes += page['components'].select { |c| c['_type'] == 'checkboxes' }.count
+        # contents += page['components'].select { |c| c['_type'] == 'content' }.count
+        # dates += page['components'].select { |c| c['_type'] == 'date' }.count
+        # emails += page['components'].select { |c| c['_type'] == 'email' }.count
+        # uploads += page['components'].select { |c| c['_type'] == 'upload' }.count
+        # multiuploads += page['components'].select { |c| c['_type'] == 'multiupload' }.count
+        # numbers += page['components'].select { |c| c['_type'] == 'number' }.count
+        # radios += page['components'].select { |c| c['_type'] == 'radios' }.count
+        # texts += page['components'].select { |c| c['_type'] == 'text' }.count
+        # textareas += page['components'].select { |c| c['_type'] == 'textarea' }.count
       end
 
       {
         addresses:, autocompletes:, checkboxes:, contents:, dates:, emails:, uploads:, multiuploads:, numbers:, radios:, texts:, textareas:
       }
+    end
+
+    def service_summary_headers
+      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Standalone pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
     end
 
     def published_state(service_id, environment)
