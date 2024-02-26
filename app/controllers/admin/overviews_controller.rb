@@ -135,7 +135,8 @@ module Admin
     end
 
     def service_summary(env)
-      published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
+      # published_service_ids = published(env).reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.map(&:service_id)
+      publshed_service_ids = MetadataApiClient::Service.all(user_id: 'a727de30-f231-4a76-9823-c1504a052a70').map!(&:id)
       result = []
 
       published_service_ids.each do |id|
