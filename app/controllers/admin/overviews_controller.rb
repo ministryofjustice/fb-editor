@@ -165,7 +165,7 @@ module Admin
 
     def page_type_counts(pages)
       types = []
-  
+
       pages.each do |page|
         types << page['_type']
       end
@@ -211,7 +211,7 @@ module Admin
 
         types = []
 
-        page['components'].each do |component, types|
+        page['components'].each do |component|
           types << component['_type']
         end
 
