@@ -149,6 +149,7 @@ module Admin
           locale: metadata['locale'],
           page_counts: page_type_counts(metadata['pages']),
           component_counts: component_type_counts(metadata['pages']),
+          branch_point_count: branch_point_count(metadata['flow']),
           confirmation_email_enabled: features.include?('CONFIRMATION_EMAIL_COMPONENT_ID'),
           save_and_return_enabled: features.include?('SAVE_AND_RETURN'),
           collect_information_by_email_enabled: features.include?('SERVICE_EMAIL_BODY'),
@@ -227,8 +228,20 @@ module Admin
       }
     end
 
+    def branch_point_count(flows)
+      types = []
+
+      flows.each_value do |flow|
+        types << flow['_type']
+      end
+
+      counts = types.tally
+
+      counts.fetch('flow.branch', 0)
+    end
+
     def service_summary_headers
-      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Branching points', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
     end
 
     def published_state(service_id, environment)
