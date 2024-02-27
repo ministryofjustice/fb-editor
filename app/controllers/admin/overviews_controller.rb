@@ -10,6 +10,7 @@ module Admin
       759716eb-b4fb-413e-b883-f7016e2a9feb
       11744bdf-86e3-4be3-b2cc-86434dc08ef2
       1ef15479-5a2c-4426-a5bf-54253031d9be
+      57497ef9-61cb-4579-ab93-f686e09d6936
     ].freeze
 
     def index
@@ -178,8 +179,7 @@ module Admin
         checkanswers_pages: counts.fetch('page.checkanswers', 0),
         singlequestion_pages: counts.fetch('page.singlequestion', 0),
         multiplequestions_pages: counts.fetch('page.multiplequestions', 0),
-        exit_pages: counts.fetch('page.exit', 0),
-        standalone_pages: counts.fetch('page.standalone', 0)
+        exit_pages: counts.fetch('page.exit', 0)
       }
     end
 
@@ -228,7 +228,7 @@ module Admin
     end
 
     def service_summary_headers
-      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Standalone pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
     end
 
     def published_state(service_id, environment)
