@@ -10,7 +10,7 @@ module Admin
       759716eb-b4fb-413e-b883-f7016e2a9feb
       11744bdf-86e3-4be3-b2cc-86434dc08ef2
       1ef15479-5a2c-4426-a5bf-54253031d9be
-      57497ef9-61cb-4579-ab93-f686e09d6936 # smoke tests form in live
+      57497ef9-61cb-4579-ab93-f686e09d6936
     ].freeze
 
     def index
