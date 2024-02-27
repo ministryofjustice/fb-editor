@@ -179,7 +179,7 @@ module Admin
         checkanswers_pages: counts.fetch('page.checkanswers', 0),
         singlequestion_pages: counts.fetch('page.singlequestion', 0),
         multiplequestions_pages: counts.fetch('page.multiplequestions', 0),
-        exit_pages: counts.fetch('page.exit', 0),
+        exit_pages: counts.fetch('page.exit', 0)
       }
     end
 
