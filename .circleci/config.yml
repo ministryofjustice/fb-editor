@@ -112,9 +112,7 @@ jobs:
       - run:
           name: Running the tests
           command: |
-            circleci tests glob "spec/**/*_spec.rb" | circleci tests run \
-              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" \
-              --verbose --split-by=timings
+            circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
       - slack/status: *slack_status
   js_test:
     docker:
@@ -325,9 +323,7 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run \
-              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \ 
-              --verbose --split-by=timings --timings-type=filename
+            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
       - slack/status: *slack_status
@@ -359,9 +355,7 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run \
-              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \
-              --verbose --split-by=timings --timings-type=filename
+            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
