@@ -95,6 +95,8 @@ class EditorApp < SitePrism::Page
   elements :form_urls, '#flow-overview .flow-item a.govuk-link'
   elements :flow_items, '#flow-overview .flow-item', visible: true
   elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
+  element :external_start_page_thumbnail, '.flow-thumbnail.external-url-thumbnail'
+  element :start_page_thumbnail, '.flow-thumbnail.start'
 
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
     find('#main-content', visible: true)
@@ -134,9 +136,9 @@ class EditorApp < SitePrism::Page
     preview_page_images.find { |p| p.find('.title').text.include?(title) }
   end
 
-  def external_start_page_thumbnail
-    page.find('.external-thumbnail')
-  end
+  # def external_start_page_thumbnail
+  #   page.find('.external-thumbnail')
+  # end
 
   def flow_article(title)
     flow_items.find { |p| p.first('.text').text.include?(title) } 

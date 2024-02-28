@@ -390,7 +390,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep(1)
+    editor.wait_until_three_dots_button_visible
     editor.three_dots_button.click
   end
 
