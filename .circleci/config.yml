@@ -360,7 +360,7 @@ jobs:
             source $BASH_ENV
 
             circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run \
-              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \ 
+              --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" \
               --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
