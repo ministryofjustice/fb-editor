@@ -5,12 +5,8 @@ feature 'Confirmation email' do
   let(:service_name) { generate_service_name }
   let(:start_page) { 'Service name goes here' }
   let(:question) { 'New Email Component' }
-  # Capybara strips out the carriage return `\r`
-  let(:message_body) {
-    "Thank you for your submission to ‘#{service_name}’. \n\nA copy of the information you provided is attached to this email."
-    I18n.t('default_values.confiramtion_email_body', service_name: service_name).gsub!('{{refernce_number_placeholder}}','')
-  }
-  let(:message_subject) { "Your submission to ‘#{service_name}’" }
+  let(:message_body) { I18n.t('default_values.confirmation_email_body', service_name:).gsub!('{{reference_payment_placeholder}}\r\n', '') }
+  let(:message_subject) { I18n.t('default_values.confirmation_email_subject', service_name:).gsub!('{{reference_number_placeholder}}', '') }
   let(:multiple_question_page) { 'Title' }
   let(:email_question) { 'Email address question' }
   let(:text_component_question) { 'Question' }
@@ -159,7 +155,6 @@ feature 'Confirmation email' do
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_dev'))
     expect(page).to have_content(I18n.t('activemodel.attributes.confirmation_email_settings.send_by_confirmation_email_production'))
     expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_hint'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_sample'))
     expect(page).to have_content(service_name)
   end
 

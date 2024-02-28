@@ -479,11 +479,6 @@ end
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
   end
 
-
-  def then_I_should_see_the_submission_confiramtion_email_warning_message
-    expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
-  end
-
   def then_I_should_see_autocomplete_warnings
     expect(environment_section.text).to include(autocomplete_warning_message)
   end
