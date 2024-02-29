@@ -1,0 +1,152 @@
+.EditableCollectionFieldComponent,
+.EditableGroupFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent {
+  :disabled {
+    background-color: govuk-colour("white");
+  }
+}
+
+editable-content,
+.EditableCollectionFieldComponent,
+.EditableGroupFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent,
+.EditableComponentCollectionItem {
+  position: relative;
+
+  .ActivatedMenuActivator {
+    left: -54px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+  }
+
+  &.active {
+    > .ActivatedMenuActivator {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.EditableTextareaFieldComponent {
+  .govuk-character-count__message {
+    display: none; // We only want message shown in Runner
+  }
+}
+
+// Not nice but trying to work around some margin annoyance caused by GDS css
+[data-fb-pagetype="page.multiplequestions"] {
+  .EditableCollectionFieldComponent legend,
+  .EditableGroupFieldComponent {
+    legend {
+      display: contents;
+    }
+  }
+
+  [data-controller*="component"] {
+    &.active:before,
+    &.active:after,
+    &:has(.icon-button--move:focus):before,
+    &:has(.icon-button--move:focus):after {
+      content: "";
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 2px;
+      background-color: $govuk-link-colour;
+    }
+
+    &.active:before,
+    &:has(.icon-button--move:focus):before {
+      left: -12px;
+    }
+
+    &.active:after,
+    &:has(.icon-button--move:focus):after {
+      right: -12px;
+    }
+
+    .icon-button--move {
+      position: absolute;
+      right: -55px;
+      display: block;
+      opacity: 0;
+      pointer-events: none;
+
+      &:focus {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    .icon-button--up {
+      top: 0;
+    }
+
+    .icon-button--down {
+      bottom: 0;
+    }
+
+    &.moving .icon-button--move,
+    &.active .icon-button--move {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &:first-child .icon-button--up {
+      display: none;
+    }
+
+    &:last-child .icon-button--down {
+      display: none;
+    }
+  }
+}
+
+.EditableElement {
+  &:focus,
+  &.active {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
+}
+
+.EditableCollectionItemMenu {
+  z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
+
+  .ActivatedMenu {
+    width: auto;
+  }
+}
+
+/* Injected/dynamic components
+ * --------------------------- */
+.ActivatedMenuActivator {
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.EditableCollectionItemInjector {
+  @include button_type_link;
+  @include addition_icon;
+  margin: 0 0 0 55px;
+}
+
+.EditableCollectionItemRemover {
+  @include button_type_link;
+
+  &:hover {
+    background-color: govuk-colour("red");
+    border-color: govuk-colour("red");
+    color: govuk-colour("white");
+  }
+}
+
+.EditableCollectionFieldComponent + [type="submit"] {
+  // Workaround to compensate for GDS CSS issues
+  margin-top: 55px;
+}

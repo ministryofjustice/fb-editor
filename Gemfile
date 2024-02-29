@@ -5,11 +5,12 @@ ruby '3.1.3'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
+
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'bugfix/old-body-content'
+#     branch: 'move-components'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.16'
+gem 'metadata_presenter', '3.3.19'
 
 gem 'activerecord-session_store'
 gem 'administrate'
@@ -44,6 +45,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
+  gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', tag: 'v0.11.0'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'

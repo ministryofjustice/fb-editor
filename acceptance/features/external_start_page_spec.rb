@@ -34,14 +34,17 @@ feature 'External start page' do
     and_I_add_a_url('not-valid.co.uk')
     and_I_confirm_url
     then_I_should_see_an_error_message(I18n.t('activemodel.errors.models.external_url_validation.invalid'))
+    sleep 1
     and_I_re_enter_a_url('')
     and_I_confirm_url
     then_I_should_see_an_error_message(I18n.t('activemodel.errors.models.external_url_validation.missing'))
+    sleep 1
     and_I_re_enter_a_url('gov.uk')
     and_I_confirm_url
     then_I_should_see_the_external_start_page_is_set
     and_I_click_on_the_external_start_page_menu
     and_I_click_on_use_internal_start_page
+    editor.wait_until_start_page_thumbnail_visible
     and_I_click_on_the_page_menu(start_page)
     then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
   end
@@ -95,7 +98,8 @@ feature 'External start page' do
     and_I_should_see_the_update_modal
     and_I_add_a_url('gov.uk/updated')
     and_I_click_done
-    sleep 2
+    # nothing changes on screen here, so we leave and revisit the flow view
+    when_I_revisit_the_flow_view
     and_I_click_on_the_external_start_page_menu
     then_I_should_see_the_expected_menu_items(start_page, external_start_page_menu_items)
     and_I_click_on_update_external_start_page_url
@@ -173,10 +177,15 @@ feature 'External start page' do
   end
 
   def then_I_should_see_the_external_start_page_is_set
-    # a little sleep here seems to make this much less flaky
-    sleep 3
-    visit current_path
-    sleep 3
+    editor.wait_until_external_start_page_thumbnail_visible(wait: 25)
     expect(page).to have_content(I18n.t('external_start_page_url.link'))
   end
+
+  def when_I_revisit_the_flow_view
+    editor.wait_until_modal_dialog_invisible
+    editor.services_link.click
+    within("#service-#{service_name.gsub(' ', '-').downcase}") do
+      click_link('Edit' )
+    end
+  end 
 end

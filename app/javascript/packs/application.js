@@ -19,9 +19,15 @@ import ConditionalsController from "../src/controllers/conditionals-controller.j
 import ExpressionController from "../src/controllers/expression-controller.js";
 import ExpressionsController from "../src/controllers/expressions-controller.js";
 import SelectionRevealController from "../src/controllers/selection-reveal-controller.js";
+import OrderableItemsController from "../src/controllers/orderable-items-controller.js";
+import OrderableItemController from "../src/controllers/orderable-item-controller.js";
+import ComponentController from "../src/controllers/component-controller.js";
 
 Turbo.session.drive = false;
 window.Stimulus = Application.start();
+
+// Stimulus.debug = true;
+
 Stimulus.register("dynamic-fields", DynamicFieldsController);
 Stimulus.register("conditionals-status", ConditionalsStatusController);
 Stimulus.register("conditional", ConditionalController);
@@ -29,6 +35,9 @@ Stimulus.register("conditionals", ConditionalsController);
 Stimulus.register("expression", ExpressionController);
 Stimulus.register("expressions", ExpressionsController);
 Stimulus.register("selection-reveal", SelectionRevealController);
+Stimulus.register("orderable-items", OrderableItemsController);
+Stimulus.register("orderable-item", OrderableItemController);
+Stimulus.register("component", ComponentController);
 
 const { EditableContent } = require("../src/web-components/editable-content");
 const { ElasticTextarea } = require("../src/web-components/elastic-textarea");

@@ -237,7 +237,11 @@ module CommonSteps
   end
 
   def then_the_save_button_should_be_disabled
-    expect(editor.save_page_button['aria-disabled']).to eq('true')
+    expect(editor).to have_disabled_save_button
+  end
+
+  def then_the_save_button_should_be_enabled
+    expect(editor).to have_enabled_save_button
   end
 
   def then_I_should_be_warned_when_leaving_page
@@ -386,7 +390,7 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep(1)
+    editor.wait_until_three_dots_button_visible
     editor.three_dots_button.click
   end
 

@@ -1,0 +1,51 @@
+editable-content {
+  display: block;
+  position: relative;
+
+  [data-element="editable-content-input"] {
+    border: none;
+    display: none;
+    font: inherit;
+    width: 99.28%; /* [1] */
+  }
+
+  [data-element="editable-content-output"] {
+    padding: 2px;
+    line-height: 25px;
+
+    > * + * {
+      margin-bottom: 25px;
+    }
+
+    > *:first-child {
+      margin-top: 25px;
+    }
+  }
+
+  .show-if-button,
+  .hidden-button {
+    display: none;
+  }
+}
+
+editable-content > [mode="edit"] {
+  [data-element="editable-content-input"] {
+    display: block;
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline-offset: 0px;
+    padding-top: 26px;
+  }
+}
+
+editable-content[conditional] [data-element="editable-content-output"] {
+  outline: 1px dashed $govuk-link-colour;
+  outline-offset: 10px;
+}
+
+editable-content[conditional="conditional"] .show-if-button,
+editable-content[conditional="never"] .hidden-button {
+  display: inline-block;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}

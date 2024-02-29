@@ -1,6 +1,7 @@
 require_relative '../support/data_content_id'
 require_relative '../sections/conditional_content_modal_section'
 require_relative '../sections/branches_section'
+require_relative '../sections/components_section'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
@@ -29,12 +30,13 @@ class EditorApp < SitePrism::Page
   ########
 
   # Your forms
-  element :service_name, '#form-navigation-heading'
+  element :services_link, :link, I18n.t('partials.header.forms')
   element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
   element :create_service_button, :button, I18n.t('services.create')
   # End Your forms
 
   # Pages flow
+  element :service_name, '#form-navigation-heading'
   element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'Cookies', class: 'govuk-link'
   element :privacy_link, :link, 'Privacy', class: 'govuk-link'
@@ -93,6 +95,8 @@ class EditorApp < SitePrism::Page
   elements :form_urls, '#flow-overview .flow-item a.govuk-link'
   elements :flow_items, '#flow-overview .flow-item', visible: true
   elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
+  element :external_start_page_thumbnail, '.flow-thumbnail.external-url-thumbnail'
+  element :start_page_thumbnail, '.flow-thumbnail.start'
 
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
     find('#main-content', visible: true)
@@ -110,6 +114,7 @@ class EditorApp < SitePrism::Page
   element :branching_link, :link, I18n.t('actions.add_branch')
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
+  element :modal_dialog, '.ui-dialog'
 
   def main_flow_titles
     flow_titles(main_flow)
@@ -129,10 +134,6 @@ class EditorApp < SitePrism::Page
 
   def flow_thumbnail(title)
     preview_page_images.find { |p| p.find('.title').text.include?(title) }
-  end
-
-  def external_start_page_thumbnail
-    page.find('.external-thumbnail')
   end
 
   def flow_article(title)
@@ -174,6 +175,8 @@ class EditorApp < SitePrism::Page
   # End pages flow
 
   element :save_page_button,  '#fb-editor-save'
+  element :disabled_save_button,  '#fb-editor-save', aria: { disabled: true }
+  element :enabled_save_button,  '#fb-editor-save', aria: { disabled: false }
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
@@ -202,6 +205,8 @@ class EditorApp < SitePrism::Page
   def content_area(content)
     editable_content_areas.select { |a| a.text.include?(content) }
   end
+
+  section :components_container, ComponentsSection, '.components'
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
