@@ -17,106 +17,103 @@
  *
  **/
 
-const {
-    createElement,
-    uniqueString
-} = require('../../utilities');
+const { createElement, uniqueString } = require("../../utilities");
 
 class ActivatedMenuActivator {
-    #config;
-    #className;
+  #config;
+  #className;
 
-    /**
-     * @param {ActivatedMenu} the menu instance to be activated
-     * @param {object} ActivatedMenu configuration object
-     */
-    constructor(menu, config) {
-        let $node = config.activator;
-        this.#config = config;
-        this.#className = "ActivatedMenuActivator";
-        this.menu = menu;
+  /**
+   * @param {ActivatedMenu} the menu instance to be activated
+   * @param {object} ActivatedMenu configuration object
+   */
+  constructor(menu, config) {
+    let $node = config.activator;
+    this.#config = config;
+    this.#className = "ActivatedMenuActivator";
+    this.menu = menu;
 
-        if (!$node || $node.length < 1) {
-            this.$node = this.#createNode();
-        } else {
-            this.$node = $node;
-        }
-        this.$node.data("instance", this);
-
-        this.#addAttributes();
-        this.#bindEventHandlers();
-
+    if (!$node || $node.length < 1) {
+      this.$node = this.#createNode();
+    } else {
+      this.$node = $node;
     }
+    this.$node.data("instance", this);
 
-    render() {
-        if (this.menu.$parent.find('.flow-conditions').length) {
-            this.$node.insertBefore(this.menu.$parent.find('.flow-conditions'))
-        } else {
-            this.menu.$parent.append(this.$node);
-        }
+    this.#addAttributes();
+    this.#bindEventHandlers();
+  }
+
+  render() {
+    if (this.menu.$parent.find(".flow-conditions").length) {
+      this.$node.insertBefore(this.menu.$parent.find(".flow-conditions"));
+    } else {
+      this.menu.$parent.append(this.$node);
     }
+  }
 
-    /**
-     * Creates a button element using config
-     * @return {jQuery}
-     */
-    #createNode() {
-        const $node = $(
-            createElement("button",
-                this.#config.activator_text,
-                this.#config.activator_classname
-            )
-        );
-        return $node;
-    }
+  /**
+   * Creates a button element using config
+   * @return {jQuery}
+   */
+  #createNode() {
+    const $node = $(
+      createElement(
+        "button",
+        this.#config.activator_text,
+        this.#config.activator_classname,
+      ),
+    );
+    return $node;
+  }
 
-    #addAttributes() {
-        this.$node.addClass(this.#className);
-        this.$node.attr("type", "button");
-        this.$node.attr("id", uniqueString("menuActivator"));
-        this.$node.attr("aria-haspopup", "menu");
-        this.$node.attr("aria-controls", this.#config.container_id);
-        this.menu.$node.attr("aria-labelledby", this.$node.attr("id"));
-    }
+  #addAttributes() {
+    this.$node.addClass(this.#className);
+    this.$node.attr("type", "button");
+    this.$node.attr("id", uniqueString("menuActivator"));
+    this.$node.attr("aria-haspopup", "menu");
+    this.$node.attr("aria-controls", this.#config.container_id);
+    this.menu.$node.attr("aria-labelledby", this.$node.attr("id"));
+  }
 
-    #bindEventHandlers() {
-        this.$node.on("click.ActivatedMenuActivator", (event) => {
-            this.menu.currentActivator = event.currentTarget;
-            this.menu.open();
-        });
+  #bindEventHandlers() {
+    this.$node.on("mousedown.ActivatedMenuActivator", (event) => {
+      this.menu.currentActivator = event.currentTarget;
+      this.menu.open();
+    });
 
-        this.$node.on("focus", (event) => {
-            this.$node.addClass("active");
-        });
+    this.$node.on("focus", (event) => {
+      this.$node.addClass("active");
+    });
 
-        this.$node.on("blur", (event) => {
-            if (!this.menu.state.open) {
-                this.$node.removeClass("active");
-            }
-        });
+    this.$node.on("blur", (event) => {
+      if (!this.menu.state.open) {
+        this.$node.removeClass("active");
+      }
+    });
 
-        this.$node.on("keydown", (event) => {
-            let key = event.originalEvent.code;
+    this.$node.on("keydown", (event) => {
+      let key = event.originalEvent.code;
 
-            switch (key) {
-                case 'Enter':
-                case 'Space':
-                case 'ArrowDown':
-                    event.preventDefault();
+      switch (key) {
+        case "Enter":
+        case "Space":
+        case "ArrowDown":
+          event.preventDefault();
 
-                    this.menu.currentActivator = event.currentTarget;
-                    this.menu.open();
-                    this.menu.focus();
-                    break;
-                case 'ArrowUp':
-                    event.preventDefault();
+          this.menu.currentActivator = event.currentTarget;
+          this.menu.open();
+          this.menu.focus();
+          break;
+        case "ArrowUp":
+          event.preventDefault();
 
-                    this.menu.currentActivator = event.currentTarget;
-                    this.menu.open();
-                    this.menu.focusLast();
-                    break;
-            }
-        });
-    }
+          this.menu.currentActivator = event.currentTarget;
+          this.menu.open();
+          this.menu.focusLast();
+          break;
+      }
+    });
+  }
 }
 module.exports = ActivatedMenuActivator;
