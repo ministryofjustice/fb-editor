@@ -18,7 +18,7 @@ editable-content,
   .ActivatedMenuActivator {
     left: -54px;
     opacity: 0;
-    pointer-events: none;
+    //pointer-events: none;
     position: absolute;
     top: 0;
   }
@@ -74,7 +74,7 @@ editable-content,
       right: -55px;
       display: block;
       opacity: 0;
-      pointer-events: none;
+      // pointer-events: none;
 
       &:focus {
         opacity: 1;
