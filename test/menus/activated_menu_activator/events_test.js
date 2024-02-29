@@ -59,7 +59,7 @@ describe("ActivatedMenuActivator", function() {
       expect(created.item.menu.state.open).to.be.false;
       expect(created.item.menu.currentActivator).to.equal(undefined);
 
-      created.$node.click()
+      created.$node.trigger('mousedown')
       expect(created.item.menu.state.open).to.be.true;
       expect(created.item.menu.currentActivator).to.equal(created.$node.get(0));
     });
