@@ -17,14 +17,12 @@ export default class extends Controller {
 
     // GLOBAL ALERT! app is a global object set in partials/_properties.html.erb
     this.labels = app.text.components;
-
-    queueMicrotask(() => {
-      this.appendButtons();
-    });
   }
 
   disconnect() {
-    this.orderableItemsController.removeChild(this);
+    if (this.orderableItemsController) {
+      this.orderableItemsController.removeChild(this);
+    }
   }
 
   orderValueChanged(newValue, oldValue) {
