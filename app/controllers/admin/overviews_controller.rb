@@ -71,7 +71,11 @@ module Admin
           csv_data = CSV.generate do |csv|
             csv << service_summary_headers
             summary.each do |s|
-              csv << to_csv_value(s)
+              row = to_csv_value(s)
+
+              next if row == []
+
+              csv << row
             end
           end
 
@@ -88,7 +92,11 @@ module Admin
           csv_data = CSV.generate do |csv|
             csv << service_summary_headers
             summary.each do |s|
-              csv << to_csv_value(s)
+              row = to_csv_value(s)
+
+              next if row == []
+
+              csv << row
             end
           end
 
@@ -140,7 +148,12 @@ module Admin
       result = []
 
       published_service_ids.each do |id|
-        metadata = MetadataApiClient::Service.latest_version(id)
+        begin
+          metadata = MetadataApiClient::Service.latest_version(id)
+        rescue Faraday::ResourceNotFound
+          next
+        end
+
         features = ServiceConfiguration.where(service_id: id, deployment_environment: env).pluck(:name)
 
         result << {
