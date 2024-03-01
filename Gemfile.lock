@@ -1,10 +1,18 @@
 GIT
-  remote: https://github.com/citizensadvice/capybara_accessible_selectors
-  revision: 679abc42cce81b43ed81d31bbe7ad6a96dbe7fef
-  tag: v0.11.0
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: c98cfa891be3191391d0f8c36a7b104849215954
+  branch: regex-validator
   specs:
-    capybara_accessible_selectors (0.11.0)
-      capybara (~> 3.36)
+    metadata_presenter (3.3.18)
+      govspeak (~> 7.1)
+      govuk_design_system_formbuilder (~> 4.1.1)
+      json-schema (~> 4.1.1)
+      kramdown (~> 2.4.0)
+      rails (~> 7.0.0)
+      sassc-rails (= 2.1.2)
+      sprockets
+      sprockets-rails
+      uk_postcode
 
 GEM
   remote: https://rubygems.org/
@@ -152,10 +160,10 @@ GEM
       delayed_job (>= 3.0, < 5)
     diff-lcs (1.5.1)
     docile (1.4.0)
-    dotenv (3.1.0)
-    dotenv-rails (3.1.0)
-      dotenv (= 3.1.0)
-      railties (>= 6.1)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.12.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -288,6 +296,7 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
+<<<<<<< HEAD
     metadata_presenter (3.3.24)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 4.1.1)
@@ -775,6 +784,7 @@ DEPENDENCIES
   capybara_accessible_selectors!
   daemons
   delayed_job_active_record
+  dotenv (= 2.8.1)
   dotenv-rails
   factory_bot_rails
   faraday
@@ -785,7 +795,7 @@ DEPENDENCIES
   govuk_design_system_formbuilder
   hashie
   listen (~> 3.8)
-  metadata_presenter (= 3.3.24)
+  metadata_presenter!
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)

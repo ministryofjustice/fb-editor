@@ -5,13 +5,13 @@ ruby '3.1.3'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'movable-components-everywhere'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'regex-validator'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.24'
+# gem 'metadata_presenter', '3.3.16'
 
+gem 'dotenv', '2.8.1'
 gem 'activerecord-session_store'
 gem 'administrate'
 gem 'aws-sdk-s3'
