@@ -1,5 +1,7 @@
 class PatternValidation < BaseComponentValidation
-  attr_accessor :string_length
+  attr_accessor :pattern
+
+  DEFAULT_METADATA_KEY = 'pattern'.freeze
 
   def status_label
     'Set a specific answer format'

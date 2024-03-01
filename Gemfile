@@ -11,7 +11,6 @@ gem 'metadata_presenter',
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 # gem 'metadata_presenter', '3.3.16'
 
-gem 'dotenv', '2.8.1'
 gem 'activerecord-session_store'
 gem 'administrate'
 gem 'aws-sdk-s3'
@@ -19,6 +18,7 @@ gem 'aws-sdk-sesv2'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
+gem 'dotenv', '2.8.1'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.10.0'
