@@ -45,13 +45,27 @@ export default class extends Controller {
     if (!this.hasUpButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="icon-button icon-button--move icon-button--up" data-orderable-item-target="upButton" data-action="orderable-item#moveUp:prevent">${this.upButtonLabel}</button>`,
+        `<button type="button" 
+                 class="icon-button icon-button--move icon-button--up" 
+                 data-orderable-item-target="upButton" 
+                 data-action="mousedown->orderable-item#moveUp:prevent 
+                              keydown.enter->orderable-item#moveUp:prevent 
+                              keyup.space->orderable-item#moveUp:prevent">
+            ${this.upButtonLabel}
+        </button>`,
       );
     }
     if (!this.hasDownButtonTarget) {
       this.element.insertAdjacentHTML(
         "beforeend",
-        `<button type="button" class="icon-button icon-button--move icon-button--down" data-orderable-item-target="downButton" data-action="orderable-item#moveDown:prevent">${this.downButtonLabel}</button>`,
+        `<button type="button"
+                 class="icon-button icon-button--move icon-button--down"
+                 data-orderable-item-target="downButton"
+                 data-action="mousedown->orderable-item#moveDown:prevent 
+                              keydown.enter->orderable-item#moveDown:prevent 
+                              keyup.space->orderable-item#moveDown:prevent">
+            ${this.downButtonLabel}
+        </button>`,
       );
     }
   }
