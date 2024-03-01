@@ -45,7 +45,9 @@ editable-content,
       display: contents;
     }
   }
+}
 
+.components {
   [data-controller*="component"] {
     &.active:before,
     &.active:after,
