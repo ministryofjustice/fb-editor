@@ -1,15 +1,5 @@
 class TestServicesConfigsRemover
-  # new-runner-acceptance-tests and Acceptance Tests - Branching Fixture 10 service IDs
-  # Save-and-return v2 - Conditional Content - API Submission JSON acceptance tests
-  # external-start-page spec
-  RUNNER_ACCEPTANCE_TEST_FORMS = %w[
-    cd75ad76-1d4b-4ce5-8a9e-035262cd2683
-    e68dca75-20b8-468e-9436-e97791a914c5
-    759716eb-b4fb-413e-b883-f7016e2a9feb
-    11744bdf-86e3-4be3-b2cc-86434dc08ef2
-    1ef15479-5a2c-4426-a5bf-54253031d9be
-    3d1cf5f3-47f3-4aeb-ae63-c2d15ce5378a
-  ].freeze
+  include MetadataVersionHelper
 
   def call
     models.each do |model|
@@ -18,22 +8,6 @@ class TestServicesConfigsRemover
   end
 
   private
-
-  def moj_forms_team_service_ids
-    @moj_forms_team_service_ids ||= team_services.map(&:id) + RUNNER_ACCEPTANCE_TEST_FORMS
-  end
-
-  def team_services
-    user_ids.map { |id| MetadataApiClient::Service.all(user_id: id) }.flatten
-  end
-
-  def user_ids
-    User.all.filter_map { |user| user.id if user.email.in?(team_emails) }
-  end
-
-  def team_emails
-    Rails.application.config.moj_forms_team
-  end
 
   def models
     [ServiceConfiguration, SubmissionSetting, PublishService]

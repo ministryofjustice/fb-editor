@@ -1,17 +1,7 @@
 module Admin
   class OverviewsController < Admin::ApplicationController
     require 'csv'
-    ACCEPTANCE_TEST_USER_ID = 'a5833e7a-a210-4447-904c-df050d198e33'.freeze
-    # new-runner-acceptance-tests and Acceptance Tests - Branching Fixture 10 service IDs
-    # Save-and-return v2 - Conditional Content - API Submission JSON acceptance tests
-    RUNNER_ACCEPTANCE_TEST_FORMS = %w[
-      cd75ad76-1d4b-4ce5-8a9e-035262cd2683
-      e68dca75-20b8-468e-9436-e97791a914c5
-      759716eb-b4fb-413e-b883-f7016e2a9feb
-      11744bdf-86e3-4be3-b2cc-86434dc08ef2
-      1ef15479-5a2c-4426-a5bf-54253031d9be
-      57497ef9-61cb-4579-ab93-f686e09d6936
-    ].freeze
+    include MetadataVersionHelper
 
     def index
       @stats = [
@@ -283,20 +273,10 @@ module Admin
       "#{humanised_env}-services-feature-summary-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
     end
 
-    def moj_forms_team_service_ids
-      @moj_forms_team_service_ids ||= team_services.map(&:id) + RUNNER_ACCEPTANCE_TEST_FORMS
-    end
-
-    def team_services
-      user_ids.map { |id| MetadataApiClient::Service.all(user_id: id) }.flatten
-    end
-
+    # Override method from `MetadataVersionHelper` to include
+    # additional user ids to filter from stats/summaries
     def user_ids
-      User.all.map { |user| user.id if user.email.in?(team_emails) }.compact.push(ACCEPTANCE_TEST_USER_ID)
-    end
-
-    def team_emails
-      @team_emails ||= Rails.application.config.moj_forms_team
+      super().push(ACCEPTANCE_TEST_USER_ID)
     end
   end
 end
