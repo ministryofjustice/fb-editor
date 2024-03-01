@@ -9,6 +9,11 @@ export default class extends Controller {
   connect() {
     useControllerName(this);
     useAncestry(this);
+    queueMicrotask(() => {
+      this.orderableItemControllers.forEach((controller) => {
+        controller.appendButtons();
+      });
+    });
   }
 
   /**

@@ -17,12 +17,6 @@ export default class extends Controller {
 
     // GLOBAL ALERT! app is a global object set in partials/_properties.html.erb
     this.labels = app.text.components;
-
-    queueMicrotask(() => {
-      if (this.orderableItemsController) {
-        this.appendButtons();
-      }
-    });
   }
 
   disconnect() {
