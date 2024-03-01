@@ -19,12 +19,16 @@ export default class extends Controller {
     this.labels = app.text.components;
 
     queueMicrotask(() => {
-      this.appendButtons();
+      if (this.orderableItemsController) {
+        this.appendButtons();
+      }
     });
   }
 
   disconnect() {
-    this.orderableItemsController.removeChild(this);
+    if (this.orderableItemsController) {
+      this.orderableItemsController.removeChild(this);
+    }
   }
 
   orderValueChanged(newValue, oldValue) {
