@@ -29,6 +29,11 @@
             </div>
           </div>
           <% else %>
+            <% if @component_validation.validator == 'pattern' %>
+              <p>
+                <%= "Use a regular expression (regex) to validate answers against a specific format, such as a reference number or case ID." %>
+              </p>
+            <% end %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
               <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" <%= @component_validation.enabled? ? 'checked' : '' %>>

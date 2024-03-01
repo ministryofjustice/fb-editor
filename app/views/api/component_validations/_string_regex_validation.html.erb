@@ -1,0 +1,18 @@
+<p><b>Regular expression</b></p>
+<div class="flex align-items-center">
+  <label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
+    <%= @component_validation.label %>
+  </label>
+  <input class="govuk-input govuk-input--width-5 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
+         id="component_validation_value"
+         name="component_validation[value]"
+         pattern="*"
+         inputmode="email"
+         spellcheck="false"
+         autocomplete=""
+         aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %> hint-text-prompt"
+         <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
+         value="<%= @component_validation.main_value %>">
+</div>
+<p><%= "You should also explain the required format in the question's hint text to help users with their answer." %></p>
+
