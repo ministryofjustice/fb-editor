@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     post '/auth/developer/callback' => 'auth0#developer_callback'
+    get  '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
   resources :services, only: [:index, :edit, :update, :create] do
