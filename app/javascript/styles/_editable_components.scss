@@ -134,6 +134,12 @@ editable-content,
   @include button_type_link;
   @include addition_icon;
   margin: 0 0 0 55px;
+
+  &:focus {
+    @include focus;
+    border-color: $govuk-text-colour;
+    outline: none;
+  }
 }
 
 .EditableCollectionItemRemover {
