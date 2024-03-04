@@ -664,7 +664,6 @@ function adjustScrollDimensionsAndPositions(
   });
 
   $nav.css({
-    "border-bottom": "110px solid white",
     position: "fixed",
     top: navTop + "px",
     width: "100%",
@@ -730,7 +729,6 @@ function setScrollPosition(view) {
     top: rect.top + scrollTop - window.innerHeight / 2,
     left: rect.left + scrollLeft - window.innerWidth / 2,
   };
-
   window.scrollTo(position);
 }
 
