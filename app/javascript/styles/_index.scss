@@ -536,6 +536,26 @@ a[disabled] {
       fill: govuk-colour("orange");
     }
   }
+
+  @media (forced-colors: active) {
+    &.active {
+      path {
+        stroke: LinkText;
+      }
+
+      .arrowPath {
+        fill: LinkText;
+      }
+    }
+    &.selected {
+      path {
+        stroke: Highlight;
+      }
+      .arrowPath {
+        fill: Highlight;
+      }
+    }
+  }
 }
 
 .PageMenuActivator {
@@ -619,6 +639,18 @@ a[disabled] {
     & > h2 a:focus svg polygon {
       fill: govuk-colour("yellow");
       stroke: govuk-colour("black");
+    }
+
+    @media (forced-colors: active) {
+      svg polygon {
+        fill: Canvas;
+        stroke: LinkText;
+      }
+
+      & > h2 a:focus svg polygon {
+        fill: Canvas;
+        stroke: Highlight;
+      }
     }
   }
 

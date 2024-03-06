@@ -36,12 +36,9 @@
     }
 
     &:focus-visible {
-      outline: none;
-    }
-
-    &:focus-visible {
       @include focus;
-      outline: none;
+      outline: $govuk-focus-width solid transparent;
+      outline-offset: calc(-1 * $govuk-focus-width);
       box-shadow: none;
     }
   }
@@ -72,6 +69,16 @@
         right: 10px;
         top: 12px;
         vertical-align: middle;
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    a,
+    span {
+      color: LinkText;
+      &:focus-visible {
+        color: LinkText;
       }
     }
   }
