@@ -8,7 +8,8 @@ module MetadataVersionHelper
     '1ef15479-5a2c-4426-a5bf-54253031d9be', # API Submission JSON Output v2 Service
     '57497ef9-61cb-4579-ab93-f686e09d6936', # Smoke Tests V2
     '3d1cf5f3-47f3-4aeb-ae63-c2d15ce5378a', # External start page form
-    '9a4e74e8-a1d7-4ce9-99ee-543f4cc3744f'  # Welsh locale
+    '9a4e74e8-a1d7-4ce9-99ee-543f4cc3744f', # Welsh locale
+    '5dc607a0-27b4-4e6b-ae5a-b23d73731ba6'  # Conditional content v2
   ].freeze
 
   private
