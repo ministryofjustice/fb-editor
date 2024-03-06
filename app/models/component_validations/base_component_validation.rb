@@ -14,7 +14,7 @@ class BaseComponentValidation
     end
   }
   with_options presence: {
-    if: proc { |obj| obj.enabled? && obj.validator != 'pattern'},
+    if: proc { |obj| obj.enabled? && obj.validator != 'pattern' },
     message: lambda do |object, _|
                I18n.t(
                  'activemodel.errors.models.base_component_validation.blank',

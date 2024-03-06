@@ -1,10 +1,11 @@
 class PatternValidation < BaseComponentValidation
   attr_accessor :pattern
+
   DEFAULT_METADATA_KEY = 'pattern'.freeze
 
   with_options presence: {
     if: proc { |obj| obj.enabled? },
-    message: "Enter a regular expression"
+    message: 'Enter a regular expression'
   } do
     validates :value
   end
