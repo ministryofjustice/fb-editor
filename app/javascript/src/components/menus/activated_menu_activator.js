@@ -64,7 +64,32 @@ class ActivatedMenuActivator {
         this.#config.activator_classname,
       ),
     );
+    console.log("creating activator");
+    $node.attr('aria-label', this.#config.activator_text)
+    $node.append(this.#icon());
     return $node;
+  }
+
+  #icon() {
+    let icon;
+    console.log(this.#config.activator_icon);
+    switch (this.#config.activator_icon) {
+      case "plus":
+        icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <polygon points="14,8 17,8 17,14 23,14 23,17 17,17 17,23 14,23 14,17 8,17 8,14 14,14 14,8"  fill="currentColor" />
+        </svg>`;
+        break;
+      case "ellipsis":
+      default:
+        icon = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="8.5" cy="16.5" r="2.5" fill="currentColor"/>
+    <circle cx="16.5" cy="16.5" r="2.5" fill="currentColor"/>
+    <circle cx="24.5" cy="16.5" r="2.5" fill="currentColor"/>
+</svg>`;
+        break;
+    }
+    console.log(icon);
+    return icon;
   }
 
   #addAttributes() {

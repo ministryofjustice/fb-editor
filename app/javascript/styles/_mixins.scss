@@ -100,6 +100,13 @@
   text-indent: -10000px;
   width: 35px;
 
+  > svg {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0
+  }
+
   &:hover {
     border-color: $govuk-link-colour;
     outline: none;
@@ -107,7 +114,6 @@
 
   &:focus {
     @include focus;
-    // border-color: $govuk-focus-colour;
     border-color: $govuk-text-colour;
     outline: none;
   }

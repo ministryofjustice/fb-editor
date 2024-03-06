@@ -44,12 +44,15 @@ export default class extends Controller {
       this.element.insertAdjacentHTML(
         "beforeend",
         `<button type="button" 
+                 aria-label="${this.upButtonLabel}"
                  class="icon-button icon-button--move icon-button--up" 
                  data-orderable-item-target="upButton" 
                  data-action="mousedown->orderable-item#moveUp:prevent 
                               keydown.enter->orderable-item#moveUp:prevent 
                               keyup.space->orderable-item#moveUp:prevent">
-            ${this.upButtonLabel}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M8 20L16 12L24 20" stroke="currentColor" stroke-width="2"/>
+            </svg>
         </button>`,
       );
     }
@@ -57,12 +60,15 @@ export default class extends Controller {
       this.element.insertAdjacentHTML(
         "beforeend",
         `<button type="button"
+                 aria-label="${this.downButtonLabel}"
                  class="icon-button icon-button--move icon-button--down"
                  data-orderable-item-target="downButton"
                  data-action="mousedown->orderable-item#moveDown:prevent 
                               keydown.enter->orderable-item#moveDown:prevent 
                               keyup.space->orderable-item#moveDown:prevent">
-            ${this.downButtonLabel}
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <path d="M24 12L16 20L8 12" stroke="currentColor" stroke-width="2"/>
+            </svg>
         </button>`,
       );
     }
@@ -139,9 +145,9 @@ export default class extends Controller {
    **/
   updateLabels() {
     if (this.hasUpButtonTarget)
-      this.upButtonTarget.innerText = this.upButtonLabel;
+      this.upButtonTarget.setAttribute('aria-label', this.upButtonLabel);
     if (this.hasDownButtonTarget)
-      this.downButtonTarget.innerText = this.downButtonLabel;
+      this.downButtonTarget.setAttribute('aria-label', this.downButtonLabel);
   }
 
   get upButtonLabel() {

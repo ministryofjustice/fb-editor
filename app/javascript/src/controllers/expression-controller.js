@@ -137,7 +137,10 @@ export default class extends Controller {
   }
 
   updateDeleteButtonLabel() {
-    this.deleteButtonTarget.innerText = `${this.conditionalController.deleteLabelValue} ${this.conditionalTitle} ${this.title}`;
+    this.deleteButtonTarget.setAttribute(
+      "aria-label",
+      `${this.conditionalController.deleteLabelValue} ${this.conditionalTitle} ${this.title}`,
+    );
   }
 
   updateFieldLabels() {
