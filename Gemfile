@@ -8,9 +8,9 @@ ruby '3.1.3'
 
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'move-components'
+#     branch: 'bugfix/conditional-check'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.21'
+gem 'metadata_presenter', '3.3.22'
 
 gem 'activerecord-session_store'
 gem 'administrate'
