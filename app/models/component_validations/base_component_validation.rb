@@ -14,7 +14,7 @@ class BaseComponentValidation
     end
   }
   with_options presence: {
-    if: proc { |obj| obj.enabled? },
+    if: proc { |obj| obj.enabled? && obj.validator != 'pattern'},
     message: lambda do |object, _|
                I18n.t(
                  'activemodel.errors.models.base_component_validation.blank',
@@ -22,7 +22,7 @@ class BaseComponentValidation
                )
              end
   } do
-    validates :value, unless: proc { |obj| obj.component_type == 'date' }
+    validates :value, unless: proc { |obj| obj.component_type == 'date' || obj.validator == 'pattern' }
   end
 
   STRING_LENGTH_VALIDATIONS = %w[max_string_length min_string_length].freeze
