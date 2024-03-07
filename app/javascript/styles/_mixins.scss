@@ -124,6 +124,17 @@
     border-color: govuk-colour("red");
     color: govuk-colour("white");
   }
+
+  @media (forced-colors: active) {
+    &:focus,
+    &:focus-visible {
+      border-color: Highlight;
+      // background: Highlight;
+      outline: 3px solid Highlight;
+      outline-offset: 0;
+      color: HighlightText;
+    }
+  }
 }
 
 @mixin list_reset {

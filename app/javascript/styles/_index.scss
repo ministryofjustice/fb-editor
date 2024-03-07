@@ -365,6 +365,23 @@ a[disabled] {
       display: none;
     }
   }
+
+  @media (forced-colors: active) {
+    a {
+      color: ButtonText;
+      border-color: ButtonText;
+    }
+    .ActivatedMenuActivator {
+      &:focus,
+      &:focus-visible {
+        border-color: Highlight;
+        background: transparent;
+        outline: 3px solid Highlight;
+        outline-offset: 0;
+        color: ButtonText;
+      }
+    }
+  }
 }
 
 /* NEW FORM FLOW CSS
@@ -650,6 +667,7 @@ a[disabled] {
       & > h2 a:focus svg polygon {
         fill: Canvas;
         stroke: Highlight;
+        stroke-width: 6px;
       }
     }
   }
