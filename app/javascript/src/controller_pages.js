@@ -856,10 +856,10 @@ function editPageContentViewCustomisations() {
 
 function editPageCheckAnswersViewCustomisations() {
   var $button1 = $("[data-component=add-content]");
-  var $target1 = $(".fb-editable").last();
+  var $target1 = $(".govuk-button-group");
   var $button2 = $button1.clone();
   var $target2 = $("#answers-form dl").first();
-  $target1.after($button1);
+  $target1.before($button1);
   $target2.before($button2);
   $button2.attr("data-fb-field-name", "page[add_extra_component]");
 }
