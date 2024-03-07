@@ -76,7 +76,7 @@ class ActivatedMenuActivator {
     switch (this.#config.activator_icon) {
       case "plus":
         icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-            <polygon points="14,8 17,8 17,14 23,14 23,17 17,17 17,23 14,23 14,17 8,17 8,14 14,14 14,8"  fill="currentColor" />
+            <polygon points="14,10 17,10 17,14 21,14 21,17 17,17 17,21 14,21 14,17 10,17 10,14 14,14 14,10"  fill="currentColor" />
         </svg>`;
         break;
       case "ellipsis":
