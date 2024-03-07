@@ -65,8 +65,8 @@ class ActivatedMenuActivator {
       ),
     );
     console.log("creating activator");
-    $node.attr('aria-label', this.#config.activator_text)
-    $node.append(this.#icon());
+    $node.attr("aria-label", this.#config.activator_text);
+    $node.html(this.#icon());
     return $node;
   }
 
@@ -81,10 +81,10 @@ class ActivatedMenuActivator {
         break;
       case "ellipsis":
       default:
-        icon = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <circle cx="8.5" cy="16.5" r="2.5" fill="currentColor"/>
-    <circle cx="16.5" cy="16.5" r="2.5" fill="currentColor"/>
-    <circle cx="24.5" cy="16.5" r="2.5" fill="currentColor"/>
+        icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="7.5" cy="15.5" r="2.5" fill="currentColor"/>
+    <circle cx="15.5" cy="15.5" r="2.5" fill="currentColor"/>
+    <circle cx="23.5" cy="15.5" r="2.5" fill="currentColor"/>
 </svg>`;
         break;
     }

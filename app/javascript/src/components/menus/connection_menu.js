@@ -38,16 +38,12 @@ class ConnectionMenu extends ActivatedMenu {
     var nextUuid = this.$node.data("next-uuid");
     var nextItem = document.getElementById(nextUuid);
     if (nextItem) {
-      const currentTitle = this.activator.$node.text();
-      const nextTitle = nextItem.querySelector(".text")?.innerHTML;
-      // Replace the text content without removing childNodes
-      this.activator.$node
-        .contents()
-        .filter(() => {
-          return this.nodeType == Node.TEXT_NODE;
-        })
-        .first()
-        .replaceWith(`${currentTitle} and ${nextTitle}`);
+      const currentLabel = this.activator.$node.attr("aria-label");
+      const nextLabel = $(nextItem).find(".text").text();
+      this.activator.$node.attr(
+        "aria-label",
+        `${currentLabel} and ${nextLabel}`,
+      );
     }
   }
 
