@@ -386,6 +386,7 @@ en:
       min_string_length: 'Minimum answer length...'
       upload_options: 'Autocomplete options...'
       max_files: 'Number of files...'
+      pattern: 'Specific answer format (regex)...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'

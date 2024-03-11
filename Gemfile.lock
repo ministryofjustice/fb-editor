@@ -1,9 +1,17 @@
 GIT
+  remote: https://github.com/citizensadvice/capybara_accessible_selectors
+  revision: 679abc42cce81b43ed81d31bbe7ad6a96dbe7fef
+  tag: v0.11.0
+  specs:
+    capybara_accessible_selectors (0.11.0)
+      capybara (~> 3.36)
+
+GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: f011bb013e83daa9ef348a029254960e550edbf9
+  revision: c98cfa891be3191391d0f8c36a7b104849215954
   branch: regex-validator
   specs:
-    metadata_presenter (3.3.24)
+    metadata_presenter (3.3.18)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 4.1.1)
       json-schema (~> 4.1.1)
@@ -202,7 +210,7 @@ GEM
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.3)
+    google-protobuf (3.25.3-x86_64-darwin)
     googleapis-common-protos-types (1.13.0)
       google-protobuf (~> 3.18)
     govspeak (7.1.1)
@@ -296,20 +304,8 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
-<<<<<<< HEAD
-    metadata_presenter (3.3.24)
-      govspeak (~> 7.1)
-      govuk_design_system_formbuilder (~> 4.1.1)
-      json-schema (~> 4.1.1)
-      kramdown (~> 2.4.0)
-      rails (~> 7.0.0)
-      sassc-rails (= 2.1.2)
-      sprockets
-      sprockets-rails
-      uk_postcode
     method_source (1.0.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
     minitest (5.22.2)
     msgpack (1.7.2)
     multi_json (1.15.0)
@@ -325,8 +321,7 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.2)
-      mini_portile2 (~> 2.8.2)
+    nokogiri (1.16.2-x86_64-darwin)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -768,7 +763,7 @@ GEM
     zeitwerk (2.6.13)
 
 PLATFORMS
-  ruby
+  x86_64-darwin-21
 
 DEPENDENCIES
   activerecord-session_store
