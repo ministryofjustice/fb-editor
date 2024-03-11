@@ -98,6 +98,8 @@ en:
         content: We were unable to redo your last action.
     component_validations:
       hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
+      hint_regex_pattern: You should also explain the required format in the question's hint text to help users with their answer.
+      instruction_regex_pattern: "Use a regular expression (regex) to validate answers against a specific format, such as a reference number or case ID."
       date:
         day: Day
         month: Month
@@ -123,6 +125,9 @@ en:
         max:
           label: Maximum answer length
           status_label: Set a maximum answer length
+        pattern:
+          label: Specific answer format
+          status_label: Set a specific answer format
       max_files:
         label: 'Maximum number of files that can be uploaded'
         hint: 'Set a limit for this page of between 1 and 10 files'
@@ -692,6 +697,8 @@ en:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
           format: "%{message}"
+        string_regex_pattern:
+          blank: Enter a regular expression
         date_validation:
           invalid: "%{label} is not a valid date"
           missing_attribute: "%{label} should include a %{attribute}"

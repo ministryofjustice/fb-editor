@@ -17,7 +17,7 @@ RSpec.describe 'PatternValidation' do
   let(:component_uuid) { 'fda1e5a1-ed5f-49c9-a943-dc930a520984' }
   let(:validator) { 'pattern' }
   let(:status) { 'enabled' }
-  let(:expected_blank_error) { 'Enter a regular expression' }
+  let(:expected_blank_error) { I18n.t('activemodel.errors.models.string_regex_pattern.blank') }
   let(:value) { '\w+' }
 
   it_behaves_like 'a base component validation'

@@ -5,17 +5,17 @@ class PatternValidation < BaseComponentValidation
 
   with_options presence: {
     if: proc { |obj| obj.enabled? },
-    message: 'Enter a regular expression'
+    message: I18n.t('activemodel.errors.models.string_regex_pattern.blank')
   } do
     validates :value
   end
 
   def status_label
-    'Set a specific answer format'
+    I18n.t('dialogs.component_validations.string.pattern.status_label')
   end
 
   def label
-    'Specific answer format'
+    I18n.t('dialogs.component_validations.string.pattern.label')
   end
 
   def component_partial

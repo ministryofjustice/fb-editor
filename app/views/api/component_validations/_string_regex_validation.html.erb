@@ -14,5 +14,5 @@
          <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
          value="<%= @component_validation.main_value %>">
 </div>
-<p><%= "You should also explain the required format in the question's hint text to help users with their answer." %></p>
+<p><%= t('dialogs.component_validations.hint_regex_pattern') %></p>
 

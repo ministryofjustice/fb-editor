@@ -31,7 +31,7 @@
           <% else %>
             <% if @component_validation.validator == 'pattern' %>
               <p>
-                <%= "Use a regular expression (regex) to validate answers against a specific format, such as a reference number or case ID." %>
+                <%= t('dialogs.component_validations.instruction_regex_pattern') %>
               </p>
             <% end %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
