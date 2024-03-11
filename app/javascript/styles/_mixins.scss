@@ -104,7 +104,7 @@
     position: absolute;
     display: block;
     top: 0;
-    left: 0
+    left: 0;
   }
 
   &:hover {
@@ -126,13 +126,14 @@
   }
 
   @media (forced-colors: active) {
+    color: ButtonText;
+
     &:focus,
     &:focus-visible {
       border-color: Highlight;
-      // background: Highlight;
       outline: 3px solid Highlight;
       outline-offset: 0;
-      color: HighlightText;
+      color: ButtonText;
     }
   }
 }

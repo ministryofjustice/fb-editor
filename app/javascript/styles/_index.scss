@@ -659,7 +659,7 @@ a[disabled] {
     }
 
     @media (forced-colors: active) {
-      svg polygon {
+      & > h2 a svg polygon {
         fill: Canvas;
         stroke: LinkText;
       }
