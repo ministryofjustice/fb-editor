@@ -18,13 +18,13 @@ RSpec.describe 'PatternValidation' do
   let(:validator) { 'pattern' }
   let(:status) { 'enabled' }
   let(:expected_blank_error) { 'Enter a regular expression' }
-  let(:value) { '\w+'}
+  let(:value) { '\w+' }
 
   it_behaves_like 'a base component validation'
 
   describe '#main_value' do
     context 'when value is present' do
-      let(:value) { '\d+'}
+      let(:value) { '\d+' }
 
       it 'returns the value initialised in the model' do
         expect(subject.main_value).to eq(value)
@@ -33,14 +33,13 @@ RSpec.describe 'PatternValidation' do
   end
 
   describe '#to_metadata' do
-    let(:value) { '\d+'}
+    let(:value) { '\d+' }
     let(:expected_metadata) { { 'pattern' => value } }
 
     it 'returns default metadata' do
       expect(subject.to_metadata).to eq(expected_metadata)
     end
   end
-
 
   context '#valid when there are no value provided for regex' do
     let(:value) { '' }
