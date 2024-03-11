@@ -365,11 +365,44 @@ a[disabled] {
       display: none;
     }
   }
+
+  @media (forced-colors: active) {
+    a {
+      color: ButtonText;
+      border-color: ButtonText;
+    }
+    .ActivatedMenuActivator {
+      &:focus,
+      &:focus-visible {
+        border-color: Highlight;
+        background: transparent;
+        outline: 3px solid Highlight;
+        outline-offset: 0;
+        color: ButtonText;
+      }
+    }
+  }
 }
 
 /* NEW FORM FLOW CSS
  * ------------------------ */
 .services-edit {
+  /* On the flow view, we need to block out behind the title and the header
+* buttons so that excess arrows do not flow under there on scrolling 
+    1. start below the bottom border
+    2. Use Canvas system color to accomodate WHCM/forced colors
+*/
+  nav#form-navigation {
+    &:after {
+      content: "";
+      position: absolute;
+      top: calc(100% + 1px); /*[1]*/
+      left: 0;
+      right: 0;
+      height: 110px;
+      background-color: Canvas; /*[2]*/
+    }
+  }
   .flow-titlebar {
     z-index: 1;
     margin-bottom: govuk-spacing(8);
@@ -520,6 +553,26 @@ a[disabled] {
       fill: govuk-colour("orange");
     }
   }
+
+  @media (forced-colors: active) {
+    &.active {
+      path {
+        stroke: LinkText;
+      }
+
+      .arrowPath {
+        fill: LinkText;
+      }
+    }
+    &.selected {
+      path {
+        stroke: Highlight;
+      }
+      .arrowPath {
+        fill: Highlight;
+      }
+    }
+  }
 }
 
 .PageMenuActivator {
@@ -603,6 +656,19 @@ a[disabled] {
     & > h2 a:focus svg polygon {
       fill: govuk-colour("yellow");
       stroke: govuk-colour("black");
+    }
+
+    @media (forced-colors: active) {
+      & > h2 a svg polygon {
+        fill: Canvas;
+        stroke: LinkText;
+      }
+
+      & > h2 a:focus svg polygon {
+        fill: Canvas;
+        stroke: Highlight;
+        stroke-width: 6px;
+      }
     }
   }
 
@@ -741,6 +807,9 @@ a[disabled] {
   img {
     display: block;
     width: inherit;
+    @media (prefers-color-scheme: dark) {
+      filter: invert(100%);
+    }
   }
 
   .title {
@@ -874,7 +943,7 @@ a[disabled] {
     &,
     &:hover {
       @include govuk-font($size: 19);
-      border-bottom: govuk-colour("light-grey") solid 4px;
+      border-bottom: transparent solid 4px;
       color: $govuk-link-colour;
       display: block;
       font: inherit;
@@ -883,6 +952,9 @@ a[disabled] {
         #{govuk-spacing(2)} - 4px
       ); // Calc to compensate for border
       text-decoration: none;
+      @media (forced-colors: active) {
+        border-color: Canvas;
+      }
     }
 
     &:focus {

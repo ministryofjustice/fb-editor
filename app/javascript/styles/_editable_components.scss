@@ -59,6 +59,9 @@ editable-content,
       height: 100%;
       width: 2px;
       background-color: $govuk-link-colour;
+      @media (forced-colors: active) {
+        background-color: CanvasText;
+      }
     }
 
     &.active:before,
@@ -141,6 +144,16 @@ editable-content,
     @include focus;
     border-color: $govuk-text-colour;
     outline: none;
+  }
+
+  @media (forced-colors: active) {
+    &:focus,
+    &:focus-visible {
+      border-color: Highlight;
+      outline: 3px solid Highlight;
+      outline-offset: 0;
+      color: ButtonText;
+    }
   }
 }
 

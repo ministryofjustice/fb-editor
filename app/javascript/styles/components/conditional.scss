@@ -1,5 +1,5 @@
 .conditional {
-  border: none;
+  border: 2px solid transparent;
 
   @include govuk-media-query($until: tablet) {
     padding-right: govuk-spacing(5);
@@ -15,8 +15,8 @@
   }
 
   > legend {
-    position:absolute;
-    top: 14px
+    position: absolute;
+    top: 14px;
   }
 
   &:focus {
@@ -24,7 +24,6 @@
     outline-offset: 0;
     box-shadow: inset 0 0 0 $govuk-border-width-form-element;
   }
-
 }
 
 .conditional--otherwise {
@@ -42,7 +41,6 @@
 .conditional__question {
   padding-left: 15%;
   position: relative;
-
 
   .label {
     @include govuk-font($size: 24);
@@ -78,11 +76,3 @@
   font-weight: bold;
   text-align: center;
 }
-
-
-
-
-
-
-
-
