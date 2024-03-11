@@ -10,7 +10,7 @@ ruby '3.1.3'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'movable-components-everywhere'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.23'
+gem 'metadata_presenter', '3.3.24'
 
 gem 'activerecord-session_store'
 gem 'administrate'
