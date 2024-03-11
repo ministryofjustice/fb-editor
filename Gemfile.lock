@@ -8,10 +8,10 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: c98cfa891be3191391d0f8c36a7b104849215954
+  revision: f011bb013e83daa9ef348a029254960e550edbf9
   branch: regex-validator
   specs:
-    metadata_presenter (3.3.18)
+    metadata_presenter (3.3.24)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 4.1.1)
       json-schema (~> 4.1.1)
@@ -210,7 +210,7 @@ GEM
     ffi (1.16.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.3-x86_64-darwin)
+    google-protobuf (3.25.3)
     googleapis-common-protos-types (1.13.0)
       google-protobuf (~> 3.18)
     govspeak (7.1.1)
@@ -321,7 +321,9 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.2-x86_64-darwin)
+    nokogiri (1.16.2)
+      racc (~> 1.4)
+    nokogiri (1.16.2)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -763,7 +765,7 @@ GEM
     zeitwerk (2.6.13)
 
 PLATFORMS
-  x86_64-darwin-21
+  ruby
 
 DEPENDENCIES
   activerecord-session_store
