@@ -239,18 +239,13 @@ class EditableContent extends HTMLElement {
         break;
       case "read":
       case "initial":
-        console.log("setting tabindex 0 on root");
         this.root.setAttribute("tabindex", "0");
         if (this.valueIsDefault()) this.value = "";
 
-        console.log("updating output");
         this.updateOutput();
 
-        console.log("hiding input");
         this.hide(this.input);
-        console.log("showing output");
         this.show(this.output);
-        console.log("removing active class");
         this.classList.remove("active");
 
         if (this.valueHasChanged()) {

@@ -88,7 +88,7 @@ export default class extends Controller {
   }
 
   updateDeleteButtonLabel() {
-    this.deleteButtonTarget.innerText = `${this.deleteLabelValue} ${this.title}`;
+    this.deleteButtonTarget.setAttribute('aria-label', `${this.deleteLabelValue} ${this.title}`);
   }
 
   updateDestinationLabel() {

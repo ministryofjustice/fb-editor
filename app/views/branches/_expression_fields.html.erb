@@ -45,11 +45,17 @@
         expression_index: expression.options[:child_index]
       }
       %>
-    <%= button_tag 'Delete condition',  
-      type: "button", 
-      data: { 
-        action: "expression#deleteWithConfirmation", 
-        expression_target: "deleteButton"
-      }, 
-      class: 'icon-button icon-button--remove expression__remover' %>
+
+    <%= render(MojForms::IconButtonComponent.new(
+      label: 'Delete Condition', 
+      icon: 'remove',
+      classes: %w[icon-button--remove expression__remover],
+      html_attributes: {
+        data: { 
+          action: "expression#deleteWithConfirmation", 
+          expression_target: "deleteButton"
+        }, 
+      }
+    )) %>
+    
 </div>

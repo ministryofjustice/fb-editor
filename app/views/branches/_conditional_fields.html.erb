@@ -9,7 +9,17 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
       <h2 class="govuk-fieldset__heading" data-conditional-target="title">Branch <%= conditional.options[:child_index].to_i+1 %></h2>
     </legend>
-    <%= button_tag 'Delete rule', type: "button", data: { action: "conditional#deleteWithConfirmation", conditional_target: "deleteButton" }, class: 'prevent-modal-close icon-button icon-button--remove conditional__remover' %>
+    
+    <%= render(MojForms::IconButtonComponent.new(
+      label: 'Delete rule', 
+      icon: 'remove',
+      classes: %w[prevent-modal-close icon-button--remove conditional__remover],
+      html_attributes: {
+        data: { 
+          action: "conditional#deleteWithConfirmation", 
+          conditional_target: "deleteButton" }
+      }
+    )) %>
 
     <div class="conditional__expressions" data-controller="dynamic-fields expressions" data-action="dynamic-fields:fieldsAdded->expressions#update">
 
