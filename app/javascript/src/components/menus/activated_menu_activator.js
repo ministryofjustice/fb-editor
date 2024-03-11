@@ -64,7 +64,6 @@ class ActivatedMenuActivator {
         this.#config.activator_classname,
       ),
     );
-    console.log("creating activator");
     $node.attr("aria-label", this.#config.activator_text);
     $node.html(this.#icon());
     return $node;
@@ -72,7 +71,6 @@ class ActivatedMenuActivator {
 
   #icon() {
     let icon;
-    console.log(this.#config.activator_icon);
     switch (this.#config.activator_icon) {
       case "plus":
         icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -88,7 +86,6 @@ class ActivatedMenuActivator {
 </svg>`;
         break;
     }
-    console.log(icon);
     return icon;
   }
 

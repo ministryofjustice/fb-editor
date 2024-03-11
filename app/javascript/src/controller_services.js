@@ -454,7 +454,6 @@ function adjustBranchConditionPositions($overview) {
   $expressions.each(function () {
     var $this = $(this);
     var expressionHeight = Number($this.height()) || 0;
-    console.log(expressionHeight);
     $this.css({
       position: "relative",
       top: "-" + (expressionHeight + lineHeight * 2) + "px",
@@ -718,9 +717,7 @@ function setScrollPosition(view) {
   if (!location.hash) return;
 
   const id = location.hash.replace("#", "");
-  console.log(id);
   const flowItem = document.querySelector(`[data-fb-id="${id}"]`);
-  console.log(flowItem);
   if (!flowItem) return;
 
   flowItem.setAttribute("tabindex", "-1");
@@ -733,7 +730,6 @@ function setScrollPosition(view) {
     top: rect.top + scrollTop - window.innerHeight / 2,
     left: rect.left + scrollLeft - window.innerWidth / 2,
   };
-  console.log(position);
 
   window.scrollTo(position);
 }

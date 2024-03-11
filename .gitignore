@@ -48,3 +48,5 @@ coverage
 
 # Clamd config
 /config/clamd/*.conf
+
+coverage/*
