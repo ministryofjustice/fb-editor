@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: f011bb013e83daa9ef348a029254960e550edbf9
+  revision: 45c47297fabc70e3932329a9af8080320d10276b
   branch: regex-validator
   specs:
     metadata_presenter (3.3.24)
@@ -321,8 +321,6 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.0)
-    nokogiri (1.16.2)
-      racc (~> 1.4)
     nokogiri (1.16.2)
       racc (~> 1.4)
     oauth2 (2.0.9)
