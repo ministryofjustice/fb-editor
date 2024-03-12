@@ -31,7 +31,7 @@
           <% else %>
             <% if @component_validation.validator == 'pattern' %>
               <p>
-                <%= t('dialogs.component_validations.instruction_regex_pattern') %>
+                <%= t('dialogs.component_validations.regex.instruction_regex_pattern', regex_href:t('dialogs.component_validations.regex.regex_link' )).html_safe %>
               </p>
             <% end %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">

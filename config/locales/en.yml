@@ -98,8 +98,10 @@ en:
         content: We were unable to redo your last action.
     component_validations:
       hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
-      hint_regex_pattern: You should also explain the required format in the question's hint text to help users with their answer.
-      instruction_regex_pattern: "Use a regular expression (regex) to validate answers against a specific format, such as a reference number or case ID."
+      regex:
+        hint_regex_pattern: You should also explain the required format in the question's hint text to help users with their answer.
+        instruction_regex_pattern: Use a regular expression ( %{regex_href} ) to validate answers against a specific format, such as a reference number or case ID.
+        regex_link: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/building-and-editing/#regex" target="_blank" rel="noopener noreferrer">regex</a>
       date:
         day: Day
         month: Month
