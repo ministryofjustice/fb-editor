@@ -807,7 +807,7 @@ a[disabled] {
   img {
     display: block;
     width: inherit;
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: dark) and (forced-colors: active) {
       filter: invert(100%);
     }
   }
