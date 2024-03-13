@@ -5,6 +5,8 @@ en:
     section_heading: Optional section heading
     flow_thumbnail: 'Form page'
     disabled_save_description: 'No changes to save'
+    optional_content_description: 'This will not be displayed if left unchanged'
+    disabled_input_description: 'Only active when published or previewed'
     page:
       start: Start page
       singlequestion: Single question page
@@ -24,8 +26,6 @@ en:
         hint: "Optional hint text for option"
         answer: "Answer field for option"
         menu_button: "Edit option"
-      optional_content_description: 'This will not be displayed if left unchanged'
-      disabled_input_description: 'Only active when published or previewed'
   assistive_text:
     warning: warning
     incomplete: incomplete
