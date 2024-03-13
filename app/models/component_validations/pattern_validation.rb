@@ -1,6 +1,5 @@
 class PatternValidation < BaseComponentValidation
   attr_accessor :pattern
-
   DEFAULT_METADATA_KEY = 'pattern'.freeze
 
   with_options presence: {
@@ -9,6 +8,8 @@ class PatternValidation < BaseComponentValidation
   } do
     validates :value
   end
+  validates_with RegexValidator, if: :run_validation?
+
 
   def status_label
     I18n.t('dialogs.component_validations.string.pattern.status_label')

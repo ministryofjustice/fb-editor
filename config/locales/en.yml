@@ -702,6 +702,7 @@ en:
           format: "%{message}"
         string_regex_pattern:
           blank: Enter a regular expression
+          invalid: Enter a valid regular expression
         date_validation:
           invalid: "%{label} is not a valid date"
           missing_attribute: "%{label} should include a %{attribute}"
