@@ -4,12 +4,18 @@
           data-component-uuid="<%= component.uuid %>"
           data-activator-text="<%= t('question.menu.activator') %>">
     <ul class="govuk-navigation component-activated-menu">
-      <li data-action="required" data-validation="required"><span role="menuitemcheckbox" aria-checked="<%= component.validation ? component.validation['required'] : 'false' -%>"><%= t('question.menu.required')%></span></li>
+      <li data-action="required" data-validation="required">
+        <span role="menuitemcheckbox" 
+              aria-checked="<%= component.validation ? component.validation['required'] : 'false' -%>"
+              aria-haspopup="dialog">
+          <%= t('question.menu.required')%>
+        </span>
+      </li>
 
       <% if component.type  == 'autocomplete' %>
         <li data-action="upload"
             data-api-path="<%= URI.decode_www_form_component(api_service_autocomplete_path(service.service_id, component.uuid))%>">
-            <span><%= t('question.menu.upload_options') %></span>
+          <span aria-haspopup="dialog"><%= t('question.menu.upload_options') %></span>
         </li>
       <% end %>
 
@@ -18,13 +24,17 @@
           <li data-action="validation"
             data-validation="<%= validation %>"
             data-api-path="<%= URI.decode_www_form_component(api_service_page_component_validations_path(service.service_id, @page.uuid, component.uuid, validation)) -%>">
-            <span><%= t("question.menu.#{validation}") %></span>
+            <span aria-haspopup="dialog"><%= t("question.menu.#{validation}") %></span>
           </li>
         <% else %>
           <li data-action="validation"
               data-validation="<%= validation %>"
               data-api-path="<%= URI.decode_www_form_component(api_service_page_component_validations_path(service.service_id, @page.uuid, component.uuid, validation)) -%>">
-              <span role="menuitemcheckbox" aria-checked="<%= component.validation[validation] ? 'true' : 'false' -%>"><%= t("question.menu.#{validation}") %></span>
+            <span role="menuitemcheckbox" 
+                  aria-checked="<%= component.validation[validation] ? 'true' : 'false' -%>" 
+                  aria-haspopup="dialog">
+              <%= t("question.menu.#{validation}") %>
+            </span>
           </li>
         <% end %>
       <% end %>
@@ -32,7 +42,9 @@
       <% unless @page.type == 'page.singlequestion' %>
          <li data-action="remove"
             data-api-path="<%= URI.decode_www_form_component(api_service_page_question_destroy_message_path(service.service_id, @page.uuid, component.uuid, method: :delete)) -%>">
-          <span class="destructive"><%= t('question.menu.remove')%></span>
+          <span class="destructive" aria-haspopup="dialog">
+            <%= t('question.menu.remove')%>
+          </span>
         </li>
       <% end %>
     </ul>

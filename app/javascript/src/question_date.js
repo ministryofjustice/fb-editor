@@ -39,6 +39,7 @@ class DateQuestion extends Question {
   }
 
   addAccessibleLabels() {
+    super.addAccessibleLabels();
     // Provide more informative accessible labels
     this.$node.find(SELECTOR_DISABLED).each(function () {
       const label = $(this).prev("label").text();

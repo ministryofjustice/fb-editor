@@ -5,10 +5,10 @@
     <ul class="govuk-navigation component-activated-menu">
         <% unless @page.type == 'page.start' %>
           <li data-action="conditional-content">
-            <span><%= t('content.menu.show_if') %></span>
+            <span aria-haspopup="dialog"><%= t('content.menu.show_if') %></span>
           </li>
         <% end %>
-      <li data-action="remove"><span class="destructive"><%= t('content.menu.remove')%></span></li>
+      <li data-action="remove"><span class="destructive" aria-haspopup="dialog"><%= t('content.menu.remove')%></span></li>
     </ul>
   </script>
 <% end %>
