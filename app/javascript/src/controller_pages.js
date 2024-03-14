@@ -725,6 +725,9 @@ function enhanceQuestions(view) {
         form: view.saveButton.$form,
         text: {
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+          },
         },
       });
     });
