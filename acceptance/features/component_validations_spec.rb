@@ -181,7 +181,7 @@ feature 'Component validations' do
         preview: preview,
         field: preview_field,
         first_answer: preview_first_answer,
-        second_answer: prview_second_answer,
+        second_answer: preview_second_answer,
         error_message: preview_error_message
       )
     end
@@ -332,6 +332,50 @@ feature 'Component validations' do
     end
   end
 
+  shared_examples 'a regex validation' do
+    scenario 'configuring string regex validation' do
+      and_I_visit_a_page(page_url)
+      when_I_want_to_select_question_properties
+      then_I_should_see_the_string_regex_validations
+
+      and_I_select_a_validation(menu_text)
+      then_I_should_see_the_validation_modal(label, status_label)
+
+      and_I_enable_the_validation
+      and_I_set_the_input_value(first_answer)
+      click_button(I18n.t('dialogs.component_validations.button'))
+      then_I_should_not_see_the_validation_modal(label, status_label)
+
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      then_I_should_see_the_previously_set_configuration(first_answer)
+      and_I_set_the_input_value(second_answer)
+      click_button(I18n.t('dialogs.component_validations.button'))
+
+      and_I_click_save
+      when_I_want_to_select_question_properties
+      and_I_select_a_validation(menu_text)
+      and_I_set_the_input_value('')
+      click_button(I18n.t('dialogs.component_validations.button'))
+      then_I_should_see_an_error_message(
+        I18n.t(
+          'activemodel.errors.models.string_regex_pattern.blank',
+          label: label
+        ))
+      click_button(I18n.t('dialogs.button_cancel'))
+
+      and_I_return_to_flow_page
+      preview = when_I_preview_the_page(page_url)
+      then_I_should_preview_the_page(
+        preview: preview,
+        field: preview_field,
+        first_answer: preview_first_answer,
+        second_answer: preview_second_answer,
+        error_message: preview_error_message
+      )
+    end
+  end
+
   context 'minimum validation' do
     let(:page_url) { 'Number' }
     let(:menu_text) { I18n.t('question.menu.minimum') }
@@ -422,7 +466,7 @@ feature 'Component validations' do
     let(:second_answer) { '3' }
     let(:preview_field) { 'answers[text_text_1]' }
     let(:preview_first_answer) { 'Po' }
-    let(:prview_second_answer) { 'Akira' }
+    let(:preview_second_answer) { 'Akira' }
     let(:preview_error_message) { 'Your answer for "Text" must be 3 characters or more' }
 
     it_behaves_like 'a string length characters validation'
@@ -439,7 +483,7 @@ feature 'Component validations' do
     let(:second_answer) { '10' }
     let(:preview_field) { 'answers[text_text_1]' }
     let(:preview_first_answer) { 'Wolfeschlegelshteinhausenbergerdorff' }
-    let(:prview_second_answer) { 'Bob' }
+    let(:preview_second_answer) { 'Bob' }
     let(:preview_error_message) { 'Your answer for "Text" must be 10 characters or fewer' }
 
     it_behaves_like 'a string length characters validation'
@@ -490,6 +534,22 @@ feature 'Component validations' do
     let(:first_answer) { '3' }
 
     it_behaves_like 'a max files validation'
+  end
+
+  context 'regex pattern' do
+    let(:page_url) { 'Text' }
+    let(:menu_text) { I18n.t('question.menu.pattern') }
+    let(:label) { I18n.t('dialogs.component_validations.string.pattern.label') }
+    let(:status_label) { I18n.t('dialogs.component_validations.string.pattern.status_label') }
+    let(:first_answer) { '[A-Z]' }
+    let(:second_answer) { '[a-z]' }
+    let(:preview_field) { 'answers[text_text_1]' }
+    let(:preview_first_answer) { 'ABC' }
+    let(:preview_second_answer) { 'abc' }
+    let(:preview_error_message) { 'Your answer for "Text" must match the required format' }
+
+    it_behaves_like 'a regex validation'
+    it_behaves_like 'a disabled component validation'
   end
 
   def and_I_visit_a_page(flow_title)
@@ -620,5 +680,9 @@ feature 'Component validations' do
   def and_I_click_save
     sleep(1)
     click_button(I18n.t('actions.save'))
+  end
+
+  def then_I_should_see_the_string_regex_validations
+    expect(page).to have_content(I18n.t('question.menu.pattern'))
   end
 end
