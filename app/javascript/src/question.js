@@ -172,11 +172,7 @@ class Question {
       );
 
     // Accessible label and description for the question hint text (where present)
-    this.$node
-      .find(".govuk-hint")
-      .first()
-      .attr("aria-label", this.labels.hint)
-      .attr("aria-describedby", "optional_content_description");
+    this.$node.find(".govuk-hint").first().attr("aria-label", this.labels.hint);
 
     // For the label wrapping the heading we provide an accessible group name
     // Remove the 'for' attribute, otherwise clicking will focus the questions

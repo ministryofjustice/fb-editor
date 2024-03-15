@@ -91,6 +91,11 @@ class EditableElement extends EditableBase {
       : undefined;
     var required = defaultContent === undefined;
 
+    this._content = $node.text().trim();
+    this._originalContent = originalContent;
+    this._defaultContent = defaultContent;
+    this._required = required;
+
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this));
     $node.on("paste.editablecomponent", (e) => pasteAsPlainText(e));
@@ -101,11 +106,10 @@ class EditableElement extends EditableBase {
     $node.attr("contentEditable", true);
     // $node.attr("role", "textbox"); // Accessibility helper.
     $node.addClass("EditableElement");
-
-    this._content = $node.text().trim();
-    this._originalContent = originalContent;
-    this._defaultContent = defaultContent;
-    this._required = required;
+    
+    if(this._content == this._defaultContent){
+      $node.attr("aria-describedby", "optional_content_description");
+    }
   }
 
   get content() {
@@ -154,8 +158,11 @@ class EditableElement extends EditableBase {
       this.content = this._required
         ? this._originalContent
         : this._defaultContent;
+
+        this.$node.attr("aria-describedby", "optional_content_description");
     } else {
       this.content = currentContent;
+      this.$node.removeAttr('aria-describedby')
     }
 
     this.$node.removeClass(this._config.editClassname);
