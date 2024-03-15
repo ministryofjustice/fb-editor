@@ -154,9 +154,14 @@ class Question {
 
   addAccessibleLabels() {
     // Set an accessible label for the editable heading
+    console.log(this.config.text.aria.components);
+    console.log(this.config.type);
     this.$heading.attr(
       "aria-label",
-      this.labels.title.replace("{{type}}", this.config.type),
+      this.labels.title.replace(
+        "{{type}}",
+        this.config.text.aria.components.types[this.config.type],
+      ),
     );
 
     // Remove the description from the fieldset element as it is confusing when editing

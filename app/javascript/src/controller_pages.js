@@ -686,6 +686,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
       });
@@ -701,6 +702,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
       });
@@ -713,6 +715,7 @@ function enhanceQuestions(view) {
         optionalFlag: view.text.question_optional_flag,
         aria: {
           question: view.text.aria.question,
+          components: view.text.components
         },
       },
     });
@@ -727,6 +730,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
       });
@@ -741,6 +745,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
       });
@@ -761,6 +766,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
 
@@ -798,6 +804,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
+            components: view.text.components
           },
         },
 
