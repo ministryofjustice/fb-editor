@@ -1,4 +1,8 @@
 <p><b><%= t('dialogs.component_validations.regex.title') %></b></p>
+<div class="govuk-hint" >
+<%= t('dialogs.component_validations.regex.hint_regex_pattern') %>
+</div>
+
 <div class="flex align-items-center">
   <label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
     <%= @component_validation.label %>
@@ -14,4 +18,4 @@
          <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
          value="<%= @component_validation.main_value %>">
 </div>
-<p><%= t('dialogs.component_validations.regex.hint_regex_pattern') %></p>
+<p><%= t('dialogs.component_validations.regex.advice_regex_pattern') %></p>
