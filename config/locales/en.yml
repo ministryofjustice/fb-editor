@@ -703,7 +703,9 @@ en:
           format: "%{message}"
         string_regex_pattern:
           blank: Enter a regular expression
-          invalid: Enter a valid regular expression. It cannot include a ‘/’ at the beginning or end or include options such as ‘i’, ‘x’, ‘m’ or ‘o‘
+          invalid: Enter a valid regular expression
+          remove_delimiter: Your regular expression cannot include a ‘/’ at the beginning or end
+          remove_options: Your regular expression cannot include options such as ‘i’, ‘x’, ‘m’ or ‘o’
         date_validation:
           invalid: "%{label} is not a valid date"
           missing_attribute: "%{label} should include a %{attribute}"
