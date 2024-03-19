@@ -28,10 +28,89 @@ RSpec.describe RegexValidator do
     end
 
     context 'when not a valid regex' do
-      let(:value) { '/[01]?[0-9]|2[0-3]):[0-5][0-9]/' }
+      let(:value) { '[01]?[0-9]|2[0-3]):[0-5][0-9]' }
 
       it 'returns invalid' do
         expect(subject).to_not be_valid
+      end
+
+      it 'returns an error message' do
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.invalid'))
+      end
+    end
+
+    context 'when it contains delimiter at the beginning' do
+      let(:value) { '/[a-z]' }
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
+      end
+
+      it 'returns an error message' do
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_delimiter'))
+      end
+    end
+
+    context 'when it contains delimiter at the end' do
+      let(:value) { '[a-z]/' }
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
+      end
+
+      it 'returns an error message' do
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_delimiter'))
+      end
+    end
+
+    context 'when it contains options' do
+      context 'for insensitive case' do
+        let(:value) { '[a-z]/i' }
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns an error message' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_options'))
+        end
+      end
+
+      context 'for multiline regex' do
+        let(:value) { '[a-z].[0-9]{3}/m' }
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns an error message' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_options'))
+        end
+      end
+
+      context 'for extended regex' do
+        let(:value) { '\D{5}/x' }
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns an error message' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_options'))
+        end
+      end
+
+    context 'when it contains several issues' do
+      let(:value) { '/[01]?[0-9]|2[0-3]):[0-5][0-9]/i' }
+
+      it 'returns invalid' do
+        expect(subject).to_not be_valid
+      end
+
+      it 'shows all error messages' do
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.invalid'))
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_options'))
+        expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_delimiter'))
       end
     end
   end
