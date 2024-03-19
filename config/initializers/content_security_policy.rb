@@ -12,7 +12,8 @@ Rails.application.configure do
     policy.object_src  :none
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
-                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"
+                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
+                       "https://www.googletagmanager.com/gtag/js?id=G-B3FKFL8JD1"
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
