@@ -13,7 +13,7 @@ Rails.application.configure do
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
-                       "https://www.googletagmanager.com/gtag/js?id=G-B3FKFL8JD1"
+                       "https://www.googletagmanager.com/gtag/js"
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
