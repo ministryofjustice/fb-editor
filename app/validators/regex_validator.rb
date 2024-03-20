@@ -9,8 +9,7 @@ class RegexValidator < ActiveModel::Validator
         I18n.t('activemodel.errors.models.string_regex_pattern.remove_delimiter')
       )
     end
-
-    if OPTIONS.include?(record.value.split('/').last)
+    if record.value.split('/').last.chars.to_set.subset?(OPTIONS.to_set)
       record.errors.add(
         :pattern,
         I18n.t('activemodel.errors.models.string_regex_pattern.remove_options')

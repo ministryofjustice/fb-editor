@@ -100,6 +100,19 @@ RSpec.describe RegexValidator do
         end
       end
 
+      context 'for several options' do
+        let(:value) { '\d{5}/ix' }
+
+        it 'returns invalid' do
+          expect(subject).to_not be_valid
+        end
+
+        it 'returns an error message' do
+          expect(subject.errors.full_messages).to include(I18n.t('activemodel.errors.models.string_regex_pattern.remove_options'))
+        end
+      end
+    end
+
     context 'when it contains several issues' do
       let(:value) { '/[01]?[0-9]|2[0-3]):[0-5][0-9]/i' }
 
