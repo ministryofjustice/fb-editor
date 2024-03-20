@@ -17,7 +17,8 @@ Rails.application.configure do
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
-                       "*.sentry.io"
+                       "*.sentry.io",
+                       "google-analytics.com"
 
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
