@@ -1,6 +1,6 @@
 class RegexValidator < ActiveModel::Validator
   DELIMITER = '/'.freeze
-  OPTIONS = %w[i x m o].freeze
+  OPTIONS = %w[i x m].freeze
 
   def validate(record)
     if record.value.first == DELIMITER || record.value.last == DELIMITER
