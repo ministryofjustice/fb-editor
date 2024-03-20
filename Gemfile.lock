@@ -8,10 +8,10 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 859b245a6fbc50057a3fc324dcd6bc1e44185980
-  branch: accessible-labels-for-editing
+  revision: 7d9652cd7efc30db98c62b5f5a586b0892206ae1
+  ref: 7d9652cd
   specs:
-    metadata_presenter (3.3.8)
+    metadata_presenter (3.3.25)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 4.1.1)
       json-schema (~> 4.1.1)
