@@ -127,8 +127,8 @@ a[disabled] {
 }
 
 .govuk-button[aria-disabled="true"] {
-    opacity: 0.5;
-    pointer-events: none;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .fb-govuk-button {
@@ -355,6 +355,11 @@ a[disabled] {
 
 /* Editable components
  * ------------------- */
+
+h1 span.EditableElement {
+  display: inline-block;
+}
+
 [data-component="add-component"] ul {
   display: none;
 }

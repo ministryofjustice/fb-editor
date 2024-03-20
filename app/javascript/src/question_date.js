@@ -17,7 +17,7 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require("./question");
 
 const SELECTOR_HINT = ".govuk-hint";
-const SELECTOR_LABEL = "legend > :first-child";
+const SELECTOR_LABEL = "legend > h1 span, legend > h2 span";
 const SELECTOR_DISABLED = "input:not(:hidden)";
 
 class DateQuestion extends Question {

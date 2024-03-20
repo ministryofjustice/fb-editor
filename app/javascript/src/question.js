@@ -20,10 +20,13 @@ const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED =
   "input:not(:hidden), textarea:not([data-element]), select";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
+const SELECTOR_EDITABLE_LABEL = "label h1 span, label h2, legend h1 span, legend h2 span";
 
 class Question {
   constructor($node, config) {
+    var $editableLabel = $(SELECTOR_EDITABLE_LABEL, $node);
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
+    console.log($editableLabel);
     var conf = mergeObjects(
       {
         // Config defaults
@@ -47,18 +50,21 @@ class Question {
     this.config = conf;
     this.data = $node.data("fb-content-data");
     this.$node = $node;
+    this.$editableLabel = $editableLabel;
     this.$heading = $heading;
     this.editable = editableComponent($node, conf);
     this.menu = createQuestionMenu.call(this);
     this.labels = this.config.text.aria.question;
 
+    this.$heading.attr("aria-label", this.$editableLabel.text());
     // Check view state on element edit or interaction and set initial state.
-    this.$heading.on("focus", () => {
+    this.$editableLabel.on("focus", () => {
       this.$node.addClass("active");
     });
-    $heading.on("blur", () => {
+    $editableLabel.on("blur", () => {
       this.$node.removeClass("active");
       this.setRequiredFlag.bind(this);
+      this.$heading.attr("aria-label", this.$editableLabel.text());
     });
     this.setRequiredFlag();
     this.addAccessibleLabels();
@@ -126,16 +132,18 @@ class Question {
     var regex = new RegExp(escapedTextWithSpace + "$", "i");
 
     if (this.required) {
-      this.$heading.text(this.$heading.text().replace(regex, ""));
+      this.$editableLabel.text(this.$editableLabel.text().replace(regex, ""));
     } else {
-      if (!this.$heading.text().match(regex)) {
-        this.$heading.text(`${this.$heading.text()} ${text}`);
+      if (!this.$editableLabel.text().match(regex)) {
+        this.$editableLabel.text(`${this.$editableLabel.text()} ${text}`);
       }
     }
 
-    // If we've changed the this.$heading content, or the editor has, we
+    console.log(this.$editableLabel);
+
+    // If we've changed the this.$editableLabel content, or the editor has, we
     // need to check whether required flag needs to show, or not.
-    this.$heading.data("instance").update();
+    this.$editableLabel.data("instance").update();
   }
 
   focus() {
@@ -156,7 +164,7 @@ class Question {
     // Set an accessible label for the editable heading
     console.log(this.config.text.aria.components);
     console.log(this.config.type);
-    this.$heading.attr(
+    this.$editableLabel.attr(
       "aria-label",
       this.labels.title.replace(
         "{{type}}",
@@ -228,7 +236,7 @@ function createQuestionMenu() {
 
   return new QuestionMenu($ul, {
     activator_text: template.data("activator-text"),
-    $target: question.$heading,
+    $target: question.$editableLabel,
     question: question,
     menu: {
       position: {

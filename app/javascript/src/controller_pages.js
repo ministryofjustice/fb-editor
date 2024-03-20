@@ -586,7 +586,7 @@ function focusOnEditableComponent() {
         }
       }
     } else {
-      const pageTitle = $("h1.EditableElement").get(0);
+      const pageTitle = $("h1 .EditableElement").get(0);
       if (pageTitle) {
         pageTitle.focus();
       } else {
@@ -686,7 +686,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
       });
@@ -702,7 +702,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
       });
@@ -715,7 +715,7 @@ function enhanceQuestions(view) {
         optionalFlag: view.text.question_optional_flag,
         aria: {
           question: view.text.aria.question,
-          components: view.text.components
+          components: view.text.components,
         },
       },
     });
@@ -730,7 +730,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
       });
@@ -745,7 +745,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
       });
@@ -766,7 +766,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
 
@@ -804,7 +804,7 @@ function enhanceQuestions(view) {
           optionalFlag: view.text.question_optional_flag,
           aria: {
             question: view.text.aria.question,
-            components: view.text.components
+            components: view.text.components,
           },
         },
 

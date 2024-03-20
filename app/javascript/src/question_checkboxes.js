@@ -127,7 +127,9 @@ class CheckboxesQuestion extends Question {
       .attr("aria-describedby", "optional_content_description");
 
     // Add index to item three-dot button
-    $node.find("button").attr('aria-label', `${this.labels.items.menu_button} ${index}`);
+    $node
+      .find("button")
+      .attr("aria-label", `${this.labels.items.menu_button} ${index}`);
   }
 }
 
