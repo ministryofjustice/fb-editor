@@ -103,11 +103,12 @@ class EditableElement extends EditableBase {
       singleLineInputRestrictions(e),
     );
 
+    // Adding textare role makes contenteditable element show in the screenreader form controls rotor
     $node.attr("contentEditable", true);
-    // $node.attr("role", "textbox"); // Accessibility helper.
+    $node.attr("role", "textbox");
     $node.addClass("EditableElement");
-    
-    if(this._content == this._defaultContent){
+
+    if (this._content == this._defaultContent) {
       $node.attr("aria-describedby", "optional_content_description");
     }
   }
@@ -159,10 +160,10 @@ class EditableElement extends EditableBase {
         ? this._originalContent
         : this._defaultContent;
 
-        this.$node.attr("aria-describedby", "optional_content_description");
+      this.$node.attr("aria-describedby", "optional_content_description");
     } else {
       this.content = currentContent;
-      this.$node.removeAttr('aria-describedby')
+      this.$node.removeAttr("aria-describedby");
     }
 
     this.$node.removeClass(this._config.editClassname);
@@ -175,6 +176,7 @@ class EditableElement extends EditableBase {
   }
 
   focus() {
+    console.log("editable element focus");
     this.$node.focus();
   }
 
@@ -506,6 +508,7 @@ class EditableComponentBase extends EditableBase {
 
   // Focus on first editable element.
   focus() {
+    console.log("editable_component focus");
     for (var i in this._elements) {
       if (this._elements.hasOwnProperty(i)) {
         this._elements[i].focus();

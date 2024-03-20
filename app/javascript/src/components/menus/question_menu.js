@@ -35,7 +35,7 @@ class QuestionMenu extends ActivatedMenu {
 
     let $target = this.config.$target;
     if ($target.length) {
-      $target.before(this.activator.$node);
+      this.config.question.$node.prepend(this.activator.$node);
       $target.on("focus.questionmenu", () =>
         this.activator.$node.addClass("active"),
       );

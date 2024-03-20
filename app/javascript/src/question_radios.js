@@ -16,7 +16,7 @@ const { mergeObjects, changeTag } = require("./utilities");
 const Question = require("./question");
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
-const SELECTOR_LABEL = "legend > :first-child";
+const SELECTOR_LABEL = "legend > h1 span, legend > h2 span";
 const SELECTOR_ITEM = ".govuk-radios__item";
 const SELECTOR_ITEM_HINT = ".govuk-radios__hint";
 const SELECTOR_ITEM_LABEL = ".govuk-radios__label";
@@ -128,7 +128,9 @@ class RadiosQuestion extends Question {
       .attr("aria-describedby", "optional_content_description");
 
     // Add index to item three-dot button
-    $node.find("button").attr('aria-label', `${this.labels.items.menu_button} ${index}`);
+    $node
+      .find("button")
+      .attr("aria-label", `${this.labels.items.menu_button} ${index}`);
   }
 }
 
