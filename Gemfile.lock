@@ -6,8 +6,10 @@ GIT
     capybara_accessible_selectors (0.11.0)
       capybara (~> 3.36)
 
-PATH
-  remote: ../fb-metadata-presenter
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: f1815b4ce3e23781921b0708785ea2f9827d5894
+  branch: semantic-editable-headings
   specs:
     metadata_presenter (3.3.25)
       govspeak (~> 7.1)
