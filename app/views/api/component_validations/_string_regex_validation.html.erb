@@ -1,12 +1,11 @@
-<p><b><%= t('dialogs.component_validations.regex.title') %></b></p>
-<div class="govuk-hint" >
+<label class="govuk-label govuk-label--m" for="component_validation_value">
+<%= t('dialogs.component_validations.regex.title') %>
+</label>
+<div class="govuk-hint" id="regex_pattern_hint" >
 <%= t('dialogs.component_validations.regex.hint_regex_pattern') %>
 </div>
 
 <div class="flex align-items-center">
-  <label class="govuk-label govuk-label--m govuk-visually-hidden" for="component_validation_value">
-    <%= @component_validation.label %>
-  </label>
   <input class="govuk-input govuk-input--width-20 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
          id="component_validation_value"
          name="component_validation[value]"
@@ -14,7 +13,7 @@
          inputmode="email"
          spellcheck="false"
          autocomplete=""
-         aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %> hint-text-prompt"
+         aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %> regex_pattern_hint"
          <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
          value="<%= @component_validation.main_value %>">
 </div>
