@@ -574,7 +574,7 @@ function openConditionalContentDialog(component, activator, view) {
 function focusOnEditableComponent() {
   const target = location.hash;
   setTimeout(() => {
-    if (target && target.match(/^[#\w\d_]+$/)) {
+    if (target && target.match(/^[#\w\d_-]+$/)) {
       // Newly added component with fragment identifier so find first
       // first editable item of last component.
       let $newComponent = $(target);
