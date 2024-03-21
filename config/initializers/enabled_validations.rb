@@ -18,4 +18,5 @@ Rails.application.config.enabled_validations = %w[
   max_files
   address
   postcode
+  pattern
 ]

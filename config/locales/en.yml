@@ -98,6 +98,12 @@ en:
         content: We were unable to redo your last action.
     component_validations:
       hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
+      regex:
+        title: Regular expression
+        hint_regex_pattern: Do not include a ‘/’ at the beginning or end. Do not include any options such as ‘i’, ‘x’ or ‘m’.
+        advice_regex_pattern: You should also explain the required format in the question's hint text to help users with their answer.
+        instruction_regex_pattern: Use a %{regex_href} (regex) to validate answers against a specific format, such as a reference number or case ID.
+        regex_link: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/building-and-editing/#regex" target="_blank" rel="noopener noreferrer">regular expression</a>
       date:
         day: Day
         month: Month
@@ -123,6 +129,9 @@ en:
         max:
           label: Maximum answer length
           status_label: Set a maximum answer length
+        pattern:
+          label: Specific answer format
+          status_label: Set a specific answer format
       max_files:
         label: 'Maximum number of files that can be uploaded'
         hint: 'Set a limit for this page of between 1 and 10 files'
@@ -386,6 +395,7 @@ en:
       min_string_length: 'Minimum answer length...'
       upload_options: 'Autocomplete options...'
       max_files: 'Number of files...'
+      pattern: 'Specific answer format (regex)...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
@@ -691,6 +701,11 @@ en:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
           format: "%{message}"
+        string_regex_pattern:
+          blank: Enter a regular expression
+          invalid: Enter a valid regular expression
+          remove_delimiter: Your regular expression cannot include a ‘/’ at the beginning or end
+          remove_options: Your regular expression cannot include options such as ‘i’, ‘x’, ‘m’
         date_validation:
           invalid: "%{label} is not a valid date"
           missing_attribute: "%{label} should include a %{attribute}"

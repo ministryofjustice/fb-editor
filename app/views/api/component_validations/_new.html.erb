@@ -29,6 +29,11 @@
             </div>
           </div>
           <% else %>
+            <% if @component_validation.validator == 'pattern' %>
+              <p>
+                <%= t('dialogs.component_validations.regex.instruction_regex_pattern', regex_href:t('dialogs.component_validations.regex.regex_link' )).html_safe %>
+              </p>
+            <% end %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
               <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" <%= @component_validation.enabled? ? 'checked' : '' %>>
