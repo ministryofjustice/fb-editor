@@ -20,13 +20,13 @@ const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED =
   "input:not(:hidden), textarea:not([data-element]), select";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
-const SELECTOR_EDITABLE_LABEL = "label h1 span, label h2, legend h1 span, legend h2 span";
+const SELECTOR_EDITABLE_LABEL =
+  "label h1 span, label h2 span, legend h1 span, legend h2 span";
 
 class Question {
   constructor($node, config) {
     var $editableLabel = $(SELECTOR_EDITABLE_LABEL, $node);
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
-    console.log($editableLabel);
     var conf = mergeObjects(
       {
         // Config defaults
@@ -139,8 +139,6 @@ class Question {
       }
     }
 
-    console.log(this.$editableLabel);
-
     // If we've changed the this.$editableLabel content, or the editor has, we
     // need to check whether required flag needs to show, or not.
     this.$editableLabel.data("instance").update();
@@ -162,8 +160,6 @@ class Question {
 
   addAccessibleLabels() {
     // Set an accessible label for the editable heading
-    console.log(this.config.text.aria.components);
-    console.log(this.config.type);
     this.$editableLabel.attr(
       "aria-label",
       this.labels.title.replace(

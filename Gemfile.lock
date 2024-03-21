@@ -9,7 +9,7 @@ GIT
 PATH
   remote: ../fb-metadata-presenter
   specs:
-    metadata_presenter (3.3.24)
+    metadata_presenter (3.3.25)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 4.1.1)
       json-schema (~> 4.1.1)
