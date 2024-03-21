@@ -104,7 +104,7 @@
     position: absolute;
     display: block;
     top: 0;
-    left: 0
+    left: 0;
   }
 
   &:hover {
@@ -123,6 +123,18 @@
     background-color: govuk-colour("red");
     border-color: govuk-colour("red");
     color: govuk-colour("white");
+  }
+
+  @media (forced-colors: active) {
+    color: ButtonText;
+
+    &:focus,
+    &:focus-visible {
+      border-color: Highlight;
+      outline: 3px solid Highlight;
+      outline-offset: 0;
+      color: ButtonText;
+    }
   }
 }
 

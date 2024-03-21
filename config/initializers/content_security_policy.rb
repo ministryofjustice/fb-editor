@@ -8,15 +8,19 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self, :https
     policy.font_src    :self, :https, :data
-    policy.img_src     :self, :https, :data
+    policy.img_src     :self, :https, :data, "https://*.google-analytics.com", "https://*.googletagmanager.com"
     policy.object_src  :none
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
-                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"
+                       "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
+                       "https://*.googletagmanager.com"
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
-                       "*.sentry.io"
+                       "*.sentry.io",
+                       "https://*.google-analytics.com",
+                       "https://*.analytics.google.com",
+                       "https://*.googletagmanager.com"
 
     # Specify URI for violation reports
     policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"

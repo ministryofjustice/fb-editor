@@ -20,6 +20,8 @@ button.Expander__activator {
     content: "";
     display: inline-block;
     margin: 0 0.5ex 0 0;
+    // Without this the borders get removed/don't work with forced colors
+    forced-color-adjust: none;
   }
 
   &[aria-expanded="true"]::before {
@@ -29,10 +31,22 @@ button.Expander__activator {
   }
 
   &:focus {
-    background: govuk-colour('yellow');
-    color: govuk-colour('black');
+    background: govuk-colour("yellow");
+    color: govuk-colour("black");
     &::before {
-      border-left-color: govuk-colour('black');
+      border-left-color: govuk-colour("black");
+    }
+  }
+
+  @media (forced-colors: active) {
+    &::before {
+      border-left-color: CanvasText;
+    }
+    &:focus {
+      color: CanvasText;
+      &::before {
+        border-left-color: CanvasText;
+      }
     }
   }
 }
