@@ -12,6 +12,7 @@ module MultipleQuestionsPageHelper
   end
 
   def and_I_add_a_multiple_page_content_component
+    sleep 2
     editor.add_a_component_button.click
     and_I_add_a_content_area
   end

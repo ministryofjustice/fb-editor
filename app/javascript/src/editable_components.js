@@ -176,7 +176,6 @@ class EditableElement extends EditableBase {
   }
 
   focus() {
-    console.log("editable element focus");
     this.$node.focus();
   }
 
@@ -508,7 +507,6 @@ class EditableComponentBase extends EditableBase {
 
   // Focus on first editable element.
   focus() {
-    console.log("editable_component focus");
     for (var i in this._elements) {
       if (this._elements.hasOwnProperty(i)) {
         this._elements[i].focus();

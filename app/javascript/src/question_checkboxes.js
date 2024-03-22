@@ -17,7 +17,7 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require("./question");
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
-const SELECTOR_LABEL = "legend > :first-child";
+const SELECTOR_LABEL = "legend > h1 span, legend > h2 span";
 const SELECTOR_ITEM = ".govuk-checkboxes__item";
 const SELECTOR_ITEM_HINT = ".govuk-checkboxes__hint";
 const SELECTOR_ITEM_LABEL = ".govuk-checkboxes__label";
