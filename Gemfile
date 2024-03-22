@@ -42,6 +42,7 @@ gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
 
 group :development, :test do
+  gem 'axe-core-rspec'
   gem 'brakeman'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
