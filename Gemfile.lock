@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: f1815b4ce3e23781921b0708785ea2f9827d5894
+  revision: 69062902bc02612ac7e75de04771b951ecfd5c81
   branch: semantic-editable-headings
   specs:
     metadata_presenter (3.3.25)
