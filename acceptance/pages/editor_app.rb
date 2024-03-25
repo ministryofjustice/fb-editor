@@ -40,6 +40,7 @@ class EditorApp < SitePrism::Page
   element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'Cookies', class: 'govuk-link'
   element :privacy_link, :link, 'Privacy', class: 'govuk-link'
+  element :accessibility_link, :link, 'Accessibility', class: 'govuk-link'
 
   element :pages_link, :link, I18n.t('pages.name')
   element :publishing_link, :link, I18n.t('publish.name')
