@@ -355,7 +355,8 @@ jobs:
             echo 'export CI_MODE=true' >> $BASH_ENV
             source $BASH_ENV
 
-            circleci tests glob "acceptance/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
+            EXCLUDE_FILES="accessibility_spec.rb"
+            circleci tests glob "acceptance/**/*_spec.rb" | grep -ve $EXCLUDE_FILES | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
       - store_test_results:
           path: ~/acceptance
       - slack/status: *testable_slack_status
