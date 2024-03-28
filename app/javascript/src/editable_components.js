@@ -143,12 +143,6 @@ class EditableElement extends EditableBase {
 
   edit() {
     this.removePlaceholder();
-    if (
-      this.$node.text().trim() == this.config.defaultLabelValue ||
-      this.$node.text().trim() == this.config.defaultItemLabelValue
-    ) {
-      this.selectContent();
-    }
     this.$node.addClass(this._config.editClassname);
   }
 
