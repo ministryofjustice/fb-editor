@@ -46,12 +46,6 @@ RSpec.describe 'Admin authorisation spec', type: :request do
     end
   end
 
-  context 'when legacy service name page' do
-    it_behaves_like 'an authorisation action' do
-      let(:request) { get '/admin/legacy_service_names' }
-    end
-  end
-
   context 'when uptime checks page' do
     it_behaves_like 'an authorisation action' do
       let(:request) { get '/admin/uptime_checks' }

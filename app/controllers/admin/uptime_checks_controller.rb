@@ -5,7 +5,7 @@ module Admin
     def index
       @without_checks = services_without_uptime_checks
       @with_checks = with_uptime_checks
-      @legacy_checks = non_editor_service_checks
+      @non_editor_checks = non_editor_service_checks
     end
 
     def create
