@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
     resources :overviews, only: [:index]
-    resources :legacy_service_names
     resources :uptime_checks, only: [:index, :create, :destroy]
     resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
       post '/unpublish/:publish_service_id/:deployment_environment',
