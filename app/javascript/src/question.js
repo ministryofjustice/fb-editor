@@ -20,9 +20,12 @@ const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 const SELECTOR_DISABLED =
   "input:not(:hidden), textarea:not([data-element]), select";
 const SELECTOR_LABEL_HEADING = "label h1, label h2, legend h1, legend h2";
+const SELECTOR_EDITABLE_LABEL =
+  "label h1 span, label h2 span, legend h1 span, legend h2 span";
 
 class Question {
   constructor($node, config) {
+    var $editableLabel = $(SELECTOR_EDITABLE_LABEL, $node);
     var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects(
       {
@@ -44,22 +47,27 @@ class Question {
     );
 
     $node.addClass("Question");
-    this._config = conf;
+    this.config = conf;
     this.data = $node.data("fb-content-data");
     this.$node = $node;
+    this.$editableLabel = $editableLabel;
     this.$heading = $heading;
     this.editable = editableComponent($node, conf);
     this.menu = createQuestionMenu.call(this);
+    this.labels = this.config.text.aria.question;
 
+    this.$heading.attr("aria-label", this.$editableLabel.text());
     // Check view state on element edit or interaction and set initial state.
-    this.$heading.on("focus", () => {
+    this.$editableLabel.on("focus", () => {
       this.$node.addClass("active");
     });
-    $heading.on("blur", () => {
+    $editableLabel.on("blur", () => {
       this.$node.removeClass("active");
       this.setRequiredFlag.bind(this);
+      this.$heading.attr("aria-label", this.$editableLabel.text());
     });
     this.setRequiredFlag();
+    this.addAccessibleLabels();
   }
 
   get required() {
@@ -116,7 +124,7 @@ class Question {
    * This function is to handle the adding the extra element.
    **/
   setRequiredFlag() {
-    var text = this._config.text.optionalFlag;
+    var text = this.config.text.optionalFlag;
     // Escape the parentheses
     var escapedTextWithSpace = " " + text.replace(/(\(|\))/gim, "\\$1");
     // $ - must be at the end of the string
@@ -124,16 +132,16 @@ class Question {
     var regex = new RegExp(escapedTextWithSpace + "$", "i");
 
     if (this.required) {
-      this.$heading.text(this.$heading.text().replace(regex, ""));
+      this.$editableLabel.text(this.$editableLabel.text().replace(regex, ""));
     } else {
-      if (!this.$heading.text().match(regex)) {
-        this.$heading.text(`${this.$heading.text()} ${text}`);
+      if (!this.$editableLabel.text().match(regex)) {
+        this.$editableLabel.text(`${this.$editableLabel.text()} ${text}`);
       }
     }
 
-    // If we've changed the this.$heading content, or the editor has, we
+    // If we've changed the this.$editableLabel content, or the editor has, we
     // need to check whether required flag needs to show, or not.
-    this.$heading.data("instance").update();
+    this.$editableLabel.data("instance").update();
   }
 
   focus() {
@@ -148,6 +156,65 @@ class Question {
   save() {
     // TODO: Replace with proper mechanism to remove this workaround
     this.editable.save();
+  }
+
+  addAccessibleLabels() {
+    // Set an accessible label for the editable heading
+    this.$editableLabel.attr(
+      "aria-label",
+      this.labels.title.replace(
+        "{{type}}",
+        this.config.text.aria.components.types[this.config.type],
+      ),
+    );
+
+    // Remove the description from the fieldset element as it is confusing when editing
+    this.$node.find("fieldset").removeAttr("aria-describedby");
+
+    // We add this so that in the editor the text in the legend is not used as
+    // the group label, as it gets confusing
+    this.$node
+      .find("fieldset > legend")
+      .attr(
+        "aria-label",
+        this.labels.legend.replace("{{type}}", this.config.type),
+      );
+
+    // Accessible label and description for the question hint text (where present)
+    this.$node.find(".govuk-hint").first().attr("aria-label", this.labels.hint);
+
+    // For the label wrapping the heading we provide an accessible group name
+    // Remove the 'for' attribute, otherwise clicking will focus the questions
+    // form field
+    if (!this.$node.find("fieldset").length > 0) {
+      this.$node.find("label.govuk-label").first().attr("for", "");
+    }
+
+    // Accessibly prevent input in editor mode
+    // 1. aria-disabled : communicate disabled state to AT
+    // 2. readonly : prevent text input
+    // 3. aria-label : provide an screen-reader label for the field
+    // 4. aria-describedby : explain why field is disabled
+    // 5. pointer-events : mouse interaction (required for <select>)
+    // 6. prevent click events
+    // 7. prevent space or enter triggering field (required for <select>)
+    this.$node
+      .find(SELECTOR_DISABLED)
+      .attr("aria-disabled", true)
+      .attr("readonly", "")
+      .attr("aria-label", this.labels.answer)
+      .attr("aria-describedby", "disabled_input_description")
+      .css("pointer-events", "none")
+      .on("click", (e) => {
+        e.preventDefault();
+        return false;
+      })
+      .on("keydown", (e) => {
+        if (e.key == " " || e.key == "Enter") {
+          e.preventDefault();
+          return false;
+        }
+      });
   }
 }
 
@@ -165,7 +232,7 @@ function createQuestionMenu() {
 
   return new QuestionMenu($ul, {
     activator_text: template.data("activator-text"),
-    $target: question.$heading,
+    $target: question.$editableLabel,
     question: question,
     menu: {
       position: {

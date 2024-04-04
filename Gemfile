@@ -7,9 +7,9 @@ ruby '3.1.3'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'regex-validator'
+#     branch: 'semantic-editable-headings'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.3.28'
+gem 'metadata_presenter', '3.3.30'
 
 gem 'activerecord-session_store'
 gem 'administrate'

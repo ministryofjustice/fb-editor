@@ -71,7 +71,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_branching_page
-    expect(editor.question_heading.first.text).to eq(
+    expect(editor.page_heading.text).to eq(
       I18n.t('default_values.branching_title', branching_number: 1)
     )
   end

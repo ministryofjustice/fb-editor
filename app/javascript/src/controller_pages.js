@@ -574,7 +574,7 @@ function openConditionalContentDialog(component, activator, view) {
 function focusOnEditableComponent() {
   const target = location.hash;
   setTimeout(() => {
-    if (target && target.match(/^[#\w\d_]+$/)) {
+    if (target && target.match(/^[#\w\d_-]+$/)) {
       // Newly added component with fragment identifier so find first
       // first editable item of last component.
       let $newComponent = $(target);
@@ -586,7 +586,7 @@ function focusOnEditableComponent() {
         }
       }
     } else {
-      const pageTitle = $("h1.EditableElement").get(0);
+      const pageTitle = $("h1 .EditableElement").get(0);
       if (pageTitle) {
         pageTitle.focus();
       } else {
@@ -684,6 +684,10 @@ function enhanceQuestions(view) {
         text: {
           default_content: view.text.defaults.content,
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+            components: view.text.components,
+          },
         },
       });
     });
@@ -696,6 +700,10 @@ function enhanceQuestions(view) {
         text: {
           default_content: view.text.defaults.content,
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+            components: view.text.components,
+          },
         },
       });
     });
@@ -705,6 +713,10 @@ function enhanceQuestions(view) {
       form: view.saveButton.$form,
       text: {
         optionalFlag: view.text.question_optional_flag,
+        aria: {
+          question: view.text.aria.question,
+          components: view.text.components,
+        },
       },
     });
   });
@@ -716,6 +728,10 @@ function enhanceQuestions(view) {
         form: view.saveButton.$form,
         text: {
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+            components: view.text.components,
+          },
         },
       });
     });
@@ -727,6 +743,10 @@ function enhanceQuestions(view) {
         form: view.saveButton.$form,
         text: {
           optionalFlag: view.text.question_optional_flag,
+          aria: {
+            question: view.text.aria.question,
+            components: view.text.components,
+          },
         },
       });
     });
@@ -745,7 +765,8 @@ function enhanceQuestions(view) {
           optionHint: view.text.defaults.option_hint,
           optionalFlag: view.text.question_optional_flag,
           aria: {
-            answers: view.text.aria.answers,
+            question: view.text.aria.question,
+            components: view.text.components,
           },
         },
 
@@ -782,7 +803,8 @@ function enhanceQuestions(view) {
           optionHint: view.text.defaults.option_hint,
           optionalFlag: view.text.question_optional_flag,
           aria: {
-            answers: view.text.aria.answers,
+            question: view.text.aria.question,
+            components: view.text.components,
           },
         },
 
@@ -891,9 +913,18 @@ function editPageSingleQuestionViewCustomisations() {
  * safely assume full JS availability.
  **/
 function accessibilityQuestionViewEnhancements(view) {
-  $(".fb-section_heading").attr("aria-label", view.text.aria.section_header);
-  $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
-  $(".govuk-hint").attr("aria-label", view.text.aria.hint);
+  $(".fb-section_heading").attr("aria-label", view.text.aria.section_heading);
+
+  $(".fb-section_heading").attr(
+    "aria-describedby",
+    "optional_content_description",
+  );
+
+  $('#new_answers .govuk-button[aria-disabled="true"]')
+    .attr("aria-describedby", "disabled_input_description")
+    .on("click", (e) => {
+      e.preventDefault();
+    });
 }
 
 /* Enhances the static content should it require special formatting

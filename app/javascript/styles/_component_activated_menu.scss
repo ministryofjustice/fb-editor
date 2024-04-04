@@ -47,7 +47,7 @@
     padding-right: 30px;
     position: relative;
 
-    &[aria-haspopup] {
+    &[aria-haspopup="menu"] {
       &:after {
         content: ">";
         font-family: monospace;
