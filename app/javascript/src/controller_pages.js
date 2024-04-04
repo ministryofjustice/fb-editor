@@ -925,9 +925,6 @@ function accessibilityQuestionViewEnhancements(view) {
     .on("click", (e) => {
       e.preventDefault();
     });
-
-  // $(".Question h1, .Question h2").attr("aria-label", view.text.aria.question);
-  // $(".govuk-hint").attr("aria-label", view.text.aria.hint);
 }
 
 /* Enhances the static content should it require special formatting

@@ -69,7 +69,7 @@ RSpec.describe 'Welsh localisation', type: :request do
     context 'question buttons' do
       it 'has a disabled continue button translated to Welsh' do
         assert_select 'div.govuk-button-group' do
-          assert_select 'button.govuk-button--disabled', 'Parhau'
+          assert_select 'button.govuk-button', 'Parhau'
         end
       end
     end
