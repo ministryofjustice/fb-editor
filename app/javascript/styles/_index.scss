@@ -923,6 +923,14 @@ h1 span.EditableElement {
   li {
     @include list_reset;
   }
+
+  a:focus {
+    @include focus;
+  }
+
+  a:focus:hover {
+    color: $govuk-text-colour;
+  }
 }
 
 /* govuk-app-navigation does not appear to exist
