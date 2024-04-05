@@ -200,6 +200,7 @@ module Admin
       radios = 0
       texts = 0
       textareas = 0
+      html_content = false
 
       pages.each do |page|
         next if page['components'].blank?
@@ -208,6 +209,9 @@ module Admin
 
         page['components'].each do |component|
           types << component['_type']
+          next unless component['_type'] == 'content'
+
+          html_content ||= contains_html?(component['content'])
         end
 
         counts = types.tally
@@ -227,7 +231,7 @@ module Admin
       end
 
       {
-        addresses:, autocompletes:, checkboxes:, contents:, dates:, emails:, uploads:, multiuploads:, numbers:, radios:, texts:, textareas:
+        addresses:, autocompletes:, checkboxes:, contents:, dates:, emails:, uploads:, multiuploads:, numbers:, radios:, texts:, textareas:, html_content: html_content ? 'Yes' : 'No'
       }
     end
 
@@ -244,7 +248,7 @@ module Admin
     end
 
     def service_summary_headers
-      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Branching points', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Content containing HTML', 'Branching points', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
     end
 
     def published_state(service_id, environment)
@@ -277,6 +281,15 @@ module Admin
     # additional user ids to filter from stats/summaries
     def user_ids
       super().push(ACCEPTANCE_TEST_USER_ID)
+    end
+
+    # A *very* basic check for the presence of some html tags
+    def contains_html?(content)
+      content.match?(/<span /)   ||
+        content.match?(/<div /)  ||
+        content.match?(/<details /) ||
+        content.match?(/<strong /) ||
+        content.match?(/<style /)
     end
   end
 end
