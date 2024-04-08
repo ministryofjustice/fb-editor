@@ -3,7 +3,7 @@
     <p class="description"><%= t("publish.#{environment}.description") %></p>
 
     <div class="govuk-panel govuk-panel--confirmation">
-      <h3 class="govuk-panel__title"><%= t("publish.publish_for_review.confirmation.heading") %></h3>
+      <h2 class="govuk-panel__title govuk-heading-m"><%= t("publish.publish_for_review.confirmation.heading") %></h2>
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
@@ -39,9 +39,9 @@
               <% end %>
             <% end %>
           </div>
-      
+    
           <div class="review">
-            <h3><%= t('publish.publish_for_review.info.heading') %></h3>
+            <h2 class="govuk-heading-m"><%= t('publish.publish_for_review.info.heading') %></h2>
       
             <p>
               <%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %>

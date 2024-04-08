@@ -37,7 +37,7 @@ feature 'Accessibility' do
     then_the_page_should_be_accessible
   end
 
-  scenario 'Settings > Google Analytics', pending: true do
+  scenario 'Settings > Google Analytics' do
     click_link(I18n.t('settings.name'))
     click_link(I18n.t('settings.form_analytics.heading'))
     then_the_page_should_be_accessible
@@ -93,13 +93,20 @@ feature 'Accessibility' do
   end
 
   scenario 'Publishing', pending: true do
+    # Publishing to Test
     click_link(I18n.t('publish.name'))
     then_the_page_should_be_accessible
 
-    click_button('Publish to Test')
+    click_button(I18n.t('actions.publish_to_test'))
     then_the_page_should_be_accessible
 
-    click_link('Publish to Live')
+    click_button('Cancel')
+
+    # Publishing to Live
+    first(:link, I18n.t('actions.publish_to_live')).click
+    then_the_page_should_be_accessible
+
+    click_button(I18n.t('actions.publish_to_live'))
     then_the_page_should_be_accessible
   end
 
