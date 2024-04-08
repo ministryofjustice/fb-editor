@@ -242,6 +242,7 @@ class Dialog {
 
     this.$container = dialog.$node.parents(".ui-dialog");
     this.$container.addClass(dialog.#className);
+    this.$container.attr('aria-labelledby', 'dialog-title')
     this.$node.data("instance", dialog);
   }
 

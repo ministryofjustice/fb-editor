@@ -30,7 +30,7 @@
   <% end %>
   
   <div data-controller="selection-reveal" data-selection-reveal-matches-value="<%= ["always", "never"].to_json %>">
-    <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-labelledby="conditional-content-title">
+    <fieldset class="govuk-fieldset govuk-!-margin-bottom-5" aria-labelledby="dialog-title">
       <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
         <% f.object.options_for_display.each do |option| %>
           <%= f.govuk_radio_button :display, option[:value], label: { text: option[:text] }, data: { selection_reveal_target: "input", action: "selection-reveal#toggle" } %>

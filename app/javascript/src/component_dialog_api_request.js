@@ -69,34 +69,34 @@
 
 **/
 
-const {
-  mergeObjects,
-  safelyActivateFunction,
-} = require('./utilities');
+const { mergeObjects, safelyActivateFunction } = require("./utilities");
 
-const DialogActivator = require('./component_dialog_activator');
+const DialogActivator = require("./component_dialog_activator");
 
 class DialogApiRequest {
-  #className = 'DialogApiRequest';
+  #className = "DialogApiRequest";
   #config;
   #state;
 
   /**
-  * @param {string} url - The url to request the template from
-  * @param {Object} config - config key/value pairs
-  */
+   * @param {string} url - The url to request the template from
+   * @param {Object} config - config key/value pairs
+   */
   constructor(url, config) {
-    this.#config = mergeObjects({
-      activator: false,
-      autoOpen: true,
-      buttons: [],
-      classes: {},
-      closeOnClickSelector: "",
-      onLoad: function(dialog) {},
-      onReady: function(dialog) {},
-      onOpen: function(dialog) {},
-      onClose: function(dialog) {},
-    }, config);
+    this.#config = mergeObjects(
+      {
+        activator: false,
+        autoOpen: true,
+        buttons: [],
+        classes: {},
+        closeOnClickSelector: "",
+        onLoad: function (dialog) {},
+        onReady: function (dialog) {},
+        onOpen: function (dialog) {},
+        onClose: function (dialog) {},
+      },
+      config,
+    );
 
     this.#state = "closed";
     this.$node = $(); // Should be overwritten on successful GET
@@ -140,15 +140,17 @@ class DialogApiRequest {
   }
 
   focus() {
-    const el = this.$node.find('.govuk-button:not([type="disabled"]):not([data-method="delete"])').eq(0);
-    if(el){
+    const el = this.$node
+      .find('.govuk-button:not([type="disabled"]):not([data-method="delete"])')
+      .eq(0);
+    if (el) {
       el.focus();
     }
   }
 
   focusActivator() {
     // Attempt to refocus on original activator
-    if(this.activator) {
+    if (this.activator) {
       this.activator.focus();
     }
   }
@@ -156,15 +158,14 @@ class DialogApiRequest {
   #initialize(url) {
     const dialog = this;
 
-    $.get(url)
-    .done( (response) => {
+    $.get(url).done((response) => {
       this.$node = $(response);
       safelyActivateFunction(dialog.#config.onLoad, dialog);
 
       this.#build();
       this.#enhance();
 
-      if(this.#config.autoOpen) {
+      if (this.#config.autoOpen) {
         this.open();
       }
     });
@@ -174,7 +175,7 @@ class DialogApiRequest {
     const dialog = this;
 
     // this.activator is true || $node setup a DialogActivator
-    if(this.activator) {
+    if (this.activator) {
       this.#addActivator();
     }
 
@@ -185,16 +186,19 @@ class DialogApiRequest {
       height: "auto",
       modal: true,
       resizable: false,
-      open: function() { dialog.#state = "open" },
-      close: function() {
+      open: function () {
+        dialog.#state = "open";
+      },
+      close: function () {
         dialog.#state = "closed";
         dialog.focusActivator();
         dialog.#destroy();
-      }
+      },
     });
 
     this.$container = dialog.$node.parents(".ui-dialog");
     this.$container.addClass(dialog.#className);
+    this.$container.attr("aria-labelledby", "dialog-title");
     this.$node.data("instance", dialog);
   }
 
@@ -209,45 +213,48 @@ class DialogApiRequest {
   #setupButtons() {
     const dialog = this;
 
-    if(this.#config.closeOnClickSelector) {
+    if (this.#config.closeOnClickSelector) {
       let $buttons = $(this.#config.closeOnClickSelector, dialog.$node);
-      $buttons.on("click", function() {
+      $buttons.on("click", function () {
         dialog.close();
       });
-    }
-    else {
-      this.$node.dialog("option", "buttons",
-        [
-          {
-            text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[0].text || "ok",
-            click: () => {
-              // Attempt to run any passed button.click action.
-              if(dialog.#config.buttons.length > 0) {
-                safelyActivateFunction(dialog.#config.buttons[0].click, dialog);
-              }
-              // Make sure the dialog closes
-              dialog.close();
+    } else {
+      this.$node.dialog("option", "buttons", [
+        {
+          text:
+            (dialog.#config.buttons.length > 0 &&
+              dialog.#config.buttons[0].text) ||
+            "ok",
+          click: () => {
+            // Attempt to run any passed button.click action.
+            if (dialog.#config.buttons.length > 0) {
+              safelyActivateFunction(dialog.#config.buttons[0].click, dialog);
             }
+            // Make sure the dialog closes
+            dialog.close();
           },
-          {
-            text: dialog.#config.buttons.length > 0 && dialog.#config.buttons[1].text || "cancel",
-            click: () => {
-              // Attempt to run any passed button.click action.
-              if(dialog.#config.buttons.length > 1) {
-                safelyActivateFunction(dialog.#config.buttons[1].click, dialog);
-              }
-              // Make sure the dialog closes
-              dialog.close();
+        },
+        {
+          text:
+            (dialog.#config.buttons.length > 0 &&
+              dialog.#config.buttons[1].text) ||
+            "cancel",
+          click: () => {
+            // Attempt to run any passed button.click action.
+            if (dialog.#config.buttons.length > 1) {
+              safelyActivateFunction(dialog.#config.buttons[1].click, dialog);
             }
-          }
-        ]
-      );
+            // Make sure the dialog closes
+            dialog.close();
+          },
+        },
+      ]);
     }
   }
 
   #destroy() {
-    if(this.$node.dialog('instance')) {
-      this.$node.dialog('destroy');
+    if (this.$node.dialog("instance")) {
+      this.$node.dialog("destroy");
     }
     this.$node.remove();
   }
@@ -259,16 +266,14 @@ class DialogApiRequest {
     var activator = new DialogActivator(this.#config.activator, {
       dialog: this,
       text: this.#config.activatorText,
-      classes: this.#config.classes?.activator || '',
-      $target: $marker
+      classes: this.#config.classes?.activator || "",
+      $target: $marker,
     });
 
     this.activator = activator.$node;
 
     $marker.remove();
   }
-
 }
-
 
 module.exports = DialogApiRequest;

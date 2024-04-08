@@ -92,7 +92,7 @@ feature 'Accessibility' do
     then_the_page_should_be_accessible
   end
 
-  scenario 'Publishing', pending: true do
+  scenario 'Publishing' do
     # Publishing to Test
     click_link(I18n.t('publish.name'))
     then_the_page_should_be_accessible
