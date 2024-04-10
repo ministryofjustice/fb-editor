@@ -168,7 +168,7 @@ class Publisher
 
     def ms_graph_api_secrets
       graph_secrets = []
-      secret_names = ['MS_ADMIN_APP_ID', 'MS_ADMIN_APP_SECRET', 'MS_OAUTH_URL', 'MS_TENANCY_ID']
+      secret_names = %w[MS_ADMIN_APP_ID MS_ADMIN_APP_SECRET MS_OAUTH_URL MS_TENANCY_ID]
 
       secret_names.each do |name|
         config = ServiceConfiguration.find_or_initialize_by(

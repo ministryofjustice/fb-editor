@@ -14,7 +14,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
         build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret),
         build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url),
-        build(:service_configuration, name: 'MS_LIST_SITE_ID', value: ms_list_site_id),
+        build(:service_configuration, name: 'MS_LIST_SITE_ID', value: ms_list_site_id)
         # build(:service_configuration, name: 'MS_ADMIN_APP_ID', value: ms_admin_app_id),
         # build(:service_configuration, name: 'MS_ADMIN_APP_SECRET', value: ms_admin_app_secret),
         # build(:service_configuration, name: 'MS_OAUTH_URL', value: ms_oauth_url),
