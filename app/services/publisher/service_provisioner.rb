@@ -159,11 +159,41 @@ class Publisher
     end
 
     def secrets
-      service_configuration.select(&:secrets?)
+      (service_configuration.select(&:secrets?) << ms_graph_api_secrets).flatten
     end
 
     def aws_s3_bucket_name
       ENV["AWS_S3_BUCKET_#{deployment_environment_upcase}"]
+    end
+
+    def ms_graph_api_secrets
+      graph_secrets = []
+      secret_names = ['MS_ADMIN_APP_ID', 'MS_ADMIN_APP_SECRET', 'MS_OAUTH_URL', 'MS_TENANCY_ID']
+
+      secret_names.each do |name|
+        config = ServiceConfiguration.find_or_initialize_by(
+          service_id:,
+          name:,
+          deployment_environment:
+        )
+        config.value = ENV[name].presence || 'default_prevent_validation_error'
+        config.save!
+        graph_secrets << config
+      end
+
+      graph_secrets
+    end
+
+    def ms_graph_root_url
+      ENV['MS_GRAPH_ROOT_URL']
+    end
+
+    def ms_list_site_id
+      ServiceConfiguration.find_by(
+        service_id:,
+        name: 'MS_LIST_SITE_ID',
+        deployment_environment:
+      ).decrypt_value || ''
     end
 
     private

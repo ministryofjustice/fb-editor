@@ -13,7 +13,12 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
         build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
         build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret),
-        build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url)
+        build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url),
+        build(:service_configuration, name: 'MS_LIST_SITE_ID', value: ms_list_site_id),
+        # build(:service_configuration, name: 'MS_ADMIN_APP_ID', value: ms_admin_app_id),
+        # build(:service_configuration, name: 'MS_ADMIN_APP_SECRET', value: ms_admin_app_secret),
+        # build(:service_configuration, name: 'MS_OAUTH_URL', value: ms_oauth_url),
+        # build(:service_configuration, name: 'MS_TENANCY_ID', value: ms_tenancy_id)
       ]
     )
   end
@@ -35,6 +40,9 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   end
   let(:service_secret) do
     EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')
+  end
+  let(:ms_list_site_id) do
+    EncryptionService.new.encrypt('ms-list-site-id')
   end
   let(:external_start_page_url) { EncryptionService.new.encrypt('external-url.com') }
   let(:autocomplete_items) do
@@ -75,6 +83,21 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(ENV).to receive(:[])
       .with('AWS_S3_BUCKET_DEV')
       .and_return('bucket-name')
+    allow(ENV).to receive(:[])
+      .with('MS_ADMIN_APP_ID')
+      .and_return('12345')
+    allow(ENV).to receive(:[])
+      .with('MS_ADMIN_APP_SECRET')
+      .and_return('67890')
+    allow(ENV).to receive(:[])
+      .with('MS_OAUTH_URL')
+      .and_return('https://msoauth.example.com/oath/token')
+    allow(ENV).to receive(:[])
+      .with('MS_TENANCY_ID')
+      .and_return('tenancyid')
+    allow(ENV).to receive(:[])
+      .with('MS_GRAPH_ROOT_URL')
+      .and_return('https://ms-graph/v1/')
   end
 
   describe '#generate' do

@@ -4,6 +4,10 @@ class ServiceConfiguration < ApplicationRecord
     BASIC_AUTH_PASS
     ENCODED_PRIVATE_KEY
     SERVICE_SECRET
+    MS_ADMIN_APP_ID
+    MS_ADMIN_APP_SECRET
+    MS_OAUTH_URL
+    MS_TENANCY_ID
   ].freeze
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT

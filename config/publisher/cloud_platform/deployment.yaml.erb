@@ -59,6 +59,8 @@ spec:
             value: '<%= service_sentry_csp_url %>'
           - name: BUCKET_NAME
             value: <%= aws_s3_bucket_name %>
+          - name: MS_GRAPH_ROOT_URL
+            value: <%= ms_graph_root_url %>
         <% secrets.each do |secret|  %>
           - name: <%= secret.name %>
             valueFrom:
