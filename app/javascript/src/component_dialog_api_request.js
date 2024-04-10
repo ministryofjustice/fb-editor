@@ -197,15 +197,25 @@ class DialogApiRequest {
     });
 
     this.$container = dialog.$node.parents(".ui-dialog");
+    this.$container.attr("aria-modal", true);
     this.$container.addClass(dialog.#className);
-    this.$container.attr("aria-labelledby", "dialog-title");
+
     this.$node.data("instance", dialog);
   }
 
   #enhance() {
     const dialog = this;
+    const $content = $('[data-node="content"]', $content);
 
     this.#setupButtons();
+
+    this.$container.attr("aria-labelledby", "dialog-title");
+    this.$container.removeAttr("aria-describedby");
+
+    if ($content.length) {
+      $content.attr("id", "dialog-content");
+      this.$container.attr("aria-describedby", "dialog-content");
+    }
 
     safelyActivateFunction(dialog.#config.onReady, dialog);
   }

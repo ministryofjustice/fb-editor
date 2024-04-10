@@ -241,16 +241,24 @@ class Dialog {
     });
 
     this.$container = dialog.$node.parents(".ui-dialog");
+    this.$container.attr("aria-modal", true);
     this.$container.addClass(dialog.#className);
-    this.$container.attr('aria-labelledby', 'dialog-title')
     this.$node.data("instance", dialog);
   }
 
   #enhance() {
     const dialog = this;
+    const $content = $('[data-node="content"]', $content);
 
     this.#setElements();
     this.#setDefaultText();
+
+    this.$node.find('h3').attr('id', 'dialog-title')
+    this.$container.attr('aria-labelledby', 'dialog-title')
+    if ($content.length) {
+      $content.attr("id", "dialog-content");
+      this.$container.attr("aria-describedby", "dialog-content");
+    }
 
     if(this.#config.closeOnClickSelector) {
       this.#setupCloseButtons();

@@ -12,39 +12,39 @@
         <span><%= t('actions.add_single_question') -%></span>
         <ul class="govuk-navigation" role="menu">
           <li data-page-type="singlequestion"
-              data-component-type="text"><span><%= t('components.list.text') -%></span></li>
+              data-component-type="text"><span aria-haspopup="dialog"><%= t('components.list.text') -%></span></li>
           <li data-page-type="singlequestion"
               data-component-type="textarea"><span><%= t('components.list.textarea') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="email"><span><%= t('components.list.email') -%></span></li>
+              data-component-type="email"><span aria-haspopup="dialog"><%= t('components.list.email') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="number"><span><%= t('components.list.number') -%></span></li>
+              data-component-type="number"><span aria-haspopup="dialog"><%= t('components.list.number') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="date"><span><%= t('components.list.date') -%></span></li>
+              data-component-type="date"><span aria-haspopup="dialog"><%= t('components.list.date') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="address"><span><%= t('components.list.address') -%></span></li>
+              data-component-type="address"><span aria-haspopup="dialog"><%= t('components.list.address') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="radios"><span><%= t('components.list.radios') -%></span></li>
+              data-component-type="radios"><span aria-haspopup="dialog"><%= t('components.list.radios') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="checkboxes"><span><%= t('components.list.checkboxes') -%></span></li>
+              data-component-type="checkboxes"><span aria-haspopup="dialog"><%= t('components.list.checkboxes') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="autocomplete"><span><%= t('components.list.autocomplete') -%></span></li>
+              data-component-type="autocomplete"><span aria-haspopup="dialog"><%= t('components.list.autocomplete') -%></span></li>
           <li data-page-type="singlequestion"
-              data-component-type="multiupload"><span><%= t('components.list.upload') -%></span></li>
+              data-component-type="multiupload"><span aria-haspopup="dialog"><%= t('components.list.upload') -%></span></li>
         </ul>
       </li>
 
-      <li data-page-type="multiplequestions"><span><%= t('actions.add_multi_question') -%></span></li>
+      <li data-page-type="multiplequestions"><span aria-haspopup="dialog"><%= t('actions.add_multi_question') -%></span></li>
 
-      <li data-page-type="content"><span><%= t('actions.add_content') -%></span></li>
+      <li data-page-type="content"><span aria-haspopup="dialog"><%= t('actions.add_content') -%></span></li>
 
       <% unless item[:type] == 'page.start' %>
-        <li data-page-type="exit"><span><%= t('actions.add_exit') -%></span></li>
+        <li data-page-type="exit"><span aria-haspopup="dialog"><%= t('actions.add_exit') -%></span></li>
       <% end %>
     <% end %>
 
     <% if !service.checkanswers_page.present? && item[:type] != 'flow.branch' && (item[:next].blank? || item[:next] == service.confirmation_page&.uuid) %>
-      <li data-page-type="checkanswers"><span><%= t('actions.add_check_answers') -%></span></li>
+      <li data-page-type="checkanswers"><span aria-haspopup="dialog"><%= t('actions.add_check_answers') -%></span></li>
     <% end %>
 
     <% if item[:type] == 'page.checkanswers' %>
@@ -57,7 +57,7 @@
           </li>
         <% end %>
       <% else %>
-        <li data-page-type="confirmation"><span><%= t('actions.add_confirmation') -%></span></li>
+        <li data-page-type="confirmation"><span aria-haspopup="dialog"><%= t('actions.add_confirmation') -%></span></li>
       <% end %>
     <% end %>
 
@@ -65,13 +65,13 @@
       <% unless item[:type] == 'page.start' %>
         <li data-action="link">
           <%= link_to t('services.branch'),
-            new_branches_path(service.service_id, item[:uuid]) %>
+            new_branches_path(service.service_id, item[:uuid]), 'aria-haspopup': 'dialog' %>
         </li>
       <% end %>
 
       <li data-action="destination">
         <%= link_to t('actions.change_destination'),
-          new_api_service_flow_destination_path(service.service_id, item[:uuid]) %>
+          new_api_service_flow_destination_path(service.service_id, item[:uuid]), 'aria-haspopup': 'dialog' %>
       </li>
     <% end %>
 </ul>

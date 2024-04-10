@@ -12,6 +12,8 @@
     <%= link_to t('actions.delete_branch'),
         api_service_branch_destroy_message_path(service.service_id, item[:uuid]),
         method: :delete,
-        class: 'destructive delete' %>
+        class: 'destructive delete',
+        'aria-haspopup': 'dialog'
+      %>
   </li>
 </ul>
