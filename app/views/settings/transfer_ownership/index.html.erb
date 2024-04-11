@@ -5,7 +5,7 @@
 
   <% c.with_back_link(href: settings_path) %>
 
-  <%= form_for @owner, url: settings_transfer_ownership_index_path(service.service_id),
+  <%= form_for @form_owner, url: settings_transfer_ownership_index_path(service.service_id),
                html: { id: 'transfer-ownership-settings' },
                builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
@@ -17,10 +17,13 @@
         <%= f.govuk_text_field :service_name,
                                label: ->  {},
                                class: "govuk-input width-responsive-two-thirds",
-                               value: @owner,
+                               value: f.object.form_owner,
                                'aria-labelledby': 'form-owner-legend' %>
       <% end %>
 
       <%= govuk_warning_text(text: t('settings.transfer_ownership.warning'), html_attributes: { id: 'transfer_ownership_warning', 'prevent-unload': true  }) %>
+
+    <%= mojf_save_button(form: f, text: t('settings.transfer_ownership.heading'), html_attributes: {'prevent-unload': true }) %>
+
   <% end %>
 <% end %>
