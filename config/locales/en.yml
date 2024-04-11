@@ -490,6 +490,12 @@ en:
       production:
         config_details_summary: Configure <span class="sr-only">live settings</span>
         save_button: Save Live settings
+    transfer_ownership:
+      heading: 'Transfer form ownership'
+      lede: 'Pass on ownership and editing capacity of this form to a colleague.'
+      label: Enter the email of the colleague who will take over this form
+      hint: The person needs to have already logged into MOJ Forms at least once
+      warning: Once you transfer ownership, you will no longer be able to edit or control this form.
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'
