@@ -357,6 +357,31 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: govuk_notify_api_key
+          - name: MS_ADMIN_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_id
+          - name: MS_ADMIN_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_secret
+          - name: MS_OATH_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_oauth_url
+          - name: MS_SITE_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_site_id
+          - name: MS_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_tenant_id
       volumes:
         - name: tmp-files
           emptyDir: {}
