@@ -1,8 +1,7 @@
 class FormOwnerSettings
   include ActiveModel::Model
-  attr_accessor :form_owner
-
   validates :form_owner, presence: true
+  attr_accessor :form_owner
 
   def initialize(service_id:)
     @service_id = service_id
@@ -10,6 +9,8 @@ class FormOwnerSettings
   end
 
   def get_form_owner
-    # 'This will call the version metadata and get field created_by'
+    latest_metadata = MetadataApiClient::Service.latest_version(@service_id)
+    latest_version = MetadataApiClient::Version.create(service_id: @service_id, payload: latest_metadata)
+    latest_version.created_by
   end
 end
