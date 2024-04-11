@@ -69,6 +69,7 @@ Rails.application.routes.draw do
             resources :confirmation_email, only: [:index, :create]
           end
         end
+        resources :transfer_ownership, only: [:index, :update]
       end
 
       mount MetadataPresenter::Engine => '/preview', as: :preview
