@@ -205,6 +205,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: ms_site_id
+          - name: MS_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_tenant_id
       volumes:
         - name: tmp-files
           emptyDir: {}
