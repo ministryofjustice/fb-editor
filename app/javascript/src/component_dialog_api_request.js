@@ -205,7 +205,7 @@ class DialogApiRequest {
 
   #enhance() {
     const dialog = this;
-    const $content = $('[data-node="content"]', $content);
+    const $content = $('[data-node="content"]', this.$node);
 
     this.#setupButtons();
 
