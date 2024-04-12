@@ -96,11 +96,11 @@ spec:
               secretKeyRef:
                 name: fb-acceptance-tests-date-secrets
                 key: ms_oauth_url
-          - name: MS_TENANCY_ID
+          - name: MS_TENANT_ID
             valueFrom:
               secretKeyRef:
                 name: fb-acceptance-tests-date-secrets
-                key: ms_tenancy_id
+                key: ms_tenant_id
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
         imagePullPolicy: Always
         ports:

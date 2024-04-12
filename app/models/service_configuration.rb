@@ -4,11 +4,13 @@ class ServiceConfiguration < ApplicationRecord
     BASIC_AUTH_PASS
     ENCODED_PRIVATE_KEY
     SERVICE_SECRET
+  ].freeze
+  MS_GRAPH_SECRETS = %w[
     MS_ADMIN_APP_ID
     MS_ADMIN_APP_SECRET
     MS_OAUTH_URL
-    MS_TENANCY_ID
-  ].freeze
+    MS_TENANT_ID
+  ]
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_FROM
@@ -47,6 +49,10 @@ class ServiceConfiguration < ApplicationRecord
 
   def secrets?
     name.in?(SECRETS)
+  end
+
+  def ms_graph_secrets?
+    name.in?(MS_GRAPH_SECRETS)
   end
 
   def do_not_inject_payment_link?

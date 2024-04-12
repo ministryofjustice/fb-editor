@@ -152,6 +152,7 @@ class Publisher
     def config_map
       service_configuration
         .reject(&:secrets?)
+        .reject(&:ms_graph_secrets?)
         .reject(&:do_not_send_submission?)
         .reject(&:do_not_send_confirmation_email?)
         .reject(&:not_in_maintenance_mode?)
@@ -159,7 +160,7 @@ class Publisher
     end
 
     def secrets
-      (service_configuration.select(&:secrets?) << ms_graph_api_secrets).flatten
+      service_configuration.select(&:secrets?)
     end
 
     def aws_s3_bucket_name
@@ -168,7 +169,7 @@ class Publisher
 
     def ms_graph_api_secrets
       graph_secrets = []
-      secret_names = %w[MS_ADMIN_APP_ID MS_ADMIN_APP_SECRET MS_OAUTH_URL MS_TENANCY_ID]
+      secret_names = %w[MS_ADMIN_APP_ID MS_ADMIN_APP_SECRET MS_OAUTH_URL MS_TENANT_ID]
 
       secret_names.each do |name|
         config = ServiceConfiguration.find_or_initialize_by(

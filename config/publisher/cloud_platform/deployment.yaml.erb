@@ -68,6 +68,13 @@ spec:
                 name: <%= secret_name %>
                 key: <%= secret.name.downcase %>
         <% end %>
+        <% ms_graph_api_secrets.each do |secret|  %>
+          - name: <%= secret.name %>
+            valueFrom:
+              secretKeyRef:
+                name: <%= secret_name %>
+                key: <%= secret.name.downcase %>
+        <% end %>
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-<%= platform_environment %>
         imagePullPolicy: Always
         ports:

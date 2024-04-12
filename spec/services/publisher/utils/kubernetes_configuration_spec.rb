@@ -89,7 +89,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
       .with('MS_OAUTH_URL')
       .and_return('https://msoauth.example.com/oath/token')
     allow(ENV).to receive(:[])
-      .with('MS_TENANCY_ID')
+      .with('MS_TENANT_ID')
       .and_return('tenancyid')
     allow(ENV).to receive(:[])
       .with('MS_GRAPH_ROOT_URL')
