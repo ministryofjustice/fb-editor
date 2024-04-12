@@ -105,6 +105,7 @@ class DialogForm {
         requestMethod: "GET",
         requestData: {},
         disableOnSubmit: "",
+        titleId: "dialog-title",
         onLoad: function (dialog) {},
         onReady: function (dialog) {},
         beforeSubmit: function (dialog) {},
@@ -288,13 +289,17 @@ class DialogForm {
   #enhance() {
     var dialog = this;
     const $content = $('[data-node="content"]', this.$node);
+    const $heading = $('[data-node="heading"]', this.$node);
+    const labelledBy = $heading.length
+      ? $heading.attr("id")
+      : this.#config.titleId;
 
     this.$form = this.$node.is("form") ? this.$node : this.$node.find("form");
-    this.$container.attr("aria-labelledby", "dialog-title");
 
-    if ($content.length) {
-      $content.attr("id", "dialog-content");
-      this.$container.attr("aria-describedby", "dialog-content");
+    this.$container.attr("aria-labelledby", labelledBy);
+    this.$container.removeAttr("aria-describedby");
+    if ($content.length && $content.attr("id")) {
+      this.$container.attr("aria-describedby", $content.attr("id"));
     }
 
     if (this.#config.closeOnClickSelector) {

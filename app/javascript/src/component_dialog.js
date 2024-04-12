@@ -250,15 +250,18 @@ class Dialog {
   #enhance() {
     const dialog = this;
     const $content = $('[data-node="content"]', this.$node);
+    const $heading = $('[data-node="heading"]', this.$node);
+    const labelledBy = $heading.length
+      ? $heading.attr("id")
+      : this.#config.titleId;
 
     this.#setElements();
     this.#setDefaultText();
 
-    this.$node.find("h3").attr("id", "dialog-title");
-    this.$container.attr("aria-labelledby", "dialog-title");
-    if ($content.length) {
-      $content.attr("id", "dialog-content");
-      this.$container.attr("aria-describedby", "dialog-content");
+    this.$container.attr("aria-labelledby", labelledBy);
+    this.$container.removeAttr("aria-describedby");
+    if ($content.length && $content.attr("id")) {
+      this.$container.attr("aria-describedby", $content.attr("id"));
     }
 
     if (this.#config.closeOnClickSelector) {

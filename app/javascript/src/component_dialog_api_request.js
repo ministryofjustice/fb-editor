@@ -194,6 +194,9 @@ class DialogApiRequest {
         dialog.focusActivator();
         dialog.#destroy();
       },
+      focus: function () {
+        console.log("dialog focus event");
+      },
     });
 
     this.$container = dialog.$node.parents(".ui-dialog");
@@ -206,15 +209,17 @@ class DialogApiRequest {
   #enhance() {
     const dialog = this;
     const $content = $('[data-node="content"]', this.$node);
+    const $heading = $('[data-node="heading"]', this.$node);
+    const labelledBy = $heading.length
+      ? $heading.attr("id")
+      : this.#config.titleId;
 
     this.#setupButtons();
 
-    this.$container.attr("aria-labelledby", "dialog-title");
+    this.$container.attr("aria-labelledby", labelledBy);
     this.$container.removeAttr("aria-describedby");
-
-    if ($content.length) {
-      $content.attr("id", "dialog-content");
-      this.$container.attr("aria-describedby", "dialog-content");
+    if ($content.length && $content.attr("id")) {
+      this.$container.attr("aria-describedby", $content.attr("id"));
     }
 
     safelyActivateFunction(dialog.#config.onReady, dialog);

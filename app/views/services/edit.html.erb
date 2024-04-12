@@ -35,7 +35,7 @@
     <%= f.hidden_field :conditional_uuid, value: '' %>
 
     <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
-      <%= f.label :page_url, class: "govuk-label govuk-label--m", id: "dialog-title" %>
+      <%= f.label :page_url, class: "govuk-label govuk-label--m", id: "new-page-dialog-title", data: { node: "heading" } %>
       <div class="govuk-hint" id="add-page-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></div>
       <% f.object.errors.each do |error|  %>
         <p class="govuk-error-message"><%= error.message %></p>
