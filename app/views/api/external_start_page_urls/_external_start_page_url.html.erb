@@ -1,6 +1,8 @@
 <div class="component-dialog-api-request" id="external_start_page_url">
   <%= form_for @external_url, url: api_service_external_start_page_index_path(service.service_id), method: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
-    <h2 id="dialog-title" class="govuk-heading-m"><%= editing? ? t('external_start_page_url.editing_title') : t('external_start_page_url.title') %></h2>
+    <h2 id="external-start-page-dialog-title" class="govuk-heading-m" data-node="heading">
+      <%= editing? ? t('external_start_page_url.editing_title') : t('external_start_page_url.title') %>
+    </h2>
     
     <% if !editing? %>
       <p class="description"><%= t('external_start_page_url.content') %></p>

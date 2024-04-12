@@ -13,10 +13,9 @@
  *
  **/
 
-
-const Dialog = require('./component_dialog');
-const SentryLogger=  require('./sentry_logger');
-const post = require('./utilities').post;
+const Dialog = require("./component_dialog");
+const SentryLogger = require("./sentry_logger");
+const post = require("./utilities").post;
 
 class DefaultController {
   constructor(app) {
@@ -33,8 +32,8 @@ class DefaultController {
     this.$body = $(document.body);
     this.$lastPoint = $(); // Use it to set a focal point in switching between components.
     this.constants = {
-      JS_ENHANCEMENT_DONE: "jsdone"
-    }
+      JS_ENHANCEMENT_DONE: "jsdone",
+    };
 
     isolatedMethodDeleteLinks();
   }
@@ -53,7 +52,6 @@ class DefaultController {
   }
 }
 
-
 /* Create standard Dialog component with single 'ok' type button.
  **/
 function createDialog() {
@@ -63,11 +61,11 @@ function createDialog() {
     autoOpen: false,
     okText: $template.data("text-ok"),
     classes: {
-      "ui-dialog": $template.data("classes")
-    }
+      "ui-dialog": $template.data("classes"),
+    },
+    titleId: "dialog-ok-title",
   });
 }
-
 
 /* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
  * Component allows passing a function to it's 'open()' function so that actions
@@ -79,11 +77,11 @@ function createDialogConfirmation() {
   return new Dialog($node, {
     autoOpen: false,
     classes: {
-      "ui-dialog": $template.data("classes")
-    }
+      "ui-dialog": $template.data("classes"),
+    },
+    titleId: "dialog-confirmation-title",
   });
 }
-
 
 /* Dialog Confirmation Delete is simply a Dialog Confirmation with a different
  * class name (dialog-confirmation-delete) added to meet style requirements
@@ -95,8 +93,9 @@ function createDialogConfirmationDelete() {
   return new Dialog($node, {
     autoOpen: false,
     classes: {
-      "ui-dialog": $template.data("classes")
-    }
+      "ui-dialog": $template.data("classes"),
+    },
+    titleId: "dialog-confirmation-delete-title",
   });
 }
 
@@ -106,7 +105,7 @@ function createDialogConfirmationDelete() {
  * with other scripts wanting to use e.preventDefault().
  **/
 function isolatedMethodDeleteLinks() {
-  $("header [data-method=delete]").on("click", function(e) {
+  $("header [data-method=delete]").on("click", function (e) {
     e.preventDefault();
     post(this.href, { _method: "delete" });
   });

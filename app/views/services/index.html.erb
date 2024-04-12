@@ -28,7 +28,7 @@
         <%= form_for(@service_creation, url: services_path) do |f| %>
           <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
             <%= tag.div class: 'govuk-character-count', data: { module: 'govuk-character-count', maxlength: Editor::Service::MAXIMUM, threshold: 90 } do %>
-              <%= f.label :service_name, class: "govuk-label govuk-label--m", id: "dialog-title" %>
+              <%= f.label :service_name, class: "govuk-label govuk-label--m", id: "create-service-dialog-title", data: { node: 'heading'} %>
               <% f.object.errors.each do |error|  %>
                 <p class="govuk-error-message"><%= error.message %></p>
               <% end %>

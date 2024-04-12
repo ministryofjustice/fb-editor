@@ -1,7 +1,11 @@
 <div class="component-dialog-api-request">
   <%= form_for @destination, url: api_service_flow_destinations_path(service.service_id, @destination.flow_uuid) do |f| %>
     <div class="govuk-form-group ">
-      <%= f.label :destination_uuid, t('dialogs.destination.label'), class: "govuk-label govuk-label--m", id: "dialog-title"  %>
+      <%= f.label :destination_uuid, t('dialogs.destination.label'), 
+        class: "govuk-label govuk-label--m", 
+        id: "change-destination-dialog-title",
+        data: { node: "heading "}
+      %>
       <div class="govuk-hint">
         <%= t('dialogs.destination.lede', title: @destination.title) %>
       </div>

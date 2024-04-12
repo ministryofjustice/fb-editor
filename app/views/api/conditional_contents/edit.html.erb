@@ -1,6 +1,6 @@
 <div class="component-dialog-api-request" id="conditional_content_dialog">
   <div class="conditional-visibility edit">
-    <h2 id="dialog-title" class="govuk-heading-m"><%= t('conditional_content.heading') %></h2>
+    <h2 id="conditional-content-dialog-title" class="govuk-heading-m" data-node="heading"><%= t('conditional_content.heading') %></h2>
     <%= form_for @conditional_content, url: api_service_update_conditional_content_path(service.service_id, params[:component_uuid]), method: :put, data: { turbo: true } do |f| %>
       <%= render 'form', f: f %>
     <% end %> 
