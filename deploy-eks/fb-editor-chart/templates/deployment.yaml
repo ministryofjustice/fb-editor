@@ -195,7 +195,7 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: ms_admin_app_secret
-          - name: MS_OATH_URL
+          - name: MS_OAUTH_URL
             valueFrom:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
@@ -367,7 +367,7 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: ms_admin_app_secret
-          - name: MS_OATH_URL
+          - name: MS_OAUTH_URL
             valueFrom:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
