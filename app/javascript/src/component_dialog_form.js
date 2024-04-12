@@ -147,7 +147,6 @@ class DialogForm {
 
     if (this.$node.dialog("instance")) {
       this.$node.dialog("open");
-      this.#state = "open";
       safelyActivateFunction(this.#config.onOpen, dialog);
 
       queueMicrotask(() => {
@@ -158,17 +157,10 @@ class DialogForm {
 
   close() {
     var dialog = this;
-    // Attempt to refocus on original activator
-    this.focusActivator();
 
     if (this.$node.dialog("instance")) {
       this.$node.dialog("close");
       safelyActivateFunction(dialog.#config.onClose, dialog);
-      this.#state = "closed";
-    }
-
-    if (this.#remoteSource) {
-      this.#destroy();
     }
   }
 
@@ -278,6 +270,16 @@ class DialogForm {
       height: "auto",
       modal: true,
       resizable: false,
+      open: () => {
+        this.#state = "open";
+      },
+      close: () => {
+        dialog.focusActivator();
+        dialog.#state = "closed";
+        if (dialog.#remoteSource) {
+          dialog.#destroy();
+        }
+      },
     });
 
     this.$container = dialog.$node.parents(".ui-dialog");
