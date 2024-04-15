@@ -3,10 +3,6 @@ module Admin
   class UsersController < Admin::ApplicationController
     before_action :assign_user_services, only: :show
 
-    def existing_action?(resource, name)
-      %w[destroy edit new].exclude?(name.to_s) && super
-    end
-
     def default_sorting_attribute
       :name
     end
