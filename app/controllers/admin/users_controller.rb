@@ -17,7 +17,7 @@ module Admin
     def index
       authorize_resource(resource_class)
       search_term = params[:search].to_s.strip
-      # Because our data is encryopted in the db we can't search using where
+      # Because our data is encrypted in the db we can't search using where
       # LIKE - so we have to force Administrate to not search.
       resources = filter_resources(scoped_resource, search_term: '')
       resources = apply_collection_includes(resources)
@@ -26,7 +26,8 @@ module Admin
       # If there's a search term we need to filter the returned data using
       # select. Otherwise we apply DB pagination
       resources = if search_term.present?
-                    resources.select { |resource| resource.name.downcase.include?(search_term) || resource.email.downcase.include?(search_term) }
+                    found = resources.select { |resource| resource.name.downcase.include?(search_term) || resource.email.downcase.include?(search_term) }
+                    Kaminari.paginate_array(found).page(params[:_page]).per(records_per_page)
                   else
                     paginate_resources(resources)
                   end
