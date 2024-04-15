@@ -3,9 +3,15 @@ class FormOwnerSettings
   attr_accessor :form_owner, :service_id
 
   def update
-    return false if @form_owner.blank?
+    if @form_owner.blank?
+      errors.add(:base, :invalid, message: 'Email cannot be blank')
+      return false
+    end
 
-    return false unless @form_owner.match(URI::MailTo::EMAIL_REGEXP)
+    unless @form_owner.match(URI::MailTo::EMAIL_REGEXP)
+      errors.add(:base, :invalid, message: 'Need an email')
+      return false
+    end
 
     if email_exists?
       # then we have to update the metadata and show an information modal

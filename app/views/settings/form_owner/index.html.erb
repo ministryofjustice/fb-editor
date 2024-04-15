@@ -4,7 +4,32 @@
     ) do |c| %>
 
   <% c.with_back_link(href: settings_path) %>
-  <%= form_with(url: transfer_form_ownership_settings_service_path(service.service_id), method: :put, html: { id: "transfer-ownership-settings" }, builder: GOVUKDesignSystemFormBuilder::FormBuilder, local: true) do |f| %>
+
+<!--  We use form_for to get the form errors shown at the top-->
+
+  <%= form_for @form_owner, url: transfer_form_ownership_settings_service_path(service.service_id), method: :put, html: { id: 'transfer-ownership-settings' }, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+  <%#= form_with(url: transfer_form_ownership_settings_service_path(service.service_id), method: :put, html: { id: "transfer-ownership-settings" }, builder: GOVUKDesignSystemFormBuilder::FormBuilder, local: true) do |f| %>
+
+    <% if f.object.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title"><%= t('activemodel.errors.summary_title') %></h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-owner-settings-field-error" >
+              <% f.object.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
     <div class="transfer-ownership-field">
       <%= f.govuk_fieldset legend: { text:t('settings.transfer_ownership.label'), size: 's', id: 'form-owner-legend' }, class:"govuk-!-margin-bottom-6" do %>
