@@ -69,7 +69,8 @@ Rails.application.routes.draw do
             resources :confirmation_email, only: [:index, :create]
           end
         end
-        resources :transfer_ownership, only: [:index, :update]
+        get '/form_owner', to: 'form_owner#index', as: :form_ownership
+        put '/form_owner', to: 'form_owner#update', as: :transfer_form_ownership
       end
 
       mount MetadataPresenter::Engine => '/preview', as: :preview

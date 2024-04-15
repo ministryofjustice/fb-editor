@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <dt><%= link_to t('settings.transfer_ownership.heading'), settings_transfer_ownership_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dt><%= link_to t('settings.transfer_ownership.heading'), form_ownership_settings_service_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint" ><%= t('settings.submission.lede') %></dd>
       </div>
     </dl>
