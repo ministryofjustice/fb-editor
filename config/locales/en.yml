@@ -782,6 +782,21 @@ en:
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
         unsupported: This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.
+
+  helpers:
+    label:
+      announcement:
+        date_from: Start date
+        date_to: End date
+
+  administrate:
+    field_hints:
+      announcement:
+        title: For example, Important or News
+        content: Content should be formatted as markdown. N.B. For a single line break, the line must end in a double space
+        date_from: Date from which the announcement will start to show
+        date_to: Optionally, an end date, otherwise announcement will show until revoked
+
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'
