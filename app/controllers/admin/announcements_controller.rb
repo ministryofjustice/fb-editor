@@ -30,10 +30,6 @@ module Admin
       end
     end
 
-    def after_resource_created_path(_requested_resource)
-      { action: :index }
-    end
-
     def default_sorting_attribute
       :created_at
     end
