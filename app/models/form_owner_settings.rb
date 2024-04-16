@@ -1,6 +1,6 @@
 class FormOwnerSettings
   include ActiveModel::Model
-  attr_accessor :form_owner, :service_id
+  attr_accessor :form_owner, :service_id, :metadata
 
   def update
     if @form_owner.blank?
@@ -18,14 +18,23 @@ class FormOwnerSettings
       return false
     end
 
-    true
+    version = MetadataApiClient::Version.create(service_id:, payload: new_metadata)
+    if version.errors?
+      errors.add(:base, :invalid, message: version.errors)
+      false
+    else
+      @version = version
+    end
   end
 
   private
 
   def email_exists?
-    emails_array = []
-    User.all.map { |user| emails_array << user.email }
-    emails_array.uniq.include?(@form_owner)
+    @new_user_id = User.all.map { |user| user.id if user.email == @form_owner }.compact.first
+    @new_user_id.present?
+  end
+
+  def new_metadata
+    @metadata.merge(created_by: @new_user_id)
   end
 end

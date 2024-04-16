@@ -7,7 +7,7 @@ class Settings::FormOwnerController < FormController
     # With form_with
     # @form_owner = FormOwnerSettings.new(form_owner: params[:form_owner])
     # With form_for
-    @form_owner = FormOwnerSettings.new(form_owner: params[:form_owner_settings][:form_owner])
+    @form_owner = FormOwnerSettings.new(service_id: service.service_id, metadata: service.to_h, form_owner: params[:form_owner_settings][:form_owner])
     if @form_owner.update
       # then we want to show the modal
       redirect_to services_path
