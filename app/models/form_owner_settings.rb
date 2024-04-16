@@ -13,13 +13,12 @@ class FormOwnerSettings
       return false
     end
 
-    if email_exists?
-      # then we have to update the metadata and show an information modal
-      true
-    else
+    unless email_exists?
       errors.add(:base, :invalid, message: 'User must exist in our user DB')
-      false
+      return false
     end
+
+    true
   end
 
   private
