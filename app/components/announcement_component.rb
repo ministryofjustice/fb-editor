@@ -1,4 +1,9 @@
 class AnnouncementComponent < ViewComponent::Base
+  def initialize(announcement = nil)
+    @announcement = announcement
+    super
+  end
+
   def render?
     FeatureFlags.announcements.enabled? && announcement.present?
   end

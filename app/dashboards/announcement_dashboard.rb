@@ -1,7 +1,7 @@
 require 'administrate/base_dashboard'
 
 class AnnouncementDashboard < Administrate::BaseDashboard
-  DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S'.freeze
+  DATETIME_FORMAT = '%d/%m/%Y %H:%M:%S %Z'.freeze
   DATE_FORMAT = '%d/%m/%Y'.freeze
 
   ATTRIBUTE_TYPES = {
@@ -30,6 +30,7 @@ class AnnouncementDashboard < Administrate::BaseDashboard
     created_by
     revoked_at
     revoked_by
+    updated_at
     title
     content
     date_from

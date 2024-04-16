@@ -1,5 +1,9 @@
 module Admin
   class AnnouncementsController < Admin::ApplicationController
+    # rubocop:disable Rails/LexicallyScopedActionFilter
+    before_action :check_is_editable, only: %i[edit update]
+    # rubocop:enable Rails/LexicallyScopedActionFilter
+
     def destroy
       if requested_resource.revoke!(current_user)
         flash[:notice] = 'Announcement was successfully revoked'
@@ -11,6 +15,13 @@ module Admin
     end
 
     private
+
+    def check_is_editable
+      unless requested_resource.editable?
+        flash[:error] = 'This announcement is not editable'
+        redirect_to after_resource_destroyed_path(requested_resource)
+      end
+    end
 
     def new_resource(params = {})
       super.tap do |announcement|
