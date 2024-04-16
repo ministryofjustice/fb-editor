@@ -114,6 +114,39 @@ RSpec.describe Announcement, type: :model do
     end
   end
 
+  describe '#editable?' do
+    before do
+      allow(subject).to receive(:expired?).and_return(expired)
+      allow(subject).to receive(:revoked?).and_return(revoked)
+    end
+
+    let(:expired) { false }
+    let(:revoked) { false }
+
+    context 'when announcement is expired' do
+      let(:expired) { true }
+
+      it { is_expected.not_to be_editable }
+    end
+
+    context 'when announcement is revoked' do
+      let(:revoked) { true }
+
+      it { is_expected.not_to be_editable }
+    end
+
+    context 'when announcement is not last one created' do
+      it { is_expected.not_to be_editable }
+    end
+
+    context 'when otherwise' do
+      it 'is editable' do
+        expect(Announcement).to receive(:first).and_return(subject)
+        is_expected.to be_editable
+      end
+    end
+  end
+
   describe '#revoked?' do
     context 'when there is a `revoked_at` date' do
       let(:revoked_at) { Date.current }

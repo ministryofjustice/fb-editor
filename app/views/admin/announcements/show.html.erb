@@ -25,10 +25,10 @@ as well as a link to its edit page.
 
   <div>
     <%= link_to(
-      t("administrate.actions.edit_resource", name: page.page_title),
+      'Edit',
       [:edit, namespace, page.resource],
       class: "button",
-    ) if accessible_action?(page.resource, :edit) %>
+    ) if accessible_action?(page.resource, :edit) && page.resource.editable? %>
   </div>
 </header>
 
@@ -53,5 +53,10 @@ as well as a link to its edit page.
         <% end %>
       </fieldset>
     <% end %>
+
+    <dt class="attribute-label">Preview</dt>
+    <dd class="attribute-data">
+      <%= render AnnouncementComponent.new(page.resource) %>
+    </dd>
   </dl>
 </section>

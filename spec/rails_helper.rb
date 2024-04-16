@@ -80,4 +80,5 @@ RSpec.configure do |config|
   config.include AuthenticationSpecHelpers
   config.include MetadataPresenter::TestHelpers
   config.include FactoryBot::Syntax::Methods
+  config.include ViewComponent::TestHelpers, type: :component
 end
