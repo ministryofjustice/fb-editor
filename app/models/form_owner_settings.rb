@@ -18,13 +18,15 @@ class FormOwnerSettings
       true
     else
       errors.add(:base, :invalid, message: 'User must exist in our user DB')
+      false
     end
   end
 
   private
 
   def email_exists?
-    owner_email = EncryptionService.new.encrypt(@form_owner)
-    User.where(email: owner_email).present?
+    emails_array = []
+    User.all.map { |user| emails_array << user.email }
+    emails_array.uniq.include?(@form_owner)
   end
 end
