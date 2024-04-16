@@ -4,17 +4,17 @@ class FormOwnerSettings
 
   def update
     if @form_owner.blank?
-      errors.add(:base, :invalid, message: 'Email cannot be blank')
+      errors.add(:base, :invalid, message: I18n.t('activemodel.errors.models.transfer_ownership.blank'))
       return false
     end
 
     unless @form_owner.match(URI::MailTo::EMAIL_REGEXP)
-      errors.add(:base, :invalid, message: 'Need an email')
+      errors.add(:base, :invalid, message: I18n.t('activemodel.errors.models.transfer_ownership.invalid'))
       return false
     end
 
     unless email_exists?
-      errors.add(:base, :invalid, message: 'User must exist in our user DB')
+      errors.add(:base, :invalid, message: I18n.t('activemodel.errors.models.transfer_ownership.unknown_user'))
       return false
     end
 

@@ -491,11 +491,11 @@ en:
         config_details_summary: Configure <span class="sr-only">live settings</span>
         save_button: Save Live settings
     transfer_ownership:
-      heading: 'Transfer form ownership'
-      lede: 'Pass on ownership and editing capacity of this form to a colleague.'
-      label: Enter the email of the colleague who will take over this form
-      hint: The person needs to have already logged into MOJ Forms at least once
-      warning: Once you transfer ownership, you will no longer be able to edit or control this form.
+      heading: Change form owner
+      lede: Transfer access and editing rights for this form to another MoJ Forms editor.
+      label: New form owner’s email address
+      hint: The address they use to access MoJ Forms. They must have signed in at least once.
+      warning: Once you change the form owner, you will no longer be able to access or edit this form in MoJ Forms.
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'
@@ -785,6 +785,10 @@ en:
         component_expression:
           unsupported: "This type of question is not currently supported to create a content rule. Please select a radio button or checkbox question."
           same_page: "Only questions on other pages are supported."
+        transfer_ownership:
+          blank: Enter an email address
+          invalid: Enter a valid email address
+          unknown_user: The email address must be registered with MoJ Forms and have been used to sign in at least once. Ask the new form owner to contact us to get access.
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"
