@@ -5,8 +5,11 @@ en:
     section_heading: Optional section heading
     flow_thumbnail: 'Form page'
     disabled_save_description: 'No changes to save'
-    optional_content_description: 'This will not be displayed if left unchanged'
+    optional_content_description: 'Leave blank to not show'
     disabled_input_description: 'Only active when published or previewed'
+    optional_content_label: Optional content area
+    page_title: Page title
+    page_lede: Optional lede paragraph
     page:
       start: Start page
       singlequestion: Single question page

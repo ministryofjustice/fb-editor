@@ -88,7 +88,12 @@ PagesController.edit = function () {
       editPageSingleQuestionViewCustomisations.call(view);
       break;
 
+    case "page.start":
+      editPageStartViewCustomisations.call(view);
+      break;
+
     case "page.content":
+    case "page.exit":
       editPageContentViewCustomisations.call(view);
       break;
 
@@ -622,6 +627,11 @@ function enhanceContent(view) {
   const form = document.querySelector("#editContentForm");
   document.querySelectorAll("editable-content").forEach((element) => {
     element.form = form;
+
+    console.log("enhance content");
+    element.setAttribute("label", view.text.aria.optional_content_label);
+    element.setAttribute("describedby", "optional_content_description");
+
     if (element.isComponent) {
       createContentMenu(element);
       createConditionalContentButton(view, {
@@ -866,8 +876,21 @@ function workaroundForDefaultText(view) {
 /**************************************************************/
 /* View customisations for PageController.edit actions follow */
 /**************************************************************/
+function editPageStartViewCustomisations() {
+  accessiblePageHeadingLabel(this);
+
+  $('.govuk-button--start[aria-disabled="true"]')
+    .attr("aria-describedby", "disabled_input_description")
+    .on("click", (e) => {
+      e.preventDefault();
+    });
+}
 
 function editPageContentViewCustomisations() {
+  accessibleSectionHeadingLabel(this);
+  accessiblePageHeadingLabel(this);
+  accessiblePageLedeLabel(this);
+
   var $button1 = $("[data-component=add-content]");
   var $target = $("#new_answers");
   $target.append($button1);
@@ -904,6 +927,22 @@ function editPageSingleQuestionViewCustomisations() {
   accessibilityQuestionViewEnhancements(this);
 }
 
+function accessiblePageHeadingLabel(view) {
+  $("h1 > .EditableElement").attr("aria-label", view.text.aria.page_title);
+}
+
+function accessiblePageLedeLabel(view) {
+  $('.EditableElement[data-fb-content-id="page[lede]"]')
+    .attr("aria-label", view.text.aria.page_lede)
+    .attr("aria-describedby", "optional_content_description");
+}
+
+function accessibleSectionHeadingLabel(view) {
+  $('.EditableElement[data-fb-content-id="page[section_heading]"]')
+    .attr("aria-label", view.text.aria.section_heading)
+    .attr("aria-describedby", "optional_content_description");
+}
+
 /* Aria accessibility view inclusions.
  * These are being added using JS because the views are controlled by
  * Metadata Presenter making direct changes more difficult and able to
@@ -913,12 +952,7 @@ function editPageSingleQuestionViewCustomisations() {
  * safely assume full JS availability.
  **/
 function accessibilityQuestionViewEnhancements(view) {
-  $(".fb-section_heading").attr("aria-label", view.text.aria.section_heading);
-
-  $(".fb-section_heading").attr(
-    "aria-describedby",
-    "optional_content_description",
-  );
+  accessibleSectionHeadingLabel(view);
 
   $('#new_answers .govuk-button[aria-disabled="true"]')
     .attr("aria-describedby", "disabled_input_description")

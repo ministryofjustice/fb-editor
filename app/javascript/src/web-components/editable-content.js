@@ -5,7 +5,7 @@ const DOMPurify = require("dompurify");
 
 class EditableContent extends HTMLElement {
   static get observedAttributes() {
-    return ["data-config"];
+    return ["data-config", "label", "describedby"];
   }
 
   constructor() {
@@ -67,6 +67,7 @@ class EditableContent extends HTMLElement {
   }
 
   connectedCallback() {
+    console.log("editable content area connected");
     // connectedCallback is fired as soon as the opening element is parsed
     // setTimeount allows the child elements to be parsed before we try to read
     // the initialMarkup
@@ -89,6 +90,18 @@ class EditableContent extends HTMLElement {
       case "data-config":
         if (newValue != oldValue) {
           this.processConfigChange(newValue);
+        }
+        break;
+      case "label":
+        console.log("label attribute changed");
+        if (newValue != oldValue) {
+          this.input.setAttribute("aria-label", newValue);
+        }
+        break;
+      case "describedby":
+        console.log("describedby attribute changed");
+        if (newValue != oldValue) {
+          this.input.setAttribute("aria-describedby", newValue);
         }
         break;
     }
@@ -230,12 +243,13 @@ class EditableContent extends HTMLElement {
         this.show(this.input);
         this.hide(this.output);
         this.classList.add("active");
-        this.input.focus({ preventScroll: true });
         this.root.removeAttribute("tabindex");
 
         if (this.valueIsDefault()) this.value = "";
         // Move cursor to end of content
         this.input.selectionStart = this.value.length;
+        this.input.focus({ preventScroll: true });
+        console.log(document.activeElement);
         break;
       case "read":
       case "initial":
