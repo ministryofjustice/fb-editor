@@ -154,12 +154,12 @@ feature 'Accessibility' do
   context 'Editing Pages' do
       let(:exit_url) { 'Exit Page' }
     
-    scenario 'Confirmation Page', pending: true do
+    scenario 'Confirmation Page' do
       given_I_edit_a_confirmation_page
       then_the_page_should_be_accessible
     end
 
-    scenario 'Check Answers Page', pending: true  do
+    scenario 'Check Answers Page' do
       given_I_edit_a_check_your_answers_page
       then_the_page_should_be_accessible
     end

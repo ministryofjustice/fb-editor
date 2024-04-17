@@ -151,6 +151,7 @@ PagesController.edit = function () {
  * Setup for the Create action view
  * -------------------------------- */
 PagesController.create = function () {
+  console.log("Pages Controller create");
   // Actually uses the Services controller due to view redirect on server.
   ServicesController.edit.call(this);
 };
@@ -878,18 +879,14 @@ function workaroundForDefaultText(view) {
 /**************************************************************/
 function editPageStartViewCustomisations() {
   accessiblePageHeadingLabel(this);
-
-  $('.govuk-button--start[aria-disabled="true"]')
-    .attr("aria-describedby", "disabled_input_description")
-    .on("click", (e) => {
-      e.preventDefault();
-    });
+  accessiblyDisableButton('.govuk-button--start[aria-disabled="true"]');
 }
 
 function editPageContentViewCustomisations() {
   accessibleSectionHeadingLabel(this);
   accessiblePageHeadingLabel(this);
   accessiblePageLedeLabel(this);
+  accessiblyDisableButton('.govuk-button--start[aria-disabled="true"]');
 
   var $button1 = $("[data-component=add-content]");
   var $target = $("#new_answers");
@@ -897,13 +894,34 @@ function editPageContentViewCustomisations() {
 }
 
 function editPageCheckAnswersViewCustomisations() {
-  var $button1 = $("[data-component=add-content]");
+  accessiblePageHeadingLabel(this);
+  $('.EditableElement[data-fb-content-id="page[send_heading]"]').attr(
+    "aria-label",
+    "Content area subheading",
+  );
+
+  $("dl.fb-block-answers")
+    .attr("aria-label", "Answer list")
+    .attr(
+      "aria-description",
+      "Lists all form questions. Answers are shown here when the form is completed.",
+    );
+
+  accessiblyDisableButton(
+    '.fb-block-actions.govuk-button[aria-disabled="true"]',
+  );
+
+  var $addContentButton = $("[data-component=add-content]");
+  var $addExtraContentButton = $addContentButton.clone();
+  $addExtraContentButton.attr(
+    "data-fb-field-name",
+    "page[add_extra_component]",
+  );
+
   var $target1 = $(".govuk-button-group");
-  var $button2 = $button1.clone();
   var $target2 = $("#answers-form dl").first();
-  $target1.before($button1);
-  $target2.before($button2);
-  $button2.attr("data-fb-field-name", "page[add_extra_component]");
+  $target1.before($addContentButton);
+  $target2.before($addExtraContentButton);
 }
 
 function editPageConfirmationViewCustomisations() {
@@ -943,6 +961,14 @@ function accessibleSectionHeadingLabel(view) {
     .attr("aria-describedby", "optional_content_description");
 }
 
+function accessiblyDisableButton(selector) {
+  $(selector)
+    .attr("aria-describedby", "disabled_input_description")
+    .on("click", (e) => {
+      e.preventDefault();
+    });
+}
+
 /* Aria accessibility view inclusions.
  * These are being added using JS because the views are controlled by
  * Metadata Presenter making direct changes more difficult and able to
@@ -953,12 +979,7 @@ function accessibleSectionHeadingLabel(view) {
  **/
 function accessibilityQuestionViewEnhancements(view) {
   accessibleSectionHeadingLabel(view);
-
-  $('#new_answers .govuk-button[aria-disabled="true"]')
-    .attr("aria-describedby", "disabled_input_description")
-    .on("click", (e) => {
-      e.preventDefault();
-    });
+  accessiblyDisableButton('#new_answers .govuk-button[aria-disabled="true"]');
 }
 
 /* Enhances the static content should it require special formatting

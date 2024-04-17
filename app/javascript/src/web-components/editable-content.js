@@ -67,7 +67,6 @@ class EditableContent extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log("editable content area connected");
     // connectedCallback is fired as soon as the opening element is parsed
     // setTimeount allows the child elements to be parsed before we try to read
     // the initialMarkup
@@ -93,13 +92,11 @@ class EditableContent extends HTMLElement {
         }
         break;
       case "label":
-        console.log("label attribute changed");
         if (newValue != oldValue) {
           this.input.setAttribute("aria-label", newValue);
         }
         break;
       case "describedby":
-        console.log("describedby attribute changed");
         if (newValue != oldValue) {
           this.input.setAttribute("aria-describedby", newValue);
         }
@@ -213,17 +210,20 @@ class EditableContent extends HTMLElement {
 
       this.input.dataset.minRows = this.input.rows || 5;
 
-      this.root.addEventListener("click", () => (this.state.mode = "edit"));
-      this.root.addEventListener("focus", () => (this.state.mode = "edit"));
+      this.root.addEventListener("click", () => {
+        this.state.mode = "edit";
+      });
+      this.root.addEventListener("focus", () => {
+        this.state.mode = "edit";
+      });
 
       this.addEventListener("focusout", (event) => {
         // The buttons are within the editable-content element, but we still
         // want to change state when focus moves to them
-        if (this.contains(event.relatedTarget)) {
-          return;
-        } else {
-          this.state.mode = "read";
-        }
+        if (!event.relatedTarget) return;
+        if (this.contains(event.relatedTarget)) return;
+
+        this.state.mode = "read";
       });
 
       return;
@@ -249,7 +249,6 @@ class EditableContent extends HTMLElement {
         // Move cursor to end of content
         this.input.selectionStart = this.value.length;
         this.input.focus({ preventScroll: true });
-        console.log(document.activeElement);
         break;
       case "read":
       case "initial":
