@@ -135,7 +135,7 @@ feature 'Accessibility' do
   end
 
   context 'Standalone Pages' do
-    scenario 'Privacy Page', pending: true do
+    scenario 'Privacy Page' do
       editor.privacy_link.click
       then_the_page_should_be_accessible
     end
@@ -145,7 +145,7 @@ feature 'Accessibility' do
       then_the_page_should_be_accessible
     end
 
-    scenario 'Accessibility Page', pending: true do
+    scenario 'Accessibility Page' do
       editor.accessibility_link.click
       then_the_page_should_be_accessible
     end
