@@ -98,8 +98,7 @@ PagesController.edit = function () {
       break;
 
     case "page.confirmation":
-      // No customisations required for this view.
-      editPageConfirmationViewCustomisations(view);
+      editPageConfirmationViewCustomisations.call(view);
       break;
 
     case "page.checkanswers":
@@ -925,6 +924,8 @@ function editPageCheckAnswersViewCustomisations() {
 }
 
 function editPageConfirmationViewCustomisations() {
+  accessiblePageHeadingLabel(this);
+  accessiblePageLedeLabel(this);
   var $payButton = $('[data-component="pay-button"]');
   var $addContentButton = $('[data-component="add-content"]');
   if ($payButton && $addContentButton) {
