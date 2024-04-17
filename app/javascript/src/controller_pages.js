@@ -104,6 +104,10 @@ PagesController.edit = function () {
     case "page.checkanswers":
       editPageCheckAnswersViewCustomisations.call(view);
       break;
+
+    case "page.standalone":
+      editPageStandaloneViewCustomisations.call(view);
+      break;
   }
 
   // Enhance any Add Content buttons
@@ -150,7 +154,6 @@ PagesController.edit = function () {
  * Setup for the Create action view
  * -------------------------------- */
 PagesController.create = function () {
-  console.log("Pages Controller create");
   // Actually uses the Services controller due to view redirect on server.
   ServicesController.edit.call(this);
 };
@@ -628,7 +631,6 @@ function enhanceContent(view) {
   document.querySelectorAll("editable-content").forEach((element) => {
     element.form = form;
 
-    console.log("enhance content");
     element.setAttribute("label", view.text.aria.optional_content_label);
     element.setAttribute("describedby", "optional_content_description");
 
@@ -940,6 +942,10 @@ function editPageMultipleQuestionsViewCustomisations() {
   var $target = $("#new_answers");
   $target.append($button1);
   accessibilityQuestionViewEnhancements(this);
+}
+
+function editPageStandaloneViewCustomisations() {
+  accessiblePageHeadingLabel(this);
 }
 
 function editPageSingleQuestionViewCustomisations() {
