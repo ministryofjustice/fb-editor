@@ -9,17 +9,21 @@ RSpec.describe FormOwnerSettings do
   end
   let(:service_id) { SecureRandom.uuid }
   let(:metadata) { { created_by: 'original author' } }
-  let(:an_existing_user) { 'fb-acceptance-tests@digital.justice.gov.uk' }
+  let(:an_existing_user) { 'legolas@middle-earth.co.uk' }
+  let(:user) { create :user }
 
   describe '#update' do
     context 'when valid' do
       let(:params) { { form_owner: an_existing_user } }
       let(:service) { double(id: service_id, errors?: false) }
+      let(:all_users) { Array(user) }
+      let(:legolas_uuid) { User.first.id }
 
       before do
+        allow(User).to receive(:all).and_return(all_users)
         expect(MetadataApiClient::Version).to receive(:create).with(
           service_id:,
-          payload: { created_by: 'a reviewer' }
+          payload: { created_by: legolas_uuid }
         ).and_return(service)
       end
 
