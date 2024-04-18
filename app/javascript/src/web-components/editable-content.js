@@ -20,7 +20,6 @@ class EditableContent extends HTMLElement {
       {
         set(state, key, value) {
           const oldValue = state[key];
-
           state[key] = value;
           if (oldValue !== value) {
             self.processStateChange();
@@ -210,20 +209,18 @@ class EditableContent extends HTMLElement {
 
       this.input.dataset.minRows = this.input.rows || 5;
 
-      this.root.addEventListener("click", () => {
-        this.state.mode = "edit";
-      });
-      this.root.addEventListener("focus", () => {
+      this.root.addEventListener("focus", (event) => {
         this.state.mode = "edit";
       });
 
       this.addEventListener("focusout", (event) => {
         // The buttons are within the editable-content element, but we still
         // want to change state when focus moves to them
-        if (!event.relatedTarget) return;
-        if (this.contains(event.relatedTarget)) return;
-
-        this.state.mode = "read";
+        if (this.contains(event.relatedTarget)) {
+          return;
+        } else {
+          this.state.mode = "read";
+        }
       });
 
       return;
@@ -243,12 +240,12 @@ class EditableContent extends HTMLElement {
         this.show(this.input);
         this.hide(this.output);
         this.classList.add("active");
-        this.root.removeAttribute("tabindex");
 
         if (this.valueIsDefault()) this.value = "";
         // Move cursor to end of content
         this.input.selectionStart = this.value.length;
         this.input.focus({ preventScroll: true });
+        this.root.removeAttribute("tabindex"); // This line must come after the previous one!
         break;
       case "read":
       case "initial":

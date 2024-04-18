@@ -96,42 +96,42 @@ RSpec.configure do |config|
   #   Kernel.srand config.seed
 end
 
-# SimpleCov.start do
-#   add_filter %w[
-#     acceptance
-#     bin
-#     config
-#     coverage
-#     db
-#     deploy-eks
-#     docker
-#     lib
-#     log
-#     node_modules
-#     public
-#     spec
-#     storage
-#     test
-#     tmp
-#     vendor
-#   ]
-#   add_group('Components', 'app/components')
-#   add_group('Controllers', 'app/controllers')
-#   add_group('Dashboards', 'app/dashboard')
-#   add_group('Generators', 'app/generators')
-#   add_group('Helpers', 'app/helpers')
-#   add_group('Jobs', 'app/jobs')
-#   add_group('Models', 'app/models')
-#   add_group('Presenters', 'app/presenters')
-#   add_group('Services', 'app/services')
-#   add_group('Validators', 'app/validators')
-#   add_group('Views', 'app/views')
-#   enable_coverage(:branch)
-# end
-#
-# SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
-#   [
-#     SimpleCov::Formatter::HTMLFormatter,
-#     SimpleCov::Formatter::Console
-#   ]
-# )
+SimpleCov.start do
+  add_filter %w[
+    acceptance
+    bin
+    config
+    coverage
+    db
+    deploy-eks
+    docker
+    lib
+    log
+    node_modules
+    public
+    spec
+    storage
+    test
+    tmp
+    vendor
+  ]
+  add_group('Components', 'app/components')
+  add_group('Controllers', 'app/controllers')
+  add_group('Dashboards', 'app/dashboard')
+  add_group('Generators', 'app/generators')
+  add_group('Helpers', 'app/helpers')
+  add_group('Jobs', 'app/jobs')
+  add_group('Models', 'app/models')
+  add_group('Presenters', 'app/presenters')
+  add_group('Services', 'app/services')
+  add_group('Validators', 'app/validators')
+  add_group('Views', 'app/views')
+  enable_coverage(:branch)
+end
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+  [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::Console
+  ]
+)
