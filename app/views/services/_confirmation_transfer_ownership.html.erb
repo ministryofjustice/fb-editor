@@ -8,8 +8,8 @@
 
   <p>
     <%= I18n.t('settings.transfer_ownership.confirmation',
-               form_name:params[:service],
-               new_owner: params[:owner],
+               form_name: CGI::escapeHTML(params[:service]),
+               new_owner: CGI::escapeHTML(params[:owner]),
                href: t('settings.transfer_ownership.href')
         ).html_safe
     %>
