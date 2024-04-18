@@ -16,7 +16,7 @@ export default class extends Controller {
     useAncestry(this);
 
     // GLOBAL ALERT! app is a global object set in partials/_properties.html.erb
-    this.labels = app.text.components;
+    this.labels = app.text.components[this.type];
   }
 
   disconnect() {
@@ -145,9 +145,13 @@ export default class extends Controller {
    **/
   updateLabels() {
     if (this.hasUpButtonTarget)
-      this.upButtonTarget.setAttribute('aria-label', this.upButtonLabel);
+      this.upButtonTarget.setAttribute("aria-label", this.upButtonLabel);
     if (this.hasDownButtonTarget)
-      this.downButtonTarget.setAttribute('aria-label', this.downButtonLabel);
+      this.downButtonTarget.setAttribute("aria-label", this.downButtonLabel);
+  }
+
+  get type() {
+    return this.element.tagName == "EDITABLE-CONTENT" ? "content" : "component";
   }
 
   get upButtonLabel() {

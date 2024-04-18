@@ -231,7 +231,7 @@ function createQuestionMenu() {
   $(document.body).append($ul);
 
   return new QuestionMenu($ul, {
-    activator_text: template.data("activator-text"),
+    activator_text: template.data("activator-text").replace("{{index}} ", ""),
     $target: question.$editableLabel,
     question: question,
     menu: {
