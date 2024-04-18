@@ -1,15 +1,37 @@
 class AnnouncementComponent < ViewComponent::Base
-  def initialize(announcement = nil)
+  TURBO_FRAME_ID = 'announcement-notification'.freeze
+
+  # rubocop:disable Layout/TrailingWhitespace
+  erb_template <<~ERB
+    <turbo-frame id="<%= TURBO_FRAME_ID %>">
+      <div class="govuk-notification-banner mojf-announcement" role="region" 
+           aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+        <div class="govuk-notification-banner__header">
+          <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+            <%= banner_title %>
+            <span class="mojf-announcement__dismiss-link">
+              <%= link_to 'Dismiss', dismiss_announcement_path(announcement), 'data-turbo-method': :put, 
+                                     class: 'govuk-link govuk-link--inverse' if @user %>
+            </span>
+          </h2>
+        </div>
+        <div class="govuk-notification-banner__content">
+          <%= banner_content %>
+        </div>
+      </div>
+    </turbo-frame>
+  ERB
+  # rubocop:enable Layout/TrailingWhitespace
+
+  def initialize(announcement: nil, user: nil)
     @announcement = announcement
+    @user = user
     super
   end
 
   def render?
-    FeatureFlags.announcements.enabled? && announcement.present?
-  end
-
-  def call
-    govuk_notification_banner(title_text:, text:, classes:)
+    announcement.present? &&
+      announcement.user_dismissals.exclude?(@user)
   end
 
   private
@@ -18,17 +40,13 @@ class AnnouncementComponent < ViewComponent::Base
     @announcement ||= Announcement.candidates.first
   end
 
-  def title_text
+  def banner_title
     announcement.title
   end
 
-  def text
+  def banner_content
     Govspeak::Document.new(
       announcement.content
     ).to_html.html_safe
-  end
-
-  def classes
-    %w[mojf-announcement].freeze
   end
 end

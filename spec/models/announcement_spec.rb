@@ -171,4 +171,25 @@ RSpec.describe Announcement, type: :model do
       .and change { subject.revoked_at }.from(nil).to(Time.current)
     end
   end
+
+  describe '#dismiss!' do
+    let(:dismissals) { subject.user_dismissals }
+
+    context 'when the user has not dismissed the announcement yet' do
+      it 'creates the dismissal record' do
+        expect(dismissals).to receive(:<<).with(user).and_call_original
+        subject.dismiss!(user)
+        expect(dismissals).to include(user)
+      end
+    end
+
+    context 'when the user has already dismissed the announcement' do
+      it 'does not create another dismissal record' do
+        subject.dismiss!(user) # first dismissal
+
+        expect(dismissals).not_to receive(:<<).with(user)
+        subject.dismiss!(user) # second dismissal
+      end
+    end
+  end
 end

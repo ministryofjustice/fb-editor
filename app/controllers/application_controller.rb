@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include SetCurrentRequestDetails
   include Auth0Helper
+  helper_method :current_user
 
   def service
     @service ||= MetadataPresenter::Service.new(service_metadata, editor: editable?)
