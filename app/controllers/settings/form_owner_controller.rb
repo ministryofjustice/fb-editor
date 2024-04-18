@@ -4,13 +4,13 @@ class Settings::FormOwnerController < FormController
   def index; end
 
   def update
-    # With form_with
-    # @form_owner = FormOwnerSettings.new(form_owner: params[:form_owner])
-    # With form_for
     @form_owner = FormOwnerSettings.new(service_id: service.service_id, metadata: service.to_h, form_owner: params[:form_owner_settings][:form_owner])
     if @form_owner.update
-      # then we want to show the modal
-      redirect_to services_path
+      transfer_params = {
+        service: @service.service_name,
+        owner: params[:form_owner_settings][:form_owner]
+      }
+      redirect_to services_path(params: transfer_params)
     else
       render :index
     end

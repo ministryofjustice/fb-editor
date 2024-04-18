@@ -496,6 +496,9 @@ en:
       label: New form owner’s email address
       hint: The address they use to access MoJ Forms. They must have signed in at least once.
       warning: Once you change the form owner, you will no longer be able to access or edit this form in MoJ Forms.
+      confirmation_title: The form owner has been changed
+      confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
+      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'

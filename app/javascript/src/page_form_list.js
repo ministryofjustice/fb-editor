@@ -14,6 +14,7 @@
 
 
 const DialogForm = require('./component_dialog_form');
+const Dialog = require('./component_dialog');
 const DefaultController = require('./controller_default');
 
 class FormListPage extends DefaultController {
@@ -22,16 +23,17 @@ class FormListPage extends DefaultController {
 
     // Create dialog for handling new form input and error reporting.
     new CreateFormDialog($("[data-component='FormCreateDialog']"));
+    new CreateTransferDialog($("[data-component='OwnershipTransferDialog']"));
+
   }
 }
 
 
 class CreateFormDialog {
   constructor($node) {
-    var $dialog = $("[data-component='FormCreateDialog']");
     var $errors = $node.find( ".govuk-error-message");
 
-    new DialogForm($dialog, {
+    new DialogForm($node, {
       autoOpen: $errors.length ? true : false,
       activator: true,
       activatorText: $node.data("activator-text"),
@@ -41,11 +43,19 @@ class CreateFormDialog {
       onClose: function() {
         $errors.parents().removeClass('error');
         $errors.remove(); // Remove from DOM (includes removing all jQuery data)
-        $dialog.find('.govuk-form-group').removeClass('govuk-form-group--error');
+        $node.find('.govuk-form-group').removeClass('govuk-form-group--error');
       }
     });
   }
 }
 
+class CreateTransferDialog {
+  constructor($node) {
+    new Dialog($node, {
+      autoOpen: true,
+      activator: false
+    });
+  }
+}
 
 module.exports = FormListPage;

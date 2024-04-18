@@ -47,6 +47,10 @@
           <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>
         <% end %>
       </div>
+
+      <% if params[:owner].present? %>
+          <%= render 'confirmation_transfer_ownership' %>
+      <% end %>
     </div>
   </div>
 </div>
