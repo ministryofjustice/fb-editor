@@ -13,8 +13,8 @@ class AnnouncementDashboard < Administrate::BaseDashboard
     revoked_at: Field::DateTime.with_options(format: DATETIME_FORMAT),
     date_from: Field::Date.with_options(format: DATE_FORMAT),
     date_to: Field::Date.with_options(format: DATE_FORMAT),
-    title: Field::String.with_options(searchable: false),
-    content: Field::Text.with_options(searchable: true)
+    title: Field::String.with_options(searchable: true, truncate: 20),
+    content: Field::Text.with_options(searchable: true, truncate: 100)
   }.freeze
 
   COLLECTION_ATTRIBUTES = %i[

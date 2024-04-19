@@ -2,6 +2,10 @@ class Announcement < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :revoked_by, class_name: 'User', optional: true
 
+  has_and_belongs_to_many :user_dismissals,
+                          join_table: :announcements_users,
+                          class_name: 'User'
+
   default_scope { order(created_at: :desc) }
 
   scope :scheduled, lambda {
@@ -29,5 +33,9 @@ class Announcement < ApplicationRecord
 
   def revoke!(user)
     update(revoked_by: user, revoked_at: Time.current)
+  end
+
+  def dismiss!(user)
+    user_dismissals << user if user_dismissals.exclude?(user)
   end
 end

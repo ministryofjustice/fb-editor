@@ -122,5 +122,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :announcements, only: [] do
+    put :dismiss, on: :member
+  end
+
   root to: 'home#show'
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_12_090347) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_16_131254) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -27,6 +27,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_12_090347) do
     t.date "date_to"
     t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
     t.index ["revoked_by_id"], name: "index_announcements_on_revoked_by_id"
+  end
+
+  create_table "announcements_users", id: false, force: :cascade do |t|
+    t.uuid "announcement_id", null: false
+    t.uuid "user_id", null: false
+    t.index ["announcement_id", "user_id"], name: "index_announcements_users_on_announcement_id_and_user_id", unique: true
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
