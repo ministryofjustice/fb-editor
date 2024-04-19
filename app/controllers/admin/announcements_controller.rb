@@ -37,5 +37,9 @@ module Admin
     def default_sorting_direction
       :desc
     end
+
+    def records_per_page
+      10
+    end
   end
 end
