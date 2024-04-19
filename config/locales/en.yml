@@ -490,6 +490,15 @@ en:
       production:
         config_details_summary: Configure <span class="sr-only">live settings</span>
         save_button: Save Live settings
+    transfer_ownership:
+      heading: Change form owner
+      lede: Transfer access and editing rights for this form to another MoJ Forms editor.
+      label: New form owner’s email address
+      hint: The address they use to access MoJ Forms. They must have signed in at least once.
+      warning: Once you change the form owner, you will no longer be able to access or edit this form in MoJ Forms.
+      confirmation_title: The form owner has been changed
+      confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
+      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'
@@ -779,6 +788,10 @@ en:
         component_expression:
           unsupported: "This type of question is not currently supported to create a content rule. Please select a radio button or checkbox question."
           same_page: "Only questions on other pages are supported."
+        transfer_ownership:
+          blank: Enter an email address
+          invalid: Enter a valid email address
+          unknown_user: The email address must be registered with MoJ Forms and have been used to sign in at least once. Ask the new form owner to contact us to get access.
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"
