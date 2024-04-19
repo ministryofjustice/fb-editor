@@ -33,8 +33,6 @@ module EmailService
           }
         }
       })
-    rescue Aws::SES::Errors::ServiceError => e
-      Rails.logger.debug "Email not sent. Error message: #{e}"
     end
   end
 end
