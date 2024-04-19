@@ -28,7 +28,9 @@ class Settings::FormOwnerController < FormController
     EmailService::Emailer.send_mail(
       to: @form_owner,
       subject: 'Transfer of Ownership',
-      raw_message: '<h1>Sample Email</h1>'
+      body: 'Sample Email',
+      html: '<h1>Sample Email</h1>',
+      raw: 'It\'s complicated'
     )
   end
 end
