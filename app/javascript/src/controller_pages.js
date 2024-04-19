@@ -88,17 +88,25 @@ PagesController.edit = function () {
       editPageSingleQuestionViewCustomisations.call(view);
       break;
 
+    case "page.start":
+      editPageStartViewCustomisations.call(view);
+      break;
+
     case "page.content":
+    case "page.exit":
       editPageContentViewCustomisations.call(view);
       break;
 
     case "page.confirmation":
-      // No customisations required for this view.
-      editPageConfirmationViewCustomisations(view);
+      editPageConfirmationViewCustomisations.call(view);
       break;
 
     case "page.checkanswers":
       editPageCheckAnswersViewCustomisations.call(view);
+      break;
+
+    case "page.standalone":
+      editPageStandaloneViewCustomisations.call(view);
       break;
   }
 
@@ -622,6 +630,10 @@ function enhanceContent(view) {
   const form = document.querySelector("#editContentForm");
   document.querySelectorAll("editable-content").forEach((element) => {
     element.form = form;
+
+    element.setAttribute("label", view.text.aria.optional_content_label);
+    element.setAttribute("describedby", "optional_content_description");
+
     if (element.isComponent) {
       createContentMenu(element);
       createConditionalContentButton(view, {
@@ -866,24 +878,56 @@ function workaroundForDefaultText(view) {
 /**************************************************************/
 /* View customisations for PageController.edit actions follow */
 /**************************************************************/
+function editPageStartViewCustomisations() {
+  accessiblePageHeadingLabel(this);
+  accessiblyDisableButton('.govuk-button--start[aria-disabled="true"]');
+}
 
 function editPageContentViewCustomisations() {
+  accessibleSectionHeadingLabel(this);
+  accessiblePageHeadingLabel(this);
+  accessiblePageLedeLabel(this);
+  accessiblyDisableButton('.govuk-button--start[aria-disabled="true"]');
+
   var $button1 = $("[data-component=add-content]");
   var $target = $("#new_answers");
   $target.append($button1);
 }
 
 function editPageCheckAnswersViewCustomisations() {
-  var $button1 = $("[data-component=add-content]");
+  accessiblePageHeadingLabel(this);
+  $('.EditableElement[data-fb-content-id="page[send_heading]"]').attr(
+    "aria-label",
+    "Content area subheading",
+  );
+
+  $("dl.fb-block-answers")
+    .attr("aria-label", "Answer list")
+    .attr(
+      "aria-description",
+      "Lists all form questions. Answers are shown here when the form is completed.",
+    );
+
+  accessiblyDisableButton(
+    '.fb-block-actions.govuk-button[aria-disabled="true"]',
+  );
+
+  var $addContentButton = $("[data-component=add-content]");
+  var $addExtraContentButton = $addContentButton.clone();
+  $addExtraContentButton.attr(
+    "data-fb-field-name",
+    "page[add_extra_component]",
+  );
+
   var $target1 = $(".govuk-button-group");
-  var $button2 = $button1.clone();
   var $target2 = $("#answers-form dl").first();
-  $target1.before($button1);
-  $target2.before($button2);
-  $button2.attr("data-fb-field-name", "page[add_extra_component]");
+  $target1.before($addContentButton);
+  $target2.before($addExtraContentButton);
 }
 
 function editPageConfirmationViewCustomisations() {
+  accessiblePageHeadingLabel(this);
+  accessiblePageLedeLabel(this);
   var $payButton = $('[data-component="pay-button"]');
   var $addContentButton = $('[data-component="add-content"]');
   if ($payButton && $addContentButton) {
@@ -900,8 +944,36 @@ function editPageMultipleQuestionsViewCustomisations() {
   accessibilityQuestionViewEnhancements(this);
 }
 
+function editPageStandaloneViewCustomisations() {
+  accessiblePageHeadingLabel(this);
+}
+
 function editPageSingleQuestionViewCustomisations() {
   accessibilityQuestionViewEnhancements(this);
+}
+
+function accessiblePageHeadingLabel(view) {
+  $("h1 > .EditableElement").attr("aria-label", view.text.aria.page_title);
+}
+
+function accessiblePageLedeLabel(view) {
+  $('.EditableElement[data-fb-content-id="page[lede]"]')
+    .attr("aria-label", view.text.aria.page_lede)
+    .attr("aria-describedby", "optional_content_description");
+}
+
+function accessibleSectionHeadingLabel(view) {
+  $('.EditableElement[data-fb-content-id="page[section_heading]"]')
+    .attr("aria-label", view.text.aria.section_heading)
+    .attr("aria-describedby", "optional_content_description");
+}
+
+function accessiblyDisableButton(selector) {
+  $(selector)
+    .attr("aria-describedby", "disabled_input_description")
+    .on("click", (e) => {
+      e.preventDefault();
+    });
 }
 
 /* Aria accessibility view inclusions.
@@ -913,18 +985,8 @@ function editPageSingleQuestionViewCustomisations() {
  * safely assume full JS availability.
  **/
 function accessibilityQuestionViewEnhancements(view) {
-  $(".fb-section_heading").attr("aria-label", view.text.aria.section_heading);
-
-  $(".fb-section_heading").attr(
-    "aria-describedby",
-    "optional_content_description",
-  );
-
-  $('#new_answers .govuk-button[aria-disabled="true"]')
-    .attr("aria-describedby", "disabled_input_description")
-    .on("click", (e) => {
-      e.preventDefault();
-    });
+  accessibleSectionHeadingLabel(view);
+  accessiblyDisableButton('#new_answers .govuk-button[aria-disabled="true"]');
 }
 
 /* Enhances the static content should it require special formatting

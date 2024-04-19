@@ -5,7 +5,7 @@ const DOMPurify = require("dompurify");
 
 class EditableContent extends HTMLElement {
   static get observedAttributes() {
-    return ["data-config"];
+    return ["data-config", "label", "describedby"];
   }
 
   constructor() {
@@ -20,7 +20,6 @@ class EditableContent extends HTMLElement {
       {
         set(state, key, value) {
           const oldValue = state[key];
-
           state[key] = value;
           if (oldValue !== value) {
             self.processStateChange();
@@ -89,6 +88,16 @@ class EditableContent extends HTMLElement {
       case "data-config":
         if (newValue != oldValue) {
           this.processConfigChange(newValue);
+        }
+        break;
+      case "label":
+        if (newValue != oldValue) {
+          this.input.setAttribute("aria-label", newValue);
+        }
+        break;
+      case "describedby":
+        if (newValue != oldValue) {
+          this.input.setAttribute("aria-describedby", newValue);
         }
         break;
     }
@@ -200,8 +209,9 @@ class EditableContent extends HTMLElement {
 
       this.input.dataset.minRows = this.input.rows || 5;
 
-      this.root.addEventListener("click", () => (this.state.mode = "edit"));
-      this.root.addEventListener("focus", () => (this.state.mode = "edit"));
+      this.root.addEventListener("focus", (event) => {
+        this.state.mode = "edit";
+      });
 
       this.addEventListener("focusout", (event) => {
         // The buttons are within the editable-content element, but we still
@@ -230,12 +240,12 @@ class EditableContent extends HTMLElement {
         this.show(this.input);
         this.hide(this.output);
         this.classList.add("active");
-        this.input.focus({ preventScroll: true });
-        this.root.removeAttribute("tabindex");
 
         if (this.valueIsDefault()) this.value = "";
         // Move cursor to end of content
         this.input.selectionStart = this.value.length;
+        this.input.focus({ preventScroll: true });
+        this.root.removeAttribute("tabindex"); // This line must come after the previous one!
         break;
       case "read":
       case "initial":

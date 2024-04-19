@@ -126,7 +126,8 @@ a[disabled] {
   }
 }
 
-.govuk-button[aria-disabled="true"] {
+.govuk-button[aria-disabled="true"],
+.govuk-button--start[aria-disabled="true"] {
   opacity: 0.5;
   pointer-events: none;
 }

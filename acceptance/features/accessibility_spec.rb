@@ -135,7 +135,7 @@ feature 'Accessibility' do
   end
 
   context 'Standalone Pages' do
-    scenario 'Privacy Page', pending: true do
+    scenario 'Privacy Page' do
       editor.privacy_link.click
       then_the_page_should_be_accessible
     end
@@ -145,24 +145,26 @@ feature 'Accessibility' do
       then_the_page_should_be_accessible
     end
 
-    scenario 'Accessibility Page', pending: true do
+    scenario 'Accessibility Page' do
       editor.accessibility_link.click
       then_the_page_should_be_accessible
     end
   end
 
   context 'Editing Pages' do
-    scenario 'Confirmation Page', pending: true do
+      let(:exit_url) { 'Exit Page' }
+    
+    scenario 'Confirmation Page' do
       given_I_edit_a_confirmation_page
       then_the_page_should_be_accessible
     end
 
-    scenario 'Check Answers Page', pending: true  do
+    scenario 'Check Answers Page' do
       given_I_edit_a_check_your_answers_page
       then_the_page_should_be_accessible
     end
 
-    scenario 'Start Page', pending: true do
+    scenario 'Start Page' do
       click_link('Service name goes here')
       then_the_page_should_be_accessible
     end
@@ -172,8 +174,8 @@ feature 'Accessibility' do
       then_the_page_should_be_accessible
     end
 
-    scenario 'Exit Page', pending: true do
-      given_I_add_an_exit_page('Some Content')
+    scenario 'Exit Page' do
+      given_I_add_an_exit_page
       then_the_page_should_be_accessible
     end
 
@@ -183,58 +185,60 @@ feature 'Accessibility' do
     end
 
     context 'Single Question Pages' do
-      scenario 'Text Question', pending: true do
-        given_I_have_a_single_question_page_with_text
+      scenario 'Text Question' do
+        # given_I_have_a_single_question_page_with_text
+        click_link('Text')
         then_the_page_should_be_accessible
       end
 
-      scenario 'Textarea Question', pending: true do
-        given_I_have_a_single_question_page_with_text_area
+      scenario 'Textarea Question' do
+        click_link('Textarea')
         then_the_page_should_be_accessible
       end
 
-      scenario 'Email Question', pending: true do
-        given_I_have_a_single_question_page_with_email
+      scenario 'Email Question' do
+        click_link('Email address question')
         then_the_page_should_be_accessible
       end
 
-      scenario 'Number Question', pending: true do
-        given_I_have_a_single_question_page_with_number
+      scenario 'Number Question' do
+        click_link('Number')
         then_the_page_should_be_accessible
       end
 
-      scenario 'Date Question', pending: true do
-        given_I_have_a_single_question_page_with_date
+      scenario 'Date Question' do
+        click_link('Date')
         then_the_page_should_be_accessible
       end
 
       scenario 'Radios Question', pending: true do
-        given_I_have_a_single_question_page_with_radio
+        click_link('Radios')
         then_the_page_should_be_accessible
       end
 
       scenario 'Checkboxes Question', pending: true do
-        given_I_have_a_single_question_page_with_checkboxes
+        click_link('Checkboxes')
         then_the_page_should_be_accessible
-        editor.question_heading.first.set('Checkboxes Question')
-        when_I_save_my_changes
-        and_I_return_to_the_flow_page
       end
 
-      scenario 'Autocomplete Question', pending: true do
-        given_I_add_a_single_question_page_with_autocomplete
-        and_I_add_a_page_url
+      scenario 'File Upload Question' do
+        click_link('Multifile upload')
+        then_the_page_should_be_accessible
+      end
+
+      scenario 'Autocomplete Question' do
+        given_I_want_to_add_a_single_question_page
+        editor.add_component(I18n.t('components.list.autocomplete')).click
+        and_I_add_a_page_url('autocomplete')
         when_I_add_the_page
         then_the_page_should_be_accessible
       end
 
-      scenario 'Address Question', pending: true do
-        given_I_have_a_single_question_page_with_upload
-        then_the_page_should_be_accessible
-      end
-
-      scenario 'File Upload Question', pending: true do
-        given_I_have_a_single_question_page_with_upload
+      scenario 'Address Question' do
+        given_I_want_to_add_a_single_question_page
+        editor.add_component(I18n.t('components.list.address')).click
+        and_I_add_a_page_url('address')
+        when_I_add_the_page
         then_the_page_should_be_accessible
       end
     end
