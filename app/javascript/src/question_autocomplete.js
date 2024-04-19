@@ -18,7 +18,7 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require("./question");
 
 const SELECTOR_HINT = ".govuk-hint";
-const SELECTOR_LABEL = "label h1 span, label h2 span";
+const SELECTOR_LABEL = "label h1, label h2";
 
 class AutocompleteQuestion extends Question {
   constructor($node, config) {

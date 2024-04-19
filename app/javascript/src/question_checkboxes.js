@@ -17,7 +17,7 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require("./question");
 
 const SELECTOR_HINT = "fieldset > .govuk-hint";
-const SELECTOR_LABEL = "legend > h1 span, legend > h2 span";
+const SELECTOR_LABEL = "legend > h1, legend > h2";
 const SELECTOR_ITEM = ".govuk-checkboxes__item";
 const SELECTOR_ITEM_HINT = ".govuk-checkboxes__hint";
 const SELECTOR_ITEM_LABEL = ".govuk-checkboxes__label";
@@ -47,8 +47,8 @@ class CheckboxesQuestion extends Question {
           // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
           // Runs after the collection item has been cloned, so further custom manipulation can be
           // carried out on the element.
-          $node.find("label").text(config.text.option);
-          $node.find("span").text(config.text.optionHint);
+          $node.find(SELECTOR_ITEM_LABEL).text(config.text.option);
+          $node.find(SELECTOR_ITEM_HINT).text(config.text.optionHint);
         },
         beforeItemRemove: function (item) {
           // @item (EditableComponentItem) Item to be deleted.
@@ -88,7 +88,7 @@ class CheckboxesQuestion extends Question {
     super.addAccessibleLabels();
     // Add a group label for the answers section
     this.$node.find(".EditableComponentCollectionItem").first().parent().attr({
-      "aria-role": "group",
+      role: "group",
       "aria-label": this.labels.answers,
     });
 
@@ -106,8 +106,9 @@ class CheckboxesQuestion extends Question {
     // remove 'for' attribute to prevent AT reading this for the field itself
     $node
       .find(SELECTOR_ITEM_LABEL)
-      .attr("aria-label", `${this.labels.items.label} ${index}`)
-      .removeAttr("for");
+      .removeAttr("for")
+      .find(".EditableElement")
+      .attr("aria-label", `${this.labels.items.label} ${index}`);
 
     // Provide labels with indexes for input options
     $node
@@ -122,7 +123,7 @@ class CheckboxesQuestion extends Question {
     // Add labels for the hint text elements for each option
     // Add the describedyby for optional content too
     $node
-      .find(SELECTOR_ITEM_HINT)
+      .find(`${SELECTOR_ITEM_HINT} > .EditableElement`)
       .attr("aria-label", `${this.labels.items.hint} ${index}`)
       .attr("aria-describedby", "optional_content_description");
 

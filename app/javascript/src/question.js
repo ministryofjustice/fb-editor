@@ -25,8 +25,6 @@ const SELECTOR_EDITABLE_LABEL =
 
 class Question {
   constructor($node, config) {
-    var $editableLabel = $(SELECTOR_EDITABLE_LABEL, $node);
-    var $heading = $(SELECTOR_LABEL_HEADING, $node);
     var conf = mergeObjects(
       {
         // Config defaults
@@ -50,9 +48,9 @@ class Question {
     this.config = conf;
     this.data = $node.data("fb-content-data");
     this.$node = $node;
-    this.$editableLabel = $editableLabel;
-    this.$heading = $heading;
     this.editable = editableComponent($node, conf);
+    this.$editableLabel = $(SELECTOR_EDITABLE_LABEL, $node);
+    this.$heading = $(SELECTOR_LABEL_HEADING, $node);
     this.menu = createQuestionMenu.call(this);
     this.labels = this.config.text.aria.question;
 
@@ -61,7 +59,7 @@ class Question {
     this.$editableLabel.on("focus", () => {
       this.$node.addClass("active");
     });
-    $editableLabel.on("blur", () => {
+    this.$editableLabel.on("blur", () => {
       this.$node.removeClass("active");
       this.setRequiredFlag.bind(this);
       this.$heading.attr("aria-label", this.$editableLabel.text());
@@ -181,14 +179,18 @@ class Question {
       );
 
     // Accessible label and description for the question hint text (where present)
-    this.$node.find(".govuk-hint").first().attr("aria-label", this.labels.hint);
+    this.$node
+      .find(".govuk-hint")
+      .first()
+      .find(".EditableElement")
+      .attr("aria-label", this.labels.hint);
 
     // For the label wrapping the heading we provide an accessible group name
     // Remove the 'for' attribute, otherwise clicking will focus the questions
     // form field
-    if (!this.$node.find("fieldset").length > 0) {
-      this.$node.find("label.govuk-label").first().attr("for", "");
-    }
+    // if (!this.$node.find("fieldset").length > 0) {
+    this.$node.find("label.govuk-label").first().attr("for", "");
+    // }
 
     // Accessibly prevent input in editor mode
     // 1. aria-disabled : communicate disabled state to AT

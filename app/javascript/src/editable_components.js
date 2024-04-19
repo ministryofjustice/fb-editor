@@ -96,20 +96,36 @@ class EditableElement extends EditableBase {
     this._defaultContent = defaultContent;
     this._required = required;
 
-    $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("focus.editablecomponent", this.edit.bind(this));
-    $node.on("paste.editablecomponent", (e) => pasteAsPlainText(e));
-    $node.on("keydown.editablecomponent", (e) =>
+    // Adding textare role makes contenteditable element show in the screenreader form controls rotor
+    $node.wrapInner(
+      '<span class="EditableElement" contentEditable="true" role="textbox"></span>',
+    );
+
+    const $editable = $node.find('[contentEditable="true"]');
+    console.log($editable);
+
+    const dataAttributes = $node.get(0).dataset;
+    for (const attrName in dataAttributes) {
+      $editable.get(0).dataset[attrName] = dataAttributes[attrName];
+      delete $node.get(0).dataset[attrName];
+    }
+
+    this.$editable = $editable;
+    this.$editable.data("instance", this);
+
+    this.$editable.on("blur.editablecomponent", this.update.bind(this));
+    this.$editable.on("focus.editablecomponent", this.edit.bind(this));
+    this.$editable.on("paste.editablecomponent", (e) => pasteAsPlainText(e));
+    this.$editable.on("keydown.editablecomponent", (e) =>
       singleLineInputRestrictions(e),
     );
 
-    // Adding textare role makes contenteditable element show in the screenreader form controls rotor
-    $node.attr("contentEditable", true);
-    $node.attr("role", "textbox");
-    $node.addClass("EditableElement");
+    // $node.attr("contentEditable", true);
+    // $node.attr("role", "textbox");
+    // $node.addClass("EditableElement");
 
     if (this._content == this._defaultContent) {
-      $node.attr("aria-describedby", "optional_content_description");
+      this.$editable.attr("aria-describedby", "optional_content_description");
     }
   }
 
@@ -143,39 +159,39 @@ class EditableElement extends EditableBase {
 
   edit() {
     this.removePlaceholder();
-    this.$node.addClass(this._config.editClassname);
+    this.$editable.addClass(this._config.editClassname);
   }
 
   update() {
-    const currentContent = this.$node.text();
+    const currentContent = this.$editable.text();
 
     if (currentContent == "") {
       this.content = this._required
         ? this._originalContent
         : this._defaultContent;
 
-      this.$node.attr("aria-describedby", "optional_content_description");
+      this.$editable.attr("aria-describedby", "optional_content_description");
     } else {
       this.content = currentContent;
-      this.$node.removeAttr("aria-describedby");
+      // this.$editable.removeAttr("aria-describedby");
     }
 
-    this.$node.removeClass(this._config.editClassname);
+    this.$editable.removeClass(this._config.editClassname);
   }
 
   // Expects content or blank string to show content or default text in view.
   populate(content) {
     var defaultContent = this._defaultContent || this._originalContent;
-    this.$node.text(content == "" ? defaultContent : content);
+    this.$editable.text(content == "" ? defaultContent : content);
   }
 
   focus() {
-    this.$node.focus();
+    this.$editable.focus();
   }
 
   removePlaceholder() {
-    if (this.$node.text().trim() == this._defaultContent) {
-      this.$node.text("");
+    if (this.$editable.text().trim() == this._defaultContent) {
+      this.$editable.text("");
     }
   }
 
@@ -183,7 +199,7 @@ class EditableElement extends EditableBase {
     const selection = window.getSelection();
     selection.removeAllRanges();
     const range = document.createRange();
-    range.selectNodeContents(this.$node.get(0));
+    range.selectNodeContents(this.$editable.get(0));
     selection.addRange(range);
   }
 
@@ -191,7 +207,7 @@ class EditableElement extends EditableBase {
     const range = document.createRange(); //Create a range (a range is a like the selection but invisible)
     const selection = window.getSelection(); //get the selection object (allows you to change selection)
 
-    range.selectNodeContents(this.$node.get(0)); //Select the entire contents of the element with the range
+    range.selectNodeContents(this.$editable.get(0)); //Select the entire contents of the element with the range
     range.collapse(false); //collapse the range to the end point. false means collapse to end rather than the start
     selection.removeAllRanges(); //remove any selections already made
     selection.addRange(range); //make the range you have just created the visible selection
@@ -478,6 +494,8 @@ class EditableComponentBase extends EditableBase {
       ),
       hint: new EditableElement($node.find(config.selectorElementHint), config),
     };
+
+    console.log(this._elements);
   }
 
   get content() {

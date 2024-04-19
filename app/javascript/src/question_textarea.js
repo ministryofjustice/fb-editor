@@ -17,7 +17,7 @@ const mergeObjects = utilities.mergeObjects;
 const Question = require("./question");
 
 const SELECTOR_HINT = "[data-fb-node=hint]";
-const SELECTOR_LABEL = "label h1 span , label h2 span";
+const SELECTOR_LABEL = "label h1, label h2";
 
 class TextareaQuestion extends Question {
   constructor($node, config) {
