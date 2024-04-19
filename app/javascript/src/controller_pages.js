@@ -658,7 +658,7 @@ function createContentMenu(component) {
   $(document.body).append($ul);
 
   return new ContentMenu(component, $ul, {
-    activator_text: template.data("activator-text"),
+    activator_text: template.data("activator-text").replace("{{index}} ", ""),
     menu: {
       position: {
         my: "left top",

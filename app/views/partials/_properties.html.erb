@@ -56,8 +56,16 @@
         label_question_if: "<%= t('branches.expression.if') %>"
       },
       components: {
-        move_up: "<%= t('components.actions.move_up') %>",
-        move_down: "<%= t('components.actions.move_down') %>",
+        content:  {
+          properties: "<%= t('content.menu.activator') %>",
+          move_up: "<%= t('components.actions.move_content_up') %>",
+          move_down: "<%= t('components.actions.move_content_down') %>",
+        },
+        component: {
+          properties: "<%= t('question.menu.activator') %>",
+          move_up: "<%= t('components.actions.move_component_up') %>",
+          move_down: "<%= t('components.actions.move_component_down') %>",
+        },
         types: {
           text: "<%= t('components.list.text')%>",
           textarea: "<%= t('components.list.textarea')%>",

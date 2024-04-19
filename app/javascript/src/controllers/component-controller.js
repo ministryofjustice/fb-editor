@@ -2,8 +2,17 @@ import { Controller } from "@hotwired/stimulus";
 import { useControllerName } from "../mixins/use-controller-name";
 
 export default class extends Controller {
+  static targets = ["propertiesButton"];
+
   connect() {
     useControllerName(this);
+
+    // GLOBAL ALERT! app is a global object set in partials/_properties.html.erb
+    this.labels = app.text.components[this.type];
+  }
+
+  propertiesButtonTargetConnected() {
+    this.updateLabels();
   }
 
   /**
@@ -34,12 +43,13 @@ export default class extends Controller {
    *   @param {Event} event
    **/
   update(event) {
-    const orderValue = event.detail.order;
+    this.orderValue = event.detail.order;
 
     this.isEditableContent
-      ? this.updateContentConfig(orderValue)
-      : this.updateQuestionData(orderValue);
+      ? this.updateContentConfig()
+      : this.updateQuestionData();
 
+    this.updateLabels();
     this.triggerSaveRequired();
   }
 
@@ -48,15 +58,24 @@ export default class extends Controller {
     this.element.remove();
   }
 
+  updateLabels() {
+    if (this.hasPropertiesButtonTarget) {
+      this.propertiesButtonTarget.setAttribute(
+        "aria-label",
+        this.propertiesButtonLabel,
+      );
+    }
+  }
+
   /**
    * Handles updating the data on a question component
    * @param {Integer} orderValue
    * 1. The data is not stored on the data attribute but within jQuery data()
    * for the EditableComponent instance
    **/
-  updateQuestionData(orderValue) {
+  updateQuestionData() {
     const data = JSON.parse(this.element.dataset.fbContentData);
-    const newData = Object.assign(data, { order: orderValue });
+    const newData = Object.assign(data, { order: this.orderValue });
     const editableInstance = $(this.element).data("instance"); // [1] A reference to the EditableComponent instance
 
     if (editableInstance) {
@@ -70,9 +89,9 @@ export default class extends Controller {
    * The content component *does* store the data directly in the data attribute
    * so we can just update that directly
    * **/
-  updateContentConfig(orderValue) {
+  updateContentConfig() {
     const data = JSON.parse(this.element.dataset.config);
-    const newData = Object.assign(data, { order: orderValue });
+    const newData = Object.assign(data, { order: this.orderValue });
 
     this.element.dataset.config = JSON.stringify(newData);
   }
@@ -85,7 +104,15 @@ export default class extends Controller {
     );
   }
 
+  get type() {
+    return this.element.tagName == "EDITABLE-CONTENT" ? "content" : "component";
+  }
+
   get isEditableContent() {
-    return this.element.tagName == "EDITABLE-CONTENT";
+    return this.type == "content";
+  }
+
+  get propertiesButtonLabel() {
+    return this.labels.properties.replace("{{index}}", this.orderValue + 1);
   }
 }

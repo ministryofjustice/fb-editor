@@ -10,30 +10,38 @@
  *       https://api.jqueryui.com/menu
  *
  **/
-const {
-  safelyActivateFunction,
-  mergeObjects
-} = require('../../utilities');
-const ActivatedMenu = require('./activated_menu');
+const { safelyActivateFunction, mergeObjects } = require("../../utilities");
+const ActivatedMenu = require("./activated_menu");
 
 class ContentMenu extends ActivatedMenu {
   constructor(component, $node, config) {
-    super($node, mergeObjects({
-      container_classname: "ContentMenu",
-      activator_text: ""
-    }, config));
+    super(
+      $node,
+      mergeObjects(
+        {
+          container_classname: "ContentMenu",
+          activator_text: "",
+        },
+        config,
+      ),
+    );
 
-    $node.on("menuselect", (event,ui) => {
-        this.selection(event, ui.item);
+    $node.on("menuselect", (event, ui) => {
+      this.selection(event, ui.item);
     });
 
-    if(component.$node.length) {
+    if (component.$node.length) {
       component.$node.prepend(this.activator.$node);
-      component.$node.on("focus.contentmenu", () => this.activator.$node.addClass("active"));
-      component.$node.on("blur.contentmenu", () => this.activator.$node.removeClass("active"));
+      component.$node.on("focus.contentmenu", () =>
+        this.activator.$node.addClass("active"),
+      );
+      component.$node.on("blur.contentmenu", () =>
+        this.activator.$node.removeClass("active"),
+      );
     }
 
     this.container.$node.addClass("ContentMenu");
+    this.activator.$node.attr("data-component-target", "propertiesButton");
     this.component = component;
   }
 
@@ -42,7 +50,7 @@ class ContentMenu extends ActivatedMenu {
     this.selectedItem = item;
 
     event.preventDefault();
-    switch(action) {
+    switch (action) {
       case "open":
         this.open();
       case "remove":
@@ -58,14 +66,14 @@ class ContentMenu extends ActivatedMenu {
   }
 
   open(config) {
-    if(this.component && this.component.state) {
-      this.component.state.mode = 'edit'
+    if (this.component && this.component.state) {
+      this.component.state.mode = "edit";
     }
     super.open(config);
   }
 
   close() {
-    if(this.component) {
+    if (this.component) {
       this.component.$node.removeClass("active");
     }
     super.close();
@@ -77,8 +85,11 @@ class ContentMenu extends ActivatedMenu {
   }
 
   conditionalContent(item) {
-    this.component.apiUrl = item.data('apiPath')
-    $(document).trigger("ContentMenuSelectionConditionalContent", { component: this.component, selectedItem: item });
+    this.component.apiUrl = item.data("apiPath");
+    $(document).trigger("ContentMenuSelectionConditionalContent", {
+      component: this.component,
+      selectedItem: item,
+    });
   }
 }
 

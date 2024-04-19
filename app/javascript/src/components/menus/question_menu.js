@@ -45,6 +45,7 @@ class QuestionMenu extends ActivatedMenu {
     }
 
     this.container.$node.addClass("QuestionMenu");
+    this.activator.$node.attr("data-component-target", "propertiesButton");
     this.question = config.question;
     this.setEnabledValidations();
   }

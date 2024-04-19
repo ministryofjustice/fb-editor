@@ -380,14 +380,16 @@ en:
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
-      move_up: 'Move component {{index}} up'
-      move_down: 'Move component {{index}} down'
+      move_component_up: 'Move component {{index}} up'
+      move_component_down: 'Move component {{index}} down'
+      move_content_up: 'Move content area {{index}} up'
+      move_content_down: 'Move content area {{index}} down'
     menu:
       question: 'Question'
       content_area: 'Content area'
   content:
     menu:
-      activator: 'Settings'
+      activator: 'Content area {{index}} properties'
       remove: 'Delete...'
       show_if: 'Show if...'
     dialog:
@@ -399,7 +401,7 @@ en:
   question:
     optional_flag: '(optional)'
     menu:
-      activator: 'Question properties'
+      activator: 'Question {{index}} properties'
       remove: 'Delete...'
       required: 'Required...'
       date_after: 'Earliest date...'
