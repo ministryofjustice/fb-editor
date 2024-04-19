@@ -102,12 +102,15 @@ class EditableElement extends EditableBase {
     );
 
     const $editable = $node.find('[contentEditable="true"]');
-    console.log($editable);
 
-    const dataAttributes = $node.get(0).dataset;
+    let dataAttributes = $node.get(0)?.dataset;
+    dataAttributes ??= [];
+
     for (const attrName in dataAttributes) {
-      $editable.get(0).dataset[attrName] = dataAttributes[attrName];
-      delete $node.get(0).dataset[attrName];
+      const el = $editable.get(0);
+      if (el) {
+        el.dataset[attrName] = dataAttributes[attrName];
+      }
     }
 
     this.$editable = $editable;
@@ -119,10 +122,6 @@ class EditableElement extends EditableBase {
     this.$editable.on("keydown.editablecomponent", (e) =>
       singleLineInputRestrictions(e),
     );
-
-    // $node.attr("contentEditable", true);
-    // $node.attr("role", "textbox");
-    // $node.addClass("EditableElement");
 
     if (this._content == this._defaultContent) {
       this.$editable.attr("aria-describedby", "optional_content_description");
@@ -494,8 +493,6 @@ class EditableComponentBase extends EditableBase {
       ),
       hint: new EditableElement($node.find(config.selectorElementHint), config),
     };
-
-    console.log(this._elements);
   }
 
   get content() {

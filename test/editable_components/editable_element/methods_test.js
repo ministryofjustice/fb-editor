@@ -1,151 +1,154 @@
-require('../../setup');
+require("../../setup");
 
-describe('EditableElement', function() {
-
-  const helpers = require('./helpers');
+describe("EditableElement", function () {
+  const helpers = require("./helpers");
   const c = helpers.constants;
-  const COMPONENT_ID = 'editable-element-methods-testsvdb';
+  const COMPONENT_ID = "editable-element-methods-testsvdb";
 
-  describe('Methods', function() {
+  describe("Methods", function () {
     var created;
 
-    beforeEach(function() {
+    beforeEach(function () {
       created = helpers.createEditableElement(COMPONENT_ID);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       helpers.teardownView(COMPONENT_ID);
       created = undefined;
     });
 
-    describe('edit()', function() {
-      it('should add the editing class', function() {
-        var $element = $('#'+COMPONENT_ID);
+    describe("edit()", function () {
+      it("should add the editing class", function () {
+        var $element = $(`#${COMPONENT_ID} > span`);
         expect($element.hasClass(c.EDIT_CLASSNAME)).to.be.false;
 
         created.instance.edit();
 
-        $element = $('#'+COMPONENT_ID);
+        $element = $(`#${COMPONENT_ID} > span`);
         expect($element.hasClass(c.EDIT_CLASSNAME)).to.be.true;
       });
     });
 
-    describe('update()', function() {
-      it('should update the content', function() {
-        var $element = $('#'+COMPONENT_ID);
+    describe("update()", function () {
+      it("should update the content", function () {
+        var $element = $(`#${COMPONENT_ID} > span`);
         expect(created.instance.content).to.equal(c.EDITABLE_TRIMMED_CONTENT);
 
-        $element.text('  My updated content  ');
+        $element.text("  My updated content  ");
         created.instance.update();
 
-        expect(created.instance.content).to.equal('My updated content');
+        expect(created.instance.content).to.equal("My updated content");
       });
 
-      it('should remove the editing class', function() {
+      it("should remove the editing class", function () {
         created.instance.edit();
 
-        $element = $('#'+COMPONENT_ID);
+        var $element = $(`#${COMPONENT_ID} > span`);
         expect($element.hasClass(c.EDIT_CLASSNAME)).to.be.true;
 
         created.instance.update();
         expect($element.hasClass(c.EDIT_CLASSNAME)).to.be.false;
       });
-
     });
 
-    describe('populate()', function() {
-      it('updates the content of the element', function() {
-        var $element = $('#'+COMPONENT_ID);
+    describe("populate()", function () {
+      it("updates the content of the element", function () {
+        var $element = $(`#${COMPONENT_ID} > span`);
         expect($element.text()).to.equal(c.EDITABLE_RAW_CONTENT);
 
-        created.instance.populate('new content');
+        created.instance.populate("new content");
 
-        $element = $('#'+COMPONENT_ID);
-        expect($element.text()).to.equal('new content');
+        $element = $(`#${COMPONENT_ID} > span`);
+        expect($element.text()).to.equal("new content");
       });
 
-      describe('without default content', function() {
-        it('updates with original content if content is empty', function() {
-          var $element = $('#'+COMPONENT_ID);
+      describe("without default content", function () {
+        it("updates with original content if content is empty", function () {
+          var $element = $(`#${COMPONENT_ID} > span`);
           expect($element.text()).to.equal(c.EDITABLE_RAW_CONTENT);
 
-          created.instance.populate('');
+          created.instance.populate("");
 
-          $element = $('#'+COMPONENT_ID);
+          $element = $(`#${COMPONENT_ID} > span`);
           expect($element.text()).to.equal(c.EDITABLE_TRIMMED_CONTENT);
         });
-      })
+      });
 
-      describe('with default content', function() {
-        beforeEach(function() {
+      describe("with default content", function () {
+        beforeEach(function () {
           created = helpers.createEditableElement(COMPONENT_ID, {
-            attributeDefaultText: 'defaultText',
+            attributeDefaultText: "defaultText",
           });
         });
 
-        it('updates with original content if content is empty', function() {
-          var $element = $('#'+COMPONENT_ID);
+        it("updates with original content if content is empty", function () {
+          var $element = $(`#${COMPONENT_ID} > span`);
           expect($element.text()).to.equal(c.EDITABLE_RAW_CONTENT);
 
-          created.instance.populate('');
+          created.instance.populate("");
 
-          $element = $('#'+COMPONENT_ID);
+          $element = $(`#${COMPONENT_ID} > span`);
           expect($element.text()).to.equal(c.EDITABLE_DEFAULT_CONTENT);
         });
       });
     });
 
-    describe('focus()', function() {
-      it('places focus on the $node', function() {
+    describe("focus()", function () {
+      it("places focus on the $node", function () {
         created.instance.focus();
-        expect(document.activeElement).to.eql(created.$node.get(0))
+        expect(document.activeElement).to.eql(
+          created.instance.$editable.get(0),
+        );
       });
     });
 
-    describe('content()', function() {
-
-      it('updates the content variable', function() {
-        created.instance.content = 'Updated content';
-        expect(created.instance.content).to.equal('Updated content');
-      })
-
-      it('updates the content in the node', function() {
-        created.instance.content = 'New content';
-        $element = $('#'+COMPONENT_ID);
-        expect($element.text()).to.equal('New content');
+    describe("content()", function () {
+      it("updates the content variable", function () {
+        created.instance.content = "Updated content";
+        expect(created.instance.content).to.equal("Updated content");
       });
 
-      it('calls the populate() method', function() {
+      it("updates the content in the node", function () {
+        created.instance.content = "New content";
+        $element = $(`#${COMPONENT_ID} > span`);
+        expect($element.text()).to.equal("New content");
+      });
+
+      it("calls the populate() method", function () {
         var spy = sinon.spy(created.instance, "populate");
-        created.instance.content = 'my new content';
-        expect(spy).to.have.been.calledWith('my new content');
+        created.instance.content = "my new content";
+        expect(spy).to.have.been.calledWith("my new content");
       });
 
-      it('calls the emitSaveRequired() method', function() {
+      it("calls the emitSaveRequired() method", function () {
         var spy = sinon.spy(created.instance, "emitSaveRequired");
-        created.instance.content = 'my new content';
+        created.instance.content = "my new content";
         expect(spy).to.have.been.calledOnce;
       });
 
-      it('triggers the saveRequired event', function() {
+      it("triggers the saveRequired event", function () {
         var eventCount = 0;
 
-        $(document).on('SaveRequired', function() {
+        $(document).on("SaveRequired", function () {
           eventCount++;
         });
-        created.instance.content = 'More new content';
+        created.instance.content = "More new content";
         expect(eventCount).to.equal(1);
-      })
+      });
 
-      it('doesn\'t trigger saveRequired when content is original', function() {
+      it("doesn't trigger saveRequired when content is original", function () {
         //reset
         helpers.teardownView(COMPONENT_ID);
         created = undefined;
         //new instance with default text
-        created = helpers.createEditableElement(COMPONENT_ID, {}, c.EDITABLE_TRIMMED_CONTENT);
+        created = helpers.createEditableElement(
+          COMPONENT_ID,
+          {},
+          c.EDITABLE_TRIMMED_CONTENT,
+        );
         var eventCount = 0;
 
-        $(document).on('SaveRequired', function() {
+        $(document).on("SaveRequired", function () {
           eventCount++;
         });
 
@@ -153,20 +156,24 @@ describe('EditableElement', function() {
         expect(eventCount).to.equal(0);
       });
 
-      it('doesn\'t trigger saveRequired when content is default', function() {
+      it("doesn't trigger saveRequired when content is default", function () {
         //reset
         helpers.teardownView(COMPONENT_ID);
         created = undefined;
         //new instance with default text
-        created = helpers.createEditableElement(COMPONENT_ID, {
+        created = helpers.createEditableElement(
+          COMPONENT_ID,
+          {
             attributeDefaultText: c.EDITABLE_DEFAULT_CONTENT,
-        }, ' ');
+          },
+          " ",
+        );
         var eventCount = 0;
 
-        $(document).on('SaveRequired', function() {
+        $(document).on("SaveRequired", function () {
           eventCount++;
         });
-        created.instance.content = '';
+        created.instance.content = "";
         expect(eventCount).to.equal(0);
       });
     });

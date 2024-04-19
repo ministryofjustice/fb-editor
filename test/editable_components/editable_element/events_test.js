@@ -1,46 +1,44 @@
-require('../../setup');
+require("../../setup");
 
-describe('EditableElement', function() {
-  const helpers = require('./helpers');
-  const COMPONENT_ID = 'editable-element-events-test';
+describe("EditableElement", function () {
+  const helpers = require("./helpers");
+  const COMPONENT_ID = "editable-element-events-test";
 
-  describe('Events', function() {
+  describe("Events", function () {
     var created;
 
-    beforeEach(function() {
+    beforeEach(function () {
       created = helpers.createEditableElement(COMPONENT_ID);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       helpers.teardownView(COMPONENT_ID);
       created = undefined;
     });
 
     // Would love to do this with spies rather than testing effects of the
     // function, but cannot get sinon spies to work here :-(
-    it('should call update() on blur', function() {
-      var $element = $('#'+COMPONENT_ID);
-      $element.text('My new content');
-      $element.trigger('blur');
-      expect(created.instance.content).to.equal('My new content');
+    it("should call update() on blur", function () {
+      var $element = $(`#${COMPONENT_ID} > span`);
+      $element.text("My new content");
+      $element.trigger("blur");
+      expect(created.instance.content).to.equal("My new content");
     });
 
     // Would love to do this with spies rather than testing effects of the
     // function, but cannot get sinon spies to work here :-(
-    it('should call focus() on focus.editablecomponent', function() {
-      var $element = $('#'+COMPONENT_ID);
+    it("should call focus() on focus.editablecomponent", function () {
+      var $element = $(`#${COMPONENT_ID} > span`);
 
-      created.$node.trigger('focus');
+      created.instance.$editable.trigger("focus");
 
       expect(document.activeElement).to.equal($element.get(0));
     });
 
     // not sure we can test this
-    it('should paste as plaintext');
+    it("should paste as plaintext");
 
     // not sure we can test this
-    it('should prevent newlines');
-
+    it("should prevent newlines");
   });
-
 });

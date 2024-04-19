@@ -106,12 +106,9 @@ describe("EditableComponentbase", function () {
       });
 
       it("should update the data on save", function () {
-        var $label = $node.find(".editable-label");
-        var $hint = $node.find(".editable-hint");
-
-        component._elements.label.$node.text("Updated Label");
+        component._elements.label.$editable.text("Updated Label");
         component._elements.label.update();
-        component._elements.hint.$node.text("Updated Hint");
+        component._elements.hint.$editable.text("Updated Hint");
         component._elements.hint.update();
 
         component.save();
@@ -126,7 +123,7 @@ describe("EditableComponentbase", function () {
 
     describe("focus", function () {
       it("should focus the first editable element", function () {
-        var label = document.querySelector(".editable-label");
+        var label = document.querySelector(".editable-label > span");
         component.focus();
 
         expect(document.activeElement).to.eql(label);

@@ -19,19 +19,25 @@ describe('EditableElement', function() {
       created = undefined;
     });
 
+    it('should add the child span element', function() {
+      var $element = $('#'+COMPONENT_ID).find('span');
+      expect($element.length).to.equal(1);
+    });
+
+
     it('should add the contentEditable attribute', function() {
-      var $element = $('#'+COMPONENT_ID);
+      var $element = $(`#${COMPONENT_ID} > span`);
       expect($element.attr('contenteditable')).to.equal('true');
     });
 
     it('should add the textbox role', function() {
-      var $element = $('#'+COMPONENT_ID);
+      var $element = $(`#${COMPONENT_ID} > span`);
       expect($element.attr('role')).to.equal('textbox');
 
     });
 
     it('should add the component class name', function() {
-      var $element = $('#'+COMPONENT_ID);
+      var $element = $(`#${COMPONENT_ID} > span`);
       expect($element.hasClass(COMPONENT_CLASSNAME)).to.be.true
     });
 
