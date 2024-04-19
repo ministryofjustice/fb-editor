@@ -4,6 +4,7 @@ module EmailService
 
     def self.send_mail(opts = {})
       ses = Aws::SESV2::Client.new(region: 'eu-west-1')
+      encoding = 'UTF-8'
 
       ses.send_email({
         from_email_address: DEFAULT_FROM_ADDRESS,
@@ -14,16 +15,16 @@ module EmailService
           simple: {
             subject: { # required
               data: opts[:subject], # required
-              charset: 'Charset'
+              charset: encoding
             },
             body: { # required
               text: {
                 data: opts[:body], # required
-                charset: 'Charset'
+                charset: encoding
               },
               html: {
                 data: opts[:html], # required
-                charset: 'Charset'
+                charset: encoding
               }
             }
           },
@@ -32,6 +33,10 @@ module EmailService
           }
         }
       })
+
+      rescue Aws::SES::Errors::ServiceError => e
+        Rails.logger.debug "Email not sent. Error message: #{e}"
+      end
     end
   end
 end
