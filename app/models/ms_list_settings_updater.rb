@@ -34,7 +34,7 @@ class MsListSettingsUpdater
   end
 
   def create_or_update_the_service_configuration(config)
-    setting = find_or_initialize_setting(config)
+    find_or_initialize_setting(config)
   end
 
   def remove_the_service_configuration(config)
