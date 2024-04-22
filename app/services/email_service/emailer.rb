@@ -2,8 +2,14 @@ module EmailService
   class Emailer
     DEFAULT_FROM_ADDRESS = 'no-reply-moj-forms@digital.justice.gov.uk'.freeze
 
+    def initialize
+      @access_key = ENV['AWS_SES_ACCESS_KEY_ID']
+      @secret_access_key = ENV['AWS_SES_SECRET_ACCESS_KEY']
+    end
+
     def self.send_mail(opts = {})
-      ses = Aws::SESV2::Client.new(region: 'eu-west-1')
+      credentials = Aws::Credentials.new(access_key, secret_access_key)
+      ses = Aws::SESV2::Client.new(region: 'eu-west-1', credentials:)
       encoding = 'UTF-8'
 
       ses.send_email({
