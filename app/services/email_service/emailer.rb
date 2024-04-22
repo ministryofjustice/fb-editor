@@ -7,6 +7,7 @@ module EmailService
     def initialize
       @access_key = ENV['AWS_SES_ACCESS_KEY_ID']
       @secret_access_key = ENV['AWS_SES_SECRET_ACCESS_KEY']
+      ses
     end
 
     def self.send_mail(opts = {})
