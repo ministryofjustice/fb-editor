@@ -1,0 +1,16 @@
+<%= mojf_settings_screen(
+  heading:t('settings.ms_list.heading'),
+  description: t('settings.ms_list.description')
+  ) do |c| %>
+
+  <% c.with_back_link(href: settings_submission_index_path) %>
+
+  <% content_for :forms do %>
+    <%= render 'form', object: @ms_list_settings_dev, deployment_environment: 'dev' %>
+    <%= render 'form', object: @ms_list_settings_production, deployment_environment: 'production' %>
+  <% end %>
+
+  <%= yield :error_summary %>
+  <%= yield :forms %>
+
+<% end %>
