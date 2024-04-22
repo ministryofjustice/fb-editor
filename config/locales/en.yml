@@ -512,6 +512,7 @@ en:
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with a copy of their answers.
     ms_list:
+<<<<<<< HEAD
       heading: 'Send to your Microsoft List'
       lede: 'This will add the submissions to the Microsoft list your services uses.'
       description: 'This will add the submissions to the Microsoft list your services uses. %{href}'
@@ -525,6 +526,13 @@ en:
       site_id_hint: 'The Sharepoint site the list belongs to. Find out how to get this value'
       drive_id_label: 'Drive folder'
       drive_id_hint: 'Optional, only required if your form collects files. Files uploaded will be sent to the drive specified, must be in the same Site as the List'
+=======
+      heading: 'fixme'
+      lede: 'fixme'
+      description: 'fixme'
+      checkbox: 'Send to Microsoft List'
+      fieldset: 'fixme'
+>>>>>>> 0fcdaf95 (WIP)
   warnings:
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}'
