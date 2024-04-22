@@ -13,7 +13,11 @@ builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
 <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
+<<<<<<< HEAD
 <%= f.govuk_check_boxes_fieldset :"send_to_ms_list_#{deployment_environment}",
+=======
+<%= f.govuk_check_boxes_fieldset :"send_to_ms_list",
+>>>>>>> 9dafa6ce (WIP)
   multiple: false,
   legend: { text: t("publish.#{deployment_environment}.heading"), size: 'l'} do %>
   <div class="govuk-hint" id="send_to_ms_list_hint"><%= t("publish.#{deployment_environment}.description") %></div>
@@ -29,7 +33,10 @@ builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
   <%= render "list_id_fieldset", f: f, deployment_environment: deployment_environment %>
 <% end %>
 
+<<<<<<< HEAD
 <%= render "created_list_setting", f: f, deployment_environment: deployment_environment %>
+=======
+>>>>>>> 9dafa6ce (WIP)
 
 <%= mojf_save_button(form: f, 
                      text: t("settings.submission.#{deployment_environment}.save_button"), 

@@ -21,6 +21,7 @@ class MsListSettingsUpdater
     submission_setting.save!
 
     if ms_list_settings.send_to_ms_list?
+<<<<<<< HEAD
       service_config = create_or_update_the_service_configuration('MS_SITE_ID')
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
@@ -57,6 +58,13 @@ class MsListSettingsUpdater
       service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
       service_config.value = created_id
       service_config.save!
+=======
+      service_config = create_or_update_the_service_configuration('MS_LIST_ID')
+      service_config.value = ms_list_settings.ms_list_id
+      service_config.save!
+    else
+      remove_the_service_configuration('MS_LIST_ID')
+>>>>>>> 9dafa6ce (WIP)
     end
   end
 
@@ -65,7 +73,11 @@ class MsListSettingsUpdater
   end
 
   def create_or_update_the_service_configuration(config)
+<<<<<<< HEAD
     find_or_initialize_setting(config)
+=======
+    setting = find_or_initialize_setting(config)
+>>>>>>> 9dafa6ce (WIP)
   end
 
   def remove_the_service_configuration(config)
