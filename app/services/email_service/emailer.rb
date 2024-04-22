@@ -7,11 +7,10 @@ module EmailService
     def initialize
       @access_key = ENV['AWS_SES_ACCESS_KEY_ID']
       @secret_access_key = ENV['AWS_SES_SECRET_ACCESS_KEY']
-      ses
     end
 
-    def self.send_mail(opts = {})
-      @ses.send_email({
+    def send_mail(opts = {})
+      ses.send_email({
         from_email_address: DEFAULT_FROM_ADDRESS,
         destination: {
           to_addresses: [opts[:to]]
@@ -45,7 +44,7 @@ module EmailService
     attr_reader :access_key, :secret_access_key
 
     def ses
-      @ses ||= Aws::SESV2::Client.new(region: REGION, credentials:)
+      Aws::SESV2::Client.new(region: REGION, credentials:)
     end
 
     def credentials

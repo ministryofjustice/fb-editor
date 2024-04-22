@@ -27,7 +27,8 @@ class Settings::FormOwnerController < FormController
   end
 
   def send_confirmation_email(new_owner, service_name, previous_owner)
-    EmailService::Emailer.send_mail(
+    emailer = EmailService::Emailer.new
+    emailer.send_mail(
       to: new_owner,
       subject: 'An MoJ Forms form has been transferred to you',
       body: "#{service_name}\n The following form has been transferred to you: \n#{service_name}\nYou are now able
