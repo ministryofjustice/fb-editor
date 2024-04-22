@@ -9,7 +9,7 @@ module EmailService
       ses.send_email({
         from_email_address: DEFAULT_FROM_ADDRESS,
         destination: {
-          to_addresses: opts[:to]
+          to_addresses: [opts[:to]]
         },
         content: { # required
           simple: {
