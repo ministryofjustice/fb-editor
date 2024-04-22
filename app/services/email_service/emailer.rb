@@ -31,9 +31,6 @@ module EmailService
                 charset: ENCODING
               }
             }
-          },
-          raw: {
-            data: opts[:raw] # required
           }
         }
       })

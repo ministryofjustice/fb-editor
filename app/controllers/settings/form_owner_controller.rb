@@ -35,8 +35,7 @@ class Settings::FormOwnerController < FormController
 to access, edit and publish this form. It will be listed on the ‘Your forms’ page when you next sign in to MoJ Forms.\n
 Sign in to MoJ Forms\nThis change was requested by #{previous_owner}.\n
 If you have any questions, please contact us.",
-      html: '<h1>Sample Email</h1>',
-      raw: 'It\'s complicated'
+      html: '<h1>Sample Email</h1>'
     )
   end
 end
