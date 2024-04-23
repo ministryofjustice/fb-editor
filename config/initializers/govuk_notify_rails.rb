@@ -6,5 +6,5 @@ ActionMailer::Base.add_delivery_method(
 
 # Load the templates set (refer to `config/govuk_notify_templates.yml` for details)
 Rails.configuration.govuk_notify_templates = Rails.application.config_for(
-  :govuk_notify_templates, env: ENV['PLATFORM_ENV']
+  :govuk_notify_templates, env: ENV.fetch('PLATFORM_ENV', 'test')
 ).with_indifferent_access

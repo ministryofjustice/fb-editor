@@ -11,24 +11,9 @@ class NotifyMailer < GovukNotifyRails::Mailer
   end
   # :nocov:
 
-  def first_time_publish_to_test(user:, form_name:, form_url:)
-    set_template(:first_time_publish_to_test)
-
-    set_personalisation(
-      form_name:,
-      form_url:
-    )
-
-    mail(to: user.email)
-  end
-
   protected
 
   def set_template(name)
-    super(@template_ids.fetch(name))
-  end
-
-  def set_email_reply_to(name)
     super(@template_ids.fetch(name))
   end
 end

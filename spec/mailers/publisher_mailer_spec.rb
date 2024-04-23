@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe NotifyMailer do
+RSpec.describe PublisherMailer do
   before do
     allow(Rails.configuration).to receive(:govuk_notify_templates).and_return(
       first_time_publish_to_test: 'first_time_publish_to_test_uuid'
