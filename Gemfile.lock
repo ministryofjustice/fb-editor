@@ -244,6 +244,9 @@ GEM
       activemodel (>= 6.1)
       activesupport (>= 6.1)
       html-attributes-utils (~> 1)
+    govuk_notify_rails (2.2.0)
+      notifications-ruby-client (~> 5.1)
+      rails (>= 4.1.0)
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
@@ -334,6 +337,8 @@ GEM
     nio4r (2.7.0)
     nokogiri (1.16.2)
       racc (~> 1.4)
+    notifications-ruby-client (5.4.0)
+      jwt (>= 1.5, < 3)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -805,6 +810,7 @@ DEPENDENCIES
   govspeak (~> 7.1)
   govuk-components (< 5.0.0)
   govuk_design_system_formbuilder
+  govuk_notify_rails (~> 2.2.0)
   hashie
   listen (~> 3.8)
   metadata_presenter (= 3.3.33)

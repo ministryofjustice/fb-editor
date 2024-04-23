@@ -180,6 +180,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: publish_for_review_password
+          - name: GOVUK_NOTIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: govuk_notify_api_key
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -322,6 +327,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: aws_s3_bucket_production
+          - name: GOVUK_NOTIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: govuk_notify_api_key
       volumes:
         - name: tmp-files
           emptyDir: {}
