@@ -11,6 +11,11 @@ class ServiceConfiguration < ApplicationRecord
     MS_OAUTH_URL
     MS_TENANT_ID
   ]
+  MS_GRAPH_CONFIGURATION = %w[
+    MS_LIST_ID
+    MS_DRIVE_ID
+    MS_SITE_ID
+  ]
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_FROM
@@ -86,6 +91,14 @@ class ServiceConfiguration < ApplicationRecord
         deployment_environment:,
         name: 'MAINTENANCE_MODE'
       ).blank?
+  end
+
+  def do_not_send_to_graph_api?
+    name.in?(MS_GRAPH_CONFIGURATION) &&
+      SubmissionSetting.find_by(
+        service_id:,
+        deployment_environment:
+      ).try(:send_to_graph_api?).blank?
   end
 
   def decrypt_value

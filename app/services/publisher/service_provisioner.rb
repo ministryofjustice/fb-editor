@@ -157,6 +157,7 @@ class Publisher
         .reject(&:do_not_send_confirmation_email?)
         .reject(&:not_in_maintenance_mode?)
         .reject(&:do_not_inject_payment_link?)
+        .reject(&:do_not_send_to_graph_api?)
     end
 
     def secrets
