@@ -57,6 +57,15 @@ en:
     reference_payment_sentence: "\r\nYour reference number is: {{reference_number}}.\r\nTo complete your submission, you now need to make the required payment at {{payment_link}}."
     service_output_json_endpoint: 'Enter the endpoint URL here'
     service_output_json_key: 'Enter the endpoint key here'
+    transfer_ownership_email:
+      subject: An MoJ Forms form has been transferred to you
+      body: |
+        ‘%{service_name}’ The following form has been transferred to you:
+        <br><br>%{service_name}<br><br>You are now able to access, edit and publish this form. It will be listed on the ‘Your forms’ page when you next sign in to MoJ Forms.
+        <br><br>Sign in to MoJ Forms
+        This change was requested by %{previous_owner}.
+        <br><br>If you have any questions, please %{href}.
+      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
   notification_banners:
     important: Important
     success: Success
@@ -502,14 +511,6 @@ en:
       confirmation_title: The form owner has been changed
       confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
       href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
-      confirmation_email:
-        subject: An MoJ Forms form has been transferred to you
-        body: |
-              ‘%{service_name}’ The following form has been transferred to you:
-              <br><br>%{service_name}<br><br>You are now able to access, edit and publish this form. It will be listed on the ‘Your forms’ page when you next sign in to MoJ Forms.
-              <br><br>Sign in to MoJ Forms
-              This change was requested by %{previous_owner}.
-              <br><br>If you have any questions, please %{href}.
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'

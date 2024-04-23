@@ -29,14 +29,14 @@ class Settings::FormOwnerController < FormController
   def send_confirmation_email(new_owner, service_name, previous_owner)
     emailer = EmailService::Emailer.new
 
-    body = I18n.t('activemodel.errors.models.transfer_ownership.confirmation_email.subject',
+    body = I18n.t('default_values.transfer_ownership_email.body',
                   service_name:,
                   previous_owner:,
-                  href: I18n.t('activemodel.errors.models.transfer_ownership.href'))
+                  href: I18n.t('default_values.transfer_ownership_email.href'))
 
     emailer.send_mail(
       to: new_owner,
-      subject: I18n.t('activemodel.errors.models.transfer_ownership.confirmation_email.body'),
+      subject: I18n.t('default_values.transfer_ownership_email.subject'),
       body:,
       html: body
     )
