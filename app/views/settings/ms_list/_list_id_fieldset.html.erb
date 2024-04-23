@@ -4,12 +4,33 @@
   </div>
 
   <div class="govuk-form-group govuk-!-margin-left-1">
+    <%= f.govuk_text_field :"ms_site_id",
+    label: {
+      text: t("settings.ms_list.site_id_label"),
+      for: settings_field_id(f, :ms_site_id, deployment_environment)
+    },
+    hint: { text: t("settings.ms_list.site_id_hint")},
+    value: f.object.value_for_site_id,
+    id: settings_field_id(f, :ms_site_id, deployment_environment) %>
+    
     <%= f.govuk_text_field :"ms_list_id",
       label: {
-        text: t("settings.ms_list.input_label"),
+        text: t("settings.ms_list.list_id_label"),
         for: settings_field_id(f, :ms_list_id, deployment_environment)
       },
+      hint: { text: t("settings.ms_list.list_id_hint")},
       value: f.object.value_for_list_id,
       id: settings_field_id(f, :ms_list_id, deployment_environment) %>
+
+
+    <%= f.govuk_text_field :"ms_drive_id",
+    label: {
+      text: t("settings.ms_list.drive_id_label"),
+      for: settings_field_id(f, :ms_drive_id, deployment_environment)
+    },
+    hint: { text: t("settings.ms_list.drive_id_hint")},
+    value: f.object.value_for_drive_id,
+    id: settings_field_id(f, :ms_drive_id, deployment_environment) %>
   </div>
+
 <% end %>
