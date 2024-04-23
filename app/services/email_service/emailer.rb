@@ -1,3 +1,5 @@
+require 'aws-sdk-ses'
+
 module EmailService
   class Emailer
     DEFAULT_FROM_ADDRESS = 'no-reply-moj-forms@digital.justice.gov.uk'.freeze
@@ -11,29 +13,29 @@ module EmailService
 
     def send_mail(opts = {})
       ses.send_email({
-        from_email_address: DEFAULT_FROM_ADDRESS,
         destination: {
           to_addresses: [opts[:to]]
         },
-        content: { # required
-          simple: {
-            subject: { # required
-              data: opts[:subject], # required
-              charset: ENCODING
+        message: {
+          body: {
+            html: {
+              charset: ENCODING,
+              data: opts[:html]
             },
-            body: { # required
-              text: {
-                data: opts[:body], # required
-                charset: ENCODING
-              },
-              html: {
-                data: opts[:html], # required
-                charset: ENCODING
-              }
+            text: {
+              charset: ENCODING,
+              data: opts[:body]
             }
+          },
+          subject: {
+            charset: ENCODING,
+            data: opts[:subject]
           }
-        }
+        },
+        source: DEFAULT_FROM_ADDRESS
       })
+    rescue Aws::SES::Errors::ServiceError => e
+      Rails.logger.debug "Email not sent. Error message: #{e}"
     end
 
     private
@@ -41,7 +43,7 @@ module EmailService
     attr_reader :access_key, :secret_access_key
 
     def ses
-      Aws::SESV2::Client.new(region: REGION, credentials:)
+      Aws::SES::Client.new(region: REGION, credentials:)
     end
 
     def credentials
