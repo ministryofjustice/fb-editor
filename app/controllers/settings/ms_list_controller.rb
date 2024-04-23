@@ -41,7 +41,6 @@ class Settings::MsListController < FormController
       deployment_environment: 'production'
     )
   end
-<<<<<<< HEAD
 
   def human_readable_list_name(deployment_environment)
     "#{service.service_name}-#{deployment_environment}-#{service.version_id}"
@@ -52,6 +51,4 @@ class Settings::MsListController < FormController
     "#{service.service_name}-#{deployment_environment}-#{service.version_id}-attachments"
   end
   helper_method :human_readable_drive_name
-=======
->>>>>>> 0fcdaf95 (WIP)
 end
