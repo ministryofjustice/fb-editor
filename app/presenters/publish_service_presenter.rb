@@ -32,7 +32,7 @@ class PublishServicePresenter
   end
 
   def url
-    "https://#{hostname}" if published?
+    form_url if published?
   end
 
   private

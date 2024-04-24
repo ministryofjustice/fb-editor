@@ -1,6 +1,14 @@
 class PublishServiceJob < ApplicationJob
   queue_as :default
 
+  attr_reader :service_provisioner
+
+  after_perform do |job|
+    Publisher::AfterCompletion.new(
+      service_provisioner: job.service_provisioner
+    ).call
+  end
+
   def perform(publish_service_id:)
     publish_service = PublishService.find(publish_service_id)
     service_configuration = ServiceConfiguration.where(
@@ -8,7 +16,7 @@ class PublishServiceJob < ApplicationJob
       deployment_environment: publish_service.deployment_environment
     )
 
-    service_provisioner = Publisher::ServiceProvisioner.new(
+    @service_provisioner = Publisher::ServiceProvisioner.new(
       service_id: publish_service.service_id,
       version_id: publish_service.version_id,
       deployment_environment: publish_service.deployment_environment,
