@@ -2,7 +2,6 @@ require 'aws-sdk-ses'
 
 module EmailService
   class Emailer
-    DEFAULT_FROM_ADDRESS = 'no-reply-moj-forms@digital.justice.gov.uk'.freeze
     REGION = 'eu-west-1'.freeze
     ENCODING = 'UTF-8'.freeze
 
