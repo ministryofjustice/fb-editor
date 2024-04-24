@@ -60,12 +60,14 @@ en:
     transfer_ownership_email:
       subject: An MoJ Forms form has been transferred to you
       body: |
-        ‘%{service_name}’ The following form has been transferred to you:
+        The following form has been transferred to you:
         <br><br>%{service_name}<br><br>You are now able to access, edit and publish this form. It will be listed on the ‘Your forms’ page when you next sign in to MoJ Forms.
-        <br><br>Sign in to MoJ Forms
-        This change was requested by %{previous_owner}.
-        <br><br>If you have any questions, please %{href}.
-      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
+        <br><br>%{href_signin}
+        <br><br>This change was requested by %{previous_owner}.
+        <br><br>If you have any questions, please %{href_contact}.
+      href_contact: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
+      href_signin: <a class="govuk-link" href="%{sign_in_link}" target="_blank" rel="noopener noreferrer">Sign in to MoJ Forms</a>
+      sign_in_link: https://moj-forms-editor.service.justice.gov.uk/
   notification_banners:
     important: Important
     success: Success
