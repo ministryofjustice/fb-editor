@@ -31,7 +31,7 @@ module EmailService
             data: opts[:subject]
           }
         },
-        source: DEFAULT_FROM_ADDRESS
+        source: opts[:from]
       })
     rescue Aws::SES::Errors::ServiceError => e
       Rails.logger.debug "Email not sent. Error message: #{e}"
