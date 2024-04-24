@@ -59,14 +59,6 @@ class Publisher
 
       private
 
-      def first_published?
-        PublishService.completed
-        .where(
-          service_id:,
-          deployment_environment:
-        ).count == 1
-      end
-
       def create_config_dir
         FileUtils.mkdir_p(config_dir)
       end

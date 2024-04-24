@@ -41,7 +41,7 @@ class Publisher
       binding
     end
 
-    delegate :service_name, to: :service
+    delegate :service_name, :created_by, to: :service
 
     def service_slug
       service_slug_config.presence || service.service_slug
