@@ -3,7 +3,6 @@ require 'aws-sdk-ses'
 module EmailService
   class Emailer
     REGION = 'eu-west-1'.freeze
-    ENCODING = 'UTF-8'.freeze
 
     def initialize
       @access_key = ENV['AWS_SES_ACCESS_KEY_ID']
@@ -11,27 +10,12 @@ module EmailService
     end
 
     def send_mail(opts = {})
-      ses.send_email({
-        destination: {
-          to_addresses: [opts[:to]]
-        },
-        message: {
-          body: {
-            html: {
-              charset: ENCODING,
-              data: opts[:html]
-            },
-            text: {
-              charset: ENCODING,
-              data: opts[:body]
-            }
-          },
-          subject: {
-            charset: ENCODING,
-            data: opts[:subject]
-          }
-        },
-        source: opts[:from]
+      ses.send_raw_email({
+        source: opts[:from],
+        destinations: [opts[:to]],
+        raw_message: {
+          data: opts[:raw_message]
+        }
       })
     rescue Aws::SES::Errors::ServiceError => e
       Rails.logger.debug "Email not sent. Error message: #{e}"

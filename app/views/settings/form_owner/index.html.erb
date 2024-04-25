@@ -6,8 +6,8 @@
       heading:t('settings.transfer_ownership.heading'),
       description: t('settings.transfer_ownership.lede')
     ) do |c| %>
-
-<!--  We use form_for to get the form errors shown at the top-->
+  
+<!--  We use the soft depracated form_for to get the form errors shown at the top -->
   <%= form_for @form_owner, url: transfer_form_ownership_settings_service_path(service.service_id), method: :put, html: { id: 'transfer-ownership-settings' }, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
     <% if f.object.errors.present? %>

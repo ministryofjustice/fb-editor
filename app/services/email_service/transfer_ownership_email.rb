@@ -3,20 +3,15 @@ module EmailService
     DEFAULT_FROM_ADDRESS = 'no-reply-moj-forms@digital.justice.gov.uk'.freeze
 
     def self.send_email(service_name:, previous_owner:, new_owner:)
+      raw_message = EmailService::TransferRawMessage.new(
+        from: DEFAULT_FROM_ADDRESS, to: new_owner, previous_owner:, service_name:
+      )
+
       emailer = EmailService::Emailer.new
-
-      body = I18n.t('default_values.transfer_ownership_email.body',
-                    service_name:,
-                    previous_owner:,
-                    href_signin: I18n.t('default_values.transfer_ownership_email.href_signin'),
-                    href_contact: I18n.t('default_values.transfer_ownership_email.href_contact'))
-
       emailer.send_mail(
         from: DEFAULT_FROM_ADDRESS,
         to: new_owner,
-        subject: I18n.t('default_values.transfer_ownership_email.subject'),
-        body:,
-        html: body
+        raw_message: raw_message.to_s
       )
     end
   end
