@@ -157,16 +157,16 @@ module EmailService
             </table>
           </body>
         </html>
-
       RAW_MESSAGE
     end
 
     def body
       I18n.t('default_values.transfer_ownership_email.body',
-             service_name:,
-             previous_owner:,
-             href_signin: I18n.t('default_values.transfer_ownership_email.href_signin'),
-             href_contact: I18n.t('default_values.transfer_ownership_email.href_contact'))
+                    service_name:,
+                    previous_owner:,
+                    href_signin: I18n.t('default_values.transfer_ownership_email.href_signin', sign_in_link: I18n.t('default_values.transfer_ownership_email.sign_in_link')),
+                    href_contact: I18n.t('default_values.transfer_ownership_email.href_contact', text_4_link_ref: I18n.t('publish.publish_for_review.confirmation.text_4_link_ref'))
+            )
     end
   end
 end
