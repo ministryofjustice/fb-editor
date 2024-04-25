@@ -26,7 +26,6 @@ class Publisher
     end
 
     def send_first_publish_to_test_email?
-      return unless FeatureFlags.first_time_publish_to_test_email.enabled?
       return unless deployment_environment.inquiry.dev?
 
       PublishService.completed.where(
