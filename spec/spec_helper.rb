@@ -129,9 +129,9 @@ SimpleCov.start do
   enable_coverage(:branch)
 end
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
-  [
-    SimpleCov::Formatter::HTMLFormatter,
-    SimpleCov::Formatter::Console
-  ]
-)
+# SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
+#   [
+#     SimpleCov::Formatter::HTMLFormatter,
+#     SimpleCov::Formatter::Console
+#   ]
+# )
