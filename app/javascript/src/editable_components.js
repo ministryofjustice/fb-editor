@@ -96,20 +96,26 @@ class EditableElement extends EditableBase {
     this._defaultContent = defaultContent;
     this._required = required;
 
-    // Adding textare role makes contenteditable element show in the screenreader form controls rotor
+    // Wrap the content of the node with a contentEditable <span>
+    // Adding textbox role makes contenteditable element show in the screenreader form controls rotor
     $node.wrapInner(
       '<span class="EditableElement" contentEditable="true" role="textbox"></span>',
     );
 
     const $editable = $node.find('[contentEditable="true"]');
 
+    // Copy data attributes from the $node to the new $editable element
     let dataAttributes = $node.get(0)?.dataset;
     dataAttributes ??= [];
-
     for (const attrName in dataAttributes) {
       const el = $editable.get(0);
       if (el) {
         el.dataset[attrName] = dataAttributes[attrName];
+      }
+      // Delete the original data-fb-content-id attribute, as duplicates cause
+      // issues with acceptance tests
+      if (attrName == "fbContentId") {
+        delete $node.get(0)?.dataset[attrName];
       }
     }
 
