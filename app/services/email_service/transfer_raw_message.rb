@@ -1,7 +1,5 @@
 module EmailService
   class TransferRawMessage
-    include ActionView::Helpers::SanitizeHelper
-
     attr_accessor :from, :to, :previous_owner, :service_name
 
     def initialize(from:, to:, previous_owner:, service_name:)
@@ -39,7 +37,7 @@ module EmailService
 
     def raw_body
       <<~RAW_MESSAGE
-            <html>
+        <html>
           <body style="font-family: Helvetica, Arial, sans-serif;font-size: 16px;margin: 0;color:#0b0c0c;">
 
             <!-- govuk banner -->
@@ -162,11 +160,10 @@ module EmailService
 
     def body
       I18n.t('default_values.transfer_ownership_email.body',
-                    service_name:,
-                    previous_owner:,
-                    href_signin: I18n.t('default_values.transfer_ownership_email.href_signin', sign_in_link: I18n.t('default_values.transfer_ownership_email.sign_in_link')),
-                    href_contact: I18n.t('default_values.transfer_ownership_email.href_contact', text_4_link_ref: I18n.t('publish.publish_for_review.confirmation.text_4_link_ref'))
-            )
+             service_name:,
+             previous_owner:,
+             href_signin: I18n.t('default_values.transfer_ownership_email.href_signin', sign_in_link: I18n.t('default_values.transfer_ownership_email.sign_in_link')),
+             href_contact: I18n.t('default_values.transfer_ownership_email.href_contact', text_4_link_ref: I18n.t('publish.publish_for_review.confirmation.text_4_link_ref')))
     end
   end
 end
