@@ -25,6 +25,7 @@ class FormOwnerSettings
     else
       @version = version
     end
+    true
   end
 
   private
