@@ -235,6 +235,7 @@ function addQuestionMenuListeners(view) {
     new DialogApiRequest(apiUrl, {
       activator: question.menu.selectedItem,
       closeOnClickSelector: ".govuk-button",
+      closeText: view.text.dialogs.button_close,
 
       onLoad: function (dialog) {
         // Find and correct (make work!) any method:delete links
@@ -283,6 +284,7 @@ function addQuestionMenuListeners(view) {
 
       new DialogForm(apiUrl, {
         activator: question.menu.selectedItem,
+        closeText: view.text.dialogs.button_close,
         remote: true,
         autoOpen: true,
         /*
@@ -421,6 +423,7 @@ function addQuestionMenuListeners(view) {
     var apiUrl = question.menu.selectedItem.data("apiPath");
     new DialogForm(apiUrl, {
       activator: question.menu.selectedItem,
+      closeText: view.text.dialogs.button_close,
       remote: true,
       autoOpen: true,
       submitOnClickSelector: 'button[type="submit"]',
@@ -455,6 +458,7 @@ function addQuestionMenuListeners(view) {
       var maxFilesVal = question.data.max_files;
       new DialogForm(apiUrl, {
         activator: question.menu.selectedItem,
+        closeText: view.text.dialogs.button_close,
         remote: true,
         autoOpen: true,
       });
@@ -489,6 +493,7 @@ function addEditableComponentItemMenuListeners(view) {
       if (collectionItem.component.canHaveItemsRemoved()) {
         new DialogApiRequest(url, {
           activator: selectedItem,
+          closeText: view.text.dialogs.button_close,
           closeOnClickSelector: ".govuk-button",
           onLoad: function (dialog) {
             dialog.$node.find("[data-method=delete]").on("click", function (e) {
@@ -556,6 +561,7 @@ function openConditionalContentDialog(component, activator, view) {
   if (url) {
     new DialogForm(url, {
       activator: activator,
+      closeText: view.text.dialogs.button_close,
       remote: true,
       requestMethod: "POST",
       requestData: data,
@@ -849,6 +855,7 @@ function createDialogConfiguration() {
   var $node = $($template.text());
   return new Dialog($node, {
     autoOpen: false,
+    closeText: this.text.dialogs.button_close,
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),
     classes: {

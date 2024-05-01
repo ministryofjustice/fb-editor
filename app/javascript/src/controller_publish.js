@@ -12,15 +12,14 @@
  *
  **/
 
-
-const DefaultController = require('./controller_default');
-const DialogForm = require('./component_dialog_form');
+const DefaultController = require("./controller_default");
+const DialogForm = require("./component_dialog_form");
 
 class PublishController extends DefaultController {
   constructor(app) {
     super(app);
 
-    switch(app.page.action) {
+    switch (app.page.action) {
       case "create":
         PublishController.create.call(this);
         break;
@@ -31,37 +30,37 @@ class PublishController extends DefaultController {
   }
 }
 
-
 /* Setup for the Index action
  **/
-PublishController.index = function() {
+PublishController.index = function () {
   var view = this;
   setupPublishForms.call(view);
 
   // When to show 15 minute message.
-  if(view.publishFormTest.firstTimePublish() || view.publishFormProd.firstTimePublish()) {
+  if (
+    view.publishFormTest.firstTimePublish() ||
+    view.publishFormProd.firstTimePublish()
+  ) {
     view.dialog.open({
       ok: view.text.dialogs.button_publish,
       heading: view.text.dialogs.heading_publish,
-      content: view.text.dialogs.message_publish
+      content: view.text.dialogs.message_publish,
     });
   }
-}
-
+};
 
 /* Set up for the Create action
  **/
-PublishController.create = function() {
+PublishController.create = function () {
   var view = this;
   setupPublishForms.call(view);
   view.ready();
-}
-
+};
 
 /* Setup the Publish Form as an enhanced object.
  **/
 class PublishForm {
-  constructor($node) {
+  constructor($node, view) {
     var $content = $node.find(".govuk-form");
     var $radios = $node.find("input[type=radio]");
     var $activator = $node.parent().find('button[data-fb-action="publish"]');
@@ -71,22 +70,23 @@ class PublishForm {
     new DialogForm($node, {
       autoOpen: $errors.length ? true : false,
       activator: $activator,
-      onClose: function(dialog) {
-        $errors.parents().removeClass('error');
+      closeText: view.text.dialogs.button_close,
+      onClose: function (dialog) {
+        $errors.parents().removeClass("error");
         $errors.remove(); // Remove from DOM (includes removing all jQuery data)
-        dialog.$node.find('.govuk-form-group').removeClass('govuk-form-group--error');
-      }
-    })
+        dialog.$node
+          .find(".govuk-form-group")
+          .removeClass("govuk-form-group--error");
+      },
+    });
 
     this.$node = $node;
-
   }
 
   firstTimePublish() {
     return this.$node.data("first_publish");
   }
 }
-
 
 /* Show/hide content based on a yes/no type of radio button control.
  * @content (jQuery node) Content area to be shown/hidden
@@ -100,7 +100,7 @@ class PublishForm {
 class ModalContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
-    if($radios.length > 0) {
+    if ($radios.length > 0) {
       $radios.eq(0).on("change", this.toggle.bind(this));
       $radios.eq(1).on("change", this.toggle.bind(this));
       this.$content = $content;
@@ -111,23 +111,25 @@ class ModalContentVisibilityController {
 
   toggle() {
     // Set initial state.
-    if(this.$radios.last().prop("checked") || this.$radios.last().get(0).checked) {
+    if (
+      this.$radios.last().prop("checked") ||
+      this.$radios.last().get(0).checked
+    ) {
       this.$content.show();
-    }
-    else {
+    } else {
       this.$content.hide();
     }
   }
 }
 
-
 // Private
 
 /* Find and setup publish forms
  **/
-function setupPublishForms(page) {
-  this.publishFormTest = new PublishForm($("#publish-form-dev"));
-  this.publishFormProd = new PublishForm($("#publish-form-production"));
+function setupPublishForms() {
+  const view = this;
+  this.publishFormTest = new PublishForm($("#publish-form-dev"), view);
+  this.publishFormProd = new PublishForm($("#publish-form-production"), view);
 }
 
 module.exports = PublishController;

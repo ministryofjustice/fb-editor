@@ -64,6 +64,7 @@ function createDialog() {
       "ui-dialog": $template.data("classes"),
     },
     titleId: "dialog-ok-title",
+    closeText: this.text.dialogs.button_close,
   });
 }
 
@@ -79,6 +80,7 @@ function createDialogConfirmation() {
     classes: {
       "ui-dialog": $template.data("classes"),
     },
+    closeText: this.text.dialogs.button_close,
     titleId: "dialog-confirmation-title",
   });
 }
@@ -95,6 +97,7 @@ function createDialogConfirmationDelete() {
     classes: {
       "ui-dialog": $template.data("classes"),
     },
+    closeText: this.text.dialogs.button_close,
     titleId: "dialog-confirmation-delete-title",
   });
 }
