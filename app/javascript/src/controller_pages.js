@@ -941,6 +941,7 @@ function editPageMultipleQuestionsViewCustomisations() {
   var $button1 = $("[data-component=add-component]");
   var $target = $("#new_answers");
   $target.append($button1);
+  accessiblePageHeadingLabel(this);
   accessibilityQuestionViewEnhancements(this);
 }
 
@@ -950,6 +951,19 @@ function editPageStandaloneViewCustomisations() {
 
 function editPageSingleQuestionViewCustomisations() {
   accessibilityQuestionViewEnhancements(this);
+}
+
+/* Aria accessibility view inclusions.
+ * These are being added using JS because the views are controlled by
+ * Metadata Presenter making direct changes more difficult and able to
+ * impact pre-approved accessibility results in the runner that already
+ * has sufficient level of accessibility support.
+ * The Editor already requires JS for correct functionality so we can
+ * safely assume full JS availability.
+ **/
+function accessibilityQuestionViewEnhancements(view) {
+  accessibleSectionHeadingLabel(view);
+  accessiblyDisableButton('#new_answers .govuk-button[aria-disabled="true"]');
 }
 
 function accessiblePageHeadingLabel(view) {
@@ -974,19 +988,6 @@ function accessiblyDisableButton(selector) {
     .on("click", (e) => {
       e.preventDefault();
     });
-}
-
-/* Aria accessibility view inclusions.
- * These are being added using JS because the views are controlled by
- * Metadata Presenter making direct changes more difficult and able to
- * impact pre-approved accessibility results in the runner that already
- * has sufficient level of accessibility support.
- * The Editor already requires JS for correct functionality so we can
- * safely assume full JS availability.
- **/
-function accessibilityQuestionViewEnhancements(view) {
-  accessibleSectionHeadingLabel(view);
-  accessiblyDisableButton('#new_answers .govuk-button[aria-disabled="true"]');
 }
 
 /* Enhances the static content should it require special formatting
