@@ -6,15 +6,11 @@
         <%= t('.title') %>
       </h1>
 
-      <div class="govuk-panel__body">
-        <p><%= t('.lede')%></p>
-      </div>
+      <h2 class="govuk-heading-l govuk-!-font-weight-regular"><%= t('.lede')%></h2>
 
-      <div>
-        <p><%= t('.body',
+      <p><%= t('.body',
                  contact_us_link: govuk_link_to( t('.contact_us_link_text'), 'https://moj-forms.service.justice.gov.uk/contact/')
                 ).html_safe %></p>
-      </div>
 
       <%= button_to @sign_in_url, method: :post, class: 'govuk-button fb-govuk-button  govuk-button--start govuk-!-margin-top-2' do %>
         <%= t('.sign_in') %>
