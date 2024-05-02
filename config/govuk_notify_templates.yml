@@ -10,11 +10,12 @@
 # formbuilder-saas-live
 live:
   first_time_publish_to_test: 'a5feab0b-f1c2-44e3-b8ef-55601c719fac'
+  transfer_ownership: '0fa12c6b-cfbc-402b-a848-22dfb8d0c76c'
 
 # formbuilder-saas-test
 test: &non_live_envs
   first_time_publish_to_test: 'ca8c193f-1a1b-48f8-b0bc-1f68e97931b5'
-  transfer_ownership: '0fa12c6b-cfbc-402b-a848-22dfb8d0c76c'
+  transfer_ownership: 'eff73e7e-4ba3-487c-961d-7034e0396449'
 
 # in local envs (development) we use same templates
 # and API key as in `formbuilder-saas-test`
