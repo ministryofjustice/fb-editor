@@ -46,4 +46,9 @@ class ServicesController < PermissionsController
       :service_creation
     ).permit(:service_name).merge(current_user:)
   end
+
+  def page_title
+    'Your forms - MoJ Forms Editor'
+  end
+  helper_method :page_title
 end

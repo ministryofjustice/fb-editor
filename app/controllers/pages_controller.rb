@@ -165,4 +165,15 @@ class PagesController < FormController
   def parameterize_url
     { page_url: params[:page][:page_url].parameterize }
   end
+
+  def page_title
+    if @page
+      if @page.heading
+        "Edit page - #{@page.heading} - MoJ Forms Editor"
+      end
+    else
+      super
+    end
+  end
+  helper_method :page_title
 end
