@@ -164,8 +164,8 @@ en:
       success: Options uploaded. Use preview or publish to view them.
   header:
     service_name: "MoJ Forms"
-    home_link_text: "Back to Home"
-    home_link_alt: "Ministry of Justice Logo - homepage"
+    home_link_text: "MoJ Forms - Back to your forms"
+    home_link_alt: "Ministry of Justice Logo"
 
   partials:
     header:
