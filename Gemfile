@@ -14,7 +14,6 @@ gem 'metadata_presenter', '3.3.33'
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'
 gem 'aws-sdk-s3'
-gem 'aws-sdk-ses'
 gem 'aws-sdk-sesv2'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
