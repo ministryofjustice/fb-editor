@@ -21,7 +21,7 @@ class FormOwnerSettings
     version = MetadataApiClient::Version.create(service_id:, payload: new_metadata)
     if version.errors?
       errors.add(:base, :invalid, message: version.errors)
-      false
+      return false
     else
       @version = version
     end
@@ -31,7 +31,9 @@ class FormOwnerSettings
   private
 
   def email_exists?
-    @new_user_id = User.all.map { |user| user.id if user.email == @form_owner }.compact.first
+    @new_user_id = User.all.map {
+      |user| user.id if @form_owner.match(Regexp.new(user.email, Regexp::IGNORECASE))
+      }.compact.first
     @new_user_id.present?
   end
 
