@@ -251,4 +251,15 @@ class PublishController < FormController
       name: 'PREVIOUS_SERVICE_SLUG'
     )
   end
+
+  def page_title
+    if @page
+      if @page.heading
+        "Publish your form - MoJ Forms Editor"
+      end
+    else
+      super
+    end
+  end
+  helper_method :page_title
 end

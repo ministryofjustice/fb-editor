@@ -172,7 +172,7 @@ class PagesController < FormController
         "Edit page - #{@page.heading} - MoJ Forms Editor"
       end
     else
-      super
+      "Edit form #{service.service_name} - MoJ Forms Editor"
     end
   end
   helper_method :page_title
