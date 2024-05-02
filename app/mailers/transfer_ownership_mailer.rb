@@ -7,6 +7,6 @@ class TransferOwnershipMailer < NotifyMailer
       previous_owner:
     )
 
-    mail(to: new_owner)
+    mail(to: [new_owner, previous_owner])
   end
 end
