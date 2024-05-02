@@ -1,12 +1,12 @@
 <% content_for :back_link do %>
-    <%= render MojForms::BackLinkComponent.new(href: settings_path) %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path) do %>
+    <%=t('actions.back')%><span class="govuk-visually-hidden">to <%=t('settings.name')%></span>
   <% end %>
+<% end %>
+
 <%= mojf_settings_screen(
   heading:t('settings.submission.heading'),
   ) do |c| %>
-
-
-
   <nav class="govuk-navigation" aria-labelledby="page-heading">
     <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
       <div>

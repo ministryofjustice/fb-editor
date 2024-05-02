@@ -1,3 +1,8 @@
+.mojf-back-link-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
 .mojf-back-link {
   @extend %govuk-link;
   @extend %govuk-body-s;
@@ -6,7 +11,8 @@
 
   display: inline-flex;
   align-items: center;
-
+  position: absolute;
+  top: 16px;
   left: 0;
 
   > span:first-child {

@@ -22,10 +22,10 @@
   <body class="govuk-template__body govuk-body layout-application <%= "#{controller_name}-#{action_name}" %>">
     <%= render partial: 'partials/header' %>
 
-      <%= render partial: 'partials/form_navigation' %>
+    <%= render partial: 'partials/form_navigation' if show_form_navigation? %>
 
     <% if content_for? :back_link %>
-      <div class="govuk-width-container">
+      <div class="mojf-back-link-wrapper govuk-width-container">
         <%= yield :back_link %>
       </div>
     <% end %>
