@@ -81,6 +81,7 @@ en:
     button_ok: 'OK'
     button_understood: 'Understood'
     button_update: 'Update'
+    button_close: 'Close modal'
     heading: General heading here
     heading_delete: 'Delete "%{label}"?'
     heading_delete_no_default_next: 'You cannot delete this page yet'

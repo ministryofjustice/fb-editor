@@ -267,6 +267,7 @@ class DialogForm {
       autoOpen: false,
       classes: this.#config.classes,
       closeOnEscape: true,
+      closeText: this.#config.closeText,
       height: "auto",
       modal: true,
       resizable: false,
