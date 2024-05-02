@@ -57,17 +57,6 @@ en:
     reference_payment_sentence: "\r\nYour reference number is: {{reference_number}}.\r\nTo complete your submission, you now need to make the required payment at {{payment_link}}."
     service_output_json_endpoint: 'Enter the endpoint URL here'
     service_output_json_key: 'Enter the endpoint key here'
-    transfer_ownership_email:
-      subject: An MoJ Forms form has been transferred to you
-      body: |
-        The following form has been transferred to you:
-        <br><br>%{service_name}<br><br>You are now able to access, edit and publish this form. It will be listed on the ‘Your forms’ page when you next sign in to MoJ Forms.
-        <br><br>%{href_signin}
-        <br><br>This change was requested by %{previous_owner}.
-        <br><br>If you have any questions, please %{href_contact}.
-      href_contact: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
-      href_signin: <a class="govuk-link" href="%{sign_in_link}" target="_blank" rel="noopener noreferrer">Sign in to MoJ Forms</a>
-      sign_in_link: https://moj-forms-editor.service.justice.gov.uk/
   notification_banners:
     important: Important
     success: Success
