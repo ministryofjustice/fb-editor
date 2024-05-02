@@ -1,9 +1,13 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_submission_index_path) do %>
+    <%=t('actions.back')%><span class="govuk-visually-hidden">to <%=t('settings.submission.heading')%></span>
+  <% end %>
+<% end %>
+
 <%= mojf_settings_screen(
   heading:t('settings.confirmation_email.heading'),
   description: t('settings.confirmation_email.description')
   ) do |c| %>
-
-  <% c.with_back_link(href: settings_submission_index_path) %>
 
   <% if @email_components.present? %>
     <% content_for :forms do %>

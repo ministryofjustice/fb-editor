@@ -1,4 +1,4 @@
 class FormController < PermissionsController
   include SetCurrentFormLocale
-  layout 'form'
+  layout 'application'
 end

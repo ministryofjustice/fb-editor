@@ -21,6 +21,12 @@ class ApplicationController < ActionController::Base
   def back_link; end
   helper_method :back_link
 
+  def show_form_navigation?
+    %w[home user_sessions].exclude?(controller_name) &&
+      !(controller_name == 'services' && action_name == 'index')
+  end
+  helper_method :show_form_navigation?
+
   def save_user_data
     return {} if params[:id].blank?
 
