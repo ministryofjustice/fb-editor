@@ -7,9 +7,16 @@
       <%= image_pack_tag "logo--white.svg", alt: t('header.home_link_alt') %>
     </a>
 
-    <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
-      <%= t('header.service_name') %>
-    </a>
+    <% if user_signed_in? %>
+      <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
+        <%= t('header.service_name') %>
+      </a>
+    <% else %>
+      <span class="govuk-header__service-name">
+        <%= t('header.service_name') %>
+      </span>
+    <% end %>
+
 
     <% if user_signed_in? %>
       <nav class="fb-navigation-header" aria-label="Site menu">
