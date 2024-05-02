@@ -255,7 +255,7 @@ class PublishController < FormController
   def page_title
     if @page
       if @page.heading
-        "Publish your form - MoJ Forms Editor"
+        'Publish your form - MoJ Forms Editor'
       end
     else
       super
