@@ -8,4 +8,8 @@ class HomeController < ApplicationController
                      '/auth/auth0'
                    end
   end
+
+  def page_title
+    'Your forms - MoJ Forms Editor'
+  end
 end
