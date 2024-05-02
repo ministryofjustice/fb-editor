@@ -131,6 +131,7 @@ function createPageAdditionDialog(view) {
   var $errors = $dialog.find(".govuk-error-message");
 
   view.pageAdditionDialog = new DialogForm($dialog, {
+    closeText: view.text.dialogs.button_close,
     autoOpen: $errors.length ? true : false,
     onClose: function () {
       $errors.parents().removeClass("error");

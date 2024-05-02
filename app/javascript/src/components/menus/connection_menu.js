@@ -112,6 +112,7 @@ class ConnectionMenu extends ActivatedMenu {
       activator: $link,
       autoOpen: true,
       remote: false,
+      closeText: this.config.view.text.dialogs.button_close,
     });
   }
 

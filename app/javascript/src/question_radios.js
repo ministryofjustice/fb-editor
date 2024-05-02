@@ -89,7 +89,7 @@ class RadiosQuestion extends Question {
     super.addAccessibleLabels();
     // Add a group label for the answers section
     this.$node.find(".EditableComponentCollectionItem").first().parent().attr({
-      "aria-role": "group",
+      "role": "group",
       "aria-label": this.labels.answers,
     });
 
