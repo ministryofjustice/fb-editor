@@ -8,7 +8,9 @@ class Settings::FormOwnerController < FormController
     new_owner = params[:form_owner_settings][:form_owner]
     @form_owner = FormOwnerSettings.new(service_id: service.service_id, metadata: service.to_h, form_owner: new_owner)
     if @form_owner.update
-      EmailService::TransferOwnershipEmail.send_email(service_name: @service.service_name, previous_owner:, new_owner:)
+      email = EmailService::TransferOwnershipEmail.new(service_name: @service.service_name, previous_owner:, new_owner:)
+
+      email.send_email
       transfer_params = {
         service: @service.service_name,
         owner: new_owner
