@@ -19,7 +19,7 @@
               <% f.object.errors.messages.each do |attribute, messages| %>
                 <% messages.each do |message| %>
                   <li>
-                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                    <a href="#form-owner-settings-form-owner-field">
                       <%= message %>
                     </a>
                   </li>
@@ -40,10 +40,10 @@
                                value: '',
                                'aria-labelledby': 'form-owner-legend' %>
       <% end %>
-
       <%= govuk_warning_text(text: t('settings.transfer_ownership.warning'), html_attributes: { id: 'transfer_ownership_warning', 'prevent-unload': true  }) %>
-
+      <br>
       <%= f.submit t('settings.transfer_ownership.heading'), class: 'govuk-button govuk-button--warning', id: 'form-owner-save' %>
+
     </div>
   <% end %>
 <% end %>

@@ -24,7 +24,7 @@
       <% if FeatureFlags.transfer_ownership.enabled? %>
       <div>
         <dt><%= link_to t('settings.transfer_ownership.heading'), form_ownership_settings_service_path(service.service_id), class: 'govuk-link' %></dt>
-        <dd class="govuk-hint" ><%= t('settings.submission.lede') %></dd>
+        <dd class="govuk-hint" ><%= t('settings.transfer_ownership.lede') %></dd>
       </div>
       <% end %>
     </dl>

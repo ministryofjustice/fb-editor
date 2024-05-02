@@ -9,7 +9,7 @@ class Settings::FormOwnerController < FormController
     @form_owner = FormOwnerSettings.new(service_id: service.service_id, metadata: service.to_h, form_owner: new_owner)
     if @form_owner.update
       TransferOwnershipMailer.transfer_ownership(
-        service_name:, previous_owner:, new_owner:
+        service_name: @service.service_name, previous_owner:, new_owner:
       ).deliver_later
 
       transfer_params = {
