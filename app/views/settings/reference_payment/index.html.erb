@@ -1,3 +1,7 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
+
 <%= form_for @reference_payment, url: settings_reference_payment_index_path(service.service_id),
     html: { id: 'reference-payment-settings' },
     builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
@@ -31,8 +35,6 @@
                     )
                   ).html_safe
     ) do |c| %>
-
-    <% c.with_back_link(href: settings_path) %>
 
     <% c.with_notification do %>
       <% if @reference_payment.reference_number_checked? && !@confirmation_email_enabled %>

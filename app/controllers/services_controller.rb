@@ -1,5 +1,4 @@
 class ServicesController < PermissionsController
-  layout 'form', only: :edit
   skip_before_action :authorised_access, only: %i[index create]
   ACCEPTANCE_TEST_USER = 'Acceptance Tests'.freeze
 
