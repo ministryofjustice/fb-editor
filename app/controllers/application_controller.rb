@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def show_form_navigation?
     %w[home user_sessions].exclude?(controller_name) &&
-      !(controller_name == 'services' && action_name == 'index')
+      !(controller_name == 'services' && %w[index create].include?(action_name))
   end
   helper_method :show_form_navigation?
 

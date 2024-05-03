@@ -1,6 +1,5 @@
 module MojForms
   class SettingsScreenComponent < GovukComponent::Base
-    # renders_one :back_link, MojForms::BackLinkComponent
     renders_one :notification
 
     def initialize(heading:, description: '', classes: [], html_attributes: {})
