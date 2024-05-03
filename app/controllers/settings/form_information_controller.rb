@@ -13,6 +13,11 @@ class Settings::FormInformationController < FormController
     end
   end
 
+  def page_title
+    I18n.t('settings.form_information.heading')
+  end
+  helper_method :page_title
+
   private
 
   def service_params

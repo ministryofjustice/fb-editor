@@ -36,6 +36,11 @@ class Settings::EmailController < FormController
     )
   end
 
+  def page_title
+    I18n.t('settings.collection_email.heading')
+  end
+  helper_method :page_title
+
   private
 
   def email_params

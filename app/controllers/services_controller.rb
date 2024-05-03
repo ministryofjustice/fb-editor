@@ -48,7 +48,11 @@ class ServicesController < PermissionsController
   end
 
   def page_title
-    'Your forms - MoJ Forms Editor'
+    if request.path =~ /edit/
+      "Edit form flow - #{service.service_name} - MoJ Forms Editor"
+    else
+      'Your forms - MoJ Forms Editor'
+    end
   end
   helper_method :page_title
 end

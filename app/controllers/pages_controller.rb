@@ -168,8 +168,12 @@ class PagesController < FormController
 
   def page_title
     if @page
-      if @page.heading
+      if @page.heading.present?
         "Edit page - #{@page.heading} - MoJ Forms Editor"
+      elsif @page.components.present?
+        "Edit page - #{@page.components.first['label']} - MoJ Forms Editor"
+      else
+        'Edit page - MoJ Forms Editor'
       end
     else
       "Edit form #{service.service_name} - MoJ Forms Editor"

@@ -253,13 +253,7 @@ class PublishController < FormController
   end
 
   def page_title
-    if @page
-      if @page.heading
-        'Publish your form - MoJ Forms Editor'
-      end
-    else
-      super
-    end
+    'Publish your form - MoJ Forms Editor'
   end
   helper_method :page_title
 end
