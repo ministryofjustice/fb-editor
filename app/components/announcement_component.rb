@@ -10,8 +10,12 @@ class AnnouncementComponent < ViewComponent::Base
           <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
             <%= banner_title %>
             <span class="mojf-announcement__dismiss-link">
-              <%= link_to 'Dismiss', dismiss_announcement_path(announcement), 'data-turbo-method': :put, 
-                                     class: 'govuk-link govuk-link--inverse' if @user %>
+              <% if @user %>
+                <%= link_to dismiss_announcement_path(announcement), 'data-turbo-method': :put, 
+                                     class: 'govuk-link govuk-link--inverse' do %>
+                  <%=t('notification_banners.dismiss')%><span class="govuk-visually-hidden"><%= t('notification_banners.dismiss_assistive')%></span>
+              <% end %>
+              <% end %>
             </span>
           </h2>
         </div>
