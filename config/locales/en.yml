@@ -60,6 +60,8 @@ en:
   notification_banners:
     important: Important
     success: Success
+    dismiss: Dismiss
+    dismiss_assistive: announcement banner
     cookies:
       heading:   "This page can’t be edited. You don’t need to do anything with it because we’ve taken care of it for you."
     privacy:
