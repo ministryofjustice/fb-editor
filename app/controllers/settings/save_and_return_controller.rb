@@ -22,7 +22,7 @@ class Settings::SaveAndReturnController < FormController
   end
 
   def page_title
-    I18n.t('settings.save_and_return.heading')
+    "#{I18n.t('settings.save_and_return.heading')} - Settings - MoJ Forms"
   end
   helper_method :page_title
 

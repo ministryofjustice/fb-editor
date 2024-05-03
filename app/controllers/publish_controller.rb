@@ -253,7 +253,7 @@ class PublishController < FormController
   end
 
   def page_title
-    'Publish your form - MoJ Forms Editor'
+    'Publish your form - MoJ Forms'
   end
   helper_method :page_title
 end

@@ -20,7 +20,7 @@ class Settings::FormNameUrlController < FormController
   end
 
   def page_title
-    I18n.t('settings.form_name.heading')
+    "#{I18n.t('settings.form_name.heading')} - Settings - MoJ Forms"
   end
   helper_method :page_title
 
