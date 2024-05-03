@@ -1,7 +1,5 @@
 <% content_for :back_link do %>
-  <%= render MojForms::BackLinkComponent.new(href: settings_path) do %>
-    <%=t('actions.back')%><span class="govuk-visually-hidden">to <%=t('settings.name')%></span>
-  <% end %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
 <% end %>
 
 <%= mojf_settings_screen(
