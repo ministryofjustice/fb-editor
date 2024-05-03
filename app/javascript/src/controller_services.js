@@ -83,16 +83,6 @@ ServicesController.edit = function () {
     const flowItem = document.querySelector(`[data-fb-id="${id}"]`);
     if (!flowItem) return;
 
-    // the hashchange sets the focus on the id of the hash.  Using
-    // queueMicrotask allows us to move the focus immediately after to where
-    // we want it.
-    queueMicrotask(() => {
-      flowItem
-        .querySelector(".flow-item__title")
-        .focus({ preventScroll: false });
-    });
-    // We use preventscroll on the focus and then call setScrollPosition, to
-    // get better centering of the element
     setScrollPosition(view);
   });
 
@@ -720,8 +710,6 @@ function setScrollPosition(view) {
   const flowItem = document.querySelector(`[data-fb-id="${id}"]`);
   if (!flowItem) return;
 
-  flowItem.setAttribute("tabindex", "-1");
-  flowItem.focus({ preventScroll: false });
   const rect = flowItem.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
   const scrollLeft = window.pageXOfset || document.documentElement.scrollLeft;
