@@ -1,9 +1,11 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
+
 <%= mojf_settings_screen(
       heading:t('settings.transfer_ownership.heading'),
       description: t('settings.transfer_ownership.lede')
     ) do |c| %>
-
-  <% c.with_back_link(href: settings_path) %>
 
 <!--  We use form_for to get the form errors shown at the top-->
   <%= form_for @form_owner, url: transfer_form_ownership_settings_service_path(service.service_id), method: :put, html: { id: 'transfer-ownership-settings' }, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
