@@ -1,9 +1,12 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
+
 <%= mojf_settings_screen(
   heading:t('settings.save_and_return.heading'),
   description: t('settings.save_and_return.description')
   ) do |c| %>
 
-  <% c.with_back_link(href: settings_path) %>
 
 <p><%= t('settings.save_and_return.page_lede', href: t('settings.save_and_return.href')).html_safe %></p>
 
