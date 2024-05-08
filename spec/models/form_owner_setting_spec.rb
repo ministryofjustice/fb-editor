@@ -27,8 +27,18 @@ RSpec.describe FormOwnerSettings do
         ).and_return(service)
       end
 
-      it 'returns true' do
-        expect(form_owner_settings.update).to be_truthy
+      context 'with a known user' do
+        it 'returns true' do
+          expect(form_owner_settings.update).to be_truthy
+        end
+      end
+
+      context 'with insensitive case' do
+        let(:an_existing_user) { 'Legolas@middle-earth.co.uk' }
+
+        it 'match also user' do
+          expect(form_owner_settings.update).to be_truthy
+        end
       end
     end
 
