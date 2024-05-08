@@ -12,6 +12,10 @@ class Settings::FormOwnerController < FormController
         service_name: @service.service_name, previous_owner:, new_owner:
       ).deliver_later
 
+      TransferOwnershipMailer.transfer_ownership_confirmation(
+        service_name: @service.service_name, previous_owner:, new_owner:
+      ).deliver_later
+
       transfer_params = {
         service: @service.service_name,
         owner: new_owner

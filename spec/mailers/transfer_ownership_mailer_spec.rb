@@ -16,7 +16,7 @@ RSpec.describe TransferOwnershipMailer do
 
     it_behaves_like 'a Notify mailer', template_id: 'transfer_ownership_uuid'
 
-    it { expect(mail.to).to eq(['new_owner@example.com', 'previous_owner@example.com']) }
+    it { expect(mail.to).to eq(['new_owner@example.com']) }
     it { expect(mail.govuk_notify_personalisation[:service_name]).to eq(service_name) }
     it { expect(mail.govuk_notify_personalisation[:previous_owner]).to eq(previous_owner) }
   end
