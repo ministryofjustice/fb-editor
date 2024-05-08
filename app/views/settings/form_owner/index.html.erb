@@ -34,6 +34,15 @@
     <div class="transfer-ownership-field">
       <%= f.govuk_fieldset legend: { text:t('settings.transfer_ownership.label'), size: 's', id: 'form-owner-legend' } do %>
         <div class="govuk-hint" id="transfer_ownership_hint"><%= t('settings.transfer_ownership.hint').html_safe %></div>
+
+        <% f.object.errors.messages.each do |attribute, messages| %>
+          <% messages.each do |message| %>
+            <p id="form-owner-settings-form-owner-field" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> <%= message %>
+            </p>
+          <% end %>
+        <% end %>
+
         <%= f.govuk_text_field :form_owner,
                                label: ->  {},
                                class: "govuk-input width-responsive-full",
