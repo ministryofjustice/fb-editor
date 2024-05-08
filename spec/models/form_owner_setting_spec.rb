@@ -50,6 +50,11 @@ RSpec.describe FormOwnerSettings do
           it 'returns false' do
             expect(form_owner_settings.update).to be_falsey
           end
+
+          it 'shows the correct message' do
+            form_owner_settings.update
+            expect(subject.errors.errors.last.message).to include(I18n.t('activemodel.errors.models.transfer_ownership.blank'))
+          end
         end
         context 'when address is invalid' do
           let(:params) { { form_owner: 'a reviewer' } }
@@ -57,12 +62,22 @@ RSpec.describe FormOwnerSettings do
           it 'returns false' do
             expect(form_owner_settings.update).to be_falsey
           end
+
+          it 'shows the correct message' do
+            form_owner_settings.update
+            expect(subject.errors.errors.last.message).to include(I18n.t('activemodel.errors.models.transfer_ownership.invalid'))
+          end
         end
         context 'when address is valid but unknown' do
           let(:params) { { form_owner: 'em@il' } }
 
           it 'returns false' do
             expect(form_owner_settings.update).to be_falsey
+          end
+
+          it 'shows the correct message' do
+            form_owner_settings.update
+            expect(subject.errors.errors.last.message).to include(I18n.t('activemodel.errors.models.transfer_ownership.unknown_user'))
           end
         end
       end
