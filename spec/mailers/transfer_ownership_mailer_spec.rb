@@ -44,5 +44,4 @@ RSpec.describe TransferOwnershipMailer do
     it { expect(mail.govuk_notify_personalisation[:service_name]).to eq(service_name) }
     it { expect(mail.govuk_notify_personalisation[:new_owner]).to eq(new_owner) }
   end
-
 end
