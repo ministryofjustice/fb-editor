@@ -495,6 +495,7 @@ en:
         save_button: Save Live settings
     transfer_ownership:
       heading: Change form owner
+      description: Transfer this form to another MoJ Forms editor.
       lede: Transfer access and editing rights for this form to another MoJ Forms editor.
       label: New form owner’s email address
       hint: The address they use to access MoJ Forms. They must have signed in at least once.
