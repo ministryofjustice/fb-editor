@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   end
 
   def page_title
-    "Sign in - MoJ Forms"
+    'Sign in - MoJ Forms'
   end
   helper_method :page_title
 end
