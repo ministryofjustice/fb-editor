@@ -15,6 +15,14 @@ html {
   position: relative;
 }
 
+html,
+body {
+  scroll-behavior: smooth;
+  @media (prefers-reduced-motion) {
+    scroll-behaviour: auto;
+  }
+}
+
 .publish-create,
 .services-edit {
   main {

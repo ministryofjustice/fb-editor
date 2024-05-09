@@ -127,7 +127,7 @@ PagesController.edit = function () {
   });
 
   // Setting focus for editing.
-  focusOnEditableComponent.call(view);
+  scrollToEditableComponent.call(view);
 
   // Bind listeners
   // --------------
@@ -582,32 +582,16 @@ function openConditionalContentDialog(component, activator, view) {
   }
 }
 
-/* Set focus on first editable component or, if a new component has been
- * added, the first element with that new component.
- **/
-function focusOnEditableComponent() {
+/* If a new component has been added, we scroll the page to the element
+ * scroll behaviour is set to auto, which respects the value set by css
+ * scroll-behaviour property.
+ * **/
+function scrollToEditableComponent() {
   const target = location.hash;
-  setTimeout(() => {
-    if (target && target.match(/^[#\w\d_-]+$/)) {
-      // Newly added component with fragment identifier so find first
-      // first editable item of last component.
-      let $newComponent = $(target);
-      if ($newComponent.length) {
-        if ($newComponent.prop("tagName").toLowerCase() == "editable-content") {
-          $newComponent.get(0).root.focus();
-        } else {
-          $newComponent.data("instance").focus();
-        }
-      }
-    } else {
-      const pageTitle = $("h1 .EditableElement").get(0);
-      if (pageTitle) {
-        pageTitle.focus();
-      } else {
-        $(".fb-editable").eq(0).focus();
-      }
-    }
-  });
+  if (target && target.match(/^[#\w\d_-]+$/)) {
+    const element = document.querySelector(target);
+    element?.scrollIntoView({ behaviour: "auto" });
+  }
 }
 
 /* Add edit functionality and component enhancements to content.
