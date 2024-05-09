@@ -40,10 +40,8 @@ editable-content,
 // Not nice but trying to work around some margin annoyance caused by GDS css
 [data-fb-pagetype="page.multiplequestions"] {
   .EditableCollectionFieldComponent legend,
-  .EditableGroupFieldComponent {
-    legend {
-      display: contents;
-    }
+  .EditableGroupFieldComponent legend {
+    display: contents;
   }
 }
 
@@ -112,10 +110,27 @@ editable-content,
 }
 
 .EditableElement {
+  border: $govuk-border-width-form-element solid transparent;
+  padding: 4px;
+  margin-left: -4px;
   &:focus,
   &.active {
     outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline-offset: 0;
+    border: $govuk-border-width-form-element solid $govuk-input-border-colour;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 $govuk-border-width-form-element;
   }
+}
+
+.govuk-radios__label.EditableElement,
+.govuk-checkboxes__label.EditableElement {
+  margin-left: 11px;
+}
+
+.govuk-radios__hint.EditableElement,
+.govuk-checkboxes__hint.EditableElement {
+  margin-left: 11px;
 }
 
 .EditableCollectionItemMenu {
