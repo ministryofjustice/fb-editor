@@ -8,4 +8,9 @@ class HomeController < ApplicationController
                      '/auth/auth0'
                    end
   end
+
+  def page_title
+    "Sign in - MoJ Forms"
+  end
+  helper_method :page_title
 end
