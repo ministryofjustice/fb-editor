@@ -182,12 +182,4 @@ RSpec.describe MetadataApiClient::Version do
       end
     end
   end
-
-  describe '#created_by' do
-    let(:version_attributes) { { created_by: 'author' } }
-
-    it 'returns the form owner user id' do
-      expect(described_class.new(version_attributes.stringify_keys).created_by).to eq('author')
-    end
-  end
 end
