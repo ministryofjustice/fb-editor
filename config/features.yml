@@ -3,7 +3,3 @@ feature_flags:
     local: true
     test: true   # formbuilder-saas-test
     live: false  # formbuilder-saas-live
-  transfer_ownership:
-    local: true
-    test: true   # formbuilder-saas-test
-    live: false  # formbuilder-saas-live
