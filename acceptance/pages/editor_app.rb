@@ -99,6 +99,12 @@ class EditorApp < SitePrism::Page
   element :external_start_page_thumbnail, '.flow-thumbnail.external-url-thumbnail'
   element :start_page_thumbnail, '.flow-thumbnail.start'
 
+  # form ownership
+  element :form_ownership_link, :link, I18n.t('settings.transfer_ownership.heading')
+  element :transfer_ownership_button, :button, I18n.t('settings.transfer_ownership.heading')
+  element :confirmation_transfer_button, :button, I18n.t('dialogs.button_understood')
+
+
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
     find('#main-content', visible: true)
     preview_page_images.map do |page_flow|
