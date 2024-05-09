@@ -10,7 +10,7 @@ class HomeController < ApplicationController
   end
 
   def page_title
-    'Sign in - MoJ Forms'
+    I18n.t('home.show.title')
   end
   helper_method :page_title
 end
