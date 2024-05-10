@@ -169,14 +169,21 @@ class PagesController < FormController
   def page_title
     if @page
       if @page.heading.present?
-        "Edit page - #{@page.heading} - MoJ Forms"
+        if @page['_type'] == 'page.standalone'
+          "#{@page.heading} - MoJ Forms"
+        else
+          "Edit page - #{@page.heading} - MoJ Forms"
+        end
       elsif @page.components.present?
-        "Edit page - #{@page.components.first['label']} - MoJ Forms"
+        if @page.components.first['label'].present?
+          "Edit page - #{@page.components.first['label']} - MoJ Forms"
+        elsif @page.components.first['legend'].present?
+          "Edit page - #{@page.components.first['legend']} - MoJ Forms"
       else
         'Edit page - MoJ Forms'
       end
     else
-      "Edit form #{service.service_name} - MoJ Forms"
+      "Edit form - #{service.service_name} - MoJ Forms"
     end
   end
   helper_method :page_title
