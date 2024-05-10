@@ -1201,6 +1201,7 @@ h1 span.EditableElement {
   }
 
   .govuk-panel__title {
+    color: govuk-colour("white");
     margin-bottom: govuk-spacing(
       6
     ); // Counter other rules to get back to original.
