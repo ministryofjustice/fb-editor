@@ -720,6 +720,12 @@ en:
           reserved: "That name is used for something else"
           has_space: "Your page name cannot include spaces"
           has_special_chars:  "Your page name cannot include special characters other than hyphens (-)"
+        service_creation:
+          blank: Enter a form name
+          taken: Your form name is already used by another form. Please modify it.
+          too_long: "Form name must be %{count} characters or less"
+          too_short: "Form name must be %{count} characters or more"
+          invalid: Form name contains characters that are not allowed
         branch:
           blank: "Select a destination for '%{attribute}'"
         conditional:
@@ -799,7 +805,7 @@ en:
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"
-        too_long: "%{attribute} must be %{count} characters or fewer"
+        too_long: "%{attribute} must be %{count} characters or less"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
