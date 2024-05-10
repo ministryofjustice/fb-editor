@@ -179,6 +179,7 @@ class PagesController < FormController
           "Edit page - #{@page.components.first['label']} - MoJ Forms"
         elsif @page.components.first['legend'].present?
           "Edit page - #{@page.components.first['legend']} - MoJ Forms"
+        end
       else
         'Edit page - MoJ Forms'
       end
