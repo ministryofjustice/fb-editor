@@ -18,7 +18,7 @@ spec:
           containers:
           - name: "fb-editor-workers-{{ .Values.environmentName }}"
             image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
-            command: ['bin/rails', 'db:sessions:trim']
+            command: ['SESSION_DAYS_TRIM_THRESHOLD=1', 'bin/rails', 'db:sessions:trim']
             securityContext:
               runAsUser: 1001
             imagePullPolicy: Always
