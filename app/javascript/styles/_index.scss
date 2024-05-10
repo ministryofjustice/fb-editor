@@ -73,8 +73,9 @@ a[disabled] {
 }
 
 
-.pages-edit .fb-main-grid-wrapper {
-  padding-left: govuk-spacing(6);
+// .pages-edit .fb-main-grid-wrapper {
+.govuk-width-container {
+  padding-left: govuk-spacing(7);
 }
 
 /* FB-Editor styles

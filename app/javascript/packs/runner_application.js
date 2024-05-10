@@ -9,7 +9,8 @@ require("../src/runner/analytics")
 require("../src/runner/index")
 
 // Entry point for fb-editor stylesheets
-import "../styles/application.scss"
+import "../styles/runner_application.scss"
+
 
 const accessibleAutocomplete = require("accessible-autocomplete")
 import 'accessible-autocomplete/dist/accessible-autocomplete.min.css'
