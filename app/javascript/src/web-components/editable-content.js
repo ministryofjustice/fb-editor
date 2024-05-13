@@ -92,12 +92,12 @@ class EditableContent extends HTMLElement {
         break;
       case "label":
         if (newValue != oldValue) {
-          this.input.setAttribute("aria-label", newValue);
+          this.input?.setAttribute("aria-label", newValue);
         }
         break;
       case "describedby":
         if (newValue != oldValue) {
-          this.input.setAttribute("aria-describedby", newValue);
+          this.input?.setAttribute("aria-describedby", newValue);
         }
         break;
     }
@@ -149,7 +149,7 @@ class EditableContent extends HTMLElement {
   // returns the markdown content of the input after filtering it through any
   // configured filters
   get value() {
-    let val = this.input.value;
+    let val = this.input?.value;
 
     for (const [key, filterFunction] of Object.entries(this.markdownFilters)) {
       val = filterFunction(val);
