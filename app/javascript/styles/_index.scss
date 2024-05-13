@@ -72,6 +72,12 @@ a[disabled] {
   min-height: 55vh;
 }
 
+
+// .pages-edit .fb-main-grid-wrapper {
+.govuk-width-container {
+  padding-left: govuk-spacing(7);
+}
+
 /* FB-Editor styles
  * ---------------- */
 .fb-editable {
