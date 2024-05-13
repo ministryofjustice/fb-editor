@@ -5,27 +5,18 @@
   border: none;
   padding: 0;
 
-  &:after {
-    background-color: $govuk-border-colour;
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 12%;
-    width: 5px;
-    height: 100%;
-  }
-
   &.error {
-    &:after {
-      background-color: $govuk-error-colour;
-    }
-
     p {
       color: $govuk-error-colour;
       font-weight: bold;
       margin-top: govuk-spacing(3);
       margin-bottom: govuk-spacing(1);
+    }
+    .expression__question {
+      border-color: $govuk-error-colour;
+      > p:first-child {
+        margin-top: 0;
+      }
     }
   }
 }
@@ -34,12 +25,28 @@
   margin-top: govuk-spacing(9);
 }
 
+.expression__label {
+  @include govuk-font($size: 24);
+  font-weight: bold;
+  text-align: right;
+}
+
+.expression__question {
+  border-left: 5px solid $govuk-border-colour;
+  padding-left: govuk-spacing(2);
+
+  &--no-border {
+    border-color: transparent;
+  }
+}
+
+.expression__component {
+  width: 100%;
+}
 
 .expression__condition {
   clear: both;
-  margin-left: 15%;
   padding-top: govuk-spacing(7);
-  width: 85%;
 
   @include govuk-media-query($until: tablet) {
     & {
@@ -58,7 +65,6 @@
 }
 
 .expression__remover {
-  position: absolute;
-  right: -50px;
-  top: 0;
+  justify-self: center;
+  position: relative;
 }
