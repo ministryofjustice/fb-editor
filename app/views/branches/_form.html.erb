@@ -40,36 +40,40 @@
     <span class="govuk-heading-m"><%= t('branches.hint_otherwise') %></span>
   </h2>
 
-  <div class="conditional__question govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error' %>">
-    <% if @branch.errors[:default_next].any? %>
-      <p id="branch_default_next_error" class="govuk-error-message">
-        <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
-        <%= @branch.errors[:default_next].first.message %>
-      </p>
-    <% end %>
-
-    <div class="label">
+  <div class="conditional__row expression govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error error' %>">
+    
+    <div class="expression__label">
       <%= t('branches.goto') %>
     </div>
-    <p class="govuk-visually-hidden" id="branch_default_next_hint">The page that will be displayed if none of the branches have their conditions matched</p>
-    <select class="govuk-select" name="branch[default_next]" id="branch_default_next" class="conditional__destination" aria-label="Destination page" aria-describedby="branch_default_next_error branch_default_next_hint destination_otherwise_hint">
-      <%= render partial: "destinations_list",
-        locals: {
-          destinations: branch_destinations,
-          selected: @branch.previous_flow_default_next
-        }
-      %>
-      <% if branch_detached_destinations.present? %>
-        <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
-          <%= render partial: "destinations_list",
-            locals: {
-              destinations: branch_detached_destinations,
-              selected: @branch.previous_flow_default_next
-            }
-          %>
-        </optgroup>
+
+    <div class="expression__question expression__question--no-border">
+      <% if @branch.errors[:default_next].any? %>
+        <p id="branch_default_next_error" class="govuk-error-message">
+          <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
+          <%= @branch.errors[:default_next].first.message %>
+        </p>
       <% end %>
-    </select>
+
+      <p class="govuk-visually-hidden" id="branch_default_next_hint">The page that will be displayed if none of the branches have their conditions matched</p>
+      <select class="govuk-select expression__component" name="branch[default_next]" id="branch_default_next" class="conditional__destination" aria-label="Destination page" aria-describedby="branch_default_next_error branch_default_next_hint destination_otherwise_hint">
+        <%= render partial: "destinations_list",
+          locals: {
+            destinations: branch_destinations,
+            selected: @branch.previous_flow_default_next
+          }
+        %>
+        <% if branch_detached_destinations.present? %>
+          <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
+            <%= render partial: "destinations_list",
+              locals: {
+                destinations: branch_detached_destinations,
+                selected: @branch.previous_flow_default_next
+              }
+            %>
+          </optgroup>
+        <% end %>
+      </select>
+    </div>
   </div>
 </div>
 

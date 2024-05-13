@@ -33,46 +33,51 @@
         <% end %>
       </template>
 
-      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
-        <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
-      <% end %>
-
-      <div class="conditional__question govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error' : '' %>">
-        <% if conditional.object.errors[:next].any? %>
-          <p id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next_error" class="govuk-error-message">
-          <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
-            <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
-          </p>
+      <div class="conditional__row">
+        <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close conditional__add-expression' do %>
+          <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
         <% end %>
+      </div>
 
-        <div class="label">
+      <div class="conditional__row expression govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error error' : '' %>">
+
+        <div class="expression__label">
           <%= t('branches.goto') %>
         </div>
 
-        <select class="govuk-select conditional__destination"
-                name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
-                id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
-                aria-label="Destination page for "
-                aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> destination_hint"
-                data-conditional-target="destination">
-          <option value=""><%= t('branches.select_destination') %></option>
-          <%= render partial: "destinations_list",
-            locals: {
-              destinations: branch_destinations,
-              selected: conditional.object.next
-            }
-          %>
-          <% if branch_detached_destinations.present? %>
-            <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
-              <%= render partial: "destinations_list",
-                locals: {
-                  destinations: branch_detached_destinations,
-                  selected: conditional.object.next
-                }
-              %>
-            </optgroup>
+        <div class="expression__question expression__question--no-border">
+
+          <% if conditional.object.errors[:next].any? %>
+            <p id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next_error" class="govuk-error-message">
+            <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span>
+              <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
+            </p>
           <% end %>
-        </select>
+          <select class="govuk-select expression__component"
+                  name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
+                  id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
+                  aria-label="Destination page for "
+                  aria-describedby="<%= conditional.object.errors[:next].any? ? 'branch_conditionals_attributes_'+conditional.options[:child_index].to_s+'_next_error' : '' %> destination_hint"
+                  data-conditional-target="destination">
+            <option value=""><%= t('branches.select_destination') %></option>
+            <%= render partial: "destinations_list",
+              locals: {
+                destinations: branch_destinations,
+                selected: conditional.object.next
+              }
+            %>
+            <% if branch_detached_destinations.present? %>
+              <optgroup class="branch-optgroup" label="<%= t('branches.detached_list') %>">
+                <%= render partial: "destinations_list",
+                  locals: {
+                    destinations: branch_detached_destinations,
+                    selected: conditional.object.next
+                  }
+                %>
+              </optgroup>
+            <% end %>
+          </select>
+        </div>
       </div>
 
     </div>

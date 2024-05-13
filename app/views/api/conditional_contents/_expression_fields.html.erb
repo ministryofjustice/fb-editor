@@ -1,4 +1,4 @@
-<div  class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
+<div  class="conditional__row expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
       data-expressions-target="expression"
       data-conditional-target="expression"
       data-controller="expression"
@@ -10,11 +10,11 @@
       data-expression-other-label-value="<%= t('branches.expression.and') %>">
 
 
-  <div class="conditional__question">
-    <div class="label" data-expression-target="label">
+    <div class="expression__label" data-expression-target="label">
       <%= t('branches.expression.if') %>
     </div>
 
+    <div class="expression__question">
     <%= expression.select :component,
       @conditional_content.previous_questions,
       { include_blank: t('branches.select_question') },
@@ -30,7 +30,6 @@
     %>
     <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' hidden><%= t('activemodel.errors.models.component_expression.unsupported') %></p>
     <p class="expression__error" data-expression-target="errorMessage" data-error-type='samepage' hidden><%= t('activemodel.errors.models.component_expression.same_page') %></p>
-  </div>
 
     <%= render partial: 'expression_condition',
       locals: {
@@ -40,6 +39,7 @@
         expression_index: expression.options[:child_index]
       }
     %>
+</div>
 
     <%= render(MojForms::IconButtonComponent.new(
           label: 'Delete condition', 
