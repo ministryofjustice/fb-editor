@@ -8,3 +8,9 @@ ActionMailer::Base.add_delivery_method(
 Rails.configuration.govuk_notify_templates = Rails.application.config_for(
   :govuk_notify_templates, env: ENV.fetch('PLATFORM_ENV', 'test')
 ).with_indifferent_access
+
+Rails.application.config.to_prepare do
+  unless HostEnv.live?
+    NotifyMailer.register_interceptor(NotifyMailerInterceptor)
+  end
+end
