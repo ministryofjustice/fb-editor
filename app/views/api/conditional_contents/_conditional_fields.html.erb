@@ -31,9 +31,13 @@
         <% end %>
       </template>
 
-      <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close' do %>
-        <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'rule', index: conditional.options[:child_index].to_i+1)%></span>
-      <% end %>
+      <div class="conditional__row">
+        <div class="expression__layout expression__layout--no-border">
+          <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close conditional__add-expression' do %>
+            <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'rule', index: conditional.options[:child_index].to_i+1)%></span>
+          <% end %>
+        </div>
+      </div>
     </div>
   </fieldset>
   <div class="conditional-separator">or</div>
