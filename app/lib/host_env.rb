@@ -12,7 +12,7 @@ module HostEnv
     def env_name
       return LOCAL if Rails.env.development? || Rails.env.test?
 
-      ENV.fetch('PLATFORM_ENV')
+      ENV.fetch('PLATFORM_ENV', '')
     end
 
     private

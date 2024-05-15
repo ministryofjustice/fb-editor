@@ -50,7 +50,7 @@ describe HostEnv do
   describe 'PLATFORM_ENV variable is set in production envs' do
     before do
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
-      allow(ENV).to receive(:fetch).with('PLATFORM_ENV').and_return(env_name)
+      allow(ENV).to receive(:fetch).with('PLATFORM_ENV', '').and_return(env_name)
     end
 
     context 'test host' do
