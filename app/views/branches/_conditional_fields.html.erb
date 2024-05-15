@@ -34,13 +34,15 @@
       </template>
 
       <div class="conditional__row">
+        <div class="expression__layout expression__layout--no-border">
         <%= button_tag type: 'button', data: { action: 'dynamic-fields#add', dynamic_fields_type_param: 'expression'}, class: 'govuk-link fb-link-button prevent-modal-close conditional__add-expression' do %>
           <%= I18n.t('conditional_content.add_condition') %><span class="govuk-visually-hidden"><%= I18n.t('conditional_content.condition_target', type: 'branch', index: conditional.options[:child_index].to_i+1)%></span>
         <% end %>
+        </div>
       </div>
 
       <div class="conditional__row expression govuk-!-margin-top-5 govuk-form-group <%= conditional.object.errors[:next].any? ? 'govuk-form-group--error error' : '' %>">
-
+      <div class="expression__layout expression__layout--no-border">
         <div class="expression__label">
           <%= t('branches.goto') %>
         </div>
@@ -78,6 +80,7 @@
             <% end %>
           </select>
         </div>
+      </div>
       </div>
 
     </div>

@@ -12,11 +12,16 @@
       margin-top: govuk-spacing(3);
       margin-bottom: govuk-spacing(1);
     }
+
     .expression__question {
       border-color: $govuk-error-colour;
       > p:first-child {
         margin-top: 0;
       }
+    }
+
+    .expression__layout {
+      border-color: $govuk-error-colour;
     }
   }
 }
@@ -25,18 +30,42 @@
   margin-top: govuk-spacing(9);
 }
 
-.expression__label {
-  @include govuk-font($size: 24);
-  font-weight: bold;
-  text-align: right;
-}
-
-.expression__question {
+.expression__layout {
   border-left: 5px solid $govuk-border-colour;
   padding-left: govuk-spacing(2);
 
   &--no-border {
-    border-color: transparent;
+    border-left: none;
+  }
+
+  @include govuk-media-query($from: tablet) {
+    display: grid;
+    grid-template-columns: min(20%, 80px) auto;
+    column-gap: govuk-spacing(2);
+    border-left: none;
+  }
+}
+
+.expression__label {
+  @include govuk-font($size: 24);
+  font-weight: bold;
+  margin-bottom: govuk-spacing(2);
+  @include govuk-media-query($from: tablet) {
+    text-align: right;
+    margin-bottom: 0;
+    // align-self: center;
+    padding-top: govuk-spacing(1);
+  }
+}
+
+.expression__question {
+  @include govuk-media-query($from: tablet) {
+    border-left: 5px solid $govuk-border-colour;
+
+    padding-left: govuk-spacing(2);
+    &--no-border {
+      border-color: transparent;
+    }
   }
 }
 
@@ -46,7 +75,7 @@
 
 .expression__condition {
   clear: both;
-  padding-top: govuk-spacing(7);
+  padding-top: govuk-spacing(6);
 
   @include govuk-media-query($until: tablet) {
     & {

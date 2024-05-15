@@ -9,7 +9,7 @@
           data-expression-first-label-value="<%= t('branches.expression.if') %>"
           data-expression-other-label-value="<%= t('branches.expression.and') %>">
   
-
+    <div class="expression__layout">
       <div class="expression__label" data-expression-target="label">
         <%= t('branches.expression.if') %>
       </div>
@@ -46,6 +46,7 @@
         }
       %>
 
+      </div>
     </div>
 
     <%= render(MojForms::IconButtonComponent.new(
