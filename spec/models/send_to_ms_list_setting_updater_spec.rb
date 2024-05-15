@@ -29,10 +29,6 @@ RSpec.describe MsListSettingsUpdater do
 
         send_to_ms_list_settings_updater.create_or_update!
       end
-
-      it 'should create the service configurations' do
-        
-      end
     end
   end
 end
