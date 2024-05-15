@@ -2,12 +2,12 @@
   border: 2px solid transparent;
 
   @include govuk-media-query($until: tablet) {
-    padding-right: govuk-spacing(5);
+    padding-right: govuk-spacing(3);
   }
 
   padding-top: govuk-spacing(9);
   padding-bottom: govuk-spacing(4);
-  padding-right: 100px;
+  padding-right: govuk-spacing(4);
   position: relative;
 
   &:last-child {
@@ -27,6 +27,9 @@
 }
 
 .conditional--otherwise {
+  @include govuk-media-query($until: tablet) {
+    margin-bottom: govuk-spacing(6);
+  }
   padding-top: govuk-spacing(3);
 
   > h2 span {
@@ -34,34 +37,18 @@
   }
 }
 
-.conditional__expressions {
-  margin-left: govuk-spacing(4);
+.conditional__row {
+  display: grid;
+  grid-template-columns: auto 40px;
+  column-gap: govuk-spacing(2);
 }
 
-.conditional__question {
-  padding-left: 15%;
-  position: relative;
-
-  .label {
-    @include govuk-font($size: 24);
-
-    display: inline-block;
-    font-weight: bold;
-    left: 0;
-    position: absolute;
-    top: 5px;
-  }
-
-  select {
-    width: 100%;
-  }
-
-  &.govuk-form-group--error {
-    border-left: none;
-  }
-
-  > h3 {
-    margin-top: 0;
+.conditional__add-expression {
+  grid-column: 2 / 3;
+  justify-self: start;
+  margin-left: govuk-spacing(1);
+  @include govuk-media-query($from: tablet) {
+    margin-left: govuk-spacing(3);
   }
 }
 
