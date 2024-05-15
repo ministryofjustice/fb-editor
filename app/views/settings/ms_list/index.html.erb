@@ -3,7 +3,9 @@
   description: t('settings.ms_list.description', href: govuk_link_to(t('settings.ms_list.link_text'), t('settings.ms_list.link_url'))).html_safe
   ) do |c| %>
 
-  <% c.with_back_link(href: settings_submission_index_path) %>
+  <% content_for :back_link do %>
+    <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+  <% end %>
 
   <% content_for :forms do %>
     <%= render 'form', object: @ms_list_settings_dev, deployment_environment: 'dev' %>
