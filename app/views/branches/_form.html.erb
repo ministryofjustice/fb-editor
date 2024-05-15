@@ -41,7 +41,7 @@
   </h2>
 
   <div class="conditional__row expression govuk-form-group <%= @branch.errors[:default_next].empty? ? '' : 'govuk-form-group--error error' %>">
-    
+    <div class="expression__layout expression__layout--no-border"> 
     <div class="expression__label">
       <%= t('branches.goto') %>
     </div>
@@ -73,6 +73,7 @@
           </optgroup>
         <% end %>
       </select>
+    </div>
     </div>
   </div>
 </div>

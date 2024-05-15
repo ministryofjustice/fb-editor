@@ -7,7 +7,7 @@
 
   padding-top: govuk-spacing(9);
   padding-bottom: govuk-spacing(4);
-  padding-right: 50px;
+  padding-right: govuk-spacing(4);
   position: relative;
 
   &:last-child {
@@ -27,6 +27,9 @@
 }
 
 .conditional--otherwise {
+  @include govuk-media-query($until: tablet) {
+    margin-bottom: govuk-spacing(6);
+  }
   padding-top: govuk-spacing(3);
 
   > h2 span {
@@ -34,20 +37,19 @@
   }
 }
 
-.conditional__expressions {
-  // margin-left: govuk-spacing(4);
-}
-
 .conditional__row {
   display: grid;
-  grid-template-columns: 16% auto 40px;
+  grid-template-columns: auto 40px;
   column-gap: govuk-spacing(2);
 }
 
 .conditional__add-expression {
   grid-column: 2 / 3;
   justify-self: start;
-  margin-left: govuk-spacing(3);
+  margin-left: govuk-spacing(1);
+  @include govuk-media-query($from: tablet) {
+    margin-left: govuk-spacing(3);
+  }
 }
 
 .conditional__remover {
