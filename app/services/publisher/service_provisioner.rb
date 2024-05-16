@@ -187,7 +187,7 @@ class Publisher
     end
 
     def ms_graph_root_url
-      ENV['MS_GRAPH_ROOT_URL']
+      ENV['MS_GRAPH_ROOT_URL'] || 'https://graph.microsoft.com/v1.0/'
     end
 
     def ms_list_site_id
