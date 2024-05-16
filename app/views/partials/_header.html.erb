@@ -25,9 +25,7 @@
             <%= link_to t('.forms'), services_path %>
           </li>
           <li>
-            <%= link_to t('.user_guide_url'), target: :_blank, noreferrer: true, nofollow: true do %>
-              <%= t('.user_guide') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
-            <% end %>
+            <%= link_to t('.user_guide'), t('.user_guide_url'), target: :_blank, noreferrer: true, nofollow: true %>
           </li>
           <% if moj_forms_dev? || moj_forms_admin? %>
             <li>
@@ -35,9 +33,7 @@
             </li>
           <% else %>
             <li>
-              <%= link_to t('.feedback_form_url'), target: :_blank, noreferrer: true, nofollow: true do %>
-                <%= t('.send_feedback') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
-              <% end %>
+              <%= link_to t('.send_feedback'), t('.feedback_form_url'), target: :_blank, noreferrer: true, nofollow: true %>
             </li>
           <% end %>
           <li>

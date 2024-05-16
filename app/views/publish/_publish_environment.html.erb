@@ -9,10 +9,7 @@
   <% else %>
     <span class="govuk-!-font-weight-bold">Your <%= text_for_environment(environment) %> form will be published to: </span><%= form_url(environment) %><br/>
     <% if environment == 'dev' %>
-    <%= govuk_link_to settings_form_name_url_index_path do %>
-      Change<span class="govuk-visually-hidden">form name</span>
-    <% end %>
-    </p>
+      <%= govuk_link_to 'Change', settings_form_name_url_index_path %></p>
     <% end %>
   <% end %>
 
