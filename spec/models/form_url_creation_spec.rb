@@ -106,7 +106,7 @@ RSpec.describe FormUrlCreation do
     context 'when service name contains special characters' do
       let(:attributes) do
         {
-          service_name: 'All 0f the ("special") characters?!'
+          service_name: 'All 0f the_("special") characters?!'
         }
       end
       let(:expected_service_slug) { 'all-0f-the-special-characters' }
