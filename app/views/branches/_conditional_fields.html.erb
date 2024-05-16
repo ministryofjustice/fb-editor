@@ -55,7 +55,7 @@
               <%= conditional.object.errors[:next].first + (conditional.options[:child_index]+1).to_s %>
             </p>
           <% end %>
-          <select class="govuk-select expression__component"
+          <select class="govuk-select expression__component conditional__destination"
                   name="branch[conditionals_attributes][<%= conditional.options[:child_index] %>][next]"
                   id="branch_conditionals_attributes_<%= conditional.options[:child_index] %>_next"
                   aria-label="Destination page for "
