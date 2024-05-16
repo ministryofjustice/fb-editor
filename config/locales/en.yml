@@ -32,6 +32,7 @@ en:
   assistive_text:
     warning: warning
     incomplete: incomplete
+    new_tab: (opens in a new tab)
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
@@ -433,13 +434,13 @@ en:
       form_name:
         label: 'Form name'
         lede: This appears in the header of all your form pages and is what your form is listed as in the MoJ Forms editor. A good name describes the task the form is designed for and starts with an action, such as "Get help with..." or "Apply for..." %{href}.
-        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form</a>
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       form_slug:
         label: 'URL'
         lede: "This will be your form's web address when it goes live. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />Changing a live form's URL can cause problems for users so this option is only available before a form has been published to Live."
         lede_live: "This is your form's live web address. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />As your form is now live, you cannot change your URL here. %{contact_us} to discuss changing your URL."
-        contact_us: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact" target="_blank" rel="noopener noreferrer">Contact us</a>
-        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards</a>
+        contact_us: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact" target="_blank" rel="noopener noreferrer">Contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
         hint: Maximum 57 characters. It cannot start with a number or include spaces or special characters except hyphens
         domain: .form.service.justice.gov.uk
     form_analytics:
@@ -458,7 +459,7 @@ en:
       link: Reference numbers and GOV.UK Pay
       heading: Reference numbers and GOV.UK Pay
       description: Generate and provide your users with a unique reference number for each submission. You can combine a reference number with a GOV.UK Pay payment link to easily match MoJ Forms submissions when taking payments. (For details, see the %{href}.)
-      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">user guide</a>
+      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">user guide<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       lede: Generate a unique reference number for each submission and link users to your GOV.UK Pay payment page.
     reference_number:
       warning: Updating these settings will reset the confirmation and submission emails and any changes you have made to the subjects and messages will be lost.
@@ -472,7 +473,7 @@ en:
     payment_link:
       legend: GOV.UK Pay payment links
       hint: This adds a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href}.)
-      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account</a>
+      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       url: 'https://www.payments.service.gov.uk/'
       checkbox_label: Add payment links with reference numbers
       url_label: Your GOV.UK Pay payment link URL
@@ -481,7 +482,7 @@ en:
       lede: 'Give users the option of saving a partially completed form.'
       description: 'Give users the option of saving a partially completed form for up to 28 days.'
       page_lede: 'This places a save button at the bottom of each page of your form which will lead users through the save process. For details, see the %{href}'
-      href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings/#save-for-later" target="_blank" rel="noopener noreferrer">user guide section on save for later.</a>
+      href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings/#save-for-later" target="_blank" rel="noopener noreferrer">user guide section on save for later.<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       label: Enable save for later
     submission:
       heading: 'Submission settings'
@@ -502,7 +503,7 @@ en:
       warning: Once you change the form owner, you will no longer be able to access or edit this form in MoJ Forms.
       confirmation_title: The form owner has been changed
       confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
-      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us</a>
+      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive your form data in PDF and CSV attached to emails.'
