@@ -15,6 +15,7 @@ class ServiceConfiguration < ApplicationRecord
     MS_LIST_ID
     MS_DRIVE_ID
     MS_SITE_ID
+    MS_GRAPH_ROOT_URL
   ]
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
