@@ -7,9 +7,7 @@
     <%= f.object.class.human_attribute_name :pdf_hint %>
   </div>
   <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-5">
-  <%= link_to asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' do %>
-    <%= f.object.class.human_attribute_name(:pdf_sample) %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
-  <% end %>
+    <%= link_to f.object.class.human_attribute_name(:pdf_sample), asset_url('/sample.pdf'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' %>
   </p>
 
   <%= f.govuk_text_field :service_email_pdf_heading,
