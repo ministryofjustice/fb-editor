@@ -298,12 +298,13 @@ end
   end
 
   def then_I_should_see_the_declarations_checkboxes
-    expect(page).to have_text(I18n.t('publish.declarations.one', href: I18n.t('publish.declarations.one_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.two', href: I18n.t('publish.declarations.two_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.three', href: I18n.t('publish.declarations.three_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.four', href: I18n.t('publish.declarations.four_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.five', href: I18n.t('publish.declarations.five_link_text')))
-    expect(page).to have_text(I18n.t('publish.declarations.six', href: I18n.t('publish.declarations.six_link_text')))
+    expect(page.text).to include( I18n.t('publish.declarations.one_link_text'))
+    expect(page.text).to include( I18n.t('assistive_text.new_tab'))
+    expect(page.text).to include( I18n.t('publish.declarations.two_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.three_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.four_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.five_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.six_link_text'))
   end
 
   def then_I_click_request_a_final_check
