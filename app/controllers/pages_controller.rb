@@ -169,7 +169,7 @@ class PagesController < FormController
   def page_title
     if @page
       if @page.heading.present?
-        if @page['_type'] == 'page.standalone' && @page.['_id'] == 'page.cookies'
+        if @page['_type'] == 'page.standalone' && @page['_id'] == 'page.cookies'
           "#{@page.heading} - MoJ Forms"
         else
           "Edit page - #{@page.heading} - MoJ Forms"
