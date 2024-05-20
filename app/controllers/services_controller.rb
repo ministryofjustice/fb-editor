@@ -45,4 +45,13 @@ class ServicesController < PermissionsController
       :service_creation
     ).permit(:service_name).merge(current_user:)
   end
+
+  def page_title
+    if request.path =~ /edit/
+      "Pages flow - #{service.service_name} - MoJ Forms"
+    else
+      'Your forms - MoJ Forms'
+    end
+  end
+  helper_method :page_title
 end

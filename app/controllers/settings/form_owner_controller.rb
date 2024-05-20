@@ -26,6 +26,11 @@ class Settings::FormOwnerController < FormController
     end
   end
 
+  def page_title
+    "#{I18n.t('settings.transfer_ownership.heading')} - Settings - MoJ Forms"
+  end
+  helper_method :page_title
+
   private
 
   # We have to initialise the form setting so it does not fail in the view and we can show the error
