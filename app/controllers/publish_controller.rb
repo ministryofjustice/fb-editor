@@ -253,7 +253,7 @@ class PublishController < FormController
   end
 
   def page_title
-    "Publishing - #{service.service_name} MoJ Forms"
+    "Publishing - #{service.service_name} - MoJ Forms"
   end
   helper_method :page_title
 end
