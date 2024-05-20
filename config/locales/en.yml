@@ -513,7 +513,7 @@ en:
       description: Send the people completing your form a confirmation email with a copy of their answers.
   warnings:
     confirmation_email:
-      message: 'Your form must include an email question to enable a %{href}.'
+      message: 'Your form must include an email question to enable a %{href}'
       link_text: confirmation email
       link_url: 'https://moj-forms.service.justice.gov.uk/settings/#confirmation-email'
     submission_pages:
