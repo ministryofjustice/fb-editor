@@ -72,7 +72,7 @@ class BranchesController < FormController
 
   def page_title
     if @branch
-      "Edit branch - #{@branch.title} - MoJ Forms"
+      "Edit - #{@branch.title} - MoJ Forms"
     else
       'Edit branch - MoJ Forms'
     end
