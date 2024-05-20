@@ -8,4 +8,9 @@ class HomeController < ApplicationController
                      '/auth/auth0'
                    end
   end
+
+  def page_title
+    I18n.t('home.show.title')
+  end
+  helper_method :page_title
 end

@@ -239,4 +239,9 @@ class ApplicationController < ActionController::Base
     external_start_page_url.empty? ? root_path : external_start_page_url
   end
   helper_method :start_page_url
+
+  def page_title
+    'MoJ Forms'
+  end
+  helper_method :page_title
 end
