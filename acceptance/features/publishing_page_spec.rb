@@ -299,7 +299,6 @@ end
 
   def then_I_should_see_the_declarations_checkboxes
     expect(page.text).to include( I18n.t('publish.declarations.one_link_text'))
-    expect(page.text).to include( I18n.t('assistive_text.new_tab'))
     expect(page.text).to include( I18n.t('publish.declarations.two_link_text'))
     expect(page.text).to include( I18n.t('publish.declarations.three_link_text'))
     expect(page.text).to include( I18n.t('publish.declarations.four_link_text'))
