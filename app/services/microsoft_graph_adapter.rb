@@ -30,7 +30,7 @@ class MicrosoftGraphAdapter
   end
 
   def create_drive(drive_id)
-    uri = URI.parse("/sites/#{site_id}/drive/items/root/children")
+    uri = URI.parse("#{root_graph_url}/sites/#{site_id}/drive/items/root/children")
 
     connection ||= Faraday.new(uri) do |conn|
     end
@@ -118,9 +118,9 @@ class MicrosoftGraphAdapter
 
   def display_name_for(component, page_label)
     if component['_type'] == 'radios' || component['_type'] == 'checkboxes'
-      "#{page_label} - #{component['legend']}" || page_label # use the page label or legend if it's a checkbox component
+      component['legend'] || page_label # use the page label or legend if it's a checkbox component
     else
-      component['label'] || component['legend'] || component['lede'] || '' # autocomplete has a legend not a label
+      component['label'] || component['legend'] || component['lede'] || page_label || '' # autocomplete has a legend not a label
     end
   end
 end
