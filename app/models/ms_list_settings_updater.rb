@@ -21,24 +21,33 @@ class MsListSettingsUpdater
     submission_setting.save!
 
     if ms_list_settings.send_to_ms_list?
-      service_config = create_or_update_the_service_configuration('MS_LIST_ID')
-      service_config.value = ms_list_settings.ms_list_id
-      service_config.save!
-
       service_config = create_or_update_the_service_configuration('MS_SITE_ID')
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
 
-      if ms_list_settings.ms_drive_id.present?
-        service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
-        service_config.value = ms_list_settings.ms_drive_id
-        service_config.save!
-      end
+      create_ms_list_and_drive(ms_list_settings.ms_site_id, service)
+
     else
       remove_the_service_configuration('MS_LIST_ID')
       remove_the_service_configuration('MS_SITE_ID')
       remove_the_service_configuration('MS_DRIVE_ID')
     end
+  end
+
+  def create_ms_list_and_drive(site_id, service)
+    adapter = MicrosoftGraphAdapter.new(site_id:, service:)
+    list_id = adapter.post_list_columns['id']
+
+    service_config = create_or_update_the_service_configuration('MS_LIST_ID')
+    service_config.value = list_id
+    service_config.save!
+
+    drive_name = CGI.escape("#{service.service_name}-#{service.version_id}-attachments")
+    created_id = adapter.create_drive(drive_name)['id']
+
+    service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
+    service_config.value = created_id
+    service_config.save!
   end
 
   def params(config)

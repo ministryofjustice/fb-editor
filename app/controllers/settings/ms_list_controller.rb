@@ -27,9 +27,7 @@ class Settings::MsListController < FormController
     params.require(:ms_list_setting).permit(
       :deployment_environment,
       :send_to_ms_list,
-      :ms_list_id,
-      :ms_site_id,
-      :ms_drive_id
+      :ms_site_id
     )
   end
 
