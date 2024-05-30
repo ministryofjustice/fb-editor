@@ -75,6 +75,10 @@ class SaveButton extends HTMLButtonElement {
     return this.form.querySelector(`#${this.getAttribute("aria-describedby")}`);
   }
 
+  get status() {
+    return this.form.querySelector(`#${this.form.id}-save-status`);
+  }
+
   get $form() {
     return $(this.form);
   }
@@ -105,7 +109,8 @@ class SaveButton extends HTMLButtonElement {
     if (this.assistiveText) {
       this.insertAdjacentHTML(
         "afterend",
-        `<span class="sr-only" id="${this.form.id}-save-description"></span>`,
+        `<span class="sr-only" id="${this.form.id}-save-description"></span>
+                <span class="sr-only" id="${this.form.id}-save-status" role="status"></span>`,
       );
       this.setAttribute("aria-describedby", `${this.form.id}-save-description`);
     }
@@ -135,6 +140,7 @@ class SaveButton extends HTMLButtonElement {
   #handleClick(event) {
     if (this.saveRequired) {
       this.innerText = this.text.saving;
+      this.status.innerText = this.text.saving;
     } else {
       event.preventDefault();
     }
