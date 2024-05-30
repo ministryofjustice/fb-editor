@@ -1,10 +1,11 @@
 class MicrosoftGraphAdapter
-  attr_accessor :site_id, :root_graph_url, :service
+  attr_accessor :site_id, :root_graph_url, :service, :env
 
-  def initialize(root_graph_url: 'https://graph.microsoft.com/v1.0/', site_id: ENV['MS_SITE_ID'], service: nil)
+  def initialize(root_graph_url: 'https://graph.microsoft.com/v1.0/', site_id: ENV['MS_SITE_ID'], service: nil, env: 'test')
     @root_graph_url = root_graph_url
     @site_id = site_id
     @service = service
+    @env = env
   end
 
   def post_list_columns
@@ -13,7 +14,7 @@ class MicrosoftGraphAdapter
     connection ||= Faraday.new(uri) do |conn|
     end
     body = {
-      'displayName' => "#{service.service_name} - #{service.version_id}",
+      'displayName' => "#{service.service_name} - #{env} - #{service.version_id}",
       'columns' => column_headings,
       'list' => {
         'template' => 'genericList'
@@ -26,7 +27,7 @@ class MicrosoftGraphAdapter
       req.body = body.to_json
     end
 
-    JSON.parse(response.body)
+    response
   end
 
   def create_drive(drive_id)
@@ -46,7 +47,7 @@ class MicrosoftGraphAdapter
       req.body = body.to_json
     end
 
-    JSON.parse(response.body)
+    response
   end
 
   def get_auth_token

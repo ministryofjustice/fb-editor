@@ -25,7 +25,7 @@ class MsListSettingsUpdater
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
 
-      create_ms_list_and_drive(ms_list_settings.ms_site_id, service)
+      create_ms_list_and_drive(ms_list_settings.ms_site_id, service, ms_list_settings.deployment_environment)
 
     else
       remove_the_service_configuration('MS_LIST_ID')
@@ -34,20 +34,30 @@ class MsListSettingsUpdater
     end
   end
 
-  def create_ms_list_and_drive(site_id, service)
-    adapter = MicrosoftGraphAdapter.new(site_id:, service:)
-    list_id = adapter.post_list_columns['id']
+  def create_ms_list_and_drive(site_id, service, env)
+    adapter = MicrosoftGraphAdapter.new(site_id:, service:, env:)
 
-    service_config = create_or_update_the_service_configuration('MS_LIST_ID')
-    service_config.value = list_id
-    service_config.save!
+    response = adapter.post_list_columns
+    
+    if response.status == 201
+      list_id = JSON.parse(response.body)['id']
+
+      service_config = create_or_update_the_service_configuration('MS_LIST_ID')
+      service_config.value = list_id
+      service_config.save!
+    end
 
     drive_name = CGI.escape("#{service.service_name}-#{service.version_id}-attachments")
-    created_id = adapter.create_drive(drive_name)['id']
 
-    service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
-    service_config.value = created_id
-    service_config.save!
+    response = adapter.create_drive(drive_name)
+
+    if response.status == 201
+      created_id = JSON.parse(response.body)['id']
+
+      service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
+      service_config.value = created_id
+      service_config.save!
+    end
   end
 
   def params(config)
