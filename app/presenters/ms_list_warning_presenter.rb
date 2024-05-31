@@ -17,7 +17,7 @@ class MsListWarningPresenter
     return if first_publish?
     return if latest.nil?
 
-    if latest.service.version_id == service.version_id
+    if latest.version_id == service.version_id
       'need to create a new list for your changes'
     end
   end
