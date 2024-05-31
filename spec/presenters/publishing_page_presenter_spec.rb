@@ -29,6 +29,12 @@ RSpec.describe PublishingPagePresenter do
     end
   end
 
+  # describe '#ms_list_warning' do
+  #   it 'returns an instance of a microsoft list warning presenter' do
+  #     expect(subject.ms_list_warning).to be_a MsListWarningPresenter
+  #   end
+  # end
+
   describe '#submission_warnings' do
     it 'returns an instance of submission warnings' do
       expect(subject.submission_warnings).to be_a SubmissionWarningsPresenter

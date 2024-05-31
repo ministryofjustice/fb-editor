@@ -38,7 +38,7 @@ class MsListSettingsUpdater
     adapter = MicrosoftGraphAdapter.new(site_id:, service:, env:)
 
     response = adapter.post_list_columns
-    
+
     if response.status == 201
       list_id = JSON.parse(response.body)['id']
 

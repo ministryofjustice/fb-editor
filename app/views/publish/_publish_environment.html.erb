@@ -24,6 +24,10 @@
     <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
   <% end %>
 
+  <% if presenter.ms_list_warning.present? %>
+    <%= render('publish/warnings/mslist', warning: presenter.ms_list_warning) %>
+  <% end %>
+
   <% if environment == 'production' %>
     <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
       <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>

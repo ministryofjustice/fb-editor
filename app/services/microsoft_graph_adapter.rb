@@ -21,13 +21,11 @@ class MicrosoftGraphAdapter
       }
     }
 
-    response = connection.post do |req|
+    connection.post do |req|
       req.headers['Content-Type'] = 'application/json'
       req.headers['Authorization'] = "Bearer #{get_auth_token}"
       req.body = body.to_json
     end
-
-    response
   end
 
   def create_drive(drive_id)
@@ -41,13 +39,11 @@ class MicrosoftGraphAdapter
       'folder' => {}
     }
 
-    response = connection.post do |req|
+    connection.post do |req|
       req.headers['Content-Type'] = 'application/json'
       req.headers['Authorization'] = "Bearer #{get_auth_token}"
       req.body = body.to_json
     end
-
-    response
   end
 
   def get_auth_token
