@@ -9,7 +9,7 @@ class PublishController < FormController
 
   def create
     return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
-    return unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
+    return if prepare_ms_list_integration(publish_service_params[:deployment_environment]) == false
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
@@ -37,7 +37,7 @@ class PublishController < FormController
     declarations
     declarations.checked(publish_for_review_params['declarations_checkboxes'].reject(&:blank?))
 
-    return unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
+    return unless prepare_ms_list_integration('production')
 
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
 
