@@ -146,7 +146,8 @@ class PublishController < FormController
       service_id: service.service_id,
       deployment_environment: env
     ).try(:send_to_graph_api?)
-    if ms_site_id.nil? || send_to_graph == false
+
+    if ms_site_id_config.nil? || send_to_graph == false
       return true
     end
 
