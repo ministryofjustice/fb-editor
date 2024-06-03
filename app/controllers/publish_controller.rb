@@ -151,7 +151,7 @@ class PublishController < FormController
       return true
     end
 
-    latest = if env == dev
+    latest = if env == 'dev'
                publishes_dev&.last
              else
                publishes_production&.last
