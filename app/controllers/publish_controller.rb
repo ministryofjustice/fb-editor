@@ -13,6 +13,9 @@ class PublishController < FormController
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     if @publish_service_creation.save
+
+      return unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
+
       if previous_service_slug.present?
         UnpublishServiceJob.perform_later(
           publish_service_id: published_service.id,
@@ -132,6 +135,66 @@ class PublishController < FormController
     "https://#{hostname(env)}"
   end
   helper_method :form_url
+
+  def prepare_ms_list_integration(env)
+    ms_site_id_config = ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      deployment_environment: env,
+      name: 'MS_SITE_ID'
+    )
+    send_to_graph = SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment: env
+    ).try(:send_to_graph_api?)
+    if ms_site_id.nil? || send_to_graph == false
+      return true
+    end
+
+    latest = if env == dev
+               publishes_dev&.last
+             else
+               publishes_production&.last
+             end
+
+    if latest.published?
+      if latest.version_id != service.version_id
+        create_ms_list_and_drive(site_id: ms_site_id_config.decrypt_value, service:, env:)
+      else
+        true
+      end
+    end
+  end
+
+  def create_ms_list_and_drive(site_id, service, env)
+    adapter = MicrosoftGraphAdapter.new(site_id:, service:, env:)
+
+    response = adapter.post_list_columns
+
+    list_created = false
+    drive_created = false
+
+    if response.status == 201
+      list_id = JSON.parse(response.body)['id']
+
+      service_config = create_or_update_the_service_configuration('MS_LIST_ID')
+      service_config.value = list_id
+      list_created = service_config.save!
+    end
+
+    drive_name = CGI.escape("#{service.service_name}-#{env}-#{service.version_id}-attachments")
+
+    response = adapter.create_drive(drive_name)
+
+    if response.status == 201
+      created_id = JSON.parse(response.body)['id']
+
+      service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
+      service_config.value = created_id
+      drive_created = service_config.save!
+    end
+
+    list_created && drive_created == true
+  end
 
   private
 
