@@ -160,7 +160,7 @@ class PublishController < FormController
 
     if latest.published?
       if latest.version_id != service.version_id
-        create_ms_list_and_drive(site_id: ms_site_id_config.decrypt_value, service:, env:)
+        create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
       else
         true
       end
