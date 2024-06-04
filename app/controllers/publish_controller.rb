@@ -202,6 +202,18 @@ class PublishController < FormController
 
   private
 
+  def create_or_update_the_service_configuration(config)
+    find_or_initialize_setting(config)
+  end
+
+  def find_or_initialize_setting(config)
+    ServiceConfiguration.find_or_initialize_by(
+      service_id: service.service_id,
+      deployment_environment: ms_list_settings.deployment_environment,
+      name: config
+    )
+  end
+
   def hostname(env)
     root_url = Rails.application.config
       .platform_environments[platform_environment][:url_root]
