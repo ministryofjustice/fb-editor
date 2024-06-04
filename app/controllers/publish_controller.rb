@@ -180,7 +180,7 @@ class PublishController < FormController
     if response.status == 201
       list_id = JSON.parse(response.body)['id']
 
-      service_config = create_or_update_the_service_configuration('MS_LIST_ID')
+      service_config = create_or_update_the_service_configuration('MS_LIST_ID', env)
       service_config.value = list_id
       list_created = service_config.save!
     end
@@ -192,7 +192,7 @@ class PublishController < FormController
     if response.status == 201
       created_id = JSON.parse(response.body)['id']
 
-      service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
+      service_config = create_or_update_the_service_configuration('MS_DRIVE_ID', env)
       service_config.value = created_id
       drive_created = service_config.save!
     end
@@ -202,14 +202,14 @@ class PublishController < FormController
 
   private
 
-  def create_or_update_the_service_configuration(config)
-    find_or_initialize_setting(config)
+  def create_or_update_the_service_configuration(config, env)
+    find_or_initialize_setting(config, env)
   end
 
-  def find_or_initialize_setting(config)
+  def find_or_initialize_setting(config, env)
     ServiceConfiguration.find_or_initialize_by(
       service_id: service.service_id,
-      deployment_environment: ms_list_settings.deployment_environment,
+      deployment_environment: env,
       name: config
     )
   end
