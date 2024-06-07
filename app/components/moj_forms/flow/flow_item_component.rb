@@ -30,7 +30,6 @@ module MojForms
 
       def default_attributes
         {
-          id: uuid,
           class: "flow-item #{type_classname}",
           data: {
             fb_id: uuid
