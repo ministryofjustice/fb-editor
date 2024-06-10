@@ -519,11 +519,11 @@ en:
       link_url: 'fixme'
       checkbox: 'Send to Microsoft List'
       fieldset: ''
-      list_id_label: 'Microsoft List ID'
+      list_id_label: 'Your MS List'
       list_id_hint: 'The ID of the list to send to. Find out how to get this value'
       site_id_label: 'Microsoft Site ID'
       site_id_hint: 'The Sharepoint site the list belongs to. Find out how to get this value'
-      drive_id_label: 'The Drive to send attachments to'
+      drive_id_label: 'Drive folder'
       drive_id_hint: 'Optional, only required if your form collects files. Files uploaded will be sent to the drive specified, must be in the same Site as the List'
   warnings:
     confirmation_email:
