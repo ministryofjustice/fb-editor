@@ -17,7 +17,7 @@
             <li><%= t("publish.publish_for_review.confirmation.li_2") %></li>
           </ul>
           <p><%= t("publish.publish_for_review.confirmation.text_3") %></p>
-          <p><%= t("publish.publish_for_review.confirmation.text_4", href: govuk_link_to(t('publish.publish_for_review.confirmation.text_4_link_text'), t('publish.publish_for_review.confirmation.text_4_link_ref'))).html_safe %></p>
+          <p><%= t("publish.publish_for_review.confirmation.text_4", href: govuk_link_to((t('publish.publish_for_review.confirmation.text_4_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.publish_for_review.confirmation.text_4_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe %></p>
         </p>
       </div>
     </div>
@@ -44,44 +44,44 @@
             <h2 class="govuk-heading-m"><%= t('publish.publish_for_review.info.heading') %></h2>
       
             <p>
-              <%= t('publish.publish_for_review.info.content', href: govuk_link_to(t('publish.publish_for_review.info.link_text'), t('publish.publish_for_review.info.link_url'))).html_safe %>
+              <%= t('publish.publish_for_review.info.content', href: govuk_link_to((t('publish.publish_for_review.info.link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.publish_for_review.info.link_url'), target: '_blank', rel: 'noreferrer nofollow')).html_safe %>
               <%= t('publish.publish_for_review.info.content_2') %>
             </p>
           </div>
           <%= form.govuk_check_boxes_fieldset :declarations_checkboxes, legend: { text: t('publish.declarations.label'), size: "s" } do %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_1,
               link_errors: true,
-              label: { text: t('publish.declarations.one', href: govuk_link_to(t('publish.declarations.one_link_text'), t('publish.declarations.one_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.one', href: govuk_link_to((t('publish.declarations.one_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.one_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_1,
               'aria-label':  t('publish.declarations.one', href: t('publish.declarations.one_link_text')).html_safe
             %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_2,
               link_errors: true,
-              label: { text: t('publish.declarations.two', href: govuk_link_to(t('publish.declarations.two_link_text'), t('publish.declarations.two_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.two', href: govuk_link_to((t('publish.declarations.two_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.two_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_2,
               'aria-label':  t('publish.declarations.two', href: t('publish.declarations.two_link_text')).html_safe
             %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_3,
               link_errors: true,
-              label: { text: t('publish.declarations.three', href: govuk_link_to(t('publish.declarations.three_link_text'), t('publish.declarations.three_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.three', href: govuk_link_to((t('publish.declarations.three_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.three_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_3,
               'aria-label':  t('publish.declarations.three', href: t('publish.declarations.three_link_text')).html_safe
             %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_4,
               link_errors: true,
-              label: { text: t('publish.declarations.four', href: govuk_link_to(t('publish.declarations.four_link_text'), t('publish.declarations.four_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.four', href: govuk_link_to((t('publish.declarations.four_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.four_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_4,
               'aria-label':  t('publish.declarations.four', href: t('publish.declarations.four_link_text')).html_safe
             %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_5,
               link_errors: true,
-              label: { text: t('publish.declarations.five',  href: govuk_link_to(t('publish.declarations.five_link_text'), t('publish.declarations.five_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.five',  href: govuk_link_to((t('publish.declarations.five_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.five_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_5,
               'aria-label':  t('publish.declarations.five', href: t('publish.declarations.five_link_text')).html_safe
             %>
             <%= form.govuk_check_box :declarations_checkboxes, :declaration_6,
               link_errors: true,
-              label: { text: t('publish.declarations.six', href: govuk_link_to(t('publish.declarations.six_link_text'), t('publish.declarations.six_link_ref'))).html_safe },
+              label: { text: t('publish.declarations.six', href: govuk_link_to((t('publish.declarations.six_link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe, t('publish.declarations.six_link_ref'), target: '_blank', rel: 'noreferrer nofollow')).html_safe },
               checked: @declarations.declaration_6,
               'aria-label':  t('publish.declarations.six', href: t('publish.declarations.six_link_text')).html_safe
             %>
