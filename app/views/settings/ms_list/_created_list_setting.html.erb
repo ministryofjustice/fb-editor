@@ -1,2 +1,15 @@
-<p>created list: <%= f.object.value_for_list_id %></p>
-<p>created drive: <%= f.object.value_for_drive_id %></p>
+
+<% if f.object.value_for_list_id %>
+  <div class="govuk-form-group">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+      <h2 class="govuk-fieldset__heading"><%= t("settings.ms_list.list_id_label") %></h2>
+    </legend>
+    <p><%= f.object.value_for_list_id %></p>
+    <% if f.object.value_for_drive_id %>
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+      <h2 class="govuk-fieldset__heading"><%= t("settings.ms_list.drive_id_label") %></h2>
+      </legend>
+      <p><%= f.object.value_for_drive_id %></p>
+    <% end %>
+  </div>
+<% end %>

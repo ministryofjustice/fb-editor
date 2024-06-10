@@ -18,7 +18,7 @@ class MsListWarningPresenter
     return if latest.nil?
 
     if latest.version_id != service.version_id
-      'need to create a new list for your changes'
+      I18n.t("warnings.publish.#{deployment_environment}.ms_list")
     end
   end
 

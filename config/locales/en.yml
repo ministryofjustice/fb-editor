@@ -551,9 +551,11 @@ en:
       dev:
         icon_fallback: 'Warning'
         heading: 'Your form will not send any user submissions because:'
+        ms_list: 'You have made changes to your form since it was first published with "Submit to MS list" turned on. A new MS list will be created in order to receive submissions.'
       production:
         icon_fallback: 'Error'
         heading: 'Before you can publish to Live you must:'
+        ms_list: 'You have made changes to your form since it was first published with "Submit to MS list" turned on. A new MS list will be created in order to receive submissions.'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.
