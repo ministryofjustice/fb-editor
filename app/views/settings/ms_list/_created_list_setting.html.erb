@@ -4,12 +4,12 @@
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
       <h2 class="govuk-fieldset__heading"><%= t("settings.ms_list.list_id_label") %></h2>
     </legend>
-    <p><%= f.object.value_for_list_id %></p>
+    <p><%= human_readable_list_name %></p>
     <% if f.object.value_for_drive_id %>
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
       <h2 class="govuk-fieldset__heading"><%= t("settings.ms_list.drive_id_label") %></h2>
       </legend>
-      <p><%= f.object.value_for_drive_id %></p>
+      <p><%= human_readable_drive_name %></p>
     <% end %>
   </div>
 <% end %>
