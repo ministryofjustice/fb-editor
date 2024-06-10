@@ -87,10 +87,8 @@ class CheckboxesQuestion extends Question {
   addAccessibleLabels() {
     super.addAccessibleLabels();
     // Add a group label for the answers section
-    this.$node.find(".EditableComponentCollectionItem").first().parent().attr({
-      "role": "group",
-      "aria-label": this.labels.answers,
-    });
+    let headingTag = this.$node.find('fieldset').has('h2').length ? 'h3' : 'h2';
+    this.$node.find(".EditableComponentCollectionItem").first().parent().before(`<${headingTag} class="govuk-visually-hidden">${this.labels.answers}</${headingTag}>`);
 
     // Update the labels for all of the items
     this.$node
