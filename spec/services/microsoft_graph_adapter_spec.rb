@@ -11,17 +11,18 @@ RSpec.describe MicrosoftGraphAdapter do
   context 'when creating a drive for this submission' do
     context 'when successful' do
       before do
-        stub_request(:post, "https://graph.microsoft.com/v1.0//sites/site_id/drive/items/root/children").
-        with(
-          body: "{\"name\":\"Branching Fixture-attachments\",\"folder\":{}}",
+        stub_request(:post, 'https://graph.microsoft.com/v1.0//sites/site_id/drive/items/root/children')
+        .with(
+          body: '{"name":"Branching Fixture-attachments","folder":{}}',
           headers: {
-         'Accept'=>'*/*',
-         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-         'Authorization'=>'Bearer valid_token',
-         'Content-Type'=>'application/json',
-         'User-Agent'=>'Faraday v1.10.3'
-          }).
-        to_return(status: 201, body: { 'id' => 'a-drive-id' }.to_json, headers: {})
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Authorization' => 'Bearer valid_token',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v1.10.3'
+          }
+        )
+        .to_return(status: 201, body: { 'id' => 'a-drive-id' }.to_json, headers: {})
 
         stub_request(:post, 'https://authurl.example.com')
           .to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
@@ -38,16 +39,17 @@ RSpec.describe MicrosoftGraphAdapter do
 
     context 'when api responds with error' do
       before do
-        stub_request(:post, "https://graph.microsoft.com/v1.0//sites/site_id/drive/items/root/children").
-        with(
-          body: "{\"name\":\"Branching Fixture-attachments\",\"folder\":{}}",
+        stub_request(:post, 'https://graph.microsoft.com/v1.0//sites/site_id/drive/items/root/children')
+        .with(
+          body: '{"name":"Branching Fixture-attachments","folder":{}}',
           headers: {
-         'Accept'=>'*/*',
-         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-         'Authorization'=>'Bearer valid_token',
-         'Content-Type'=>'application/json',
-         'User-Agent'=>'Faraday v1.10.3'
-          }).to_return(status: 500, body: {}.to_json, headers: {})
+            'Accept' => '*/*',
+            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Authorization' => 'Bearer valid_token',
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Faraday v1.10.3'
+          }
+        ).to_return(status: 500, body: {}.to_json, headers: {})
 
         stub_request(:post, 'https://authurl.example.com')
           .to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
@@ -158,16 +160,17 @@ RSpec.describe MicrosoftGraphAdapter do
       end
 
       before do
-        stub_request(:post, "https://graph.microsoft.com/v1.0//sites/site_id/lists/").
-          with(
+        stub_request(:post, 'https://graph.microsoft.com/v1.0//sites/site_id/lists/')
+          .with(
             body: "{\"displayName\":\"Branching Fixture - test - 27dc30c9-f7b8-4dec-973a-bd153f6797df\",\"columns\":[{\"name\":\"bfebbbeafabacdef\",\"displayName\":\"Full name\",\"text\":{}},{\"name\":\"deaffeabbcdf\",\"displayName\":\"Do you like Star Wars?\",\"text\":{}},{\"name\":\"adcbfeffadfdf\",\"displayName\":\"What was the name of the band playing in Jabba's palace?\",\"text\":{}},{\"name\":\"fffcaaefdfffb\",\"displayName\":\"What is The Mandalorian's real name?\",\"text\":{}},{\"name\":\"fcbdbbfeb\",\"displayName\":\"What is your favourite fruit?\",\"text\":{}},{\"name\":\"fbaebbacfbcf\",\"displayName\":\"Do you like apple juice?\",\"text\":{}},{\"name\":\"cceafbaeaafd\",\"displayName\":\"Do you like orange juice?\",\"text\":{}},{\"name\":\"dfafceedaf\",\"displayName\":\"What is your favourite band?\",\"text\":{}},{\"name\":\"fdfdadedafbfde\",\"displayName\":\"Which app do you use to listen music?\",\"text\":{}},{\"name\":\"ddebbfcfcbcdf\",\"displayName\":\"What is the best form builder?\",\"text\":{}},{\"name\":\"baaafbafaecbbaff\",\"displayName\":\"Which Formbuilder is the best?\",\"text\":{}},{\"name\":\"eafdebfefacf\",\"displayName\":\"What would you like on your burger?\",\"text\":{}},{\"name\":\"ddcecdbadb\",\"displayName\":\"What is the best marvel series?\",\"text\":{}},{\"name\":\"cceadacfdc\",\"displayName\":\"Select all Arnold Schwarzenegger quotes\",\"text\":{}}],\"list\":{\"template\":\"genericList\"}}",
             headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Bearer valid_token',
-          'Content-Type'=>'application/json',
-          'User-Agent'=>'Faraday v1.10.3'
-            }).to_return(status: 200, body: response.to_json, headers: {})
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization' => 'Bearer valid_token',
+              'Content-Type' => 'application/json',
+              'User-Agent' => 'Faraday v1.10.3'
+            }
+          ).to_return(status: 200, body: response.to_json, headers: {})
 
         stub_request(:post, 'https://authurl.example.com')
           .to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
