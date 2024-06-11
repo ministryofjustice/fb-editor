@@ -13,7 +13,7 @@ builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
 
 <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
-<%= f.govuk_check_boxes_fieldset :"send_to_ms_list",
+<%= f.govuk_check_boxes_fieldset :"send_to_ms_list_#{deployment_environment}",
   multiple: false,
   legend: { text: t("publish.#{deployment_environment}.heading"), size: 'l'} do %>
   <div class="govuk-hint" id="send_to_ms_list_hint"><%= t("publish.#{deployment_environment}.description") %></div>

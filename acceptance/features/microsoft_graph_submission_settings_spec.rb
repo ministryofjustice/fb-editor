@@ -14,6 +14,7 @@ feature 'Submission email' do
     scenario 'loading the settings page' do
       when_I_visit_the_ms_graph_submission_settings_page
       then_I_should_see_the_ms_graph_submission_settings_page(environment)
+      when_I_enter_an_empty_id(environment)
       when_I_click_save(environment)
       then_I_should_see_validation
     end
@@ -58,6 +59,12 @@ feature 'Submission email' do
   end
 
   def then_I_should_see_validation
-    expect(page).to have_content("Your answer for 'Ms site' cannot be blank.")
+    expect(page).to have_content("Your answer for ‘Ms site’ cannot be blank.")
+  end
+
+  def when_I_enter_an_empty_id(environment)
+    within( "#ms-list-setting-#{environment}") do
+      page.find(:css, "input#ms-list-setting-send-to-ms-list-1-field", visible: false).set(true)
+    end
   end
 end

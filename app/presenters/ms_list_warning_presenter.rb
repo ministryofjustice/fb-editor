@@ -7,13 +7,12 @@ class MsListWarningPresenter
   end
 
   def message
-    # byebug
     @publishes = if deployment_environment == 'dev'
                    publishes_dev
                  else
                    publishes_production
                  end
-    # byebug
+
     return if first_publish?
     return if latest.nil?
 

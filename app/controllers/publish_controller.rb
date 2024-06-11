@@ -9,10 +9,11 @@ class PublishController < FormController
 
   def create
     return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
-    return if prepare_ms_list_integration(publish_service_params[:deployment_environment]) == false
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
+    ms_list_updated = prepare_ms_list_integration(publish_service_params[:deployment_environment]) == false
 
+    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.') unless ms_list_updated
     if @publish_service_creation.save
       if previous_service_slug.present?
         UnpublishServiceJob.perform_later(
@@ -37,9 +38,11 @@ class PublishController < FormController
     declarations
     declarations.checked(publish_for_review_params['declarations_checkboxes'].reject(&:blank?))
 
-    return unless prepare_ms_list_integration('production')
+    ms_list_updated = prepare_ms_list_integration('production')
 
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
+
+    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.') unless ms_list_updated
 
     unless @declarations.valid?
       update_form_objects
