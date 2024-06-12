@@ -13,7 +13,7 @@ class PublishController < FormController
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
     ms_list_updated = prepare_ms_list_integration(publish_service_params[:deployment_environment]) == false
 
-    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.') unless ms_list_updated
+    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
     if @publish_service_creation.save
       if previous_service_slug.present?
         UnpublishServiceJob.perform_later(
