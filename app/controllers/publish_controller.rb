@@ -11,10 +11,14 @@ class PublishController < FormController
     return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
-    prepare_ms_list_integration(publish_service_params[:deployment_environment])
 
-    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
-    if @publish_service_creation.save
+    unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
+      @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
+      update_form_objects
+      render :index, status: :unprocessable_entity and return
+    end
+
+    if @publish_service_creation.save && ms_list_updated
       if previous_service_slug.present?
         UnpublishServiceJob.perform_later(
           publish_service_id: published_service.id,
@@ -38,13 +42,15 @@ class PublishController < FormController
     declarations
     declarations.checked(publish_for_review_params['declarations_checkboxes'].reject(&:blank?))
 
-    ms_list_updated = prepare_ms_list_integration('production')
-
     @publish_service_creation = PublishServiceCreation.new(publish_for_review_params.except('authenticity_token', 'declarations_checkboxes'))
 
-    @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.') unless ms_list_updated
-
     unless @declarations.valid?
+      update_form_objects
+      render :index, status: :unprocessable_entity and return
+    end
+
+    unless prepare_ms_list_integration('production')
+      @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
       update_form_objects
       render :index, status: :unprocessable_entity and return
     end
