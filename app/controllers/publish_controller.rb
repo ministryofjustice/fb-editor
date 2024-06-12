@@ -11,7 +11,7 @@ class PublishController < FormController
     return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
-    ms_list_updated = prepare_ms_list_integration(publish_service_params[:deployment_environment]) == false
+    prepare_ms_list_integration(publish_service_params[:deployment_environment])
 
     @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
     if @publish_service_creation.save
