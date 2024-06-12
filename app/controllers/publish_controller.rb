@@ -18,7 +18,7 @@ class PublishController < FormController
       render :index, status: :unprocessable_entity and return
     end
 
-    if @publish_service_creation.save && ms_list_updated
+    if @publish_service_creation.save
       if previous_service_slug.present?
         UnpublishServiceJob.perform_later(
           publish_service_id: published_service.id,
