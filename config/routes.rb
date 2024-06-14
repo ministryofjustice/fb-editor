@@ -128,5 +128,6 @@ Rails.application.routes.draw do
     put :dismiss, on: :member
   end
 
+  get 'accessibility_statement', to: 'home#accessibility'
   root to: 'home#show'
 end
