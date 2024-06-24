@@ -7,7 +7,11 @@
     <% if !editing? %>
       <p class="description"><%= t('external_start_page_url.content') %></p>
 
-      <p class="description"><%= govuk_link_to t('external_start_page_url.help_link_text'), 'https://moj-forms.service.justice.gov.uk/building-and-editing/#start-page' %></p>
+      <p class="description">
+      <%= govuk_link_to 'https://moj-forms.service.justice.gov.uk/building-and-editing/#start-page', target: :blank, rel: 'noreferrer nofollow' do %>
+        <%= t('external_start_page_url.help_link_text') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
+      <% end %>
+      </p>
       <br/>
       <%= f.govuk_text_field :url,
         label: { text: t('external_start_page_url.label'), size: 's', tag: 'h3' },
