@@ -25,10 +25,6 @@ class MsListSettingsUpdater
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
 
-<<<<<<< HEAD
-      create_ms_list_and_drive(ms_list_settings.ms_site_id, service, ms_list_settings.deployment_environment)
-
-=======
       service_config = create_or_update_the_service_configuration('MS_SITE_ID')
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
@@ -38,7 +34,6 @@ class MsListSettingsUpdater
         service_config.value = ms_list_settings.ms_drive_id
         service_config.save!
       end
->>>>>>> b20dadcc (Update view and add extra settings)
     else
       remove_the_service_configuration('MS_LIST_ID')
       remove_the_service_configuration('MS_SITE_ID')
