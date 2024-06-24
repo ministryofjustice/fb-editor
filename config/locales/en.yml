@@ -32,6 +32,7 @@ en:
   assistive_text:
     warning: warning
     incomplete: incomplete
+    new_tab: (opens in a new tab)
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
