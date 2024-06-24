@@ -25,7 +25,7 @@ class MsListSettingsUpdater
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
 
-      create_or_update_the_service_configuration(ms_list_settings.ms_site_id, service, ms_list_settings.deployment_environment)
+      create_ms_list_and_drive(ms_list_settings.ms_site_id, service, ms_list_settings.deployment_environment)
     else
       remove_the_service_configuration('MS_LIST_ID')
       remove_the_service_configuration('MS_SITE_ID')
