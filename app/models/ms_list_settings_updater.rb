@@ -25,15 +25,7 @@ class MsListSettingsUpdater
       service_config.value = ms_list_settings.ms_site_id
       service_config.save!
 
-      service_config = create_or_update_the_service_configuration('MS_SITE_ID')
-      service_config.value = ms_list_settings.ms_site_id
-      service_config.save!
-
-      if ms_list_settings.ms_drive_id.present?
-        service_config = create_or_update_the_service_configuration('MS_DRIVE_ID')
-        service_config.value = ms_list_settings.ms_drive_id
-        service_config.save!
-      end
+      create_or_update_the_service_configuration(ms_list_settings.ms_site_id, service, ms_list_settings.deployment_environment)
     else
       remove_the_service_configuration('MS_LIST_ID')
       remove_the_service_configuration('MS_SITE_ID')
