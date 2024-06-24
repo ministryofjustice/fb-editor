@@ -3,11 +3,13 @@ class MsListSetting
   include ContentSubstitutorHelper
 
   attr_accessor :ms_site_id,
+                :ms_list_id,
+                :ms_drive_id,
                 :send_to_ms_list,
                 :deployment_environment,
                 :service
 
-  validates :ms_list_id, :ms_site_id, presence: true
+  validates :ms_list_id, presence: true
 
   def send_to_ms_list_checked?
     send_to_ms_list? || SubmissionSetting.find_by(
