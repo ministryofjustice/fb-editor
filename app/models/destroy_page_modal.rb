@@ -7,6 +7,8 @@ class DestroyPageModal
   delegate :expressions, :branches, to: :service
 
   PARTIALS = {
+    delete_page_used_for_submission_confirmation?: 'delete_page_used_for_submission_confirmation',
+    delete_page_used_for_check_your_answers?: 'delete_page_used_for_check_your_answers',
     delete_page_used_for_confirmation_email?: 'delete_page_used_for_confirmation_email',
     delete_page_used_for_conditional_content?: 'delete_page_used_for_conditional_content',
     potential_stacked_branches?: 'stack_branches_not_supported',
@@ -29,6 +31,16 @@ class DestroyPageModal
   def delete_page_used_for_conditional_content?
     @pages = service.pages_with_conditional_content_for_page(page.uuid)
     @pages.any?
+  end
+
+  def delete_page_used_for_submission_confirmation?
+    @confirmation_page = service.confirmation_page
+    page.uuid == @confirmation_page.uuid
+  end
+
+  def delete_page_used_for_check_your_answers?
+    @cya_page = service.checkanswers_page
+    page.uuid == @cya_page.uuid
   end
 
   def delete_page_used_for_branching?

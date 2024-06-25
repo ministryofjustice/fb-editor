@@ -95,6 +95,8 @@ en:
     message_delete: 'This cannot be undone'
     message_delete_branch: 'This cannot be undone'
     message_delete_condition: 'This cannot be undone'
+    message_delete_page_used_for_submission_confirmation: "You won't receive any user data from your form without a confirmation page. You will lose any changes you have made to the page."
+    message_delete_page_used_for_check_your_answers: "You won't receive any user data from your form without a check answers page. You will lose any changes you have made to the page."
     destination:
       button_change: Change next page
       label: 'Change next page'
