@@ -9,6 +9,21 @@ RSpec.describe DestroyPageModal do
   let(:page) { service.find_page_by_url('page-h') }
 
   describe '#to_partial_path' do
+    context 'confirmation page' do
+      let(:page) { service.find_page_by_url('confirmation') }
+      it 'shows the confirmation page partial' do
+        expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_submission_confirmation_modal')
+      end
+    end
+
+    context 'check answers page' do
+      let(:page) { service.find_page_by_url('check-answers') }
+
+      it 'shows the confirmation page partial' do
+        expect(subject.to_partial_path).to eq('api/pages/delete_page_used_for_check_your_answers_modal')
+      end
+    end
+
     context 'branching' do
       # branch destinations
       context 'when after branch' do
