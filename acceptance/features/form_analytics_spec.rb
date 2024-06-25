@@ -5,7 +5,6 @@ feature 'Form analytics configuration' do
   let(:service_name) { generate_service_name }
   let(:error_messages) do
     [
-      I18n.t('activemodel.errors.models.form_analytics_settings.ua'),
       I18n.t('activemodel.errors.models.form_analytics_settings.gtm'),
       I18n.t('activemodel.errors.models.form_analytics_settings.ga4')
     ]
@@ -27,13 +26,11 @@ feature 'Form analytics configuration' do
       then_I_should_see_error_messages([I18n.t('activemodel.errors.models.form_analytics_settings.blank')])
 
       then_I_should_see_the_account_ids_fields(environment)
-      and_I_set_the_analytics_tracking_id("ua_#{environment}", invalid_ids["ua_#{environment}"])
       and_I_set_the_analytics_tracking_id("gtm_#{environment}", invalid_ids["gtm_#{environment}"])
       and_I_set_the_analytics_tracking_id("ga4_#{environment}", invalid_ids["ga4_#{environment}"])
       click_button(I18n.t('actions.save'))
       then_I_should_see_error_messages(error_messages)
 
-      and_I_set_the_analytics_tracking_id("ua_#{environment}", valid_ids["ua_#{environment}"])
       and_I_set_the_analytics_tracking_id("gtm_#{environment}", valid_ids["gtm_#{environment}"])
       and_I_set_the_analytics_tracking_id("ga4_#{environment}", valid_ids["ga4_#{environment}"])
       click_button(I18n.t('actions.save'))
@@ -53,14 +50,12 @@ feature 'Form analytics configuration' do
     let(:environment) { 'test' }
     let(:invalid_ids) do
       {
-        'ua_test' => 'not',
         'gtm_test'=> 'real',
         'ga4_test' => 'ids'
       }
     end
     let(:valid_ids) do
       {
-        'ua_test' =>'UA-12345',
         'gtm_test' => 'GTM-12345',
         'ga4_test' => 'G-12345'
       }
@@ -73,14 +68,12 @@ feature 'Form analytics configuration' do
     let(:environment) { 'live' }
     let(:invalid_ids) do
       {
-        'ua_live' => 'more',
         'gtm_live'=> 'fake',
         'ga4_live' => 'analytics'
       }
     end
     let(:valid_ids) do
       {
-        'ua_live' =>'UA-67890',
         'gtm_live' => 'GTM-67890',
         'ga4_live' => 'G-67890'
       }
@@ -120,8 +113,6 @@ feature 'Form analytics configuration' do
 
   def then_I_should_see_the_account_ids_fields(environment)
     expect(page).to have_content(I18n.t('settings.form_analytics.details_hint'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.form_analytics_settings.ua'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.form_analytics_settings.ua_hint'))
     expect(page).to have_content(I18n.t('activemodel.attributes.form_analytics_settings.gtm'))
     expect(page).to have_content(I18n.t('activemodel.attributes.form_analytics_settings.gtm_hint'))
     expect(page).to have_content(I18n.t('activemodel.attributes.form_analytics_settings.ga4'))
