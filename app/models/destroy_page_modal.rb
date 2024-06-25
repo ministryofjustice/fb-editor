@@ -35,12 +35,12 @@ class DestroyPageModal
 
   def delete_page_used_for_submission_confirmation?
     @confirmation_page = service.confirmation_page
-    @confirmation_page != nil && page.uuid == @confirmation_page.uuid
+    !@confirmation_page.nil? && page.uuid == @confirmation_page.uuid
   end
 
   def delete_page_used_for_check_your_answers?
     @cya_page = service.checkanswers_page
-    @cya_page != nil && page.uuid == @cya_page.uuid
+    !@cya_page.nil? && page.uuid == @cya_page.uuid
   end
 
   def delete_page_used_for_branching?
