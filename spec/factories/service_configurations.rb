@@ -45,11 +45,6 @@ FactoryBot.define do
       value { 'Star killer HR' }
     end
 
-    trait :ua do
-      name { 'UA' }
-      value { 'UA-123456' }
-    end
-
     trait :gtm do
       name { 'GTM' }
       value { 'GTM-123456' }

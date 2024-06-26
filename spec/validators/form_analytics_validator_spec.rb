@@ -11,7 +11,7 @@ RSpec.describe FormAnalyticsValidator do
   end
   let(:analytics_params) do
     {
-      ua_test: 'UA-123456',
+      ga4_test: 'G-123457',
       gtm_live: 'GTM-123456',
       ga4_live: 'G-123456'
     }
@@ -23,14 +23,6 @@ RSpec.describe FormAnalyticsValidator do
     context 'when all analytics are valid' do
       it 'returns valid' do
         expect(subject).to be_valid
-      end
-    end
-
-    context 'when universal analytics is invalid' do
-      let(:analytics_params) { { ua_live: 'not-a-universal-analytics-id' } }
-
-      it 'returns invalid' do
-        expect(subject).to_not be_valid
       end
     end
 
