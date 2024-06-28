@@ -167,7 +167,7 @@ class PublishController < FormController
                publishes_production&.last
              end
 
-    if latest.published?
+    if latest && latest.published?
       if latest.version_id != service.version_id
         create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
       else
