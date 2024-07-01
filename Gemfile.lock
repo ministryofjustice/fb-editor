@@ -351,9 +351,9 @@ GEM
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
-    omniauth-auth0 (3.1.1)
-      omniauth (~> 2)
-      omniauth-oauth2 (~> 1)
+    omniauth-cognito-idp (0.1.1)
+      jwt
+      omniauth-oauth2
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
@@ -807,7 +807,7 @@ DEPENDENCIES
   hashie
   listen (~> 3.8)
   metadata_presenter (= 3.4.3)
-  omniauth-auth0 (~> 3.1.0)
+  omniauth-cognito-idp (= 0.1.1)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
   puma (~> 6.4)
