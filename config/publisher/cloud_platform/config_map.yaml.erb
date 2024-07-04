@@ -7,6 +7,6 @@ data: <% config_map.each do |configuration|  %>
   <% if configuration.name == 'ENCODED_PUBLIC_KEY' %>
     <%= configuration.name %>: "<%= configuration.encode64 %>"
   <% else %>
-    <%= configuration.name %>: "<%= configuration.config_map_value.gsub('"', '\"') %>"
+    <%= configuration.name %>: "<%= configuration.config_map_value.gsub('"', '\\"') %>"
   <% end %>
 <% end %>
