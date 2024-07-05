@@ -46,4 +46,4 @@ ENV GOVUK_APP_DOMAIN ''
 ENV GOVUK_WEBSITE_ROOT ''
 
 ARG RAILS_ENV=production
-CMD bin/delayed_job run --queue=quotes
+CMD bin/delayed_job run

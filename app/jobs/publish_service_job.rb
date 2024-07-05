@@ -1,5 +1,5 @@
 class PublishServiceJob < ApplicationJob
-  queue_as :quotes
+  queue_as :default
 
   attr_reader :service_provisioner
 
