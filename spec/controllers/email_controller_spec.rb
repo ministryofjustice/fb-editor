@@ -8,7 +8,7 @@ RSpec.describe Settings::EmailController do
           deployment_environment:,
           service_email_output: '',
           service_email_subject: 'Submission from Version Fixture',
-          service_email_body: 'Please find attached a submission sent from Version Fixture',
+          service_email_body: 'Please find attached a submission sent from "Version Fixture"',
           service_email_pdf_heading: 'Submission for Version Fixture',
           service_email_pdf_subheading: ''
         }
@@ -20,7 +20,7 @@ RSpec.describe Settings::EmailController do
         'deployment_environment' => deployment_environment,
         'service_email_output' => '',
         'service_email_subject' => 'Submission from Version Fixture',
-        'service_email_body' => 'Please find attached a submission sent from Version Fixture',
+        'service_email_body' => 'Please find attached a submission sent from "Version Fixture"',
         'service_email_pdf_heading' => 'Submission for Version Fixture',
         'service_email_pdf_subheading' => ''
       }

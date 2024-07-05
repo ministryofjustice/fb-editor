@@ -9,3 +9,4 @@ data:
   MS_SITE_ID: 'ms-site-id'
   MS_DRIVE_ID: 'ms-drive-id'
   MS_LIST_ID: 'ms-list-id'
+  ESCAPED_VALUE: "hello from \"my form\""

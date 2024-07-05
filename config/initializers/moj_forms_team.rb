@@ -6,6 +6,7 @@ MOJ_FORMS_ADMIN = %w[
   fabien.marry@digital.justice.gov.uk
   darren.rooke@digital.justice.gov.uk
   daniel.glen@digital.justice.gov.uk
+  polly.parker@digital.justice.gov.uk
 ].freeze
 
 MOJ_FORMS_DEVS = %w[

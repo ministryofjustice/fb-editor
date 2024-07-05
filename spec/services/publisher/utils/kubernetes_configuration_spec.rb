@@ -17,6 +17,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'MS_DRIVE_ID', value: ms_drive_id),
         build(:service_configuration, name: 'MS_SITE_ID', value: ms_site_id),
         build(:service_configuration, name: 'MS_LIST_ID', value: ms_list_id)
+        build(:service_configuration, name: 'ESCAPED_VALUE', value: service_email_body)
       ]
     )
   end
@@ -35,6 +36,9 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   end
   let(:basic_auth_pass) do
     EncryptionService.new.encrypt('r2d2')
+  end
+  let(:service_email_body) do
+    EncryptionService.new.encrypt('hello from "my form"')
   end
   let(:service_secret) do
     EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')

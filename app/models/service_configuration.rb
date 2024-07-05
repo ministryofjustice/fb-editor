@@ -116,7 +116,7 @@ class ServiceConfiguration < ApplicationRecord
   def config_map_value
     send(name.downcase)
   rescue NoMethodError
-    decrypt_value
+    decrypt_value.gsub('"', '\"')
   end
 
   private
@@ -134,7 +134,8 @@ class ServiceConfiguration < ApplicationRecord
   end
 
   def inject_line_breaks(text)
-    text.gsub(/\n|\r/, '<br />')
+    text = text.gsub(/\n|\r/, '<br />')
+    text.gsub('"', '\"')
   end
 
   def encrypt_value
