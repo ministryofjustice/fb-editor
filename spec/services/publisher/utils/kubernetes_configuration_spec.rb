@@ -16,7 +16,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url),
         build(:service_configuration, name: 'MS_DRIVE_ID', value: ms_drive_id),
         build(:service_configuration, name: 'MS_SITE_ID', value: ms_site_id),
-        build(:service_configuration, name: 'MS_LIST_ID', value: ms_list_id)
+        build(:service_configuration, name: 'MS_LIST_ID', value: ms_list_id),
         build(:service_configuration, name: 'ESCAPED_VALUE', value: service_email_body)
       ]
     )
