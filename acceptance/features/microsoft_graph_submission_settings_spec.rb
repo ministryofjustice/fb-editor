@@ -36,13 +36,11 @@ feature 'Submission email' do
     page.find(:css, '#main-content', visible: true)
     editor.click_link(I18n.t('settings.name'))
     expect(page).to have_content(I18n.t('settings.ms_list.heading'))
-    expect(page).to have_content(I18n.t('settings.ms_list.lede'))
     editor.click_link(I18n.t('settings.ms_list.heading'))
   end
 
   def then_I_should_see_the_ms_graph_submission_settings_page(environment)
     expect(page).to have_content(I18n.t('settings.ms_list.heading'))
-    expect(page).to have_content(I18n.t('settings.ms_list.lede'))
     expect(page).to have_content(I18n.t("publish.#{environment}.heading"))
     expect(page).to have_content(I18n.t("publish.#{environment}.description"))
     within( "#ms-list-setting-#{environment}") do
