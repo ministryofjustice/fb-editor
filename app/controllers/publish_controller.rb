@@ -13,7 +13,7 @@ class PublishController < FormController
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
     unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
-      @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
+      @publish_service_creation.errors.add(:ms_list, message: 'We were unable to create a new Microsoft List. Your form changes have not been published. Contact us to resolve this issue.')
       update_form_objects
       render :index, status: :unprocessable_entity and return
     end
@@ -50,7 +50,7 @@ class PublishController < FormController
     end
 
     unless prepare_ms_list_integration('production')
-      @publish_service_creation.errors.add(:ms_list, message: 'An error occured creating the new list required to publish your form. Please contact us.')
+      @publish_service_creation.errors.add(:ms_list, message: 'We were unable to create a new Microsoft List. Your form changes have not been published. Contact us to resolve this issue.')
       update_form_objects
       render :index, status: :unprocessable_entity and return
     end

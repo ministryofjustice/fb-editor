@@ -517,17 +517,19 @@ en:
     ms_list:
       heading: 'Send to your Microsoft List'
       lede: 'This will add the submissions to the Microsoft list your services uses.'
-      description: 'This will add the submissions to the Microsoft list your services uses. %{href}'
-      link_text: 'Find out more about exporting to MS list'
+      description: 'Automatically collate and manage all your form submissions in MS Lists on a SharePoint site. Only available with sites accessed using an @justice email address. For details, %{href}.'
+      link_text: 'see the user guide section on collecting information in MS lists'
       link_url: 'fixme'
       checkbox: 'Send to Microsoft List'
       fieldset: ''
-      list_id_label: 'Microsoft List ID'
+      list_id_label: 'Submissions will be saved to this MS List:'
       list_id_hint: 'The ID of the list to send to. Find out how to get this value'
-      site_id_label: 'Microsoft Site ID'
-      site_id_hint: 'The Sharepoint site the list belongs to. Find out how to get this value'
-      drive_id_label: 'The Drive to send attachments to'
-      drive_id_hint: 'Optional, only required if your form collects files. Files uploaded will be sent to the drive specified, must be in the same Site as the List'
+      site_id_label: 'SharePoint site ID'
+      site_id_hint: "32 letters and numbers separated with hyphens, for example: 6fecc977-b958-4c6a-b171-480ca5b1759a</br>%{href}"
+      help_link_text: 'How to find the site ID'
+      help_link_ref: 'fixme'
+      drive_id_label: 'Attachments will be saved in this folder'
+      created_item_hint: 'You need to publish your form for these changes to take effect.'
   warnings:
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}'
@@ -554,11 +556,15 @@ en:
       dev:
         icon_fallback: 'Warning'
         heading: 'Your form will not send any user submissions because:'
-        ms_list: 'You have made changes to your form since it was first published with "Submit to MS list" turned on. A new MS list will be created in order to receive submissions.'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list. %{href}"
+        link_text: 'Find out more about list versioning.'
+        link_ref: 'fixme'
       production:
         icon_fallback: 'Error'
         heading: 'Before you can publish to Live you must:'
-        ms_list: 'You have made changes to your form since it was first published with "Submit to MS list" turned on. A new MS list will be created in order to receive submissions.'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list. %{href}"
+        link_text: 'Find out more about list versioning.'
+        link_ref: 'fixme'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.

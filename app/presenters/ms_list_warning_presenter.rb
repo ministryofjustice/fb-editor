@@ -17,7 +17,7 @@ class MsListWarningPresenter
     return if latest.nil?
 
     if latest.version_id != service.version_id
-      I18n.t("warnings.publish.#{deployment_environment}.ms_list")
+      I18n.t("warnings.publish.#{deployment_environment}.ms_list", href: govuk_link_to(t("warnings.publish.#{deployment_environment}.ms_list.link_text"), t("warnings.publish.#{deployment_environment}.ms_list.link_ref")).html_safe )
     end
   end
 
