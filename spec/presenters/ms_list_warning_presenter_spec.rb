@@ -35,7 +35,7 @@ RSpec.describe MsListWarningPresenter do
     end
 
     it "doesn't show a warning" do
-      expect(presenter.message).to eq(I18n.t("warnings.publish.#{deployment_environment}.ms_list"))
+      expect(presenter.message).to eq(I18n.t("warnings.publish.#{deployment_environment}.ms_list", href: I18n.t("warnings.publish.#{deployment_environment}.link_text")))
     end
   end
 
