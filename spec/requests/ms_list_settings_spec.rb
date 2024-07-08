@@ -1,7 +1,7 @@
 RSpec.describe 'MS List Settings' do
   let(:current_user) { double(id: service.created_by, email: 'bishop@sulaco.com') }
-  let(:settings) { MsListSetting.new(params.merge(service:))}
-  let(:params) do 
+  let(:settings) { MsListSetting.new(params.merge(service:)) }
+  let(:params) do
     { ms_site_id: SecureRandom.uuid, deployment_environment: 'dev', send_to_ms_list: '1' }
   end
 
@@ -41,5 +41,4 @@ RSpec.describe 'MS List Settings' do
       expect(response.status).to be(422)
     end
   end
-
 end
