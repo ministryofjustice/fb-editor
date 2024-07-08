@@ -9,7 +9,7 @@ class MsListSetting
                 :deployment_environment,
                 :service
 
-  validates :ms_site_id, presence: true
+  validates_with MicrosoftListSettingsValidator
 
   def send_to_ms_list_checked?
     send_to_ms_list? || SubmissionSetting.find_by(

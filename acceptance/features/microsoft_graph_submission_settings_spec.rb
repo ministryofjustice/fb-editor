@@ -57,7 +57,7 @@ feature 'Submission email' do
   end
 
   def then_I_should_see_validation
-    expect(page).to have_content("Your answer for ‘Ms site’ cannot be blank.")
+    expect(page).to have_content("Enter a SharePoint site ID")
   end
 
   def when_I_enter_an_empty_id(environment)

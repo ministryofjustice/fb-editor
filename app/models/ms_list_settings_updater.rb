@@ -38,6 +38,13 @@ class MsListSettingsUpdater
 
     response = adapter.post_list_columns
 
+    if response.status == 500
+      raise Faraday::ClientError('Internal server error')
+    end
+    if response.status == 403
+      raise Faraday::ForbiddenError('Forbidden')
+    end
+
     if response.status == 201
       list_id = JSON.parse(response.body)['id']
 
@@ -49,6 +56,13 @@ class MsListSettingsUpdater
     drive_name = CGI.escape("#{service.service_name}-#{env}-#{service.version_id}-attachments")
 
     response = adapter.create_drive(drive_name)
+
+    if response.status == 500
+      raise Faraday::ClientError('Internal server error')
+    end
+    if response.status == 403
+      raise Faraday::ForbiddenError('Forbidden')
+    end
 
     if response.status == 201
       created_id = JSON.parse(response.body)['id']

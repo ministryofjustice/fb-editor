@@ -7,10 +7,24 @@ class Settings::MsListController < FormController
     )
 
     if @ms_list_settings.valid?
-      MsListSettingsUpdater.new(
-        ms_list_settings: @ms_list_settings,
-        service:
-      ).create_or_update!
+      begin
+        MsListSettingsUpdater.new(
+          ms_list_settings: @ms_list_settings,
+          service:
+        ).create_or_update!
+      rescue StandardError => e
+        if e.message == 'Forbidden'
+          @ms_list_settings.errors.add(:ms_site_id, 'The SharePoint site must be in MoJ’s main Microsoft 365 tenancy which requires an @justice email address to access it.')
+        else
+          @ms_list_settings.errors.add(:ms_site_id, 'There was a problem and we were unable to set up your Microsoft List. Try again or contact us if the problem persists.')
+        end
+        if ms_list_settings_params[:deployment_environment] == 'dev'
+          @ms_list_settings_dev = @ms_list_settings
+        else
+          @ms_list_settings_production = @ms_list_settings
+        end
+        render :index, status: :unprocessable_entity and return
+      end
 
       redirect_to settings_ms_list_index_path(service_id: service.service_id)
     else
