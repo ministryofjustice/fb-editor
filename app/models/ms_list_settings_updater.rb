@@ -41,7 +41,8 @@ class MsListSettingsUpdater
     if response.status == 500
       raise Faraday::ClientError('Internal server error')
     end
-    if response.status == 401
+    # forbidden or not found, we show the same error. The graph API returns 401 in the case of already exists
+    if response.status == 401 || response.status == 403 || response.status == 404
       raise Faraday::ForbiddenError('Forbidden')
     end
 
@@ -60,7 +61,8 @@ class MsListSettingsUpdater
     if response.status == 500
       raise Faraday::ClientError('Internal server error')
     end
-    if response.status == 401
+    # forbidden or not found, we show the same error. The graph API returns 401 in the case of already exists
+    if response.status == 401 || response.status == 403 || response.status == 404
       raise Faraday::ForbiddenError('Forbidden')
     end
 
