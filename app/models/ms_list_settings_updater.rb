@@ -41,7 +41,7 @@ class MsListSettingsUpdater
     if response.status == 500
       raise Faraday::ClientError('Internal server error')
     end
-    if response.status == 403
+    if response.status == 403 || 401
       raise Faraday::ForbiddenError('Forbidden')
     end
 
@@ -60,7 +60,7 @@ class MsListSettingsUpdater
     if response.status == 500
       raise Faraday::ClientError('Internal server error')
     end
-    if response.status == 403
+    if response.status == 403 || 401
       raise Faraday::ForbiddenError('Forbidden')
     end
 

@@ -2,14 +2,14 @@
 <% if f.object.value_for_list_id.present? %>
   <div class="govuk-form-group">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-      <p class="govuk-fieldset__heading"><%= t("settings.ms_list.list_id_label") %></p>
+      <p><%= t("settings.ms_list.list_id_label") %></p>
     </legend>
-    <p><%= human_readable_list_name(deployment_environment) %></p>
+    <p>./<%= human_readable_list_name(deployment_environment) %></p>
 
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-    <p class="govuk-fieldset__heading"><%= t("settings.ms_list.drive_id_label") %></p>
+    <p><%= t("settings.ms_list.drive_id_label") %></p>
     </legend>
-    <p><%= human_readable_drive_name(deployment_environment) %></p>
-    <p class="govuk-hint"><%= t("settings.ms_list.created_item_hint") %></p>
+    <p>./<%= human_readable_drive_name(deployment_environment) %></p>
+    <p ><%= t("settings.ms_list.created_item_hint") %></p>
   </div>
 <% end %>
