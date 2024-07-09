@@ -15,6 +15,8 @@ class Settings::MsListController < FormController
       rescue StandardError => e
         if e.message == 'Forbidden'
           @ms_list_settings.errors.add(:ms_site_id, 'The SharePoint site must be in MoJ’s main Microsoft 365 tenancy which requires an @justice email address to access it.')
+        elsif e.message == 'Already exists'
+          @ms_list_settings.errors.add(:ms_site_id, 'A list for this version of the form already exists')
         else
           @ms_list_settings.errors.add(:ms_site_id, 'There was a problem and we were unable to set up your Microsoft List. Try again or contact us if the problem persists.')
         end
