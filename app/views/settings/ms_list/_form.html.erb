@@ -29,8 +29,6 @@ builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
   <%= render "list_id_fieldset", f: f, deployment_environment: deployment_environment %>
 <% end %>
 
-<%= render "created_list_setting", f: f, deployment_environment: deployment_environment %>
-
 <%= mojf_save_button(form: f, 
                      text: t("settings.submission.#{deployment_environment}.save_button"), 
                      html_attributes: {

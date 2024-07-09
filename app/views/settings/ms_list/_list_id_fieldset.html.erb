@@ -11,5 +11,7 @@
       value: f.object.value_for_site_id,
       id: settings_field_id(f, :ms_site_id, deployment_environment) %>
     </div>
+
+    <%= render "created_list_setting", f: f, deployment_environment: deployment_environment %>
   </div>
 <% end %>
