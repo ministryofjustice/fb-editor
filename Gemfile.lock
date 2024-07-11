@@ -292,6 +292,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.6.0)
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
@@ -611,7 +612,8 @@ GEM
     regexp_parser (2.9.1)
     request_store (1.7.0)
       rack (>= 1.4)
-    rexml (3.2.6)
+    rexml (3.3.1)
+      strscan
     rinku (2.0.6)
     rouge (4.2.1)
     rspec-core (3.13.0)
@@ -691,7 +693,9 @@ GEM
       sprockets-rails
       tilt
     selectize-rails (0.12.6)
-    selenium-webdriver (4.15.0)
+    selenium-webdriver (4.22.0)
+      base64 (~> 0.2)
+      logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -738,6 +742,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     statsd-ruby (1.5.0)
+    strscan (3.1.0)
     terminal-table (3.0.2)
       unicode-display_width (>= 1.1.1, < 3)
     thor (1.3.1)
@@ -778,7 +783,7 @@ GEM
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
     webrick (1.8.1)
-    websocket (1.2.10)
+    websocket (1.2.11)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -828,7 +833,7 @@ DEPENDENCIES
   rubocop-govuk
   ruby-lsp
   sass-rails (>= 6)
-  selenium-webdriver (= 4.15.0)
+  selenium-webdriver (= 4.22.0)
   sentry-delayed_job (~> 5.14)
   sentry-rails (~> 5.14)
   sentry-ruby (~> 5.14)
