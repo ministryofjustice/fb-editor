@@ -15,6 +15,12 @@
           <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
           <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
         </div>
+        <% if FeatureFlags.ms_list.enabled? %>
+        <div>
+          <dt><%= link_to t('settings.ms_list.heading'), settings_ms_list_index_path(service.service_id), class: 'govuk-link' %></dt>
+          <dd class="govuk-hint" ><%= t('settings.ms_list.lede') %></dd>
+        </div>
+      <% end %>
     </dl>
   </nav>
 <% end %>

@@ -35,6 +35,7 @@ feature 'Submission email' do
   def when_I_visit_the_ms_graph_submission_settings_page
     page.find(:css, '#main-content', visible: true)
     editor.click_link(I18n.t('settings.name'))
+    editor.click_link(I18n.t('settings.submission.heading'))
     expect(page).to have_content(I18n.t('settings.ms_list.heading'))
     editor.click_link(I18n.t('settings.ms_list.heading'))
   end
