@@ -17,7 +17,7 @@ class MicrosoftGraphAdapter
       'displayName' => "#{service.service_name} - #{env} - #{service.version_id}",
       'columns' => column_headings,
       'list' => {
-        'template' => 'genericList'
+        'template' => nil
       }
     }
 
@@ -109,6 +109,13 @@ class MicrosoftGraphAdapter
         }
       end
     end
+
+    components.insert(0,
+                      {
+                        'name' => Digest::MD5.hexdigest('Submission Id').tr('0-9', ''),
+                        'displayName' => 'Submission Id',
+                        'text' => {}
+                      })
 
     components
   end
