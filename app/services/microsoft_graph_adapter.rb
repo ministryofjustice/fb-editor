@@ -112,8 +112,8 @@ class MicrosoftGraphAdapter
 
     components.insert(0,
                       {
-                        'name' => Digest::MD5.hexdigest('Submission Id').tr('0-9', ''),
-                        'displayName' => 'Submission Id',
+                        'name' => Digest::MD5.hexdigest('Submission ID').tr('0-9', ''),
+                        'displayName' => 'Submission ID',
                         'text' => {}
                       })
 
