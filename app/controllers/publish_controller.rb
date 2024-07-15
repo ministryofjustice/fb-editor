@@ -171,7 +171,7 @@ class PublishController < FormController
       if latest.version_id != service.version_id
         create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
         NewMsListMailer.new_ms_list_created(
-          user:,
+          user: current_user,
           form_name: service.service_name,
           list_name: "#{service.service_name}-#{env}-#{service.version_id}",
           drive_name: "#{service.service_name}-#{env}-#{service.version_id}-attachments"
