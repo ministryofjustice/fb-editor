@@ -515,21 +515,24 @@ en:
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with a copy of their answers.
     ms_list:
-      heading: 'Send to your Microsoft List'
-      lede: 'This will add the submissions to the Microsoft list your services uses.'
-      description: 'Automatically collate and manage all your form submissions in MS Lists on a SharePoint site. Only available with sites accessed using an @justice email address. For details, %{href}.'
-      link_text: 'see the user guide section on collecting information in MS lists'
+      heading: 'Collect information in Microsoft Lists'
+      lede: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists.'
+      description: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists. For details, see the %{href}.'
+      link_text: 'user guide section on collecting information in MS lists'
       link_url: 'fixme'
-      checkbox: 'Send to Microsoft List'
+      checkbox: "Enable MS Lists on %{env}"
       fieldset: ''
       list_id_label: 'Submissions will be saved to this MS List:'
       list_id_hint: 'The ID of the list to send to. Find out how to get this value'
-      site_id_label: 'SharePoint site ID'
+      site_id_label: 'Teams site ID'
       site_id_hint: "32 letters and numbers separated with hyphens, for example: 6fecc977-b958-4c6a-b171-480ca5b1759a</br>%{href}"
       help_link_text: 'How to find the site ID'
       help_link_ref: 'fixme'
       drive_id_label: 'Attachments will be saved in this folder'
       created_item_hint: 'You need to publish your form for these changes to take effect.'
+      errors:
+        permissions: 'The Teams site must be in the main "Ministry of Justice" Microsoft tenant. The tenant is shown on your profile whenever you are signed into MS 365.'
+        server_error: 'There was a problem and we were unable to set up your Microsoft List. Try again or contact us if the problem persists'
   warnings:
     confirmation_email:
       message: 'Your form must include an email question to enable a %{href}'

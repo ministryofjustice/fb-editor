@@ -25,7 +25,8 @@ RSpec.describe 'MS List Settings' do
     end
 
     it 'will render index with unprocessable entity' do
-      expect(response.body).to include('The SharePoint site must be in MoJ’s main Microsoft 365 tenancy which requires an @justice email address to access it.')
+      # the localisation contains quotes so is encoded in the body response
+      expect(response.body).to include('The Teams site must be in the main &quot;Ministry of Justice&quot; Microsoft tenant. The tenant is shown on your profile whenever you are signed into MS 365')
       expect(response.status).to be(422)
     end
   end
@@ -37,7 +38,7 @@ RSpec.describe 'MS List Settings' do
     end
 
     it 'will render index with unprocessable entity' do
-      expect(response.body).to include('There was a problem and we were unable to set up your Microsoft List. Try again or contact us if the problem persists.')
+      expect(response.body).to include(I18n.t('settings.ms_list.errors.server_error'))
       expect(response.status).to be(422)
     end
   end

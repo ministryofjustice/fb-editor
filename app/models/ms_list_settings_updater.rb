@@ -45,9 +45,6 @@ class MsListSettingsUpdater
     if response.status == 401 || response.status == 403 || response.status == 404
       raise Faraday::ForbiddenError('Forbidden')
     end
-    if response.status == 409
-      raise Faraday::ForbiddenError('Already exists')
-    end
 
     if response.status == 201
       list_id = JSON.parse(response.body)['id']

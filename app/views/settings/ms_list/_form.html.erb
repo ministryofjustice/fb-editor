@@ -20,7 +20,7 @@ builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
   <%= f.govuk_check_box :"send_to_ms_list", 1, 0,
     multiple: false,
     link_errors: true,
-    label: { text: t("settings.ms_list.checkbox") },
+    label: { text: t("settings.ms_list.checkbox", env: deployment_environment) },
     checked: f.object.send_to_ms_list_checked?
   %>
 <% end %>
