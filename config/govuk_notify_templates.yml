@@ -12,6 +12,7 @@ live:
   first_time_publish_to_test: 'a5feab0b-f1c2-44e3-b8ef-55601c719fac'
   transfer_ownership: '0fa12c6b-cfbc-402b-a848-22dfb8d0c76c'
   transfer_ownership_confirmation: '30c38720-21b5-4959-a68f-185fc3321452'
+  new_ms_list_created: '4d2d3d18-daf6-4d87-a566-fe47be3343a4'
 
 # formbuilder-saas-test
 test: &non_live_envs
