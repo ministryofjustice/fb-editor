@@ -20,7 +20,7 @@
     "accessible-autocomplete": "^2.0.4",
     "chai-dom": "^1.11.0",
     "dompurify": "^3.0.3",
-    "govuk-frontend": "4.8.0",
+    "govuk-frontend": "5.4.1",
     "govuk-markdown": "^0.3.0",
     "jquery": "^3.6.4",
     "jquery-ui-dist": "^1.13.2",
