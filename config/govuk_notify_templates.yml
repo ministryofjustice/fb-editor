@@ -18,6 +18,7 @@ test: &non_live_envs
   first_time_publish_to_test: 'ca8c193f-1a1b-48f8-b0bc-1f68e97931b5'
   transfer_ownership: 'eff73e7e-4ba3-487c-961d-7034e0396449'
   transfer_ownership_confirmation: '280839c2-b036-4cfd-bda7-180fa0f1458b'
+  new_ms_list_created: 'd123c579-77c5-4bc4-a55b-4bbe2a2a3f53'
 
 # in local envs (development) we use same templates
 # and API key as in `formbuilder-saas-test`
