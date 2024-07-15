@@ -1,4 +1,4 @@
-class NewMsListMailer < NotifyMailer
+class NewListMailer < NotifyMailer
   def new_ms_list_created(user:, form_name:, list_name:, drive_name:)
     set_template(:new_ms_list_created)
 
