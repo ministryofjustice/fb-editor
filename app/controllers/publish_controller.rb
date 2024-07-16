@@ -322,6 +322,7 @@ class PublishController < FormController
     else
       @publish_page_presenter_production.publish_creation = @publish_service_creation
     end
+    declarations
   end
 
   def declarations
