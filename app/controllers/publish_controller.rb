@@ -170,7 +170,7 @@ class PublishController < FormController
     if latest && latest.published?
       if latest.version_id != service.version_id
         created = create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
-        if created
+        if created == true
           NewListMailer.new_ms_list_created(
             user: current_user,
             form_name: service.service_name,
