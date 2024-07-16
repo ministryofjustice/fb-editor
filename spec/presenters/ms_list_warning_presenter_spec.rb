@@ -30,12 +30,13 @@ RSpec.describe MsListWarningPresenter do
       create(:publish_service, :dev, :completed, service_id: service.service_id)
     end
     before do
-      expect(presenter).to receive(:first_publish?).and_return(false)
+      allow(presenter).to receive(:first_publish?).and_return(false)
       allow(presenter).to receive(:latest).and_return(latest)
     end
 
-    it "doesn't show a warning" do
-      expect(presenter.message).to eq(I18n.t("warnings.publish.#{deployment_environment}.ms_list", href: I18n.t("warnings.publish.#{deployment_environment}.link_text")))
+    it "does show a warning" do
+      expect(presenter.message).to include(I18n.t("warnings.publish.#{deployment_environment}.ms_list"))
+      expect(presenter.message).to include(I18n.t("warnings.publish.#{deployment_environment}.link_text"))
     end
   end
 

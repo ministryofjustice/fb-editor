@@ -508,7 +508,7 @@ en:
       href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
     collection_email:
       heading: 'Collect information by email'
-      lede: 'Receive your form data in PDF and CSV attached to emails.'
+      lede: 'Receive each form submission by email with PDF and CSV attachments.'
       description: 'Receive your form data in PDF and CSV attached to emails.'
     confirmation_email:
       heading: 'Send a confirmation email'
@@ -519,15 +519,15 @@ en:
       lede: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists.'
       description: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists. For details, see the %{href}.'
       link_text: 'user guide section on collecting information in MS lists'
-      link_url: 'fixme'
+      link_url: 'https://moj-forms.service.justice.gov.uk/settings/#ms-lists'
       checkbox: "Enable MS Lists on %{env}"
       fieldset: ''
       list_id_label: 'Submissions will be saved to this MS List:'
       list_id_hint: 'The ID of the list to send to. Find out how to get this value'
       site_id_label: 'Teams site ID'
-      site_id_hint: "32 letters and numbers separated with hyphens, for example: 6fecc977-b958-4c6a-b171-480ca5b1759a</br>%{href}"
+      site_id_hint: "32 letters and numbers separated with hyphens, for example: 6fecc977-b958-4c6a-b171-480ca5b1759a"
       help_link_text: 'How to find the site ID'
-      help_link_ref: 'fixme'
+      help_link_ref: 'https://moj-forms.service.justice.gov.uk/settings/#site-id'
       drive_id_label: 'Attachments will be saved in this folder'
       created_item_hint: 'You need to publish your form for these changes to take effect.'
       errors:
@@ -559,15 +559,13 @@ en:
       dev:
         icon_fallback: 'Warning'
         heading: 'Your form will not send any user submissions because:'
-        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list. %{href}"
-        link_text: 'Find out more about list versioning.'
-        link_ref: 'fixme'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list."
+        link_text: 'Find out more about collecting information in MS Lists.'
       production:
         icon_fallback: 'Error'
         heading: 'Before you can publish to Live you must:'
-        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list. %{href}"
-        link_text: 'Find out more about list versioning.'
-        link_ref: 'fixme'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list."
+        link_text: 'Find out more about collecting information in MS Lists.'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.

@@ -7,7 +7,7 @@
         for: settings_field_id(f, :ms_site_id, deployment_environment),
           size: 'm'
       },
-      hint: { text: t("settings.ms_list.site_id_hint", href: govuk_link_to(t('settings.ms_list.help_link_text'), t('settings.ms_list.help_link_ref'))).html_safe },
+      hint: { text: "#{t("settings.ms_list.site_id_hint")} </br></br> #{govuk_link_to(t('settings.ms_list.help_link_text'), t('settings.ms_list.help_link_ref'))}".html_safe },
       value: f.object.value_for_site_id,
       id: settings_field_id(f, :ms_site_id, deployment_environment) %>
     </div>

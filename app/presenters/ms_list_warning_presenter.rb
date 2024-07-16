@@ -17,8 +17,12 @@ class MsListWarningPresenter
     return if latest.nil?
 
     if latest.version_id != service.version_id
-      I18n.t("warnings.publish.#{deployment_environment}.ms_list", href: I18n.t("warnings.publish.#{deployment_environment}.link_text"))
+      link_text
     end
+  end
+
+  def link_text
+    "#{I18n.t("warnings.publish.#{deployment_environment}.ms_list")}<a href=\"https://moj-forms.service.justice.gov.uk/settings/#ms-lists\">#{I18n.t("warnings.publish.#{deployment_environment}.link_text")}</a>"
   end
 
   def latest

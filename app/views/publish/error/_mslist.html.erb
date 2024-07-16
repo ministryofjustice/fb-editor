@@ -1,6 +1,6 @@
 <%=
   govuk_warning_text(
-    text: warning,
+    text: warning.html_safe,
     icon_fallback_text: t('publish.service_output.icon_fallback'),
     classes: 'govuk-warning-text--error'
   )
