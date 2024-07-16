@@ -75,8 +75,6 @@ class MicrosoftGraphAdapter
     }
   end
 
-  # private
-
   def admin_app
     ENV['MS_ADMIN_APP_ID']
   end
