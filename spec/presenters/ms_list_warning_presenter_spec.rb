@@ -34,7 +34,7 @@ RSpec.describe MsListWarningPresenter do
       allow(presenter).to receive(:latest).and_return(latest)
     end
 
-    it "does show a warning" do
+    it 'does show a warning' do
       expect(presenter.message).to include(I18n.t("warnings.publish.#{deployment_environment}.ms_list"))
       expect(presenter.message).to include(I18n.t("warnings.publish.#{deployment_environment}.link_text"))
     end
