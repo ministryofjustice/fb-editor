@@ -5,6 +5,18 @@ class ServiceConfiguration < ApplicationRecord
     ENCODED_PRIVATE_KEY
     SERVICE_SECRET
   ].freeze
+  MS_GRAPH_SECRETS = %w[
+    MS_ADMIN_APP_ID
+    MS_ADMIN_APP_SECRET
+    MS_OAUTH_URL
+    MS_TENANT_ID
+  ]
+  MS_GRAPH_CONFIGURATION = %w[
+    MS_LIST_ID
+    MS_DRIVE_ID
+    MS_SITE_ID
+    MS_GRAPH_ROOT_URL
+  ]
   SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_FROM
@@ -45,6 +57,10 @@ class ServiceConfiguration < ApplicationRecord
     name.in?(SECRETS)
   end
 
+  def ms_graph_secrets?
+    name.in?(MS_GRAPH_SECRETS)
+  end
+
   def do_not_inject_payment_link?
     name == 'PAYMENT_LINK' &&
       SubmissionSetting.find_by(
@@ -76,6 +92,14 @@ class ServiceConfiguration < ApplicationRecord
         deployment_environment:,
         name: 'MAINTENANCE_MODE'
       ).blank?
+  end
+
+  def do_not_send_to_graph_api?
+    name.in?(MS_GRAPH_CONFIGURATION) &&
+      SubmissionSetting.find_by(
+        service_id:,
+        deployment_environment:
+      ).try(:send_to_graph_api?).blank?
   end
 
   def decrypt_value

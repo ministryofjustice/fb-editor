@@ -152,10 +152,12 @@ class Publisher
     def config_map
       service_configuration
         .reject(&:secrets?)
+        .reject(&:ms_graph_secrets?)
         .reject(&:do_not_send_submission?)
         .reject(&:do_not_send_confirmation_email?)
         .reject(&:not_in_maintenance_mode?)
         .reject(&:do_not_inject_payment_link?)
+        .reject(&:do_not_send_to_graph_api?)
     end
 
     def secrets
@@ -164,6 +166,36 @@ class Publisher
 
     def aws_s3_bucket_name
       ENV["AWS_S3_BUCKET_#{deployment_environment_upcase}"]
+    end
+
+    def ms_graph_api_secrets
+      graph_secrets = []
+      secret_names = %w[MS_ADMIN_APP_ID MS_ADMIN_APP_SECRET MS_OAUTH_URL MS_TENANT_ID]
+
+      secret_names.each do |name|
+        config = ServiceConfiguration.find_or_initialize_by(
+          service_id:,
+          name:,
+          deployment_environment:
+        )
+        config.value = ENV[name].presence || 'default_prevent_validation_error'
+        config.save!
+        graph_secrets << config
+      end
+
+      graph_secrets
+    end
+
+    def ms_graph_root_url
+      ENV['MS_GRAPH_ROOT_URL'] || 'https://graph.microsoft.com/v1.0/'
+    end
+
+    def ms_list_site_id
+      ServiceConfiguration.find_by(
+        service_id:,
+        name: 'MS_LIST_SITE_ID',
+        deployment_environment:
+      ).decrypt_value || ''
     end
 
     private

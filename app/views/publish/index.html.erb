@@ -1,6 +1,51 @@
   <div class="width-responsive">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-0"><%= t('publish.heading') %></h1>
     <div id="publish-environments">
+    <% if @publish_page_presenter_dev.publish_creation.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            <%= t('activemodel.errors.summary_title') %>
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+              <% @publish_page_presenter_dev.publish_creation.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if @publish_page_presenter_production.publish_creation.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            <%= t('activemodel.errors.summary_title') %>
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+              <% @publish_page_presenter_production.publish_creation.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
       <%= govuk_tabs(title: 'Publish environment tabs', classes: ['moj-forms-tabs']) do |c|
         c.with_tab(label: 'Publish to Test') do %>
           <div class="govuk-grid-row">

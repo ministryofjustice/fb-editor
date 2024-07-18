@@ -1,0 +1,18 @@
+<%= mojf_settings_screen(
+  heading:t('settings.ms_list.heading'),
+  description: t('settings.ms_list.description', href: govuk_link_to(t('settings.ms_list.link_text'), t('settings.ms_list.link_url'))).html_safe
+  ) do |c| %>
+
+  <% content_for :back_link do %>
+    <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+  <% end %>
+
+  <% content_for :forms do %>
+    <%= render 'form', object: @ms_list_settings_dev, deployment_environment: 'dev' %>
+    <%= render 'form', object: @ms_list_settings_production, deployment_environment: 'production' %>
+  <% end %>
+
+  <%= yield :error_summary %>
+  <%= yield :forms %>
+
+<% end %>

@@ -134,5 +134,20 @@ FactoryBot.define do
       name { 'PREVIOUS_SERVICE_SLUG' }
       value { 'slug-life' }
     end
+
+    trait :ms_list_id do
+      name { 'MS_LIST_ID' }
+      value { 'ms-list-id-value' }
+    end
+
+    trait :ms_drive_id do
+      name { 'MS_DRIVE_ID' }
+      value { 'ms-drive-id-value' }
+    end
+
+    trait :ms_site_id do
+      name { 'MS_SITE_ID' }
+      value { 'ms-site-id-value' }
+    end
   end
 end

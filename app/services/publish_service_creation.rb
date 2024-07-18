@@ -9,7 +9,8 @@ class PublishServiceCreation
                 :require_authentication,
                 :username,
                 :password,
-                :publish_service_id
+                :publish_service_id,
+                :ms_list
 
   validates :service_id, :version_id, :user_id, presence: true
   with_options if: :require_authentication? do |record|
