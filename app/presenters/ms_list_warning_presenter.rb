@@ -23,7 +23,7 @@ class MsListWarningPresenter
   end
 
   def link_text
-    "#{I18n.t("warnings.publish.#{deployment_environment == 'dev' ? 'test' : 'live'}.ms_list")}<a href=\"https://moj-forms.service.justice.gov.uk/settings/#ms-lists\">#{I18n.t("warnings.publish.#{deployment_environment}.link_text")}</a>"
+    "#{I18n.t("warnings.publish.#{deployment_environment}.ms_list")}<a href=\"https://moj-forms.service.justice.gov.uk/settings/#ms-lists\">#{I18n.t("warnings.publish.#{deployment_environment}.link_text")}</a>"
   end
 
   def latest
