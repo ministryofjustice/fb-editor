@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'webmock/rspec'
 
 RSpec.describe MicrosoftGraphAdapter do
-  subject(:graph_service) { described_class.new(site_id: 'site_id', service:) }
+  subject(:graph_service) { described_class.new(site_id: 'site_id', service:, env: 'dev') }
 
   let(:latest_metadata) { metadata_fixture(:branching) }
   let(:service) { MetadataPresenter::Service.new(latest_metadata) }
