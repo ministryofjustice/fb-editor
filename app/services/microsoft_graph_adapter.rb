@@ -14,7 +14,7 @@ class MicrosoftGraphAdapter
     connection ||= Faraday.new(uri) do |conn|
     end
     body = {
-      'displayName' => "#{service.service_name} - #{env} - #{service.version_id}",
+      'displayName' => "#{service.service_name} - #{env == 'dev' ? 'test' : 'live'} - #{service.version_id}",
       'columns' => column_headings,
       'list' => {
         'template' => nil

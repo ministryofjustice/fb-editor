@@ -174,8 +174,8 @@ class PublishController < FormController
           NewListMailer.new_ms_list_created(
             user: current_user,
             form_name: service.service_name,
-            list_name: "#{service.service_name}-#{env}-#{service.version_id}",
-            drive_name: "#{service.service_name}-#{env}-#{service.version_id}-attachments"
+            list_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}",
+            drive_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments"
           ).deliver_later
         end
         created
@@ -203,7 +203,7 @@ class PublishController < FormController
       list_created = service_config.save!
     end
 
-    drive_name = CGI.escape("#{service.service_name}-#{env}-#{service.version_id}-attachments")
+    drive_name = CGI.escape("#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments")
 
     response = adapter.create_drive(drive_name)
 

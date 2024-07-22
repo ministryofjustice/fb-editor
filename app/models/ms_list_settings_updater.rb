@@ -54,7 +54,7 @@ class MsListSettingsUpdater
       service_config.save!
     end
 
-    drive_name = CGI.escape("#{service.service_name}-#{env}-#{service.version_id}-attachments")
+    drive_name = CGI.escape("#{service.service_name}-#{env == 'dev' ? 'test' : 'live'}-#{service.version_id}-attachments")
 
     response = adapter.create_drive(drive_name)
 
