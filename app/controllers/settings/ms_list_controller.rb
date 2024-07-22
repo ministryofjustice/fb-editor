@@ -57,12 +57,12 @@ class Settings::MsListController < FormController
   end
 
   def human_readable_list_name(deployment_environment)
-    "#{service.service_name}-#{deployment_environment}-#{service.version_id}"
+    "#{service.service_name}-#{deployment_environment == 'dev' ? 'test' : 'live'}-#{service.version_id}"
   end
   helper_method :human_readable_list_name
 
   def human_readable_drive_name(deployment_environment)
-    "#{service.service_name}-#{deployment_environment}-#{service.version_id}-attachments"
+    "#{service.service_name}-#{deployment_environment == 'dev' ? 'test' : 'live'}-#{service.version_id}-attachments"
   end
   helper_method :human_readable_drive_name
 end
