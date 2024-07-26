@@ -13,9 +13,9 @@ class MsListWarningPresenter
                    publishes_production
                  end
 
-    # return if first_publish?
+    return if first_publish?
     return if latest.nil?
-    return unless published?
+    # return unless published?
 
     if latest.version_id != service.version_id
       link_text
