@@ -116,8 +116,8 @@ class MicrosoftGraphAdapter
                       })
     components.insert(1,
                       {
-                        'name' => Digest::MD5.hexdigest('Payment Reference').tr('0-9', ''),
-                        'displayName' => 'Payment Reference',
+                        'name' => Digest::MD5.hexdigest('Reference Number').tr('0-9', ''),
+                        'displayName' => 'Reference Number',
                         'text' => {}
                       })
 

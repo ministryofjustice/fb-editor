@@ -160,17 +160,16 @@ RSpec.describe MicrosoftGraphAdapter do
       end
 
       before do
-        stub_request(:post, 'https://graph.microsoft.com/v1.0//sites/site_id/lists/')
-        .with(
-          body: "{\"displayName\":\"Branching Fixture - test - 27dc30c9-f7b8-4dec-973a-bd153f6797df\",\"columns\":[{\"name\":\"debcefbcbdf\",\"displayName\":\"Submission ID\",\"text\":{}},{\"name\":\"cffbefafefabae\",\"displayName\":\"Payment Reference\",\"text\":{}},{\"name\":\"bfebbbeafabacdef\",\"displayName\":\"Full name\",\"text\":{}},{\"name\":\"deaffeabbcdf\",\"displayName\":\"Do you like Star Wars?\",\"text\":{}},{\"name\":\"adcbfeffadfdf\",\"displayName\":\"What was the name of the band playing in Jabba's palace?\",\"text\":{}},{\"name\":\"fffcaaefdfffb\",\"displayName\":\"What is The Mandalorian's real name?\",\"text\":{}},{\"name\":\"fcbdbbfeb\",\"displayName\":\"What is your favourite fruit?\",\"text\":{}},{\"name\":\"fbaebbacfbcf\",\"displayName\":\"Do you like apple juice?\",\"text\":{}},{\"name\":\"cceafbaeaafd\",\"displayName\":\"Do you like orange juice?\",\"text\":{}},{\"name\":\"dfafceedaf\",\"displayName\":\"What is your favourite band?\",\"text\":{}},{\"name\":\"fdfdadedafbfde\",\"displayName\":\"Which app do you use to listen music?\",\"text\":{}},{\"name\":\"ddebbfcfcbcdf\",\"displayName\":\"What is the best form builder?\",\"text\":{}},{\"name\":\"baaafbafaecbbaff\",\"displayName\":\"Which Formbuilder is the best?\",\"text\":{}},{\"name\":\"eafdebfefacf\",\"displayName\":\"What would you like on your burger?\",\"text\":{}},{\"name\":\"ddcecdbadb\",\"displayName\":\"What is the best marvel series?\",\"text\":{}},{\"name\":\"cceadacfdc\",\"displayName\":\"Select all Arnold Schwarzenegger quotes\",\"text\":{}}],\"list\":{\"template\":null}}",
+        stub_request(:post, "https://graph.microsoft.com/v1.0//sites/site_id/lists/").
+        with(
+          body: "{\"displayName\":\"Branching Fixture - test - 27dc30c9-f7b8-4dec-973a-bd153f6797df\",\"columns\":[{\"name\":\"debcefbcbdf\",\"displayName\":\"Submission ID\",\"text\":{}},{\"name\":\"bdfaeebcbe\",\"displayName\":\"Reference Number\",\"text\":{}},{\"name\":\"bfebbbeafabacdef\",\"displayName\":\"Full name\",\"text\":{}},{\"name\":\"deaffeabbcdf\",\"displayName\":\"Do you like Star Wars?\",\"text\":{}},{\"name\":\"adcbfeffadfdf\",\"displayName\":\"What was the name of the band playing in Jabba's palace?\",\"text\":{}},{\"name\":\"fffcaaefdfffb\",\"displayName\":\"What is The Mandalorian's real name?\",\"text\":{}},{\"name\":\"fcbdbbfeb\",\"displayName\":\"What is your favourite fruit?\",\"text\":{}},{\"name\":\"fbaebbacfbcf\",\"displayName\":\"Do you like apple juice?\",\"text\":{}},{\"name\":\"cceafbaeaafd\",\"displayName\":\"Do you like orange juice?\",\"text\":{}},{\"name\":\"dfafceedaf\",\"displayName\":\"What is your favourite band?\",\"text\":{}},{\"name\":\"fdfdadedafbfde\",\"displayName\":\"Which app do you use to listen music?\",\"text\":{}},{\"name\":\"ddebbfcfcbcdf\",\"displayName\":\"What is the best form builder?\",\"text\":{}},{\"name\":\"baaafbafaecbbaff\",\"displayName\":\"Which Formbuilder is the best?\",\"text\":{}},{\"name\":\"eafdebfefacf\",\"displayName\":\"What would you like on your burger?\",\"text\":{}},{\"name\":\"ddcecdbadb\",\"displayName\":\"What is the best marvel series?\",\"text\":{}},{\"name\":\"cceadacfdc\",\"displayName\":\"Select all Arnold Schwarzenegger quotes\",\"text\":{}}],\"list\":{\"template\":null}}",
           headers: {
-            'Accept' => '*/*',
-            'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Authorization' => 'Bearer valid_token',
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v1.10.3'
-          }
-        ).to_return(status: 200, body: response.to_json, headers: {})
+         'Accept'=>'*/*',
+         'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+         'Authorization'=>'Bearer valid_token',
+         'Content-Type'=>'application/json',
+         'User-Agent'=>'Faraday v1.10.3'
+          }).to_return(status: 200, body: response.to_json, headers: {})
 
         stub_request(:post, 'https://authurl.example.com')
           .to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
