@@ -305,7 +305,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 126.0.6478.214
+          chrome-version: 126.0.6478.182
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
