@@ -12,12 +12,11 @@ feature 'Submission email' do
 
   shared_examples 'ms graph submission settings page' do
     scenario 'loading the settings page' do
-      # TODO: uncomment when releasing, for now this is only accessible to admin
-      # when_I_visit_the_ms_graph_submission_settings_page
-      # then_I_should_see_the_ms_graph_submission_settings_page(environment)
-      # when_I_enter_an_empty_id(environment)
-      # when_I_click_save(environment)
-      # then_I_should_see_validation
+      when_I_visit_the_ms_graph_submission_settings_page
+      then_I_should_see_the_ms_graph_submission_settings_page(environment)
+      when_I_enter_an_empty_id(environment)
+      when_I_click_save(environment)
+      then_I_should_see_validation
     end
   end
 
