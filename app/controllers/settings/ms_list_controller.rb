@@ -67,12 +67,12 @@ class Settings::MsListController < FormController
   helper_method :human_readable_drive_name
 
   def show_email_submission_prompt?
-    @ms_list_settings_dev.send_to_ms_list? &&
+    @ms_list_settings_dev.send_to_ms_list_checked? &&
       SubmissionSetting.find_by(
         service_id: service.service_id,
         deployment_environment: 'dev'
       ).try(:send_confirmation_email?) ||
-      @ms_list_settings_production.send_to_ms_list? &&
+      @ms_list_settings_production.send_to_ms_list_checked? &&
         SubmissionSetting.find_by(
           service_id: service.service_id,
           deployment_environment: 'production'
