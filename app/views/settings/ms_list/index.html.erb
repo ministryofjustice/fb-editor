@@ -1,3 +1,23 @@
+<div class="govuk-grid-column-two-thirds">
+  <br/>
+  <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        <%= I18n.t('settings.ms_list.banner.heading') %>
+      </h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">
+        <%= I18n.t('settings.ms_list.banner.content_1') %>
+      </p>
+      <p>
+        <%= I18n.t('settings.ms_list.banner.content_2') %>
+      </p>
+      <a class="govuk_link" href=<%= settings_email_index_path(service.service_id) %>><%= I18n.t('settings.ms_list.banner.link_text') %></a>
+    </div>
+  </div>
+</div>
+
 <%= mojf_settings_screen(
   heading:t('settings.ms_list.heading'),
   description: t('settings.ms_list.description', href: govuk_link_to(t('settings.ms_list.link_text'), t('settings.ms_list.link_url'))).html_safe

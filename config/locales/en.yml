@@ -515,6 +515,11 @@ en:
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with a copy of their answers.
     ms_list:
+      banner:
+        heading: 'Important'
+        content_1: 'Do you also want to collect submissions by email?'
+        content_2: 'We recommend you also enable collecting information by email. This ensures you have a backup of submissions in case there is any disruption to the Microsoft Lists connection.'
+        link_text: 'Collect information by email'
       heading: 'Collect information in Microsoft Lists'
       lede: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists.'
       description: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists. For details, see the %{href}.'
