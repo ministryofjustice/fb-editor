@@ -98,12 +98,17 @@ class MicrosoftGraphAdapter
       page.components.each do |component|
         next if component['_type'] == 'content'
 
-        display_name_for(component, page_label)
-
         components << {
           'name' => Digest::MD5.hexdigest(component['name']).tr('0-9', ''),
-          'displayName' => display_name_for(component, page_label),
-          'text' => {}
+          'displayName' => "#{display_name_for(component, page_label)} from #{page.url}",
+          'text' =>
+          {
+            "allowMultipleLines": true,
+            "appendChangesToExistingText": false,
+            "linesForEditing": 6,
+            "maxLength": 10_000,
+            "textType": 'plain'
+          }
         }
       end
     end
