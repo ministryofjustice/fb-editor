@@ -71,12 +71,12 @@ class Settings::MsListController < FormController
       !SubmissionSetting.find_by(
         service_id: service.service_id,
         deployment_environment: 'dev'
-      ).try(:send_confirmation_email?) ||
+      ).try(:send_email?) ||
       @ms_list_settings_production.send_to_ms_list_checked? &&
         !SubmissionSetting.find_by(
           service_id: service.service_id,
           deployment_environment: 'production'
-        ).try(:send_confirmation_email?)
+        ).try(:send_email?)
   end
   helper_method :show_email_submission_prompt?
 end
