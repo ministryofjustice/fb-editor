@@ -107,7 +107,7 @@ class MicrosoftGraphAdapter
             "appendChangesToExistingText": false,
             "linesForEditing": 6,
             "maxLength": 10_000,
-            "textType": 'plain'
+            "textType": 'richText'
           }
         }
       end
