@@ -632,8 +632,8 @@ en:
       production: Live
     service_output:
       icon_fallback: Warning
-      default: 'Your form will not send any user submissions until you enable %{link}.'
-      confirmation_email: 'Your form will not send any user submissions or confirmation emails until you enable %{link}.'
+      default: 'You will not receive any submissions from this form until you enable a method of collecting information in %{link}.'
+      confirmation_email: 'You will not receive any submissions from this form until you enable a method of collecting information in %{link}.'
       link_text: collecting information by email
     dialog:
       heading: Publish to Test?
