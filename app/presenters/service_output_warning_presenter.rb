@@ -31,7 +31,7 @@ class ServiceOutputWarningPresenter
   def link
     govuk_link_to(
       messages[:link_text],
-      Rails.application.routes.url_helpers.settings_email_index_path(service_id)
+      Rails.application.routes.url_helpers.settings_submission_index_path(service_id)
     )
   end
 
