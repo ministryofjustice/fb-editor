@@ -367,7 +367,7 @@ end
   end
 
   def then_I_click_the_collecting_information_by_email_link
-    environment_section.find('a', text: 'collecting information by email').click
+    environment_section.find('a', text: 'submission settings').click
   end
 
   def then_I_should_be_on_collecting_information_by_email_page
