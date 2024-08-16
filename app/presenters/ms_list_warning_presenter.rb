@@ -57,7 +57,7 @@ class MsListWarningPresenter
 
   def send_to_graph_api
     @send_to_graph_api ||= SubmissionSetting.find_by(
-      service_id:,
+      service_id: service.service_id,
       deployment_environment:
     ).try(:send_to_graph_api?)
   end
