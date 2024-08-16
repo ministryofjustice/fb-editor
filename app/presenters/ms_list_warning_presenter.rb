@@ -13,6 +13,7 @@ class MsListWarningPresenter
                    publishes_production
                  end
 
+    return unless send_to_graph_api
     return if first_publish?
     return if latest.nil?
 
@@ -52,5 +53,12 @@ class MsListWarningPresenter
     @publishes_production ||= PublishService.where(
       service_id: service.service_id
     ).production
+  end
+
+  def send_to_graph_api
+    @send_to_graph_api ||= SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment:
+    ).try(:send_to_graph_api?)
   end
 end
