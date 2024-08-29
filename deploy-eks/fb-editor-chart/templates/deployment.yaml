@@ -28,6 +28,9 @@ spec:
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-web:{{ .Values.circleSha1 }}"
         {{- if ((.Values.resources).requests) }}
         resources:
+          limits:
+            cpu: "1000m"
+            memory: "1000Mi"
           requests:
             memory: {{ .Values.resources.requests.memory }}
             cpu: {{ .Values.resources.requests.cpu }}
