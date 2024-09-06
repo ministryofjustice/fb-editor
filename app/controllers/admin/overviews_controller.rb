@@ -260,7 +260,7 @@ module Admin
       PublishService.where(
         service_id:,
         deployment_environment: environment
-      ).last&.published?
+      ).max_by(&:created_at).published?
     end
 
     def first_publish_date(service_id, environment)

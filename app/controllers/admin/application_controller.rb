@@ -25,6 +25,7 @@ module Admin
 
     def published(environment)
       PublishService.where(deployment_environment: environment)
+                    .sort_by(&:created_at)
                     .group_by(&:service_id)
                     .map { |p| p.last.last }
                     .select(&:published?)
@@ -32,6 +33,7 @@ module Admin
 
     def ever_published(environment)
       PublishService.where(deployment_environment: environment)
+                    .sort_by(&:created_at)
                     .group_by(&:service_id)
                     .map(&:last)
                     .map { |p| p.select(&:published?) }
