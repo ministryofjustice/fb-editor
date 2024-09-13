@@ -322,6 +322,7 @@ jobs:
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
             echo 'export CI_MODE=true' >> $BASH_ENV
+            echo 'export SITEPRISM_DSL_VALIDATION_DISABLED=true' >> $BASH_ENV
             source $BASH_ENV
 
             EXCLUDE_FILES="accessibility_spec.rb"
@@ -356,6 +357,7 @@ jobs:
             echo 'export ACCEPTANCE_TESTS_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
             echo 'export CI_MODE=true' >> $BASH_ENV
+            echo 'export SITEPRISM_DSL_VALIDATION_DISABLED=true' >> $BASH_ENV
             source $BASH_ENV
 
             EXCLUDE_FILES="accessibility_spec.rb"
