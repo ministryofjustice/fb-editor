@@ -31,6 +31,11 @@ class PublishController < FormController
       PublishServiceJob.perform_later(
         publish_service_id: @publish_service_creation.publish_service_id
       )
+
+      if current_user.email != 'fb-acceptance-tests@digital.justice.gov.uk' && (deployment_environment == 'production')
+        NotificationService.notify(publish_message, webhook: ENV['SLACK_PUBLISH_FOR_CONTENT_WEBHOOK'])
+      end
+
       redirect_to publish_index_path(service.service_id)
     else
       update_form_objects
@@ -285,6 +290,10 @@ class PublishController < FormController
     else
       "#{service.service_name} has been published for review using the review credentials.\n#{hostname('production')}"
     end
+  end
+
+  def publish_message
+    "#{service.service_name} has been published to live"
   end
 
   def assign_form_objects
