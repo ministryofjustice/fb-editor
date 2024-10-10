@@ -32,7 +32,7 @@ class PublishController < FormController
         publish_service_id: @publish_service_creation.publish_service_id
       )
 
-      if current_user.email != 'fb-acceptance-tests@digital.justice.gov.uk' && (deployment_environment == 'production')
+      if current_user.email != 'fb-acceptance-tests@digital.justice.gov.uk' && (publish_service_params[:deployment_environment] == 'production')
         NotificationService.notify(publish_message, webhook: ENV['SLACK_PUBLISH_FOR_CONTENT_WEBHOOK'])
       end
 
