@@ -286,9 +286,9 @@ class PublishController < FormController
 
   def review_message
     if platform_environment == 'test'
-      "#{service.service_name} has been published for review *in the test environment* using the review credentials.\n#{hostname('production')}"
+      "#{service.service_name} has been published for review *in the test environment* by #{current_user.email} using the review credentials.\n#{hostname('production')}"
     else
-      "#{service.service_name} has been published for review using the review credentials.\n#{hostname('production')}"
+      "#{service.service_name} has been published for review by #{current_user.email} using the review credentials.\n#{hostname('production')}"
     end
   end
 
