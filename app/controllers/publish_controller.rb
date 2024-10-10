@@ -293,7 +293,7 @@ class PublishController < FormController
   end
 
   def publish_message
-    "#{service.service_name} has been published to live"
+    "#{service.service_name} has been published to live by #{current_user.email}"
   end
 
   def assign_form_objects
