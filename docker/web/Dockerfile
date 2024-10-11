@@ -45,6 +45,7 @@ USER ${UID}
 # do not actually need to use them.
 ENV GOVUK_APP_DOMAIN ''
 ENV GOVUK_WEBSITE_ROOT ''
+ENV ALLOWED_DOMAINS 'cabinetoffice.gov.uk,digital.cabinet-office.gov.uk'
 
 ARG RAILS_ENV=production
 
