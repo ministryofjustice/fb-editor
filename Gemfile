@@ -8,8 +8,8 @@ ruby '3.1.3'
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'semantic-editable-headings'
-# gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.3'
+gem 'metadata_presenter', path: '../fb-metadata-presenter'
+# gem 'metadata_presenter', '3.4.3'
 
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'

@@ -68,6 +68,8 @@ class ActivatedMenu {
   #currentFocusIndex;
 
   constructor($menu, config) {
+    console.log("xxxxxxxxxx> ActivatedMenu!");
+    console.log("xxxxxxxxxx> config:", config);
     let defaults = {
       container_id: uniqueString("menu"),
       render: true,

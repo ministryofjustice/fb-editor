@@ -1065,6 +1065,7 @@ function editableComponent($node, config) {
     case "multiupload":
     case "conditional-content":
     case "autocomplete":
+    case "select":
       klass = EditableTextFieldComponent;
       break;
     case "textarea":
@@ -1076,6 +1077,7 @@ function editableComponent($node, config) {
       break;
     case "radios":
     case "checkboxes":
+    // case "select":
       klass = EditableCollectionFieldComponent;
       break;
   }

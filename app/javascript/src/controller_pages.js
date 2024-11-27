@@ -165,6 +165,7 @@ PagesController.create = function () {
  **/
 class AddComponent {
   constructor($node) {
+    console.log("---------> AddComponent: ", $node);
     var $list = $node.find("> ul");
     var $button = $node.find("> a");
 
@@ -678,7 +679,7 @@ function createConditionalContentButton(view, config) {
 function enhanceQuestions(view) {
   view.$editable
     .filter(
-      "[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=multiupload]",
+      "[data-fb-content-type=text], [data-fb-content-type=email], [data-fb-content-type=number], [data-fb-content-type=upload], [data-fb-content-type=multiupload] [data-fb-content-type=select]",
     )
     .each(function (i, node) {
       new TextQuestion($(this), {

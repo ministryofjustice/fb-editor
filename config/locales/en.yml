@@ -383,6 +383,7 @@ en:
       multi_upload: 'Multiple File upload'
       autocomplete: 'Autocomplete'
       address: 'Address'
+      select: 'Select'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
@@ -419,6 +420,7 @@ en:
       upload_options: 'Autocomplete options...'
       max_files: 'Number of files...'
       pattern: 'Specific answer format (regex)...'
+      edit_select_options: 'Edit options'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'

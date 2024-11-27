@@ -114,6 +114,11 @@ Rails.application.routes.draw do
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
+      get '/components/:component_id/select', to: 'select#show', as: :select
+      post '/components/:component_id/select', to: 'select#create', as: :select_create
+      get '/components/:component_id/select/edit', to: 'select#edit', as: :select_edit
+      post '/components/:component_id/select/ninja', to: 'select#ninja', as: :select_ninja
+
       get '/versions/previous/:operation/:undoable_action', to: 'undo#show', as: :previous_version,
           constraints: { operation: /undo|redo/ }
 

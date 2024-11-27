@@ -6,6 +6,20 @@ GIT
     capybara_accessible_selectors (0.11.0)
       capybara (~> 3.36)
 
+PATH
+  remote: ../fb-metadata-presenter
+  specs:
+    metadata_presenter (3.4.4)
+      govspeak (~> 7.1)
+      govuk_design_system_formbuilder (~> 4.1.1)
+      json-schema (~> 4.1.1)
+      kramdown (~> 2.4.0)
+      rails (~> 7.0.0)
+      sassc-rails (= 2.1.2)
+      sprockets
+      sprockets-rails
+      uk_postcode
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -306,16 +320,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    metadata_presenter (3.4.3)
-      govspeak (~> 7.1)
-      govuk_design_system_formbuilder (~> 4.1.1)
-      json-schema (~> 4.1.1)
-      kramdown (~> 2.4.0)
-      rails (~> 7.0.0)
-      sassc-rails (= 2.1.2)
-      sprockets
-      sprockets-rails
-      uk_postcode
     method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.7)
@@ -806,7 +810,7 @@ DEPENDENCIES
   govuk_notify_rails (~> 2.2.0)
   hashie
   listen (~> 3.8)
-  metadata_presenter (= 3.4.3)
+  metadata_presenter!
   omniauth-cognito-idp (= 0.1.1)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)

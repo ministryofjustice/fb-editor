@@ -194,6 +194,7 @@ class DialogForm {
       }
 
       if (el) {
+        console.log("focus, el is: ", el);
         el.focus();
       }
     }
@@ -376,6 +377,7 @@ class DialogForm {
   }
 
   #addActivator() {
+    console.log("~~~~~> addActivator, this.$node: ", this.$node);
     var $marker = $("<span></span>");
     if (this.$node) {
       this.$node.before($marker);

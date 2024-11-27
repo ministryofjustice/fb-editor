@@ -52,6 +52,7 @@ class QuestionMenu extends ActivatedMenu {
 
   selection(event, item) {
     var action = item.data("action");
+    console.log("------> action: ", action);
     this.selectedItem = item;
 
     event.preventDefault();
@@ -73,6 +74,10 @@ class QuestionMenu extends ActivatedMenu {
         break;
       case "close":
         this.close();
+        break;
+      case "edit":
+        console.log("edit chosen");
+        this.multiupload();
         break;
     }
   }
