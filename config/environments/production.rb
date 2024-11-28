@@ -88,4 +88,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   OmniAuth.config.full_host = ENV['EDITOR_FULL_URL_ROOT']
+
+
+  config.hosts << "builder.forms.preprod.grid.civilservice.gov.uk"
+  config.hosts << "editor.forms.preprod.grid.civilservice.gov.uk"
+  config.hosts << "form-builder.preprod.forms.grid.civilservice.gov.uk"
 end

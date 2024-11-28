@@ -1,0 +1,5 @@
+<li id="<%= @option.id %>">
+  <%= turbo_frame_tag @option.id do %> <!-- WIP: add a good id here -->
+  <%= link_to @option.option, api_service_select_edit_path(@option.component_id, @option.service_id, @option.option) %>
+  <% end %>
+</li>

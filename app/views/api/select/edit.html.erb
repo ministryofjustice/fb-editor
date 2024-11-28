@@ -1,0 +1,8 @@
+<%= turbo_frame_tag id: :options do %>
+<%= form_with(url: api_service_select_create_path) do |form| %>
+<fieldset class="govuk-fieldset">
+  <%= form.text_field(:option, class: "govuk-input govuk-input--width-20", id: "option_input") %>
+  <%= form.submit(class: "govuk-button govuk-button--secondary", value: "Add new option" )%>
+</fieldset>
+<% end %>
+<% end %>

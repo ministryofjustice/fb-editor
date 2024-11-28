@@ -1,0 +1,6 @@
+<%= turbo_stream.append "options" do %>
+  <%= render "option" %>
+<% end %>
+<%= turbo_stream.replace "option_input" do %>
+  <%= render "option_input" %>
+<% end %>

@@ -1,0 +1,39 @@
+<div class="component-dialog-api-request" id="edit_select_options">
+
+<%= form_with url: api_service_select_ninja_path do |f| %>
+
+
+
+  <legend data-node="heading" id="dialog-title" class="govuk-fieldset__legend govuk-fieldset__legend--m">
+    Edit options
+  </legend>
+
+  <ul id="options">
+    <% @component.items.each do |item| %>
+    <li id="<%= item._uuid %>"><%= item.label %></li>
+    <% end %>
+  </ul>
+
+
+  <div class="govuk-form-group">
+    <%= turbo_frame_tag id: :options do %>
+      <%= form_with(url: api_service_select_create_path) do |form| %>
+        <fieldset class="govuk-fieldset">
+          <%= form.text_field(:option, class: "govuk-input govuk-input--width-20", id: "option_input") %>
+          <%= form.submit(class: "govuk-button govuk-button--secondary", value: "Add new option" )%>
+        </fieldset>
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div class="govuk-button-group">
+    <button class="govuk-button govuk-button--secondary" type="button">
+      <%= t('dialogs.button_cancel') %>
+    </button>
+    <button class="govuk-button govuk-button--primary" type="button" >
+      <%= f.submit "yes" %>
+    </button>
+  </div>
+  <% end %>
+</div>

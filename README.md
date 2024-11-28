@@ -5,7 +5,7 @@ New editor for MoJ Forms.
 ## Prerequisites
 * Docker
 * Node (version 16.20.1 LTS)
-* Ruby v2.7.7
+* Ruby (look at the `.ruby-version`)
 * Postgresql
 * Yarn
 
@@ -120,7 +120,14 @@ machine to point to the test environment you need to run:
 
 ### Docker Compose
 
-There are three docker compose files.
+For local development, run:
+
+    make setup
+
+which will spin up the services in the correct order.
+
+
+Docker compose setup is made up of these three files:
 
 #### docker-compose.yml
 

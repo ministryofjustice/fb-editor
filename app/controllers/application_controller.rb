@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include SetCurrentRequestDetails
-  include Auth0Helper
-  helper_method :current_user
+  include CognitoHelper
 
   def service
     @service ||= MetadataPresenter::Service.new(service_metadata, editor: editable?)

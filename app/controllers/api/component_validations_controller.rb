@@ -17,6 +17,7 @@ module Api
     private
 
     def assign_component_validation
+      # puts "-------> base_params #{base_params}, validation_params: #{validation_params}"
       @component_validation = BaseComponentValidation.new(base_params).assign_validation(validation_params)
     end
 

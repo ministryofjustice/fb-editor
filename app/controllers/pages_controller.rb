@@ -8,6 +8,10 @@ class PagesController < FormController
   EXTRA_COMPONENTS = 'extra_components'.freeze
 
   def edit
+
+    puts "%%%%%%%%%%> #{@page.to_yaml}
+"
+
     return if @page.components.nil?
 
     if @page.autocomplete_component_present?

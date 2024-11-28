@@ -1,16 +1,19 @@
 <% @page.components&.each do |component| %>
+<% # puts @page.components.to_yaml %>
   <script type="text/html"
           data-component-template="QuestionMenu_<%= component.uuid %>"
           data-component-uuid="<%= component.uuid %>"
           data-activator-text="<%= t('question.menu.activator') %>">
     <ul class="govuk-navigation component-activated-menu">
       <li data-action="required" data-validation="required">
-        <span role="menuitemcheckbox" 
+        <span role="menuitemcheckbox"
               aria-checked="<%= component.validation ? component.validation['required'] : 'false' -%>"
               aria-haspopup="dialog">
           <%= t('question.menu.required')%>
         </span>
       </li>
+
+      <%= puts "===============> component.type: #{component.type} " %>
 
       <% if component.type  == 'autocomplete' %>
         <li data-action="upload"
@@ -18,6 +21,22 @@
           <span aria-haspopup="dialog"><%= t('question.menu.upload_options') %></span>
         </li>
       <% end %>
+
+      <% if component.type  == 'text' %>
+      <%= puts "++++++> #{@page.components.select{|k,v| k.type == 'select'}.to_yaml}" %>
+        <li data-action="edit"
+            data-api-path="<%= URI.decode_www_form_component(api_service_select_path(service.service_id, component.uuid, @page.components.select{|k,v| k.type == 'select'}.first.to_json))%>">
+          <span aria-haspopup="dialog"><%= t('question.menu.edit_select_options') %></span>
+        </li>
+      <% end %>
+
+      <% if component.type  == 'select' %>
+        <li data-action="edit"
+            data-api-path="<%= URI.decode_www_form_component(api_service_select_path(service.service_id, component.uuid))%>">
+          <span aria-haspopup="dialog"><%= t('question.menu.edit_select_options') %></span>
+        </li>
+      <% end %>
+
 
       <% enabled_validations(component).each do |validation| %>
         <% if validation == 'max_files' %>

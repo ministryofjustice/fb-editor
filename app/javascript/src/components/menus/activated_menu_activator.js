@@ -28,6 +28,7 @@ class ActivatedMenuActivator {
    * @param {object} ActivatedMenu configuration object
    */
   constructor(menu, config) {
+    console.log("ActivatedMenuActivator called...");
     let $node = config.activator;
     this.#config = config;
     this.#className = "ActivatedMenuActivator";
