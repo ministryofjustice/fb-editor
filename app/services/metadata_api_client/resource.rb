@@ -16,7 +16,7 @@ module MetadataApiClient
 
     def self.error_messages(exception, send_sentry: true)
       errors = JSON.parse(
-        exception.response_body, symbolize_names: true
+        exception.response[:body], symbolize_names: true
       )[:message]
 
       if send_sentry

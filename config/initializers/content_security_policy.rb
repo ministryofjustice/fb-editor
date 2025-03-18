@@ -23,7 +23,7 @@ Rails.application.configure do
                        "https://*.googletagmanager.com"
 
     # Specify URI for violation reports
-    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
+    policy.report_uri "#{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts

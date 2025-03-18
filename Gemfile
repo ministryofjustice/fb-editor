@@ -6,8 +6,8 @@ ruby '3.1.3'
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
 # gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'semantic-editable-headings'
+#     github: 'cabinetoffice/cdo-metadata-presenter',
+#     branch: 'my-new-signin-component'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.4.3'
 
@@ -19,7 +19,7 @@ gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'dotenv', '2.8.1'
 gem 'faraday'
-gem 'faraday_middleware'
+gem 'faraday_middleware', '~> 1.2', '>= 1.2.1'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
 gem 'govuk-components', '< 5.0.0'

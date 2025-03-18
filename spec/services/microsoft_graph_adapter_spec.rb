@@ -19,7 +19,7 @@ RSpec.describe MicrosoftGraphAdapter do
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Authorization' => 'Bearer valid_token',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v1.10.3'
+            'User-Agent' => 'Faraday v1.2.0'
           }
         )
         .to_return(status: 201, body: { 'id' => 'a-drive-id' }.to_json, headers: {})
@@ -47,7 +47,7 @@ RSpec.describe MicrosoftGraphAdapter do
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Authorization' => 'Bearer valid_token',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v1.10.3'
+            'User-Agent' => 'Faraday v1.2.0'
           }
         ).to_return(status: 500, body: {}.to_json, headers: {})
 
@@ -78,7 +78,7 @@ RSpec.describe MicrosoftGraphAdapter do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => 'Faraday v1.2.0'
             }
           ).to_return(status: 200, body: { 'access_token' => 'valid_token' }.to_json, headers: {})
 
@@ -106,7 +106,7 @@ RSpec.describe MicrosoftGraphAdapter do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => 'Faraday v1.2.0'
             }
           ).to_return(status: 500, body: {}.to_json, headers: {})
 
@@ -134,7 +134,7 @@ RSpec.describe MicrosoftGraphAdapter do
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
               'Content-Type' => 'application/x-www-form-urlencoded',
-              'User-Agent' => 'Faraday v1.10.3'
+              'User-Agent' => 'Faraday v1.2.0'
             }
           ).to_return(status: 403, body: {}.to_json, headers: {})
 
@@ -168,7 +168,7 @@ RSpec.describe MicrosoftGraphAdapter do
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Authorization' => 'Bearer valid_token',
             'Content-Type' => 'application/json',
-            'User-Agent' => 'Faraday v1.10.3'
+            'User-Agent' => 'Faraday v1.2.0'
           }
         ).to_return(status: 200, body: response.to_json, headers: {})
 
