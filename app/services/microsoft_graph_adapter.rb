@@ -130,7 +130,7 @@ class MicrosoftGraphAdapter
   end
 
   def display_name_for(component, page_label)
-    if component['_type'] == 'radios' || component['_type'] == 'checkboxes'
+    if %w[radios checkboxes].include?(component['_type'])
       component['legend'] || page_label # use the page label or legend if it's a checkbox component
     else
       component['label'] || component['legend'] || component['lede'] || page_label || '' # autocomplete has a legend not a label
