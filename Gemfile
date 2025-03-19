@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
+ruby '3.2.0'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'cabinetoffice/cdo-metadata-presenter',
-#     branch: 'my-new-signin-component'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'bump-off-cobwebs'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.3'
+# gem 'metadata_presenter', '3.4.3'
 
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'
@@ -30,7 +30,7 @@ gem 'omniauth-auth0', '~> 3.1.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 7.0', '< 7.1'
+gem 'rails', '~> 7.1', '< 7.2'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
 gem 'sass-rails', '>= 6'
