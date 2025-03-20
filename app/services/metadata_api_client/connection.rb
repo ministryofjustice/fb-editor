@@ -10,18 +10,16 @@ module MetadataApiClient
 
     def initialize(root_url: ENV['METADATA_API_URL'])
       @connection = Faraday.new(root_url, headers:) do |conn|
-        conn.request :json
-        conn.response :json
-        conn.response :raise_error
-        conn.use :instrumentation, name: SUBSCRIPTION
-
         # Number of seconds to wait for the connection to open
         conn.options.open_timeout = DEFAULT_OPEN_TIMEOUT
 
         # Number of seconds to wait for one block to be read
         conn.options.read_timeout = DEFAULT_READ_TIMEOUT
-
+        conn.request :instrumentation, name: SUBSCRIPTION
         conn.request :authorization, 'Bearer', service_access_token
+        conn.request :json
+        conn.response :raise_error
+        conn.response :json
       end
     end
 

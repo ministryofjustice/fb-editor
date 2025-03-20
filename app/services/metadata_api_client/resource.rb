@@ -15,9 +15,7 @@ module MetadataApiClient
     end
 
     def self.error_messages(exception, send_sentry: true)
-      errors = JSON.parse(
-        exception.response[:body], symbolize_names: true
-      )[:message]
+      errors = exception.response_body['message']
 
       if send_sentry
         sentry_errors = errors.reject { |err| err == SERVICE_NAME_EXISTS }

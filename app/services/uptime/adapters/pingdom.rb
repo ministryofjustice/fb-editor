@@ -13,13 +13,13 @@ class Uptime
 
       def initialize(root_url: API_URL)
         @connection = Faraday.new(root_url) do |conn|
-          conn.request :json
-          conn.request(:authorization, 'Bearer', ENV['PINGDOM_TOKEN'])
-          conn.response :json
-          conn.response :raise_error
-          conn.use :instrumentation, name: SUBSCRIPTION
           conn.options[:open_timeout] = TIMEOUT
           conn.options[:timeout] = TIMEOUT
+          conn.request :instrumentation, name: SUBSCRIPTION
+          conn.request(:authorization, 'Bearer', ENV['PINGDOM_TOKEN'])
+          conn.request :json
+          conn.response :raise_error
+          conn.response :json
         end
       end
 
