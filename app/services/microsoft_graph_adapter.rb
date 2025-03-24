@@ -53,7 +53,6 @@ class MicrosoftGraphAdapter
     end
 
     response_body = JSON.parse(response.body)
-    Rails.logger.info(response_body)
     response_body['access_token']
   end
 
