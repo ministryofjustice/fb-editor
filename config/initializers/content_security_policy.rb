@@ -23,7 +23,7 @@ Rails.application.configure do
                        "https://*.googletagmanager.com"
 
     # Specify URI for violation reports
-    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
+    policy.report_uri "#{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts
@@ -31,5 +31,5 @@ Rails.application.configure do
   config.content_security_policy_nonce_directives = %w(script-src)
 
   # Report violations without enforcing the policy.
-  config.content_security_policy_report_only = false
+  config.content_security_policy_report_only = true
 end

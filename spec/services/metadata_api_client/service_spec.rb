@@ -50,7 +50,7 @@ RSpec.describe MetadataApiClient::Service do
     before do
       stub_request(:get, expected_url)
         .with(headers: expected_headers)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns a list of all the services' do
@@ -65,7 +65,7 @@ RSpec.describe MetadataApiClient::Service do
     before do
       stub_request(:get, expected_url)
         .with(headers: expected_headers)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns a list of services objects' do
@@ -86,7 +86,7 @@ RSpec.describe MetadataApiClient::Service do
       before do
         stub_request(:post, expected_url)
           .with(headers: expected_headers)
-          .to_return(status: 201, body: expected_body.to_json, headers: {})
+          .to_return(status: 201, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns a service' do
@@ -108,7 +108,7 @@ RSpec.describe MetadataApiClient::Service do
       before do
         stub_request(:post, expected_url)
           .with(headers: expected_headers)
-          .to_return(status: 422, body: expected_body.to_json, headers: {})
+          .to_return(status: 422, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns an error message' do
@@ -132,7 +132,7 @@ RSpec.describe MetadataApiClient::Service do
     before do
       stub_request(:get, expected_url)
         .with(headers: expected_headers)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns latest metadata' do
@@ -145,7 +145,7 @@ RSpec.describe MetadataApiClient::Service do
 
     context 'when we can delete the service' do
       before do
-        stub_request(:delete, expected_url).to_return(status: 200, headers: {})
+        stub_request(:delete, expected_url).to_return(status: 200, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'does not add any errors message' do
@@ -157,7 +157,7 @@ RSpec.describe MetadataApiClient::Service do
       let(:expected_body) { { 'message' => ['the server responded with status 400'] } }
 
       before do
-        stub_request(:delete, expected_url).to_return(status: 400, body: expected_body.to_json, headers: {})
+        stub_request(:delete, expected_url).to_return(status: 400, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'rescue error if client has an issue' do
