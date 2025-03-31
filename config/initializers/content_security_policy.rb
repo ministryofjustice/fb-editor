@@ -14,6 +14,7 @@ Rails.application.configure do
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
                        "https://*.googletagmanager.com"
+    policy.script_src_elem :unsafe_inline
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
