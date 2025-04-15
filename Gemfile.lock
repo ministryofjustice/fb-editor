@@ -6,6 +6,22 @@ GIT
     capybara_accessible_selectors (0.11.0)
       capybara (~> 3.36)
 
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: 227cc9b392800b3c16a96677c8a89e868d346919
+  branch: cdpt-2632-moj-forms-update-crest
+  specs:
+    metadata_presenter (3.4.6)
+      govspeak (~> 7.1)
+      govuk_design_system_formbuilder (~> 4.1.1)
+      json-schema (~> 4.1.1)
+      kramdown (~> 2.4.0)
+      rails (~> 7.1.0)
+      sassc-rails (= 2.1.2)
+      sprockets
+      sprockets-rails
+      uk_postcode
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -314,16 +330,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    metadata_presenter (3.4.6)
-      govspeak (~> 7.1)
-      govuk_design_system_formbuilder (~> 4.1.1)
-      json-schema (~> 4.1.1)
-      kramdown (~> 2.4.0)
-      rails (~> 7.1.0)
-      sassc-rails (= 2.1.2)
-      sprockets
-      sprockets-rails
-      uk_postcode
     method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
@@ -862,7 +868,7 @@ DEPENDENCIES
   govuk_notify_rails (~> 2.2.0)
   hashie
   listen (~> 3.8)
-  metadata_presenter (= 3.4.6)
+  metadata_presenter!
   omniauth-auth0 (~> 3.1.0)
   omniauth-rails_csrf_protection (~> 1.0.1)
   pg (>= 0.18, < 2.0)
