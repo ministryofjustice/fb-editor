@@ -3,6 +3,18 @@
  * Specific customisations for the MOJ form builder Editor.
  **/
 
+.fb-govuk-footer__copyright-logo {
+  display: inline-block;
+  min-width: 125px;
+  padding-top: 112px;
+  background-image: url("../images/govuk-crest.svg");
+  background-repeat: no-repeat;
+  background-size: 125px 102px;
+  text-align: center;
+  background-position: 50% 0px;
+  white-space: nowrap;
+}
+
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
 }
