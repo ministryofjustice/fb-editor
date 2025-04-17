@@ -5,11 +5,11 @@ ruby '3.2.0'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'bugfix/page-title'
+gem 'metadata_presenter',
+    github: 'ministryofjustice/fb-metadata-presenter',
+    branch: 'cdpt-2632-moj-forms-update-crest'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.6'
+# gem 'metadata_presenter', '3.4.6'
 
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'
@@ -21,7 +21,7 @@ gem 'dotenv', '2.8.1'
 gem 'faraday', '~> 2.0'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
-gem 'govuk-components', '< 5.0.0'
+gem 'govuk-components', '5.9.0'
 gem 'govuk_design_system_formbuilder'
 gem 'govuk_notify_rails', '~> 2.2.0'
 gem 'hashie'
