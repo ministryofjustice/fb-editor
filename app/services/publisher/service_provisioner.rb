@@ -104,7 +104,7 @@ class Publisher
     end
 
     def resource_requests_cpu
-      '20m'
+      '50m'
     end
 
     def resource_requests_memory
