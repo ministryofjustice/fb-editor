@@ -23,6 +23,7 @@ MOJ_FORMS_DEVS = %w[
   steven.leighton1@justice.gov.uk
   jesus.laiz@digital.justice.gov.uk
   hettie.street@digital.justice.gov.uk
+  hettie.street@justice.gov.uk
   nick.preddy@justice.gov.uk
   meena.modhvadia@digital.justice.gov.uk
 ].freeze
