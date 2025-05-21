@@ -17,10 +17,7 @@
  *
  **/
 
-const {
-  createElement,
-  uniqueString
-} = require('../../utilities');
+const { createElement, uniqueString } = require("../../utilities");
 
 class ActivatedMenuActivator {
   #config;
@@ -36,7 +33,7 @@ class ActivatedMenuActivator {
     this.#className = "ActivatedMenuActivator";
     this.menu = menu;
 
-    if(!$node || $node.length < 1) {
+    if (!$node || $node.length < 1) {
       this.$node = this.#createNode();
     } else {
       this.$node = $node;
@@ -45,25 +42,51 @@ class ActivatedMenuActivator {
 
     this.#addAttributes();
     this.#bindEventHandlers();
-
   }
 
   render() {
-    this.menu.$parent.append(this.$node);
+    if (this.menu.$parent.find(".flow-conditions").length) {
+      this.$node.insertBefore(this.menu.$parent.find(".flow-conditions"));
+    } else {
+      this.menu.$parent.append(this.$node);
+    }
   }
 
-   /**
-    * Creates a button element using config
-    * @return {jQuery}
-    */
+  /**
+   * Creates a button element using config
+   * @return {jQuery}
+   */
   #createNode() {
-      const $node = $(
-        createElement("button",
-                      this.#config.activator_text,
-                      this.#config.activator_classname
-        )
-      );
-      return $node;
+    const $node = $(
+      createElement(
+        "button",
+        this.#config.activator_text,
+        this.#config.activator_classname,
+      ),
+    );
+    $node.attr("aria-label", this.#config.activator_text);
+    $node.html(this.#icon());
+    return $node;
+  }
+
+  #icon() {
+    let icon;
+    switch (this.#config.activator_icon) {
+      case "plus":
+        icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <polygon points="14,10 17,10 17,14 21,14 21,17 17,17 17,21 14,21 14,17 10,17 10,14 14,14 14,10"  fill="currentColor" />
+        </svg>`;
+        break;
+      case "ellipsis":
+      default:
+        icon = `<svg width="31" height="31" viewBox="0 0 31 31" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <circle cx="7.5" cy="15.5" r="2.5" fill="currentColor"/>
+    <circle cx="15.5" cy="15.5" r="2.5" fill="currentColor"/>
+    <circle cx="23.5" cy="15.5" r="2.5" fill="currentColor"/>
+</svg>`;
+        break;
+    }
+    return icon;
   }
 
   #addAttributes() {
@@ -76,7 +99,7 @@ class ActivatedMenuActivator {
   }
 
   #bindEventHandlers() {
-    this.$node.on("click.ActivatedMenuActivator", (event) => {
+    this.$node.on("mousedown.ActivatedMenuActivator", (event) => {
       this.menu.currentActivator = event.currentTarget;
       this.menu.open();
     });
@@ -86,7 +109,7 @@ class ActivatedMenuActivator {
     });
 
     this.$node.on("blur", (event) => {
-      if(!this.menu.state.open) {
+      if (!this.menu.state.open) {
         this.$node.removeClass("active");
       }
     });
@@ -94,17 +117,17 @@ class ActivatedMenuActivator {
     this.$node.on("keydown", (event) => {
       let key = event.originalEvent.code;
 
-      switch(key) {
-        case 'Enter':
-        case 'Space':
-        case 'ArrowDown':
+      switch (key) {
+        case "Enter":
+        case "Space":
+        case "ArrowDown":
           event.preventDefault();
 
           this.menu.currentActivator = event.currentTarget;
           this.menu.open();
           this.menu.focus();
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           event.preventDefault();
 
           this.menu.currentActivator = event.currentTarget;

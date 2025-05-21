@@ -1,0 +1,24 @@
+<% content_for(:title) do %>
+  <%= display_resource_name('Overview') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+</header>
+
+<section class="main-content__body">
+  <dl class="govuk-summary-list">
+    <% @stats.each do |stat| %>
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+          <%= stat[:name] %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <%= stat[:value] %>
+        </dd>
+      </div>
+    <% end %>
+  </dl>
+</section>

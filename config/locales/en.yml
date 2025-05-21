@@ -1,11 +1,15 @@
 en:
   aria:
-    answers: Answers
     hint: Question Hint
     question: Question
-    section_heading: Section Heading
+    section_heading: Optional section heading
     flow_thumbnail: 'Form page'
     disabled_save_description: 'No changes to save'
+    optional_content_description: 'Leave blank to not show'
+    disabled_input_description: 'Only active when published or previewed'
+    optional_content_label: Optional content area
+    page_title: Page title
+    page_lede: Optional lede paragraph
     page:
       start: Start page
       singlequestion: Single question page
@@ -14,9 +18,21 @@ en:
       confirmation: Confirmation page
       content: Content page
       exit: Exit page
+    question:
+      title: "{{type}} question title"
+      legend: "Edit {{type}} question"
+      hint: "Optional hint text for question"
+      answers: Answers
+      answer: "Answer field"
+      items:
+        label: "Label for option"
+        hint: "Optional hint text for option"
+        answer: "Answer field for option"
+        menu_button: "Edit option"
   assistive_text:
     warning: warning
     incomplete: incomplete
+    new_tab: (opens in a new tab)
   default_text:
     section_heading: '[Optional section heading]'
     lede: '[Optional lede paragraph]'
@@ -29,23 +45,24 @@ en:
     service_email_output: ''
     service_email_from: 'no-reply-moj-forms@digital.justice.gov.uk'
     service_email_subject: 'Submission from %{service_name}{{reference_number_placeholder}}'
-    service_email_body: 'Please find attached a submission sent from %{service_name}. {{reference_number_placeholder}}'
-    service_email_pdf_heading: 'Submission for %{service_name} {{reference_number_placeholder}}'
+    service_email_body: 'Please find attached a submission sent from %{service_name}.{{reference_number_placeholder}}'
+    service_email_pdf_heading: 'Submission for %{service_name}{{reference_number_placeholder}}'
     service_email_pdf_subheading: ''
     branching_title: 'Branching point %{branching_number}'
     confirmation_email_reply_to: ''
     confirmation_email_subject: "Your submission to ‘%{service_name}’{{reference_number_placeholder}}"
-    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’. {{reference_payment_placeholder}}\n\r\nYour answers are shown below and attached to this email."
-    reference_number_sentence: "Your reference number is: {{reference_number}}."
+    confirmation_email_body: "Thank you for your submission to ‘%{service_name}’.{{reference_payment_placeholder}}\r\nThe information you provided is shown below."
+    reference_number_sentence: "\r\nYour reference number is: {{reference_number}}."
     reference_number_subject: ", reference number: {{reference_number}}"
     reference_number: '123-ABCD-456'
-    reference_payment_sentence: "Your reference number is: {{reference_number}}.\n\r\nTo complete your submission, you now need to make the required payment at {{payment_link}}."
-    save_and_return_email: "You have saved your progress with the form '%{service_name}'.<br /><br /><a href={{save_and_return_link}}>Continue with your form</a><br /><br />This link will only work once. If you want to save your progress again after resuming the form, you will need to repeat the save process and generate another link.<br /><br />The link is valid for 28 days. After that time, your saved information will be deleted."
+    reference_payment_sentence: "\r\nYour reference number is: {{reference_number}}.\r\nTo complete your submission, you now need to make the required payment at {{payment_link}}."
     service_output_json_endpoint: 'Enter the endpoint URL here'
     service_output_json_key: 'Enter the endpoint key here'
   notification_banners:
     important: Important
     success: Success
+    dismiss: Dismiss
+    dismiss_assistive: announcement banner
     cookies:
       heading:   "This page can’t be edited. You don’t need to do anything with it because we’ve taken care of it for you."
     privacy:
@@ -67,6 +84,7 @@ en:
     button_ok: 'OK'
     button_understood: 'Understood'
     button_update: 'Update'
+    button_close: 'Close modal'
     heading: General heading here
     heading_delete: 'Delete "%{label}"?'
     heading_delete_no_default_next: 'You cannot delete this page yet'
@@ -77,6 +95,8 @@ en:
     message_delete: 'This cannot be undone'
     message_delete_branch: 'This cannot be undone'
     message_delete_condition: 'This cannot be undone'
+    message_delete_page_used_for_submission_confirmation: "You won't receive any user data from your form without a confirmation page. You will lose any changes you have made to the page."
+    message_delete_page_used_for_check_your_answers: "You won't receive any user data from your form without a check answers page. You will lose any changes you have made to the page."
     destination:
       button_change: Change next page
       label: 'Change next page'
@@ -98,6 +118,13 @@ en:
       redo:
         content: We were unable to redo your last action.
     component_validations:
+      hint_text_prompt: You may want to mention this requirement in the question's hint text to help users with their answer
+      regex:
+        title: Regular expression
+        hint_regex_pattern: Do not include a ‘/’ at the beginning or end. Do not include any options such as ‘i’, ‘x’ or ‘m’.
+        advice_regex_pattern: You should also explain the required format in the question's hint text to help users with their answer.
+        instruction_regex_pattern: Use a %{regex_href} (regex) to validate answers against a specific format, such as a reference number or case ID.
+        regex_link: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/building-and-editing/#regex" target="_blank" rel="noopener noreferrer">regular expression</a>
       date:
         day: Day
         month: Month
@@ -123,6 +150,9 @@ en:
         max:
           label: Maximum answer length
           status_label: Set a maximum answer length
+        pattern:
+          label: Specific answer format
+          status_label: Set a specific answer format
       max_files:
         label: 'Maximum number of files that can be uploaded'
         hint: 'Set a limit for this page of between 1 and 10 files'
@@ -139,18 +169,20 @@ en:
       success: Options uploaded. Use preview or publish to view them.
   header:
     service_name: "MoJ Forms"
-    home_link_text: "Back to Home"
-    home_link_alt: "Ministry of Justice Logo - homepage"
+    home_link_text: "MoJ Forms - Back to your forms"
+    home_link_alt: "Ministry of Justice Logo"
 
   partials:
     header:
       admin: Admin
       forms: Your forms
       sign_out: Sign out %{user_name}
-      user_guide: "User guide"
+      user_guide: "Support"
+      send_feedback: "Feedback"
       home_url: "https://moj-forms.service.justice.gov.uk/"
       user_guide_url: "https://moj-forms.service.justice.gov.uk/user-guide/"
       user_guide_check_confirm_url: 'https://moj-forms.service.justice.gov.uk/building-and-editing/#check-confirm'
+      feedback_form_url: "https://mojf-in-service-feedback-form.form.service.justice.gov.uk"
   home:
     show:
       phase: beta
@@ -216,6 +248,10 @@ en:
       undo_move: 'Undo move'
       redo_change_next_page: 'Redo change next page'
       redo_move: 'Redo move'
+    enable_external_start_page: 'Switch to a GOV.UK start page'
+    edit_external_start_page: 'Edit start page URL'
+    preview_external_start_page: 'Open start page'
+    disable_external_start_page: 'Switch to form start page'
   branches:
     branch_add: 'Add another branch'
     branch_edit: 'Edit branch'
@@ -233,6 +269,12 @@ en:
     title_otherwise: 'Otherwise,'
     hint_otherwise: 'if none of the above'
     detached_list: 'Unconnected page'
+    hints:
+      question: The question whose answer will be used in this conditon
+      operator: The type of comparison that will be made to the answer of the source question
+      value: The value to which the answer to the source question will be compared to
+      destination: ", The page that will be displayed if the conditions for branch one are met"
+      destination_otherwise: ", The page that will be displayed none of branches have their condition met"
     delete_modal:
       destinations: 'Go to:'
       lede: 'Choose which branch you want to keep in your form.'
@@ -241,13 +283,36 @@ en:
   conditional_content:
     heading: Show this content...
     show_if_button_label: Shows if...
-    hidden_button_label: Hidden 
-    display: 
+    hidden_button_label: Hidden
+    display:
       always: 'Always'
       conditional: 'Only if...'
       never: 'Never'
     add_another_rule: 'Add another rule'
     add_condition: 'Add condition'
+  external_start_page_url:
+    link: 'GOV.UK start page'
+    link_aria_text: 'action for GOV.UK start page'
+    title: 'Switch to a GOV.UK start page'
+    editing_title: 'Edit GOV.UK start page URL'
+    content: 'This will remove the current start page from your form. Use this option if you want to link to your form from a GOV.UK start page.'
+    help_link_text: 'Which type of start page do I need?'
+    label: 'GOV.UK start page URL'
+    confirm: 'Use this as my start page'
+    done: 'Done'
+    cancel: 'Cancel'
+    preview:
+      title: 'Open your GOV.UK start page'
+      content_one: 'This will open the GOV.UK link you have set as your start page.'
+      content_two: 'The start page should include a link to %{href}. This may not work as expected if you have not published your form to Live yet or have changes in draft.'
+      link_text: "your form's live URL"
+      confirm: 'Open GOV.UK start page'
+      cancel: 'cancel'
+    condition_target: ' to %{type} %{index}'
+    hints:
+      question: The question whose answer will be used in this rule
+      operator: The type of comparison that will be made to the answer of the source question
+      value: The value to which the answer to the source question will be compared to
   questions:
     delete_modal:
       can_not_delete_heading: 'You cannot delete this question yet'
@@ -269,10 +334,20 @@ en:
       heading: 'Pages flow'
       detached: 'Unconnected pages'
       reconnect_hint: 'How do I reconnect these?'
+      page_types:
+        start: 'Start page'
+        singlequestion: 'Single question page'
+        multiplequestions: 'Single question page'
+        content: 'Content page'
+        exit: 'Exit page'
+        checkanswers: 'Check your answers page'
+        confirmation: 'Confirmation page'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
-    actions: 'Actions'
+    flow_page_menu_label: "Actions for page %{title}"
+    flow_branch_menu_label: "Actions for %{title}"
+    connection_menu_label: "Actions for connection between pages %{source}"
     footer: 'Form footer'
     delete_modal:
       delete_page: 'Deletes "%{title}"'
@@ -307,15 +382,20 @@ en:
       upload: 'File upload'
       multi_upload: 'Multiple File upload'
       autocomplete: 'Autocomplete'
+      address: 'Address'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'
+      move_component_up: 'Move component {{index}} up'
+      move_component_down: 'Move component {{index}} down'
+      move_content_up: 'Move content area {{index}} up'
+      move_content_down: 'Move content area {{index}} down'
     menu:
       question: 'Question'
       content_area: 'Content area'
   content:
     menu:
-      activator: 'Settings'
+      activator: 'Content area {{index}} properties'
       remove: 'Delete...'
       show_if: 'Show if...'
     dialog:
@@ -327,7 +407,7 @@ en:
   question:
     optional_flag: '(optional)'
     menu:
-      activator: 'Properties'
+      activator: 'Question {{index}} properties'
       remove: 'Delete...'
       required: 'Required...'
       date_after: 'Earliest date...'
@@ -338,6 +418,7 @@ en:
       min_string_length: 'Minimum answer length...'
       upload_options: 'Autocomplete options...'
       max_files: 'Number of files...'
+      pattern: 'Specific answer format (regex)...'
     dialog:
       heading_remove: Delete the component '#{label}'?
       heading_required: 'Is answering this question required?'
@@ -355,13 +436,13 @@ en:
       form_name:
         label: 'Form name'
         lede: This appears in the header of all your form pages and is what your form is listed as in the MoJ Forms editor. A good name describes the task the form is designed for and starts with an action, such as "Get help with..." or "Apply for..." %{href}.
-        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form</a>
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about naming a form<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       form_slug:
         label: 'URL'
         lede: "This will be your form's web address when it goes live. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />Changing a live form's URL can cause problems for users so this option is only available before a form has been published to Live."
         lede_live: "This is your form's live web address. The URL should be easy to read and closely resemble your form name. Words should be in lower case and separated with hyphens. %{href}.<br /><br />As your form is now live, you cannot change your URL here. %{contact_us} to discuss changing your URL."
-        contact_us: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact" target="_blank" rel="noopener noreferrer">Contact us</a>
-        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards</a>
+        contact_us: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/contact" target="_blank" rel="noopener noreferrer">Contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
+        href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings" target="_blank" rel="noopener noreferrer">Learn more about URL standards<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
         hint: Maximum 57 characters. It cannot start with a number or include spaces or special characters except hyphens
         domain: .form.service.justice.gov.uk
     form_analytics:
@@ -380,7 +461,7 @@ en:
       link: Reference numbers and GOV.UK Pay
       heading: Reference numbers and GOV.UK Pay
       description: Generate and provide your users with a unique reference number for each submission. You can combine a reference number with a GOV.UK Pay payment link to easily match MoJ Forms submissions when taking payments. (For details, see the %{href}.)
-      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">user guide</a>
+      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">user guide<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       lede: Generate a unique reference number for each submission and link users to your GOV.UK Pay payment page.
     reference_number:
       warning: Updating these settings will reset the confirmation and submission emails and any changes you have made to the subjects and messages will be lost.
@@ -394,7 +475,7 @@ en:
     payment_link:
       legend: GOV.UK Pay payment links
       hint: This adds a reference number to a GOV.UK Pay payment link and inserts it in the confirmation page and confirmation email. (Requires a %{href}.)
-      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account</a>
+      href: <a class="govuk-link" href="%{url}" target="_blank" rel="noopener noreferrer">GOV.UK Pay account<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       url: 'https://www.payments.service.gov.uk/'
       checkbox_label: Add payment links with reference numbers
       url_label: Your GOV.UK Pay payment link URL
@@ -403,7 +484,7 @@ en:
       lede: 'Give users the option of saving a partially completed form.'
       description: 'Give users the option of saving a partially completed form for up to 28 days.'
       page_lede: 'This places a save button at the bottom of each page of your form which will lead users through the save process. For details, see the %{href}'
-      href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings/#save-for-later" target="_blank" rel="noopener noreferrer">user guide section on save for later.</a>
+      href: <a class="govuk-link" href="https://moj-forms.service.justice.gov.uk/settings/#save-for-later" target="_blank" rel="noopener noreferrer">user guide section on save for later.<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
       label: Enable save for later
     submission:
       heading: 'Submission settings'
@@ -415,17 +496,51 @@ en:
       production:
         config_details_summary: Configure <span class="sr-only">live settings</span>
         save_button: Save Live settings
+    transfer_ownership:
+      heading: Change form owner
+      description: Transfer this form to another MoJ Forms editor.
+      lede: Transfer access and editing rights for this form to another MoJ Forms editor.
+      label: New form owner’s email address
+      hint: The address they use to access MoJ Forms. They must have signed in at least once.
+      warning: Once you change the form owner, you will no longer be able to access or edit this form in MoJ Forms.
+      confirmation_title: The form owner has been changed
+      confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
+      href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
     collection_email:
       heading: 'Collect information by email'
-      lede: 'Receive your form data in PDF and CSV attached to emails.'
+      lede: 'Receive each form submission by email with PDF and CSV attachments.'
       description: 'Receive your form data in PDF and CSV attached to emails.'
     confirmation_email:
       heading: 'Send a confirmation email'
       lede: Send the people who complete your form a copy of their data.
       description: Send the people completing your form a confirmation email with a copy of their answers.
+    ms_list:
+      banner:
+        heading: 'Important'
+        content_1: 'Do you also want to collect submissions by email?'
+        content_2: 'We recommend you also enable collecting information by email. This ensures you have a backup of submissions in case there is any disruption to the Microsoft Lists connection.'
+        link_text: 'Collect information by email'
+      heading: 'Collect information in Microsoft Lists'
+      lede: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists.'
+      description: 'Automatically collate and manage all your form submissions in a Teams site with MS Lists. For details, see the %{href}.'
+      link_text: 'user guide section on collecting information in MS lists'
+      link_url: 'https://moj-forms.service.justice.gov.uk/settings/#ms-lists'
+      checkbox: "Enable MS Lists on %{env}"
+      fieldset: ''
+      list_id_label: 'Submissions will be saved to this MS List:'
+      list_id_hint: 'The ID of the list to send to. Find out how to get this value'
+      site_id_label: 'Teams site ID'
+      site_id_hint: "32 letters and numbers separated with hyphens, for example: 6fecc977-b958-4c6a-b171-480ca5b1759a"
+      help_link_text: 'How to find the site ID'
+      help_link_ref: 'https://moj-forms.service.justice.gov.uk/settings/#site-id'
+      drive_id_label: 'Attachments will be saved in this folder'
+      created_item_hint: 'You need to publish your form for these changes to take effect.'
+      errors:
+        permissions: 'The Teams site must be in the main "Ministry of Justice" Microsoft tenant. The tenant is shown on your profile whenever you are signed into MS 365.'
+        server_error: 'There was a problem and we were unable to set up your Microsoft List. Try again or contact us if the problem persists'
   warnings:
     confirmation_email:
-      message: 'Your form must include an email question to enable a %{href}.'
+      message: 'Your form must include an email question to enable a %{href}'
       link_text: confirmation email
       link_url: 'https://moj-forms.service.justice.gov.uk/settings/#confirmation-email'
     submission_pages:
@@ -449,9 +564,13 @@ en:
       dev:
         icon_fallback: 'Warning'
         heading: 'Your form will not send any user submissions because:'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list."
+        link_text: 'Find out more about collecting information in MS Lists.'
       production:
         icon_fallback: 'Error'
         heading: 'Before you can publish to Live you must:'
+        ms_list: "This will create a new Microsoft List. All future form submissions will go into this new list."
+        link_text: 'Find out more about collecting information in MS Lists.'
     email_settings:
       default: You need to set and validate a team email address.
       pending: You need to validate this email address.
@@ -460,6 +579,47 @@ en:
     heading: 'Publishing'
     first_publish_warning: 'Your form is being published. It may take 15 minutes for the link below to work. Future updates will happen straight away.'
     first_publish_success: 'Your form has been published.'
+    publish_for_review:
+      info:
+        heading: 'Unlock publishing to Live'
+        content: 'You need to apply to %{href}. This can take up to 3 working days. You should only do this when you think your form is ready.'
+        content_2: 'We will check your form against the MoJ Forms terms of use and let you know when publishing is unlocked.'
+        link_text: 'unlock the ability to publish to Live'
+        link_url: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#final-check'
+      button: 'Apply to unlock publishing'
+      confirmation:
+        heading: 'We are reviewing your request to unlock publishing'
+        subheading: 'What happens next?'
+        text_1: 'A member of the MoJ Forms team will review your form against the terms of use to confirm it is ready to go live.'
+        text_2: 'This can take up to 3 working days.'
+        ul: 'We will then either:'
+        li_1: 'unlock your ability to publish to Live and let you know by email'
+        li_2: 'contact you to discuss any issues'
+        text_3: 'Once publishing is unlocked, you will be able to return to this page to publish your form to Live.'
+        text_4: '%{href} if you have any questions or concerns about this process.'
+        text_4_link_text: 'Contact us'
+        text_4_link_ref: 'https://moj-forms.service.justice.gov.uk/contact/'
+    declarations:
+      label: 'Confirm you have taken the following actions to unlock publishing'
+      error: 'Check all of the statements to confirm you have read them and taken the appropriate actions.'
+      one: 'I have read the %{href} and taken any appropriate actions for my form'
+      one_link_text: 'guidance on assessments'
+      one_link_ref: 'https://moj-forms.service.justice.gov.uk/getting-started/#assessment'
+      two: "I taken the %{href} into account and completed my form's accessibility statement"
+      two_link_text: 'accessibility guidance'
+      two_link_ref: 'https://moj-forms.service.justice.gov.uk/accessibility/'
+      three: "I have read the %{href} and completed my form's privacy statement"
+      three_link_text: 'guidance on data protection'
+      three_link_ref: 'https://moj-forms.service.justice.gov.uk/data-protection/'
+      four: 'I have tested my form and confirmed that it works as intended and is sending responses correctly (%{href})'
+      four_link_text: 'advice on testing your form'
+      four_link_ref: 'https://moj-forms.service.justice.gov.uk/testing-and-publishing/#test-checks'
+      five: 'I have checked and confirmed all %{href} for the Live site are correct'
+      five_link_text: 'settings'
+      five_link_ref: 'https://moj-forms.service.justice.gov.uk/settings/'
+      six: 'I have read and agree to the %{href}'
+      six_link_text: 'MoJ Forms Terms of use'
+      six_link_ref: 'https://moj-forms.service.justice.gov.uk/terms-of-use/'
     autocomplete_items:
       dev:
         icon_fallback: 'Warning'
@@ -472,9 +632,9 @@ en:
       production: Live
     service_output:
       icon_fallback: Warning
-      default: 'Your form will not send any user submissions until you enable %{link}.'
-      confirmation_email: 'Your form will not send any user submissions or confirmation emails until you enable %{link}.'
-      link_text: collecting information by email
+      default: 'You will not receive any submissions from this form until you enable a method of collecting information in %{link}.'
+      confirmation_email: 'You will not receive any submissions from this form until you enable a method of collecting information in %{link}.'
+      link_text: submission settings
     dialog:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view
@@ -489,6 +649,10 @@ en:
       version: 'Version: Latest  -'
       by: 'by %{name}'
       hint: 'Where you can check your form works and get feedback.'
+      inset_text_label: 'Is your form ready to go live?'
+      inset_text_html: "You will need to apply to unlock the ability to publish to Live. This can take up to 3 working days. Go to <a href='#publish-to-live'>Publish to Live</a> to find out more."
+      inset_text_link_text: 'final check'
+      inset_text_href:  'https://formbuilder-product-page-staging.apps.live.cloud-platform.service.justice.gov.uk/testing-and-publishing/#final-check'
     production:
       button: Publish to Live
       heading: 'Live site'
@@ -544,8 +708,7 @@ en:
         service_email_pdf_subheading: PDF subheading (optional)
         email_fieldset: Email
         pdf_fieldset: PDF attachment
-        pdf_sample: See sample PDF
-        pdf_hint: Answers will be inserted below the message and attached separately in a PDF.
+        pdf_hint: The user’s answers will be displayed below the message.
         csv_attachment: CSV attachment
         csv_hint: A comma-separated values (CSV) lists all the answers in plain text, separated by commas. It can be imported into spreadsheets and other applications.
         csv_sample: See sample CSV
@@ -574,6 +737,7 @@ en:
         default_next: Otherwise
     errors:
       summary_title: There is a problem
+      assistive_prefix: 'Error: '
       models:
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
@@ -587,16 +751,28 @@ en:
           reserved: "That name is used for something else"
           has_space: "Your page name cannot include spaces"
           has_special_chars:  "Your page name cannot include special characters other than hyphens (-)"
+        service_creation:
+          blank: Enter a form name
+          taken: Your form name is already used by another form. Please modify it.
+          too_long: "Form name must be %{count} characters or less"
+          too_short: "Form name must be %{count} characters or more"
+          invalid: Form name contains characters that are not allowed
         branch:
           blank: "Select a destination for '%{attribute}'"
         conditional:
           blank: "Select a destination for Branch "
         expression:
-          blank: "Select a question for the condition for Branch "
+          blank: "Select a question "
+          unsupported: "Select a radio button or checkbox question "
         base_component_validation:
           validator: "%{validator} is not valid for %{component} component"
           blank: "Enter an answer for %{label}"
           format: "%{message}"
+        string_regex_pattern:
+          blank: Enter a regular expression
+          invalid: Enter a valid regular expression
+          remove_delimiter: Your regular expression cannot include a ‘/’ at the beginning or end
+          remove_options: Your regular expression cannot include options such as ‘i’, ‘x’, ‘m’
         date_validation:
           invalid: "%{label} is not a valid date"
           missing_attribute: "%{label} should include a %{attribute}"
@@ -611,6 +787,9 @@ en:
         max_files_validation:
           too_small: "%{label} cannot be less than 1"
           too_big: "%{label} cannot be larger than 10"
+        external_url_validation:
+          missing: 'Enter a valid URL which includes "gov.uk"'
+          invalid: 'Enter a valid URL which includes "gov.uk"'
         form_analytics_settings:
           blank: Enter at least one tracking ID
           ua: A Universal Analytics ID must start with UA
@@ -650,14 +829,33 @@ en:
         component_expression:
           unsupported: "This type of question is not currently supported to create a content rule. Please select a radio button or checkbox question."
           same_page: "Only questions on other pages are supported."
+        transfer_ownership:
+          blank: Enter an email address
+          invalid: Enter a valid email address
+          unknown_user: The email address must be registered with MoJ Forms and have been used to sign in at least once. Ask the new form owner to contact us to get access.
       messages:
         blank: "Your answer for ‘%{attribute}’ cannot be blank."
         too_short: "%{attribute} must be %{count} characters or more"
-        too_long: "%{attribute} must be %{count} characters or fewer"
+        too_long: "%{attribute} must be %{count} characters or less"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
         unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
         unsupported: This type of question is not currently supported to create a branching condition. Please select a radio button or checkbox question.
+
+  helpers:
+    label:
+      announcement:
+        date_from: Start date
+        date_to: End date
+
+  administrate:
+    field_hints:
+      announcement:
+        title: For example, Important or News
+        content: Content should be formatted as markdown. N.B. For a single line break, the line must end in a double space
+        date_from: Date from which the announcement will start to show
+        date_to: Optionally, an end date, otherwise announcement will show until revoked
+
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'
@@ -670,3 +868,24 @@ en:
     does_not_contain: does not contain
     is_answered: is answered
     is_not_answered: is not answered
+  ordinals:
+    n_0: zeroth
+    n_1: first
+    n_2: second
+    n_3: third
+    n_4: fourth
+    n_5: fifth
+    n_6: sixth
+    n_7: seventh
+    n_8: eighth
+    n_9: ninth
+    n_10: tenth
+    n_11: eleventh
+    n_12: twelfth
+    n_13: thirteenth
+    n_14: fourteenth
+    n_15: fifteenth
+    n_16: sixteenth
+    n_17: seventeenth
+    n_18: eigthteenth
+    n_19: nineteenth

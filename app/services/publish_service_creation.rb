@@ -9,7 +9,8 @@ class PublishServiceCreation
                 :require_authentication,
                 :username,
                 :password,
-                :publish_service_id
+                :publish_service_id,
+                :ms_list
 
   validates :service_id, :version_id, :user_id, presence: true
   with_options if: :require_authentication? do |record|
@@ -72,7 +73,7 @@ class PublishServiceCreation
   end
 
   def no_service_output?
-    send_by_email.blank? || (send_by_email.present? && service_email_output.blank?)
+    (send_by_email.blank? && send_to_graph_api.blank?) || (send_by_email.present? && service_email_output.blank?)
   end
 
   private
@@ -147,6 +148,13 @@ class PublishServiceCreation
       service_id:,
       deployment_environment:
     ).try(:send_email?)
+  end
+
+  def send_to_graph_api
+    @send_to_graph_api ||= SubmissionSetting.find_by(
+      service_id:,
+      deployment_environment:
+    ).try(:send_to_graph_api?)
   end
 
   def service_email_output

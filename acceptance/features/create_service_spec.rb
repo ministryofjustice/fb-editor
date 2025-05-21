@@ -15,9 +15,9 @@ feature 'Create a service' do
     # page url links have the word "Edit" as a visually hidden span element
     # associated with them for added accessibility
     [
-      "Edit:\nService name goes here",
-      "Edit:\nCheck your answers",
-      "Edit:\nApplication complete"
+      "Service name goes here\n, Start page",
+      "Check your answers\n, Check your answers page",
+      "Application complete\n, Confirmation page"
     ]
   end
 
@@ -67,6 +67,7 @@ feature 'Create a service' do
     when_I_create_the_service
     then_I_should_see_default_service_pages
     then_I_should_not_be_able_to_add_page(start_page_title, checkanswers_link_text)
+    editor.service_name.click
     then_I_should_not_be_able_to_add_page(start_page_title, confirmation_link_text)
     and_I_add_a_content_page('Content Page')
     given_I_add_an_exit_page
@@ -94,25 +95,25 @@ feature 'Create a service' do
 
   def then_I_should_see_a_validation_message_for_required
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.blank', attribute: 'Give your form a name')
+      I18n.t('activemodel.errors.models.service_creation.blank')
     )
   end
 
   def then_I_should_see_a_validation_message_for_min_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_short', attribute: 'Give your form a name', count: Editor::Service::MINIMUM)
+      I18n.t('activemodel.errors.models.service_creation.too_short', count: Editor::Service::MINIMUM)
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.too_long', attribute: 'Give your form a name', count: Editor::Service::MAXIMUM)
+      I18n.t('activemodel.errors.models.service_creation.too_long', count: Editor::Service::MAXIMUM)
     )
   end
 
   def then_I_should_see_the_unique_validation_message
     expect(editor).to have_content(
-      I18n.t('activemodel.errors.messages.taken', attribute: 'Give your form a name')
+      I18n.t('activemodel.errors.models.service_creation.taken')
     )
   end
 

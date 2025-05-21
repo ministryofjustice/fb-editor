@@ -62,7 +62,7 @@
 
 .govspeak-address,
 .govspeak-contact,
-.address,
+div.address,
 .contact {
   @include govuk-text-colour;
   @include govuk-font($size: 19);

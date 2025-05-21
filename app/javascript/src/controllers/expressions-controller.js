@@ -1,52 +1,51 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets =  [ 'expression' ]
+    static targets = ['expression']
 
-  initialize() {
-    this.connected = false;
-  }
-
-  connect() {
-    Promise.resolve().then(() => {
-      this.connected = true
-      this.ensureFirstExpressionCannotBeDeleted()
-      this.allowFirstExpressionToBeDeleted()
-      this.setExpressionLabels()
-    })
-  }
-
-  expressionTargetDisconnected(element) {
-    this.ensureFirstExpressionCannotBeDeleted()
-    this.setExpressionLabels()
-  }
-  
-  expressionTargetConnected(element) {
-    if (!this.connected) return
-
-    this.allowFirstExpressionToBeDeleted();
-    this.setExpressionLabels()
-  }
-
-  ensureFirstExpressionCannotBeDeleted() {
-    if(this.expressionTargets.length == 1) {
-      this.expressionTargets[0].expressionController.hideDeleteButton()
+    initialize() {
+        this.connected = false;
     }
-  }
 
-  allowFirstExpressionToBeDeleted() {
-    if(this.expressionTargets.length > 1) {
-      this.expressionTargets[0].expressionController.showDeleteButton() 
+    connect() {
+        Promise.resolve().then(() => {
+            this.connected = true
+            this.preventFirstExpressionDeletion()
+            this.allowFirstExpressionDeletion()
+            this.updateExpressionIndices()
+        })
     }
-  }
 
-  setExpressionLabels(element) {
-    this.expressionTargets.forEach( (element, index) => {
-      if( index == 0) {
-       element.expressionController.setLabelText(element.expressionController.firstLabelValue)  
-      } else {
-        element.expressionController.setLabelText(element.expressionController.otherLabelValue)  
-      }
-    });
-  }
+    expressionTargetDisconnected() {
+        this.preventFirstExpressionDeletion()
+        this.updateExpressionIndices()
+    }
+
+    update(event) {
+        if (event.detail.additionType != 'expression') return
+
+        Promise.resolve().then(() => {
+            this.allowFirstExpressionDeletion();
+            this.updateExpressionIndices();
+        })
+    }
+
+
+    preventFirstExpressionDeletion() {
+        if (this.expressionTargets.length == 1) {
+            this.expressionTargets[0].expressionController.hideDeleteButton()
+        }
+    }
+
+    allowFirstExpressionDeletion() {
+        if (this.expressionTargets.length > 1) {
+            this.expressionTargets[0].expressionController.showDeleteButton()
+        }
+    }
+
+    updateExpressionIndices() {
+        this.expressionTargets.forEach((element, index) => {
+            element.expressionController.indexValue = index + 1
+        })
+    }
 }

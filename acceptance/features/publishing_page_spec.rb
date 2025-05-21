@@ -32,6 +32,7 @@ feature 'Publishing' do
     scenario 'service email output warning message and submission pages present' do
       when_I_visit_the_publishing_page
 
+      and_I_click_the_environment_tab
       then_I_should_see_the_default_no_service_output_warning_message
       then_the_publish_button_should_be_enabled
 
@@ -40,6 +41,7 @@ feature 'Publishing' do
       when_I_enable_the_submission_settings
 
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_not_see_the_default_no_service_output_warning_message
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_cya_text
@@ -48,6 +50,7 @@ feature 'Publishing' do
 
     scenario 'service email output warning message confirmation email and submission pages present' do
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
 
       then_I_should_see_the_default_no_service_output_warning_message
       then_the_publish_button_should_be_enabled
@@ -56,6 +59,7 @@ feature 'Publishing' do
       then_I_enable_confirmation_email
 
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_see_the_confirmation_email_no_service_output_warning_message
 
       then_I_click_the_collecting_information_by_email_link
@@ -63,6 +67,7 @@ feature 'Publishing' do
       when_I_enable_the_submission_settings
 
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_not_see_the_default_no_service_output_warning_message
       then_I_should_not_see_the_confirmation_email_no_service_output_warning_message
 
@@ -79,6 +84,7 @@ feature 'Publishing' do
 
       when_I_enable_the_submission_settings
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_see_the_submission_warning_message
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_confirmation_text
@@ -87,6 +93,7 @@ feature 'Publishing' do
       and_I_return_to_flow_page
       given_I_add_an_exit_page
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_see_the_submission_warning_message
       then_I_should_see_warning_both_text
       then_I_should_not_see_warning_cya_text
@@ -100,6 +107,7 @@ feature 'Publishing' do
 
       when_I_enable_the_submission_settings
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_not_see_warning_both_text
       then_I_should_not_see_warning_cya_text
       then_I_should_see_warning_confirmation_text
@@ -113,6 +121,7 @@ feature 'Publishing' do
 
       when_I_enable_the_submission_settings
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_see_autocomplete_warnings
       then_I_should_see_the_publish_button
 
@@ -123,6 +132,7 @@ feature 'Publishing' do
       when_I_upload_a_csv_file(valid_csv_one_column)
 
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_not_see_autocomplete_warnings
       then_the_publish_button_should_be_enabled
     end
@@ -147,7 +157,9 @@ feature 'Publishing' do
     let(:warning_cya){ 'add a check answers page' }
     let(:warning_confirmation){ 'add a confirmation page'}
 
-    it_behaves_like 'a publishing page environment'
+    context 'when I have published before' do
+      it_behaves_like 'a publishing page environment'
+    end
   end
 
   scenario 'when username and password is too short' do
@@ -160,7 +172,7 @@ feature 'Publishing' do
 
     then_username_and_password_should_be_the_default('dev')
     when_I_enter_invalid_username_and_password('dev', 'Test')
-    then_I_should_see_an_error_message('dev', 'Test')
+    then_I_should_see_username_and_password_error
 
     and_I_cancel
   end
@@ -175,6 +187,7 @@ feature 'Publishing' do
 
     scenario 'unconnected autocomplete page does not block Live publishing' do
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_see_autocomplete_warnings
       then_I_should_see_the_publish_button
 
@@ -183,9 +196,135 @@ feature 'Publishing' do
       when_I_change_destination_to_page('Check your answers')
 
       when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
       then_I_should_not_see_autocomplete_warnings
       then_the_publish_button_should_be_enabled
     end
+  end
+end
+
+feature 'First publish for approval' do
+  before do
+    given_I_am_logged_in
+    given_I_have_a_service_fixture(name: service_name, fixture: fixture_name)
+  end
+  let(:fixture_name) { 'default_new_service_fixture' }
+  let(:editor) { EditorApp.new }
+  let(:service_name) { "no_approval-#{generate_service_name}" }
+  let(:page_url) { 'palpatine' }
+  let(:modal_description) { I18n.t('activemodel.attributes.publish_service_creation.description') }
+  let(:allow_anyone_text) { I18n.t('publish.dialog.option_1') }
+  let(:username_and_password_text) { I18n.t('publish.dialog.option_2') }
+  let(:username_and_password_errors) do
+    [
+      I18n.t('activemodel.errors.models.publish_service_creation.username_too_short'),
+      I18n.t('activemodel.errors.models.publish_service_creation.password_too_short'),
+    ]
+  end
+  let(:valid_email) { 'station-master-tama@justice.gov.uk' }
+  let(:environment) { 'production' }
+  let(:warning_both){ 'check answers page and confirmation' }
+  let(:warning_cya){ 'add a check answers page' }
+  let(:warning_confirmation){ 'add a confirmation page'}
+  let(:exit_url) { 'exit' }
+
+  context 'when never published before ' do
+    scenario 'resolve email warnings' do
+      when_I_visit_the_publishing_page
+
+      and_I_click_the_environment_tab
+      then_I_should_see_the_default_no_service_output_warning_message
+
+      then_I_click_the_collecting_information_by_email_link
+      then_I_should_be_on_collecting_information_by_email_page
+      when_I_enable_the_submission_settings
+
+      when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
+      then_I_should_not_see_the_default_no_service_output_warning_message
+      then_I_should_not_see_warning_both_text
+      then_I_should_not_see_warning_cya_text
+      then_I_should_not_see_warning_confirmation_text
+    end
+
+    scenario 'resolve publishing warnings' do
+      given_I_have_a_single_question_page_with_upload
+      and_I_return_to_flow_page
+      and_I_delete_cya_page
+      then_I_should_see_delete_warning_cya
+
+      when_I_enable_the_submission_settings
+      when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
+      then_I_should_see_the_submission_warning_message
+      then_I_should_not_see_warning_both_text
+      then_I_should_not_see_warning_confirmation_text
+      then_I_should_see_warning_cya_text
+
+      and_I_return_to_flow_page
+      given_I_add_an_exit_page
+      when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
+      then_I_should_see_the_submission_warning_message
+      then_I_should_see_warning_both_text
+      then_I_should_not_see_warning_cya_text
+      then_I_should_not_see_warning_confirmation_text
+    end
+
+    scenario 'accept the declarations' do
+      when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
+      then_I_should_see_the_declarations_checkboxes
+      then_I_click_request_a_final_check
+      then_I_should_see_the_declarations_error
+      then_I_accept_the_declarations_with_error_summary
+      then_I_click_request_a_final_check
+      then_I_should_see_the_confirmation
+      and_I_return_to_flow_page
+      when_I_visit_the_publishing_page
+      and_I_click_the_environment_tab
+      then_I_should_see_the_confirmation
+    end
+  end
+end
+
+  def and_I_click_the_environment_tab
+    sleep 0.5
+    if environment == 'dev'
+      editor.dev_tab.click
+    else
+      editor.production_tab.click
+    end
+  end
+
+  def then_I_should_see_the_declarations_checkboxes
+    expect(page.text).to include( I18n.t('publish.declarations.one_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.two_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.three_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.four_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.five_link_text'))
+    expect(page.text).to include( I18n.t('publish.declarations.six_link_text'))
+  end
+
+  def then_I_click_request_a_final_check
+    editor.publish_for_review.click
+  end
+
+  def then_I_should_see_the_declarations_error
+    expect(page).to have_text(I18n.t('publish.declarations.error'))
+  end
+
+  def then_I_accept_the_declarations_with_error_summary
+    # we've got an error on the page so the checkboxes all get the same error id for linking
+    checkboxes = page.find_all(:css, '#publish-for-review-declarations-declarations-checkboxes-field-error', visible: false)
+    checkboxes.each do | checkbox |
+      checkbox.check
+    end
+  end
+
+  def then_I_should_see_the_confirmation
+    expect(page).to have_text(I18n.t('publish.publish_for_review.confirmation.heading'))
+    expect(page).to have_text(I18n.t('publish.publish_for_review.confirmation.text_1'))
   end
 
   def then_I_should_see_the_default_no_service_output_warning_message
@@ -228,7 +367,7 @@ feature 'Publishing' do
   end
 
   def then_I_click_the_collecting_information_by_email_link
-    environment_section.find(:css,'.govuk-link').click
+    environment_section.find('a', text: 'submission settings').click
   end
 
   def then_I_should_be_on_collecting_information_by_email_page
@@ -287,6 +426,11 @@ feature 'Publishing' do
     expect(page).to_not have_text(username_and_password_text)
   end
 
+  def then_I_should_see_username_and_password_error
+    expect(page).to have_text(I18n.t('activemodel.errors.models.publish_service_creation.password_too_short'))
+    expect(page).to have_text(I18n.t('activemodel.errors.models.publish_service_creation.username_too_short'))
+  end
+
   def when_I_enter_invalid_username_and_password(environment, button_environment)
     editor.find("#username_#{environment}").set('foo')
     editor.find("#password_#{environment}").set('bar')
@@ -335,11 +479,6 @@ feature 'Publishing' do
     expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
   end
 
-
-  def then_I_should_see_the_submission_confiramtion_email_warning_message
-    expect(editor.text).to include(I18n.t("warnings.publish.#{environment}.heading"))
-  end
-
   def then_I_should_see_autocomplete_warnings
     expect(environment_section.text).to include(autocomplete_warning_message)
   end
@@ -347,5 +486,3 @@ feature 'Publishing' do
   def then_I_should_not_see_autocomplete_warnings
     expect(environment_section.text).to_not include(autocomplete_warning_message)
   end
-
-end

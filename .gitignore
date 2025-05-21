@@ -38,6 +38,8 @@ yarn-debug.log*
 .env
 .env.acceptance_tests
 
+coverage
+
 # Visual Studio Code #
 **/.vscode/
 
@@ -46,3 +48,5 @@ yarn-debug.log*
 
 # Clamd config
 /config/clamd/*.conf
+
+coverage/*

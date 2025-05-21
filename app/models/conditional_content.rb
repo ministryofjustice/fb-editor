@@ -65,7 +65,7 @@ class ConditionalContent
   end
 
   def conditionals_attributes=(hash)
-    hash.each do |_index, conditional_hash|
+    hash.each_value do |conditional_hash|
       conditionals.push(ComponentConditional.new(conditional_hash.merge(service:, content_component: component_uuid)))
     end
   end

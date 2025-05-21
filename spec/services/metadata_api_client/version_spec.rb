@@ -1,10 +1,18 @@
 RSpec.describe MetadataApiClient::Version do
   let(:metadata_api_url) { 'http://metadata-api' }
+  let(:service_id) { SecureRandom.uuid }
+  let(:expected_headers) do
+    {
+      'User-Agent' => 'Editor',
+      'X-Request-Id' => '12345'
+    }
+  end
+
   before do
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with('METADATA_API_URL').and_return(metadata_api_url)
+    allow(Current).to receive(:request_id).and_return('12345')
   end
-  let(:service_id) { SecureRandom.uuid }
 
   describe '.create' do
     let(:expected_url) { "#{metadata_api_url}/services/#{service_id}/versions" }
@@ -16,7 +24,8 @@ RSpec.describe MetadataApiClient::Version do
 
       before do
         stub_request(:post, expected_url)
-          .to_return(status: 201, body: expected_body.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 201, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'returns a version' do
@@ -35,7 +44,8 @@ RSpec.describe MetadataApiClient::Version do
 
       before do
         stub_request(:post, expected_url)
-          .to_return(status: 422, body: expected_body.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 422, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns an error message' do
@@ -76,7 +86,8 @@ RSpec.describe MetadataApiClient::Version do
 
     before do
       stub_request(:get, expected_url)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .with(headers: expected_headers)
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns all the versions for a service' do
@@ -99,7 +110,8 @@ RSpec.describe MetadataApiClient::Version do
 
     before do
       stub_request(:get, expected_url)
-        .to_return(status: 200, body: version_attributes.to_json, headers: {})
+        .with(headers: expected_headers)
+        .to_return(status: 200, body: version_attributes.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns the requested version of a service' do
@@ -140,7 +152,8 @@ RSpec.describe MetadataApiClient::Version do
     context 'if the metadata api service is working fine' do
       before do
         stub_request(:get, expected_url)
-          .to_return(status: 200, body: version_attributes.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 200, body: version_attributes.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'returns the response body with a correct format ' do
@@ -156,7 +169,8 @@ RSpec.describe MetadataApiClient::Version do
 
       before do
         stub_request(:get, expected_url)
-          .to_return(status: 400, body: expected_body.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 400, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns an error message' do
@@ -166,6 +180,14 @@ RSpec.describe MetadataApiClient::Version do
           MetadataApiClient::ErrorMessages.new(['Oh no!'])
         )
       end
+    end
+  end
+
+  describe '#created_by' do
+    let(:version_attributes) { { created_by: 'author' } }
+
+    it 'returns the form owner user id' do
+      expect(described_class.new(version_attributes.stringify_keys).created_by).to eq('author')
     end
   end
 end

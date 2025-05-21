@@ -1,43 +1,55 @@
-<div  class="expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>" 
-      data-expressions-target="expression" 
+<div  class="conditional__row expression govuk-form-group <%= expression.object.errors.any? ? 'error' : '' %>"
+      data-expressions-target="expression"
+      data-conditional-target="expression"
       data-controller="expression"
-      data-expression-error-class="error" 
+      data-expression-error-class="error"
+      data-expression-conditionals-status-outlet="#conditionals-status"
+      data-expression-index-value="0"
+      data-expression-title-value="condition"
       data-expression-first-label-value="<%= t('branches.expression.if') %>"
       data-expression-other-label-value="<%= t('branches.expression.and') %>">
 
-  <%= button_tag 'Delete condition', type: "button", data: { action: "expression#delete", expression_target: "deleteButton"}, class: 'prevent-modal-close icon-button icon-button--remove expression__remover' %>
+  <div class="expression__layout">
+    <div class="expression__label" data-expression-target="label">
+      <%= t('branches.expression.if') %>
+    </div>
 
-  <div class="expression__question">
-    <%= expression.label  :component, 
-      t('branches.expression.if'),
-      { 
-        class: "govuk-label",
-        data: {
-          expression_target: 'label'
-        }
-      } 
-    %>
-    <%= expression.select :component,
-      @conditional_content.previous_questions,
-      { include_blank: t('branches.select_question') },
-      { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
-        data: {
-          action: 'change->expression#getCondition',
-          expression_target: 'question',
-          expression_url_param: api_service_conditional_content_expressions_path(service.service_id, component_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
-        },
-      }
-    %> 
-    <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' hidden><%= t('activemodel.errors.models.component_expression.unsupported') %></p> 
-    <p class="expression__error" data-expression-target="errorMessage" data-error-type='samepage' hidden><%= t('activemodel.errors.models.component_expression.same_page') %></p> 
+    <div class="expression__question">
+        <%= expression.select :component,
+          @conditional_content.previous_questions,
+          { include_blank: t('branches.select_question') },
+          { class: "govuk-select expression__component #{ expression.object.errors[:component].any? ? 'govuk-select--error' : '' }",
+            'aria-label': 'Source question',
+            'aria-describedby': ( expression.object.errors[:component].any? ? "condition_#{conditional.options[:child_index]}_expression_#{expression.options[:child_index]}_component_error" : "") + "source_question_hint",
+            data: {
+              action: 'change->expression#getCondition',
+              expression_target: 'question',
+              expression_url_param: api_service_conditional_content_expressions_path(service.service_id, component_uuid, conditional.options[:child_index], expression.options[:child_index], '--componentId--'),
+            },
+          }
+        %>
+        <p class="expression__error" data-expression-target="errorMessage" data-error-type='unsupported' hidden><%= t('activemodel.errors.models.component_expression.unsupported') %></p>
+        <p class="expression__error" data-expression-target="errorMessage" data-error-type='samepage' hidden><%= t('activemodel.errors.models.component_expression.same_page') %></p>
+
+        <%= render partial: 'expression_condition',
+          locals: {
+            f: default_form_builder.new(:expression, expression.object, self, {}),
+            expression: expression.object,
+            conditional_index: conditional.options[:child_index],
+            expression_index: expression.options[:child_index]
+          }
+        %>
+    </div>
   </div>
-    
-    <%= render partial: 'expression_condition',
-      locals: {
-        f: default_form_builder.new(:expression, expression.object, self, {}),
-        expression: expression.object,
-        conditional_index: conditional.options[:child_index],
-        expression_index: expression.options[:child_index]
-      }
-    %>
+
+  <%= render(MojForms::IconButtonComponent.new(
+        label: 'Delete condition', 
+        icon: 'remove',
+        classes: %w[prevent-modal-close expression__remover],
+        html_attributes: {
+          data: { 
+            action: "expression#delete", 
+            expression_target: "deleteButton" }
+        }
+      )) %>
 </div>

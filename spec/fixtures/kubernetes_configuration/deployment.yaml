@@ -59,6 +59,8 @@ spec:
             value: 'sentry-csp-url-test'
           - name: BUCKET_NAME
             value: bucket-name
+          - name: MS_GRAPH_ROOT_URL
+            value: 'https://ms-graph/v1/'
           - name: ENCODED_PRIVATE_KEY
             valueFrom:
               secretKeyRef:
@@ -79,16 +81,36 @@ spec:
               secretKeyRef:
                 name: fb-acceptance-tests-date-secrets
                 key: service_secret
+          - name: MS_ADMIN_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: ms_admin_app_id
+          - name: MS_ADMIN_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: ms_admin_app_secret
+          - name: MS_OAUTH_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: ms_oauth_url
+          - name: MS_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: ms_tenant_id
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
         resources:
           limits:
-            cpu: 150m
+            cpu: 300m
             memory: 300Mi
           requests:
-            cpu: 10m
+            cpu: 30m
             memory: 128Mi
         readinessProbe:
           httpGet:

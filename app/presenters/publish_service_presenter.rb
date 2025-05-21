@@ -11,7 +11,7 @@ class PublishServicePresenter
   end
 
   def service_slug
-    (previous_service_slug.presence || service_slug_config.presence || service.service_slug)
+    previous_service_slug.presence || service_slug_config.presence || service.service_slug
   end
 
   def latest
@@ -32,7 +32,7 @@ class PublishServicePresenter
   end
 
   def url
-    "https://#{hostname}" if published?
+    form_url if published?
   end
 
   private
@@ -40,7 +40,8 @@ class PublishServicePresenter
   def service_slug_config
     ServiceConfiguration.find_by(
       service_id: service.service_id,
-      name: 'SERVICE_SLUG'
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
     )&.decrypt_value
   end
 

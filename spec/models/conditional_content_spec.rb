@@ -87,13 +87,11 @@ RSpec.describe ConditionalContent do
     end
 
     it 'serialises the component objects metadata' do
-      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(ConditionalContent.from_metadata(component)).to eq(expected_metadata)
     end
   end
 
   describe '.from_json' do
-    skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
     let(:component) do
       current_page.find_component_by_uuid(component_uuid)
     end
@@ -130,7 +128,6 @@ RSpec.describe ConditionalContent do
 
   describe '#previous_questions' do
     it 'returns all questions for single and mulitiple questions pages' do
-      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[0] }).to eq(
         [
           'What is your name?',
@@ -146,7 +143,6 @@ RSpec.describe ConditionalContent do
     end
 
     it 'injects the data-supports-branching attribute' do
-      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
         [
           { 'data-supports-branching': false, 'data-same-page': false },
@@ -168,7 +164,6 @@ RSpec.describe ConditionalContent do
       let(:component_uuid) { 'e03e5c74-f719-4310-ab04-0705357cb159' }
 
       it 'injects the data-same-page attribute' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.previous_questions.map { |question| question[2] }).to eq(
           [
             { 'data-supports-branching': false, 'data-same-page': false },
@@ -212,7 +207,6 @@ RSpec.describe ConditionalContent do
     end
 
     it 'assigns conditionals' do
-      skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
       expect(conditional_content.conditionals).to eq(
         [
           expected_conditional
@@ -224,7 +218,6 @@ RSpec.describe ConditionalContent do
   describe '#previous_flow_uuid' do
     context 'previous flow uuid is present' do
       it 'returns the previous flow uuid' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(previous_flow_uuid)
       end
     end
@@ -233,16 +226,14 @@ RSpec.describe ConditionalContent do
       let(:previous_flow_uuid) { nil }
 
       it 'returns the current page in the flow' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.flow_uuid).to eq(current_page[:_uuid])
       end
     end
   end
 
   describe '#validations' do
-    skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
     before do
-      conditional_content.valid? if ENV['CONDITIONAL_CONTENT'] == 'enabled'
+      conditional_content.valid?
     end
 
     context 'when blank conditionals' do
@@ -259,12 +250,10 @@ RSpec.describe ConditionalContent do
       end
 
       it 'does not accept blank conditionals' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.conditionals_validations).to be_present
       end
 
       it 'adds error to conditionals object' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_present
         expect(errors.of_kind?(:expressions, :invalid_expression)).to be_truthy
@@ -290,12 +279,10 @@ RSpec.describe ConditionalContent do
       end
 
       it 'no errors on conditional_content' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         expect(conditional_content.errors).to be_blank
       end
 
       it 'no errors on conditionals' do
-        skip('Conditional content presenter update') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
         errors = conditional_content.conditionals.first.errors
         expect(errors).to be_blank
       end

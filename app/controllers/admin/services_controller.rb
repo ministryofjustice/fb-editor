@@ -16,8 +16,7 @@ module Admin
     end
 
     def show
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+      load_service_and_metadata_corresponding_to_id
       @service_creator = User.find(@service.created_by)
       @version_creator = version_creator
       @published_to_live = published('production')
@@ -56,9 +55,7 @@ module Admin
     end
 
     def edit
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         service_id: @service.service_id,
         deployment_environment: 'production'
@@ -66,9 +63,7 @@ module Admin
     end
 
     def update
-      @latest_metadata = MetadataApiClient::Service.latest_version(params[:id])
-      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
-
+      load_service_and_metadata_corresponding_to_id
       @maintenance_mode_settings = MaintenanceModeSettings.new(
         maintenance_mode_params.merge(service_id: @service.service_id, deployment_environment: 'production')
       )
@@ -141,10 +136,141 @@ module Admin
       redirect_to admin_service_path(service_id)
     end
 
+    def approve
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_or_initialize_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      )
+      revoke = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED'
+      )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL'
+      )
+
+      if approval.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        approval.value = '1'
+        approval.save!
+      end
+      if revoke.present?
+        revoke.delete
+      end
+      if awaiting.present?
+        awaiting.delete
+      end
+
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service approved for go live - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
+
+      redirect_to admin_service_path(service_id)
+    end
+
+    def revoke_approval
+      service_id = params[:service_id]
+      approval = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      )
+      revoke = ServiceConfiguration.find_or_initialize_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'REVOKED'
+      )
+      awaiting = ServiceConfiguration.find_by(
+        service_id:,
+        deployment_environment: 'production',
+        name: 'AWAITING_APPROVAL'
+      )
+
+      if revoke.new_record?
+        # have to give it a value to save, but can't find by the value as it will be encrypted
+        revoke.value = '1'
+        revoke.save!
+      end
+      if approval.present?
+        approval.delete
+      end
+      if awaiting.present?
+        awaiting.delete
+      end
+
+      if unpublish_review_service(service_id)
+        flash[:success] = 'Service requires changes - queueing for unpublish'
+      else
+        flash[:error] = 'Issue with saving record or queueing service for unpublish'
+      end
+      redirect_to admin_service_path(service_id)
+    end
+
+    def unpublish_review_service(service_id)
+      if review_service_queued?(service_id)
+        true
+      else
+        publish_service = PublishService.find_by(service_id:)
+        version_metadata = get_version_metadata(publish_service)
+        publish_service_creation = PublishServiceCreation.new(
+          service_id: publish_service.service_id,
+          version_id: version_metadata['version_id'],
+          deployment_environment: 'production',
+          user_id: current_user.id
+        )
+        if publish_service_creation.save
+          UnpublishServiceJob.perform_later(
+            publish_service_id: publish_service_creation.publish_service_id,
+            service_slug: service_slug(publish_service.service_id, version_metadata)
+          )
+          true
+        else
+          false
+        end
+      end
+    end
+
+    def is_already_approved?
+      ServiceConfiguration.find_by(
+        service_id: params[:id],
+        deployment_environment: 'production',
+        name: 'APPROVED_TO_GO_LIVE'
+      ).present?
+    end
+    helper_method :is_already_approved?
+
     def search_term
       params[:search] || ''
     end
     helper_method :search_term
+
+    def destroy
+      service_id = params[:id]
+      load_service_and_metadata_corresponding_to_id
+      if has_ever_been_live?
+        flash[:error] = 'We cannot delete a form that has ever been live'
+        redirect_to admin_service_path(service_id)
+      elsif unpublished?('dev') || Rails.env.development?
+        MetadataApiClient::Service.delete(service_id)
+        ServiceConfiguration.where(service_id:).destroy_all
+        SubmissionSetting.where(service_id:).destroy_all
+        PublishService.where(service_id:).destroy_all
+        message = "Service #{service_id} has been deleted"
+        flash[:success] = message
+        NotificationService.notify(message, webhook:) if webhook.present?
+        redirect_to admin_services_path
+      else
+        flash[:error] = 'Please unpublish before deleting a service'
+        redirect_to admin_service_path(service_id)
+      end
+    end
 
     private
 
@@ -210,6 +336,17 @@ module Admin
       publish_service.queued? || publish_service.unpublishing?
     end
 
+    def review_service_queued?(service_id)
+      publish_service = PublishService.where(
+        service_id:,
+        deployment_environment: 'production'
+      ).last
+
+      return true if publish_service.nil?
+
+      publish_service.queued? || publish_service.unpublishing?
+    end
+
     def unpublished?(environment)
       PublishService.where(
         service_id: @service.service_id,
@@ -248,7 +385,8 @@ module Admin
     def service_slug_config(service_id)
       ServiceConfiguration.find_by(
         service_id:,
-        name: 'SERVICE_SLUG'
+        name: 'SERVICE_SLUG',
+        deployment_environment: 'dev'
       )&.decrypt_value
     end
 
@@ -259,6 +397,20 @@ module Admin
 
     def service_slug(service_id, version_metadata)
       service_slug_config(service_id).presence || service_slug_from_name(version_metadata)
+    end
+
+    def load_service_and_metadata_corresponding_to_id
+      service_id = params[:id]
+      @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
+      @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+    end
+
+    def webhook
+      ENV['SLACK_PUBLISH_WEBHOOK']
+    end
+
+    def has_ever_been_live?
+      PublishService.exists?(service_id: @service.service_id, deployment_environment: 'production')
     end
   end
 end

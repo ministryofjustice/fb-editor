@@ -7,9 +7,16 @@
       <%= image_pack_tag "logo--white.svg", alt: t('header.home_link_alt') %>
     </a>
 
-    <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
-      <%= t('header.service_name') %>
-    </a>
+    <% if user_signed_in? %>
+      <a href="/" class="govuk-header__link govuk-header__service-name" aria-label="<%= t('header.home_link_text') %>">
+        <%= t('header.service_name') %>
+      </a>
+    <% else %>
+      <span class="govuk-header__service-name">
+        <%= t('header.service_name') %>
+      </span>
+    <% end %>
+
 
     <% if user_signed_in? %>
       <nav class="fb-navigation-header" aria-label="Site menu">
@@ -18,11 +25,19 @@
             <%= link_to t('.forms'), services_path %>
           </li>
           <li>
-            <%= link_to t('.user_guide'), t('.user_guide_url'), target: :_blank %>
+            <%= link_to t('.user_guide_url'), target: :_blank, noreferrer: true, nofollow: true do %>
+              <%= t('.user_guide') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
+            <% end %>
           </li>
           <% if moj_forms_dev? || moj_forms_admin? %>
             <li>
               <%= link_to t('.admin'), admin_root_path %>
+            </li>
+          <% else %>
+            <li>
+              <%= link_to t('.feedback_form_url'), target: :_blank, noreferrer: true, nofollow: true do %>
+                <%= t('.send_feedback') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
+              <% end %>
             </li>
           <% end %>
           <li>

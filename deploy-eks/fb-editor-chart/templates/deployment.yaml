@@ -28,6 +28,9 @@ spec:
         image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-web:{{ .Values.circleSha1 }}"
         {{- if ((.Values.resources).requests) }}
         resources:
+          limits:
+            cpu: "1000m"
+            memory: "1000Mi"
           requests:
             memory: {{ .Values.resources.requests.memory }}
             cpu: {{ .Values.resources.requests.cpu }}
@@ -51,6 +54,7 @@ spec:
           initialDelaySeconds: {{ .Values.livenessProbe.web.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.web.periodSeconds }}
           successThreshold: {{ .Values.livenessProbe.web.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.web.failureThreshold }}
         readinessProbe:
           httpGet:
             path: /readiness
@@ -144,6 +148,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
+          - name: SLACK_REVIEW_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_review_webhook
+          - name: SLACK_PUBLISH_FOR_CONTENT_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_publish_for_content_webhook
           - name: PINGDOM_TOKEN
             valueFrom:
               secretKeyRef:
@@ -164,6 +178,46 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: aws_ses_access_key_id
+          - name: PUBLISH_FOR_REVIEW_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: publish_for_review_username
+          - name: PUBLISH_FOR_REVIEW_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: publish_for_review_password
+          - name: GOVUK_NOTIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: govuk_notify_api_key
+          - name: MS_ADMIN_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_id
+          - name: MS_ADMIN_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_secret
+          - name: MS_OAUTH_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_oauth_url
+          - name: MS_SITE_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_site_id
+          - name: MS_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_tenant_id
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -291,6 +345,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: slack_publish_webhook
+          - name: SLACK_REVIEW_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_review_webhook
+          - name: SLACK_PUBLISH_FOR_CONTENT_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_publish_for_content_webhook
           - name: AWS_S3_BUCKET_DEV
             valueFrom:
               secretKeyRef:
@@ -301,6 +365,36 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: aws_s3_bucket_production
+          - name: GOVUK_NOTIFY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: govuk_notify_api_key
+          - name: MS_ADMIN_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_id
+          - name: MS_ADMIN_APP_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_admin_app_secret
+          - name: MS_OAUTH_URL
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_oauth_url
+          - name: MS_SITE_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_site_id
+          - name: MS_TENANT_ID
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: ms_tenant_id
       volumes:
         - name: tmp-files
           emptyDir: {}

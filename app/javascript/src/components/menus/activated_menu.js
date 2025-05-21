@@ -50,28 +50,28 @@ const {
   property,
   mergeObjects,
   createElement,
-  uniqueString
-} = require('../../utilities');
+  uniqueString,
+} = require("../../utilities");
 
-const tabbable = require('tabbable').tabbable;
-const ActivatedMenuItem = require('./activated_menu_item');
-const ActivatedMenuActivator = require('./activated_menu_activator');
-const ActivatedMenuContainer = require('./activated_menu_container');
+const tabbable = require("tabbable").tabbable;
+const ActivatedMenuItem = require("./activated_menu_item");
+const ActivatedMenuActivator = require("./activated_menu_activator");
+const ActivatedMenuContainer = require("./activated_menu_container");
 
-const ITEMS_SELECTOR = '> li';
+const ITEMS_SELECTOR = "> li";
 
 class ActivatedMenu {
-  #className
-  #config
-  #position
-  #state
-  #currentFocusIndex
+  #className;
+  #config;
+  #position;
+  #state;
+  #currentFocusIndex;
 
   constructor($menu, config) {
     let defaults = {
       container_id: uniqueString("menu"),
       render: true,
-    }
+    };
 
     config = mergeObjects(defaults, config);
 
@@ -90,12 +90,15 @@ class ActivatedMenu {
     // Default position settings (can be set on instantiation or overide
     // on-the-fly by passing to component.open() function. Passing in a
     // position object will set the temporary value this.#state.position.
-    this.#position = mergeObjects({
-      my: "left top",
-      at: "left top",
-      of: this.activator.$node,
-      collision: "flip"
-    }, property(this._config, "menu.position") );
+    this.#position = mergeObjects(
+      {
+        my: "left top",
+        at: "left top",
+        of: this.activator.$node,
+        collision: "flip",
+      },
+      property(this._config, "menu.position"),
+    );
 
     // Default position is empty - update this dynamically by passing
     // to component.open() - will be reset on component.close()
@@ -103,8 +106,8 @@ class ActivatedMenu {
     // for what value(s) are required.
     this.#state = {
       open: false,
-      position: null
-    }
+      position: null,
+    };
 
     this.#bindMenuEventHandlers();
     this.#setMenuOpenPosition();
@@ -114,7 +117,7 @@ class ActivatedMenu {
     this.$items = this.$node.find(ITEMS_SELECTOR);
     this.#currentFocusIndex = 0;
 
-    if(config.render) {
+    if (config.render) {
       this.close();
       this.render();
     }
@@ -125,7 +128,7 @@ class ActivatedMenu {
   }
 
   get state() {
-   return this.#state;
+    return this.#state;
   }
 
   get position() {
@@ -152,16 +155,15 @@ class ActivatedMenu {
   // Opens the menu.
   // @position (Object) Optional (jQuery position) object.
   open(config = {}) {
-    if(config.position) {
+    if (config.position) {
       this.#setMenuOpenPosition(config.position);
-    }
-    else {
+    } else {
       this.#calculateMenuOpenPosition(this.activator.$node);
     }
     this.container.$node.position(this.state.position);
     this.container.$node.show();
-    this.activator.$node.addClass("active");
     this.activator.$node.attr("aria-expanded", true);
+    this.focus();
     this.#state.open = true;
   }
 
@@ -169,7 +171,6 @@ class ActivatedMenu {
     this.closeAllSubmenus();
     this.#state.open = false;
     this.container.$node.hide();
-    this.activator.$node.removeClass("active");
     this.activator.$node.removeAttr("aria-expanded");
     this.activator.$node.focus();
 
@@ -180,7 +181,7 @@ class ActivatedMenu {
 
   closeAllSubmenus() {
     var $subMenus = this.$node.find('ul[role="menu"]');
-    $subMenus.each(function() {
+    $subMenus.each(function () {
       $(this).hide();
     });
   }
@@ -188,33 +189,33 @@ class ActivatedMenu {
   focus(index = 0) {
     var $items = this.$items;
 
-    if( index > $items.length - 1 ) {
+    if (index > $items.length - 1) {
       index = 0;
     }
-    if( index < 0 ) {
+    if (index < 0) {
       index = $items.length - 1;
     }
-    var $item = $($items[index]).find('> :first-child');
-    if($item.parent().is('[aria-disabled]')) {
+    var $item = $($items[index]).find("> :first-child");
+    if ($item.parent().is("[aria-disabled]")) {
       // if item is disabled, skip it
-      if( index > this.#currentFocusIndex) {
-        this.focus(index+1);
+      if (index > this.#currentFocusIndex) {
+        this.focus(index + 1);
       } else {
-        this.focus(index-1);
+        this.focus(index - 1);
       }
     } else {
       this.#currentFocusIndex = index;
       $item[0].focus();
-      this.$node.attr('aria-activedescendant', $item.attr('id'));
+      this.$node.attr("aria-activedescendant", $item.attr("id"));
     }
   }
 
-  focusNext(){
-    this.focus( this.#currentFocusIndex + 1 );
+  focusNext() {
+    this.focus(this.#currentFocusIndex + 1);
   }
 
   focusPrev() {
-    this.focus( this.#currentFocusIndex - 1 );
+    this.focus(this.#currentFocusIndex - 1);
   }
 
   focusItem($node) {
@@ -229,7 +230,7 @@ class ActivatedMenu {
 
   #initializeMenuItems() {
     const menu = this;
-    menu.$node.find('li').each( function() {
+    menu.$node.find("li").each(function () {
       new ActivatedMenuItem($(this), menu);
     });
   }
@@ -246,9 +247,9 @@ class ActivatedMenu {
       // event.currentTarget will be the menu (UL) element.
       // check if relatedTarget is not a child element.
       this.#state.close = true;
-      if(!$.contains(event.currentTarget, event.relatedTarget)) {
-        setTimeout(function(e) {
-          if(component.state.close) {
+      if (!$.contains(event.currentTarget, event.relatedTarget)) {
+        setTimeout(function (e) {
+          if (component.state.close) {
             component.close();
           }
         }, 100);
@@ -259,61 +260,60 @@ class ActivatedMenu {
       this.#state.close = false;
     });
 
-    this.$node.on('keydown', (event) => {
-      if(this.state.open) {
+    this.$node.on("keydown", (event) => {
+      if (this.state.open) {
         let key = event.originalEvent.key;
         let shiftKey = event.originalEvent.shiftKey;
 
-        switch(key) {
-          case 'Home':
+        switch (key) {
+          case "Home":
             event.preventDefault();
             this.focus(0);
             break;
-          case 'End':
+          case "End":
             event.preventDefault();
             this.focusLast();
             break;
-          case 'ArrowDown':
+          case "ArrowDown":
             event.preventDefault();
             this.focusNext();
             break;
-          case 'ArrowUp':
+          case "ArrowUp":
             event.preventDefault();
             this.focusPrev();
             break;
-          case 'Escape':
+          case "Escape":
             this.close();
             this.activator.$node.focus();
             break;
-          case 'Tab':
+          case "Tab":
             event.preventDefault();
             // close will set focus on the activator by default, so we call first
             this.close();
             // now we can set the focus to the correct item
-            let tabbableElements = tabbable(document, { displayCheck: 'full' })
+            let tabbableElements = tabbable(document, { displayCheck: "full" });
             let index = tabbableElements.indexOf(this.activator.$node[0]);
             // focus on the next/previous item after the activator node
-            if( shiftKey ) {
-              tabbableElements[index-1].focus();
+            if (shiftKey) {
+              tabbableElements[index - 1].focus();
             } else {
-              tabbableElements[index+1].focus();
+              tabbableElements[index + 1].focus();
             }
             break;
         }
       }
     });
 
-
     // Add a trigger for any listening document event
     // to activate on menu item selection.
-    if(this.config.selection_event) {
+    if (this.config.selection_event) {
       let component = this;
-      component.$node.on("menuselect", function(event, ui) {
+      component.$node.on("menuselect", function (event, ui) {
         var e = event.originalEvent;
         var original = {};
 
-        if(e) {
-          if(component.config.preventDefault) {
+        if (e) {
+          if (component.config.preventDefault) {
             e.preventDefault();
             original.element = e.target;
             original.event = e;
@@ -324,7 +324,7 @@ class ActivatedMenu {
           activator: ui.item,
           menu: event.currentTarget,
           component: component,
-          original: original
+          original: original,
         });
       });
     }
@@ -346,10 +346,10 @@ class ActivatedMenu {
   #setMenuOpenPosition(position) {
     var pos = position || {};
     this.#state.position = {
-      my: (pos.my || this.position.my),
-      at: (pos.at || this.position.at),
-      of: (pos.of || this.position.of)
-    }
+      my: pos.my || this.position.my,
+      at: pos.at || this.position.at,
+      of: pos.of || this.position.of,
+    };
   }
 
   /*
@@ -362,14 +362,13 @@ class ActivatedMenu {
     var rightBoundary = window.innerWidth;
     var menuWidth = this.$node.outerWidth();
 
-    if(rightBoundary - activatorLeft < menuWidth) {
+    if (rightBoundary - activatorLeft < menuWidth) {
       this.#setMenuOpenPosition({
         my: "right top",
         at: "right top",
-        of: $activator
+        of: $activator,
       });
-    }
-    else {
+    } else {
       this.#setMenuOpenPosition();
     }
   }
@@ -397,6 +396,5 @@ class ActivatedMenu {
     this.#state.position = null; // Reset because this one is set on-the-fly
   }
 }
-
 
 module.exports = ActivatedMenu;

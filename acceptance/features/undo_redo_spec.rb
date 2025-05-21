@@ -31,8 +31,6 @@ feature 'Undo redo page' do
       "Service name goes here",
       "page 1",
       "page 2",
-      "!",
-      "Warning",
       "You won’t receive any user data without a check answers page and a confirmation page"
     ]
   end

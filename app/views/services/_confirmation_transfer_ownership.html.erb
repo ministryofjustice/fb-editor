@@ -1,0 +1,24 @@
+<div class="component-dialog-form"
+     id="ownership-transfer-dialog"
+     data-component="OwnershipTransferDialog">
+
+  <h2 id= "ownership-transfer-dialog-title" data-node="heading">
+    <%= t('settings.transfer_ownership.confirmation_title')%>
+  </h2>
+
+  <p>
+    <%= I18n.t('settings.transfer_ownership.confirmation',
+               form_name: CGI::escapeHTML(params[:service]),
+               new_owner: CGI::escapeHTML(params[:owner]),
+               href: t('settings.transfer_ownership.href')
+        ).html_safe
+    %>
+  </p>
+
+  <div class="govuk-button-group">
+    <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+      Understood
+    </button>
+  </div>
+</div>
+

@@ -1,10 +1,6 @@
 class UnpublishDevServices
   include MetadataVersionHelper
-  AUTOMATED_TEST_SERVICES = [
-    'cd75ad76-1d4b-4ce5-8a9e-035262cd2683', # New Runner Service
-    'e68dca75-20b8-468e-9436-e97791a914c5', # Branching Fixture 10 Service
-    '57497ef9-61cb-4579-ab93-f686e09d6936'  # Smoke Tests V2
-  ].freeze
+
   SELECT_LATEST_PUBLISH_SERVICE_RECORD = 'SELECT DISTINCT ON (service_id) * FROM publish_services ORDER BY service_id, created_at DESC'.freeze
 
   def call
@@ -22,7 +18,7 @@ class UnpublishDevServices
   def published_services
     @published_services ||=
       PublishService.find_by_sql(SELECT_LATEST_PUBLISH_SERVICE_RECORD)
-                    .reject { |ps| ps.service_id.in?(AUTOMATED_TEST_SERVICES) }
+                    .reject { |ps| ps.service_id.in?(ACCEPTANCE_TEST_FORMS) }
                     .select(&:completed?)
   end
 
@@ -33,7 +29,8 @@ class UnpublishDevServices
   def service_slug_config(service_id)
     ServiceConfiguration.find_by(
       service_id:,
-      name: 'SERVICE_SLUG'
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
     )&.decrypt_value
   end
 

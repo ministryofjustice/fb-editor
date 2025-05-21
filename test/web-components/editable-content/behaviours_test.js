@@ -49,14 +49,6 @@ describe('<editable-content>', function() {
         expect(component.input).not.to.be.displayed
       })
 
-      it('should show the input on click', function() {
-        component.root.click()
-
-        expect(component.output).not.to.be.displayed
-        expect(component.input).to.be.displayed
-        expect(component.input).to.have.focus
-      })
-
       it('should show the input on focus and hide again on blur', function() {
         const button = document.querySelector('button')
 

@@ -66,10 +66,15 @@ module CommonSteps
     editor.create_service_button.click
   end
 
-  def given_I_have_a_single_question_page_with_text
-    given_I_add_a_single_question_page_with_text
+  def given_I_have_a_single_question_page_with(component_name)
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(component_name).click
     and_I_add_a_page_url
     when_I_add_the_page
+  end
+
+  def given_I_have_a_single_question_page_with_text
+    given_I_have_a_single_question_page_with(I18n.t('components.list.text'))
   end
 
   def given_I_have_a_single_question_page_with_upload
@@ -79,28 +84,12 @@ module CommonSteps
   end
 
   def given_I_add_a_single_question_page_with_text
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.text')).click
+    given_I_add_a_single_question_page_with(I18n.t('components.list.text'))
   end
 
-  def given_I_add_a_single_question_page_with_text_area
+  def given_I_add_a_single_question_page_with(component_name)
     given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.textarea')).click
-  end
-
-  def given_I_add_a_single_question_page_with_number
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.number')).click
-  end
-
-  def given_I_add_a_single_question_page_with_upload
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.upload')).click
-  end
-
-  def given_I_add_a_single_question_page_with_date
-    given_I_want_to_add_a_single_question_page
-    editor.add_component(I18n.t('components.list.date')).click
+    editor.add_component(component_name).click
   end
 
   def given_I_add_a_single_question_page_with_radio
@@ -173,7 +162,7 @@ module CommonSteps
   end
 
   def and_I_edit_the_page(url:)
-    page.find('.govuk-link', text: url).click
+    page.find('.govuk-link .text', text: url).click
   end
 
   def and_I_return_to_flow_page
@@ -248,7 +237,11 @@ module CommonSteps
   end
 
   def then_the_save_button_should_be_disabled
-    expect(editor.save_page_button['aria-disabled']).to eq('true')
+    expect(editor).to have_disabled_save_button
+  end
+
+  def then_the_save_button_should_be_enabled
+    expect(editor).to have_enabled_save_button
   end
 
   def then_I_should_be_warned_when_leaving_page
@@ -264,6 +257,7 @@ module CommonSteps
   end
 
   def when_I_want_to_edit_content_component_properties(component)
+    editor.service_name.click #in case component is already focused
     element_output(component).click
     component.find('.ActivatedMenuActivator', visible: true).click
   end
@@ -281,6 +275,11 @@ module CommonSteps
     given_I_add_a_single_question_page_with_radio
     and_I_add_a_page_url
     when_I_add_the_page
+  end
+
+  def given_I_add_a_single_question_page_with_upload
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.upload')).click
   end
 
   def and_I_preview_the_form
@@ -321,6 +320,8 @@ module CommonSteps
   end
 
   def when_I_change_editable_content(element, content:)
+    editor.service_name.click #in case component is already focused
+
     # activate the input element for the content component by clicking on the
     # output element tag first
     element_output(element).click
@@ -351,7 +352,7 @@ module CommonSteps
     else
       and_I_add_a_multiple_page_content_component
     end
-      
+
     component = editor.editable_content_areas.last
     and_the_content_component_has_the_optional_content(component)
     when_I_change_editable_content(component, content: content)
@@ -389,12 +390,17 @@ module CommonSteps
   end
 
   def and_I_click_on_the_three_dots
-    sleep(1)
+    editor.wait_until_three_dots_button_visible
     editor.three_dots_button.click
   end
 
   def and_I_click_on_the_page_menu(flow_title)
     editor.flow_thumbnail(flow_title).hover
+    and_I_click_on_the_three_dots
+  end
+
+  def and_I_click_on_the_external_start_page_menu
+    editor.external_start_page_thumbnail.hover
     and_I_click_on_the_three_dots
   end
 
@@ -591,5 +597,11 @@ module CommonSteps
   def then_I_fill_in_reply_to_email(email, environment)
     input = editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field")
     input.fill_in(with: email)
+  end
+
+  #Address component
+  def given_I_add_a_single_question_page_with_address
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.address')).click
   end
 end

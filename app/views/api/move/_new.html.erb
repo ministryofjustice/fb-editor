@@ -4,7 +4,9 @@
       <%= f.hidden_field :previous_flow_uuid, value: @move.previous_flow_uuid %>
       <%= f.hidden_field :previous_conditional_uuid, value: @move.previous_conditional_uuid %>
       <%= f.hidden_field :target_conditional_uuid, value: '' %>
-      <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
+      <h2 class="govuk-label-wrapper" id="move-page-dialog-title" data-node="heading">
+        <%= f.label :target_uuid, t('dialogs.move.label', title: @move.title), class: "govuk-label govuk-label--m" %>
+      </h2>
       <p> <%= t('dialogs.move.lede') %></p>
       <div class="govuk-form-group">
         <select class="govuk-select" name="move[target_uuid]" id="move_target_uuid">

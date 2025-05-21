@@ -41,7 +41,6 @@ RSpec.describe DestroyQuestionModal do
         let(:page) { service.find_page_by_url('multiple') }
 
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
           expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_conditional_content_modal')
         end
       end
@@ -51,7 +50,6 @@ RSpec.describe DestroyQuestionModal do
         let(:question) { page.components[2] }
 
         it 'returns the default delete modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
           expect(subject.to_partial_path).to eq('api/questions/delete_question_modal')
         end
       end
@@ -61,7 +59,6 @@ RSpec.describe DestroyQuestionModal do
         let(:question) { page.components.last }
 
         it 'returns the delete conditional content modal' do
-          skip('awaiting updated presenter') unless ENV['CONDITIONAL_CONTENT'] == 'enabled'
           expect(subject.to_partial_path).to eq('api/questions/delete_question_used_for_conditional_content_modal')
         end
       end

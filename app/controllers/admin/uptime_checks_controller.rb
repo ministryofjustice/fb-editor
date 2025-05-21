@@ -5,7 +5,7 @@ module Admin
     def index
       @without_checks = services_without_uptime_checks
       @with_checks = with_uptime_checks
-      @legacy_checks = non_editor_service_checks
+      @non_editor_checks = non_editor_service_checks
     end
 
     def create
@@ -90,7 +90,7 @@ module Admin
     def service_slug_config(service_id)
       ServiceConfiguration.find_by(
         service_id:,
-        deployment_environment: 'production',
+        deployment_environment: 'dev',
         name: 'SERVICE_SLUG'
       )&.decrypt_value
     end

@@ -12,7 +12,12 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: public_key),
         build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
         build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
-        build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret)
+        build(:service_configuration, name: 'SERVICE_SECRET', value: service_secret),
+        build(:service_configuration, name: 'EXTERNAL_START_PAGE_URL', value: external_start_page_url),
+        build(:service_configuration, name: 'MS_DRIVE_ID', value: ms_drive_id),
+        build(:service_configuration, name: 'MS_SITE_ID', value: ms_site_id),
+        build(:service_configuration, name: 'MS_LIST_ID', value: ms_list_id),
+        build(:service_configuration, name: 'ESCAPED_VALUE', value: service_email_body)
       ]
     )
   end
@@ -32,9 +37,22 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   let(:basic_auth_pass) do
     EncryptionService.new.encrypt('r2d2')
   end
+  let(:service_email_body) do
+    EncryptionService.new.encrypt('hello from "my form"')
+  end
   let(:service_secret) do
     EncryptionService.new.encrypt('be04689a805f07acc74d493a6107e17d')
   end
+  let(:ms_site_id) do
+    EncryptionService.new.encrypt('ms-site-id')
+  end
+  let(:ms_drive_id) do
+    EncryptionService.new.encrypt('ms-drive-id')
+  end
+  let(:ms_list_id) do
+    EncryptionService.new.encrypt('ms-list-id')
+  end
+  let(:external_start_page_url) { EncryptionService.new.encrypt('external-url.com') }
   let(:autocomplete_items) do
     {
       'items' => {
@@ -57,6 +75,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(service_provisioner).to receive(:secret_key_base).and_return(
       'fdfdd491d611aa1abef54cbf24a709a1bb31ff881a487f8c58c69399202b08f77019920f481e17b40dd7452361055534b9f91f172719ed98a088498242f96f59'
     )
+    allow_any_instance_of(ServiceConfiguration).to receive(:do_not_send_to_graph_api?).and_return(false)
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[])
       .with('SUBMISSION_ENCRYPTION_KEY')
@@ -73,6 +92,21 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(ENV).to receive(:[])
       .with('AWS_S3_BUCKET_DEV')
       .and_return('bucket-name')
+    allow(ENV).to receive(:[])
+      .with('MS_ADMIN_APP_ID')
+      .and_return('12345')
+    allow(ENV).to receive(:[])
+      .with('MS_ADMIN_APP_SECRET')
+      .and_return('67890')
+    allow(ENV).to receive(:[])
+      .with('MS_OAUTH_URL')
+      .and_return('https://msoauth.example.com/oath/token')
+    allow(ENV).to receive(:[])
+      .with('MS_TENANT_ID')
+      .and_return('tenancyid')
+    allow(ENV).to receive(:[])
+      .with('MS_GRAPH_ROOT_URL')
+      .and_return('https://ms-graph/v1/')
   end
 
   describe '#generate' do

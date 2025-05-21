@@ -1,22 +1,82 @@
-  <div class="width-responsive-two-thirds">
+  <div class="width-responsive">
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-0"><%= t('publish.heading') %></h1>
-    <p id="publish-intro">
-      You are publishing the version from <span class="date version">
-        <%= l(service.created_at.to_time.in_time_zone('London'), format: :date) %></span>
-      <span class="time version">
-        <%= l(service.created_at.to_time.in_time_zone('London'), format: :time) %></span>.
-    </p>
-
     <div id="publish-environments">
-      <%= render 'publish_environment',
-        environment: 'dev',
-        presenter: @publish_page_presenter_dev,
-        published_service: @published_dev
-      %>
-      <%= render 'publish_environment',
-        environment: 'production',
-        presenter: @publish_page_presenter_production,
-        published_service: @published_production
-      %>
+    <% if @publish_page_presenter_dev.publish_creation.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            <%= t('activemodel.errors.summary_title') %>
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+              <% @publish_page_presenter_dev.publish_creation.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if @publish_page_presenter_production.publish_creation.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title">
+            <%= t('activemodel.errors.summary_title') %>
+          </h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+              <% @publish_page_presenter_production.publish_creation.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+      <%= govuk_tabs(title: 'Publish environment tabs', classes: ['moj-forms-tabs']) do |c|
+        c.with_tab(label: 'Publish to Test') do %>
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <%= render 'publish_environment',
+                environment: 'dev',
+                presenter: @publish_page_presenter_dev,
+                published_service: @published_dev
+              %>
+            <%= govuk_inset_text do %>
+              <label class="govuk-label govuk-label--s"><%= t('publish.dev.inset_text_label') %></label>
+              <p><%= t('publish.dev.inset_text_html', href: govuk_link_to(t('publish.dev.inset_text_link_text'), t('publish.dev.inset_text_href'))) %></p>
+            <% end %>
+          </div>
+        </div>
+        <% end %>
+        <% c.with_tab(label: 'Publish to Live') do %>
+          <% if can_publish_to_live %>
+            <%= render 'publish_environment',
+              environment: 'production',
+              presenter: @publish_page_presenter_production,
+              published_service: @published_production
+            %>
+          <% else %>
+            <%= render 'publish_for_review',
+              environment: 'production',
+              presenter: @publish_page_presenter_production,
+              published_service: @published_production
+            %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   </div>

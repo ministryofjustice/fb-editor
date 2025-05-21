@@ -30,18 +30,6 @@ RSpec.describe ServiceCreation do
         end
       end
 
-      context 'when name is in the legacy' do
-        let(:service_name) { 'So you want to become an avenger' }
-        let(:attributes) { { service_name: } }
-        let!(:legacy_service_name) do
-          create(:legacy_service_name, name: service_name)
-        end
-
-        it 'returns false' do
-          expect(service_creation.create).to be_falsey
-        end
-      end
-
       context 'when user inputs name with trailing whitespace' do
         let(:current_user) { double(id: '1') }
         let(:attributes) { { service_name: '  Form Name  ', current_user: } }

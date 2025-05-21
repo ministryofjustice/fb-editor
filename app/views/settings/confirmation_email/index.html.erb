@@ -1,9 +1,14 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(
+    href: settings_submission_index_path, 
+    hidden_text: "to #{t('settings.submission.heading')}"
+  ) %>
+<% end %>
+
 <%= mojf_settings_screen(
   heading:t('settings.confirmation_email.heading'),
   description: t('settings.confirmation_email.description')
   ) do |c| %>
-
-  <% c.with_back_link(href: settings_submission_index_path) %>
 
   <% if @email_components.present? %>
     <% content_for :forms do %>
@@ -18,10 +23,10 @@
       text: t('warnings.confirmation_email.message',
       href:
         govuk_link_to(
-          t('warnings.confirmation_email.link_text'),
+          (t('warnings.confirmation_email.link_text') + tag.span(t('assistive_text.new_tab'), class: 'govuk-visually-hidden')).html_safe,
           t('warnings.confirmation_email.link_url'),
           target: :_blank,
-          rel: 'nofollow noreferrer'
+          rel: 'nofollow noreferrer',
         )
       ).html_safe
     ) %>

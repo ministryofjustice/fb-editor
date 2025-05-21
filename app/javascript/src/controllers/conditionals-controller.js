@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets =  [ 'conditional' ]
+  static targets = ['conditional']
 
   initialize() {
     this.connected = false;
@@ -10,30 +10,44 @@ export default class extends Controller {
   connect() {
     Promise.resolve().then(() => {
       this.connected = true
-      this.ensureFirstConditionalCannotBeDeleted();
-      this.allowFirstConditionalToBeDeleted();
+      this.preventFirstConditionalDeletion();
+      this.allowFirstConditionalDeletion();
+      this.updateConditionalIndices();
     })
   }
 
-  conditionalTargetDisconnected(element) {
-    this.ensureFirstConditionalCannotBeDeleted();
+  conditionalTargetDisconnected() {
+    this.preventFirstConditionalDeletion();
+    this.updateConditionalIndices();
+    this.element.focus()
   }
 
-  conditionalTargetConnected(element) {
-    if (!this.connected) return;
+  newConditionalAdded(event) {
+    if (event.detail.additionType != 'conditional') return
 
-    this.allowFirstConditionalToBeDeleted();
+    Promise.resolve().then(() => {
+      this.allowFirstConditionalDeletion();
+      this.updateConditionalIndices();
+      // place focus on the newly added conditional fieldset
+      this.conditionalTargets[this.conditionalTargets.length - 1].conditionalController.fieldsetTarget.focus()
+    })
   }
 
-  ensureFirstConditionalCannotBeDeleted() {
-    if(this.conditionalTargets.length == 1) {
+  preventFirstConditionalDeletion() {
+    if (this.conditionalTargets.length == 1) {
       this.conditionalTargets[0].conditionalController.hideDeleteButton()
     }
   }
 
-  allowFirstConditionalToBeDeleted() {
-    if(this.conditionalTargets.length > 1) {
-      this.conditionalTargets[0].conditionalController.showDeleteButton() 
+  allowFirstConditionalDeletion() {
+    if (this.conditionalTargets.length > 1) {
+      this.conditionalTargets[0].conditionalController.showDeleteButton()
     }
+  }
+
+  updateConditionalIndices() {
+    this.conditionalTargets.forEach((conditional, index) => {
+      conditional.conditionalController.indexValue = index + 1
+    })
   }
 }

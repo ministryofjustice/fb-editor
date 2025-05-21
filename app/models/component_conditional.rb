@@ -37,7 +37,7 @@ class ComponentConditional
 
   # this is tested in the ConditionalComponent model
   def expressions_attributes=(hash)
-    hash.each do |_index, expression_hash|
+    hash.each_value do |expression_hash|
       expressions.push(
         ComponentExpression.new(
           expression_hash.merge(

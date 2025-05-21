@@ -1,6 +1,8 @@
 class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
+
   before_action :assign_required_objects, only: %i[edit update destroy]
+  around_action :switch_locale, only: %i[edit update]
 
   COMPONENTS = 'components'.freeze
   EXTRA_COMPONENTS = 'extra_components'.freeze
@@ -163,4 +165,27 @@ class PagesController < FormController
   def parameterize_url
     { page_url: params[:page][:page_url].parameterize }
   end
+
+  def page_title
+    if @page
+      if @page.heading.present?
+        if @page['_type'] == 'page.standalone' && @page['_id'] == 'page.cookies'
+          "#{@page.heading} - MoJ Forms"
+        else
+          "Edit page - #{@page.heading} - MoJ Forms"
+        end
+      elsif @page.components.present?
+        if @page.components.first['label'].present?
+          "Edit page - #{@page.components.first['label']} - MoJ Forms"
+        elsif @page.components.first['legend'].present?
+          "Edit page - #{@page.components.first['legend']} - MoJ Forms"
+        end
+      else
+        'Edit page - MoJ Forms'
+      end
+    else
+      "Edit form - #{service.service_name} - MoJ Forms"
+    end
+  end
+  helper_method :page_title
 end

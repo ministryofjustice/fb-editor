@@ -2,9 +2,9 @@
   <h1 class="govuk-heading-xl"><%= t('pages.flow.heading') %></h1>
 
   <% if @undo_redo_button.present?%>
-    <%= button_to api_service_previous_version_path(service.service_id, action: @undo_redo_button[:action],undoable_action: @undo_redo_button[:undoable_action]),
+    <%= button_to api_service_previous_version_path(service.service_id, operation: @undo_redo_button[:action],undoable_action: @undo_redo_button[:undoable_action]),
       method: :get,
-      class: 'fb-govuk-button fb-govuk-button-inverted fb-govuk-button--inline',
+      class: 'govuk-button fb-govuk-button fb-govuk-button-inverted fb-govuk-button--inline',
       data: { element: 'undo-redo-button' } do
         @undo_redo_button[:text]
       end
@@ -18,36 +18,7 @@
 </div>
 
 <%# Flow overview layout for pages, branches, and conditions %>
-<section id="flow-overview">
-  <% @pages_flow.each do |collection| %>
-    <div class="column">
-      <% collection.each_with_index do |item, index| %>
-        <%= render partial: 'services/flow_layout', locals: { item: item, index: index } %>
-      <% end %>
-    </div>
-  <% end %>
-</section>
-
-<% if @detached_flows.present? %>
-  <section id="flow-detached" data-component="Expander">
-    <h2 class="govuk-heading-s"><%= t('pages.flow.detached') %></h2>
-    <p class="help">
-      <a target="_blank" href="https://moj-forms.service.justice.gov.uk/branching#reconnect-unconnected" class="govuk-link"><%= t('pages.flow.reconnect_hint') -%></a>
-    </p>
-    <% @detached_flows.each do |detached_flow| %>
-          <div class="flow-detached-group">
-        <% detached_flow.each do |column| %>
-          <div class="column">
-            <% column.each_with_index do |flow, index| %>
-              <%= render partial: 'services/flow_layout', locals: { item: flow, index: index } %>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  </section>
-<% end %>
-
+<%= render partial: 'services/flow_layout', locals: {main_flow: @pages_flow, detached_flows: @detached_flows } %>
 
 <%# Section for static/standalone pages (e.g. T&Cs) %>
 <%= render partial: 'partials/standalone' %>
@@ -64,7 +35,10 @@
     <%= f.hidden_field :conditional_uuid, value: '' %>
 
     <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' :'' %>">
-      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      <h2 class="govuk-label-wrapper" id="new-page-dialog-title" data-node="heading">
+        <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      </h2>
+
       <div class="govuk-hint" id="add-page-hint"><%= t('activemodel.attributes.page_creation.page_url_hint') %></div>
       <% f.object.errors.each do |error|  %>
         <p class="govuk-error-message"><%= error.message %></p>
