@@ -35,10 +35,16 @@ class PublishingPagePresenter
     )
   end
 
+  def ms_list_warning
+    @ms_list_warning ||= MsListWarningPresenter.new(service:, deployment_environment:)
+
+    @ms_list_warning.message
+  end
+
   def publish_button_disabled?
     return if deployment_environment == 'dev'
 
-    submission_warnings.messages.any? || autocomplete_warning.messages.any?
+    autocomplete_warning.messages.any?
   end
 
   private

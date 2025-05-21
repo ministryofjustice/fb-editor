@@ -4,7 +4,6 @@
  * MOJ form builder (Editor) environment.
  **/
 
-
 @mixin responsive_width($width: full, $at: tablet) {
   @if $at != desktop {
     width: 100%;
@@ -59,6 +58,7 @@
   background-color: $govuk-focus-colour;
   color: $govuk-focus-text-colour;
   outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline-offset: 0;
 }
 
 @mixin fb-govuk-button {
@@ -67,8 +67,8 @@
 
   &:hover,
   &[disabled],
-  &[disabled='disabled'],
-  &[disabled='disabled']:hover,
+  &[disabled="disabled"],
+  &[disabled="disabled"]:hover,
   &[aria-disabled="true"]:hover {
     background-color: govuk-colour("dark-blue");
   }
@@ -89,7 +89,7 @@
 @mixin container_panel {
   background-color: govuk-colour("light-grey");
   border-radius: 15px;
-  padding: govuk-spacing(3) govuk-spacing(4) 1px govuk-spacing(4);
+  padding: govuk-spacing(3) govuk-spacing(4);
 }
 
 @mixin icon_button {
@@ -101,6 +101,13 @@
   text-indent: -10000px;
   width: 35px;
 
+  > svg {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+  }
+
   &:hover {
     border-color: $govuk-link-colour;
     outline: none;
@@ -108,17 +115,27 @@
 
   &:focus {
     @include focus;
-    border-color: $govuk-focus-colour;
+    border-color: $govuk-text-colour;
     outline: none;
   }
-
-
 
   &.destructive:focus,
   &.destructive:hover {
     background-color: govuk-colour("red");
     border-color: govuk-colour("red");
     color: govuk-colour("white");
+  }
+
+  @media (forced-colors: active) {
+    color: ButtonText;
+
+    &:focus,
+    &:focus-visible {
+      border-color: Highlight;
+      outline: 3px solid Highlight;
+      outline-offset: 0;
+      color: ButtonText;
+    }
   }
 }
 

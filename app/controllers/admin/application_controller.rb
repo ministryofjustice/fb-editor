@@ -12,8 +12,10 @@ module Admin
   end
 
   class ApplicationController < Administrate::ApplicationController
+    include SetCurrentRequestDetails
     include ApplicationHelper
     include Auth0Helper
+
     before_action :require_user!
     before_action :authenticate_admin
 
@@ -23,9 +25,20 @@ module Admin
 
     def published(environment)
       PublishService.where(deployment_environment: environment)
+                    .sort_by(&:created_at)
                     .group_by(&:service_id)
                     .map { |p| p.last.last }
                     .select(&:published?)
+    end
+
+    def ever_published(environment)
+      PublishService.where(deployment_environment: environment)
+                    .sort_by(&:created_at)
+                    .group_by(&:service_id)
+                    .map(&:last)
+                    .map { |p| p.select(&:published?) }
+                    .map(&:last)
+                    .compact
     end
 
     # Override this value to specify the number of elements to display at a time
@@ -33,5 +46,6 @@ module Admin
     # def records_per_page
     #   params[:per_page] || 20
     # end
+    #
   end
 end

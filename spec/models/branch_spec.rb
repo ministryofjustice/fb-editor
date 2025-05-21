@@ -196,11 +196,12 @@ RSpec.describe Branch do
           'Do you like Star Wars?',
           'What is the day that you like to take holidays?',
           'What would you like on your burger?',
-          "What was the name of the band playing in Jabba's palace?",
           "What is The Mandalorian's real name?",
+          "What was the name of the band playing in Jabba's palace?",
           'Upload your best dog photo',
           'Upload your best dog photos',
-          'Countries'
+          'Countries',
+          'Confirm your postal address'
         ]
       )
     end
@@ -216,8 +217,9 @@ RSpec.describe Branch do
           { 'data-supports-branching': true },
           { 'data-supports-branching': false },
           { 'data-supports-branching': true },
-          { 'data-supports-branching': false },
           { 'data-supports-branching': true },
+          { 'data-supports-branching': false },
+          { 'data-supports-branching': false },
           { 'data-supports-branching': false },
           { 'data-supports-branching': false },
           { 'data-supports-branching': false }

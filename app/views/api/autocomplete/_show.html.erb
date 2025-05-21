@@ -1,7 +1,9 @@
 <div class="component-dialog-api-request" id="autocomplete_items">
   <%= form_for @items, url: api_service_autocomplete_path(service_id: service.service_id, component_id: @items.component_id), method: :post, multipart: true do |form| %>
   <div class="govuk-form-group">
-      <%= form.label :file, t('dialogs.autocomplete.legend'), class: "govuk-label govuk-label--m" %>
+    <h2 class="govuk-label-wrapper" id="autocomplete-items-dialog-title" data-node="heading">
+      <%= form.label :file, t('dialogs.autocomplete.legend'), class: "govuk-label govuk-label--m" %>    
+    </h2>
 
       <% if items_present?(@items.component_id) %>
         <div class="govuk-warning-text govuk-!-margin-bottom-2">

@@ -7,16 +7,27 @@ RSpec.describe MetadataApiClient::Service do
       ]
     }
   end
+
+  let(:expected_headers) do
+    {
+      'User-Agent' => 'Editor',
+      'X-Request-Id' => '12345'
+    }
+  end
+
+  let(:service_id) { '634aa3d5-a3b3-4d0f-9078-bb754542a1d3' }
+
   let(:service_attributes) do
     {
       "service_name": 'basset',
-      "service_id": '634aa3d5-a3b3-4d0f-9078-bb754542a1d3'
+      "service_id": service_id
     }
   end
 
   before do
     allow(ENV).to receive(:[])
     allow(ENV).to receive(:[]).with('METADATA_API_URL').and_return(metadata_api_url)
+    allow(Current).to receive(:request_id).and_return('12345')
   end
 
   describe '.all_services' do
@@ -38,7 +49,8 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .with(headers: expected_headers)
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns a list of all the services' do
@@ -52,7 +64,8 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .with(headers: expected_headers)
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns a list of services objects' do
@@ -72,7 +85,8 @@ RSpec.describe MetadataApiClient::Service do
     context 'when created' do
       before do
         stub_request(:post, expected_url)
-          .to_return(status: 201, body: expected_body.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 201, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns a service' do
@@ -93,7 +107,8 @@ RSpec.describe MetadataApiClient::Service do
 
       before do
         stub_request(:post, expected_url)
-          .to_return(status: 422, body: expected_body.to_json, headers: {})
+          .with(headers: expected_headers)
+          .to_return(status: 422, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
       end
 
       it 'assigns an error message' do
@@ -116,11 +131,38 @@ RSpec.describe MetadataApiClient::Service do
 
     before do
       stub_request(:get, expected_url)
-        .to_return(status: 200, body: expected_body.to_json, headers: {})
+        .with(headers: expected_headers)
+        .to_return(status: 200, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
     end
 
     it 'returns latest metadata' do
       expect(described_class.latest_version('12345')).to eq(expected_body)
+    end
+  end
+
+  describe '.delete' do
+    let(:expected_url) { "#{metadata_api_url}/services/#{service_id}" }
+
+    context 'when we can delete the service' do
+      before do
+        stub_request(:delete, expected_url).to_return(status: 200, headers: { 'Content-Type': 'application/json' })
+      end
+
+      it 'does not add any errors message' do
+        assert_raises(NoMethodError) { described_class.delete(service_id).error? }
+      end
+    end
+
+    context 'when we cannot delete the service' do
+      let(:expected_body) { { 'message' => ['the server responded with status 400'] } }
+
+      before do
+        stub_request(:delete, expected_url).to_return(status: 400, body: expected_body.to_json, headers: { 'Content-Type': 'application/json' })
+      end
+
+      it 'rescue error if client has an issue' do
+        expect(described_class.delete(service_id).errors?).to be_truthy
+      end
     end
   end
 end

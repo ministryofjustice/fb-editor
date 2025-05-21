@@ -6,7 +6,7 @@
       html: { novalidate: true } do |f| %>
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+          <legend data-node="heading" id="<%=@component_validation.validator %>-dialog-title" class="govuk-fieldset__legend govuk-fieldset__legend--m">
             <%= @component_validation.label -%>
           </legend>
           <% if @component_validation.validator == 'max_files' %>
@@ -29,6 +29,11 @@
             </div>
           </div>
           <% else %>
+            <% if @component_validation.validator == 'pattern' %>
+              <p>
+                <%= t('dialogs.component_validations.regex.instruction_regex_pattern', regex_href:t('dialogs.component_validations.regex.regex_link' )).html_safe %>
+              </p>
+            <% end %>
           <div class="govuk-checkboxes" data-module="govuk-checkboxes">
             <div class="govuk-checkboxes__item">
               <input class="govuk-checkboxes__input" id="component_validation_status" name="component_validation[status]" type="checkbox" value="enabled" <%= @component_validation.enabled? ? 'checked' : '' %>>

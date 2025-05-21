@@ -28,6 +28,7 @@ RSpec.describe Traversable do
             dog-picture
             dog-picture-2
             countries
+            postal-address
           ]
         end
 

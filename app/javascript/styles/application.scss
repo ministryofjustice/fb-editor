@@ -22,11 +22,16 @@
 @import "./component_expander";
 @import "./component_warning_text";
 @import "./component_status_message";
+@import "./editable_components";
 @import "components/settings-screen";
 @import "components/back-link";
+@import "components/panel";
 @import "components/conditional";
 @import "components/expression";
 @import "components/icon-button";
+@import "components/editable-content";
+@import "components/announcement";
+// @import "components/movable-component";
 @import "./shared/content";
 @import "./index";
 @import "./admin";

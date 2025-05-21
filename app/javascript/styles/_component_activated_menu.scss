@@ -19,32 +19,13 @@
   @include icon_button;
 
   &:focus {
-    border-color: govuk-colour('black');
-  }
-
-  &::after {
-    content: url('../images/three-dots-blue.svg');
-    display: block;
-    position: absolute;
-    font-weight: bold;
-    top: -1px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    text-indent: 0;
-  }
-
-  &:hover::after {
-    content: url('../images/three-dots-white.svg');
-  }
-
-  &:focus::after {
-    content: url('../images/three-dots-black.svg');
+    border-color: govuk-colour("black");
   }
 }
 
 .ActivatedMenu {
-  a, span {
+  a,
+  span {
     @include button_type_link;
     border: none;
     display: block;
@@ -55,12 +36,9 @@
     }
 
     &:focus-visible {
-      outline: none;
-    }
-
-    &:focus {
       @include focus;
-      outline: none;
+      outline: $govuk-focus-width solid transparent;
+      outline-offset: calc(-1 * $govuk-focus-width);
       box-shadow: none;
     }
   }
@@ -69,7 +47,7 @@
     padding-right: 30px;
     position: relative;
 
-    &[aria-haspopup] {
+    &[aria-haspopup="menu"] {
       &:after {
         content: ">";
         font-family: monospace;
@@ -95,8 +73,18 @@
     }
   }
 
+  @media (forced-colors: active) {
+    a,
+    span {
+      color: LinkText;
+      &:focus-visible {
+        color: LinkText;
+      }
+    }
+  }
 
-  &, li > ul {
+  &,
+  li > ul {
     border: govuk-colour("blue") solid 2px;
     position: absolute;
     width: 250px;

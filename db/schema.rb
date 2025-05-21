@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_24_135119) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_17_133049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "announcements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "revoked_at"
+    t.uuid "created_by_id", null: false
+    t.uuid "revoked_by_id"
+    t.string "title", null: false
+    t.text "content", null: false
+    t.date "date_from", null: false
+    t.date "date_to"
+    t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
+    t.index ["revoked_by_id"], name: "index_announcements_on_revoked_by_id"
+  end
+
+  create_table "announcements_users", id: false, force: :cascade do |t|
+    t.uuid "announcement_id", null: false
+    t.uuid "user_id", null: false
+    t.index ["announcement_id", "user_id"], name: "index_announcements_users_on_announcement_id_and_user_id", unique: true
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -48,12 +68,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_135119) do
     t.index ["email"], name: "index_identities_on_email"
     t.index ["provider", "uid"], name: "index_identities_on_provider_and_uid"
     t.index ["user_id"], name: "index_identities_on_user_id"
-  end
-
-  create_table "legacy_service_names", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "publish_services", force: :cascade do |t|
@@ -101,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_135119) do
     t.boolean "service_csv_output", default: false
     t.boolean "send_confirmation_email", default: false
     t.boolean "payment_link", default: false
+    t.boolean "send_to_graph_api"
     t.index ["service_id", "deployment_environment"], name: "submission_settings_id_and_environment"
     t.index ["service_id"], name: "index_submission_settings_on_service_id"
   end
@@ -121,5 +136,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_135119) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "announcements", "users", column: "created_by_id"
+  add_foreign_key "announcements", "users", column: "revoked_by_id"
   add_foreign_key "identities", "users"
 end

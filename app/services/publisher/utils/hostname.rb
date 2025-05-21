@@ -1,6 +1,10 @@
 class Publisher
   module Utils
     module Hostname
+      def form_url
+        "https://#{hostname}".freeze
+      end
+
       def hostname
         root_url = Rails.application.config
           .platform_environments[platform_environment][:url_root]

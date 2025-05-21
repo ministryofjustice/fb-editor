@@ -93,7 +93,7 @@
 
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m govuk-!-margin-left-5">
-        These services are from the Legacy Form Builder system, except the Publisher and the Product Page
+        These checks were created outside the editor admin dashboard
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
@@ -104,7 +104,7 @@
         </tr>
       </thead>
       <tbody class="govuk-table__body">
-        <% @legacy_checks.each do |check| %>
+        <% @non_editor_checks.each do |check| %>
           <tr class="govuk-table__row">
             <td class="govuk-table__cell" id="service-name">
               <%= check['name'].gsub('Form Builder - ', '') %>

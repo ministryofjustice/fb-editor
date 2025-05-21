@@ -10,11 +10,11 @@ feature 'Add page in the middle flow' do
     # page url links have the word "Edit" as a visually hidden span element
     # associated with them for added accessibility
     [
-      "Edit:\nService name goes here",
-      "Edit:\nWe Both Love Soup And Snow Peas",
-      "Edit:\nQuestion",
-      "Edit:\nCheck your answers",
-      "Edit:\nApplication complete"
+      "Service name goes here\n, Start page",
+      "We Both Love Soup And Snow Peas\n, Single question page",
+      "Question\n, Single question page",
+      "Check your answers\n, Check your answers page",
+      "Application complete\n, Confirmation page"
     ]
   end
 

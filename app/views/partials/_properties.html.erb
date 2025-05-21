@@ -27,11 +27,25 @@
     },
     text: {
       aria: {
-        answers: "<%= t('aria.answers') %>",
         hint: "<%= t('aria.hint') %>",
-        question: "<%= t('aria.question') %>",
         section_heading: "<%= t('aria.section_heading') %>",
         disabled_save_description: "<%= t('aria.disabled_save_description') %>",
+        optional_content_label: "<%= t('aria.optional_content_label') %>",
+        page_title: "<%= t('aria.page_title') %>",
+        page_lede: "<%= t('aria.page_lede') %>",
+        question: {
+          title: "<%=t('aria.question.title')%>",
+          legend: "<%=t('aria.question.legend')%>",
+          hint: "<%=t('aria.question.hint')%>",
+          answers: "<%= t('aria.question.answers') %>",
+          answer: "<%=t('aria.question.answer')%>",
+          items: {
+            label: "<%=t('aria.question.items.label')%>", 
+            hint:"<%=t('aria.question.items.hint')%>",
+            answer:"<%=t('aria.question.items.answer')%>", 
+            menu_button:"<%=t('aria.question.items.menu_button')%>", 
+          },
+        },
       },
       branches: {
         branch_edit: "<%= t('branches.branch_edit') %>",
@@ -40,6 +54,31 @@
         condition_remove: "<%= t('branches.condition_remove') %>",
         label_question_and: "<%= t('branches.expression.and') %>",
         label_question_if: "<%= t('branches.expression.if') %>"
+      },
+      components: {
+        content:  {
+          properties: "<%= t('content.menu.activator') %>",
+          move_up: "<%= t('components.actions.move_content_up') %>",
+          move_down: "<%= t('components.actions.move_content_down') %>",
+        },
+        component: {
+          properties: "<%= t('question.menu.activator') %>",
+          move_up: "<%= t('components.actions.move_component_up') %>",
+          move_down: "<%= t('components.actions.move_component_down') %>",
+        },
+        types: {
+          text: "<%= t('components.list.text')%>",
+          textarea: "<%= t('components.list.textarea')%>",
+          email: "<%= t('components.list.email')%>",
+          number: "<%= t('components.list.number')%>",
+          date: "<%= t('components.list.date')%>",
+          radios: "<%= t('components.list.radios')%>",
+          checkboxes: "<%= t('components.list.checkboxes')%>",
+          upload: "<%= t('components.list.upload')%>",
+          multiupload: "<%= t('components.list.upload')%>",
+          autocomplete: "<%= t('components.list.autocomplete')%>",
+          address: "<%= t('components.list.address')%>",
+        }
       },
       content_visibility: {
         label_question_and: "<%= t('branches.expression.and') %>",
@@ -84,6 +123,7 @@
         button_ok: "<%= t('dialogs.button_ok') %>",
         button_publish: "<%= t('publish.dialog.alert_button') %>",
         button_understood: "<%= t('dialogs.button_understood') -%>",
+        button_close: "<%= t('dialogs.button_close') %>",
         heading: "<%= t('dialogs.heading') %>",
         heading_delete: '<%= t('dialogs.heading_delete').html_safe %>',
         heading_delete_condition: "<%= t('dialogs.heading_delete_condtition').html_safe %>",

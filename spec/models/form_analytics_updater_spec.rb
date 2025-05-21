@@ -11,9 +11,9 @@ RSpec.describe FormAnalyticsUpdater do
     context 'when enabled' do
       context 'when config already exists in db' do
         let!(:service_configuration) do
-          create(:service_configuration, :dev, :ua, service_id: service.service_id)
+          create(:service_configuration, :dev, :gtm, service_id: service.service_id)
         end
-        let(:params) { { enabled_test: '1', ua_test: 'UA-98765' } }
+        let(:params) { { enabled_test: '1', gtm_test: 'GTM-98765' } }
 
         before do
           service_configuration
@@ -22,7 +22,7 @@ RSpec.describe FormAnalyticsUpdater do
         it 'updates the value' do
           subject.create_or_update!
           service_configuration.reload
-          expect(service_configuration.decrypt_value).to eq(params[:ua_test])
+          expect(service_configuration.decrypt_value).to eq(params[:gtm_test])
         end
       end
 
@@ -64,9 +64,6 @@ RSpec.describe FormAnalyticsUpdater do
 
     context 'when not enabled' do
       context 'when configs exist in the db' do
-        let!(:ua_config) do
-          create(:service_configuration, :dev, :ua, service_id: service.service_id)
-        end
         let!(:gtm_config) do
           create(:service_configuration, :dev, :gtm, service_id: service.service_id)
         end
@@ -77,7 +74,6 @@ RSpec.describe FormAnalyticsUpdater do
         it 'removes all the configs from the db' do
           subject.create_or_update!
 
-          expect { ua_config.reload }.to raise_error(ActiveRecord::RecordNotFound)
           expect { gtm_config.reload }.to raise_error(ActiveRecord::RecordNotFound)
           expect { ga4_config.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end

@@ -17,8 +17,8 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(2)
-    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
-    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}1")
+    then_I_should_see_conditional_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
+    then_I_should_see_expression_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}")
   end
 
   scenario 'when the "Go to" field is not filled in' do
@@ -29,13 +29,11 @@ feature 'Branching errors' do
       '#branch_conditionals_attributes_0_expressions_attributes_0_component',
       5
     )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
     then_I_should_see_statement_answers
 
     and_I_select_the_operator_dropdown
+    editor.branches.conditional(0).expression(0).operator_select.select('is')
     and_I_choose_an_option(
       'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
       'is'
@@ -46,10 +44,7 @@ feature 'Branching errors' do
       '#branch_conditionals_attributes_0_expressions_attributes_0_field',
       2
     )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
-      'Hiking'
-    )
+    editor.branches.conditional(0).expression(0).answer_select.select('Hiking')
 
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
@@ -64,7 +59,7 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(1)
-    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
+    then_I_should_see_conditional_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
   end
 
   scenario 'when there are two conditional objects to a branching point' do
@@ -78,44 +73,28 @@ feature 'Branching errors' do
       '#branch_conditionals_attributes_0_next',
       6
     )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][next]',
-      'Favourite hiking destination'
-    )
+    editor.branches.conditional(0).destination_select.select('Favourite hiking destination')
 
     and_I_select_the_condition_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_expressions_attributes_0_component',
       5
     )
-
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'Favourite hiking destination'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('Favourite hiking destination')
     then_I_should_see_unsupported_type_error
 
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][component]',
-      'What is your favourite hobby?'
-    )
+    editor.branches.conditional(0).expression(0).component_select.select('What is your favourite hobby?')
     then_I_should_see_statement_answers
 
     and_I_select_the_operator_dropdown
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][operator]',
-      'is'
-    )
+    editor.branches.conditional(0).expression(0).operator_select.select('is')
 
     and_I_select_the_field_dropdown
     then_I_should_see_the_correct_number_of_options(
       '#branch_conditionals_attributes_0_expressions_attributes_0_field',
       2
     )
-    and_I_choose_an_option(
-      'branch[conditionals_attributes][0][expressions_attributes][0][field]',
-      'Hiking'
-    )
+    editor.branches.conditional(0).expression(0).answer_select.select('Hiking')
 
     and_I_select_the_otherwise_dropdown
     then_I_should_see_the_correct_number_of_options(
@@ -130,8 +109,8 @@ feature 'Branching errors' do
     when_I_save_my_changes
     then_I_should_see_an_error_summary
     then_I_should_see_error_summary_errors(2)
-    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}2")
-    then_I_should_see_branching_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}2")
+    then_I_should_see_conditional_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}2")
+    then_I_should_see_expression_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}")
   end
 
   # Errors
@@ -143,12 +122,16 @@ feature 'Branching errors' do
     expect(find('ul.govuk-error-summary__list')).to have_selector('li', count: count)
   end
 
-  def then_I_should_see_branching_error_message(text)
+  def then_I_should_see_expression_error_message(text)
+    expect(page).to have_selector('.govuk-form-group.error', text: text)
+  end
+
+  def then_I_should_see_conditional_error_message(text)
     expect(page).to have_selector('.govuk-form-group--error', text: text)
   end
 
   def then_I_should_see_unsupported_type_error
-    expect(page).to have_selector('p.error-message', text: unsupported_type_error)
+    expect(page).to have_selector('p.expression__error', text: unsupported_type_error)
   end
 
   # Branching options / selections
@@ -158,6 +141,7 @@ feature 'Branching errors' do
   end
 
   def then_I_should_see_another_conditional
-    expect(page).to have_selector('.Branch', count: 2)
+    # expect(page).to have_selector('[data-controller="conditional"]', count: 2)
+  expect(editor.branches).to have_conditionals(count: 2)
   end
 end

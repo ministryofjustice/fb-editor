@@ -1,41 +1,68 @@
 <ul class="govuk-navigation component-activated-menu"
-    data-activator-text="<%= t('pages.actions') %>"
+    data-activator-text="<%= using_external_start_page? ? t('external_start_page_url.link_aria_text') : t('pages.flow_page_menu_label', title: item[:title]) %>"
     data-activator-classname="flow-menu-activator"
     data-component="ItemActionMenu"
     data-title="<%= item[:title] %>"
     data-uuid="<%= item[:uuid] %>">
-  <li data-action="none">
-    <%= link_to t('actions.edit_page'),
-    edit_page_path(service.service_id, item[:uuid]) %>
-  </li>
-  <% if item[:url] %>
-    <li data-action="preview">
-      <%= link_to t('actions.preview_page'),
-      File.join(preview_service_path(service.service_id), item[:url]),
-      target: '_blank',
-      rel: 'noreferrer nofollow'
-    %>
+  <% if item[:type] == 'page.start' && using_external_start_page? %>
+    <li data-action="toggle-external-start-page"
+      data-url="<%= new_api_service_external_start_page_path(service.service_id, item[:uuid]) -%>">
+      <a href="<%= new_api_service_external_start_page_path(service.service_id, item[:uuid]) -%>" aria-haspopup="dialog"><%= t('actions.edit_external_start_page') %></a>
     </li>
-  <% end %>
+    <li data-action="preview-external-start-page"
+      data-url="<%= api_service_preview_external_start_page_path(service.service_id, item[:uuid]) -%>">
+      <a href="<%= api_service_preview_external_start_page_path(service.service_id, item[:uuid]) -%>"><%= t('actions.preview_external_start_page') %></a>
+    </li>
+    <li data-action="disable-external-start-page">
+      <%= link_to t('actions.disable_external_start_page'),
+        api_service_remove_external_start_page_path(service.service_id),
+        method: :delete
+      %>
+    </li>
+  <% else %>
+    <li data-action="none">
+      <%= link_to t('actions.edit_page'),
+      edit_page_path(service.service_id, item[:uuid]) %>
+    </li>
+    <% if item[:url] %>
+      <li data-action="preview">
+        <%= link_to t('actions.preview_page'),
+        File.join(preview_service_path(service.service_id), item[:url]),
+        target: '_blank',
+        rel: 'noreferrer nofollow'
+      %>
+      </li>
+    <% end %>
 
-  <% unless (item[:type] =~ /page.(start|checkanswers|confirmation)/) %>
-    <li data-action="move-api">
-      <%= link_to t('actions.move_page'),
-        api_service_flow_move_path(
-          service.service_id,
-          item[:uuid],
-          item[:previous_uuid].to_s,
-          item[:previous_conditional_uuid].to_s
-        ) %>
-    </li>
-  <% end %>
+    <% unless (item[:type] =~ /page.(start|checkanswers|confirmation)/) %>
+      <li data-action="move-api">
+        <%= link_to t('actions.move_page'),
+          api_service_flow_move_path(
+            service.service_id,
+            item[:uuid],
+            item[:previous_uuid].to_s,
+            item[:previous_conditional_uuid].to_s
+          ),
+          'aria-haspopup': 'dialog' %>
+      </li>
+    <% end %>
 
-  <% unless item[:type] == 'page.start' %>
-    <li data-action="delete-api">
-      <%= link_to t('actions.delete_page'),
-        api_service_page_destroy_message_path(service.service_id, item[:uuid]),
-        method: :delete,
-        class: 'destructive delete' %>
-    </li>
+    <% unless item[:type] == 'page.start' %>
+      <li data-action="delete-api">
+        <%= link_to t('actions.delete_page'),
+          api_service_page_destroy_message_path(service.service_id, item[:uuid]),
+          method: :delete,
+          class: 'destructive delete',
+          'aria-haspopup': 'dialog'
+        %>
+      </li>
+    <% end %>
+
+    <% if item[:type] == 'page.start' && !using_external_start_page? %>
+      <li data-action="toggle-external-start-page"
+        data-url="<%= new_api_service_external_start_page_path(service.service_id, item[:uuid]) -%>">
+        <a href="<%= new_api_service_external_start_page_path(service.service_id) -%>" aria-haspopup="dialog"><%= t('actions.enable_external_start_page') %></a>
+      </li>
+    <% end %>
   <% end %>
 </ul>

@@ -1,0 +1,27 @@
+# Notify Service Configuration
+#
+# We have three different Notify environments: "live", "test" and "local".
+# The Notify environment is determined by the value of the environment
+# variable 'PLATFORM_ENV'.
+#
+# The Notify API key, set by 'GOVUK_NOTIFY_API_KEY', must correspond
+# to the Notify Service of the template set used by the environment.
+
+# formbuilder-saas-live
+live:
+  first_time_publish_to_test: 'a5feab0b-f1c2-44e3-b8ef-55601c719fac'
+  transfer_ownership: '0fa12c6b-cfbc-402b-a848-22dfb8d0c76c'
+  transfer_ownership_confirmation: '30c38720-21b5-4959-a68f-185fc3321452'
+  new_ms_list_created: '4d2d3d18-daf6-4d87-a566-fe47be3343a4'
+
+# formbuilder-saas-test
+test: &non_live_envs
+  first_time_publish_to_test: 'ca8c193f-1a1b-48f8-b0bc-1f68e97931b5'
+  transfer_ownership: 'eff73e7e-4ba3-487c-961d-7034e0396449'
+  transfer_ownership_confirmation: '280839c2-b036-4cfd-bda7-180fa0f1458b'
+  new_ms_list_created: 'd123c579-77c5-4bc4-a55b-4bbe2a2a3f53'
+
+# in local envs (development) we use same templates
+# and API key as in `formbuilder-saas-test`
+local:
+  <<: *non_live_envs

@@ -35,7 +35,7 @@ class PageDestroyer
   def update_service_flow
     linked_to_uuid = @latest_metadata['flow'][uuid]['next']['default']
 
-    @latest_metadata['flow'].each do |_flow_uuid, properties|
+    @latest_metadata['flow'].each_value do |properties|
       if properties['next']['default'] == uuid
         properties['next']['default'] = uuid == linked_to_uuid ? '' : linked_to_uuid
       end

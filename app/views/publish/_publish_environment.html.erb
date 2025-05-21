@@ -1,11 +1,19 @@
 <section class="publish-environment publish-environment--<%=environment%>">
-  <h2 class="govuk-heading-l"><%= t("publish.#{environment}.heading") %></h2>
   <p class="description"><%= t("publish.#{environment}.description") %></p>
+
+  <p><span class="govuk-!-font-weight-bold">Your form name is: </span><%= service.service_name %><br/>
 
   <% if published_service.published? %>
     <%= render('first_publish_message', environment: environment, service_id: service.service_id) if published_service.first_publish? %>
-
-    <p><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
+    <p><span class="govuk-!-font-weight-bold">Your <%= text_for_environment(environment) %> form is at: </span><%= govuk_link_to published_service.url, published_service.url, target: '_blank', rel: 'noopener noreferrer' %></p>
+  <% else %>
+    <span class="govuk-!-font-weight-bold">Your <%= text_for_environment(environment) %> form will be published to: </span><%= form_url(environment) %><br/>
+    <% if environment == 'dev' %>
+    <%= govuk_link_to settings_form_name_url_index_path do %>
+      Change<span class="govuk-visually-hidden">form name</span>
+    <% end %>
+    </p>
+    <% end %>
   <% end %>
 
   <% if presenter.service_output_warning.present? %>
@@ -19,6 +27,14 @@
     <%= render 'publish/warnings/autocomplete', warning: presenter.autocomplete_warning, environment: environment %>
   <% end %>
 
+  <% if presenter.ms_list_warning.present? %>
+    <%= render('publish/warnings/mslist', warning: presenter.ms_list_warning) %>
+  <% end %>
+
+  <% presenter.publish_creation.errors[:ms_list].each do |message| %>
+    <%= render('publish/error/mslist', warning: message) %>
+  <% end %>
+
   <% if environment == 'production' %>
     <% if presenter.service_output_warning.blank? || presenter.autocomplete_warning.messages.any? %>
       <%= render('publish/warnings/submission', warning: presenter.submission_warnings, environment: environment)  %>
@@ -29,6 +45,7 @@
       data-module="govuk-button"
       type="button"
       data-fb-action="publish"
+      aria-haspopup="dialog"
       aria-disabled="<%= presenter.publish_button_disabled? %>"
       hidden >
       <%= t("publish.#{environment}.button") %>

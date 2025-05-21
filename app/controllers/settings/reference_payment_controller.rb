@@ -1,5 +1,5 @@
 class Settings::ReferencePaymentController < FormController
-  before_action :assign_form_objects, only: :index
+  before_action :assign_form_objects, only: %i[index create]
 
   def index; end
 
@@ -19,6 +19,11 @@ class Settings::ReferencePaymentController < FormController
       render :index, status: :unprocessable_entity
     end
   end
+
+  def page_title
+    "#{I18n.t('settings.reference_payment.heading')} - Settings - MoJ Forms"
+  end
+  helper_method :page_title
 
   private
 

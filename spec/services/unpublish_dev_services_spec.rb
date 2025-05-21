@@ -52,7 +52,7 @@ RSpec.describe UnpublishDevServices do
       end
 
       context 'when service is in an automated test service' do
-        UnpublishDevServices::AUTOMATED_TEST_SERVICES.each do |service_id|
+        described_class::ACCEPTANCE_TEST_FORMS.each do |service_id|
           let(:published_services) do
             create(
               :publish_service,

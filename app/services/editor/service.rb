@@ -9,7 +9,6 @@ module Editor
 
     validates :service_name, presence: true
     validates :service_name, length: { minimum: MINIMUM, maximum: MAXIMUM }, allow_blank: true
-    validates :service_name, legacy_service_name: true
 
     def add_errors(service)
       service.errors.each do |_error_message|

@@ -1,0 +1,9 @@
+<%= tag.article **html_attributes do %>
+  <%= image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{uuid}", alt: "", role: "presentation" %>
+  <map name="thumbnail-<%= uuid %>" aria-hidden="true">
+    <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= title -%>" role="presentation" href="<%= edit_branch_path(service.service_id, @item[:uuid]) %>" tabindex="-1">
+  </map>
+  <%= render(MojForms::Flow::BranchLinkComponent.new(title:, url: edit_path )) %>
+  <%= render(MojForms::Flow::BranchConditionalsComponent.new(branch: item)) %> 
+  <%= render partial: 'services/flow_branch_menu', locals: { item:  } %>
+<% end %>

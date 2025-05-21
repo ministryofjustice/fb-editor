@@ -8,23 +8,23 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self, :https
     policy.font_src    :self, :https, :data
-    policy.img_src     :self, :https, :data
+    policy.img_src     :self, :https, :data, "https://*.google-analytics.com", "https://*.googletagmanager.com"
     policy.object_src  :none
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
-                       "https://*.hotjar.com"
+                       "https://*.googletagmanager.com",
+                       :unsafe_inline
     policy.style_src   :self,
-                       :unsafe_inline,
-                       "https://*.hotjar.com"
+                       :unsafe_inline
     policy.connect_src :self,
                        "*.sentry.io",
-                       "https://*.hotjar.com",
-                       "https://*.hotjar.io",
-                       "wss://*.hotjar.com"
+                       "https://*.google-analytics.com",
+                       "https://*.analytics.google.com",
+                       "https://*.googletagmanager.com"
 
     # Specify URI for violation reports
-    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
+    policy.report_uri "#{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts
@@ -32,5 +32,5 @@ Rails.application.configure do
   config.content_security_policy_nonce_directives = %w(script-src)
 
   # Report violations without enforcing the policy.
-  config.content_security_policy_report_only = false
+  config.content_security_policy_report_only = true
 end

@@ -9,7 +9,8 @@ require("../src/runner/analytics")
 require("../src/runner/index")
 
 // Entry point for fb-editor stylesheets
-import "../styles/application.scss"
+import "../styles/runner_application.scss"
+
 
 const accessibleAutocomplete = require("accessible-autocomplete")
 import 'accessible-autocomplete/dist/accessible-autocomplete.min.css'
@@ -47,7 +48,7 @@ if(autocompleteComponent) {
     
     // if the select is not empty and the values do not match or if the
     // autocomplete is empty trigger validation
-    if(autocompleteSelect.value != '' && !autocompleteSelect.value.includes(autocompleteField.value) || autocompleteField.value == '') {
+    if(autocompleteSelect.value != '' && !autocompleteSelect.value.includes(autocompleteField.value.replaceAll('&', "\\u0026")) || autocompleteField.value == '') {
       autocompleteSelect.value = '';
     }
   });

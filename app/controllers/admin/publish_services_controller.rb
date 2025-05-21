@@ -1,9 +1,5 @@
 module Admin
   class PublishServicesController < Admin::ApplicationController
-    def valid_action?(name, resource = resource_class)
-      %w[destroy new].exclude?(name.to_s) && super
-    end
-
     def default_sorting_attribute
       :created_at
     end

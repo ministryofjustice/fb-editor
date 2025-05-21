@@ -36,6 +36,11 @@ class Settings::ConfirmationEmailController < FormController
     )
   end
 
+  def page_title
+    "#{I18n.t('settings.confirmation_email.heading')} - Settings - MoJ Forms"
+  end
+  helper_method :page_title
+
   private
 
   def assign_form_objects

@@ -120,7 +120,7 @@ RSpec.describe PagesFlow do
               uuid: 'e8708909-922e-4eaf-87a5-096f7a713fcb',
               next: '80420693-d6f2-4fce-a860-777ca774a6f5',
               previous_uuid: '0c022e95-0748-4dda-8ba5-12fd1d2f596b',
-              thumbnail: 'text',
+              thumbnail: 'radios',
               url: 'star-wars-knowledge'
             }
           ],
@@ -162,10 +162,21 @@ RSpec.describe PagesFlow do
               type: 'page.singlequestion',
               title: 'Countries',
               uuid: 'c7755991-436b-4495-afa6-803db58cefbc',
-              next: 'e337070b-f636-49a3-a65c-f506675265f0',
+              next: '6984b0a4-d432-4628-89b7-410170b6f148',
               previous_uuid: '2ef7d11e-0307-49e9-9fe2-345dc528dd67',
               thumbnail: 'autocomplete',
               url: 'countries'
+            }
+          ],
+          [
+            {
+              type: 'page.singlequestion',
+              title: 'Confirm your postal address',
+              uuid: '6984b0a4-d432-4628-89b7-410170b6f148',
+              next: 'e337070b-f636-49a3-a65c-f506675265f0',
+              previous_uuid: 'c7755991-436b-4495-afa6-803db58cefbc',
+              thumbnail: 'address',
+              url: 'postal-address'
             }
           ],
           [
@@ -174,7 +185,7 @@ RSpec.describe PagesFlow do
               title: 'Check your answers',
               uuid: 'e337070b-f636-49a3-a65c-f506675265f0',
               next: '778e364b-9a7f-4829-8eb2-510e08f156a3',
-              previous_uuid: 'c7755991-436b-4495-afa6-803db58cefbc',
+              previous_uuid: '6984b0a4-d432-4628-89b7-410170b6f148',
               thumbnail: 'checkanswers',
               url: 'check-answers'
             }
@@ -2498,16 +2509,6 @@ RSpec.describe PagesFlow do
               type: 'pointer',
               uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
               title: 'Question'
-            }],
-            [{
-              type: 'pointer',
-              uuid: '5afcfd29-75b9-4ce0-8e74-5000cd175154',
-              title: 'Check your answers'
-            }],
-            [{
-              type: 'pointer',
-              uuid: 'e184ce91-0b0e-4fb0-b05b-f2113281ea94',
-              title: 'Application complete'
             }]
           ],
           [
@@ -2539,16 +2540,6 @@ RSpec.describe PagesFlow do
               type: 'pointer',
               uuid: '74a38f1e-f408-4787-a988-8e5bcf4498e5',
               title: 'Question'
-            }],
-            [{
-              type: 'pointer',
-              uuid: '5afcfd29-75b9-4ce0-8e74-5000cd175154',
-              title: 'Check your answers'
-            }],
-            [{
-              type: 'pointer',
-              uuid: 'e184ce91-0b0e-4fb0-b05b-f2113281ea94',
-              title: 'Application complete'
             }]
           ]
         ]

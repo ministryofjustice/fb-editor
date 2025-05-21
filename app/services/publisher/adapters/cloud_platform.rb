@@ -8,10 +8,12 @@ class Publisher
       delegate :service_id,
                :namespace,
                :service_slug,
+               :external_start_page_url,
                :hostname,
                :service_name,
                :deployment_environment,
                :live_production?,
+               :dev_production?,
                to: :service_provisioner
 
       def initialize(service_provisioner)
@@ -53,25 +55,9 @@ class Publisher
         )
       end
 
-      def completed
-        if live_production? && first_published?
-          NotificationService.notify(message)
-        end
-      end
+      def completed; end
 
       private
-
-      def first_published?
-        PublishService.completed
-        .where(
-          service_id:,
-          deployment_environment:
-        ).count == 1
-      end
-
-      def message
-        "#{service_name} has been published to #{namespace}.\n#{hostname}"
-      end
 
       def create_config_dir
         FileUtils.mkdir_p(config_dir)
