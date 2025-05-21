@@ -37,7 +37,7 @@ class AutocompleteItems
   def file_too_big?
     return if file.blank?
 
-    file.size > 1.megabytes
+    file.size > 1.megabyte
   end
 
   def scan_file
