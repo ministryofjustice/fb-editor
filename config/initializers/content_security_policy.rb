@@ -13,7 +13,8 @@ Rails.application.configure do
     policy.script_src  :self,
                        "https://unpkg.com/alpinejs",
                        "https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js",
-                       "https://*.googletagmanager.com"
+                       "https://*.googletagmanager.com",
+                       :unsafe_inline
     policy.style_src   :self,
                        :unsafe_inline
     policy.connect_src :self,
@@ -23,7 +24,7 @@ Rails.application.configure do
                        "https://*.googletagmanager.com"
 
     # Specify URI for violation reports
-    policy.report_uri "report-uri #{ENV['SENTRY_CSP_URL']}"
+    policy.report_uri "#{ENV['SENTRY_CSP_URL']}"
   end
 
   # Generate session nonces for permitted importmap and inline scripts
@@ -31,5 +32,5 @@ Rails.application.configure do
   config.content_security_policy_nonce_directives = %w(script-src)
 
   # Report violations without enforcing the policy.
-  config.content_security_policy_report_only = false
+  config.content_security_policy_report_only = true
 end

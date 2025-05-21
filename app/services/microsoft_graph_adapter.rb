@@ -53,15 +53,12 @@ class MicrosoftGraphAdapter
     end
 
     response_body = JSON.parse(response.body)
-
     response_body['access_token']
   end
 
   def auth_connection
     @auth_connection ||= Faraday.new(URI.parse(auth_url)) do |conn|
       conn.response :raise_error
-      conn.request :multipart
-      conn.request :url_encoded
       conn.adapter :net_http
     end
   end
@@ -130,7 +127,7 @@ class MicrosoftGraphAdapter
   end
 
   def display_name_for(component, page_label)
-    if component['_type'] == 'radios' || component['_type'] == 'checkboxes'
+    if %w[radios checkboxes].include?(component['_type'])
       component['legend'] || page_label # use the page label or legend if it's a checkbox component
     else
       component['label'] || component['legend'] || component['lede'] || page_label || '' # autocomplete has a legend not a label

@@ -25,9 +25,9 @@ RSpec.describe Uptime::Adapters::Pingdom do
   let(:checks) { Uptime::Adapters::Pingdom::CHECKS }
   let(:response_body) do
     {
+      headers: { 'Content-Type': 'application/json' },
       status: 200,
-      body: expected_body.to_json,
-      headers: {}
+      body: expected_body.to_json
     }
   end
   let(:expected_body) do
@@ -40,7 +40,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
   let(:pingdom_stub) do
     stub_request(action, pingdom_api_url)
       .with(
-        body: expected_payload.to_json,
+        body: expected_payload,
         headers: {
           'Accept' => '*/*',
           'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -80,7 +80,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
         {
           status: 200,
           body: expected_body.to_json,
-          headers: {}
+          headers: { 'Content-Type': 'application/json' }
         }
       end
       let(:expected_body) do
@@ -125,7 +125,7 @@ RSpec.describe Uptime::Adapters::Pingdom do
             {
               status: 400,
               body: '',
-              headers: {}
+              headers: { 'Content-Type': 'application/json' }
             }
           )
         pingdom_stub

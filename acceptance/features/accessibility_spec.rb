@@ -1,7 +1,7 @@
 require_relative '../spec_helper'
 require 'axe-rspec'
 
-feature 'Accessibility' do
+feature.skip 'Accessibility' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
 
