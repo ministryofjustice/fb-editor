@@ -29,5 +29,13 @@ FactoryBot.define do
     trait :payment_link do
       payment_link { true }
     end
+
+    trait :send_to_graph_api do
+      send_to_graph_api { true }
+    end
+
+    trait :do_not_send_to_graph_api do
+      send_to_graph_api { false }
+    end
   end
 end

@@ -11,10 +11,14 @@
         <dt><%= link_to t('settings.collection_email.heading'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint"><%= t('settings.collection_email.lede') %></dd>
       </div>
-        <div>
-          <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
-        </div>
+      <div>
+        <dt><%= link_to t('settings.ms_list.heading'), settings_ms_list_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.ms_list.lede') %></dd>
+      </div>
+      <div>
+        <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
+      </div>
     </dl>
   </nav>
 <% end %>

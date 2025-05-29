@@ -156,6 +156,7 @@ module Admin
           confirmation_email_enabled: features.include?('CONFIRMATION_EMAIL_COMPONENT_ID'),
           save_and_return_enabled: features.include?('SAVE_AND_RETURN'),
           collect_information_by_email_enabled: features.include?('SERVICE_EMAIL_BODY'),
+          collect_information_by_ms_list_enabled: features.include?('MS_SITE_ID'),
           send_to_json_api_enabled: features.include?('SERVICE_OUTPUT_JSON_ENDPOINT'),
           receive_csv_enabled: features.include?('SERVICE_CSV_OUTPUT'),
           external_start_page_enabled: features.include?('EXTERNAL_START_PAGE_URL'),
@@ -248,7 +249,7 @@ module Admin
     end
 
     def service_summary_headers
-      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Content containing HTML', 'Branching points', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
+      ['Service id', 'Service name', 'Locale', 'Start pages', 'Confirmation pages', 'Check your answers pages', 'Single Question pages', 'Multiple Question pages', 'Exit pages', 'Address components', 'Autocomplete components', 'Checkbox components', 'Content components', 'Date components', 'Email components', 'Upload components', 'Multiupload components', 'Number components', 'Radio components', 'Text input components', 'Textarea components', 'Content containing HTML', 'Branching points', 'Confirmation email enabled', 'Save and return enabled', 'Collect data via email', 'Collect data via MS List', 'Send to JSON api', 'Receive csv', 'External start page enabled', 'Analytics enabled', 'Reference number enabled', 'Payment link enabled']
     end
 
     def published_state(service_id, environment)
@@ -259,7 +260,7 @@ module Admin
       PublishService.where(
         service_id:,
         deployment_environment: environment
-      ).last&.published?
+      ).max_by(&:created_at)&.published?
     end
 
     def first_publish_date(service_id, environment)

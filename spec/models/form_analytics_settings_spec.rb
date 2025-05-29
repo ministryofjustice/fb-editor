@@ -41,7 +41,7 @@ RSpec.describe FormAnalyticsSettings do
   end
 
   describe '#config_params' do
-    let(:expected_config_params) { %i[ua gtm ga4] }
+    let(:expected_config_params) { %i[gtm ga4] }
 
     it 'returns the config parameter keys' do
       expect(subject.config_params).to match_array(expected_config_params)
@@ -49,7 +49,7 @@ RSpec.describe FormAnalyticsSettings do
   end
 
   describe '#config_names' do
-    let(:expected_config_names) { %w[UA GTM GA4] }
+    let(:expected_config_names) { %w[GTM GA4] }
 
     it 'returns the config parameter values' do
       expect(subject.config_names).to match_array(expected_config_names)
@@ -86,7 +86,7 @@ RSpec.describe FormAnalyticsSettings do
 
       context 'attribute has been previously configured' do
         before do
-          create(:service_configuration, :dev, :ua, service_id: service.service_id)
+          create(:service_configuration, :gtm, :dev, service_id: service.service_id)
         end
 
         it 'returns truthy' do
@@ -111,12 +111,6 @@ RSpec.describe FormAnalyticsSettings do
       end
     end
 
-    context 'when attribute is not present' do
-      it 'returns nil' do
-        expect(subject.saved_param(:ua, 'test')).to be_nil
-      end
-    end
-
     context 'when value has been saved to the db' do
       let!(:service_config) do
         create(:service_configuration, :dev, :gtm, service_id: service.service_id)
@@ -128,31 +122,7 @@ RSpec.describe FormAnalyticsSettings do
     end
   end
 
-  describe '#instance_param' do
-    let(:analytics_params) { { ua_test: '      ua-123456 ' } }
-
-    it 'removes whitespace and uppercases the value' do
-      expect(subject.instance_param(:ua_test)).to eq('UA-123456')
-    end
-  end
-
   %w[test live].each do |environment|
-    describe "#ua_#{environment}" do
-      context 'when attribute is present' do
-        let(:analytics_params) { { "ua_#{environment}": 'UA-123456' } }
-
-        it 'returns the attribute value' do
-          expect(subject.public_send("ua_#{environment}")).to eq('UA-123456')
-        end
-      end
-
-      context 'when attribute is not present' do
-        it 'returns nil' do
-          expect(subject.public_send("ua_#{environment}")).to be_nil
-        end
-      end
-    end
-
     describe "#gtm_#{environment}" do
       context 'when attribute is present' do
         let(:analytics_params) { { "gtm_#{environment}": 'GTM-123456' } }
@@ -216,14 +186,6 @@ RSpec.describe FormAnalyticsSettings do
 
       it 'returns falsey' do
         expect(subject.errors_present?(environment)).to be_falsey
-      end
-
-      context 'when error is present for a different param' do
-        let(:analytics_params) { { "gtm_#{environment}": 'not-allowed' } }
-
-        it 'returns falsey' do
-          expect(subject.errors_present?(environment, 'ua_test')).to be_falsey
-        end
       end
     end
   end

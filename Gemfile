@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
+ruby '3.2.0'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'semantic-editable-headings'
+#     branch: 'test-footer-partial'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.0'
+gem 'metadata_presenter', '3.4.7'
 
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'
@@ -18,8 +18,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'dotenv', '2.8.1'
-gem 'faraday'
-gem 'faraday_middleware'
+gem 'faraday', '~> 2.0'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
 gem 'govuk-components', '< 5.0.0'
@@ -30,7 +29,8 @@ gem 'omniauth-auth0', '~> 3.1.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rails', '~> 7.0', '< 7.1'
+gem 'rack', '2.2.14'
+gem 'rails', '~> 7.1', '< 7.2'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
 gem 'sass-rails', '>= 6'

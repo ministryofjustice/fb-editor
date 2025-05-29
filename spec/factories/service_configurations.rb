@@ -45,11 +45,6 @@ FactoryBot.define do
       value { 'Star killer HR' }
     end
 
-    trait :ua do
-      name { 'UA' }
-      value { 'UA-123456' }
-    end
-
     trait :gtm do
       name { 'GTM' }
       value { 'GTM-123456' }
@@ -138,6 +133,21 @@ FactoryBot.define do
     trait :previous_service_slug do
       name { 'PREVIOUS_SERVICE_SLUG' }
       value { 'slug-life' }
+    end
+
+    trait :ms_list_id do
+      name { 'MS_LIST_ID' }
+      value { 'ms-list-id-value' }
+    end
+
+    trait :ms_drive_id do
+      name { 'MS_DRIVE_ID' }
+      value { 'ms-drive-id-value' }
+    end
+
+    trait :ms_site_id do
+      name { 'MS_SITE_ID' }
+      value { 'ms-site-id-value' }
     end
   end
 end
