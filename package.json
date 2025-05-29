@@ -19,7 +19,7 @@
     "@x-govuk/marked-govspeak": "^0.2.0",
     "accessible-autocomplete": "^2.0.4",
     "chai-dom": "^1.11.0",
-    "dompurify": "^3.0.3",
+    "dompurify": "^3.2.4",
     "govuk-frontend": "4.8.0",
     "govuk-markdown": "^0.3.0",
     "jquery": "^3.6.4",
@@ -41,5 +41,8 @@
     "jsdom-global": "^3.0.2",
     "mocha": "^10.2.0",
     "sinon-chai": "^3.7.0"
+  },
+  "resolutions": {
+    "loader-utils": "2.0.4"
   }
 }
