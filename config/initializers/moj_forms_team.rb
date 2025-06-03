@@ -12,6 +12,8 @@ MOJ_FORMS_ADMIN = %w[
   sijy.mathew1@justice.gov.uk
   deepika.patel@justice.gov.uk
   andrew.altwasser@justice.gov.uk
+  rhian.townsend@justice.gov.uk
+  mark.jefferson1@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_DEVS = %w[
