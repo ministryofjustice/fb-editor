@@ -18,7 +18,7 @@ MOJ_FORMS_ADMIN = %w[
 
 MOJ_FORMS_DEVS = %w[
   matt.tei@digital.justice.gov.uk
-  matthew.tei@justice.gov.uk
+  Matthew.Tei@justice.gov.uk
   chris.pymm@digital.justice.gov.uk
   hellema.ibrahim@digital.justice.gov.uk
   steven.leighton@digital.justice.gov.uk
@@ -26,8 +26,9 @@ MOJ_FORMS_DEVS = %w[
   jesus.laiz@digital.justice.gov.uk
   hettie.street@digital.justice.gov.uk
   Hettie.Street@justice.gov.uk
-  nick.preddy@justice.gov.uk
+  Nick.Preddy@justice.gov.uk
   meena.modhvadia@digital.justice.gov.uk
+  Meena.Modhvadia@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS.freeze
