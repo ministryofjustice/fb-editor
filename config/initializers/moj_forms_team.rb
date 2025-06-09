@@ -18,7 +18,7 @@ MOJ_FORMS_ADMIN = %w[
 
 MOJ_FORMS_DEVS = %w[
   matt.tei@digital.justice.gov.uk
-  Matthew.Tei@justice.gov.uk
+  Matthew.Tei@Justice.gov.uk
   chris.pymm@digital.justice.gov.uk
   hellema.ibrahim@digital.justice.gov.uk
   steven.leighton@digital.justice.gov.uk
