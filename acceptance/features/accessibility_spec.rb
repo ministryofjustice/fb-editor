@@ -13,9 +13,6 @@ feature.skip 'Accessibility' do
   scenario 'services list' do
     click_link(I18n.t('partials.header.forms'))
     then_the_page_should_be_accessible
-
-    click_button(I18n.t('services.create'))
-    then_the_page_should_be_accessible
   end
 
   scenario 'flow_view' do

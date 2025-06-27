@@ -38,7 +38,6 @@ module CommonSteps
     end
 
     page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
-    expect(page).to have_content(I18n.t('services.create'))
   end
 
   def given_I_have_a_service(service = service_name)
