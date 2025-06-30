@@ -23,7 +23,7 @@ metadata:
       SecRuleUpdateTargetByTag attack-xss !REQUEST_COOKIES:_fb_runner_session
       SecRuleUpdateTargetByTag attack-sqli !REQUEST_COOKIES:_fb_runner_session
 spec:
-  ingressClassName: modsec
+  ingressClassName: modsec-non-prod
   tls:
     - hosts:
       - <%= hostname %>
