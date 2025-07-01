@@ -37,7 +37,6 @@ module CommonSteps
       editor.sign_in_submit.click
     end
 
-    page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
   end
 
   def given_I_have_a_service(service = service_name)
