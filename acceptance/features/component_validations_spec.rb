@@ -5,11 +5,10 @@ feature 'Component validations' do
   let(:service_name) { generate_service_name }
   let(:fixture) { 'all_component_types_fixture' }
 
-  background do
-    given_I_am_logged_in
-    given_I_have_a_service_fixture(name: service_name, fixture: fixture)
-  end
-
+  # background do
+  #   given_I_am_logged_in
+  #   given_I_have_a_service_fixture(name: service_name, fixture: fixture)
+  # end
 
   # shared_examples 'a number component validation' do
   #   scenario 'configuring number validation' do

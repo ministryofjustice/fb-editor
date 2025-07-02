@@ -12,10 +12,10 @@ feature 'Default text' do
     ['Adobe-wan Kenobi', 'PDFinn']
   end
 
-  background do
-    given_I_am_logged_in
-    given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
-  end
+  # background do
+  #   given_I_am_logged_in
+  #   given_I_have_a_service_fixture(fixture: 'default_new_service_fixture')
+  # end
 
   # scenario 'Text component with default text' do
   #   given_I_have_a_single_question_page_with_text

@@ -10,12 +10,12 @@ feature 'Form analytics configuration' do
     ]
   end
 
-  background do
-    given_I_am_logged_in
-    given_I_have_a_service_fixture(name: service_name)
-    when_I_visit_the_form_analytics_page
-    then_I_should_see_the_settings_configuration
-  end
+  # background do
+  #   given_I_am_logged_in
+  #   given_I_have_a_service_fixture(name: service_name)
+  #   when_I_visit_the_form_analytics_page
+  #   then_I_should_see_the_settings_configuration
+  # end
 
   # shared_examples 'a form analytics settings' do
   #   scenario 'configuring form analytics settings' do
