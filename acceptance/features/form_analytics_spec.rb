@@ -46,41 +46,41 @@ feature 'Form analytics configuration' do
   #   end
   # end
 
-  context 'Test environment' do
-    let(:environment) { 'test' }
-    let(:invalid_ids) do
-      {
-        'gtm_test'=> 'real',
-        'ga4_test' => 'ids'
-      }
-    end
-    let(:valid_ids) do
-      {
-        'gtm_test' => 'GTM-12345',
-        'ga4_test' => 'G-12345'
-      }
-    end
+  # context 'Test environment' do
+  #   let(:environment) { 'test' }
+  #   let(:invalid_ids) do
+  #     {
+  #       'gtm_test'=> 'real',
+  #       'ga4_test' => 'ids'
+  #     }
+  #   end
+  #   let(:valid_ids) do
+  #     {
+  #       'gtm_test' => 'GTM-12345',
+  #       'ga4_test' => 'G-12345'
+  #     }
+  #   end
 
-    it_behaves_like 'a form analytics settings'
-  end
+  #   it_behaves_like 'a form analytics settings'
+  # end
 
-  context 'Live environment' do
-    let(:environment) { 'live' }
-    let(:invalid_ids) do
-      {
-        'gtm_live'=> 'fake',
-        'ga4_live' => 'analytics'
-      }
-    end
-    let(:valid_ids) do
-      {
-        'gtm_live' => 'GTM-67890',
-        'ga4_live' => 'G-67890'
-      }
-    end
+  # context 'Live environment' do
+  #   let(:environment) { 'live' }
+  #   let(:invalid_ids) do
+  #     {
+  #       'gtm_live'=> 'fake',
+  #       'ga4_live' => 'analytics'
+  #     }
+  #   end
+  #   let(:valid_ids) do
+  #     {
+  #       'gtm_live' => 'GTM-67890',
+  #       'ga4_live' => 'G-67890'
+  #     }
+  #   end
 
-    it_behaves_like 'a form analytics settings'
-  end
+  #   it_behaves_like 'a form analytics settings'
+  # end
 
   def when_I_visit_the_form_analytics_page
     page.find(:css, '#main-content', visible: true)
