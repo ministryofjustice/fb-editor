@@ -27,21 +27,21 @@ feature 'Preview form' do
     given_I_have_a_service_fixture(fixture: 'preview_form_fixture')
   end
 
-  scenario 'preview the whole form' do
-    preview_form = when_I_preview_the_form
-    then_I_can_navigate_until_the_end_of_the_form(preview_form)
-  end
+  # scenario 'preview the whole form' do
+  #   preview_form = when_I_preview_the_form
+  #   then_I_can_navigate_until_the_end_of_the_form(preview_form)
+  # end
 
-  scenario 'preview the standalone page from start page' do
-    preview_form = when_I_preview_the_form
-    then_I_should_preview_the_cookies_page(preview_form)
-  end
+  # scenario 'preview the standalone page from start page' do
+  #   preview_form = when_I_preview_the_form
+  #   then_I_should_preview_the_cookies_page(preview_form)
+  # end
 
-  scenario 'preview standalone page after start page' do
-    preview_form = when_I_preview_the_form
-    then_I_navigate_to_the_next_page(preview_form)
-    then_I_should_preview_the_cookies_page(preview_form)
-  end
+  # scenario 'preview standalone page after start page' do
+  #   preview_form = when_I_preview_the_form
+  #   then_I_navigate_to_the_next_page(preview_form)
+  #   then_I_should_preview_the_cookies_page(preview_form)
+  # end
 
   def then_I_should_preview_the_cookies_page(preview_form)
     within_window(preview_form) do

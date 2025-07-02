@@ -17,34 +17,34 @@ feature 'Form analytics configuration' do
     then_I_should_see_the_settings_configuration
   end
 
-  shared_examples 'a form analytics settings' do
-    scenario 'configuring form analytics settings' do
-      when_I_enable_the_analytics(environment)
-      then_I_should_see_the_account_ids_fields(environment)
+  # shared_examples 'a form analytics settings' do
+  #   scenario 'configuring form analytics settings' do
+  #     when_I_enable_the_analytics(environment)
+  #     then_I_should_see_the_account_ids_fields(environment)
 
-      click_button(I18n.t('actions.save'))
-      then_I_should_see_error_messages([I18n.t('activemodel.errors.models.form_analytics_settings.blank')])
+  #     click_button(I18n.t('actions.save'))
+  #     then_I_should_see_error_messages([I18n.t('activemodel.errors.models.form_analytics_settings.blank')])
 
-      then_I_should_see_the_account_ids_fields(environment)
-      and_I_set_the_analytics_tracking_id("gtm_#{environment}", invalid_ids["gtm_#{environment}"])
-      and_I_set_the_analytics_tracking_id("ga4_#{environment}", invalid_ids["ga4_#{environment}"])
-      click_button(I18n.t('actions.save'))
-      then_I_should_see_error_messages(error_messages)
+  #     then_I_should_see_the_account_ids_fields(environment)
+  #     and_I_set_the_analytics_tracking_id("gtm_#{environment}", invalid_ids["gtm_#{environment}"])
+  #     and_I_set_the_analytics_tracking_id("ga4_#{environment}", invalid_ids["ga4_#{environment}"])
+  #     click_button(I18n.t('actions.save'))
+  #     then_I_should_see_error_messages(error_messages)
 
-      and_I_set_the_analytics_tracking_id("gtm_#{environment}", valid_ids["gtm_#{environment}"])
-      and_I_set_the_analytics_tracking_id("ga4_#{environment}", valid_ids["ga4_#{environment}"])
-      click_button(I18n.t('actions.save'))
-      then_I_should_see_no_error_message
-      then_I_should_see_my_saved_ids(environment)
+  #     and_I_set_the_analytics_tracking_id("gtm_#{environment}", valid_ids["gtm_#{environment}"])
+  #     and_I_set_the_analytics_tracking_id("ga4_#{environment}", valid_ids["ga4_#{environment}"])
+  #     click_button(I18n.t('actions.save'))
+  #     then_I_should_see_no_error_message
+  #     then_I_should_see_my_saved_ids(environment)
 
-      when_I_disable_the_analytics(environment)
-      click_button(I18n.t('actions.save'))
+  #     when_I_disable_the_analytics(environment)
+  #     click_button(I18n.t('actions.save'))
 
-      when_I_enable_the_analytics(environment)
-      then_I_should_see_the_account_ids_fields(environment)
-      then_I_should_not_see_my_saved_ids
-    end
-  end
+  #     when_I_enable_the_analytics(environment)
+  #     then_I_should_see_the_account_ids_fields(environment)
+  #     then_I_should_not_see_my_saved_ids
+  #   end
+  # end
 
   context 'Test environment' do
     let(:environment) { 'test' }

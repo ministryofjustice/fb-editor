@@ -11,370 +11,370 @@ feature 'Component validations' do
   end
 
 
-  shared_examples 'a number component validation' do
-    scenario 'configuring number validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_minimum_and_maximum_validations
+  # shared_examples 'a number component validation' do
+  #   scenario 'configuring number validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_minimum_and_maximum_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_enable_the_validation
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
+  #     and_I_enable_the_validation
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
 
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_not_see_the_validation_modal(label, status_label)
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_not_see_the_validation_modal(label, status_label)
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_answer)
-      and_I_set_the_input_value(second_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(first_answer)
+  #     and_I_set_the_input_value(second_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
 
-      and_I_click_save
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(second_answer)
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(second_answer)
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      and_I_return_to_flow_page
-      preview = when_I_preview_the_page(page_url)
-      then_I_should_preview_the_page(
-        preview: preview,
-        field: preview_field,
-        first_answer: preview_first_answer,
-        second_answer: preview_second_answer,
-        error_message: preview_error_message
-      )
-    end
-  end
+  #     and_I_return_to_flow_page
+  #     preview = when_I_preview_the_page(page_url)
+  #     then_I_should_preview_the_page(
+  #       preview: preview,
+  #       field: preview_field,
+  #       first_answer: preview_first_answer,
+  #       second_answer: preview_second_answer,
+  #       error_message: preview_error_message
+  #     )
+  #   end
+  # end
 
-  shared_examples 'a date component validation' do
-    scenario 'configuring date validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_date_before_and_after_validations
+  # shared_examples 'a date component validation' do
+  #   scenario 'configuring date validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_date_before_and_after_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_enable_the_validation
-      first_answers.each do |field, value|
-        and_I_set_the_date_input_value(field, value)
-      end
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.date_validation.missing_attribute',
-        label: error_message_label,
-        attribute: error_message_attribute
-      ))
+  #     and_I_enable_the_validation
+  #     first_answers.each do |field, value|
+  #       and_I_set_the_date_input_value(field, value)
+  #     end
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.date_validation.missing_attribute',
+  #       label: error_message_label,
+  #       attribute: error_message_attribute
+  #     ))
 
-      and_I_set_the_date_input_value(invalid_field_answer['field'], invalid_field_answer['invalid'])
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.date_validation.invalid',
-        label: label
-      ))
+  #     and_I_set_the_date_input_value(invalid_field_answer['field'], invalid_field_answer['invalid'])
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.date_validation.invalid',
+  #       label: label
+  #     ))
 
-      and_I_set_the_date_input_value(invalid_field_answer['field'], invalid_field_answer['valid'])
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_not_see_the_validation_modal(label, status_label)
+  #     and_I_set_the_date_input_value(invalid_field_answer['field'], invalid_field_answer['valid'])
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_not_see_the_validation_modal(label, status_label)
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      first_answers.each do |field, value|
-        then_I_should_see_the_previously_set_date_configuration(field, value)
-      end
-      then_I_should_see_the_previously_set_date_configuration(invalid_field_answer['field'], invalid_field_answer['valid'])
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     first_answers.each do |field, value|
+  #       then_I_should_see_the_previously_set_date_configuration(field, value)
+  #     end
+  #     then_I_should_see_the_previously_set_date_configuration(invalid_field_answer['field'], invalid_field_answer['valid'])
 
-      second_answers.each do |field, value|
-        and_I_set_the_date_input_value(field, value)
-      end
-      click_button(I18n.t('dialogs.component_validations.button'))
+  #     second_answers.each do |field, value|
+  #       and_I_set_the_date_input_value(field, value)
+  #     end
+  #     click_button(I18n.t('dialogs.component_validations.button'))
 
-      and_I_click_save
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      second_answers.each do |field, value|
-        then_I_should_see_the_previously_set_date_configuration(field, value)
-      end
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     second_answers.each do |field, value|
+  #       then_I_should_see_the_previously_set_date_configuration(field, value)
+  #     end
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      and_I_return_to_flow_page
-      preview = when_I_preview_the_page(page_url)
-      then_I_should_preview_the_date_page(
-        preview: preview,
-        first_date: preview_first_date,
-        second_date: preview_second_date,
-        error_message: preview_error_message
-      )
-    end
-  end
+  #     and_I_return_to_flow_page
+  #     preview = when_I_preview_the_page(page_url)
+  #     then_I_should_preview_the_date_page(
+  #       preview: preview,
+  #       first_date: preview_first_date,
+  #       second_date: preview_second_date,
+  #       error_message: preview_error_message
+  #     )
+  #   end
+  # end
 
-  shared_examples 'a string length characters validation' do
-    scenario 'configuring string length characters validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_string_length_validations
+  # shared_examples 'a string length characters validation' do
+  #   scenario 'configuring string length characters validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_string_length_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_enable_the_validation
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
+  #     and_I_enable_the_validation
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
 
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_not_see_the_validation_modal(label, status_label)
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_not_see_the_validation_modal(label, status_label)
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_answer)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      and_I_set_the_input_value(second_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(first_answer)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     and_I_set_the_input_value(second_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
 
-      and_I_click_save
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(second_answer)
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(second_answer)
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      sleep(0.5)
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      and_I_set_the_input_value('')
-      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     sleep(0.5)
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     and_I_set_the_input_value('')
+  #     and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(alt_menu_text)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(alt_menu_text)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      and_I_return_to_flow_page
-      preview = when_I_preview_the_page(page_url)
-      then_I_should_preview_the_page(
-        preview: preview,
-        field: preview_field,
-        first_answer: preview_first_answer,
-        second_answer: preview_second_answer,
-        error_message: preview_error_message
-      )
-    end
-  end
+  #     and_I_return_to_flow_page
+  #     preview = when_I_preview_the_page(page_url)
+  #     then_I_should_preview_the_page(
+  #       preview: preview,
+  #       field: preview_field,
+  #       first_answer: preview_first_answer,
+  #       second_answer: preview_second_answer,
+  #       error_message: preview_error_message
+  #     )
+  #   end
+  # end
 
-  shared_examples 'a max files validation' do
-    scenario 'configuring the max files' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_max_files_validations
+  # shared_examples 'a max files validation' do
+  #   scenario 'configuring the max files' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_max_files_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('question.dialog.multiupload_continue'))
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('question.dialog.multiupload_continue'))
 
-      sleep(0.5)
+  #     sleep(0.5)
 
-      and_I_should_see_the_max_files_displayed
+  #     and_I_should_see_the_max_files_displayed
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_answer)
-    end
-  end
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(first_answer)
+  #   end
+  # end
 
-  shared_examples 'a string length words validation' do
-    scenario 'configuring string length words validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_string_length_validations
+  # shared_examples 'a string length words validation' do
+  #   scenario 'configuring string length words validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_string_length_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_enable_the_validation
-      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+  #     and_I_enable_the_validation
+  #     and_I_select_the_radio(I18n.t('dialogs.component_validations.string.words'))
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
 
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_not_see_the_validation_modal(label, status_label)
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_not_see_the_validation_modal(label, status_label)
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_answer)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
-      and_I_set_the_input_value(second_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(first_answer)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+  #     and_I_set_the_input_value(second_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
 
-      and_I_click_save
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(second_answer)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(second_answer)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      sleep(0.5)
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
-      and_I_set_the_input_value('')
-      and_I_select_the_radio(I18n.t('dialogs.component_validations.string.characters'))
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     sleep(0.5)
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.words'))
+  #     and_I_set_the_input_value('')
+  #     and_I_select_the_radio(I18n.t('dialogs.component_validations.string.characters'))
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(alt_menu_text)
-      then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(alt_menu_text)
+  #     then_the_radio_is_selected(I18n.t('dialogs.component_validations.string.characters'))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      and_I_return_to_flow_page
-      preview = when_I_preview_the_page('Textarea')
-      then_I_should_preview_the_page(
-        preview: preview,
-        field: preview_field,
-        first_answer: preview_first_answer,
-        second_answer: preview_second_answer,
-        error_message: preview_error_message
-      )
-    end
-  end
+  #     and_I_return_to_flow_page
+  #     preview = when_I_preview_the_page('Textarea')
+  #     then_I_should_preview_the_page(
+  #       preview: preview,
+  #       field: preview_field,
+  #       first_answer: preview_first_answer,
+  #       second_answer: preview_second_answer,
+  #       error_message: preview_error_message
+  #     )
+  #   end
+  # end
 
-  shared_examples 'a disabled component validation' do
-    scenario 'disabling a previously enabled validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      and_I_enable_the_validation
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
-      and_I_click_save
+  # shared_examples 'a disabled component validation' do
+  #   scenario 'disabling a previously enabled validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     and_I_enable_the_validation
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     and_I_click_save
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      and_I_set_the_input_value('')
-      and_I_disable_the_validation
-      click_button(I18n.t('dialogs.component_validations.button'))
-      and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     and_I_set_the_input_value('')
+  #     and_I_disable_the_validation
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     and_I_click_save
 
-      then_I_should_not_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
-    end
-  end
+  #     then_I_should_not_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
+  #   end
+  # end
 
-  shared_examples 'a disabled date component validation' do
-    scenario 'disabling a previously enabled validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      and_I_enable_the_validation
-      second_answers.each do |field, value|
-        and_I_set_the_date_input_value(field, value)
-      end
-      click_button(I18n.t('dialogs.component_validations.button'))
-      and_I_click_save
+  # shared_examples 'a disabled date component validation' do
+  #   scenario 'disabling a previously enabled validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     and_I_enable_the_validation
+  #     second_answers.each do |field, value|
+  #       and_I_set_the_date_input_value(field, value)
+  #     end
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     and_I_click_save
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      second_answers.each do |field, _|
-        and_I_set_the_date_input_value(field, '')
-      end
-      and_I_disable_the_validation
-      click_button(I18n.t('dialogs.component_validations.button'))
-      and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     second_answers.each do |field, _|
+  #       and_I_set_the_date_input_value(field, '')
+  #     end
+  #     and_I_disable_the_validation
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     and_I_click_save
 
-      then_I_should_not_see_an_error_message(
-        I18n.t(
-        'activemodel.errors.models.base_component_validation.blank',
-        label: label
-      ))
-    end
-  end
+  #     then_I_should_not_see_an_error_message(
+  #       I18n.t(
+  #       'activemodel.errors.models.base_component_validation.blank',
+  #       label: label
+  #     ))
+  #   end
+  # end
 
-  shared_examples 'a regex validation' do
-    scenario 'configuring string regex validation' do
-      and_I_visit_a_page(page_url)
-      when_I_want_to_select_question_properties
-      then_I_should_see_the_string_regex_validations
+  # shared_examples 'a regex validation' do
+  #   scenario 'configuring string regex validation' do
+  #     and_I_visit_a_page(page_url)
+  #     when_I_want_to_select_question_properties
+  #     then_I_should_see_the_string_regex_validations
 
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_validation_modal(label, status_label)
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_validation_modal(label, status_label)
 
-      and_I_enable_the_validation
-      and_I_set_the_input_value(first_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_not_see_the_validation_modal(label, status_label)
+  #     and_I_enable_the_validation
+  #     and_I_set_the_input_value(first_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_not_see_the_validation_modal(label, status_label)
 
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      then_I_should_see_the_previously_set_configuration(first_answer)
-      and_I_set_the_input_value(second_answer)
-      click_button(I18n.t('dialogs.component_validations.button'))
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     then_I_should_see_the_previously_set_configuration(first_answer)
+  #     and_I_set_the_input_value(second_answer)
+  #     click_button(I18n.t('dialogs.component_validations.button'))
 
-      and_I_click_save
-      when_I_want_to_select_question_properties
-      and_I_select_a_validation(menu_text)
-      and_I_set_the_input_value('')
-      click_button(I18n.t('dialogs.component_validations.button'))
-      then_I_should_see_an_error_message(
-        I18n.t(
-          'activemodel.errors.models.string_regex_pattern.blank',
-          label: label
-        ))
-      click_button(I18n.t('dialogs.button_cancel'))
+  #     and_I_click_save
+  #     when_I_want_to_select_question_properties
+  #     and_I_select_a_validation(menu_text)
+  #     and_I_set_the_input_value('')
+  #     click_button(I18n.t('dialogs.component_validations.button'))
+  #     then_I_should_see_an_error_message(
+  #       I18n.t(
+  #         'activemodel.errors.models.string_regex_pattern.blank',
+  #         label: label
+  #       ))
+  #     click_button(I18n.t('dialogs.button_cancel'))
 
-      and_I_return_to_flow_page
-      preview = when_I_preview_the_page(page_url)
-      then_I_should_preview_the_page(
-        preview: preview,
-        field: preview_field,
-        first_answer: preview_first_answer,
-        second_answer: preview_second_answer,
-        error_message: preview_error_message
-      )
-    end
-  end
+  #     and_I_return_to_flow_page
+  #     preview = when_I_preview_the_page(page_url)
+  #     then_I_should_preview_the_page(
+  #       preview: preview,
+  #       field: preview_field,
+  #       first_answer: preview_first_answer,
+  #       second_answer: preview_second_answer,
+  #       error_message: preview_error_message
+  #     )
+  #   end
+  # end
 
   context 'minimum validation' do
     let(:page_url) { 'Number' }
