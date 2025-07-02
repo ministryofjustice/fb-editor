@@ -54,7 +54,7 @@ feature 'Component validations' do
   #       error_message: preview_error_message
   #     )
   #   end
-  end
+  # end
 
   # shared_examples 'a date component validation' do
   #   scenario 'configuring date validation' do
