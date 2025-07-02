@@ -22,10 +22,10 @@ feature 'Preview form' do
     'There is no bathroom'
   end
 
-  background do
-    given_I_am_logged_in
-    given_I_have_a_service_fixture(fixture: 'preview_form_fixture')
-  end
+  # background do
+  #   given_I_am_logged_in
+  #   given_I_have_a_service_fixture(fixture: 'preview_form_fixture')
+  # end
 
   # scenario 'preview the whole form' do
   #   preview_form = when_I_preview_the_form

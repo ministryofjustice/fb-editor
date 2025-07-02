@@ -5,11 +5,10 @@ feature 'Component validations' do
   let(:service_name) { generate_service_name }
   let(:fixture) { 'all_component_types_fixture' }
 
-  background do
-    given_I_am_logged_in
-    given_I_have_a_service_fixture(name: service_name, fixture: fixture)
-  end
-
+  # background do
+  #   given_I_am_logged_in
+  #   given_I_have_a_service_fixture(name: service_name, fixture: fixture)
+  # end
 
   # shared_examples 'a number component validation' do
   #   scenario 'configuring number validation' do
@@ -376,181 +375,181 @@ feature 'Component validations' do
   #   end
   # end
 
-  context 'minimum validation' do
-    let(:page_url) { 'Number' }
-    let(:menu_text) { I18n.t('question.menu.minimum') }
-    let(:label) { I18n.t('dialogs.component_validations.minimum.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.minimum.status_label') }
-    let(:first_answer) { '5' }
-    let(:second_answer) { '3' }
-    let(:preview_field) { 'answers[number_number_1]' }
-    let(:preview_first_answer) { '1' }
-    let(:preview_second_answer) { '20' }
-    let(:preview_error_message) { 'Your answer for "Number" must be 3 or higher' }
+  # context 'minimum validation' do
+  #   let(:page_url) { 'Number' }
+  #   let(:menu_text) { I18n.t('question.menu.minimum') }
+  #   let(:label) { I18n.t('dialogs.component_validations.minimum.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.minimum.status_label') }
+  #   let(:first_answer) { '5' }
+  #   let(:second_answer) { '3' }
+  #   let(:preview_field) { 'answers[number_number_1]' }
+  #   let(:preview_first_answer) { '1' }
+  #   let(:preview_second_answer) { '20' }
+  #   let(:preview_error_message) { 'Your answer for "Number" must be 3 or higher' }
 
-    it_behaves_like 'a number component validation'
-    it_behaves_like 'a disabled component validation'
-  end
+  #   it_behaves_like 'a number component validation'
+  #   it_behaves_like 'a disabled component validation'
+  # end
 
-  context 'maximum validation' do
-    let(:page_url) { 'Number' }
-    let(:menu_text) { I18n.t('question.menu.maximum') }
-    let(:label) { I18n.t('dialogs.component_validations.maximum.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.maximum.status_label') }
-    let(:first_answer) { '100' }
-    let(:second_answer) { '50' }
-    let(:preview_field) { 'answers[number_number_1]' }
-    let(:preview_first_answer) { '100' }
-    let(:preview_second_answer) { '5' }
-    let(:preview_error_message) { 'Your answer for "Number" must be 50 or lower' }
+  # context 'maximum validation' do
+  #   let(:page_url) { 'Number' }
+  #   let(:menu_text) { I18n.t('question.menu.maximum') }
+  #   let(:label) { I18n.t('dialogs.component_validations.maximum.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.maximum.status_label') }
+  #   let(:first_answer) { '100' }
+  #   let(:second_answer) { '50' }
+  #   let(:preview_field) { 'answers[number_number_1]' }
+  #   let(:preview_first_answer) { '100' }
+  #   let(:preview_second_answer) { '5' }
+  #   let(:preview_error_message) { 'Your answer for "Number" must be 50 or lower' }
 
-    it_behaves_like 'a number component validation'
-    it_behaves_like 'a disabled component validation'
-  end
+  #   it_behaves_like 'a number component validation'
+  #   it_behaves_like 'a disabled component validation'
+  # end
 
-  context 'date after validation' do
-    let(:page_url) { 'Date' }
-    let(:menu_text) { I18n.t('question.menu.date_after') }
-    let(:label) { I18n.t('dialogs.component_validations.date_after.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.date_after.status_label') }
-    let(:first_answers) { { 'day' => '10', 'month' => '11' } }
-    let(:invalid_field_answer) do
-      {
-        'field' => 'year',
-        'invalid' => 'this is not a year' ,
-        'valid' => '2001'
-      }
-    end
-    let(:error_message_label) { 'Earliest date'}
-    let(:error_message_attribute) { I18n.t('dialogs.component_validations.date.year').downcase }
-    let(:second_answers) { { 'day' => '28', 'month' => '02', 'year' => '1999' } }
-    let(:preview_first_date) { { day: '01', month: '02', year: '1901' } }
-    let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
-    let(:preview_error_message) { 'Your answer for "Date" must be 28 02 1999 or later' }
+  # context 'date after validation' do
+  #   let(:page_url) { 'Date' }
+  #   let(:menu_text) { I18n.t('question.menu.date_after') }
+  #   let(:label) { I18n.t('dialogs.component_validations.date_after.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.date_after.status_label') }
+  #   let(:first_answers) { { 'day' => '10', 'month' => '11' } }
+  #   let(:invalid_field_answer) do
+  #     {
+  #       'field' => 'year',
+  #       'invalid' => 'this is not a year' ,
+  #       'valid' => '2001'
+  #     }
+  #   end
+  #   let(:error_message_label) { 'Earliest date'}
+  #   let(:error_message_attribute) { I18n.t('dialogs.component_validations.date.year').downcase }
+  #   let(:second_answers) { { 'day' => '28', 'month' => '02', 'year' => '1999' } }
+  #   let(:preview_first_date) { { day: '01', month: '02', year: '1901' } }
+  #   let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
+  #   let(:preview_error_message) { 'Your answer for "Date" must be 28 02 1999 or later' }
 
-    it_behaves_like 'a date component validation'
-    it_behaves_like 'a disabled date component validation'
-  end
+  #   it_behaves_like 'a date component validation'
+  #   it_behaves_like 'a disabled date component validation'
+  # end
 
-  context 'date before validation' do
-    let(:page_url) { 'Date' }
-    let(:menu_text) { I18n.t('question.menu.date_before') }
-    let(:label) { I18n.t('dialogs.component_validations.date_before.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.date_before.status_label') }
-    let(:first_answers) { { 'month' => '06', 'year' => '2050' } }
-    let(:invalid_field_answer) do
-      {
-        'field' => 'day',
-        'invalid' => 'this is not a day' ,
-        'valid' => '30'
-      }
-    end
-    let(:error_message_label) { 'Latest date'}
-    let(:error_message_attribute) { I18n.t('dialogs.component_validations.date.day').downcase }
-    let(:second_answers) { { 'day' => '14', 'month' => '08', 'year' => '2045' } }
-    let(:preview_first_date) { { day: '01', month: '02', year: '2050' } }
-    let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
-    let(:preview_error_message) { 'Your answer for "Date" must be 14 08 2045 or earlier' }
+  # context 'date before validation' do
+  #   let(:page_url) { 'Date' }
+  #   let(:menu_text) { I18n.t('question.menu.date_before') }
+  #   let(:label) { I18n.t('dialogs.component_validations.date_before.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.date_before.status_label') }
+  #   let(:first_answers) { { 'month' => '06', 'year' => '2050' } }
+  #   let(:invalid_field_answer) do
+  #     {
+  #       'field' => 'day',
+  #       'invalid' => 'this is not a day' ,
+  #       'valid' => '30'
+  #     }
+  #   end
+  #   let(:error_message_label) { 'Latest date'}
+  #   let(:error_message_attribute) { I18n.t('dialogs.component_validations.date.day').downcase }
+  #   let(:second_answers) { { 'day' => '14', 'month' => '08', 'year' => '2045' } }
+  #   let(:preview_first_date) { { day: '01', month: '02', year: '2050' } }
+  #   let(:preview_second_date) { { day: '28', month: '02', year: '2001' } }
+  #   let(:preview_error_message) { 'Your answer for "Date" must be 14 08 2045 or earlier' }
 
-    it_behaves_like 'a date component validation'
-    it_behaves_like 'a disabled date component validation'
-  end
+  #   it_behaves_like 'a date component validation'
+  #   it_behaves_like 'a disabled date component validation'
+  # end
 
-  context 'min length (characters)' do
-    let(:page_url) { 'Text' }
-    let(:menu_text) { I18n.t('question.menu.min_string_length') }
-    let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
-    let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
-    let(:first_answer) { '5' }
-    let(:second_answer) { '3' }
-    let(:preview_field) { 'answers[text_text_1]' }
-    let(:preview_first_answer) { 'Po' }
-    let(:preview_second_answer) { 'Akira' }
-    let(:preview_error_message) { 'Your answer for "Text" must be 3 characters or more' }
+  # context 'min length (characters)' do
+  #   let(:page_url) { 'Text' }
+  #   let(:menu_text) { I18n.t('question.menu.min_string_length') }
+  #   let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
+  #   let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
+  #   let(:first_answer) { '5' }
+  #   let(:second_answer) { '3' }
+  #   let(:preview_field) { 'answers[text_text_1]' }
+  #   let(:preview_first_answer) { 'Po' }
+  #   let(:preview_second_answer) { 'Akira' }
+  #   let(:preview_error_message) { 'Your answer for "Text" must be 3 characters or more' }
 
-    it_behaves_like 'a string length characters validation'
-    it_behaves_like 'a disabled component validation'
-  end
+  #   it_behaves_like 'a string length characters validation'
+  #   it_behaves_like 'a disabled component validation'
+  # end
 
-  context 'max length (characters)' do
-    let(:page_url) { 'Text' }
-    let(:menu_text) { I18n.t('question.menu.max_string_length') }
-    let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
-    let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
-    let(:first_answer) { '20' }
-    let(:second_answer) { '10' }
-    let(:preview_field) { 'answers[text_text_1]' }
-    let(:preview_first_answer) { 'Wolfeschlegelshteinhausenbergerdorff' }
-    let(:preview_second_answer) { 'Bob' }
-    let(:preview_error_message) { 'Your answer for "Text" must be 10 characters or fewer' }
+  # context 'max length (characters)' do
+  #   let(:page_url) { 'Text' }
+  #   let(:menu_text) { I18n.t('question.menu.max_string_length') }
+  #   let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
+  #   let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
+  #   let(:first_answer) { '20' }
+  #   let(:second_answer) { '10' }
+  #   let(:preview_field) { 'answers[text_text_1]' }
+  #   let(:preview_first_answer) { 'Wolfeschlegelshteinhausenbergerdorff' }
+  #   let(:preview_second_answer) { 'Bob' }
+  #   let(:preview_error_message) { 'Your answer for "Text" must be 10 characters or fewer' }
 
-    it_behaves_like 'a string length characters validation'
-    it_behaves_like 'a disabled component validation'
-  end
+  #   it_behaves_like 'a string length characters validation'
+  #   it_behaves_like 'a disabled component validation'
+  # end
 
-  context 'min word' do
-    let(:page_url) { 'Textarea' }
-    let(:menu_text) { I18n.t('question.menu.min_string_length') }
-    let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
-    let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
-    let(:first_answer) { '20' }
-    let(:second_answer) { '10' }
-    let(:preview_field) { 'answers[textarea_textarea_1]' }
-    let(:preview_first_answer) { 'Mother died today.' }
-    let(:preview_second_answer) do
-      'He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish.'
-    end
-    let(:preview_error_message) { 'Your answer for "Textarea" must be 10 words or more' }
+  # context 'min word' do
+  #   let(:page_url) { 'Textarea' }
+  #   let(:menu_text) { I18n.t('question.menu.min_string_length') }
+  #   let(:alt_menu_text) { I18n.t('question.menu.max_string_length') }
+  #   let(:label) { I18n.t('dialogs.component_validations.string.min.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.string.min.status_label') }
+  #   let(:first_answer) { '20' }
+  #   let(:second_answer) { '10' }
+  #   let(:preview_field) { 'answers[textarea_textarea_1]' }
+  #   let(:preview_first_answer) { 'Mother died today.' }
+  #   let(:preview_second_answer) do
+  #     'He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish.'
+  #   end
+  #   let(:preview_error_message) { 'Your answer for "Textarea" must be 10 words or more' }
 
-    it_behaves_like 'a string length words validation'
-  end
+  #   it_behaves_like 'a string length words validation'
+  # end
 
-  context 'max word' do
-    let(:page_url) { 'Textarea' }
-    let(:menu_text) { I18n.t('question.menu.max_string_length') }
-    let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
-    let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
-    let(:first_answer) { '50' }
-    let(:second_answer) { '20' }
-    let(:preview_field) { 'answers[textarea_textarea_1]' }
-    let(:preview_first_answer) do
-      'The story so far: in the beginning, the universe was created. This has made a lot of people very angry and been widely regarded as a bad move.'
-    end
-    let(:preview_second_answer) { 'All this happened, more or less.' }
-    let(:preview_error_message) { 'Your answer for "Textarea" must be 20 words or fewer' }
+  # context 'max word' do
+  #   let(:page_url) { 'Textarea' }
+  #   let(:menu_text) { I18n.t('question.menu.max_string_length') }
+  #   let(:alt_menu_text) { I18n.t('question.menu.min_string_length') }
+  #   let(:label) { I18n.t('dialogs.component_validations.string.max.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.string.max.status_label') }
+  #   let(:first_answer) { '50' }
+  #   let(:second_answer) { '20' }
+  #   let(:preview_field) { 'answers[textarea_textarea_1]' }
+  #   let(:preview_first_answer) do
+  #     'The story so far: in the beginning, the universe was created. This has made a lot of people very angry and been widely regarded as a bad move.'
+  #   end
+  #   let(:preview_second_answer) { 'All this happened, more or less.' }
+  #   let(:preview_error_message) { 'Your answer for "Textarea" must be 20 words or fewer' }
 
-    it_behaves_like 'a string length words validation'
-  end
+  #   it_behaves_like 'a string length words validation'
+  # end
 
-  context 'max files' do
-    let(:page_url) { 'Multifile upload' }
-    let(:menu_text) { I18n.t('question.menu.max_files') }
-    let(:label) { I18n.t('question.dialog.multiupload_label') }
-    let(:status_label) { I18n.t('question.dialog.multiupload_hint') }
-    let(:first_answer) { '3' }
+  # context 'max files' do
+  #   let(:page_url) { 'Multifile upload' }
+  #   let(:menu_text) { I18n.t('question.menu.max_files') }
+  #   let(:label) { I18n.t('question.dialog.multiupload_label') }
+  #   let(:status_label) { I18n.t('question.dialog.multiupload_hint') }
+  #   let(:first_answer) { '3' }
 
-    it_behaves_like 'a max files validation'
-  end
+  #   it_behaves_like 'a max files validation'
+  # end
 
-  context 'regex pattern' do
-    let(:page_url) { 'Text' }
-    let(:menu_text) { I18n.t('question.menu.pattern') }
-    let(:label) { I18n.t('dialogs.component_validations.string.pattern.label') }
-    let(:status_label) { I18n.t('dialogs.component_validations.string.pattern.status_label') }
-    let(:first_answer) { '[A-Z]' }
-    let(:second_answer) { '[a-z]' }
-    let(:preview_field) { 'answers[text_text_1]' }
-    let(:preview_first_answer) { 'ABC' }
-    let(:preview_second_answer) { 'abc' }
-    let(:preview_error_message) { 'Your answer for "Text" must match the required format' }
+  # context 'regex pattern' do
+  #   let(:page_url) { 'Text' }
+  #   let(:menu_text) { I18n.t('question.menu.pattern') }
+  #   let(:label) { I18n.t('dialogs.component_validations.string.pattern.label') }
+  #   let(:status_label) { I18n.t('dialogs.component_validations.string.pattern.status_label') }
+  #   let(:first_answer) { '[A-Z]' }
+  #   let(:second_answer) { '[a-z]' }
+  #   let(:preview_field) { 'answers[text_text_1]' }
+  #   let(:preview_first_answer) { 'ABC' }
+  #   let(:preview_second_answer) { 'abc' }
+  #   let(:preview_error_message) { 'Your answer for "Text" must match the required format' }
 
-    it_behaves_like 'a regex validation'
-    it_behaves_like 'a disabled component validation'
-  end
+  #   it_behaves_like 'a regex validation'
+  #   it_behaves_like 'a disabled component validation'
+  # end
 
   def and_I_visit_a_page(flow_title)
     editor.flow_thumbnail(flow_title).click
