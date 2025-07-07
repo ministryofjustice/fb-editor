@@ -28,18 +28,18 @@ feature.skip 'Accessibility' do
     click_button('Cancel')
     editor.service_name.click
 
-    # move page modal
-    # and_I_click_on_the_page_menu('Text')
-    # editor.move_page_link.click
-    # then_the_page_should_be_accessible
+    move page modal
+    and_I_click_on_the_page_menu('Text')
+    editor.move_page_link.click
+    then_the_page_should_be_accessible
 
-    # click_button('Cancel')
-    # editor.service_name.click
+    click_button('Cancel')
+    editor.service_name.click
 
-    # delete page modal
-    # and_I_click_on_the_page_menu('Text')
-    # editor.delete_page_link.click
-    # then_the_page_should_be_accessible
+    delete page modal
+    and_I_click_on_the_page_menu('Text')
+    editor.delete_page_link.click
+    then_the_page_should_be_accessible
 
     ## With branching
 

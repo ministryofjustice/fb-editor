@@ -666,6 +666,7 @@ en:
     form_name_hint: "Maximum %{max_length} characters, including spaces. It cannot start with a number or include special characters except ' - ( )"
     form_name_change_hint: "You will be able to change this later in your form's settings"
     preview: 'Preview'
+    # create: 'Create a new form'
     cancel: 'Cancel'
     branch: 'Add branching'
   activemodel:

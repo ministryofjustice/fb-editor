@@ -10,35 +10,35 @@ feature 'Submission email' do
   let(:message_subject) { "Submission from #{service_name}, reference number: {{reference_number}}" }
   let(:pdf_heading) { "Submission for #{service_name}, reference number: {{reference_number}}" }
 
-  # background do
-  #   given_I_am_logged_in
-  #   given_I_have_a_service_fixture(name: service_name)
-  # end
+  background do
+    given_I_am_logged_in
+    given_I_have_a_service_fixture(name: service_name)
+  end
 
-  # shared_examples 'submission email settings page' do
-  #   scenario 'with valid and invalid send to domains' do
-  #     when_I_visit_the_submission_email_settings_page
-  #     then_I_should_see_the_submission_email_settings_page(environment)
-  #     when_I_enable_submission_email(environment)
-  #     then_I_add_a_send_to_email('iorek.byrnison@outlook.com')
-  #     then_I_should_see_the_error
+  shared_examples 'submission email settings page' do
+    scenario 'with valid and invalid send to domains' do
+      when_I_visit_the_submission_email_settings_page
+      then_I_should_see_the_submission_email_settings_page(environment)
+      when_I_enable_submission_email(environment)
+      then_I_add_a_send_to_email('iorek.byrnison@outlook.com')
+      then_I_should_see_the_error
 
-  #     then_I_add_a_send_to_email('iorek.byrnison@justice.gov.uk')
-  #     then_I_should_not_see_the_error
-  #   end
-  # end
+      then_I_add_a_send_to_email('iorek.byrnison@justice.gov.uk')
+      then_I_should_not_see_the_error
+    end
+  end
 
-  # context 'when dev environment' do
-  #   let(:environment) { 'dev' }
+  context 'when dev environment' do
+    let(:environment) { 'dev' }
 
-  #   it_behaves_like 'submission email settings page'
-  # end
+    it_behaves_like 'submission email settings page'
+  end
 
-  # context 'when production environment' do
-  #   let(:environment) { 'production' }
+  context 'when production environment' do
+    let(:environment) { 'production' }
 
-  #   it_behaves_like 'submission email settings page'
-  # end
+    it_behaves_like 'submission email settings page'
+  end
 
   def when_I_visit_the_submission_email_settings_page
     page.find(:css, '#main-content', visible: true)
