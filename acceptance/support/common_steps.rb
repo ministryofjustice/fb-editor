@@ -36,7 +36,6 @@ module CommonSteps
       editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
-
   end
 
   def given_I_have_a_service(service = service_name)
