@@ -27,7 +27,7 @@ feature 'Form owner settings page' do
     then_I_should_see_a_validation_message_for_unknown_user
   end
 
-   scenario 'updates the service owner in metadata and will be redirected to the forms list' do
+  scenario 'updates the service owner in metadata and will be redirected to the forms list' do
     given_I_update_the_form_owner(new_form_owner)
     then_I_should_be_redirected_to_my_forms
     then_I_should_see_the_modal_for_email_confirmation
@@ -49,7 +49,6 @@ feature 'Form owner settings page' do
     expect(editor).to have_content('Your forms')
   end
 
-
   def then_I_should_see_a_validation_message_for_missing_email
     expect(editor).to have_content(I18n.t('activemodel.errors.models.transfer_ownership.blank'))
   end
@@ -61,7 +60,6 @@ feature 'Form owner settings page' do
   def then_I_should_see_a_validation_message_for_unknown_user
     expect(editor).to have_content(I18n.t('activemodel.errors.models.transfer_ownership.unknown_user'))
   end
-
 
   def then_I_should_see_the_modal_for_email_confirmation
     expect(editor).to have_content(I18n.t('settings.transfer_ownership.confirmation_title'))

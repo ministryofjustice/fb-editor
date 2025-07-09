@@ -9,7 +9,6 @@ class ExpressionSection < SitePrism::Section
       element :unsupported_error, '.expression__error[data-error-type="unsupported"]'
       element :same_page_error, '.expression__error[data-error-type="samepage"]'
 
-
     def operator_select_values
       operator_select_options.map{|option| option['value'] }
     end

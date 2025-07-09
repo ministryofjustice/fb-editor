@@ -83,5 +83,4 @@ feature 'Undo redo page' do
     page.find(:css, '#main-content', visible: true)
     page.find('.fb-govuk-button', text: I18n.t("actions.undo_redo.#{name}")).click
   end
-
 end
