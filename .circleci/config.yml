@@ -450,11 +450,7 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
-      - acceptance_tests_eks:
-          context: *context
-          requires:
-            - deploy_to_test_eks
-      - acceptance_tests_eks:
+      - acceptance_tests_eks:  # 10/07/2025 causing issue - replace after removal test (Damien)
           context: *context
           requires:
             - deploy_to_test_eks
