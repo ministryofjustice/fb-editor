@@ -453,7 +453,7 @@ workflows:
       - production_deploy_approval:
           type: approval
           requires:
-            - acceptance_tests_eks
+            - deploy_to_test_eks
           filters:
             branches:
               only:
