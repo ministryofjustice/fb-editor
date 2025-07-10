@@ -461,7 +461,7 @@ workflows:
       - deploy_to_live_eks:
           context: *context
           requires:
-            - acceptance_tests_eks
+            - deploy_to_test_eks
             - production_deploy_approval
   deploy_testable_branch:
     jobs:
