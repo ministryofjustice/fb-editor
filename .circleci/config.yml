@@ -457,7 +457,7 @@ workflows:
       - production_deploy_approval:
           type: approval
           requires:
-            - deploy_to_test_eks
+            - acceptance_tests_eks
           filters:
             branches:
               only:
@@ -465,7 +465,7 @@ workflows:
       - deploy_to_live_eks:
           context: *context
           requires:
-            - deploy_to_test_eks
+            - acceptance_tests_eks
             - production_deploy_approval
   deploy_testable_branch:
     jobs:
