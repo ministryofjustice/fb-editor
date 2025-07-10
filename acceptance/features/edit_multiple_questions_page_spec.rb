@@ -265,6 +265,4 @@ feature 'Edit multiple questions page' do
     component.activate
     component.down_button.click
   end
-
-
 end

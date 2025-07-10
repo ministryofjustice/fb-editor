@@ -199,4 +199,3 @@ feature 'Edit single question page' do
     expect(page).to have_content(content)
   end
 end
-

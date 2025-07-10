@@ -78,8 +78,6 @@ feature 'Edit exit pages' do
     expect(page).not_to have_content(I18n.t('actions.continue'))
   end
 
-
-
   def when_I_preview_the_form_until_the_exit_page
     and_I_return_to_flow_page
     when_I_preview_the_form
