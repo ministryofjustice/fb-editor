@@ -26,7 +26,7 @@ MOJ_FORMS_DEVS = %w[
   jesus.laiz@digital.justice.gov.uk
   hettie.street@digital.justice.gov.uk
   Hettie.Street@justice.gov.uk
-  Nick.Preddy@justice.gov.uk
+  Nick.Preddy@Justice.gov.uk
   meena.modhvadia@digital.justice.gov.uk
   Meena.Modhvadia@justice.gov.uk
 ].freeze
