@@ -5,7 +5,7 @@ metadata:
   name: fb-editor-cron-remove-test-services-configs-{{ .Values.environmentName }}
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  schedule: "0 5 * * *"
+  schedule: "0 6 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
   jobTemplate:
