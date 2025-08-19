@@ -10,7 +10,7 @@ class Announcement < ApplicationRecord
 
   scope :scheduled, lambda {
     where(['date_from <= ?', Date.current])
-    .where(['date_to >= ? OR date_to IS ?', Date.current, nil])
+    .where(['date_to >= ? OR date_to IS NULL', Date.current])
   }
   scope :non_revoked, -> { where(revoked_at: nil) }
   scope :candidates,  -> { scheduled.non_revoked }
