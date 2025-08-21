@@ -37,7 +37,7 @@ RSpec.describe Settings::EmailController do
         let(:deployment_environment) { environment }
 
         it "sets send_by_email param and rejects send_by_email_#{environment} param" do
-          expect(controller.email_settings_params).to eq(expected_params)
+          expect(controller.email_settings_params.to_h).to eq(expected_params)
         end
       end
     end
