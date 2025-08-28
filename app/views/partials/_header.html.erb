@@ -48,3 +48,17 @@
     <% end %>
   </div>
 </header>
+
+
+<%= govuk_header(homepage_url: "/", service_name: t('header.service_name')) do |header|
+  if user_signed_in?
+    header.with_navigation_item(text: t('.forms'), href: services_path, active: false)
+    header.with_navigation_item(text: t('.user_guide'), href: t('.user_guide_url'), active: false)
+    if moj_forms_dev? || moj_forms_admin?
+      header.with_navigation_item(text: t('.admin'), href: admin_root_path, active: false)
+    else
+      header.with_navigation_item(text: t('.send_feedback'), href: t('.feedback_form_url'), active: false)
+    end
+    header.with_navigation_item(text: t('.sign_out', user_name: user_name), href: user_session_path, active: false)
+  end
+end %>
