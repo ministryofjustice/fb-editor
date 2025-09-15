@@ -32,6 +32,7 @@ class EditorApp < SitePrism::Page
   # Your forms
   element :services_link, :link, I18n.t('partials.header.forms')
   element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
+  element :create_service_button, :button, I18n.t('services.create')
   # End Your forms
 
   # Pages flow
