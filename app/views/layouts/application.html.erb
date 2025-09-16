@@ -4,7 +4,6 @@
     <title><%= page_title %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= capybara_lockstep if defined?(Capybara::Lockstep) %>
     <%= render partial: 'partials/head_tags' %>
     <%= render partial: 'partials/properties' %>
     <%= stylesheet_pack_tag 'application', media: 'all' %>
