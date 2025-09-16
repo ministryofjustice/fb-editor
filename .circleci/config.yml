@@ -205,6 +205,7 @@ jobs:
           command: |
             echo 'export BUILD_SHA=$CIRCLE_SHA1' >> $BASH_ENV
             echo 'export SSH_FILE_FOR_SECRETS=~/.ssh/id_rsa_339c9dd086ca45a8262af090e5e8e82a' >> $BASH_ENV
+            echo 'export CREATE_FORM_ENABLED=true' >> $BASH_ENV
             source $BASH_ENV
       - run: *deploy_scripts
       - run:
@@ -323,7 +324,6 @@ jobs:
             echo 'export ACCEPTANCE_TESTS_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
             echo 'export CI_MODE=true' >> $BASH_ENV
             echo 'export SITEPRISM_DSL_VALIDATION_DISABLED=true' >> $BASH_ENV
-            echo 'export CREATE_FORM_ENABLED=true' >> $BASH_ENV
             source $BASH_ENV
 
             EXCLUDE_FILES="accessibility_spec.rb"
