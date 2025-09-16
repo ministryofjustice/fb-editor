@@ -23,7 +23,7 @@
         <% end %>
       </ul>
 
-      <% if ENV['CREATE_FORM_ENABLED'].present? %>
+      <% if ENV['PLATFORM_ENV'] != 'live'  %>
         <div class="component-dialog-form"
              id="new-service-create-dialog"
              data-activator-text="<%= t('services.create') %>"
