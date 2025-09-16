@@ -36,6 +36,8 @@ module CommonSteps
       editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
+    page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
+    expect(page).to have_content(I18n.t('services.create'))
   end
 
   def given_I_have_a_service(service = service_name)
