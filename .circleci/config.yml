@@ -454,7 +454,6 @@ workflows:
           context: *context
           requires:
             - build
-            - deploy_to_test_eks
       - production_deploy_approval:
           type: approval
           requires:
