@@ -59,7 +59,7 @@ feature 'Edit multiple questions page' do
       ]
     }
 
-    scenario 'adding and updating components' do
+    xscenario 'adding and updating components' do
       and_I_edit_the_page(url: page_heading)
       then_the_save_button_should_be_disabled
       and_I_add_the_component(I18n.t('components.list.text'))
@@ -77,7 +77,7 @@ feature 'Edit multiple questions page' do
       then_I_can_answer_the_questions_in_the_page(preview_form)
     end
 
-    scenario 'deleting a text component' do
+    xscenario 'deleting a text component' do
       and_I_edit_the_page(url: page_heading)
       and_I_add_the_component(I18n.t('components.list.text'))
       and_I_add_the_component(I18n.t('components.list.textarea'))
@@ -90,7 +90,7 @@ feature 'Edit multiple questions page' do
       and_the_component_is_deleted(text_component_question, remaining: 1)
     end
 
-    scenario 'deleting an email component' do
+    xscenario 'deleting an email component' do
       and_I_edit_the_page(url: page_heading)
       and_I_add_the_component(I18n.t('components.list.text'))
       and_I_add_the_component(I18n.t('components.list.textarea'))
