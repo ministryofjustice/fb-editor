@@ -429,6 +429,7 @@ workflows:
             - security
             - rspec_test
             - js_test
+            - acceptance_tests_eks
           filters:
             branches:
               only:
@@ -492,9 +493,6 @@ workflows:
       - js_test:
           requires:
             - build
-      - acceptance_tests_eks:
-          requires:
-            - build
       - build_web_testable_branch:
           context: *context
           requires:
@@ -504,7 +502,6 @@ workflows:
             - security
             - rspec_test
             - js_test
-            - acceptance_tests_eks
           filters:
             branches:
               only:
