@@ -494,7 +494,7 @@ workflows:
             - build
       - acceptance_tests_eks:
           requires:
-            - build      -
+            - build
       - build_web_testable_branch:
           context: *context
           requires:
