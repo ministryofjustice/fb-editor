@@ -421,6 +421,9 @@ workflows:
       - js_test:
           requires:
             - build
+      - acceptance_tests_eks:
+          requires:
+            - build
       - build_web_image:
           context: *context
           requires:
