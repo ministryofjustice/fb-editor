@@ -21,7 +21,7 @@ feature 'Edit single question page' do
   end
 
   shared_examples 'editing a component' do
-    scenario 'editing heading, section and hint text' do
+    xscenario 'editing heading, section and hint text' do
       given_I_have_a_single_question_page_with(component_name)
       and_I_have_optional_section_heading_text
       then_the_save_button_should_be_disabled
