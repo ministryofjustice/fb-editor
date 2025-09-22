@@ -77,7 +77,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - run: bundle exec brakeman -q --no-pager -i brakeman.ignore -x EOLRails
+      - run: bundle exec brakeman -q --no-pager -i brakeman.ignore
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
@@ -305,7 +305,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 138.0.7204.100
+          chrome-version: 126.0.6478.182
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -340,7 +340,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 138.0.7204.100
+          chrome-version: 126.0.6478.182
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -458,7 +458,6 @@ workflows:
           type: approval
           requires:
             - acceptance_tests_eks
-            - deploy_to_test_eks
           filters:
             branches:
               only:
@@ -467,7 +466,6 @@ workflows:
           context: *context
           requires:
             - acceptance_tests_eks
-            - deploy_to_test_eks
             - production_deploy_approval
   deploy_testable_branch:
     jobs:
