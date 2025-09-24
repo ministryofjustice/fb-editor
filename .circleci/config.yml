@@ -60,7 +60,6 @@ jobs:
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-
   lint:
     docker:
       - image: 'cimg/ruby:3.2.0-node'
@@ -389,6 +388,15 @@ jobs:
 
 workflows:
   version: 2
+  tear_down_testable_editors:
+    jobs:
+      - remove_testable_editors:
+          context: &context
+            - moj-forms
+          filters:
+            branches:
+              only:
+                - main
   test_and_build:
     jobs:
       - build:
@@ -444,11 +452,12 @@ workflows:
       - acceptance_tests_eks:
           context: *context
           requires:
-            - build
+            - deploy_to_test_eks
       - production_deploy_approval:
           type: approval
           requires:
             - acceptance_tests_eks
+            - deploy_to_test_eks
           filters:
             branches:
               only:
@@ -457,6 +466,7 @@ workflows:
           context: *context
           requires:
             - acceptance_tests_eks
+            - deploy_to_test_eks
             - production_deploy_approval
   deploy_testable_branch:
     jobs:
