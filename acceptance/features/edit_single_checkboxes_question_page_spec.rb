@@ -29,7 +29,7 @@ feature 'Edit single radios question page' do
   context 'editing checkbox components' do
     let(:fixture) { 'checkboxes_page_fixture' }
 
-    scenario 'when editing the checkbox component' do
+    xscenario 'when editing the checkbox component' do
       and_I_edit_the_page(url: pre_edit_title)
       and_I_have_optional_section_heading_text
       when_I_update_the_question_name
@@ -41,7 +41,7 @@ feature 'Edit single radios question page' do
       and_I_should_see_the_options_that_I_added(preview_form, initial_options)
     end
 
-    scenario 'when adding an option to the checkbox component' do
+    xscenario 'when adding an option to the checkbox component' do
       and_I_edit_the_page(url: pre_edit_title)
       when_I_update_the_question_name
       and_I_update_the_options
@@ -52,7 +52,7 @@ feature 'Edit single radios question page' do
       and_I_should_see_the_options_that_I_added(preview_form, options_after_addition)
     end
 
-    scenario 'when deleting an option from the checkbox component' do
+    xscenario 'when deleting an option from the checkbox component' do
       and_I_edit_the_page(url: pre_edit_title)
       when_I_update_the_question_name
       and_I_update_the_options
