@@ -19,22 +19,27 @@ feature 'Form owner settings page' do
 
   scenario 'validates the input is an email' do
     given_I_update_the_form_owner('hi')
+    sleep(1)
     then_I_should_see_a_validation_message_for_invalid_email
   end
 
   scenario 'validates the user is present' do
     given_I_update_the_form_owner('unknown@user')
+    sleep(1)
     then_I_should_see_a_validation_message_for_unknown_user
   end
 
   scenario 'updates the service owner in metadata and will be redirected to the forms list' do
     given_I_update_the_form_owner(new_form_owner)
+    sleep(1)
     then_I_should_be_redirected_to_my_forms
     then_I_should_see_the_modal_for_email_confirmation
   end
 
   def and_I_go_to_update_the_form_owner_in_settings
+    sleep(1)
     editor.load
+    sleep(1)
     editor.edit_service_link(service_name).click
     editor.settings_link.click
     editor.form_ownership_link.click

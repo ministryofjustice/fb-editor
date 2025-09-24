@@ -118,10 +118,12 @@ feature 'Create page' do
 
     scenario 'attempt to add a page with an existing url in the service flow' do
       given_I_have_a_single_question_page_with_text
+      sleep(0.5)
       add_existing_url
     end
 
     scenario 'attempt to add a page with an existing url' do
+      sleep(0.5)
       all_page_urls.each { |url| add_existing_url(url) }
     end
   end
@@ -130,6 +132,7 @@ feature 'Create page' do
     let(:error_message) { 'That name is used for something else' }
 
     scenario 'attempt to add a page with a reserved url' do
+      sleep(0.5)
       reserved_urls.each { |url| add_existing_url(url) }
     end
   end

@@ -58,6 +58,7 @@ feature 'Create a service' do
 
   scenario 'validates uniqueness of the service name' do
     given_I_have_a_service
+    sleep(0.5)
     when_I_try_to_create_a_service_with_the_same_name
     then_I_should_see_the_unique_validation_message
   end

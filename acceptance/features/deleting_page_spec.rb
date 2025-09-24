@@ -40,9 +40,11 @@ feature 'Deleting page' do
 
   scenario 'when deleting a branch destination with no default next' do
     given_I_add_an_exit_page
+    sleep(1)
     and_I_update_the_exit_page_question
     and_I_return_to_flow_page
     given_I_set_the_exit_page_as_a_branch_destination
+    sleep(1)
     and_I_return_to_flow_page
     try_to_delete_page(exit_page_title)
     then_I_should_see_the_delete_page_no_default_next_modal
