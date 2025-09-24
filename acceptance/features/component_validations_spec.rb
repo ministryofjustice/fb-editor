@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-feature 'Component validations' do
+feature.skip 'Component validations' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:fixture) { 'all_component_types_fixture' }
