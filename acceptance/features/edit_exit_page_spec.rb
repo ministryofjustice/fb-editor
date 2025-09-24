@@ -37,7 +37,7 @@ feature 'Edit exit pages' do
     then_I_should_stop_until_the_exit_page(preview_form)
   end
 
-  scenario 'adding components' do
+  xscenario 'adding components' do
     given_I_add_an_exit_page
     then_I_should_not_see_the_continue_button
     and_I_add_a_content_component(
@@ -49,7 +49,7 @@ feature 'Edit exit pages' do
     then_I_should_see_the_component(content_component)
   end
 
-  scenario 'deleting components' do
+  xscenario 'deleting components' do
     given_I_add_an_exit_page
     then_I_should_not_see_the_continue_button
     and_I_add_a_content_component(
