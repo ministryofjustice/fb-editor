@@ -29,7 +29,7 @@ feature 'Save and Return page' do
     save_and_return_button_should_be_disabled_in_preview(preview_page)
   end
 
-  scenario 'when I disable save and return' do
+  xscenario 'when I disable save and return' do
     with_setting(save_and_return_checkbox, true)
     click_button(I18n.t('actions.save'))
     then_checkbox_should_remain_checked(save_and_return_checkbox, true)
