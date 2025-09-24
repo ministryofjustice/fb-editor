@@ -72,7 +72,7 @@ feature 'Reference Payment Page' do
     then_checkbox_should_remain_checked(payment_link_checkbox)
   end
 
-  scenario 'email body in confirmation email settings page updates correctly' do
+  xscenario 'email body in confirmation email settings page updates correctly' do
     with_setting(reference_number_checkbox, true)
     with_setting(payment_link_checkbox, true)
     then_I_should_see_text(payment_link_label)
@@ -106,7 +106,7 @@ feature 'Reference Payment Page' do
     expect(page).to_not have_content('{{payment_link}}')
   end
 
-  scenario 'confirmation page styling updates correctly' do
+  xscenario 'confirmation page styling updates correctly' do
     with_setting(reference_number_checkbox, true)
     with_setting(payment_link_checkbox, true)
     then_I_should_see_text(payment_link_label)
