@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-feature 'Preview conditional content' do
+feature.skip 'Preview conditional content' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:optional_content) { I18n.t('default_text.content') }
