@@ -19,6 +19,7 @@ feature 'Default text' do
 
   scenario 'Text component with default text' do
     given_I_have_a_single_question_page_with_text
+    sleep(1)
     then_I_should_see_default_text
     and_I_return_to_flow_page
     preview_page = when_I_preview_the_page(question_title)
@@ -30,6 +31,7 @@ feature 'Default text' do
 
   scenario 'Text component with custom hint from the user' do
     given_I_have_a_single_question_page_with_text
+    sleep(1)
     when_I_customise_hint
     when_I_save_my_changes
     and_I_return_to_flow_page
@@ -41,6 +43,7 @@ feature 'Default text' do
 
   scenario 'Radio component with default text' do
     given_I_have_a_single_question_page_with_radio
+    sleep(1)
     then_I_should_see_default_text_in_label_and_options
     and_I_return_to_flow_page
     preview_page = when_I_preview_the_page(question_title)
@@ -51,6 +54,7 @@ feature 'Default text' do
 
   scenario 'Radio component with custom hint from the user' do
     given_I_have_a_single_question_page_with_radio
+    sleep(1)
     when_I_customise_all_hints
     when_I_save_my_changes
     and_I_return_to_flow_page

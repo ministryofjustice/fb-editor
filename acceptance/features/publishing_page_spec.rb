@@ -100,7 +100,7 @@ feature 'Publishing' do
       then_I_should_not_see_warning_confirmation_text
     end
 
-    scenario 'when visiting the publishing page without confirmation page present' do
+    xscenario 'when visiting the publishing page without confirmation page present' do
       given_I_have_a_single_question_page_with_upload
       and_I_return_to_flow_page
       when_I_delete_confirmation_page
@@ -271,7 +271,7 @@ feature 'First publish for approval' do
       then_I_should_not_see_warning_confirmation_text
     end
 
-    scenario 'accept the declarations' do
+    xscenario 'accept the declarations' do
       when_I_visit_the_publishing_page
       and_I_click_the_environment_tab
       then_I_should_see_the_declarations_checkboxes

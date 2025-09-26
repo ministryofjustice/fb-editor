@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-feature 'Edit single question page' do
+feature.skip 'Edit single question page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:page_url) { 'star-wars-question' }

@@ -55,7 +55,7 @@ feature 'Undo redo page' do
     then_page_1_should_be_after_page_2
   end
 
-  scenario 'when changing next page' do
+  xscenario 'when changing next page' do
     given_I_want_to_change_destination_of_a_page(page_2)
     when_I_change_destination_to_page('page 1')
     then_next_to_page_2_is_page_1

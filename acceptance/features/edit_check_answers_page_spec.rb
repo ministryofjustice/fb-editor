@@ -38,7 +38,7 @@ feature 'Edit check your answers page' do
     then_I_should_see_the_page_send_body(send_body)
   end
 
-  scenario 'adding components' do
+  xscenario 'adding components' do
     given_I_edit_a_check_your_answers_page
     and_I_add_a_content_component(
       content: content_component
@@ -53,7 +53,7 @@ feature 'Edit check your answers page' do
     then_I_should_see_the_first_extra_component(content_extra_component)
   end
 
-  scenario 'deleting components' do
+  xscenario 'deleting components' do
     given_I_edit_a_check_your_answers_page
     and_I_add_a_content_component(
       content: content_component

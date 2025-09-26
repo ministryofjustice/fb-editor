@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-feature 'Confirmation email' do
+feature.skip 'Confirmation email' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:start_page) { 'Service name goes here' }

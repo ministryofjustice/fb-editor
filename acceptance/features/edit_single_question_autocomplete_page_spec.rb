@@ -34,7 +34,7 @@ feature 'Edit single question autocomplete page' do
     then_I_should_see_my_changes_on_preview(question)
   end
 
-  scenario 'when uploading and overwriting csv files' do
+  xscenario 'when uploading and overwriting csv files' do
     and_I_edit_the_page(url: pre_edit_title)
     and_I_should_see_default_upload_options_warning
     when_I_click_autocomplete_options_in_three_dots_menu

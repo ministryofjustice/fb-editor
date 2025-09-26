@@ -40,6 +40,7 @@ feature 'Form analytics configuration' do
       when_I_disable_the_analytics(environment)
       click_button(I18n.t('actions.save'))
 
+      sleep 0.5
       when_I_enable_the_analytics(environment)
       then_I_should_see_the_account_ids_fields(environment)
       then_I_should_not_see_my_saved_ids

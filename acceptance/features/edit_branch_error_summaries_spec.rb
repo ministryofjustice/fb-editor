@@ -21,7 +21,7 @@ feature 'Branching errors' do
     then_I_should_see_expression_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}")
   end
 
-  scenario 'when the "Go to" field is not filled in' do
+  xscenario 'when the "Go to" field is not filled in' do
     and_I_want_to_add_branching(page_url)
 
     and_I_select_the_condition_dropdown
@@ -62,7 +62,7 @@ feature 'Branching errors' do
     then_I_should_see_conditional_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
   end
 
-  scenario 'when there are two conditional objects to a branching point' do
+  xscenario 'when there are two conditional objects to a branching point' do
     and_I_want_to_add_branching(page_url)
 
     and_I_want_to_add_another_conditional

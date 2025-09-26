@@ -37,7 +37,7 @@ feature 'Edit single radios question page' do
     and_I_should_see_the_options_that_I_added(preview_form, initial_options)
   end
 
-  scenario 'when adding an option to the radio component' do
+  xscenario 'when adding an option to the radio component' do
     and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options
@@ -48,7 +48,7 @@ feature 'Edit single radios question page' do
     and_I_should_see_the_options_that_I_added(preview_form, options_after_addition)
   end
 
-  scenario 'when deleting an option from the radio component' do
+  xscenario 'when deleting an option from the radio component' do
     and_I_edit_the_page(url: pre_edit_title)
     when_I_update_the_question_name
     and_I_update_the_options

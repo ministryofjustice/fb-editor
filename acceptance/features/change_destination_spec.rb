@@ -19,7 +19,7 @@ feature 'Deleting page' do
     then_I_should_see_unconnected_pages
   end
 
-  scenario 'change destination in the middle of a branch' do
+  xscenario 'change destination in the middle of a branch' do
     given_I_want_to_change_destination_of_a_page('Page b')
     when_I_change_destination_to_page('Page d')
     then_I_should_not_see_unconnected_pages

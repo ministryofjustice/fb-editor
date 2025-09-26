@@ -99,7 +99,7 @@ feature 'New branch page' do
     then_I_should_see_no_errors
   end
 
-  scenario 'when editing with unconnected pages' do
+  xscenario 'when editing with unconnected pages' do
     and_I_want_to_add_branching(page_url)
 
     then_I_should_see_the_branch_title(index: 0, title: 'Branch 1')

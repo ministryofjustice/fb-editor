@@ -60,7 +60,6 @@ jobs:
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
-   
   lint:
     docker:
       - image: 'cimg/ruby:3.2.0-node'
@@ -305,7 +304,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 126.0.6478.182
+          chrome-version: 138.0.7204.100
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -340,7 +339,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 126.0.6478.182
+          chrome-version: 138.0.7204.100
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -458,6 +457,7 @@ workflows:
           type: approval
           requires:
             - acceptance_tests_eks
+            - deploy_to_test_eks
           filters:
             branches:
               only:
@@ -466,6 +466,7 @@ workflows:
           context: *context
           requires:
             - acceptance_tests_eks
+            - deploy_to_test_eks
             - production_deploy_approval
   deploy_testable_branch:
     jobs:
