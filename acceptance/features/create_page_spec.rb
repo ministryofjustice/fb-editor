@@ -118,12 +118,14 @@ feature 'Create page' do
 
     scenario 'attempt to add a page with an existing url in the service flow' do
       given_I_have_a_single_question_page_with_text
-      sleep(0.5)
+      # Ensure editor page is loaded and interactive before proceeding
+      expect(page).to have_css('#main-content', visible: true)
       add_existing_url
     end
 
     scenario 'attempt to add a page with an existing url' do
-      sleep(0.5)
+      # Wait for metadata to be present before collecting URLs
+      expect(page).to have_css('#main-content', visible: true)
       all_page_urls.each { |url| add_existing_url(url) }
     end
   end
@@ -132,7 +134,7 @@ feature 'Create page' do
     let(:error_message) { 'That name is used for something else' }
 
     scenario 'attempt to add a page with a reserved url' do
-      sleep(0.5)
+      expect(page).to have_css('#main-content', visible: true)
       reserved_urls.each { |url| add_existing_url(url) }
     end
   end
@@ -182,7 +184,7 @@ feature 'Create page' do
     and_I_should_see_the_save_button_visible
     and_I_should_see_default_upload_options_warning
     and_I_should_see_the_save_button_disabled
-    expect(editor.find('.govuk-select')).to be_visible
+    expect(page).to have_css('.govuk-select', visible: true)
   end
 
   def then_I_should_see_the_edit_single_question_address_page
@@ -203,7 +205,9 @@ feature 'Create page' do
   end
 
   def and_I_should_see_three_inputs_for_day_month_and_year
-    expect(editor.all('input[type="text"]').size).to be(3)
+    expect(page).to have_field('Day',   type: 'text')
+    expect(page).to have_field('Month', type: 'text')
+    expect(page).to have_field('Year',  type: 'text')
   end
 
   def and_I_should_see_default_values_created(legend_or_label = 'Question')
@@ -233,7 +237,9 @@ feature 'Create page' do
 
   def and_I_should_see_default_address_created
     expect(editor.all('input[type="text"]').size).to be(6)
-    expect(editor.all('input[type="text"]').last.value).to have_content('United Kingdom')
+    expect(editor.all('input[type="text"]').last.value).to eq('United Kingdom')
+    # or, if the field may include trailing spaces or different capitalization:
+    # expect(editor.all('input[type="text"]').last.value).to include('United Kingdom')
   end
 
   def then_I_should_see_the_edit_multiple_question_page

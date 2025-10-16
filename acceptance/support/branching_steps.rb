@@ -81,7 +81,7 @@ module BranchingSteps
   end
 
   def then_I_should_not_see_unconnected_pages
-    expect(editor).not_to have_selector('.branch-optgroup')
+    expect(editor).to have_no_selector('.branch-optgroup')
   end
 
   def then_I_should_have_unconnected_pages
@@ -127,7 +127,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_no_errors
-    expect(page).not_to have_selector('.govuk-error-summary')
+    expect(page).to have_no_selector('.govuk-error-summary')
   end
 
   def then_I_should_be_on_the_correct_branch_page(path)
@@ -165,7 +165,7 @@ module BranchingSteps
   end
 
   def page_without_css(element, text)
-    expect(page).not_to have_css(element, text: text)
+    expect(page).to have_no_css(element, text: text)
   end
 
   def then_I_should_see_another_question_list
@@ -290,6 +290,6 @@ module BranchingSteps
 
   # Error summary #
   def then_I_should_not_see_an_error_summary
-    expect(page).not_to have_selector('.govuk-error-summary')
+    expect(page).to have_no_selector('.govuk-error-summary')
   end
 end

@@ -146,7 +146,7 @@ feature 'Preview form' do
       page.click_button 'Continue'
 
       expect(page).to have_content('Check your answers')
-      expect(page).not_to have_content('Apples')
+      expect(page).to have_no_content('Apples')
 
       page.click_button I18n.t('actions.submit')
       then_I_should_not_see_a_back_link
@@ -202,6 +202,6 @@ feature 'Preview form' do
   end
 
   def then_I_should_not_see_a_back_link
-    expect(page).not_to have_selector(:css, 'a[class="govuk-back-link"]')
+    expect(page).to have_no_selector(:css, 'a[class="govuk-back-link"]')
   end
 end

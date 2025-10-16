@@ -30,10 +30,12 @@ feature 'Deleting page' do
   end
 
   def then_I_should_not_see_unconnected_pages
-    expect(editor).not_to have_selector('.destination-optgroup')
+    expect(page).to have_css('#flow-overview', visible: true)
+    expect(editor).to have_no_selector('.destination-optgroup')
   end
 
   def then_I_should_see_unconnected_pages
+    expect(page).to have_css('#flow-overview', visible: true)
     expect(editor).to have_selector('.destination-optgroup')
   end
 

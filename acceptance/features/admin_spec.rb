@@ -46,7 +46,7 @@ feature 'Visiting admin pages' do
   end
 
   def then_I_should_not_see_the_admin_link
-    expect(page).not_to have_content(I18n.t('partials.header.admin'))
+    expect(page).to have_no_content(I18n.t('partials.header.admin'))
   end
 
   def then_I_should_be_redirected_to_the_services_page
