@@ -21,7 +21,7 @@ feature 'Branching errors' do
     then_I_should_see_expression_error_message("#{I18n.t('activemodel.errors.models.expression.blank')}")
   end
 
-  xscenario 'when the "Go to" field is not filled in' do
+  scenario 'when the "Go to" field is not filled in' do
     and_I_want_to_add_branching(page_url)
 
     and_I_select_the_condition_dropdown
@@ -62,7 +62,7 @@ feature 'Branching errors' do
     then_I_should_see_conditional_error_message("#{I18n.t('activemodel.errors.models.conditional.blank')}1")
   end
 
-  xscenario 'when there are two conditional objects to a branching point' do
+  scenario 'when there are two conditional objects to a branching point' do
     and_I_want_to_add_branching(page_url)
 
     and_I_want_to_add_another_conditional
@@ -123,7 +123,8 @@ feature 'Branching errors' do
   end
 
   def then_I_should_see_expression_error_message(text)
-    expect(page).to have_selector('.govuk-form-group.error', text: text)
+    # Support both old and new GOV.UK error classes to avoid flakiness
+    expect(page).to have_selector('.govuk-form-group--error, .govuk-form-group.error', text: text)
   end
 
   def then_I_should_see_conditional_error_message(text)
