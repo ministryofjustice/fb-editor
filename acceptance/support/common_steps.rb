@@ -165,11 +165,10 @@ module CommonSteps
   end
 
   def and_I_return_to_flow_page
-    accept_confirm(wait: 1) { editor.pages_link.click }
-    rescue Capybara::ModalNotFound
-      editor.pages_link.click
-    ensure
-    sleep 0.5
+    accept_confirm(wait: 2) { editor.pages_link.click }
+  rescue Capybara::ModalNotFound
+    editor.pages_link.click
+  ensure
     page.find('#main-content', visible: true)
   end
 
@@ -252,7 +251,9 @@ module CommonSteps
   def when_I_want_to_select_question_properties
     editor.question_heading.first.click
     editor.question_three_dots_button.click
-    expect(editor).not_to have_css('span', text: I18n.t('question.menu.remove'))
+    # Ensure the menu opened and is in the expected state
+    expect(editor).to have_required_question
+    expect(editor).to have_no_css('span', text: I18n.t('question.menu.remove'))
   end
 
   def when_I_want_to_edit_content_component_properties(component)
@@ -342,7 +343,7 @@ module CommonSteps
   end
 
   def then_I_should_not_see_optional_text
-    OPTIONAL_TEXT.each { |optional| expect(page).not_to have_content(optional) }
+    OPTIONAL_TEXT.each { |optional| expect(page).to have_no_content(optional) }
   end
 
   def and_I_add_a_content_component(content:)
@@ -414,17 +415,25 @@ module CommonSteps
   end
 
   def and_I_click_delete
+    # Wait for the confirmation modal to be visible
+    expect(page).to have_selector('.ui-dialog', visible: true)
+
     within('.ui-dialog') do
       editor.delete_page_modal_button.click
     end
+
+    # Ensure the modal has closed and the flow page is re-rendered
+    expect(page).to have_no_selector('.ui-dialog', wait: 5)
+    find('#main-content', visible: true)
   end
 
   def then_I_should_not_be_able_to_add_page(page_title, page_link)
     find('#main-content', visible: true)
     editor.connection_menu(page_title).click
-    sleep(1)
-    expect(editor).not_to have_content(page_link)
-    editor.flow_thumbnail(page_title).hover #hides the connection menu
+    # Wait for the menu container to be present/visible if possible, then assert absence.
+    # This uses a waiting matcher which retries until timeout.
+    expect(editor).to have_no_content(page_link)
+    editor.flow_thumbnail(page_title).hover # hides the connection menu
   end
 
   def then_I_should_be_able_to_add_page(page_title, page_link)
@@ -435,6 +444,7 @@ module CommonSteps
   end
 
   def then_I_should_see_default_service_pages
+    find('#main-content', visible: true)
     expect(editor.form_urls.count).to eq(3)
   end
 
@@ -456,9 +466,9 @@ module CommonSteps
 
   def then_I_should_not_see_delete_warnings
     find('#main-content', visible: true)
-    expect(editor).not_to have_content(DELETE_WARNING[0])
-    expect(editor).not_to have_content(DELETE_WARNING[1])
-    expect(editor).not_to have_content(DELETE_WARNING[2])
+    expect(editor).to have_no_content(DELETE_WARNING[0])
+    expect(editor).to have_no_content(DELETE_WARNING[1])
+    expect(editor).to have_no_content(DELETE_WARNING[2])
   end
 
   def then_I_should_see_delete_warning_cya
@@ -541,19 +551,33 @@ module CommonSteps
   def given_I_want_to_change_destination_of_a_page(page)
     editor.connection_menu(page).click
     editor.change_destination_link.click
+
+    # Ensure the modal is open and the destination select is present
+    expect(editor).to have_css('.ui-dialog', visible: true)
   end
 
   def when_I_change_destination_to_page(page)
     select page
     editor.change_next_page_button.click
+
+    # Wait for the modal to close indicating the action completed
+    expect(page).to have_no_css('.ui-dialog', wait: Capybara.default_max_wait_time)
   end
 
   def and_I_select_a_target(target)
-    find('select#move_target_uuid').select(target)
+    # Use Capybara’s built-in waiting for options to be available
+    select(target, from: 'move_target_uuid')
   end
 
   def and_I_click_the_move_button
+    # Click the Move button inside the dialog
     find('button', text: I18n.t('dialogs.move.button')).click
+
+    # Wait for the Move dialog to close (ensures the action completed)
+    expect(page).to have_no_css('div#move_targets_list')
+
+    # Optional: ensure main content is visible again
+    expect(page).to have_css('#main-content', visible: true)
   end
 
   def then_I_should_see_the_move_target_list(page_title)

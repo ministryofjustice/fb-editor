@@ -127,11 +127,19 @@ feature 'Move a page' do
   end
 
   def and_I_click_on_an_unconnected_page_menu(flow_title)
-    flow_item = all('.flow-detached-group .flow-item .flow-thumbnail').find do |page_flow|
-      page_flow.text.include?(flow_title)
-    end
+    # Ensure main content is present before interacting
+    find('#main-content', visible: true)
+
+    # Use a waiting finder scoped to the detached group, matching the title text
+    flow_item = find(
+      '.flow-detached-group .flow-item .flow-thumbnail',
+      text: flow_title,
+      match: :prefer_exact
+    )
+
     flow_item.hover
-    editor.three_dots_button.click
+    # Reuse the helper that waits for the menu activator to be visible
+    and_I_click_on_the_three_dots
   end
 
   def then_page_H_should_be_after_page_B

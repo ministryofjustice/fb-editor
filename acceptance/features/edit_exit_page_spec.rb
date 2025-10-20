@@ -75,7 +75,7 @@ feature 'Edit exit pages' do
   end
 
   def then_I_should_not_see_the_continue_button
-    expect(page).not_to have_content(I18n.t('actions.continue'))
+    expect(page).to have_no_content(I18n.t('actions.continue'))
   end
 
   def when_I_preview_the_form_until_the_exit_page
@@ -85,11 +85,14 @@ feature 'Edit exit pages' do
 
   def then_I_should_stop_until_the_exit_page(preview_form)
     within_window(preview_form) do
+      expect(page).to have_button('Start now')
       page.click_button 'Start now'
-      expect(page).to have_content(I18n.t('actions.continue'))
+
+      expect(page).to have_button(I18n.t('actions.continue'))
       page.click_button I18n.t('actions.continue')
-      expect(page.current_path).to include('/preview/exit')
-      expect(page.all('button').to_a).to eq([])
+
+      expect(page).to have_current_path(/\/preview\/exit/)
+      expect(page).to have_no_selector('button')
     end
   end
 

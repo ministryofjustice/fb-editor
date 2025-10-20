@@ -353,7 +353,7 @@ def then_I_see_the_never_content
 end
 
 def then_I_dont_see_the_never_content
-  expect(page).not_to have_content never_content
+  expect(page).to have_no_content never_content
 end
 
 def then_I_see_the_conditional_content
@@ -361,11 +361,11 @@ def then_I_see_the_conditional_content
 end
 
 def then_I_dont_see_the_conditional_content
-  expect(page).not_to have_content conditional_content
+  expect(page).to have_no_content conditional_content
 end
 
 def then_I_dont_see_the_conditional_content_notification
-  expect(page).not_to have_content I18n.t('presenter.conditional_content.notification')
+  expect(page).to have_no_content I18n.t('presenter.conditional_content.notification')
 end
 
 def then_I_see_the_conditional_content_notification
