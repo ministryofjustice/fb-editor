@@ -49,7 +49,7 @@ ENV GOVUK_WEBSITE_ROOT ''
 ARG RAILS_ENV=production
 
 RUN yarn install --production --check-files
-RUN ./bin/webpack
+RUN yarn build
 
 # Note some ENV vars here are just dummies needed to be present to build the image.
 # The real ones in the kubernetes pods are injected into the environment.

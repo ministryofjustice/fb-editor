@@ -37,7 +37,7 @@ jobs:
   build:
     docker: &docker_image
       - image: 'cimg/ruby:3.2.0-node'
-    steps:
+  steps:
       - checkout
       - ruby/install-deps
       - run: &node_version
@@ -48,8 +48,8 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            nvm install v16.20.1
-            nvm alias default 16.20.1
+            nvm install v18
+            nvm alias default 18
 
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
@@ -60,6 +60,9 @@ jobs:
           only_for_branches: main
           failure_message: ":facepalm:  Failed job $CIRCLE_JOB  :homer-disappear:"
           include_job_number_field: false
+    environment:
+      # additional contexts are attached at workflow time; see workflows below
+      DUMMY: "true"
   lint:
     docker:
       - image: 'cimg/ruby:3.2.0-node'
@@ -113,6 +116,8 @@ jobs:
           command: |
             circleci tests glob "spec/**/*_spec.rb" | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/rspec/rspec.xml" --verbose --split-by=timings
       - slack/status: *slack_status
+    environment:
+      DUMMY: "true"
   js_test:
     docker:
       - image: 'cimg/ruby:3.2.0-node'
@@ -125,6 +130,8 @@ jobs:
           name: Running the JS tests
           command: yarn run jstest
       - slack/status: *slack_status
+    environment:
+      DUMMY: "true"
   build_web_testable_branch:
     docker: &ecr_image
       - image: docker.io/ministryofjustice/fb-builder:latest
@@ -404,6 +411,8 @@ workflows:
             branches:
               ignore:
                 - /testable-.*/
+          context:
+            - sentry
       - login-to-aws:
           context: *context
           requires:
@@ -417,11 +426,15 @@ workflows:
       - rspec_test:
           requires:
             - build
+          context:
+            - sentry
       - js_test:
           requires:
             - build
-      - build_web_image:
-          context: *context
+          context:
+            - sentry
+    - build_web_image:
+      context: *context
           requires:
             - lint
             - login-to-aws
@@ -432,8 +445,8 @@ workflows:
             branches:
               only:
                 - main
-      - build_workers_image:
-          context: *context
+    - build_workers_image:
+      context: *context
           requires:
             - lint
             - login-to-aws
@@ -491,8 +504,8 @@ workflows:
       - js_test:
           requires:
             - build
-      - build_web_testable_branch:
-          context: *context
+    - build_web_testable_branch:
+      context: *context
           requires:
             - build
             - login-to-aws
@@ -504,8 +517,8 @@ workflows:
             branches:
               only:
                 - /testable-.*/
-      - build_workers_testable_branch:
-          context: *context
+    - build_workers_testable_branch:
+      context: *context
           requires:
             - build
             - login-to-aws
