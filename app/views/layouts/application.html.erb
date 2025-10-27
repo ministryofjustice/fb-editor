@@ -6,7 +6,8 @@
     <%= csp_meta_tag %>
     <%= render partial: 'partials/head_tags' %>
     <%= render partial: 'partials/properties' %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+
     <!-- Google tag (gtag.js) -->
     <% if ENV['PLATFORM_ENV'] == 'live' %>
       <script nonce=<%= request.content_security_policy_nonce %> async src="https://www.googletagmanager.com/gtag/js?id=G-B3FKFL8JD1"></script>
@@ -16,7 +17,8 @@
         gtag('config', 'G-B3FKFL8JD1');
       </script>
     <% end %>
-  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 

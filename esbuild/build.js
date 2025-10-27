@@ -1,5 +1,6 @@
 const esbuild = require('esbuild');
 let sentryPlugin;
+
 try {
   // only require the plugin if it's installed and configured
   sentryPlugin = require('@sentry/esbuild-plugin');

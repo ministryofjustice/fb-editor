@@ -34,9 +34,9 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-  "@sentry/esbuild-plugin": "^1.0.0",
+    "@sentry/esbuild-plugin": "^1.0.0",
     "chai": "^4.3.7",
-  "esbuild": "^0.18.0",
+    "esbuild": "^0.18.0",
     "form-data": "^4.0.4",
     "jquery-ui": "^1.13.2",
     "jsdom": "^20.0.3",
