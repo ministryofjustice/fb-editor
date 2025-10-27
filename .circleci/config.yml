@@ -48,8 +48,8 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            nvm install v16.20.1
-            nvm alias default 16.20.1
+            nvm install v18
+            nvm alias default 18
 
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
@@ -404,6 +404,8 @@ workflows:
             branches:
               ignore:
                 - /testable-.*/
+          context:
+            - sentry
       - login-to-aws:
           context: *context
           requires:
@@ -417,21 +419,25 @@ workflows:
       - rspec_test:
           requires:
             - build
+          context:
+            - sentry
       - js_test:
           requires:
             - build
+          context:
+            - sentry
       - build_web_image:
-          context: *context
-          requires:
-            - lint
-            - login-to-aws
-            - security
-            - rspec_test
-            - js_test
-          filters:
-            branches:
-              only:
-                - main
+        context: *context
+        requires:
+          - lint
+          - login-to-aws
+          - security
+          - rspec_test
+          - js_test
+        filters:
+          branches:
+            only:
+              - main
       - build_workers_image:
           context: *context
           requires:
