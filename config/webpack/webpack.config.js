@@ -1,4 +1,5 @@
 // TODO - incorporate environment.js settings
+// See https://github.com/rails/jsbundling-rails/blob/main/docs/switch_from_webpacker.md
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
