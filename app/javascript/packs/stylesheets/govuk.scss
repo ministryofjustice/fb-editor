@@ -3,7 +3,7 @@ $govuk-assets-path: "~govuk-frontend/govuk/assets/";
 
 // Corrective tweak to make area non-full width in large view
 // Pointed out by design and shown in this example (at time of writing)
-// https://design-system.service.gov.uk/patterns/confirmation-pages/default/index.html 
+// https://design-system.service.gov.uk/patterns/confirmation-pages/default/index.html
 .govuk-panel--confirmation {
   width: govuk-grid-width("two-thirds");
 
@@ -34,7 +34,7 @@ html {
   display: inline-block;
   min-width: 125px;
   padding-top: 112px;
-  background-image: url("../../images/govuk-crest.svg");
+  background-image: url("../images/govuk-crest.svg");
   background-repeat: no-repeat;
   background-size: 125px 102px;
   text-align: center;
