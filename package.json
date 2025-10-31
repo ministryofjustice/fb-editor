@@ -6,7 +6,7 @@
   },
   "scripts": {
     "jstest": "mocha --recursive",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config ./config/webpack/webpack.config.js"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
