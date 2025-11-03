@@ -37,10 +37,9 @@ gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.14'
 gem 'sentry-rails', '~> 5.14'
 gem 'sentry-ruby', '~> 5.14'
+gem 'shakapacker', '6.6.0'
 gem 'turbo-rails', '~> 1.4'
 gem 'tzinfo-data'
-#gem 'webpacker', '6.0.0.rc.6'
-gem 'shakapacker', '6.6.0'
 
 group :development, :test do
   gem 'axe-core-rspec'
