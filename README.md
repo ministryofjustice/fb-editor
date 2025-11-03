@@ -4,15 +4,15 @@ New editor for MoJ Forms.
 
 ## Prerequisites
 * Docker
-* Node (version 16.20.1 LTS)
+* Node (version 20.10.0 LTS)
 * Ruby v2.7.7
 * Postgresql
 * Yarn
 
 ## Setup
-Ensure you are running Node version 16.20.1 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
-`nvm install 16.20.1`
-`nvm use 16.20.1`
+Ensure you are running Node version 20.10.0 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
+`nvm install 20.10.0`
+`nvm use 20.10.0`
 
 Install gems:
 `bundle`

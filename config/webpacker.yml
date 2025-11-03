@@ -71,11 +71,23 @@ development:
     disable_host_check: true
     use_local_ip: false
     quiet: false
-    pretty: false
     headers:
       'Access-Control-Allow-Origin': '*'
     watch_options:
       ignored: '**/node_modules/**'
+    allowed_hosts: 'all'
+    pretty: true
+    static:
+      watch:
+        ignored: '**/node_modules/**'
+    client:
+      # Should we show a full-screen overlay in the browser when there are compiler errors or warnings?
+      overlay: true
+      # May also be a string
+      # webSocketURL:
+      #  hostname: "0.0.0.0"
+      #  pathname: "/ws"
+      #  port: 8080
 
 
 test:
