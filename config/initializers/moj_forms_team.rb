@@ -31,6 +31,7 @@ MOJ_FORMS_DEVS = %w[
   meena.modhvadia@digital.justice.gov.uk
   Meena.Modhvadia@justice.gov.uk
   Ripan.Kumar@justice.gov.uk
+  mohammed.seedat2@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS.freeze
