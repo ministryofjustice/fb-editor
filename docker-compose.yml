@@ -2,7 +2,9 @@ version: '3.4'
 
 networks:
   app-net:
+    name: fb-app-bridge-network
   db-net:
+    name: fb-db-bridge-network
 
 x-shared-variables: &shared-variables
   RAILS_ENV: development
