@@ -12,7 +12,7 @@ ruby '3.2.0'
 gem 'metadata_presenter', '3.4.12'
 
 gem 'activerecord-session_store'
-gem 'administrate', '~> 0.20.1'
+gem 'administrate', '~> 1.0.0'
 gem 'aws-sdk-s3'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
