@@ -1,8 +1,12 @@
 class ServicesController < PermissionsController
-  skip_before_action :authorised_access, only: %i[index create]
+  skip_before_action :authorised_access, only: %i[index create new]
   ACCEPTANCE_TEST_USER = 'Acceptance Tests'.freeze
 
   def index
+    @service_creation = ServiceCreation.new
+  end
+
+  def new
     @service_creation = ServiceCreation.new
   end
 
