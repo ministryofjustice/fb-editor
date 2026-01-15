@@ -1,0 +1,11 @@
+<%= render 'page_layout' do %>
+  <p><%=t('questionnaire.great_choice.p1') %></p>
+  <ul>
+  <%t('questionnaire.great_choice.p1_options').each do |option|%>
+      <li><%= option %></li>
+  <%end%>
+  </ul>
+  <p><%=t('questionnaire.great_choice.p2') %></p>
+  <p><%=t('questionnaire.great_choice.p3') %></p>
+  <%= link_to t('dialogs.button_continue'), new_service_path, class: "govuk-button fb-govuk-button" %>
+<% end %>

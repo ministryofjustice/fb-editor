@@ -27,8 +27,8 @@ module MetadataApiClient
       ).metadata
     end
 
-    def self.create(metadata)
-      response = connection.post('/services', metadata)
+    def self.create(payload)
+      response = connection.post('/services', payload)
       new(response.body)
     rescue Faraday::UnprocessableEntityError => e
       error_messages(e)

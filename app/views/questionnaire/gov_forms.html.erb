@@ -1,0 +1,21 @@
+<%= render 'page_layout' do %>
+  <ul>
+    <%t('questionnaire.gov_forms_form.subheading_options').each do |option|%>
+      <li><%= option %></li>
+    <%end%>
+  </ul>
+  <p><%=t('questionnaire.gov_forms_form.p1') %></p>
+  <p><%=t('questionnaire.gov_forms_form.p2') %></p>
+  <% set_form_defaults @form %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out,
+                                         @form.govuk_forms_ruled_out_options,
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.gov_forms_form.legend.text") },
+                                         hint: { text: '' } %>
+
+
+    <%= render 'form_buttons' %>
+  <% end %>
+<% end %>

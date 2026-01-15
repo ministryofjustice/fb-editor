@@ -1,0 +1,22 @@
+<%= render 'page_layout' do %>
+  <% set_form_defaults @form %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+
+    <%= f.govuk_collection_check_boxes :required_moj_forms_features,
+                                       @form.required_moj_forms_features_options,
+                                       :value,
+                                       :name,
+                                       caption: nil,
+                                       legend: { text: t("questionnaire.form_features_form.legend.text") },
+                                       hint: { text: "" },
+                                       include_hidden: false %>
+
+    <%= f.govuk_text_area :govuk_forms_ruled_out_reason,
+                          max_chars: Questionnaire::FormFeaturesForm::MAX_CHARS,
+                          label: { text:t("questionnaire.form_features_form.label.text") },
+                          hint: { text: t("questionnaire.form_features_form.hint.text") },
+                          rows: 9 %>
+
+    <%= render 'form_buttons' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,13 @@
+<%= render 'page_layout' do %>
+  <% set_form_defaults @form %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= f.govuk_collection_radio_buttons :new_form_reason,
+                                         @form.new_form_reason_options,
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.get_started_form.legend.text") },
+                                         hint: { text: '' } %>
+
+    <%= render 'form_buttons' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,10 @@
+<%
+  translation_key = "questionnaire.#{@page}"
+  translation_key += "_form" if %i[get_started gov_forms continue form_features new_form].include?(@page)
+%>
+<h2><%= t("#{translation_key}.heading") %></h2>
+<p><%= t("#{translation_key}.subheading") %></p>
+
+<%= yield %>
+
+<%= render_answers_list %>
