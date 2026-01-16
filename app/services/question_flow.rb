@@ -10,7 +10,7 @@ class QuestionFlow
   # end
 
   def next(current)
-    case current
+    case current.to_sym
     when :get_started
       @answers[:new_form_reason] == 'building' ? :gov_forms : :great_choice
     when :gov_forms

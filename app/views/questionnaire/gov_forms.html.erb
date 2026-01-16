@@ -8,7 +8,7 @@
 <% end %>
 <%= @answers.inspect %>
 <%#= turbo_frame_tag "question" do %>
-<%= form_with url: questionnaire_gov_forms_path(@question), method: :post do |f| %>
+<%= form_with url: questionnaire_path, method: :put do |f| %>
   <%
     govuk_forms_ruled_out = Struct.new(:name, :value, keyword_init: true)
     govuk_forms_ruled_out_reasons = [

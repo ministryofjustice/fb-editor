@@ -1,4 +1,4 @@
-class Questionnaire::GovUkForm
+class Questionnaire::GovForms
   # include ActiveModel::Model
   # include ActiveModel::AttributeAssignment
   # include ActiveModel::Validations

@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
-  namespace :questionnaire do
-    resources :get_started, only: [:index, :create]
-    resources :great_choice, only: [:index, :create]
-    resources :gov_forms, only: [:index, :create]
-    mount MetadataPresenter::Engine => '/preview', as: :preview
-  end
+  # namespace :questionnaire do
+  #   resources :get_started, only: [:index, :create]
+  #   resources :great_choice, only: [:index, :create]
+  #   resources :gov_forms, only: [:index, :create]
+  #   mount MetadataPresenter::Engine => '/preview', as: :preview
+  # end
+  resources :questionnaire, only: [:show, :update]
   namespace :admin do
     resources :overviews, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]

@@ -27,7 +27,7 @@
         <%= render partial: 'new_form' %>
 
         <% if Rails.env.development? %>
-          <%=link_to :create_new_form_via_questionnaire, questionnaire_get_started_index_path, class: "govuk-button fb-govuk-button" %>
+          <%=link_to :create_new_form_via_questionnaire, questionnaire_path(:get_started), class: "govuk-button fb-govuk-button" %>
         <% end %>
       <% end %>
 
