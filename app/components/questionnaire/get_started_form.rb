@@ -1,8 +1,4 @@
 class Questionnaire::GetStartedForm
-  # include ActiveModel::Model
-  # include ActiveModel::AttributeAssignment
-  # include ActiveModel::Validations
-
   include ActiveModel::API
   attr_accessor :new_form_reason
 

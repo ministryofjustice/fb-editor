@@ -1,0 +1,29 @@
+<h2><%= t("questionnaire.form_features_form.heading") %></h2>
+<p><%= t("questionnaire.form_features_form.subheading") %></p>
+
+<%# @form.required_moj_forms_features = @answers[:required_moj_forms_features] %>
+<%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+
+
+<%
+  feature = Struct.new(:value, :name, keyword_init: true)
+  features = Questionnaire::FormFeaturesForm::REQUIRED_MOJ_FORMS_FEATURE_OPTIONS.map do |m|
+    feature.new(value: m, name: m)
+  end
+%>
+
+  <%= f.govuk_collection_check_boxes :required_moj_forms_features, features, :value, :name, caption: nil, legend: { text: t("questionnaire.form_features_form.legend.text") }, hint: { text: "" }, include_hidden: false %>
+
+  <%= f.govuk_text_area :govuk_forms_ruled_out_reason, max_chars: Questionnaire::FormFeaturesForm::MAX_CHARS, label: { text:t("questionnaire.form_features_form.label.text") }, hint: { text: t("questionnaire.form_features_form.hint.text") }, rows: 9 %>
+  <div class="govuk-button-group">
+    <button class="govuk-button fb-govuk-button" type="submit">
+      <%= t('dialogs.button_continue') %>
+    </button>
+  </div>
+<% end %>
+
+<ul>
+  <% @answers.each do |q, a| %>
+    <li><strong><%= q %>:</strong> <%= a %></li>
+  <% end %>
+</ul>

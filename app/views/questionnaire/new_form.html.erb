@@ -1,0 +1,39 @@
+<h2><%= t("questionnaire.new_form_form.heading") %></h2>
+<p><%= t("questionnaire.new_form_form.subheading") %></p>
+
+<%# @form.required_moj_forms_features = @answers[:required_moj_forms_features] %>
+<%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+
+    <%= f.govuk_collection_radio_buttons :estimated_page_count,
+                                         Questionnaire::NewFormForm::ESTIMATED_PAGE_COUNT_OPTIONS.map{|s| OpenStruct.new(value: s, name: s.humanize) },
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.new_form_form.estimated_page_count.legend.text") },
+                                         hint: { text: '' } %>
+
+    <%= f.govuk_collection_radio_buttons :estimated_first_year_submissions_count,
+                                         Questionnaire::NewFormForm::ESTIMATED_FIRST_YEAR_SUBMISSIONS_COUNT_OPTIONS.map{|s| OpenStruct.new(value: s, name: s.humanize) },
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.new_form_form.estimated_first_year_submissions_count.legend.text") },
+                                         hint: { text: '' } %>
+
+    <%= f.govuk_collection_radio_buttons :submission_delivery_method,
+                                         Questionnaire::NewFormForm::SUBMISSION_DELIVERY_METHOD_OPTIONS.map{|s| OpenStruct.new(value: s, name: s.humanize) },
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.new_form_form.submission_delivery_method.legend.text") },
+                                         hint: { text: '' } %>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button fb-govuk-button" type="submit">
+      <%= t('dialogs.button_continue') %>
+    </button>
+  </div>
+<% end %>
+
+<ul>
+  <% @answers.each do |q, a| %>
+    <li><strong><%= q %>:</strong> <%= a %></li>
+  <% end %>
+</ul>

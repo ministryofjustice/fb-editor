@@ -85,6 +85,8 @@ en:
     button_understood: 'Understood'
     button_update: 'Update'
     button_close: 'Close modal'
+    button_continue: 'Continue'
+    link_back_to_your_forms: 'Back to your forms'
     heading: General heading here
     heading_delete: 'Delete "%{label}"?'
     heading_delete_no_default_next: 'You cannot delete this page yet'
@@ -670,6 +672,52 @@ en:
     create: 'Create a new form'
     cancel: 'Cancel'
     branch: 'Add branching'
+  questionnaire:
+    get_started_form:
+      heading: 'Before you get started'
+      subheading: 'We want to ask you...'
+      legend:
+        text: 'Why are you creating a new form today'
+    gov_forms_form:
+      heading: 'have you tried govuk forms?'
+      subheading: 'Gov ul form is ....'
+      legend:
+        text: 'have you considered and ruled out ...'
+    continue_form:
+      heading: 'You must consider GOV.UK form...'
+      subheading: 'Any form built on ....'
+      legend:
+        text: 'Do you want to continue with MOJ forms ...'
+    form_features_form:
+      heading: 'Why did you rule out govuk forms?...'
+      subheading: ''
+      legend:
+        text: 'Do you need any of these MOJ forms features ...'
+      label:
+        text: 'Tell us more about why you ruled out govuk forms...'
+      hint:
+        text: 'if you selected something else ...'
+    new_form_form:
+      heading: 'What can you tell us about your new form.'
+      subheading: 'We only require your best guess....'
+      estimated_page_count:
+        legend:
+          text: 'How many pages it will have? ...'
+      estimated_first_year_submissions_count:
+        legend:
+          text: 'How many submissions do you expect in first year? ...'
+      submission_delivery_method:
+        legend:
+          text: 'How do you want to receive your submissions? ...'
+    great_choice:
+      heading: 'Great choice!'
+      subheading: 'We hope ....'
+    requirements:
+      heading: 'we will need to review your form before it goes live'
+      subheading: 'Any form built on MOJ ....'
+    exit:
+      heading: 'Thank you for considering MOJ forms'
+      subheading: 'Find out more ....'
   activemodel:
     models:
       service_creation: 'Form'
@@ -721,6 +769,15 @@ en:
         confirmation_email_body: Message
         send_by_confirmation_email_dev: Enable confirmation email on Test
         send_by_confirmation_email_production: Enable confirmation email on Live
+      questionnaire/get_started_form:
+        new_form_reason_building: "Building something new"
+        new_form_reason_experiment: "Running an experiment"
+      questionnaire/gov_forms_form:
+        govuk_forms_ruled_out_true: "Yes"
+        govuk_forms_ruled_out_false: "No"
+      questionnaire/continue_form:
+        continue_with_moj_forms_true: "Yes"
+        continue_with_moj_forms_false: "Not right now"
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"
@@ -740,6 +797,25 @@ en:
       summary_title: There is a problem
       assistive_prefix: 'Error: '
       models:
+        questionnaire/get_started_form:
+          blank: "Select why you are creating a new form today"
+        questionnaire/gov_forms_form:
+          blank: "Select whether you have considered and ruled out GOV.UK Forms"
+        questionnaire/continue_form:
+          blank: "Select whether you want to continue with MOJ forms"
+        questionnaire/form_features_form:
+          blank: "Enter more about why you ruled out GOV.UK forms"
+          inclusion: 'Select the MOJ forms features you need'
+        questionnaire/new_form_form:
+          estimated_page_count:
+            inclusion: 'Select how many pages your form will have'
+            blank: 'Select how many pages your form will have'
+          estimated_first_year_submissions_count:
+            inclusion: 'Select how many submissions you expect in the first year'
+            blank: 'Select how many submissions you expect in the first year'
+          submission_delivery_method:
+            inclusion: 'Select how you want to receive your submissions'
+            blank: 'Select how you want to receive your submissions'
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
         publish_service_creation:

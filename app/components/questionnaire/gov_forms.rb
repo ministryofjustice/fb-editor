@@ -1,8 +1,4 @@
 class Questionnaire::GovForms
-  # include ActiveModel::Model
-  # include ActiveModel::AttributeAssignment
-  # include ActiveModel::Validations
-
   include ActiveModel::API
   attr_accessor :govuk_forms_ruled_out
 

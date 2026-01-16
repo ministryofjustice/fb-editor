@@ -1,16 +1,16 @@
-<h2><%= t("questionnaire.gov_forms_form.heading") %></h2>
-<p><%= t("questionnaire.gov_forms_form.subheading") %></p>
+<h2><%= t("questionnaire.continue_form.heading") %></h2>
+<p><%= t("questionnaire.continue_form.subheading") %></p>
 
 <%# @form.govuk_forms_ruled_out = @answers[:govuk_forms_ruled_out] %>
 <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
-  <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out,
+  <%= f.govuk_collection_radio_buttons :continue_with_moj_forms,
                                        [
-                                         OpenStruct.new(value: 'true', name: t('activemodel.attributes.questionnaire/gov_forms_form.govuk_forms_ruled_out_true')),
-                                         OpenStruct.new(value: 'false', name: t('activemodel.attributes.questionnaire/gov_forms_form.govuk_forms_ruled_out_false'))
+                                         OpenStruct.new(value: 'true', name: t('activemodel.attributes.questionnaire/continue_form.continue_with_moj_forms_true')),
+                                         OpenStruct.new(value: 'false', name: t('activemodel.attributes.questionnaire/continue_form.continue_with_moj_forms_false'))
                                        ],
                                        :value,
                                        :name,
-                                       legend: { text:  t("questionnaire.gov_forms_form.legend.text") },
+                                       legend: { text:  t("questionnaire.continue_form.legend.text") },
                                        hint: { text: '' } %>
 
 
@@ -26,4 +26,3 @@
     <li><strong><%= q %>:</strong> <%= a %></li>
   <% end %>
 </ul>
-

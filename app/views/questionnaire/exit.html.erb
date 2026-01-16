@@ -1,0 +1,10 @@
+<h2><%= t("questionnaire.exit.heading") %></h2>
+<p><%= t("questionnaire.exit.subheading") %></p>
+
+<%= link_to t('dialogs.link_back_to_your_forms'), back_to_services_questionnaire_index_path %>
+
+<ul>
+  <% @answers.each do |q, a| %>
+    <li><strong><%= q %>:</strong> <%= a %></li>
+  <% end %>
+</ul>

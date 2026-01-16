@@ -5,7 +5,10 @@ Rails.application.routes.draw do
   #   resources :gov_forms, only: [:index, :create]
   #   mount MetadataPresenter::Engine => '/preview', as: :preview
   # end
-  resources :questionnaire, only: [:show, :update]
+
+  resources :questionnaire, only: [:show, :update] do
+    get :back_to_services, on: :collection,as: :back_to_services
+  end
   namespace :admin do
     resources :overviews, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]

@@ -1,25 +1,27 @@
-<h2><%= @question.to_s.humanize %></h2>
-<% if @form %>
-  <% @form.errors.each do |error| %>
-    <p id="service-name-error" class="govuk-error-message">
-      <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span> <%= error.message %>
-    </p>
+<h2><%= t("questionnaire.get_started_form.heading") %></h2>
+<p><%= t("questionnaire.get_started_form.subheading") %></p>
+
+<%# @form.new_form_reason = @answers[:new_form_reason] %>
+<%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+  <%= f.govuk_collection_radio_buttons :new_form_reason,
+                                       [
+                                         OpenStruct.new(value: 'building', name: t('activemodel.attributes.questionnaire/get_started_form.new_form_reason_building')),
+                                         OpenStruct.new(value: 'experiment', name: t('activemodel.attributes.questionnaire/get_started_form.new_form_reason_experiment'))
+                                       ],
+                                       :value,
+                                       :name,
+                                       legend: { text:  t("questionnaire.get_started_form.legend.text") },
+                                       hint: { text: '' } %>
+
+  <div class="govuk-button-group">
+    <button class="govuk-button fb-govuk-button" type="submit">
+      <%= t('dialogs.button_continue') %>
+    </button>
+  </div>
+<% end %>
+
+<ul>
+  <% @answers.each do |q, a| %>
+    <li><strong><%= q %>:</strong> <%= a %></li>
   <% end %>
-<% end %>
-<%= @answers.inspect %>
-<%#= turbo_frame_tag "question" do %>
-<%= form_with url: questionnaire_path, method: :put do |f| %>
-  <%
-    new_form_reason = Struct.new(:name, :value, keyword_init: true)
-    new_form_reasons = [
-      new_form_reason.new(name: 'Start building a form', value: 'building'),
-      new_form_reason.new(name: 'Look around and experiment with MOJ forms', value: 'experiment'),
-
-    ]
-  %>
-
-  <%= f.govuk_collection_radio_buttons :new_form_reason, new_form_reasons, :value, :name, legend: { text: 'Before you get started' }, hint: { text: 'We want to ask you' } %>
-
-  <%= submit_tag "Next" %>
-<% end %>
-<%# end %>
+</ul>
