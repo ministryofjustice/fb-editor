@@ -3,8 +3,4 @@
 
 <%= link_to t('dialogs.link_back_to_your_forms'), back_to_services_questionnaire_index_path %>
 
-<ul>
-  <% @answers.each do |q, a| %>
-    <li><strong><%= q %>:</strong> <%= a %></li>
-  <% end %>
-</ul>
+<%= render_answers_list %>

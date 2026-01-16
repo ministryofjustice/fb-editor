@@ -21,9 +21,4 @@
   </div>
 <% end %>
 
-<ul>
-  <% @answers.each do |q, a| %>
-    <li><strong><%= q %>:</strong> <%= a %></li>
-  <% end %>
-</ul>
-
+<%= render_answers_list %>

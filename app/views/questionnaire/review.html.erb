@@ -1,9 +1,5 @@
 <h2>Good Choice</h2>
 <%= @answers.inspect %>
-<ul>
-  <% @answers.each do |q, a| %>
-    <li><strong><%= q %>:</strong> <%= a %></li>
-  <% end %>
-</ul>
+<%= render_answers_list %>
 
 <%= link_to "Continue", new_service_path %>

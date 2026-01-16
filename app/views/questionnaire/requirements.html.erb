@@ -3,8 +3,4 @@
 
 <%= link_to t('dialogs.button_continue'), new_service_path, class: "govuk-button fb-govuk-button" %>
 
-<ul>
-  <% @answers.each do |q, a| %>
-    <li><strong><%= q %>:</strong> <%= a %></li>
-  <% end %>
-</ul>
+<%= render_answers_list %>
