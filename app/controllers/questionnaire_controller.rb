@@ -5,49 +5,15 @@ class QuestionnaireController < PermissionsController
   before_action :set_page, except: %i[back_to_services]
   before_action :init_answers
 
-  PAGE_CONFIG = {
-    get_started: {
-      form: Questionnaire::GetStartedForm,
-      param_key: :questionnaire_get_started_form
-    },
-    gov_forms: {
-      form: Questionnaire::GovForms,
-      param_key: :questionnaire_gov_forms
-    },
-    continue: {
-      form: Questionnaire::ContinueForm,
-      param_key: :questionnaire_continue_form
-    },
-    form_features: {
-      form: Questionnaire::FormFeaturesForm,
-      param_key: :questionnaire_form_features_form
-    },
-    new_form: {
-      form: Questionnaire::NewFormForm,
-      param_key: :questionnaire_new_form_form
-    },
-    requirements: {
-      form: Questionnaire::Requirements
-    },
-    great_choice: {
-      form: Questionnaire::GreatChoice
-    },
-    exit: {
-      form: Questionnaire::Exit
-    }
-  }.freeze
-
   def show
-    @form = form_class.new # (@answers)
+    @form = flow.form_class(@page).new
     render @page
   end
 
   def update
-    @form = form_class.new(answer_attributes)
+    @form = flow.form_class(@page).new(answer_attributes)
 
-    unless @form.valid?
-      return render @page, status: :unprocessable_entity
-    end
+    return render @page, status: :unprocessable_entity unless @form.valid?
 
     persist_answers
 
@@ -83,17 +49,10 @@ class QuestionnaireController < PermissionsController
     @flow ||= QuestionnaireFlow.new(session[:answers])
   end
 
-  def page_config
-    PAGE_CONFIG.fetch(@page)
-  end
-
-  def form_class
-    page_config[:form]
-  end
-
   def answer_attributes
-    return {} unless page_config[:param_key]
+    param_key = flow.param_key(@page)
+    return {} unless param_key
 
-    params.require(page_config[:param_key]).permit!
+    params.require(param_key).permit!
   end
 end
