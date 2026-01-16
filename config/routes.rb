@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
-  resources :questionnaire, only: [:show, :update] do
-    get :review, on: :collection
-    post :submit, on: :collection
+  namespace :questionnaire do
+    resources :get_started, only: [:index, :create]
+    resources :great_choice, only: [:index, :create]
+    resources :gov_forms, only: [:index, :create]
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end
   namespace :admin do

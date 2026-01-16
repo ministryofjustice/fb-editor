@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   helper_method :back_link
 
   def show_form_navigation?
-    return false if controller_name == 'questionnaire'
+    return false if %w[get_started great_choice gov_forms].include?(controller_name)
 
     %w[home user_sessions].exclude?(controller_name) &&
       !(controller_name == 'services' && %w[index create new].include?(action_name))

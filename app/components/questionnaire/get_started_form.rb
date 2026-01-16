@@ -1,18 +1,14 @@
-module Questionnaire
-  class GetStartedForm
-    include ActiveModel::Model
+class Questionnaire::GetStartedForm
+  # include ActiveModel::Model
+  # include ActiveModel::AttributeAssignment
+  # include ActiveModel::Validations
 
-    attr_reader :answers, :current_question
+  include ActiveModel::API
+  attr_accessor :new_form_reason
 
-    validates :answer, presence: true
+  NEW_FORM_REASON_OPTIONS = %w[building experiment].freeze
 
-    def initialize(answers, current_question)
-      @answers = answers
-      @current_question = current_question
-    end
-
-    def answer
-      answers[current_question]
-    end
-  end
+  validates :new_form_reason,
+            presence: true,
+            inclusion: { in: NEW_FORM_REASON_OPTIONS }
 end

@@ -1,21 +1,21 @@
 class QuestionFlow
-  QUESTIONS = %i[q1 q2 q3 q4].freeze
+  # QUESTIONS = %i[new_form_reason govuk_forms_ruled_out great_choice q4].freeze
 
   def initialize(answers)
     @answers = answers
   end
 
-  def first
-    :q1
-  end
+  # def first
+  #   :get_started
+  # end
 
   def next(current)
     case current
-    when :q1
-      @answers[:q1] == 'yes' ? :q2 : :q3
-    when :q2
-      :q4
-    when :q3
+    when :get_started
+      @answers[:new_form_reason] == 'building' ? :gov_forms : :great_choice
+    when :gov_forms
+      :great_choice
+    when :great_choice
       :q4
     end
   end

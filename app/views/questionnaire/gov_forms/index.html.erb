@@ -1,0 +1,27 @@
+<h2><%= @question.to_s.humanize %></h2>
+<% if @form %>
+  <% @form.errors.each do |error| %>
+    <p id="service-name-error" class="govuk-error-message">
+      <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span> <%= error.message %>
+    </p>
+  <% end %>
+<% end %>
+<%= @answers.inspect %>
+<%#= turbo_frame_tag "question" do %>
+<%= form_with url: questionnaire_gov_forms_path(@question), method: :post do |f| %>
+  <%
+    govuk_forms_ruled_out = Struct.new(:name, :value, keyword_init: true)
+    govuk_forms_ruled_out_reasons = [
+      govuk_forms_ruled_out.new(name: 'Yes', value: 'true'),
+      govuk_forms_ruled_out.new(name: 'No', value: 'false'),
+
+    ]
+  %>
+
+  <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out, govuk_forms_ruled_out_reasons, :value, :name, legend: { text: 'Have you tried govuk forms' }, hint: { text: 'Sometext' } %>
+
+
+  <br>
+  <%= submit_tag "Next" %>
+<% end %>
+<%# end %>
