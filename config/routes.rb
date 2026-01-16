@@ -1,11 +1,4 @@
 Rails.application.routes.draw do
-  # namespace :questionnaire do
-  #   resources :get_started, only: [:index, :create]
-  #   resources :great_choice, only: [:index, :create]
-  #   resources :gov_forms, only: [:index, :create]
-  #   mount MetadataPresenter::Engine => '/preview', as: :preview
-  # end
-
   resources :questionnaire, only: [:show, :update] do
     get :back_to_services, on: :collection,as: :back_to_services
   end
