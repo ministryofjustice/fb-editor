@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :questionnaire, only: [:show, :update] do
+    get :back_to_services, on: :collection,as: :back_to_services
+  end
   namespace :admin do
     resources :overviews, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
@@ -43,7 +46,7 @@ Rails.application.routes.draw do
     get  '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: [:index, :edit, :update, :create] do
+  resources :services, only: [:index, :edit, :update, :create, :new] do
     member do
       resources :publish, only: [:index, :create]
       post '/publish_for_review', to: 'publish#publish_for_review'

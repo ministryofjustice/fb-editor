@@ -22,8 +22,10 @@ class ApplicationController < ActionController::Base
   helper_method :back_link
 
   def show_form_navigation?
+    return false if %w[questionnaire].include?(controller_name)
+
     %w[home user_sessions].exclude?(controller_name) &&
-      !(controller_name == 'services' && %w[index create].include?(action_name))
+      !(controller_name == 'services' && %w[index create new].include?(action_name))
   end
   helper_method :show_form_navigation?
 

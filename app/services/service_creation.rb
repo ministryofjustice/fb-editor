@@ -25,7 +25,10 @@ class ServiceCreation < Editor::Service
       metadata: NewServiceGenerator.new(
         service_name: service_name.strip,
         current_user:
-      ).to_metadata
+      ).to_metadata,
+      questionnaire: {
+        new_form_reason: 'new_form_reason test'
+      }
     }
   end
 end
