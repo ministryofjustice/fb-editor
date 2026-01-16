@@ -770,37 +770,46 @@ en:
         send_by_confirmation_email_dev: Enable confirmation email on Test
         send_by_confirmation_email_production: Enable confirmation email on Live
       questionnaire/get_started_form:
-        new_form_reason_building: "Building something new"
-        new_form_reason_experiment: "Running an experiment"
-      questionnaire/gov_forms_form:
-        govuk_forms_ruled_out_true: "Yes"
-        govuk_forms_ruled_out_false: "No"
+        new_form_reason: 'Reason for starting a new form'
+      'questionnaire/get_started_form/new_form_reason':
+        building: "Start building a form"
+        experiment: "Look around and experiment with MOJ forms"
+      'questionnaire/gov_forms/govuk_forms_ruled_out':
+        'true': "Yes"
+        'false': "No"
       questionnaire/continue_form:
-        continue_with_moj_forms_true: "Yes"
-        continue_with_moj_forms_false:
+        continue_with_moj_forms: 'Continue with MOJ Forms'
+      'questionnaire/continue_form/continue_with_moj_forms':
+        'true': "Yes"
+        'false': "Not right now"
       questionnaire/form_features_form:
-        required_moj_forms_features:
-          multiple_questions: 'multiple_questions'
-          multiple_branches: 'multiple_branches'
-          control_visibility: 'control_visibility'
-          save_progress: 'save_progress'
-          collect_responses: 'collect_responses'
-          hosting_off: 'hosting_off'
-          something_else: 'something_else'
+        required_moj_forms_features: 'Required features'
+        govuk_forms_ruled_out_reason: 'Reason for ruling out GOV.UK Forms'
+      'questionnaire/form_features_form/required_moj_forms_features':
+        multiple_questions: 'multiple_questions'
+        multiple_branches: 'multiple_branches'
+        control_visibility: 'control_visibility'
+        save_progress: 'save_progress'
+        collect_responses: 'collect_responses'
+        hosting_off: 'hosting_off'
+        something_else: 'something_else'
       questionnaire/new_form_form:
-        estimated_page_count:
-          under_20: 'under_20'
-          20_to_50: '20_to_50'
-          50_to_100: '50_to_100'
-          over_100: 'over_100'
-        estimated_first_year_submissions_count:
-          under_10000: 'under_10000'
-          10000_to_100000: '10000_to_100000'
-          over_100000: 'over_100000'
-        submission_delivery_method:
-          email: 'email'
-          collate: 'collate'
-          direct_to_service: 'direct_to_service'
+        estimated_page_count: 'Estimated page count'
+        estimated_first_year_submissions_count: 'Estimated first year submissions'
+        submission_delivery_method: 'Submission delivery method'
+      'questionnaire/new_form_form/estimated_page_count':
+        under_20: 'under_20'
+        20_to_50: '20_to_50'
+        50_to_100: '50_to_100'
+        over_100: 'over_100'
+      'questionnaire/new_form_form/estimated_first_year_submissions_count':
+        under_10000: 'under_10000'
+        10000_to_100000: '10000_to_100000'
+        over_100000: 'over_100000'
+      'questionnaire/new_form_form/submission_delivery_method':
+        email: 'email'
+        collate: 'collate'
+        direct_to_service: 'direct_to_service'
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"
@@ -822,7 +831,7 @@ en:
       models:
         questionnaire/get_started_form:
           blank: "Select why you are creating a new form today"
-        questionnaire/gov_forms_form:
+        questionnaire/gov_forms:
           blank: "Select whether you have considered and ruled out GOV.UK Forms"
         questionnaire/continue_form:
           blank: "Select whether you want to continue with MOJ forms"

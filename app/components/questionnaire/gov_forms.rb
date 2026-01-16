@@ -10,7 +10,7 @@ class Questionnaire::GovForms
     %w[true false].map do |option|
       OpenStruct.new(
         value: option,
-        name: I18n.t("activemodel.attributes.questionnaire/gov_forms_form.govuk_forms_ruled_out_#{option}")
+        name: I18n.t("activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.#{option}")
       )
     end
   end

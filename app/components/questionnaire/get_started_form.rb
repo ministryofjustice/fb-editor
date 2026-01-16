@@ -12,7 +12,7 @@ class Questionnaire::GetStartedForm
     NEW_FORM_REASON_OPTIONS.map do |option|
       OpenStruct.new(
         value: option,
-        name: I18n.t("activemodel.attributes.questionnaire/get_started_form.new_form_reason_#{option}")
+        name: I18n.t("activemodel.attributes.questionnaire/get_started_form/new_form_reason.#{option}")
       )
     end
   end

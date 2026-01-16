@@ -10,7 +10,7 @@ class Questionnaire::ContinueForm
     %w[true false].map do |option|
       OpenStruct.new(
         value: option,
-        name: I18n.t("activemodel.attributes.questionnaire/continue_form.continue_with_moj_forms_#{option}")
+        name: I18n.t("activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.#{option}")
       )
     end
   end
