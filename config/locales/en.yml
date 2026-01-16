@@ -777,7 +777,30 @@ en:
         govuk_forms_ruled_out_false: "No"
       questionnaire/continue_form:
         continue_with_moj_forms_true: "Yes"
-        continue_with_moj_forms_false: "Not right now"
+        continue_with_moj_forms_false:
+      questionnaire/form_features_form:
+        required_moj_forms_features:
+          multiple_questions: 'multiple_questions'
+          multiple_branches: 'multiple_branches'
+          control_visibility: 'control_visibility'
+          save_progress: 'save_progress'
+          collect_responses: 'collect_responses'
+          hosting_off: 'hosting_off'
+          something_else: 'something_else'
+      questionnaire/new_form_form:
+        estimated_page_count:
+          under_20: 'under_20'
+          20_to_50: '20_to_50'
+          50_to_100: '50_to_100'
+          over_100: 'over_100'
+        estimated_first_year_submissions_count:
+          under_10000: 'under_10000'
+          10000_to_100000: '10000_to_100000'
+          over_100000: 'over_100000'
+        submission_delivery_method:
+          email: 'email'
+          collate: 'collate'
+          direct_to_service: 'direct_to_service'
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"

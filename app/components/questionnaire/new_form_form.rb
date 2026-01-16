@@ -24,14 +24,14 @@ class Questionnaire::NewFormForm
             presence: { messgae: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.blank') }
 
   def estimated_page_count_options
-    ESTIMATED_PAGE_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+    ESTIMATED_PAGE_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: I18n.t("activemodel.attributes.questionnaire/new_form_form.estimated_page_count.#{s}")) }
   end
 
   def estimated_first_year_submissions_count_options
-    ESTIMATED_FIRST_YEAR_SUBMISSIONS_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+    ESTIMATED_FIRST_YEAR_SUBMISSIONS_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: I18n.t("activemodel.attributes.questionnaire/new_form_form.estimated_first_year_submissions_count.#{s}")) }
   end
 
   def submission_delivery_method_options
-    SUBMISSION_DELIVERY_METHOD_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+    SUBMISSION_DELIVERY_METHOD_OPTIONS.map { |s| OpenStruct.new(value: s, name: I18n.t("activemodel.attributes.questionnaire/new_form_form.submission_delivery_method.#{s}")) }
   end
 end

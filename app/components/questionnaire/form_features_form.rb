@@ -13,7 +13,7 @@ class Questionnaire::FormFeaturesForm
 
   def required_moj_forms_features_options
     REQUIRED_MOJ_FORMS_FEATURE_OPTIONS.map do |option|
-      OpenStruct.new(value: option, name: option)
+      OpenStruct.new(value: option, name:  I18n.t("activemodel.attributes.questionnaire/form_features_form.required_moj_forms_features.#{option}"))
     end
   end
 end
