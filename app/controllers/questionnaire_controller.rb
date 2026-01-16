@@ -5,8 +5,7 @@ class QuestionnaireController < PermissionsController
   before_action :init_answers
 
   def show
-    @page = params[:id]
-    render @page
+    render page
   end
 
   def update
@@ -19,7 +18,6 @@ class QuestionnaireController < PermissionsController
     update_session(answer_params)
 
     next_page = flow.next(@page)
-
 
     if next_page
       redirect_to questionnaire_path(next_page)
