@@ -9,13 +9,13 @@ class QuestionnaireController < PermissionsController
   end
 
   def update
-    @form = form_name.new(answer_params)
+    @form = form_name.new(answer_attributes)
 
     unless @form.valid?
       return render @page, status: :unprocessable_entity
     end
 
-    update_session(answer_params)
+    update_session(answer_attributes)
 
     next_page = flow.next(@page)
 
@@ -41,11 +41,11 @@ class QuestionnaireController < PermissionsController
     @flow ||= QuestionFlow.new(@answers)
   end
 
-  def update_session(answer_params)
-    session[:answers].merge! answer_params
+  def update_session(answer_attributes)
+    session[:answers].merge! answer_attributes
   end
 
-  def answer_params
+  def answer_attributes
     case page.to_sym
     when :get_started
       { new_form_reason: params[:new_form_reason] }
