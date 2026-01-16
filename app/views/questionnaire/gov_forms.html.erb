@@ -1,24 +1,13 @@
-<h2><%= t("questionnaire.gov_forms_form.heading") %></h2>
-<p><%= t("questionnaire.gov_forms_form.subheading") %></p>
-
-<%# @form.govuk_forms_ruled_out = @answers[:govuk_forms_ruled_out] %>
-<%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
-  <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out,
-                                       [
-                                         OpenStruct.new(value: 'true', name: t('activemodel.attributes.questionnaire/gov_forms_form.govuk_forms_ruled_out_true')),
-                                         OpenStruct.new(value: 'false', name: t('activemodel.attributes.questionnaire/gov_forms_form.govuk_forms_ruled_out_false'))
-                                       ],
-                                       :value,
-                                       :name,
-                                       legend: { text:  t("questionnaire.gov_forms_form.legend.text") },
-                                       hint: { text: '' } %>
+<%= render 'page_layout' do %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out,
+                                         @form.govuk_forms_ruled_out_options,
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.gov_forms_form.legend.text") },
+                                         hint: { text: '' } %>
 
 
-  <div class="govuk-button-group">
-    <button class="govuk-button fb-govuk-button" type="submit">
-      <%= t('dialogs.button_continue') %>
-    </button>
-  </div>
+    <%= render 'form_buttons' %>
+  <% end %>
 <% end %>
-
-<%= render_answers_list %>

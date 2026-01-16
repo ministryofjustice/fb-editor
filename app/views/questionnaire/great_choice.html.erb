@@ -1,6 +1,3 @@
-<h2><%= t("questionnaire.great_choice.heading") %></h2>
-<p><%= t("questionnaire.great_choice.subheading") %></p>
-
-<%= link_to t('dialogs.button_continue'), new_service_path, class: "govuk-button fb-govuk-button" %>
-
-<%= render_answers_list %>
+<%= render 'page_layout' do %>
+  <%= link_to t('dialogs.button_continue'), new_service_path, class: "govuk-button fb-govuk-button" %>
+<% end %>

@@ -4,9 +4,16 @@ class Questionnaire::FormFeaturesForm
 
   REQUIRED_MOJ_FORMS_FEATURE_OPTIONS = %w[multiple_questions multiple_branches control_visibility save_progress collect_responses hosting_off something_else].freeze
   MAX_CHARS = 500
+
   validates :required_moj_forms_features,
             inclusion: { in: REQUIRED_MOJ_FORMS_FEATURE_OPTIONS }
 
   validates :govuk_forms_ruled_out_reason,
             presence: true
+
+  def required_moj_forms_features_options
+    REQUIRED_MOJ_FORMS_FEATURE_OPTIONS.map do |option|
+      OpenStruct.new(value: option, name: option)
+    end
+  end
 end

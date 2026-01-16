@@ -22,4 +22,16 @@ class Questionnaire::NewFormForm
             inclusion: { in: SUBMISSION_DELIVERY_METHOD_OPTIONS,
                          message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.inclusion') },
             presence: { messgae: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.blank') }
+
+  def estimated_page_count_options
+    ESTIMATED_PAGE_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+  end
+
+  def estimated_first_year_submissions_count_options
+    ESTIMATED_FIRST_YEAR_SUBMISSIONS_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+  end
+
+  def submission_delivery_method_options
+    SUBMISSION_DELIVERY_METHOD_OPTIONS.map { |s| OpenStruct.new(value: s, name: s.humanize) }
+  end
 end
