@@ -23,7 +23,7 @@
         <% end %>
       </ul>
 
-      <% if (ENV['PLATFORM_ENV'] != 'live') || moj_forms_admin? %>
+      <% if moj_forms_admin? %>
         <div class="component-dialog-form"
              id="new-service-create-dialog"
              data-activator-text="<%= t('services.create') %>"
@@ -31,10 +31,8 @@
              data-component="FormCreateDialog">
           <%= render partial: 'new_form' %>
         </div>
-
-        <% if Rails.env.development? %>
-          <%=link_to t('services.create'), questionnaire_path(:get_started), class: "govuk-button fb-govuk-button" %>
-        <% end %>
+      <% else %>
+        <%=link_to t('services.create'), questionnaire_path(:get_started), class: "govuk-button fb-govuk-button" %>
       <% end %>
 
       <% if params[:owner].present? %>
