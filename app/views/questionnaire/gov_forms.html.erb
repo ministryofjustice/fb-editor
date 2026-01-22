@@ -1,3 +1,7 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:get_started)) %>
+<% end %>
+
 <%= render 'page_layout' do %>
   <ul>
     <%t('questionnaire.gov_forms_form.subheading_options').each do |option|%>

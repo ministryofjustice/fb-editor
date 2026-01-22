@@ -38,7 +38,7 @@ class QuestionnaireFlow
   def next(current)
     case current.to_sym
     when :get_started
-      @answers['new_form_reason'] == 'building' ? :gov_forms : :great_choice
+      @answers['new_form_reason'] == Questionnaire::GetStartedForm::BUILDING ? :gov_forms : :great_choice
     when :gov_forms
       @answers['govuk_forms_ruled_out'] == 'true' ? :form_features : :continue
     when :continue

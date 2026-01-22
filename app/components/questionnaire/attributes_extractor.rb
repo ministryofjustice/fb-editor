@@ -31,7 +31,7 @@ class Questionnaire::AttributesExtractor
   def extract!
     return {} if questionnaire.blank?
 
-    if questionnaire[:new_form_reason] == 'experiment'
+    if questionnaire[:new_form_reason] == Questionnaire::GetStartedForm::EXPERIMENT
       questionnaire.slice!(*ALLOWED_KEYS[:experiment])
     end
 

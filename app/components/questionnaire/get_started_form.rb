@@ -4,10 +4,10 @@ class Questionnaire::GetStartedForm
 
   attribute :new_form_reason, :string
 
-  NEW_FORM_REASON_OPTIONS = %w[
-    building
-    experiment
-  ].freeze
+  BUILDING = 'building'.freeze
+  EXPERIMENT = 'experiment'.freeze
+
+  NEW_FORM_REASON_OPTIONS = [BUILDING, EXPERIMENT].freeze
 
   validates :new_form_reason,
             inclusion: { in: NEW_FORM_REASON_OPTIONS }

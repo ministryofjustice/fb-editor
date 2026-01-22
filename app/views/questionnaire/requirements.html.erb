@@ -1,3 +1,7 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:new_form)) %>
+<% end %>
+
 <%= render 'page_layout' do %>
   <p><%=t('questionnaire.requirements.p1') %></p>
   <ul>
