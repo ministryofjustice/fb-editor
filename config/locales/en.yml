@@ -680,18 +680,18 @@ en:
         text: 'Why are you creating a new form today?'
     gov_forms_form:
       heading: 'Have you tried GOV.UK Forms?'
-      subheading: '<a href="#">GOV.UK Forms</a> is a government-wide form-building service built by a team at the Government Digital Service (GDS). It can be used for a wide variety of forms that:'
+      subheading: '<a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a> is a government-wide form-building service built by a team at the Government Digital Service (GDS). It can be used for a wide variety of forms that:'
       subheading_options:
         - 'sit on GOV.UK'
         - 'need only standard form components like text fields and radio buttons'
         - 'need only one or 2 branches'
       p1: 'MoJ Forms should generally be used only for more complex forms when GOV.UK Forms is unsuitable.'
-      p2: 'Find out more about <a href="#">choosing between GOV.UK Forms and MoJ Forms.</a>'
+      p2: 'Find out more about <a href="https://moj-forms.service.justice.gov.uk/govuk-and-moj-forms/" target="_blank">choosing between GOV.UK Forms and MoJ Forms.</a>'
       legend:
         text: 'Have you considered and ruled out GOV.UK Forms?'
     continue_form:
       heading: 'You must consider GOV.UK Forms before using MoJ Forms'
-      subheading: 'Any form built on MoJ Forms needs to meet our requirements. These include ensuring that it could not have been built to a satisfactory level using <a href="#">GOV.UK Forms.</a>'
+      subheading: 'Any form built on MoJ Forms needs to meet our requirements. These include ensuring that it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms.</a>'
       legend:
         text: 'Do you want to continue with MoJ Forms?'
     form_features_form:
@@ -720,27 +720,27 @@ en:
       subheading: 'We hope you have fun with MoJ Forms.'
       p1: 'If you ever want to turn your test form into a live form, it will need to meet our requirements. These include:'
       p1_options:
-      - 'it could not have been built to a satisfactory level using <a href="#">GOV.UK Forms</a>'
+      - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
       - 'it will not be used for SECRET or TOP SECRET information'
       - 'it does not exceed our in terms of complexity or transaction volumes'
-      - 'it complies with our <a href="#">terms of use</a>'
+      - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
       p2: 'Any form that does not meet these requirements will not be approved to go live.'
-      p3: 'You can find out more about <a href="#">our requirements for forms</a> in the user guide or you can <a href="#">contact us to discuss your form</a> when you have confirmed your plans.'
+      p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'
     requirements:
       heading: 'We will need to review your form before it can go live'
       subheading: ''
       p1: 'Any form built on MoJ Forms needs to meet our requirements. These include:'
       p1_options:
-        - 'it could not have been built to a satisfactory level using <a href="#">GOV.UK Forms</a>'
+        - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
         - 'it will not be used for SECRET or TOP SECRET information'
         - 'it does not exceed our in terms of complexity or transaction volumes'
-        - 'it complies with our <a href="#">terms of use</a>'
+        - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
       p2: 'Any form that does not meet these requirements will not be approved to go live.'
-      p3: 'You can find out more about <a href="#">our requirements for forms</a> in the user guide or you can <a href="#">contact us to discuss your form</a> when you have confirmed your plans.'
+      p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'
 
     exit:
       heading: 'Thank you for considering MoJ Forms'
-      subheading: 'Find out more about <a href="#">when to use MoJ Forms</a> (!!destination content does not exist!!) or <a href="#">contact us</a> with any questions.'
+      subheading: 'Find out more about <a href="https://moj-forms.service.justice.gov.uk/govuk-and-moj-forms/" target="_blank">when to use MoJ Forms</a> (!!destination content does not exist!!) or <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us</a> with any questions.'
   activemodel:
     models:
       service_creation: 'Form'
