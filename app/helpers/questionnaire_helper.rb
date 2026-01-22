@@ -1,9 +1,9 @@
 module QuestionnaireHelper
-  def render_answers_list
-    return content_tag(:ul) if session[:questionnaire_answers].blank?
+  def render_answers_list(answers)
+    return content_tag(:ul) if answers.blank?
 
     content_tag(:ul) do
-      session[:questionnaire_answers].map { |q, a|
+      answers.map { |q, a|
         content_tag(:li) do
           content_tag(:strong, "#{q}: ") + a.to_s
         end

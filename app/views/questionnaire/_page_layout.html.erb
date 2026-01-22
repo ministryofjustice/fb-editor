@@ -7,5 +7,14 @@
 
 <%= yield %>
 
-<!--Display session attributes-->
-<%= render_answers_list if Rails.env.development? %>
+<%  if Rails.env.development? %>
+ <div>
+  <!--Display session attributes-->
+  <strong>Session</strong>
+  <%= render_answers_list(session[:questionnaire_answers]) %>
+
+  <!--Display payload attributes-->
+   <strong>Payload</strong>
+  <%= render_answers_list(Questionnaire::AttributesExtractor.new(session[:questionnaire_answers]).extract!) %>
+ </div>
+<% end %>
