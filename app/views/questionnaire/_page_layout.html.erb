@@ -7,4 +7,5 @@
 
 <%= yield %>
 
-<%= render_answers_list %>
+<!--Display session attributes-->
+<%= render_answers_list if Rails.env.development? %>
