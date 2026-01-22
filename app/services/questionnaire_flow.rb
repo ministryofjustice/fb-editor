@@ -1,24 +1,40 @@
 class QuestionnaireFlow
+  ALLOWED_PAGES = %i[
+    get_started
+    gov_forms
+    continue
+    form_features
+    new_form
+    requirements
+    great_choice
+    exit
+  ].freeze
+
   PAGE_CONFIG = {
     get_started: {
       form: Questionnaire::GetStartedForm,
-      param_key: :questionnaire_get_started_form
+      param_key: :questionnaire_get_started_form,
+      attributes: [:new_form_reason]
     },
     gov_forms: {
       form: Questionnaire::GovForms,
-      param_key: :questionnaire_gov_forms
+      param_key: :questionnaire_gov_forms,
+      attributes: [:govuk_forms_ruled_out]
     },
     continue: {
       form: Questionnaire::ContinueForm,
-      param_key: :questionnaire_continue_form
+      param_key: :questionnaire_continue_form,
+      attributes: [:continue_with_moj_forms]
     },
     form_features: {
       form: Questionnaire::FormFeaturesForm,
-      param_key: :questionnaire_form_features_form
+      param_key: :questionnaire_form_features_form,
+      attributes: [:govuk_forms_ruled_out_reason, { required_moj_forms_features: [] }]
     },
     new_form: {
       form: Questionnaire::NewFormForm,
-      param_key: :questionnaire_new_form_form
+      param_key: :questionnaire_new_form_form,
+      attributes: %i[estimated_page_count estimated_first_year_submissions_count submission_delivery_method]
     },
     requirements: {
       form: Questionnaire::Requirements
@@ -62,5 +78,9 @@ class QuestionnaireFlow
 
   def param_key(page)
     PAGE_CONFIG.dig(page.to_sym, :param_key)
+  end
+
+  def form_attributes(page)
+    PAGE_CONFIG.dig(page.to_sym, :attributes)
   end
 end

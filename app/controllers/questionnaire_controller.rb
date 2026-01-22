@@ -34,7 +34,14 @@ class QuestionnaireController < PermissionsController
   private
 
   def set_page
-    @page = params[:id].to_sym
+    page = params[:id].to_s
+
+    @page =
+      if QuestionnaireFlow::ALLOWED_PAGES.include?(page.to_sym)
+        page.to_sym
+      else
+        raise ActionController::RoutingError, 'Not Found'
+      end
   end
 
   def init_questionnaire_answers
@@ -53,6 +60,6 @@ class QuestionnaireController < PermissionsController
     param_key = flow.param_key(@page)
     return {} unless param_key
 
-    params.require(param_key).permit!
+    params.require(param_key).permit(flow.form_attributes(@page))
   end
 end
