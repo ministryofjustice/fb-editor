@@ -1,15 +1,4 @@
 class QuestionnaireFlow
-  ALLOWED_PAGES = %i[
-    get_started
-    gov_forms
-    continue
-    form_features
-    new_form
-    requirements
-    great_choice
-    exit
-  ].freeze
-
   PAGE_CONFIG = {
     get_started: {
       form: Questionnaire::GetStartedForm,
