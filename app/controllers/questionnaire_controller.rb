@@ -37,7 +37,7 @@ class QuestionnaireController < PermissionsController
     page = params[:id].to_s
 
     @page =
-      if QuestionnaireFlow::PAGE_CONFIG.keys.include?(page.to_sym)
+      if QuestionnaireFlow::ALLOWED_PAGES.include?(page.to_sym)
         page.to_sym
       else
         raise ActionController::RoutingError, 'Not Found'
