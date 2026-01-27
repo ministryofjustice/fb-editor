@@ -85,6 +85,8 @@ en:
     button_understood: 'Understood'
     button_update: 'Update'
     button_close: 'Close modal'
+    button_continue: 'Continue'
+    link_back_to_your_forms: 'Back to your forms'
     heading: General heading here
     heading_delete: 'Delete "%{label}"?'
     heading_delete_no_default_next: 'You cannot delete this page yet'
@@ -670,6 +672,75 @@ en:
     create: 'Create a new form'
     cancel: 'Cancel'
     branch: 'Add branching'
+  questionnaire:
+    get_started_form:
+      heading: 'Before you get started...'
+      subheading: 'We want to ask you a few questions about why you are using MoJ Forms and make you aware of our requirements for forms on this service.'
+      legend:
+        text: 'Why are you creating a new form today?'
+    gov_forms_form:
+      heading: 'Have you tried GOV.UK Forms?'
+      subheading: '<a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a> is a government-wide form-building service built by a team at the Government Digital Service (GDS). It can be used for a wide variety of forms that:'
+      subheading_options:
+        - 'sit on GOV.UK'
+        - 'need only standard form components like text fields and radio buttons'
+        - 'need only one or 2 branches'
+      p1: 'MoJ Forms should generally be used only for more complex forms when GOV.UK Forms is unsuitable.'
+      p2: 'Find out more about <a href="https://moj-forms.service.justice.gov.uk/govuk-and-moj-forms/" target="_blank">choosing between GOV.UK Forms and MoJ Forms.</a>'
+      legend:
+        text: 'Have you considered and ruled out GOV.UK Forms?'
+    continue_form:
+      heading: 'You must consider GOV.UK Forms before using MoJ Forms'
+      subheading: 'Any form built on MoJ Forms needs to meet our requirements. These include ensuring that it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms.</a>'
+      legend:
+        text: 'Do you want to continue with MoJ Forms?'
+    form_features_form:
+      heading: 'Why did you rule out GOV.UK Forms?'
+      subheading: ''
+      legend:
+        text: 'Do you need any of these MoJ Forms features?'
+      label:
+        text: 'Tell us more about why you ruled out GOV.UK Forms'
+      hint:
+        text: "If you selected 'something else' above, make sure to include the additional MoJ Forms features you need"
+    new_form_form:
+      heading: 'What can you tell us about your new form?'
+      subheading: "We only require your best guess at these questions and your answers won't limit your form as you build it. We may contact you later on with some follow-up questions."
+      estimated_page_count:
+        legend:
+          text: 'How many pages will it have?'
+      estimated_first_year_submissions_count:
+        legend:
+          text: 'How many submissions do you expect in the first year?'
+      submission_delivery_method:
+        legend:
+          text: 'How do you want to receive your submissions?'
+    great_choice:
+      heading: 'Great choice!'
+      subheading: 'We hope you have fun with MoJ Forms.'
+      p1: 'If you ever want to turn your test form into a live form, it will need to meet our requirements. These include:'
+      p1_options:
+      - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
+      - 'it will not be used for SECRET or TOP SECRET information'
+      - 'it does not exceed our in terms of complexity or transaction volumes'
+      - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
+      p2: 'Any form that does not meet these requirements will not be approved to go live.'
+      p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'
+    requirements:
+      heading: 'We will need to review your form before it can go live'
+      subheading: ''
+      p1: 'Any form built on MoJ Forms needs to meet our requirements. These include:'
+      p1_options:
+        - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
+        - 'it will not be used for SECRET or TOP SECRET information'
+        - 'it does not exceed our in terms of complexity or transaction volumes'
+        - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
+      p2: 'Any form that does not meet these requirements will not be approved to go live.'
+      p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'
+
+    exit:
+      heading: 'Thank you for considering MoJ Forms'
+      subheading: 'Find out more about <a href="https://moj-forms.service.justice.gov.uk/govuk-and-moj-forms/" target="_blank">when to use MoJ Forms</a> (!!destination content does not exist!!) or <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us</a> with any questions.'
   activemodel:
     models:
       service_creation: 'Form'
@@ -721,6 +792,47 @@ en:
         confirmation_email_body: Message
         send_by_confirmation_email_dev: Enable confirmation email on Test
         send_by_confirmation_email_production: Enable confirmation email on Live
+      questionnaire/get_started_form:
+        new_form_reason: 'Why are you creating a new form today?'
+      'questionnaire/get_started_form/new_form_reason':
+        building: "Start building a form"
+        experiment: "Look around and experiment with MoJ Forms"
+      'questionnaire/gov_forms/govuk_forms_ruled_out':
+        'true': "Yes"
+        'false': "No"
+      questionnaire/continue_form:
+        continue_with_moj_forms: 'Continue with MOJ Forms'
+      'questionnaire/continue_form/continue_with_moj_forms':
+        'true': "Yes"
+        'false': "Not right now"
+      questionnaire/form_features_form:
+        required_moj_forms_features: 'Required features'
+        govuk_forms_ruled_out_reason: 'Reason for ruling out GOV.UK Forms'
+      'questionnaire/form_features_form/required_moj_forms_features':
+        multiple_questions: 'Multiple questions on a page'
+        multiple_branches: 'Multiple branches or complex logic'
+        control_visibility: 'Using logic to control visibility of content'
+        save_progress: 'Enabling users to save progress on a form'
+        collect_responses: 'Collecting responses in MS Lists'
+        hosting_off: 'Hosting off GOV.UK'
+        something_else: 'Something else'
+      questionnaire/new_form_form:
+        estimated_page_count: 'Estimated page count'
+        estimated_first_year_submissions_count: 'Estimated first year submissions'
+        submission_delivery_method: 'Submission delivery method'
+      'questionnaire/new_form_form/estimated_page_count':
+        under_20: 'Under 20'
+        20_to_50: '20 to 50'
+        50_to_100: '50 to 100'
+        over_100: 'Over 100'
+      'questionnaire/new_form_form/estimated_first_year_submissions_count':
+        under_10000: 'Under 10,000'
+        10000_to_100000: '10,000 to 100,000'
+        over_100000: 'Over 100,000'
+      'questionnaire/new_form_form/submission_delivery_method':
+        email: 'Individually by email'
+        collate: 'Collated for me - for example, in a spreadsheet'
+        direct_to_service: 'Directly in another service'
       page_creation:
         page_url: "Give your page a short name"
         page_url_hint: "This will form the page’s URL so should be in lower case with no spaces"
@@ -740,6 +852,28 @@ en:
       summary_title: There is a problem
       assistive_prefix: 'Error: '
       models:
+        questionnaire/get_started_form:
+          inclusion: "Select why you are creating a new form today"
+          blank: "Select why you are creating a new form today"
+        questionnaire/gov_forms:
+          inclusion: "Select whether you have considered and ruled out GOV.UK Forms"
+          blank: "Select whether you have considered and ruled out GOV.UK Forms"
+        questionnaire/continue_form:
+          inclusion: "Select whether you want to continue with MOJ forms"
+          blank: "Select whether you want to continue with MOJ forms"
+        questionnaire/form_features_form:
+          blank: "Enter more about why you ruled out GOV.UK forms"
+          inclusion: 'Select the MOJ forms features you need'
+        questionnaire/new_form_form:
+          estimated_page_count:
+            inclusion: 'Select how many pages your form will have'
+            blank: 'Select how many pages your form will have'
+          estimated_first_year_submissions_count:
+            inclusion: 'Select how many submissions you expect in the first year'
+            blank: 'Select how many submissions you expect in the first year'
+          submission_delivery_method:
+            inclusion: 'Select how you want to receive your submissions'
+            blank: 'Select how you want to receive your submissions'
         from_address:
           invalid: Enter an email address in the correct format, like name@example.com
         publish_service_creation:

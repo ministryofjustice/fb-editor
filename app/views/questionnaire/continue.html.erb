@@ -1,0 +1,18 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:gov_forms)) %>
+<% end %>
+
+<%= render 'page_layout' do %>
+  <% set_form_defaults @form %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= f.govuk_collection_radio_buttons :continue_with_moj_forms,
+                                         @form.continue_with_moj_forms_options,
+                                         :value,
+                                         :name,
+                                         legend: { text:  t("questionnaire.continue_form.legend.text") },
+                                         hint: { text: '' } %>
+
+
+    <%= render 'form_buttons' %>
+  <% end %>
+<% end %>

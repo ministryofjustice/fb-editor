@@ -38,7 +38,7 @@ RSpec.describe ServiceCreation do
           expect(NewServiceGenerator).to receive(:new)
             .with(service_name: 'Form Name', current_user:)
             .and_return(double(to_metadata: 'metadata'))
-          subject.metadata
+          subject.service_payload
         end
       end
 
@@ -160,18 +160,61 @@ RSpec.describe ServiceCreation do
     end
   end
 
-  describe '#metadata' do
-    let(:attributes) do
-      { service_name: 'Moff Gideon', current_user: double(id: '1234') }
+  describe '#service_payload' do
+    context 'when questionnaire is present' do
+      let(:attributes) do
+        { service_name: 'Moff Gideon', current_user: double(id: '1234'), questionnaire: { 'new_form_reason' => 'experiment' } }
+      end
+      it 'generates the metadata for the API' do
+        expect(service_creation.service_payload[:metadata]).to include(
+          {
+            'service_name' => 'Moff Gideon',
+            'created_by' => '1234'
+          }
+        )
+      end
+
+      it 'generates the questionnaire for the API' do
+        expect(service_creation.service_payload[:questionnaire]).to eq(
+          { 'new_form_reason' => 'experiment' }
+        )
+      end
     end
 
-    it 'generates the metadata for the API' do
-      expect(service_creation.metadata[:metadata]).to include(
-        {
-          'service_name' => 'Moff Gideon',
-          'created_by' => '1234'
-        }
-      )
+    context 'when questionnaire is empty' do
+      let(:attributes) do
+        { service_name: 'Moff Gideon', current_user: double(id: '1234'), questionnaire: {} }
+      end
+      it 'generates the metadata for the API' do
+        expect(service_creation.service_payload[:metadata]).to include(
+          {
+            'service_name' => 'Moff Gideon',
+            'created_by' => '1234'
+          }
+        )
+      end
+
+      it 'generates the questionnaire for the API' do
+        expect(service_creation.service_payload[:questionnaire]).to eq({})
+      end
+    end
+
+    context 'when questionnaire is missing' do
+      let(:attributes) do
+        { service_name: 'Moff Gideon', current_user: double(id: '1234') }
+      end
+      it 'generates the metadata for the API' do
+        expect(service_creation.service_payload[:metadata]).to include(
+          {
+            'service_name' => 'Moff Gideon',
+            'created_by' => '1234'
+          }
+        )
+      end
+
+      it 'generates the questionnaire for the API' do
+        expect(service_creation.service_payload[:questionnaire]).to eq({})
+      end
     end
   end
 end
