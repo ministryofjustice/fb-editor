@@ -39,7 +39,7 @@ gem 'sentry-rails', '~> 5.14'
 gem 'sentry-ruby', '~> 5.14'
 gem 'turbo-rails', '~> 1.4'
 gem 'tzinfo-data'
-gem 'webpacker', '~> 5.4'
+gem 'jsbundling-rails'
 
 group :development, :test do
   gem 'axe-core-rspec'
