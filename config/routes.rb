@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   end
   namespace :admin do
     resources :overviews, only: [:index]
+    resources :questionnaires, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
     resources :uptime_checks, only: [:index, :create, :destroy]
     resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
