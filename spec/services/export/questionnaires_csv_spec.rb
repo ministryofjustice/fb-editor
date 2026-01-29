@@ -9,14 +9,14 @@ RSpec.describe Export::QuestionnairesCsv, type: :service do
 
   let(:questionnaire) do
     OpenStruct.new(
-      new_form_reason: 'new_service',
-      govuk_forms_ruled_out: 'too_complex',
+      new_form_reason: 'building',
+      govuk_forms_ruled_out: true,
       required_moj_forms_features: %w[multiple_questions save_progress],
       govuk_forms_ruled_out_reason: 'Legacy constraints',
-      continue_with_moj_forms: 'yes',
-      estimated_page_count: '1_10',
-      estimated_first_year_submissions_count: 'under_100',
-      submission_delivery_method: 'online',
+      continue_with_moj_forms: false,
+      estimated_page_count: '20_to_50',
+      estimated_first_year_submissions_count: '10000_to_100000',
+      submission_delivery_method: 'collate',
       service_id: 'service-123',
       created_at: Time.zone.parse('2024-01-01 10:00')
     )
@@ -78,15 +78,15 @@ RSpec.describe Export::QuestionnairesCsv, type: :service do
 
       expect(row).to eq(
         [
-          'translated: activemodel.attributes.questionnaire/get_started_form/new_form_reason.new_service',
-          'translated: activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.too_complex',
-          'translated: activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.payments, ' \
-            'translated: activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.attachments',
+          'translated: activemodel.attributes.questionnaire/get_started_form/new_form_reason.building',
+          'translated: activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.true',
+          'translated: activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.multiple_questions, ' \
+            'translated: activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.save_progress',
           'Legacy constraints',
-          'translated: activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.yes',
-          'translated: activemodel.attributes.questionnaire/new_form_form/estimated_page_count.1_10',
-          'translated: activemodel.attributes.questionnaire/new_form_form/estimated_first_year_submissions_count.under_100',
-          'translated: activemodel.attributes.questionnaire/new_form_form/submission_delivery_method.online',
+          'translated: activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.false',
+          'translated: activemodel.attributes.questionnaire/new_form_form/estimated_page_count.20_to_50',
+          'translated: activemodel.attributes.questionnaire/new_form_form/estimated_first_year_submissions_count.10000_to_100000',
+          'translated: activemodel.attributes.questionnaire/new_form_form/submission_delivery_method.collate',
           'service-123',
           '2024-01-01 10:00:00 UTC'
         ]
