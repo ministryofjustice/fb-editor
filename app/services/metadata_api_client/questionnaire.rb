@@ -1,6 +1,6 @@
 module MetadataApiClient
   class Questionnaire < Resource
-    def self.all_questionnaires(page:, per_page:)
+    def self.all_questionnaires(page: nil, per_page: nil)
       response = connection.get(
         '/questionnaires',
         {

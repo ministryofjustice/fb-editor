@@ -32,6 +32,10 @@ module Admin
         {
           name: 'Awaiting approval for go live',
           value: ServiceConfiguration.where(name: 'AWAITING_APPROVAL').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
+        },
+        {
+          name: 'Questionnaires',
+          value: MetadataApiClient::Questionnaire.all_questionnaires[:total_questionnaires]
         }
       ]
     end
@@ -45,6 +49,46 @@ module Admin
             csv << ['Service name', 'User email', 'Published Test', 'Published Live', 'First Published']
             services.each do |service|
               csv << service.values.map(&:strip)
+            end
+          end
+
+          send_data csv_data, filename: csv_filename, type: 'text/csv'
+        end
+      end
+    end
+
+    def export_questionnaires
+      respond_to do |format|
+        format.csv do
+          response = MetadataApiClient::Questionnaire.all_questionnaires(page: 1, per_page: 100_000_000)
+          csv_data = CSV.generate do |csv|
+            header = %w[
+              new_form_reason
+              govuk_forms_ruled_out
+              required_moj_forms_features
+              govuk_forms_ruled_out_reason
+              continue_with_moj_forms
+              estimated_page_count
+              estimated_first_year_submissions_count
+              submission_delivery_method
+              service_id
+              created_at
+            ]
+            csv << header.map(&:humanize)
+            response[:questionnaires].each do |questionnaire|
+              values = [
+                I18n.t("activemodel.attributes.questionnaire/get_started_form/new_form_reason.#{questionnaire.new_form_reason}"),
+                (I18n.t("activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.#{questionnaire.govuk_forms_ruled_out}") unless questionnaire.govuk_forms_ruled_out.nil?),
+                questionnaire.required_moj_forms_features&.map { |f| I18n.t("activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.#{f}") }&.join(', '),
+                questionnaire.govuk_forms_ruled_out_reason,
+                (I18n.t("activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.#{questionnaire.continue_with_moj_forms}") unless questionnaire.continue_with_moj_forms.nil?),
+                (I18n.t("activemodel.attributes.questionnaire/new_form_form/estimated_page_count.#{questionnaire.estimated_page_count}") if questionnaire.estimated_page_count),
+                (I18n.t("activemodel.attributes.questionnaire/new_form_form/estimated_first_year_submissions_count.#{questionnaire.estimated_first_year_submissions_count}") if questionnaire.estimated_first_year_submissions_count),
+                (I18n.t("activemodel.attributes.questionnaire/new_form_form/submission_delivery_method.#{questionnaire.submission_delivery_method}") if questionnaire.submission_delivery_method),
+                questionnaire.service_id,
+                questionnaire.created_at
+              ]
+              csv << values
             end
           end
 
