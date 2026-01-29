@@ -60,37 +60,7 @@ module Admin
     def export_questionnaires
       respond_to do |format|
         format.csv do
-          response = MetadataApiClient::Questionnaire.all_questionnaires(page: 1, per_page: 100_000_000)
-          csv_data = CSV.generate do |csv|
-            header = %w[
-              new_form_reason
-              govuk_forms_ruled_out
-              required_moj_forms_features
-              govuk_forms_ruled_out_reason
-              continue_with_moj_forms
-              estimated_page_count
-              estimated_first_year_submissions_count
-              submission_delivery_method
-              service_id
-              created_at
-            ]
-            csv << header.map(&:humanize)
-            response[:questionnaires].each do |questionnaire|
-              values = [
-                I18n.t("activemodel.attributes.questionnaire/get_started_form/new_form_reason.#{questionnaire.new_form_reason}"),
-                (I18n.t("activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.#{questionnaire.govuk_forms_ruled_out}") unless questionnaire.govuk_forms_ruled_out.nil?),
-                questionnaire.required_moj_forms_features&.map { |f| I18n.t("activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.#{f}") }&.join(', '),
-                questionnaire.govuk_forms_ruled_out_reason,
-                (I18n.t("activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.#{questionnaire.continue_with_moj_forms}") unless questionnaire.continue_with_moj_forms.nil?),
-                (I18n.t("activemodel.attributes.questionnaire/new_form_form/estimated_page_count.#{questionnaire.estimated_page_count}") if questionnaire.estimated_page_count),
-                (I18n.t("activemodel.attributes.questionnaire/new_form_form/estimated_first_year_submissions_count.#{questionnaire.estimated_first_year_submissions_count}") if questionnaire.estimated_first_year_submissions_count),
-                (I18n.t("activemodel.attributes.questionnaire/new_form_form/submission_delivery_method.#{questionnaire.submission_delivery_method}") if questionnaire.submission_delivery_method),
-                questionnaire.service_id,
-                questionnaire.created_at
-              ]
-              csv << values
-            end
-          end
+          csv_data = Export::QuestionnairesCsv.call
 
           send_data csv_data, filename: csv_filename, type: 'text/csv'
         end
