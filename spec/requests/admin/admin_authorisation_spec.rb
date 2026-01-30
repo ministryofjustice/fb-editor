@@ -7,6 +7,13 @@ RSpec.describe 'Admin authorisation spec', type: :request do
     allow_any_instance_of(
       Admin::ApplicationController
     ).to receive(:current_user).and_return(current_user)
+
+    # Mock dependencies for Admin::OverviewsController#index
+    allow(MetadataApiClient::Questionnaire).to receive(:all_questionnaires).and_return(
+      { total_questionnaires: 0, questionnaires: [] }
+    )
+    allow_any_instance_of(Admin::OverviewsController).to receive(:active_sessions).and_return(0)
+    allow_any_instance_of(Admin::OverviewsController).to receive(:moj_forms_team_service_ids).and_return([])
   end
 
   it_behaves_like 'a controller that stores the current request details' do
@@ -70,7 +77,7 @@ RSpec.describe 'Admin authorisation spec', type: :request do
       let(:all_services) do
         {
           services: [],
-          total_count: 0,
+          total_services: 0,
           page: 1,
           per_page: 10
         }
@@ -91,6 +98,14 @@ RSpec.describe 'Admin authorisation spec', type: :request do
   context 'when publish services page' do
     it_behaves_like 'an authorisation action' do
       let(:request) { get '/admin/publish_services' }
+
+      before do
+        allow_any_instance_of(
+          Admin::PublishServicesController
+        ).to receive(:index) do |controller|
+          controller.render plain: 'OK'
+        end
+      end
     end
   end
 end
