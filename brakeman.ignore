@@ -102,6 +102,25 @@
         22
       ],
       "note": ""
+    },
+    {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 123,
+      "fingerprint": "715ee6d743a8af33c7b930d728708ce19c765fb40e2ad9d2b974db04d92dc7d1",
+      "check_name": "EOLRuby",
+      "message": "Support for Ruby 3.2.0 ends on 2026-03-31",
+      "file": ".ruby-version",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        1104
+      ],
+      "note": "Ruby 3.2.0 is still currently supported (EOL 2026-03-31)"
     }
   ],
   "updated": "2023-03-14 10:51:46 +0000",
