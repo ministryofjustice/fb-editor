@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   end
   namespace :admin do
     resources :overviews, only: [:index]
+    resources :questionnaires, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
     resources :uptime_checks, only: [:index, :create, :destroy]
     resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
     get '/export-services', to: 'overviews#export_services'
     get '/export_dev_summary', to: 'overviews#export_dev_form_summary'
     get '/export_prod_summary', to: 'overviews#export_live_form_summary'
+    get '/export-questionnaires', to: 'overviews#export_questionnaires'
 
     root to: "overviews#index"
   end
