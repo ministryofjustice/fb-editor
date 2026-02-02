@@ -2,7 +2,7 @@
 
 module Export
   class QuestionnairesCsv < ApplicationService
-    PER_PAGE = 100_000_000 # maximize this number to get all questionnaires.BY default its 20 per page
+    PER_PAGE = 100_000_000 # maximized count to get all questionnaires.
 
     def call
       CSV.generate do |csv|
