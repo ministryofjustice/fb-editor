@@ -1,7 +1,7 @@
 module Editor
   class Service
     include ActiveModel::Model
-    attr_accessor :service_name, :current_user, :service_id, :latest_metadata
+    attr_accessor :service_name, :current_user, :questionnaire, :service_id, :latest_metadata
 
     MINIMUM = 3
     MAXIMUM = 255

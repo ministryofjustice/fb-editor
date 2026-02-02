@@ -1,0 +1,6 @@
+<% content_for :back_link do %>
+  <% path =  session.dig(:questionnaire_answers, :new_form_reason) == Questionnaire::GetStartedForm::EXPERIMENT ?  :great_choice : :requirements  %>
+  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(path)) %>
+<% end %>
+
+<%= render partial: 'new_form' %>

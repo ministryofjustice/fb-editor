@@ -90,4 +90,8 @@ module ApplicationHelper
 
     response.metadata['items'].present?
   end
+
+  def live_environment?
+    ENV['PLATFORM_ENV'] == 'live'
+  end
 end

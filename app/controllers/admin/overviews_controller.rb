@@ -32,6 +32,10 @@ module Admin
         {
           name: 'Awaiting approval for go live',
           value: ServiceConfiguration.where(name: 'AWAITING_APPROVAL').reject { |p| moj_forms_team_service_ids.include?(p.service_id) }.count
+        },
+        {
+          name: 'Questionnaires',
+          value: MetadataApiClient::Questionnaire.all_questionnaires[:total_questionnaires]
         }
       ]
     end
@@ -47,6 +51,16 @@ module Admin
               csv << service.values.map(&:strip)
             end
           end
+
+          send_data csv_data, filename: csv_filename, type: 'text/csv'
+        end
+      end
+    end
+
+    def export_questionnaires
+      respond_to do |format|
+        format.csv do
+          csv_data = Export::QuestionnairesCsv.call
 
           send_data csv_data, filename: csv_filename, type: 'text/csv'
         end

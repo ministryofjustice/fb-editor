@@ -1,8 +1,12 @@
 class ServicesController < PermissionsController
-  skip_before_action :authorised_access, only: %i[index create]
+  skip_before_action :authorised_access, only: %i[index create new]
   ACCEPTANCE_TEST_USER = 'Acceptance Tests'.freeze
 
   def index
+    @service_creation = ServiceCreation.new
+  end
+
+  def new
     @service_creation = ServiceCreation.new
   end
 
@@ -10,6 +14,7 @@ class ServicesController < PermissionsController
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
+      session.delete(:questionnaire_answers)
       if current_user.name != ACCEPTANCE_TEST_USER
         FormUrlCreation.new(
           service_id: @service_creation.service_id,
@@ -18,6 +23,8 @@ class ServicesController < PermissionsController
       end
 
       redirect_to edit_service_path(@service_creation.service_id)
+    elsif session[:questionnaire_answers].present?
+      render :new
     else
       render :index
     end
@@ -41,9 +48,13 @@ class ServicesController < PermissionsController
   private
 
   def service_creation_params
+    params.tap do |p|
+      p[:service_creation] ||= {}
+      p[:service_creation][:questionnaire] ||= session[:questionnaire_answers]
+    end
     params.require(
       :service_creation
-    ).permit(:service_name).merge(current_user:)
+    ).permit(:service_name, questionnaire: {}).merge(current_user:)
   end
 
   def page_title

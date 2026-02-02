@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
+  resources :questionnaire, only: [:show, :update] do
+    get :back_to_services, on: :collection,as: :back_to_services
+  end
   namespace :admin do
     resources :overviews, only: [:index]
+    resources :questionnaires, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
     resources :uptime_checks, only: [:index, :create, :destroy]
     resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
@@ -21,6 +25,7 @@ Rails.application.routes.draw do
     get '/export-services', to: 'overviews#export_services'
     get '/export_dev_summary', to: 'overviews#export_dev_form_summary'
     get '/export_prod_summary', to: 'overviews#export_live_form_summary'
+    get '/export-questionnaires', to: 'overviews#export_questionnaires'
 
     root to: "overviews#index"
   end
@@ -43,7 +48,7 @@ Rails.application.routes.draw do
     get  '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: [:index, :edit, :update, :create] do
+  resources :services, only: [:index, :edit, :update, :create, :new] do
     member do
       resources :publish, only: [:index, :create]
       post '/publish_for_review', to: 'publish#publish_for_review'

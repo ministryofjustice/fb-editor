@@ -1,0 +1,2 @@
+class Questionnaire::GreatChoice
+end
