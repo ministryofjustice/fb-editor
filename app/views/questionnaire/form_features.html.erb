@@ -1,6 +1,4 @@
-<% content_for :back_link do %>
-  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:gov_forms)) %>
-<% end %>
+<%= link_to t("actions.back"), questionnaire_path(:gov_forms), class: "govuk-back-link" %>
 
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>

@@ -1,6 +1,4 @@
-<% content_for :back_link do %>
-  <%= render MojForms::BackLinkComponent.new(href: services_path) %>
-<% end %>
+<%= link_to t("actions.back"), services_path, class: "govuk-back-link" %>
 
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>

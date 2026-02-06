@@ -1,7 +1,5 @@
-<% content_for :back_link do %>
-  <% path =  session.dig(:questionnaire_answers, :govuk_forms_ruled_out) == "true" ?  :form_features : :continue  %>
-  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(path)) %>
-<% end %>
+<% path =  session.dig(:questionnaire_answers, :govuk_forms_ruled_out) == "true" ?  :form_features : :continue  %>
+<%= link_to t("actions.back"), questionnaire_path(path), class: "govuk-back-link" %>
 
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>
