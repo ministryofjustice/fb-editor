@@ -4,6 +4,9 @@
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>
   <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+      <%= render 'form_errors', f: f %>
+      <p class="govuk-body"><%= t("questionnaire.#{@page}_form.subheading").html_safe %></p>
+
       <%= f.govuk_collection_radio_buttons :estimated_page_count,
                                            @form.estimated_page_count_options,
                                            :value,

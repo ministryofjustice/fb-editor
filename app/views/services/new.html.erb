@@ -1,4 +1,8 @@
-<% path =  session.dig(:questionnaire_answers, :new_form_reason) == Questionnaire::GetStartedForm::EXPERIMENT ?  :great_choice : :requirements  %>
-<%= link_to t("actions.back"), questionnaire_path(path), class: "govuk-back-link" %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+  <% path =  session.dig(:questionnaire_answers, :new_form_reason) == Questionnaire::GetStartedForm::EXPERIMENT ?  :great_choice : :requirements  %>
+  <%= link_to t("actions.back"), questionnaire_path(path), class: "govuk-back-link" %>
 
-<%= render partial: 'new_form' %>
+  <%= render partial: 'new_form' %>
+  </div>
+</div>
