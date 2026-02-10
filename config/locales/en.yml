@@ -722,7 +722,7 @@ en:
       p1_options:
       - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
       - 'it will not be used for SECRET or TOP SECRET information'
-      - 'It does not exceed our capacity in terms of complexity or transaction volumes'
+      - 'it does not exceed our capacity in terms of complexity or transaction volumes'
       - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
       p2: 'Any form that does not meet these requirements will not be approved to go live.'
       p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'
@@ -733,7 +733,7 @@ en:
       p1_options:
         - 'it could not have been built to a satisfactory level using <a href="https://www.forms.service.gov.uk/" target="_blank">GOV.UK Forms</a>'
         - 'it will not be used for SECRET or TOP SECRET information'
-        - 'It does not exceed our capacity our in terms of complexity or transaction volumes'
+        - 'it does not exceed our capacity our in terms of complexity or transaction volumes'
         - 'it complies with our <a href="https://moj-forms.service.justice.gov.uk/terms-of-use/" target="_blank">terms of use</a>'
       p2: 'Any form that does not meet these requirements will not be approved to go live.'
       p3: 'You can find out more about <a href="https://moj-forms.service.justice.gov.uk/user-guide/#requirements" target="_blank">our requirements for forms</a> in the user guide or you can <a href="https://moj-forms.service.justice.gov.uk/contact/" target="_blank">contact us to discuss your form</a> when you have confirmed your plans.'

@@ -3,7 +3,8 @@
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>
   <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
-    <%= render 'form_errors', f: f %>
+    <%= render 'partials/form_errors', f: f %>
+    <h1 class="govuk-heading-xl"><%= page_heading %></h1>
     <p class="govuk-body"><%= t("questionnaire.#{@page}_form.subheading").html_safe %></p>
 
     <%= f.govuk_collection_check_boxes :required_moj_forms_features,

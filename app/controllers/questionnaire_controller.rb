@@ -62,4 +62,15 @@ class QuestionnaireController < PermissionsController
 
     params.require(param_key).permit(flow.form_attributes(@page))
   end
+
+  def page_heading
+    translation_key = "questionnaire.#{@page}"
+    translation_key += '_form' if %i[get_started gov_forms continue form_features new_form].include?(@page)
+    t("#{translation_key}.heading")
+  end
+  helper_method :page_heading
+
+  def page_title
+    "#{page_heading} - MoJ Forms"
+  end
 end

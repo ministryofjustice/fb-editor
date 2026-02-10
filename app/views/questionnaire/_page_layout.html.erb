@@ -1,10 +1,5 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-  <%
-    translation_key = "questionnaire.#{@page}"
-    translation_key += "_form" if %i[get_started gov_forms continue form_features new_form].include?(@page)
-  %>
-  <h1 class="govuk-heading-xl"><%= t("#{translation_key}.heading") %></h1>
 
   <%= yield %>
 
