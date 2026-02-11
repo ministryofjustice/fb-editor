@@ -1,10 +1,11 @@
-<% content_for :back_link do %>
-  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:gov_forms)) %>
-<% end %>
+<%= link_to t("actions.back"), questionnaire_path(:gov_forms), class: "govuk-back-link" %>
 
 <%= render 'page_layout' do %>
   <% set_form_defaults @form %>
   <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= render 'partials/form_errors', f: f %>
+    <h1 class="govuk-heading-xl"><%= page_heading %></h1>
+    <p class="govuk-body"><%= t("questionnaire.#{@page}_form.subheading").html_safe %></p>
 
     <%= f.govuk_collection_check_boxes :required_moj_forms_features,
                                        @form.required_moj_forms_features_options,
@@ -17,7 +18,7 @@
 
     <%= f.govuk_text_area :govuk_forms_ruled_out_reason,
                           max_chars: Questionnaire::FormFeaturesForm::MAX_CHARS,
-                          label: { text:t("questionnaire.form_features_form.label.text") },
+                          label: { text:t("questionnaire.form_features_form.label.text"), class: "govuk-label govuk-label--m" },
                           hint: { text: t("questionnaire.form_features_form.hint.text") },
                           rows: 9 %>
 

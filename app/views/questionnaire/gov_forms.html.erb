@@ -1,17 +1,19 @@
-<% content_for :back_link do %>
-  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(:get_started)) %>
-<% end %>
+<%= link_to t("actions.back"), questionnaire_path(:get_started), class: "govuk-back-link" %>
 
 <%= render 'page_layout' do %>
-  <ul>
-    <%t('questionnaire.gov_forms_form.subheading_options').each do |option|%>
-      <li><%= option %></li>
-    <%end%>
-  </ul>
-  <p><%=t('questionnaire.gov_forms_form.p1') %></p>
-  <p><%=t('questionnaire.gov_forms_form.p2').html_safe %></p>
   <% set_form_defaults @form %>
   <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+    <%= render 'partials/form_errors', f: f %>
+    <h1 class="govuk-heading-xl"><%= page_heading %></h1>
+    <p class="govuk-body"><%= t("questionnaire.#{@page}_form.subheading").html_safe %></p>
+    <ul>
+      <%t('questionnaire.gov_forms_form.subheading_options').each do |option|%>
+        <li><%= option %></li>
+      <%end%>
+    </ul>
+    <p class="govuk-body"><%=t('questionnaire.gov_forms_form.p1') %></p>
+    <p class="govuk-body"><%=t('questionnaire.gov_forms_form.p2').html_safe %></p>
+
     <%= f.govuk_collection_radio_buttons :govuk_forms_ruled_out,
                                          @form.govuk_forms_ruled_out_options,
                                          :value,

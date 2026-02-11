@@ -27,18 +27,15 @@ class Questionnaire::NewFormForm
 
   validates :estimated_page_count,
             inclusion: { in: ESTIMATED_PAGE_COUNT_OPTIONS,
-                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_page_count.inclusion') },
-            presence: { messgae: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_page_count.blank') }
+                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_page_count.inclusion') }
 
   validates :estimated_first_year_submissions_count,
             inclusion: { in: ESTIMATED_FIRST_YEAR_SUBMISSIONS_COUNT_OPTIONS,
-                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_first_year_submissions_count.inclusion') },
-            presence: { messgae: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_first_year_submissions_count.blank') }
+                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.estimated_first_year_submissions_count.inclusion') }
 
   validates :submission_delivery_method,
             inclusion: { in: SUBMISSION_DELIVERY_METHOD_OPTIONS,
-                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.inclusion') },
-            presence: { messgae: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.blank') }
+                         message: I18n.t('activemodel.errors.models.questionnaire/new_form_form.submission_delivery_method.inclusion') }
 
   def estimated_page_count_options
     ESTIMATED_PAGE_COUNT_OPTIONS.map { |s| OpenStruct.new(value: s, name: I18n.t("activemodel.attributes.questionnaire/new_form_form/estimated_page_count.#{s}")) }

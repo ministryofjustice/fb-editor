@@ -60,6 +60,8 @@ class ServicesController < PermissionsController
   def page_title
     if request.path =~ /edit/
       "Pages flow - #{service.service_name} - MoJ Forms"
+    elsif (request.path =~ /new/) || (request.request_method == 'POST')
+      "#{t('activemodel.attributes.service_creation.service_name')} - MoJ Forms"
     else
       'Your forms - MoJ Forms'
     end

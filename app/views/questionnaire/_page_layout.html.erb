@@ -1,20 +1,18 @@
-<%
-  translation_key = "questionnaire.#{@page}"
-  translation_key += "_form" if %i[get_started gov_forms continue form_features new_form].include?(@page)
-%>
-<h2><%= t("#{translation_key}.heading") %></h2>
-<p><%= t("#{translation_key}.subheading").html_safe %></p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-<%= yield %>
+  <%= yield %>
 
-<%  if Rails.env.development? %>
- <div>
-  <!--Display session attributes-->
-  <strong>Session</strong>
-  <%= render_answers_list(session[:questionnaire_answers]) %>
+  <%  if Rails.env.development? %>
+   <div>
+    <!--Display session attributes-->
+    <strong>Session</strong>
+    <%= render_answers_list(session[:questionnaire_answers]) %>
 
-  <!--Display payload attributes-->
-   <strong>Payload</strong>
-  <%= render_answers_list(Questionnaire::AttributesExtractor.new(session[:questionnaire_answers]).extract!) %>
- </div>
-<% end %>
+    <!--Display payload attributes-->
+     <strong>Payload</strong>
+    <%= render_answers_list(Questionnaire::AttributesExtractor.new(session[:questionnaire_answers]).extract!) %>
+   </div>
+  <% end %>
+  </div>
+</div>

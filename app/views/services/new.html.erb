@@ -1,6 +1,8 @@
-<% content_for :back_link do %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
   <% path =  session.dig(:questionnaire_answers, :new_form_reason) == Questionnaire::GetStartedForm::EXPERIMENT ?  :great_choice : :requirements  %>
-  <%= render MojForms::BackLinkComponent.new(href: questionnaire_path(path)) %>
-<% end %>
+  <%= link_to t("actions.back"), questionnaire_path(path), class: "govuk-back-link" %>
 
-<%= render partial: 'new_form' %>
+  <%= render partial: 'new_form' %>
+  </div>
+</div>
