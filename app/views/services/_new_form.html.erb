@@ -2,7 +2,7 @@
   <%= render 'partials/form_errors', f: f %>
   <div class="govuk-form-group <%= f.object.errors.present? ? 'govuk-form-group--error' : '' %>">
     <h1 class="govuk-label-wrapper" id="create-service-dialog-title" data-node="heading">
-      <%= f.label :service_name, class: "govuk-label govuk-label--l" %>
+      <%= f.label :service_name, class: "govuk-label govuk-label--xl" %>
     </h1>
     <div class="govuk-hint" id="service-name-hint">
       <%= t('services.form_name_change_hint') %>
