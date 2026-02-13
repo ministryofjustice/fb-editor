@@ -8,11 +8,11 @@
       <%= t('services.form_name_change_hint') %>
     </div>
     <% f.object.errors.each do |error| %>
-      <p id="service-name-error" class="govuk-error-message">
+      <p id="service-creation-service-name-error" class="govuk-error-message">
         <span class="govuk-visually-hidden"><%= t('activemodel.errors.assistive_prefix') %></span> <%= error.message %>
       </p>
     <% end %>
-    <%= f.text_field :service_name, class: "govuk-input", 'aria-describedby': "service-name-hint #{ f.object.errors.present? ? ' service-name-error' : ''}" %>
+    <%= f.text_field :service_name, class: "govuk-input", 'aria-describedby': "service-name-hint #{ f.object.errors.present? ? 'service-creation-service-name-error' : ''}" %>
   </div>
   <%= f.button t('services.create'), class: "govuk-button fb-govuk-button", type: 'submit' %>
 <% end %>

@@ -5,11 +5,11 @@
         <%= t('activemodel.errors.summary_title') %>
       </h2>
       <div class="govuk-error-summary__body">
-        <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-name-url-settings-field-error" >
+        <ul class="govuk-list govuk-error-summary__list govuk-error-message" >
           <% f.object.errors.messages.each do |attribute, messages| %>
             <% messages.each do |message| %>
               <li>
-                <a href="#service-<%= attribute.to_s.dasherize %>-field-error">
+                <a href="#<%= f.object.class.name.titleize.parameterize %>-<%= attribute.to_s.dasherize %>-error">
                   <%= message %>
                 </a>
               </li>
