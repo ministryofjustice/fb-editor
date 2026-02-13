@@ -71,4 +71,13 @@ RSpec.describe Questionnaire::GetStartedForm, type: :model do
         .to be_a(OpenStruct)
     end
   end
+
+  describe '#is_valid?' do
+    let(:attributes) { {} }
+
+    it 'returns true' do
+      expect(form.is_valid?({})).to be_truthy
+      expect(form.is_valid?(nil)).to be_truthy
+    end
+  end
 end

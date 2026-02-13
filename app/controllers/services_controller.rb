@@ -7,7 +7,12 @@ class ServicesController < PermissionsController
   end
 
   def new
-    @service_creation = ServiceCreation.new
+    validator = QuestionnaireAnswersValidator.new(session[:questionnaire_answers])
+    if validator.valid?
+      @service_creation = ServiceCreation.new
+    else
+      redirect_to services_path
+    end
   end
 
   def create
