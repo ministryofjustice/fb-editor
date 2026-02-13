@@ -27,4 +27,8 @@ class Questionnaire::FormFeaturesForm
       OpenStruct.new(value: option, name:  I18n.t("activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.#{option}"))
     end
   end
+
+  def is_valid?(questionnaire_answers)
+    questionnaire_answers && questionnaire_answers[:govuk_forms_ruled_out] == 'true'
+  end
 end
