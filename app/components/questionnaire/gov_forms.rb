@@ -17,6 +17,6 @@ class Questionnaire::GovForms
   end
 
   def valid?(questionnaire_answers)
-    questionnaire_answers && questionnaire_answers[:new_form_reason] == Questionnaire::GetStartedForm::BUILDING
+    questionnaire_answers[:new_form_reason] == Questionnaire::GetStartedForm::BUILDING
   end
 end

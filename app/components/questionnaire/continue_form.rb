@@ -17,6 +17,6 @@ class Questionnaire::ContinueForm
   end
 
   def valid?(questionnaire_answers)
-    questionnaire_answers && questionnaire_answers[:govuk_forms_ruled_out] == 'false'
+    questionnaire_answers[:govuk_forms_ruled_out] == 'false'
   end
 end

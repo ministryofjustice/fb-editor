@@ -29,6 +29,6 @@ class Questionnaire::FormFeaturesForm
   end
 
   def valid?(questionnaire_answers)
-    questionnaire_answers && questionnaire_answers[:govuk_forms_ruled_out] == 'true'
+    questionnaire_answers[:govuk_forms_ruled_out] == 'true'
   end
 end
