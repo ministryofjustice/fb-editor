@@ -1,5 +1,5 @@
 class Questionnaire::Requirements
-  def is_valid?(questionnaire_answers)
+  def valid?(questionnaire_answers)
     return false unless questionnaire_answers
 
     %i[
