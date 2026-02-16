@@ -21,7 +21,7 @@ class Questionnaire::GetStartedForm
     end
   end
 
-  def valid?(_questionnaire_answers)
+  def is_valid?(_questionnaire_answers)
     true
   end
 end

@@ -3,16 +3,16 @@ require 'rails_helper'
 RSpec.describe Questionnaire::GreatChoice, type: :model do
   subject(:component) { described_class.new }
 
-  describe '#valid?' do
+  describe '#is_valid?' do
     context 'when questionnaire_answers is nil' do
       it 'returns false' do
-        expect(component.valid?(nil)).to be_falsey
+        expect(component.is_valid?(nil)).to be_falsey
       end
     end
 
     context 'when questionnaire_answers is empty' do
       it 'returns false' do
-        expect(component.valid?({})).to be_falsey
+        expect(component.is_valid?({})).to be_falsey
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe Questionnaire::GreatChoice, type: :model do
       let(:answers) { { new_form_reason: Questionnaire::GetStartedForm::EXPERIMENT } }
 
       it 'returns true' do
-        expect(component.valid?(answers)).to be_truthy
+        expect(component.is_valid?(answers)).to be_truthy
       end
     end
 
@@ -28,7 +28,7 @@ RSpec.describe Questionnaire::GreatChoice, type: :model do
       let(:answers) { { new_form_reason: Questionnaire::GetStartedForm::BUILDING } }
 
       it 'returns false' do
-        expect(component.valid?(answers)).to be_falsey
+        expect(component.is_valid?(answers)).to be_falsey
       end
     end
   end

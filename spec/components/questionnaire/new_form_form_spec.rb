@@ -141,18 +141,18 @@ RSpec.describe Questionnaire::NewFormForm, type: :model do
     end
   end
 
-  describe '#valid?' do
+  describe '#is_valid?' do
     let(:attributes) { {} }
 
     context 'when questionnaire_answers is nil' do
       it 'returns false' do
-        expect(form.valid?(nil)).to be_falsey
+        expect(form.is_valid?(nil)).to be_falsey
       end
     end
 
     context 'when questionnaire_answers is empty' do
       it 'returns false' do
-        expect(form.valid?({})).to be_falsey
+        expect(form.is_valid?({})).to be_falsey
       end
     end
 
@@ -160,7 +160,7 @@ RSpec.describe Questionnaire::NewFormForm, type: :model do
       let(:answers) { { continue_with_moj_forms: 'true' } }
 
       it 'returns true' do
-        expect(form.valid?(answers)).to be_truthy
+        expect(form.is_valid?(answers)).to be_truthy
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Questionnaire::NewFormForm, type: :model do
         end
 
         it 'returns true' do
-          expect(form.valid?(answers)).to be_truthy
+          expect(form.is_valid?(answers)).to be_truthy
         end
       end
 
@@ -189,7 +189,7 @@ RSpec.describe Questionnaire::NewFormForm, type: :model do
         end
 
         it 'returns false' do
-          expect(form.valid?(answers)).to be_falsey
+          expect(form.is_valid?(answers)).to be_falsey
         end
       end
     end
