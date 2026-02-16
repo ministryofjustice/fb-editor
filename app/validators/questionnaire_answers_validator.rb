@@ -10,19 +10,12 @@ class QuestionnaireAnswersValidator
   end
 
   def valid?
-    rules.all?(&:call)
+    answers_present? && (experiment? || required_fields_present?)
   end
 
   private
 
   attr_reader :answers
-
-  def rules
-    [
-      -> { answers_present? },
-      -> { experiment? || required_fields_present? }
-    ]
-  end
 
   def answers_present?
     !answers.nil?
