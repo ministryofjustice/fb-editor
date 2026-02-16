@@ -140,4 +140,52 @@ RSpec.describe Questionnaire::NewFormForm, type: :model do
         .to match_array(described_class::SUBMISSION_DELIVERY_METHOD_OPTIONS)
     end
   end
+
+  describe '#previous_step_completed?' do
+    let(:attributes) { {} }
+
+    context 'when questionnaire_answers is empty' do
+      it 'returns false' do
+        expect(form.previous_step_completed?({})).to be_falsey
+      end
+    end
+
+    context 'when continue_with_moj_forms is "true"' do
+      let(:answers) { { continue_with_moj_forms: 'true' } }
+
+      it 'returns true' do
+        expect(form.previous_step_completed?(answers)).to be_truthy
+      end
+    end
+
+    context 'when continue_with_moj_forms is "false"' do
+      context 'when other required fields are present' do
+        let(:answers) do
+          {
+            continue_with_moj_forms: 'false',
+            required_moj_forms_features: 'some features',
+            govuk_forms_ruled_out_reason: 'some reason'
+          }
+        end
+
+        it 'returns true' do
+          expect(form.previous_step_completed?(answers)).to be_truthy
+        end
+      end
+
+      context 'when other required fields are missing' do
+        let(:answers) do
+          {
+            continue_with_moj_forms: 'false',
+            required_moj_forms_features: '',
+            govuk_forms_ruled_out_reason: ''
+          }
+        end
+
+        it 'returns false' do
+          expect(form.previous_step_completed?(answers)).to be_falsey
+        end
+      end
+    end
+  end
 end

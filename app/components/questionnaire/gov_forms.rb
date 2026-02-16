@@ -15,4 +15,8 @@ class Questionnaire::GovForms
       )
     end
   end
+
+  def previous_step_completed?(questionnaire_answers)
+    questionnaire_answers[:new_form_reason] == Questionnaire::GetStartedForm::BUILDING
+  end
 end

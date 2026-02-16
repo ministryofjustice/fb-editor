@@ -71,4 +71,13 @@ RSpec.describe Questionnaire::GetStartedForm, type: :model do
         .to be_a(OpenStruct)
     end
   end
+
+  describe '#previous_step_completed?' do
+    let(:attributes) { {} }
+
+    it 'returns true' do
+      expect(form.previous_step_completed?({})).to be_truthy
+      expect(form.previous_step_completed?(nil)).to be_truthy
+    end
+  end
 end

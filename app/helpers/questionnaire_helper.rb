@@ -1,16 +1,4 @@
 module QuestionnaireHelper
-  def render_answers_list(answers)
-    return content_tag(:ul) if answers.blank?
-
-    content_tag(:ul) do
-      answers.map { |q, a|
-        content_tag(:li) do
-          content_tag(:strong, "#{q}: ") + a.to_s
-        end
-      }.join.html_safe
-    end
-  end
-
   def set_form_defaults(form)
     form.attributes.each_key do |attribute|
       value = session.dig(:questionnaire_answers, attribute)

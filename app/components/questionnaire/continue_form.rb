@@ -15,4 +15,8 @@ class Questionnaire::ContinueForm
       )
     end
   end
+
+  def previous_step_completed?(questionnaire_answers)
+    questionnaire_answers[:govuk_forms_ruled_out] == 'false'
+  end
 end

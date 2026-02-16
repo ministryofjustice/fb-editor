@@ -94,4 +94,30 @@ RSpec.describe Questionnaire::FormFeaturesForm, type: :model do
         .to be_a(OpenStruct)
     end
   end
+
+  describe '#previous_step_completed?' do
+    let(:attributes) { {} }
+
+    context 'when questionnaire_answers is empty' do
+      it 'returns false' do
+        expect(form.previous_step_completed?({})).to be_falsey
+      end
+    end
+
+    context 'when govuk_forms_ruled_out is "true"' do
+      let(:answers) { { govuk_forms_ruled_out: 'true' } }
+
+      it 'returns true' do
+        expect(form.previous_step_completed?(answers)).to be_truthy
+      end
+    end
+
+    context 'when govuk_forms_ruled_out is "false"' do
+      let(:answers) { { govuk_forms_ruled_out: 'false' } }
+
+      it 'returns false' do
+        expect(form.previous_step_completed?(answers)).to be_falsey
+      end
+    end
+  end
 end

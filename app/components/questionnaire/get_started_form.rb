@@ -20,4 +20,8 @@ class Questionnaire::GetStartedForm
       )
     end
   end
+
+  def previous_step_completed?(_questionnaire_answers)
+    true
+  end
 end
