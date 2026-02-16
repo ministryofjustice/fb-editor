@@ -21,7 +21,7 @@ class Questionnaire::GetStartedForm
     end
   end
 
-  def is_valid?(_questionnaire_answers)
+  def previous_step_completed?(_questionnaire_answers)
     true
   end
 end

@@ -28,7 +28,7 @@ class Questionnaire::FormFeaturesForm
     end
   end
 
-  def is_valid?(questionnaire_answers)
+  def previous_step_completed?(questionnaire_answers)
     questionnaire_answers[:govuk_forms_ruled_out] == 'true'
   end
 end

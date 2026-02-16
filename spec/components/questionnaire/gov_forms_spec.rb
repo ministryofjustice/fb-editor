@@ -61,12 +61,12 @@ RSpec.describe Questionnaire::GovForms, type: :model do
     end
   end
 
-  describe '#is_valid?' do
+  describe '#previous_step_completed?' do
     let(:attributes) { {} }
 
     context 'when questionnaire_answers is empty' do
       it 'returns false' do
-        expect(form.is_valid?({})).to be_falsey
+        expect(form.previous_step_completed?({})).to be_falsey
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.describe Questionnaire::GovForms, type: :model do
       let(:answers) { { new_form_reason: Questionnaire::GetStartedForm::BUILDING } }
 
       it 'returns true' do
-        expect(form.is_valid?(answers)).to be_truthy
+        expect(form.previous_step_completed?(answers)).to be_truthy
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Questionnaire::GovForms, type: :model do
       let(:answers) { { new_form_reason: Questionnaire::GetStartedForm::EXPERIMENT } }
 
       it 'returns false' do
-        expect(form.is_valid?(answers)).to be_falsey
+        expect(form.previous_step_completed?(answers)).to be_falsey
       end
     end
   end

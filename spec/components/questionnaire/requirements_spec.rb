@@ -3,11 +3,10 @@ require 'rails_helper'
 RSpec.describe Questionnaire::Requirements, type: :model do
   subject(:component) { described_class.new }
 
-  describe '#is_valid?' do
-
+  describe '#previous_step_completed?' do
     context 'when questionnaire_answers is empty' do
       it 'returns false' do
-        expect(component.is_valid?({})).to be_falsey
+        expect(component.previous_step_completed?({})).to be_falsey
       end
     end
 
@@ -21,7 +20,7 @@ RSpec.describe Questionnaire::Requirements, type: :model do
       end
 
       it 'returns true' do
-        expect(component.is_valid?(answers)).to be_truthy
+        expect(component.previous_step_completed?(answers)).to be_truthy
       end
     end
 
@@ -35,7 +34,7 @@ RSpec.describe Questionnaire::Requirements, type: :model do
       end
 
       it 'returns false' do
-        expect(component.is_valid?(answers)).to be_falsey
+        expect(component.previous_step_completed?(answers)).to be_falsey
       end
     end
   end

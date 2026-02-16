@@ -7,7 +7,7 @@ class QuestionnaireController < PermissionsController
 
   def show
     @form = flow.form_class(@page).new
-    if @form.is_valid? session[:questionnaire_answers]
+    if @form.previous_step_completed? session[:questionnaire_answers]
       render @page
     else
       redirect_to services_path

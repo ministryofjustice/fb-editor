@@ -49,7 +49,7 @@ class Questionnaire::NewFormForm
     SUBMISSION_DELIVERY_METHOD_OPTIONS.map { |s| OpenStruct.new(value: s, name: I18n.t("activemodel.attributes.questionnaire/new_form_form/submission_delivery_method.#{s}")) }
   end
 
-  def is_valid?(questionnaire_answers)
+  def previous_step_completed?(questionnaire_answers)
     return false unless questionnaire_answers
 
     (questionnaire_answers[:continue_with_moj_forms] == 'true') ||

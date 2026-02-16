@@ -72,12 +72,12 @@ RSpec.describe Questionnaire::GetStartedForm, type: :model do
     end
   end
 
-  describe '#is_valid?' do
+  describe '#previous_step_completed?' do
     let(:attributes) { {} }
 
     it 'returns true' do
-      expect(form.is_valid?({})).to be_truthy
-      expect(form.is_valid?(nil)).to be_truthy
+      expect(form.previous_step_completed?({})).to be_truthy
+      expect(form.previous_step_completed?(nil)).to be_truthy
     end
   end
 end
