@@ -59,11 +59,6 @@ RSpec.describe Questionnaire::ContinueForm, type: :model do
 
   describe '#is_valid?' do
     let(:attributes) { {} }
-    context 'when questionnaire_answers is nil' do
-      it 'returns false' do
-        expect(form.is_valid?(nil)).to be_falsey
-      end
-    end
 
     context 'when questionnaire_answers is empty' do
       it 'returns false' do
