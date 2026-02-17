@@ -31,7 +31,7 @@ RSpec.describe MetadataApiClient::Service do
   end
 
   describe '.all_services' do
-    let(:expected_url) { "#{metadata_api_url}/services?name_query=&page=1&per_page=20" }
+    let(:expected_url) { "#{metadata_api_url}/services?query=&page=1&per_page=20" }
     let(:expected_body) do
       {
         "services": [service_attributes],
