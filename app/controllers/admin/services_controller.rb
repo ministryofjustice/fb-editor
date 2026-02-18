@@ -6,7 +6,7 @@ module Admin
       response = MetadataApiClient::Service.all_services(
         page:,
         per_page:,
-        name_query: params[:search] || ''
+        query: params[:search]&.strip || ''
       )
 
       @services = Kaminari.paginate_array(
