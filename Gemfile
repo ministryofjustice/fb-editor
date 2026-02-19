@@ -13,7 +13,7 @@ gem 'metadata_presenter', '3.4.12'
 
 gem 'activerecord-session_store'
 gem 'administrate', '~> 0.20.1'
-gem 'aws-sdk-s3'
+gem 'aws-sdk-s3', '>= 1.208.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
