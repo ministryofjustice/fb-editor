@@ -55,7 +55,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-console'
-  gem 'site_prism'
+  gem 'site_prism', '>= 5.1.1'
   gem 'webmock'
 end
 
