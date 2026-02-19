@@ -2,7 +2,7 @@ FROM ruby:3.3.10-alpine
 
 ARG UID=1001
 
-RUN apk add git yarn build-base postgresql-contrib postgresql-dev bash libcurl curl
+RUN apk add git yarn build-base postgresql-contrib postgresql-dev bash libcurl curl yaml-dev
 
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/main/ nodejs
 

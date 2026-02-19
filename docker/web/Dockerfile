@@ -4,7 +4,7 @@ ARG UID=1001
 
 RUN apk update
 RUN apk add git yarn build-base postgresql-contrib postgresql-dev \
-      bash libcurl curl
+      bash libcurl curl yaml-dev
 
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/main/ nodejs
 RUN apk add clamav-daemon
