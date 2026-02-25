@@ -7,7 +7,8 @@ ALLOWED_DOMAINS = [
   'judicialombudsman.gov.uk',
   'ospt.gov.uk',
   'gov.sscl.com',
-  'hmcts.net'
+  'hmcts.net',
+  'publicguardian.gov.uk'
 ].freeze
 
 Rails.application.config.allowed_domains = ALLOWED_DOMAINS
