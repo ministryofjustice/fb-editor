@@ -411,6 +411,9 @@ workflows:
       - lint:
           requires:
             - build
+      - security:
+          requires:
+            - build
       - rspec_test:
           requires:
             - build
