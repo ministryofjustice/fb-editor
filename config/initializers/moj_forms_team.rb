@@ -9,7 +9,6 @@ MOJ_FORMS_ADMIN = %w[
   Rhian.Townsend@justice.gov.uk
   Mark.Jefferson1@justice.gov.uk
   Edwin.Bajomo@justice.gov.uk
-  fb-acceptance-tests@digital.justice.gov.uk
 ].freeze
 
 MOJ_FORMS_DEVS = %w[
