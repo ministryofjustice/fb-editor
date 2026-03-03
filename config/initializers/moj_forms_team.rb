@@ -1,4 +1,5 @@
 MOJ_FORMS_ADMIN = %w[
+  fb-acceptance-tests@digital.justice.gov.uk
   mark.jefferson@digital.justice.gov.uk
   daniel.glen@digital.justice.gov.uk
   polly.parker@digital.justice.gov.uk
