@@ -6,6 +6,8 @@ feature 'Visiting admin pages' do
     %w(
       admin
       admin/overviews
+      admin/questionnaires
+      admin/announcements
       admin/services
       admin/users
       admin/publish_services
@@ -22,10 +24,10 @@ feature 'Visiting admin pages' do
   # acceptance test user does not have permission to visit admin dashboards
   scenario 'when logged in' do
     given_I_am_logged_in
-    then_I_should_not_see_the_admin_link
+    then_I_should_see_the_admin_link
     admin_pages.each do |path|
       given_I_visit_an_admin_page(path)
-      then_I_should_be_redirected_to_the_unauthorised_page
+      then_I_should_be_redirected_to_the_page(path)
     end
   end
 
@@ -45,8 +47,16 @@ feature 'Visiting admin pages' do
     expect(page).to have_content(I18n.t('auth.unauthorised.body'))
   end
 
+  def then_I_should_be_redirected_to_the_page(path)
+    expect(page.current_path).to eq("/#{path}")
+  end
+
   def then_I_should_not_see_the_admin_link
     expect(page).to have_no_content(I18n.t('partials.header.admin'))
+  end
+
+  def then_I_should_see_the_admin_link
+    expect(page).to have_content(I18n.t('partials.header.admin'))
   end
 
   def then_I_should_be_redirected_to_the_services_page
