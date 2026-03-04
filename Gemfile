@@ -18,7 +18,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'dotenv', '2.8.1'
-gem 'faraday', '~> 2.0'
+gem 'faraday', '~> 2.14', '>= 2.14.1'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
 gem 'govuk-components', '< 5.0.0'
