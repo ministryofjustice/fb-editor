@@ -13,7 +13,7 @@ module CommonSteps
     I18n.t('warnings.pages_flow.both_pages')
   ].freeze
 
-  def given_I_am_logged_in
+  def given_I_am_logged_in(admin: true)
     editor.load
     page.find(:css, '#main-content', visible: true)
     editor.sign_in_button.click
@@ -33,10 +33,28 @@ module CommonSteps
         "document.getElementById('btn-login').click()"
       )
     else
-      editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
+      if admin
+        editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
+      else
+        editor.sign_in_email_field.set('fb-acceptance-tests-user@digital.justice.gov.uk')
+      end
       editor.sign_in_submit.click
     end
+
+    if admin
+      user_sees_create_new_form_button
+    else
+      user_sees_create_new_form_link
+    end
+  end
+
+  def user_sees_create_new_form_button
     page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
+    expect(page).to have_content(I18n.t('services.create'))
+  end
+
+  def user_sees_create_new_form_link
+    page.find('a.govuk-button.fb-govuk-button', visible: true)
     expect(page).to have_content(I18n.t('services.create'))
   end
 
