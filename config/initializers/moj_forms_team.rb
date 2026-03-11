@@ -1,12 +1,8 @@
 MOJ_FORMS_ADMIN = %w[
   fb-acceptance-tests@digital.justice.gov.uk
   mark.jefferson@digital.justice.gov.uk
-  daniel.glen@digital.justice.gov.uk
-  polly.parker@digital.justice.gov.uk
-  andrew.altwasser@digital.justice.gov.uk
   deepika.patel@digital.justice.gov.uk
   Deepika.Patel@justice.gov.uk
-  Andrew.Altwasser@justice.gov.uk
   Rhian.Townsend@justice.gov.uk
   Mark.Jefferson1@justice.gov.uk
   Edwin.Bajomo@justice.gov.uk
@@ -16,9 +12,9 @@ MOJ_FORMS_DEVS = %w[
   matt.tei@digital.justice.gov.uk
   Matthew.Tei@Justice.gov.uk
   Nick.Preddy@Justice.gov.uk
-  meena.modhvadia@digital.justice.gov.uk
-  Meena.Modhvadia@justice.gov.uk
   Ripan.Kumar@justice.gov.uk
+  Mohammed.Seedat2@justice.gov.uk
+  Daniel.Glen@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS.freeze
