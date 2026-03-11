@@ -68,5 +68,5 @@ group :development do
   gem 'ruby-lsp'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'web-console', '>= 4.3.0'
 end
