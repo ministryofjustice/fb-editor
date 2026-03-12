@@ -13,30 +13,71 @@ module CommonSteps
     I18n.t('warnings.pages_flow.both_pages')
   ].freeze
 
-  def given_I_am_logged_in
+  CREDENTIALS = {
+    admin: {
+      form_email: 'fb-acceptance-tests@digital.justice.gov.uk',
+      ci_email_env: 'ACCEPTANCE_TESTS_USER',
+      ci_password_env: 'ACCEPTANCE_TESTS_PASSWORD'
+    },
+    user: {
+      form_email: 'fb-acceptance-tests-standard@digital.justice.gov.uk',
+      ci_email_env: 'ACCEPTANCE_TESTS_STANDARD_USER',
+      ci_password_env: 'ACCEPTANCE_TESTS_STANDARD_PASSWORD'
+    }
+  }.freeze
+
+  def given_I_am_logged_in(admin: true)
     editor.load
-    page.find(:css, '#main-content', visible: true)
+    page.find('#main-content', visible: true)
     editor.sign_in_button.click
 
-    if ENV['CI_MODE'].present?
-      expect(page).to have_content('Please select the log in option that matches your work email')
+    creds = credentials(admin)
 
-      # Executing javascript directly as the fields and button are hidden on the
-      # login page for the moment
-      editor.execute_script(
-        "document.getElementById('email').value = '#{ENV['ACCEPTANCE_TESTS_USER']}'"
-      )
-      editor.execute_script(
-        "document.getElementById('password').value = '#{ENV['ACCEPTANCE_TESTS_PASSWORD']}'"
-      )
-      editor.execute_script(
-        "document.getElementById('btn-login').click()"
-      )
-    else
-      editor.sign_in_email_field.set('fb-acceptance-tests@digital.justice.gov.uk')
-      editor.sign_in_submit.click
-    end
+    ci_mode? ? login_via_ci(creds) : login_via_form(creds)
+
+    verify_logged_in(admin)
+  end
+
+  def credentials(admin)
+    admin ? CREDENTIALS[:admin] : CREDENTIALS[:user]
+  end
+
+  def ci_mode?
+    ENV['CI_MODE'].present?
+  end
+
+  def login_via_ci(creds)
+    expect(page).to have_content('Please select the log in option that matches your work email')
+
+    # Executing javascript directly as the fields and button are hidden on the
+    # login page for the moment
+    editor.execute_script(
+      "document.getElementById('email').value = '#{ENV[creds[:ci_email_env]]}'"
+    )
+    editor.execute_script(
+      "document.getElementById('password').value = '#{ENV[creds[:ci_password_env]]}'"
+    )
+    editor.execute_script(
+      "document.getElementById('btn-login').click()"
+    )
+  end
+
+  def login_via_form(creds)
+    editor.sign_in_email_field.set(creds[:form_email])
+    editor.sign_in_submit.click
+  end
+
+  def verify_logged_in(admin)
+    admin ? user_sees_create_new_form_button : user_sees_create_new_form_link
+  end
+
+  def user_sees_create_new_form_button
     page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
+    expect(page).to have_content(I18n.t('services.create'))
+  end
+
+  def user_sees_create_new_form_link
+    page.find('a.govuk-button.fb-govuk-button', visible: true)
     expect(page).to have_content(I18n.t('services.create'))
   end
 
