@@ -406,7 +406,7 @@ module Admin
     end
 
     def webhook
-      ENV['SLACK_PUBLISH_FOR_CONTENT_WEBHOOK']
+      ENV['SLACK_PUBLISH_WEBHOOK']
     end
 
     def has_ever_been_live?
