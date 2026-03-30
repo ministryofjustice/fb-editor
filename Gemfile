@@ -65,7 +65,7 @@ group :development do
   gem 'listen', '~> 3.8'
   gem 'rubocop'
   gem 'rubocop-govuk'
-  gem 'ruby-lsp'
+  gem 'ruby-lsp', '>= 0.26.9'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'web-console', '>= 3.3.0'
