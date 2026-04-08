@@ -113,8 +113,8 @@ This is already added on CircleCI but in case you want to run on your local
 machine to point to the test environment you need to run:
 
 ```
-  export ACCEPTANCE_TESTS_USER='my-user'
-  export ACCEPTANCE_TESTS_PASSWORD='my-password'
+  export ACCEPTANCE_TESTS_ADMIN_USER='my-user'
+  export ACCEPTANCE_TESTS_ADMIN_PASSWORD='my-password'
   make acceptance-ci -s
 ```
 

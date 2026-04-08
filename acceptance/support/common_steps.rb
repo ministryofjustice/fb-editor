@@ -16,8 +16,8 @@ module CommonSteps
   CREDENTIALS = {
     admin: {
       form_email: 'fb-acceptance-tests@digital.justice.gov.uk',
-      ci_email_env: 'ACCEPTANCE_TESTS_USER',
-      ci_password_env: 'ACCEPTANCE_TESTS_PASSWORD'
+      ci_email_env: 'ACCEPTANCE_TESTS_ADMIN_USER',
+      ci_password_env: 'ACCEPTANCE_TESTS_ADMIN_PASSWORD'
     },
     user: {
       form_email: 'fb-acceptance-tests-standard@digital.justice.gov.uk',
