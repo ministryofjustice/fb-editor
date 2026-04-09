@@ -39,8 +39,8 @@ copy-testable-branch-env-vars-ci:
 
 .PHONY: add-env-vars-ci
 add-env-vars-ci:
-	echo "ACCEPTANCE_TESTS_USER=${ACCEPTANCE_TESTS_USER}" >> .env.acceptance_tests
-	echo "ACCEPTANCE_TESTS_PASSWORD=${ACCEPTANCE_TESTS_PASSWORD}" >> .env.acceptance_tests
+	echo "ACCEPTANCE_TESTS_ADMIN_USER=${ACCEPTANCE_TESTS_ADMIN_USER}" >> .env.acceptance_tests
+	echo "ACCEPTANCE_TESTS_ADMIN_PASSWORD=${ACCEPTANCE_TESTS_ADMIN_PASSWORD}" >> .env.acceptance_tests
 
 .PHONY: setup-ci
 setup-ci:
