@@ -1,14 +1,15 @@
-MOJ_FORMS_ADMIN = [
-  ENV['ACCEPTANCE_TESTS_ADMIN_USER'],
-  'mark.jefferson@digital.justice.gov.uk',
-  'deepika.patel@digital.justice.gov.uk',
-  'Deepika.Patel@justice.gov.uk',
-  'Rhian.Townsend@justice.gov.uk',
-  'Mark.Jefferson1@justice.gov.uk',
-  'Edwin.Bajomo@justice.gov.uk',
-  'andrew.altwasser@digital.justice.gov.uk',
-  'Andrew.Altwasser@justice.gov.uk'
-].compact.freeze
+MOJ_FORMS_ADMIN = %w[
+  moj-form-acceptance-test-admin@devl.justice.gov.uk
+  fb-acceptance-tests@digital.justice.gov.uk
+  mark.jefferson@digital.justice.gov.uk
+  deepika.patel@digital.justice.gov.uk
+  Deepika.Patel@justice.gov.uk
+  Rhian.Townsend@justice.gov.uk
+  Mark.Jefferson1@justice.gov.uk
+  Edwin.Bajomo@justice.gov.uk
+  andrew.altwasser@digital.justice.gov.uk
+  Andrew.Altwasser@justice.gov.uk
+].freeze
 
 MOJ_FORMS_DEVS = %w[
   matt.tei@digital.justice.gov.uk
