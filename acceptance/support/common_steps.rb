@@ -16,13 +16,13 @@ module CommonSteps
   CREDENTIALS = {
     admin: {
       form_email: 'fb-acceptance-tests@digital.justice.gov.uk',
-      ci_email_env: 'ACCEPTANCE_TESTS_ADMIN_USER',
-      ci_password_env: 'ACCEPTANCE_TESTS_ADMIN_PASSWORD'
+      ci_email: ENV['ACCEPTANCE_TESTS_ADMIN_USER'],
+      ci_password: ENV['ACCEPTANCE_TESTS_ADMIN_PASSWORD']
     },
     user: {
       form_email: 'fb-acceptance-tests-standard@digital.justice.gov.uk',
-      ci_email_env: 'ACCEPTANCE_TESTS_STANDARD_USER',
-      ci_password_env: 'ACCEPTANCE_TESTS_STANDARD_PASSWORD'
+      ci_email: ENV['ACCEPTANCE_TESTS_STANDARD_USER'],
+      ci_password: ENV['ACCEPTANCE_TESTS_STANDARD_PASSWORD']
     }
   }.freeze
 
@@ -52,10 +52,10 @@ module CommonSteps
     # Executing javascript directly as the fields and button are hidden on the
     # login page for the moment
     editor.execute_script(
-      "document.getElementById('email').value = '#{ENV[creds[:ci_email_env]]}'"
+      "document.getElementById('email').value = '#{creds[:ci_email]}'"
     )
     editor.execute_script(
-      "document.getElementById('password').value = '#{ENV[creds[:ci_password_env]]}'"
+      "document.getElementById('password').value = '#{creds[:ci_password]}'"
     )
     editor.execute_script(
       "document.getElementById('btn-login').click()"
