@@ -54,4 +54,4 @@ acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
 assets:
 	yarn install
 	bundle exec rails assets:precompile
-	./bin/webpack
+	yarn build

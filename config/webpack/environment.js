@@ -1,32 +1,5 @@
-const { environment } = require('@rails/webpacker')
-const webpack = require('webpack')
+// webpacker is no longer used in this project. This file is retained as a
+// historical reference only. JavaScript bundling is now handled by
+// jsbundling-rails (esbuild) and the build scripts in package.json.
 
-environment.plugins.prepend('Provide',
-  new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
-  })
-);
-
-// resolve-url-loader must be used before sass-loader
-environment.loaders.get('sass').use.splice(-1, 0, {
-  loader: 'resolve-url-loader'
-});
-
-// the folllwing is required to get sanitise-html to behave correctly as a
-// Common JS require under webpacker
-const nodeModulesLoader = environment.loaders.get('nodeModules')
-if (!Array.isArray(nodeModulesLoader.exclude)) {
-  nodeModulesLoader.exclude = (nodeModulesLoader.exclude == null)
-    ? []
-    : [nodeModulesLoader.exclude]
-}
-nodeModulesLoader.exclude.push(/sanitize-html/);
-
-const aliasConfig = {
-  'jquery': 'jquery/src/jquery',
-  'jquery-ui': 'jquery-ui-dist/jquery-ui.js',
-};
-environment.config.set('resolve.alias', aliasConfig);
-
-module.exports = environment
+module.exports = {}

@@ -4,15 +4,43 @@ New editor for MoJ Forms.
 
 ## Prerequisites
 * Docker
-* Node (version 16.20.1 LTS)
+* Node (version 18.x LTS)
 * Ruby v2.7.7
 * Postgresql
 * Yarn
 
 ## Setup
-Ensure you are running Node version 16.20.1 LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
-`nvm install 16.20.1`
-`nvm use 16.20.1`
+Ensure you are running Node version 18.x LTS. Easiest is to install [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and then:
+`nvm install 18`
+`nvm use 18`
+
+If you want Sentry sourcemap uploads during builds, set the following environment
+variables in CI or your environment before running `yarn build`:
+
+- SENTRY_AUTH_TOKEN
+- SENTRY_ORG
+- SENTRY_PROJECT
+- SENTRY_URL
+
+To add these to CircleCI securely, create a CircleCI context (recommended) and add the variables:
+
+1. Create a context (in CircleCI web UI under Organization settings → Contexts) named `sentry`.
+2. Add the following environment variables to the `sentry` context: `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_URL`.
+
+Alternatively, using the CircleCI CLI:
+
+```bash
+# create the context (web UI required for creation in many orgs) or do in web UI
+circleci context create org/<your-org> sentry
+
+# add variables to the context
+circleci context store-secret org/<your-org> sentry SENTRY_AUTH_TOKEN 'your-token'
+circleci context store-secret org/<your-org> sentry SENTRY_ORG 'your-org'
+circleci context store-secret org/<your-org> sentry SENTRY_PROJECT 'your-project'
+circleci context store-secret org/<your-org> sentry SENTRY_URL 'https://sentry.io'
+```
+
+Once the context is created and contains the variables, the CI jobs (build, rspec_test, js_test, build_web_testable_branch, etc.) will have access to them and the esbuild plugin will upload sourcemaps during `yarn build`.
 
 Install gems:
 `bundle`
@@ -28,7 +56,7 @@ and start the database daemon
 Copy the environment variables into your own .env file:
 `cp .env.development .env`
 
-Compile the necessary assets and run webpack (requires yarn):
+Compile the necessary assets and run the JavaScript bundler (requires yarn):
 `make assets`
 
 Start the Rails server:
@@ -89,7 +117,7 @@ ONE OF THE FOLLOWING
 2. The docker-compose used by the `make setup` command will create and Editor app
    available at http://localhost:9090. By default running `bundle exec rspec acceptance`
    will target this container. This container does not run the webpack-dev-server
-   command therefore you will need to run `./bin/webpack-dev-server` on your local
+   command therefore you will need to run `yarn build:watch` on your local
    machine and then any changes to the JS and assets will be reflected in the Editor
    container running on port 9090.
 
@@ -100,7 +128,7 @@ OR
    the rails server locally using `bundle exec rails s` and then running
    `bundle exec rspec acceptance` will point those acceptance tests at the server
    running on port 3000. Making changes locally to the JS or assets will require
-   you to run webpack-dev-server similarly to the step above: `./bin/webpack-dev-server`
+   you to run a watcher similarly to the step above: `yarn build:watch`
 
 OR
 
