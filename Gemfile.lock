@@ -89,8 +89,8 @@ GEM
       minitest (>= 5.1, < 6)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
     administrate (0.20.1)
       actionpack (>= 6.0, < 8.0)
       actionview (>= 6.0, < 8.0)
@@ -310,7 +310,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.1.0)
-    matrix (0.4.2)
+    matrix (0.4.3)
     metadata_presenter (3.4.13)
       govspeak (~> 7.1)
       govuk_design_system_formbuilder (~> 5.11.0)
@@ -341,7 +341,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.9)
+    nokogiri (1.19.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     notifications-ruby-client (5.4.0)
@@ -590,7 +590,7 @@ GEM
     psych (5.2.3)
       date
       stringio
-    public_suffix (6.0.1)
+    public_suffix (7.0.5)
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -648,7 +648,7 @@ GEM
     rdoc (6.12.0)
       psych (>= 4.0.0)
     redis (4.8.1)
-    regexp_parser (2.10.0)
+    regexp_parser (2.12.0)
     reline (0.6.0)
       io-console (~> 0.5)
     request_store (1.7.0)
@@ -758,11 +758,11 @@ GEM
       terminal-table
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    site_prism (5.1)
+    site_prism (5.2)
       addressable (~> 2.8, >= 2.8.4)
       capybara (~> 3.34)
       site_prism-all_there (> 3, < 5)
-    site_prism-all_there (3.0.6)
+    site_prism-all_there (3.0.8)
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
