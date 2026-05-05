@@ -11,7 +11,7 @@ ruby '3.2.0'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.4.13'
 
-gem 'activerecord-session_store'
+gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 0.20.1'
 gem 'aws-sdk-s3'
 gem 'bootsnap', '>= 1.4.2', require: false
