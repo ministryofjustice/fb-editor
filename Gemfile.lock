@@ -64,13 +64,12 @@ GEM
       activemodel (= 7.2.3.1)
       activesupport (= 7.2.3.1)
       timeout (>= 0.4.0)
-    activerecord-session_store (2.1.0)
-      actionpack (>= 6.1)
-      activerecord (>= 6.1)
+    activerecord-session_store (2.2.0)
+      actionpack (>= 7.0)
+      activerecord (>= 7.0)
       cgi (>= 0.3.6)
-      multi_json (~> 1.11, >= 1.11.2)
       rack (>= 2.0.8, < 4)
-      railties (>= 6.1)
+      railties (>= 7.0)
     activestorage (7.2.3.1)
       actionpack (= 7.2.3.1)
       activejob (= 7.2.3.1)
@@ -326,7 +325,6 @@ GEM
     mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
-    multi_json (1.15.0)
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     net-http (0.6.0)
@@ -838,7 +836,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-session_store
+  activerecord-session_store (~> 2.2.0)
   administrate (~> 0.20.1)
   aws-sdk-s3
   axe-core-rspec
