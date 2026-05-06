@@ -59,7 +59,7 @@ class PublishServiceCreation
       name: name.to_s.upcase
     )
 
-    configuration.decrypt_value if configuration.present?
+    configuration.decrypt_value if configuration.present? # rubocop:disable Rails/Presence
   end
 
   def existing_authentication?(deployment_environment:)
