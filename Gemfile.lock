@@ -871,7 +871,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection (~> 2.0.0)
   pg (>= 0.18, < 2.0)
   puma (~> 6.4)
-  rack (= 3.0.0)
+  rack (~> 3.0.0)
   rails (~> 7.2.3.1)
   redis (~> 4.0)
   rspec-rails
