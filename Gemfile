@@ -48,7 +48,7 @@ group :development, :test do
   gem 'capybara'
   gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', tag: 'v0.11.0'
   gem 'dotenv-rails', groups: %i[development test]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 6.5.0'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '4.15.0'
@@ -64,7 +64,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'listen', '~> 3.8'
   gem 'rubocop'
-  gem 'rubocop-govuk', '~> 5.1.1'
+  gem 'rubocop-govuk', '~> 5.2.0'
   gem 'ruby-lsp'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
