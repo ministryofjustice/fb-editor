@@ -48,7 +48,7 @@ group :development, :test do
   gem 'capybara'
   gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', tag: 'v0.11.0'
   gem 'dotenv-rails', groups: %i[development test]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '~> 6.5.0'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '4.15.0'
