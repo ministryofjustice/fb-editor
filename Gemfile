@@ -64,7 +64,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'listen', '~> 3.8'
   gem 'rubocop'
-  gem 'rubocop-govuk'
+  gem 'rubocop-govuk', '~> 5.1.1'
   gem 'ruby-lsp'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
