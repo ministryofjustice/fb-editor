@@ -159,12 +159,14 @@ module Admin
         approval.value = '1'
         approval.save!
       end
+      # rubocop:disable Rails/Presence
       if revoke.present?
         revoke.delete
       end
       if awaiting.present?
         awaiting.delete
       end
+      # rubocop:enable Rails/Presence
 
       if unpublish_review_service(service_id)
         flash[:success] = 'Service approved for go live - queueing for unpublish'
@@ -198,12 +200,14 @@ module Admin
         revoke.value = '1'
         revoke.save!
       end
+      # rubocop:disable Rails/Presence
       if approval.present?
         approval.delete
       end
       if awaiting.present?
         awaiting.delete
       end
+      # rubocop:enable Rails/Presence
 
       if unpublish_review_service(service_id)
         flash[:success] = 'Service requires changes - queueing for unpublish'
