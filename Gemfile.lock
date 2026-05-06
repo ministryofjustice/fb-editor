@@ -861,7 +861,7 @@ DEPENDENCIES
   faraday (~> 2.0)
   fb-jwt-auth (= 0.10.0)
   govspeak (~> 7.1)
-  govuk-components (< 5.0.0)
+  govuk-components (< 5.0.2)
   govuk_design_system_formbuilder
   govuk_notify_rails (~> 3.0.0)
   hashie
