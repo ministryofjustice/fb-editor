@@ -595,7 +595,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.0.0)
+    rack (3.2.6)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -871,7 +871,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection (~> 2.0.0)
   pg (>= 0.18, < 2.0)
   puma (~> 6.4)
-  rack (~> 3.0.0)
+  rack (~> 3.2.6)
   rails (~> 7.2.3.1)
   redis (~> 4.0)
   rspec-rails
