@@ -1,12 +1,18 @@
 FROM ruby:3.3.11-alpine
 
+# Fixes the Node version issue by copying Node 16 directly from the official image
+COPY --from=node:16-alpine /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:16-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:16-alpine /usr/local/include/node /usr/local/include/node
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-merge-driver /usr/local/bin/npm-merge-driver || true
+
 ARG UID=1001
 
 RUN apk update
 RUN apk add git yarn build-base postgresql-contrib postgresql-dev \
       bash libcurl curl yaml-dev
 
-RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/main/ nodejs
+#RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/main/ nodejs
 RUN apk add clamav-daemon
 RUN apk add --no-cache gcompat
 
