@@ -37,6 +37,7 @@ const DialogForm = require("./component_dialog_form");
 const DefaultController = require("./controller_default");
 const ServicesController = require("./controller_services");
 const Expander = require("./component_expander");
+const DOMPurify = require("dompurify");
 
 const ATTRIBUTE_DEFAULT_TEXT = "fb-default-text";
 
@@ -836,7 +837,7 @@ function enhanceQuestions(view) {
  **/
 function createDialogConfiguration() {
   var $template = $("[data-component-template=DialogConfiguration]");
-  var $node = $($template.text());
+  var $node = $(DOMPurify.sanitize($template.text()));
   return new Dialog($node, {
     autoOpen: false,
     closeText: this.text.dialogs.button_close,

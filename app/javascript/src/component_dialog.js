@@ -89,6 +89,8 @@ const { mergeObjects, safelyActivateFunction } = require("./utilities");
 
 const DialogActivator = require("./component_dialog_activator");
 
+const DOMPurify = require("dompurify");
+
 class Dialog {
   #className = "Dialog";
   #config;
@@ -158,7 +160,7 @@ class Dialog {
     let content = mergeObjects(this.#defaultText, text);
 
     this.#elements.heading.text(content.heading);
-    this.#elements.content.html(content.content);
+    this.#elements.content.html(DOMPurify.sanitize(content.content));
     this.#elements.confirm.text(content.confirm);
     this.#elements.cancel.text(content.cancel);
   }
