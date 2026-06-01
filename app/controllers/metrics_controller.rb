@@ -1,4 +1,6 @@
 class MetricsController < ActionController::Base
+  protect_from_forgery with: :exception
+
   def show
     response.set_header('Content-Type', 'text/plain; version=0.0.4')
     @stats = [
