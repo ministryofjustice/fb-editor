@@ -90,7 +90,15 @@ class PagesController < FormController
   end
 
   def page_attributes
-    params.require(:page).permit!
+    params.require(:page).permit(
+      :heading,
+      :body,
+      :lede,
+      :url,
+      :section_heading,
+      components: {},
+      extra_components: {}
+    )
   end
 
   def common_params

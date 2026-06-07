@@ -100,7 +100,15 @@ class BranchesController < FormController
   end
 
   def branch_params
-    params.require(:branch).permit!.merge(branch_attributes)
+    params.require(:branch).permit(
+      :title,
+      :default_next,
+      :previous_flow_uuid,
+      conditionals_attributes: [
+        :next,
+        { expressions_attributes: %i[operator page component field] }
+      ]
+    ).merge(branch_attributes)
   end
 
   def previous_flow_uuid
