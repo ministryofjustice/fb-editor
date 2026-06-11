@@ -5,7 +5,7 @@ module MojForms
       attr_reader :expression, :iteration
 
       def initialize(expression:, expression_iteration:)
-        super
+        super()
         @expression = expression
         @iteration = expression_iteration
       end

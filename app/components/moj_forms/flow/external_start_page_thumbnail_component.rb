@@ -3,6 +3,7 @@ module MojForms
     class ExternalStartPageThumbnailComponent < ViewComponent::Base
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
+      delegate :image_pack_tag, to: :helpers
       attr_reader :title, :thumbnail, :url
 
       def thumbnail_path

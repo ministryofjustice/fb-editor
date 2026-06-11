@@ -837,7 +837,7 @@ DEPENDENCIES
   faraday (~> 2.14.1)
   fb-jwt-auth (= 0.10.0)
   govspeak (~> 7.1)
-  govuk-components (~> 5.0)
+  govuk-components (~> 5.13)
   govuk_design_system_formbuilder
   govuk_notify_rails (~> 3.0.0)
   hashie
@@ -868,6 +868,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.1.0)
   turbo-rails (~> 2.0.0)
   tzinfo-data
+  view_component (>= 4.0, < 4.2)
   web-console (>= 3.3.0)
   webmock (~> 3.25.2)
   webpacker (~> 5.4)

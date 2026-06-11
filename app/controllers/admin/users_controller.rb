@@ -33,12 +33,14 @@ module Admin
                   end
 
       page = Administrate::Page::Collection.new(dashboard, order:)
+      filters = Administrate::Search.new(scoped_resource, dashboard, search_term).valid_filters
 
       render locals: {
         resources:,
         search_term:,
         page:,
-        show_search_bar: show_search_bar?
+        show_search_bar: show_search_bar?,
+        filters:
       }
     end
     #

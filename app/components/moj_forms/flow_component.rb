@@ -3,7 +3,7 @@ module MojForms
     delegate :service, to: :helpers
 
     def initialize(flow:)
-      super
+      super()
       @flow = flow
     end
   end

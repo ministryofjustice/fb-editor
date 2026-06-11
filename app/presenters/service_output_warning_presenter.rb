@@ -1,5 +1,6 @@
 class ServiceOutputWarningPresenter
   include ActionView::Helpers
+  include GovukVisuallyHiddenHelper
   include GovukLinkHelper
 
   def initialize(service_id:, deployment_environment:, messages:)
