@@ -76,7 +76,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - run: bundle exec brakeman -q --no-pager -i brakeman.ignore -i EOLRails
+      - run: bundle exec brakeman -q --no-pager -i brakeman.ignore --except EOLRails
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
