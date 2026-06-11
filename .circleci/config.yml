@@ -468,6 +468,10 @@ workflows:
             - acceptance_tests_eks
             - deploy_to_test_eks
             - production_deploy_approval
+          filters:
+            branches:
+              only:
+                - main
   deploy_testable_branch:
     jobs:
       - build:
