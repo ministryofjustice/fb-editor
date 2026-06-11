@@ -17,7 +17,7 @@ parameters:
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - aws-cli/setup:
@@ -36,7 +36,7 @@ jobs:
             - bash.env
   build:
     docker: &docker_image
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -62,7 +62,7 @@ jobs:
           include_job_number_field: false
   lint:
     docker:
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -72,7 +72,7 @@ jobs:
       - slack/status: *slack_status
   security:
     docker:
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -80,15 +80,15 @@ jobs:
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
       - environment:
           POSTGRES_DB: editor_local
           POSTGRES_PASSWORD: password
           POSTGRES_USER: postgres
-        image: 'cimg/postgres:12.9'
+        image: "cimg/postgres:12.9"
     environment: &test_environment
-      BUNDLE_JOBS: '3'
-      BUNDLE_RETRY: '3'
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
       PGHOST: 127.0.0.1
       PGPASSWORD: password
       PGUSER: postgres
@@ -102,7 +102,7 @@ jobs:
           pkg-manager: yarn
       - run: &wait_for_db
           name: Wait for DB
-          command: 'dockerize -wait tcp://localhost:5432 -timeout 1m'
+          command: "dockerize -wait tcp://localhost:5432 -timeout 1m"
       - run: &db_setup
           name: Database setup
           command: |
@@ -115,7 +115,7 @@ jobs:
       - slack/status: *slack_status
   js_test:
     docker:
-      - image: 'cimg/ruby:3.3-node'
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - run: *node_version
@@ -146,7 +146,7 @@ jobs:
             echo "export BUILD_SHA=$CIRCLE_SHA1" >> $BASH_ENV
       - run: &deploy_scripts
           name: cloning deploy scripts
-          command: 'git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts'
+          command: "git clone git@github.com:ministryofjustice/fb-deploy.git deploy-scripts"
       - run:
           name: build testable editor web docker images
           environment:
@@ -180,7 +180,7 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
-          command: './deploy-scripts/bin/build'
+          command: "./deploy-scripts/bin/build"
       - run:
           name: Restore env
           command: |
@@ -212,11 +212,11 @@ jobs:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
-      - image: 'cimg/ruby:3.2.0-node'
+      - image: "cimg/ruby:3.2.0-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -224,7 +224,7 @@ jobs:
       - run: *deploy_scripts
       - run:
           name: set kubernetes context for saas namespace
-          command: './deploy-scripts/bin/set_testable_editors_context'
+          command: "./deploy-scripts/bin/set_testable_editors_context"
       - run:
           name: remove testable editors
           command: bundle exec rails remove:testable_editors
@@ -245,7 +245,7 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: web
-          command: './deploy-scripts/bin/build'
+          command: "./deploy-scripts/bin/build"
       - slack/status: *slack_status
   build_workers_image:
     working_directory: ~/circle/git/fb-editor
@@ -270,7 +270,7 @@ jobs:
           environment:
             ENVIRONMENT_NAME: test
             IMAGE_TYPE: workers
-          command: './deploy-scripts/bin/build'
+          command: "./deploy-scripts/bin/build"
       - run:
           name: Restore env
           command: |
@@ -292,7 +292,7 @@ jobs:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: test
             K8S_NAMESPACE: formbuilder-saas-test
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status: *slack_status
   acceptance_tests_eks:
     docker: *test_image
@@ -379,7 +379,7 @@ jobs:
             APPLICATION_NAME: fb-editor
             PLATFORM_ENV: live
             K8S_NAMESPACE: formbuilder-saas-live
-          command: './deploy-scripts/bin/deploy-eks'
+          command: "./deploy-scripts/bin/deploy-eks"
       - slack/status:
           only_for_branches: main
           success_message: ":rocket:  Successfully deployed to Live (eks) :guitar:"
@@ -431,7 +431,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - run-only-this-branch
       - build_workers_image:
           context: *context
           requires:
@@ -443,7 +443,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - run-only-this-branch
       - deploy_to_test_eks:
           context: *context
           requires:
