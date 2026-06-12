@@ -7,7 +7,7 @@ namespace :db do
     rotate_records = lambda do |model, attributes, old_enc, new_enc|
       model.transaction do
         model.find_each do |record|
-          updates = attributes do |attribute|
+          updates = attributes.map do |attribute|
             encrypted_value = record.attributes_before_type_cast[attribute]
 
             decrypted_value = old_enc.decrypt(encrypted_value)
