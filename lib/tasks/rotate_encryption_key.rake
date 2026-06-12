@@ -1,56 +1,48 @@
 namespace :db do
   desc 'Rotate encryption keys'
-  task rotate_encryption_key: [:environment] do
-    ## Identity ##
-    Identity.transaction do
-      Identity.find_each do |identity|
-        name = identity.attributes_before_type_cast['name']
-        email = identity.attributes_before_type_cast['email']
+  task rotate_encryption_key: :environment do
+    old_encryption = EncryptionService.new
+    new_encryption = NewEncryptionService.new
 
-        decrypted_name = EncryptionService.new.decrypt(name)
-        decrypted_email = EncryptionService.new.decrypt(email)
+    rotate_records = lambda do |model, attributes, old_enc, new_enc|
+      model.transaction do
+        model.find_each do |record|
+          updates = attributes.to_h do |attribute|
+            encrypted_value = record.attributes_before_type_cast[attribute]
 
-        new_encrypted_name = NewEncryptionService.new.encrypt(decrypted_name)
-        new_encrypted_email = NewEncryptionService.new.encrypt(decrypted_email)
+            decrypted_value =
+              old_enc.decrypt(encrypted_value)
 
-        identity.update_columns(
-          name: new_encrypted_name,
-          email: new_encrypted_email
-        )
+            [
+              attribute,
+              new_enc.encrypt(decrypted_value)
+            ]
+          end
+
+          record.update_columns(updates)
+        end
       end
     end
 
-    ## User ##
-    User.transaction do
-      User.find_each do |user|
-        name = user.attributes_before_type_cast['name']
-        email = user.attributes_before_type_cast['email']
+    rotate_records.call(
+      Identity,
+      %w[name email],
+      old_encryption,
+      new_encryption
+    )
 
-        decrypted_name = EncryptionService.new.decrypt(name)
-        decrypted_email = EncryptionService.new.decrypt(email)
+    rotate_records.call(
+      User,
+      %w[name email],
+      old_encryption,
+      new_encryption
+    )
 
-        new_encrypted_name = NewEncryptionService.new.encrypt(decrypted_name)
-        new_encrypted_email = NewEncryptionService.new.encrypt(decrypted_email)
-
-        user.update_columns(
-          name: new_encrypted_name,
-          email: new_encrypted_email
-        )
-      end
-    end
-
-    ## ServiceConfiguration ##
-    ServiceConfiguration.transaction do
-      ServiceConfiguration.find_each do |service_configuration|
-        value = service_configuration.attributes_before_type_cast['value']
-
-        decrypted_value = EncryptionService.new.decrypt(value)
-        new_encrypted_value = NewEncryptionService.new.encrypt(decrypted_value)
-
-        service_configuration.update_columns(
-          value: new_encrypted_value
-        )
-      end
-    end
+    rotate_records.call(
+      ServiceConfiguration,
+      %w[value],
+      old_encryption,
+      new_encryption
+    )
   end
 end
