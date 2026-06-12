@@ -5,7 +5,7 @@ module MojForms
       attr_reader :branch, :conditional, :index
 
       def initialize(conditional:, conditional_iteration:, branch:)
-        super
+        super()
         @branch = branch
         @conditional = conditional
         @index = conditional_iteration.index
