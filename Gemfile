@@ -38,6 +38,7 @@ gem 'sentry-delayed_job', '~> 5.14'
 gem 'sentry-rails', '~> 5.24.0'
 gem 'sentry-ruby', '~> 5.14'
 gem 'turbo-rails', '~> 2.0.0'
+gem 'turnout'
 gem 'tzinfo-data'
 gem 'webpacker', '~> 5.4'
 
