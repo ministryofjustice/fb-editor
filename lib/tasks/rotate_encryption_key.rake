@@ -4,10 +4,11 @@ namespace :db do
     rotate_records = lambda do |model, attributes, old_enc = EncryptionService.new, new_enc = NewEncryptionService.new|
       model.transaction do
         records = model.all
-        count = records.count
 
-        puts "\nEncrypting #{model}: #{count} records\n"
-        records.each do |record|
+        puts "\nEncrypting #{model}: #{records.count} records\n"
+
+        count = 0
+        records.each_with_index do |record, index|
           updates = attributes.map do |attribute|
             encrypted_value = record.attributes_before_type_cast[attribute]
             decrypted_value = old_enc.decrypt(encrypted_value)
@@ -20,6 +21,7 @@ namespace :db do
           end
 
           record.update_columns(updates.to_h)
+          count = index + 1
         end
         puts "Updated #{model}: #{count} records"
       end
