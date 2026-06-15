@@ -6,9 +6,12 @@ namespace :db do
 
     rotate_records = lambda do |model, attributes, old_enc, new_enc|
       model.transaction do
-        model.find_each do |record|
+        records = model.all
+        count = records.count
+
+        puts "\nEncrypting #{model}: #{count} records\n"
+        records.each do |record|
           updates = attributes.map do |attribute|
-            puts "\n\nModel: #{model}, Attribute: #{attribute}\n"
             encrypted_value = record.attributes_before_type_cast[attribute]
             decrypted_value = old_enc.decrypt(encrypted_value)
             new_encrypted_value = new_enc.encrypt(decrypted_value)
@@ -19,8 +22,9 @@ namespace :db do
             ]
           end
 
-          puts record.update_columns(updates.to_h)
+          record.update_columns(updates.to_h)
         end
+        puts "Updated #{model}: #{count} records"
       end
     end
 
