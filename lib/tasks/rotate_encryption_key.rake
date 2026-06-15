@@ -1,10 +1,7 @@
 namespace :db do
   desc 'Rotate encryption keys'
   task rotate_encryption_key: :environment do
-    old_encryption = EncryptionService.new
-    new_encryption = NewEncryptionService.new
-
-    rotate_records = lambda do |model, attributes, old_enc, new_enc|
+    rotate_records = lambda do |model, attributes, old_enc = EncryptionService.new, new_enc = NewEncryptionService.new|
       model.transaction do
         records = model.all
         count = records.count
@@ -30,23 +27,17 @@ namespace :db do
 
     rotate_records.call(
       Identity,
-      %w[name email],
-      old_encryption,
-      new_encryption
+      %w[name email]
     )
 
     rotate_records.call(
       User,
-      %w[name email],
-      old_encryption,
-      new_encryption
+      %w[name email]
     )
 
     rotate_records.call(
       ServiceConfiguration,
-      %w[value],
-      old_encryption,
-      new_encryption
+      %w[value]
     )
   end
 end
