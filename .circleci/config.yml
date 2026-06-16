@@ -431,7 +431,7 @@ workflows:
           filters:
             branches:
               only:
-                - run-only-this-branch
+                - main
       - build_workers_image:
           context: *context
           requires:
@@ -443,7 +443,7 @@ workflows:
           filters:
             branches:
               only:
-                - run-only-this-branch
+                - main
       - deploy_to_test_eks:
           context: *context
           requires:
@@ -457,7 +457,6 @@ workflows:
           type: approval
           requires:
             - acceptance_tests_eks
-            - deploy_to_test_eks
           filters:
             branches:
               only:
@@ -465,8 +464,6 @@ workflows:
       - deploy_to_live_eks:
           context: *context
           requires:
-            - acceptance_tests_eks
-            - deploy_to_test_eks
             - production_deploy_approval
           filters:
             branches:
