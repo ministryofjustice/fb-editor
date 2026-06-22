@@ -1,5 +1,6 @@
 class SubmissionPagesPresenter
   include ActionView::Helpers
+  include GovukVisuallyHiddenHelper
   include GovukLinkHelper
   attr_reader :messages, :service
 

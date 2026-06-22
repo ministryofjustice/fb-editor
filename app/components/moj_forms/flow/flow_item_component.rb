@@ -4,6 +4,7 @@ module MojForms
       with_collection_parameter :item
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
+      delegate :image_pack_tag, to: :helpers
       attr_reader :item, :html_attributes
 
       def initialize(item:, classes: [], html_attributes: {})

@@ -4,7 +4,7 @@ module MojForms
       attr_reader :branch
 
       def initialize(branch:)
-        super
+        super()
         @branch = branch
       end
 

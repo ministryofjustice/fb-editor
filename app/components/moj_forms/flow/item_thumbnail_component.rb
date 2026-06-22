@@ -3,10 +3,11 @@ module MojForms
     class ItemThumbnailComponent < ViewComponent::Base
       delegate :service, to: :helpers
       delegate :payment_link_enabled?, to: :helpers
+      delegate :image_pack_tag, to: :helpers
       attr_reader :title, :thumbnail, :url
 
       def initialize(title:, thumbnail:, url:)
-        super
+        super()
         @title = title
         @thumbnail = thumbnail
         @url = url

@@ -4,7 +4,7 @@ module MojForms
       attr_reader :title, :url
 
       def initialize(title:, url:)
-        super
+        super()
         @title = title
         @url = url
       end
