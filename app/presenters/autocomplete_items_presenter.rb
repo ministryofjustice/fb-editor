@@ -1,6 +1,5 @@
 class AutocompleteItemsPresenter
   include ActionView::Helpers
-  include GovukVisuallyHiddenHelper
   include GovukLinkHelper
   attr_reader :autocomplete_items, :grid, :deployment_environment
 
