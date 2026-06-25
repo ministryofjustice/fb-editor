@@ -204,9 +204,9 @@ class EditorApp < SitePrism::Page
   data_content_id :page_send_body, 'page[send_body]'
 
   elements :add_content_area_buttons, :link, 'Add content area'
-  data_content_id :first_component, 'page[components[0]]'
-  data_content_id :second_component, 'page[components[1]]'
-  data_content_id :first_extra_component, 'page[extra_components[0]]'
+  data_content_id :first_component, 'page[components][0]'
+  data_content_id :second_component, 'page[components][1]'
+  data_content_id :first_extra_component, 'page[extra_components][0]'
   elements :editable_content_areas, 'editable-content[data-config]'
   element :last_editable_content_area, 'editable-content[data-config]:last-of-type'
 

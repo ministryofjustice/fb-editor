@@ -15,7 +15,7 @@
   <% @page.editable_attributes.each do |key, value| %>
     <% if key == :components || key == :extra_components %>
       <% value.each_with_index do |hash, index| %>
-        <%= f.hidden_field "#{key}[#{index}]", value: hash.to_json, id: "#{key}_#{index}" %>
+        <%= f.hidden_field "#{key}[#{index}]", name: "page[#{key}][#{index}]", value: hash.to_json, id: "#{key}_#{index}" %>
       <% end %>
     <% else %>
       <%= f.hidden_field key, value: value %>

@@ -304,7 +304,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 138.0.7204.183
+          chrome-version: 149.0.7827.200
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -339,7 +339,7 @@ jobs:
       - ruby/install-deps
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: 138.0.7204.100
+          chrome-version: 149.0.7827.200
       - browser-tools/install-chromedriver
       - run:
           name: Check browser tools install
@@ -431,7 +431,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1150-rails-8-upgrade
       - build_workers_image:
           context: *context
           requires:
@@ -443,7 +443,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1150-rails-8-upgrade
       - deploy_to_test_eks:
           context: *context
           requires:
