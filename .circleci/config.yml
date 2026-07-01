@@ -431,7 +431,7 @@ workflows:
           filters:
             branches:
               only:
-                - CDPTKAN-1150-rails-8-upgrade
+                - main
       - build_workers_image:
           context: *context
           requires:
@@ -443,7 +443,7 @@ workflows:
           filters:
             branches:
               only:
-                - CDPTKAN-1150-rails-8-upgrade
+                - main
       - deploy_to_test_eks:
           context: *context
           requires:

@@ -5,11 +5,11 @@ ruby '3.3.11'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-gem 'metadata_presenter',
-    github: 'ministryofjustice/fb-metadata-presenter',
-    branch: 'CDPTKAN-1150-rails-8-upgrade'
+# gem 'metadata_presenter',
+#     github: 'ministryofjustice/fb-metadata-presenter',
+#     branch: 'test-footer-partial'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-# gem 'metadata_presenter', '3.4.15'
+gem 'metadata_presenter', '3.4.16'
 
 gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
