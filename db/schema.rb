@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_04_17_133049) do
+ActiveRecord::Schema[8.1].define(version: 2024_04_17_133049) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
-  enable_extension "plpgsql"
 
   create_table "announcements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "revoked_at"
-    t.uuid "created_by_id", null: false
-    t.uuid "revoked_by_id"
-    t.string "title", null: false
     t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.uuid "created_by_id", null: false
     t.date "date_from", null: false
     t.date "date_to"
+    t.datetime "revoked_at"
+    t.uuid "revoked_by_id"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_announcements_on_created_by_id"
     t.index ["revoked_by_id"], name: "index_announcements_on_revoked_by_id"
   end
@@ -36,34 +36,34 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_17_133049) do
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
-    t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "failed_at", precision: nil
     t.text "handler", null: false
     t.text "last_error"
-    t.datetime "run_at", precision: nil
     t.datetime "locked_at", precision: nil
-    t.datetime "failed_at", precision: nil
     t.string "locked_by"
+    t.integer "priority", default: 0, null: false
     t.string "queue"
-    t.datetime "created_at"
+    t.datetime "run_at", precision: nil
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "from_addresses", comment: "DEPRECATED: We have kept the table to ensure backwards compatibility.", force: :cascade do |t|
-    t.uuid "service_id", null: false
-    t.string "email", null: false
-    t.integer "status", default: 0
     t.datetime "created_at", null: false
+    t.string "email", null: false
+    t.uuid "service_id", null: false
+    t.integer "status", default: 0
     t.datetime "updated_at", null: false
     t.index ["service_id"], name: "index_from_addresses_on_service_id"
   end
 
   create_table "identities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email"
+    t.string "name"
     t.string "provider"
     t.string "uid"
-    t.string "name"
-    t.string "email"
     t.uuid "user_id"
     t.index ["email"], name: "index_identities_on_email"
     t.index ["provider", "uid"], name: "index_identities_on_provider_and_uid"
@@ -71,14 +71,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_17_133049) do
   end
 
   create_table "publish_services", force: :cascade do |t|
+    t.uuid "autocomplete_ids", default: [], array: true
+    t.datetime "created_at", null: false
     t.string "deployment_environment", null: false
     t.uuid "service_id", null: false
     t.string "status", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "version_id"
     t.uuid "user_id"
-    t.uuid "autocomplete_ids", default: [], array: true
+    t.uuid "version_id"
     t.index ["service_id", "deployment_environment"], name: "index_publish_services_on_service_id_and_deployment_environment"
     t.index ["service_id", "status", "deployment_environment"], name: "index_publish_services_on_service_status_deployment"
     t.index ["service_id"], name: "index_publish_services_on_service_id"
@@ -86,53 +86,53 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_17_133049) do
   end
 
   create_table "service_configurations", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "value", null: false
-    t.string "deployment_environment", null: false
-    t.uuid "service_id"
     t.datetime "created_at", null: false
+    t.string "deployment_environment", null: false
+    t.string "name", null: false
+    t.uuid "service_id"
     t.datetime "updated_at", null: false
+    t.string "value", null: false
     t.index ["service_id", "deployment_environment", "name"], name: "index_service_configurations_on_service_deployment_name"
     t.index ["service_id", "deployment_environment"], name: "index_service_configurations_on_service_id_and_deployment_env"
     t.index ["service_id"], name: "index_service_configurations_on_service_id"
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
     t.datetime "created_at", null: false
+    t.text "data"
+    t.string "session_id", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "submission_settings", force: :cascade do |t|
-    t.boolean "send_email", default: false
-    t.string "deployment_environment"
-    t.uuid "service_id"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "service_csv_output", default: false
-    t.boolean "send_confirmation_email", default: false
+    t.string "deployment_environment"
     t.boolean "payment_link", default: false
+    t.boolean "send_confirmation_email", default: false
+    t.boolean "send_email", default: false
     t.boolean "send_to_graph_api"
+    t.boolean "service_csv_output", default: false
+    t.uuid "service_id"
+    t.datetime "updated_at", null: false
     t.index ["service_id", "deployment_environment"], name: "submission_settings_id_and_environment"
     t.index ["service_id"], name: "index_submission_settings_on_service_id"
   end
 
   create_table "uptime_checks", force: :cascade do |t|
-    t.uuid "service_id", null: false
     t.string "check_id", null: false
     t.datetime "created_at", null: false
+    t.uuid "service_id", null: false
     t.datetime "updated_at", null: false
     t.index ["service_id"], name: "index_uptime_checks_on_service_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email"
     t.string "name"
     t.string "timezone", default: "London"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 

@@ -72,7 +72,7 @@ module MultipleQuestionsPageHelper
   def and_I_change_the_component(question, component:, tag:, options: nil)
     element = editor.find(
       :xpath,
-      "//*[@data-fb-content-id='page[components[#{component}]]']")
+      "//*[@data-fb-content-id='page[components][#{component}]']")
     question_name = element.find("#{tag} .EditableElement")
     question_name.set(question)
 

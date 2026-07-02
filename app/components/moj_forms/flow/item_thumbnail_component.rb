@@ -6,7 +6,7 @@ module MojForms
       attr_reader :title, :thumbnail, :url
 
       def initialize(title:, thumbnail:, url:)
-        super
+        super()
         @title = title
         @thumbnail = thumbnail
         @url = url
@@ -18,9 +18,9 @@ module MojForms
 
       def call
         link_to url, class: "flow-thumbnail #{thumbnail} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
-          concat image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
+          concat helpers.image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
           concat tag.span(title, class: 'title')
-          concat image_pack_tag(thumbnail_path, class: 'body', alt: '')
+          concat helpers.image_pack_tag(thumbnail_path, class: 'body', alt: '')
         end
       end
     end
