@@ -148,7 +148,7 @@ RSpec.describe 'Move spec', type: :request do
         '<option value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" data-conditional-uuid="" selected="selected">'
       end
       let(:previous_uuid_field) do
-        '<input autocomplete="off" value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" type="hidden" name="move[previous_flow_uuid]" id="move_previous_flow_uuid" />'
+        '<input value="1d60bef0-100a-4f3b-9e6f-1711e8adda7e" autocomplete="off" type="hidden" name="move[previous_flow_uuid]" id="move_previous_flow_uuid" />'
       end
 
       it 'returns the list of possible targets' do
@@ -195,7 +195,7 @@ RSpec.describe 'Move spec', type: :request do
         '<option value="a02f7073-ba5a-459d-b6b9-abe548c933a6" data-conditional-uuid="0bdc8fde-be62-4945-8496-854e867a665d" selected="selected">'
       end
       let(:previous_conditional_uuid_field) do
-        '<input autocomplete="off" value="0bdc8fde-be62-4945-8496-854e867a665d" type="hidden" name="move[previous_conditional_uuid]" id="move_previous_conditional_uuid" />'
+        '<input value="0bdc8fde-be62-4945-8496-854e867a665d" autocomplete="off" type="hidden" name="move[previous_conditional_uuid]" id="move_previous_conditional_uuid" />'
       end
 
       it 'sets the selected attribute for the previous target' do
