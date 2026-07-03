@@ -216,7 +216,7 @@ jobs:
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
-      - image: "cimg/ruby:3.2.0-node"
+      - image: "cimg/ruby:3.3-node"
     steps:
       - checkout
       - ruby/install-deps
