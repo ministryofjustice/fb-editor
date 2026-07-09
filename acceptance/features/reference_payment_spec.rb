@@ -106,7 +106,7 @@ feature 'Reference Payment Page' do
     expect(page).to_not have_content('{{payment_link}}')
   end
 
-  xscenario 'confirmation page styling updates correctly' do
+  scenario 'confirmation page styling updates correctly' do
     with_setting(reference_number_checkbox, true)
     with_setting(payment_link_checkbox, true)
     then_I_should_see_text(payment_link_label)
