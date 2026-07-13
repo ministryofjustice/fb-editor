@@ -105,7 +105,7 @@ feature 'Conditional content' do
       then_I_can_see_the_hidden_button_for(editor.last_editable_content_area)
     end
 
-    xscenario 'setting to conditionally display' do
+    scenario 'setting to conditionally display' do
       when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
@@ -151,7 +151,7 @@ feature 'Conditional content' do
       then_I_can_see_the_show_if_button_for(editor.last_editable_content_area)
     end
 
-    xscenario 'loads state from component config' do
+    scenario 'loads state from component config' do
       when_I_edit_the_page(title: 'Conditional content')
       and_I_add_a_content_component(content: 'You will maybe see this content')
       and_I_want_to_edit_content_visibility_for(editor.last_editable_content_area)
