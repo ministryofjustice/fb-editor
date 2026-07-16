@@ -3,6 +3,7 @@ Capybara.register_driver :selenium do |app|
     o.add_argument '--enable-features=NetworkService,NetworkServiceInProcess'
     o.add_argument '--guest'
     o.add_argument '--headless' unless ENV['SHOW_BROWSER']
+    o.add_argument '--disable-popup-blocking'
     o.add_argument '--no-sandbox'
     o.add_argument '--window-size=1920,1200'
   end
