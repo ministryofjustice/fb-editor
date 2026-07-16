@@ -37,6 +37,7 @@ jobs:
   build:
     docker: &docker_image
       - image: "cimg/ruby:3.4.9-node"
+    resource_class: large
     steps:
       - checkout
       - ruby/install-deps
