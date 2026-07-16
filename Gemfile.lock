@@ -163,6 +163,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    csv (3.3.5)
     daemons (1.4.1)
     date (3.4.1)
     debug_inspector (1.2.0)
@@ -843,6 +844,7 @@ DEPENDENCIES
   byebug
   capybara
   capybara_accessible_selectors!
+  csv
   daemons
   delayed_job_active_record
   dotenv (= 2.8.1)
@@ -887,7 +889,7 @@ DEPENDENCIES
   webpacker (~> 5.4)
 
 RUBY VERSION
-   ruby 3.3.11p205
+   ruby 3.4.9p82
 
 BUNDLED WITH
    2.4.6

@@ -1,4 +1,4 @@
-FROM ruby:3.3.11-alpine
+FROM ruby:3.4.9-alpine
 
 # Fixes the Node version issue by copying Node 16 directly from the official image
 COPY --from=node:16-alpine /usr/local/bin/node /usr/local/bin/node
