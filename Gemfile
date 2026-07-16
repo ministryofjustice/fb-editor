@@ -15,6 +15,7 @@ gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.208.0'
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'csv'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'dotenv', '2.8.1'
