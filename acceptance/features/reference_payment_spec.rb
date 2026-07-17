@@ -72,7 +72,7 @@ feature 'Reference Payment Page' do
     then_checkbox_should_remain_checked(payment_link_checkbox)
   end
 
-  xscenario 'email body in confirmation email settings page updates correctly' do
+  scenario 'email body in confirmation email settings page updates correctly' do
     with_setting(reference_number_checkbox, true)
     with_setting(payment_link_checkbox, true)
     then_I_should_see_text(payment_link_label)
@@ -182,8 +182,12 @@ feature 'Reference Payment Page' do
   def then_I_add_a_reply_to_email(email, environment)
     editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
   end
-  
+
   def then_I_should_be_warned_when_leaving_the_page
     accept_confirm(wait: 1) { editor.settings_link.click }
+  rescue Capybara::ModalNotFound
+    editor.settings_link.click
+  ensure
+    page.find('#main-content', visible: true)
   end
 end
