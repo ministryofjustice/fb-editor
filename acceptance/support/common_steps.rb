@@ -286,11 +286,13 @@ module CommonSteps
   def then_I_should_be_warned_when_leaving_page
     # click outside of fields that will make save button re-enable
     editor.service_name.click
+
+    # dismiss_confirm(wait: 1) { editor.pages_link.click } throws Capybara::ModalNotFound: Unable to find modal dialog.
+    # Therefore using page.evaluate_script
+
     # Headless Chrome hides the native beforeunload prompt from the driver, so
     # trigger it directly. dispatchEvent returns false when a handler cancels the
     # event, which is exactly what produces the browser's "leave page?" warning.
-
-    #dismiss_confirm(wait: 1) { editor.pages_link.click }
     warned = page.evaluate_script(
       "!window.dispatchEvent(new Event('beforeunload', {cancelable: true}))"
     )
