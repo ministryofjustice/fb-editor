@@ -182,7 +182,7 @@ feature 'Reference Payment Page' do
   def then_I_add_a_reply_to_email(email, environment)
     editor.find(:css, "input#confirmation-email-settings-confirmation-email-reply-to-#{environment}-field").set(email)
   end
-
+  
   def then_I_should_be_warned_when_leaving_the_page
     accept_confirm(wait: 1) { editor.settings_link.click }
   rescue Capybara::ModalNotFound
