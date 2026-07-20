@@ -52,7 +52,7 @@ group :development, :test do
   gem 'factory_bot_rails', '~> 6.5.0'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '4.16.0'
+  gem 'selenium-webdriver', '4.46.0'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-console'
