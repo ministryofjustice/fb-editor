@@ -314,6 +314,7 @@ jobs:
             chromedriver --version
       - run: *wait_for_db
       - run: *db_setup
+      - run: mkdir ~/acceptance
       - run:
           name: Run acceptance tests
           command: |
@@ -349,6 +350,7 @@ jobs:
             chromedriver --version
       - run: *wait_for_db
       - run: *db_setup
+      - run: mkdir ~/acceptance
       - run:
           name: Run acceptance tests
           command: |
