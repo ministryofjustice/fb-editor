@@ -436,8 +436,18 @@ module CommonSteps
   end
 
   def when_I_want_to_select_component_properties(attribute, text)
-    page.find(attribute, text: text).click
-    page.first('.ActivatedMenuActivator', visible: true).click
+    # The attribute might be h2 (heading) which is inside a component container.
+    # We want to click the properties button for THAT component.
+    element = page.find(attribute, text: text)
+    component_container = element.ancestor('.Question, [data-fb-content-id]')
+    component_container.scroll_to(:center)
+    
+    # Click the element to ensure it's "selected" if needed by JS
+    element.click 
+
+    menu_activator = component_container.find('.ActivatedMenuActivator', visible: true)
+    menu_activator.scroll_to(:center)
+    menu_activator.click
   end
 
   def and_I_click_on_the_three_dots
