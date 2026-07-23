@@ -434,7 +434,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1254-password-field-length-is-too-long
       - build_workers_image:
           context: *context
           requires:
