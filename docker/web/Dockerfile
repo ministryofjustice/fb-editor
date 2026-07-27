@@ -1,9 +1,9 @@
 FROM ruby:3.4.9-alpine
 
 # Fixes the Node version issue by copying Node 16 directly from the official image
-COPY --from=node:16-alpine /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:16-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node:16-alpine /usr/local/include/node /usr/local/include/node
+COPY --from=node:22.15.0-alpine /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:22.15.0-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:22.15.0-alpine /usr/local/include/node /usr/local/include/node
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-merge-driver /usr/local/bin/npm-merge-driver || true
 
 ARG UID=1001
