@@ -40,7 +40,6 @@ gem 'sentry-rails', '~> 5.24.0'
 gem 'sentry-ruby', '~> 5.14'
 gem 'turbo-rails', '~> 2.0.0'
 gem 'tzinfo-data'
-gem 'webpacker', '~> 5.4'
 
 group :development, :test do
   gem 'axe-core-rspec'
