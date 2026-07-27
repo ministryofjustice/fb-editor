@@ -3,7 +3,7 @@
   "packageManager": "yarn@1.22.22",
   "private": true,
   "engines": {
-    "node": ">=22.15.0"
+    "node": "^22.18.0"
   },
   "scripts": {
     "jstest": "mocha --recursive"
