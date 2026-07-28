@@ -124,7 +124,10 @@ jobs:
           pkg-manager: yarn
       - run:
           name: Running the JS tests
-          command: yarn run jstest
+          command: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            yarn run jstest
       - slack/status: *slack_status
   build_web_testable_branch:
     docker: &ecr_image
