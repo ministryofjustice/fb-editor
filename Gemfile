@@ -38,6 +38,7 @@ gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.14'
 gem 'sentry-rails', '~> 5.24.0'
 gem 'sentry-ruby', '~> 5.14'
+gem 'shakapacker', '= 10.3'
 gem 'turbo-rails', '~> 2.0.0'
 gem 'tzinfo-data'
 
@@ -70,5 +71,3 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'web-console', '>= 3.3.0'
 end
-
-gem "shakapacker", "= 10.3"
