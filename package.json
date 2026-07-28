@@ -6,7 +6,7 @@
     "node": "^22.18.0"
   },
   "scripts": {
-    "jstest": "mocha --require test/setup.js --recursive \"test/**/*_test.js\""
+    "jstest": "mocha --recursive"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
