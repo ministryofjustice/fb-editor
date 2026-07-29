@@ -5,7 +5,8 @@
 
 // Scripts called by javascript_pack_tag
 require("@ungap/custom-elements"); // required until safari supports customizing native elements using `is`
-require("jquery");
+const jquery = require("jquery");
+window.jQuery = window.$ = jquery;
 require("jquery-ui");
 require("../src/index");
 

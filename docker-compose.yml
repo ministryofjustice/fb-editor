@@ -52,23 +52,23 @@ services:
       - app-net
       - db-net
 
-  editor-workers:
-    container_name: editor-workers
-    build:
-      context: .
-      dockerfile: ./docker/workers/Dockerfile
-      args:
-        BUNDLE_ARGS: ''
-    tty: true
-    stdin_open: true
-    environment:
-      <<: *shared-variables
-    depends_on:
-      - editor-db
-      - editor-metadata-api
-    networks:
-      - app-net
-      - db-net
+#  editor-workers:
+#    container_name: editor-workers
+#    build:
+#      context: .
+#      dockerfile: ./docker/workers/Dockerfile
+#      args:
+#        BUNDLE_ARGS: ''
+#    tty: true
+#    stdin_open: true
+#    environment:
+#      <<: *shared-variables
+#    depends_on:
+#      - editor-db
+#      - editor-metadata-api
+#    networks:
+#      - app-net
+#      - db-net
 
   editor-metadata-db:
     container_name: editor-metadata-db
