@@ -15,7 +15,7 @@ copy-env-vars-local:
 	cp .env.acceptance_tests.local .env.acceptance_tests
 
 .PHONY: setup
-setup: build seed-public-key copy-env-vars-local assets
+setup: build seed-public-key copy-env-vars-local
 
 .PHONY: restart
 restart:
@@ -52,4 +52,4 @@ acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
 
 .PHONY: assets
 assets:
-	docker-compose exec editor-app sh -c "yarn install && bundle exec rails assets:precompile && ./bin/webpack"
+	docker-compose exec editor-app sh -c "yarn install && bundle exec rails assets:precompile"
