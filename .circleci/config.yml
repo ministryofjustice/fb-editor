@@ -434,7 +434,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-460-pw-field-has-show-that-doesnt-work
       - build_workers_image:
           context: *context
           requires:
