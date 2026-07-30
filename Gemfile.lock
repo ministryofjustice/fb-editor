@@ -8,8 +8,8 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: afcf3d373ca3ed291b633a4cf6693c860b61acc9
-  branch: CDPTKAN-460-pw-field-has-show-that-doesnt-work
+  revision: ac29a09f70129aad9c4062a20a7dd122572f5d4a
+  branch: CDPTKAN-460-revert-icon-changes
   specs:
     metadata_presenter (3.4.18)
       govspeak (~> 7.1)

@@ -434,7 +434,7 @@ workflows:
           filters:
             branches:
               only:
-                - CDPTKAN-460-pw-field-has-show-that-doesnt-work
+                - CDPTKAN-460-revert-icon-changes
       - build_workers_image:
           context: *context
           requires:

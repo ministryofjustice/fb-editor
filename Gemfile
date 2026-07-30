@@ -7,7 +7,7 @@ ruby '3.4.9'
 # one of these lines:
 gem 'metadata_presenter',
     github: 'ministryofjustice/fb-metadata-presenter',
-    branch: 'CDPTKAN-460-pw-field-has-show-that-doesnt-work'
+    branch: 'CDPTKAN-460-revert-icon-changes'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 # gem 'metadata_presenter', '3.4.17'
 
