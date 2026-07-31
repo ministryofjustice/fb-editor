@@ -18,6 +18,7 @@ MOJ_FORMS_DEVS = %w[
   Ripan.Kumar@justice.gov.uk
   Mohammed.Seedat2@justice.gov.uk
   Daniel.Glen@justice.gov.uk
+  Lucas.Shaw@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS.freeze
