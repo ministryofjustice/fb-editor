@@ -7,14 +7,12 @@ MOJ_FORMS_ADMIN = %w[
   Rhian.Townsend@justice.gov.uk
   Mark.Jefferson1@justice.gov.uk
   Edwin.Bajomo@justice.gov.uk
-  andrew.altwasser@digital.justice.gov.uk
-  Andrew.Altwasser@justice.gov.uk
+  Lucas.Shaw@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_DEVS = %w[
   matt.tei@digital.justice.gov.uk
   Matthew.Tei@Justice.gov.uk
-  Nick.Preddy@Justice.gov.uk
   Ripan.Kumar@justice.gov.uk
   Mohammed.Seedat2@justice.gov.uk
   Daniel.Glen@justice.gov.uk
