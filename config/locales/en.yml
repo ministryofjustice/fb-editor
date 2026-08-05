@@ -201,6 +201,8 @@ en:
       feedback_link_text: feedback
       callout: You will need an @digital.justice.gov.uk, @justice.gov.uk or @cica.org.uk email address to use MoJ Forms.
       sign_in: Sign in
+    accessibility:
+      title: Accessibility statement - MoJ Forms
   auth:
     existing_user:
       welcome_html: 'Signed in successfully'

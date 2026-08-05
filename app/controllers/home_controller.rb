@@ -10,6 +10,8 @@ class HomeController < ApplicationController
   end
 
   def page_title
+    return I18n.t('home.accessibility.title') if action_name == 'accessibility'
+
     I18n.t('home.show.title')
   end
   helper_method :page_title
