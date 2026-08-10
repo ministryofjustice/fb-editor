@@ -1,8 +1,9 @@
 {
   "name": "fb_editor",
+  "packageManager": "yarn@1.22.22",
   "private": true,
   "engines": {
-    "node": "^16.20.1"
+    "node": "^22.18.0"
   },
   "scripts": {
     "jstest": "mocha --recursive"
