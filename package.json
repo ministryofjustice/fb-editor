@@ -14,7 +14,6 @@
     "@rails/actioncable": "^7.0.4",
     "@rails/activestorage": "^7.0.4",
     "@rails/ujs": "^7.0.4",
-    "@rails/webpacker": "^5.4.4",
     "@rspack/cli": "^2.1.8",
     "@rspack/core": "^2.1.8",
     "@sentry/browser": "^7.28.1",
