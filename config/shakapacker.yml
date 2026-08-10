@@ -68,7 +68,7 @@ default: &default
 
   # Select assets bundler to use
   # Available options: 'webpack' or 'rspack'
-  assets_bundler: "rspack"
+  assets_bundler: "webpack"
 
   # Path to the directory containing webpack/rspack config files
   # Defaults to 'config/webpack' for webpack or 'config/rspack' for rspack
