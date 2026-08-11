@@ -434,7 +434,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-460-revert-icon-changes
       - build_workers_image:
           context: *context
           requires:
