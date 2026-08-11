@@ -13,12 +13,12 @@ module MojForms
       end
 
       def thumbnail_path
-        "thumbnails/thumbs_#{thumbnail}.jpg"
+        "static/images/thumbnails/thumbs_#{thumbnail}.jpg"
       end
 
       def call
         link_to url, class: "flow-thumbnail #{thumbnail} #{payment_link_enabled? ? 'payment-enabled' : ''}", 'aria-hidden': true, tabindex: -1 do
-          concat helpers.image_pack_tag('thumbnails/thumbs_header.png', class: 'header', alt: '')
+          concat helpers.image_pack_tag('static/images/thumbnails/thumbs_header.png', class: 'header', alt: '')
           concat tag.span(title, class: 'title')
           concat helpers.image_pack_tag(thumbnail_path, class: 'body', alt: '')
         end
