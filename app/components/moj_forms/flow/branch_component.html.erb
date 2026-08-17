@@ -1,5 +1,5 @@
 <%= tag.article **html_attributes do %>
-  <%= helpers.image_pack_tag "diamond.svg",  usemap: "#thumbnail-#{uuid}", alt: "", role: "presentation" %>
+  <%= helpers.image_pack_tag "static/images/diamond.svg",  usemap: "#thumbnail-#{uuid}", alt: "", role: "presentation" %>
   <map name="thumbnail-<%= uuid %>" aria-hidden="true">
     <area shape="poly" coords="0,72.5 100,0 200,72.5 100,145" alt="<%= title -%>" role="presentation" href="<%= edit_branch_path(service.service_id, @item[:uuid]) %>" tabindex="-1">
   </map>
