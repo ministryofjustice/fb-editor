@@ -35,7 +35,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^16.1.1",
     "postcss-loader": "^8.2.1",
-    "postcss-preset-env": "^11.3.2",
+    "postcss-preset-env": "9",
     "resolve-url-loader": "^5.0.0",
     "rspack-manifest-plugin": "^5.2.2",
     "sanitize-html": "^2.8.1",
