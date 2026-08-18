@@ -1,9 +1,9 @@
 FROM ruby:3.4.9-alpine
 
 # Fixes the Node version issue by copying Node 16 directly from the official image
-COPY --from=node:16-alpine /usr/local/bin/node /usr/local/bin/node
-COPY --from=node:16-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node:16-alpine /usr/local/include/node /usr/local/include/node
+COPY --from=node:22.18.0-alpine /usr/local/bin/node /usr/local/bin/
+COPY --from=node:22.18.0-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:22.18.0-alpine /opt/yarn-v1.22.22 /opt/yarn
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-merge-driver /usr/local/bin/npm-merge-driver || true
 
 ARG UID=1001
@@ -55,7 +55,7 @@ ENV GOVUK_WEBSITE_ROOT ''
 ARG RAILS_ENV=production
 
 RUN yarn install --production --check-files
-RUN ./bin/webpack
+RUN ./bin/shakapacker
 
 # Note some ENV vars here are just dummies needed to be present to build the image.
 # The real ones in the kubernetes pods are injected into the environment.
