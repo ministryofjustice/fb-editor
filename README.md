@@ -28,7 +28,7 @@ and start the database daemon
 Copy the environment variables into your own .env file:
 `cp .env.development .env`
 
-Compile the necessary assets and run webpack (requires yarn):
+Compile the necessary assets and run shakapacker (requires yarn):
 `make assets`
 
 Start the Rails server:
@@ -88,8 +88,8 @@ ONE OF THE FOLLOWING
 
 2. The docker-compose used by the `make setup` command will create and Editor app
    available at http://localhost:9090. By default running `bundle exec rspec acceptance`
-   will target this container. This container does not run the webpack-dev-server
-   command therefore you will need to run `./bin/webpack-dev-server` on your local
+   will target this container. This container does not run the shakapacker-dev-server
+   command therefore you will need to run `./bin/shakapacker-dev-server` on your local
    machine and then any changes to the JS and assets will be reflected in the Editor
    container running on port 9090.
 
@@ -100,7 +100,7 @@ OR
    the rails server locally using `bundle exec rails s` and then running
    `bundle exec rspec acceptance` will point those acceptance tests at the server
    running on port 3000. Making changes locally to the JS or assets will require
-   you to run webpack-dev-server similarly to the step above: `./bin/webpack-dev-server`
+   you to run shakapacker-dev-server similarly to the step above: `./bin/shakapacker-dev-server`
 
 OR
 
