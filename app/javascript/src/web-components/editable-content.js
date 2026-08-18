@@ -271,7 +271,7 @@ class EditableContent extends HTMLElement {
   }
 
   processConfigChange(value) {
-    config = JSON.parse(value);
+    const config = JSON.parse(value);
     if (config.display && config.display !== "always") {
       this.setAttribute("conditional", config.display);
     } else {

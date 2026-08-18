@@ -6,12 +6,12 @@ module MojForms
       attr_reader :title, :thumbnail, :url
 
       def thumbnail_path
-        "thumbnails/thumbs_#{thumbnail}.jpg"
+        "static/images/thumbnails/thumbs_#{thumbnail}.jpg"
       end
 
       def call
         "<div class=\"flow-thumbnail external-url-thumbnail #{thumbnail} #{payment_link_enabled? ? 'payment-enabled' : ''}\" aria-hidden=\"true\" tabindex=\"-1\">
-          #{helpers.image_pack_tag('thumbnails/thumbs_external.png', class: 'external-thumbnail', alt: '')}
+          #{helpers.image_pack_tag('static/images/thumbnails/thumbs_external.png', class: 'external-thumbnail', alt: '')}
         </div>".html_safe
       end
     end
