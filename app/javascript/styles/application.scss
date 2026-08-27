@@ -14,6 +14,11 @@
  *= require_self
  */
 
+@use "govuk-frontend/dist/govuk" as * with (
+  $govuk-assets-path: "~govuk-frontend/dist/govuk/assets/",
+  $govuk-global-styles: true
+);
+
 @import "../packs/stylesheets/govuk";
 @import "./mixins";
 @import "./component_dialog";
