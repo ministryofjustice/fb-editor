@@ -1,5 +1,5 @@
 class PublishServiceJob < ApplicationJob
-  queue_as :default
+  queue_as :testable_modsec
 
   attr_reader :service_provisioner
 
