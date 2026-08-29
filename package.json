@@ -12,7 +12,7 @@
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^7.3.0",
     "@rails/actioncable": "^7.0.4",
-    "@rails/activestorage": "^7.0.4",
+    "@rails/activestorage": "^7.2.202",
     "@rails/ujs": "^7.0.4",
     "@rspack/cli": "^2.1.8",
     "@rspack/core": "^2.1.8",
