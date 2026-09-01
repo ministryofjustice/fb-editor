@@ -1,6 +1,9 @@
 
 /* Emulate GovSpeak styles
  * -------------------------------- */
+
+@use "govuk-frontend/dist/govuk" as *;
+
 .call-to-action,
 .govspeak-call-to-action {
   background-color: govuk-colour("light-grey");

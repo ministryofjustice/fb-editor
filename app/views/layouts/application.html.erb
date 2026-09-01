@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="govuk-template app-html-class">
   <head>
+    <meta charset="utf-8">
     <title><%= page_title %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -19,20 +20,21 @@
     <% end %>
   </head>
 
-  <body class="govuk-template__body govuk-body layout-application <%= "#{controller_name}-#{action_name}" %>">
+  <body class="govuk-template__body app-body-class <%= "#{controller_name}-#{action_name}" %>">
     <%= render partial: 'partials/header' %>
 
     <%= render partial: 'partials/form_navigation' if show_form_navigation? %>
 
-    <% if content_for? :back_link %>
-      <div class="mojf-back-link-wrapper govuk-width-container">
-        <%= yield :back_link %>
-      </div>
-    <% end %>
-
-    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
-      <%= yield %>
-    </main>
+    <div class="govuk-width-container app-width-container">
+      <% if content_for? :back_link %>
+        <div class="mojf-back-link-wrapper govuk-width-container">
+          <%= yield :back_link %>
+        </div>
+      <% end %>
+      <main class="govuk-main-wrapper app-main-class govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+        <%= yield %>
+      </main>
+    </div>
 
     <%= render partial: 'partials/footer' %>
     <%= render partial: 'partials/template_dialog' %>
