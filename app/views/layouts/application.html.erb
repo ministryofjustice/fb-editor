@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="govuk-template app-html-class">
+<html lang="en" class="govuk-template">
   <head>
     <meta charset="utf-8">
     <title><%= page_title %></title>
@@ -20,18 +20,18 @@
     <% end %>
   </head>
 
-  <body class="govuk-template__body app-body-class <%= "#{controller_name}-#{action_name}" %>">
+  <body class="govuk-template__body <%= "#{controller_name}-#{action_name}" %>">
     <%= render partial: 'partials/header' %>
 
     <%= render partial: 'partials/form_navigation' if show_form_navigation? %>
 
-    <div class="govuk-width-container app-width-container">
+    <div class="govuk-width-container">
       <% if content_for? :back_link %>
-        <div class="mojf-back-link-wrapper govuk-width-container">
+        <div class="mojf-back-link-wrapper">
           <%= yield :back_link %>
         </div>
       <% end %>
-      <main class="govuk-main-wrapper app-main-class govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+      <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-body-m" id="main-content" role="main">
         <%= yield %>
       </main>
     </div>
