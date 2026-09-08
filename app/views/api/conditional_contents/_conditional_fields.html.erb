@@ -6,7 +6,7 @@
       data-action="dynamic-fields:fieldsAdded->conditional#focusNewExpression">
   <fieldset class="govuk-fieldset panel conditional" data-conditional-target="fieldset" data-conditional-index-value="<%= conditional.options[:child_index]%>" tabindex="-1">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h2 class="govuk-fieldset__heading" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
+      <h3 class="govuk-fieldset__heading" data-conditional-target="title">Rule <%= conditional.options[:child_index].to_i+1 %></h3>
     </legend>
     
     <%= render(MojForms::IconButtonComponent.new(
