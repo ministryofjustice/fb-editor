@@ -41,3 +41,10 @@
 @import "./index";
 @import "./admin";
 @import "./utilities";
+
+//Temporary solution to fix broken UI while upgrading govuk-frontend(govuk-components) package from 4.8.0 to 6.4.0
+.panel {
+  background-color: #f3f2f1;
+  border-radius: 15px;
+  padding: 40px 20px;
+}
