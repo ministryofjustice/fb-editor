@@ -33,7 +33,7 @@ class PublishController < FormController
       )
 
       if current_user.email != 'fb-acceptance-tests@digital.justice.gov.uk' && (publish_service_params[:deployment_environment] == 'production')
-        NotificationService.notify(publish_message, webhook: ENV['SLACK_PUBLISH_FOR_CONTENT_WEBHOOK'])
+        NotificationService.notify(publish_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
       end
 
       redirect_to publish_index_path(service.service_id)
@@ -76,7 +76,7 @@ class PublishController < FormController
           PublishServiceJob.perform_later(
             publish_service_id: @publish_service_creation.publish_service_id
           )
-          NotificationService.notify(review_message, webhook: ENV['SLACK_REVIEW_WEBHOOK'])
+          NotificationService.notify(review_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
         end
 
         approval = ServiceConfiguration.find_or_initialize_by(
