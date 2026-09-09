@@ -410,7 +410,7 @@ module Admin
     end
 
     def webhook
-      ENV['SLACK_PUBLISH_WEBHOOK']
+      ENV['SLACK_NOTIFICATION_WEBHOOK']
     end
 
     def has_ever_been_live?
