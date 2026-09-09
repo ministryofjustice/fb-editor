@@ -2,7 +2,7 @@ require 'net/http'
 require 'uri'
 
 class NotificationService
-  def self.notify(message, webhook: ENV['SLACK_PUBLISH_WEBHOOK'])
+  def self.notify(message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
     body = {
       text: message,
       username: 'MOJ Forms Editor',

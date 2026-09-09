@@ -21,7 +21,7 @@ class TestableEditorRemover
         if webhook
           NotificationService.notify(
             removal_service.status.join("\n"),
-            webhook: ENV['SLACK_WEBHOOK']
+            webhook: ENV['SLACK_NOTIFICATION_WEBHOOK']
           )
         end
       end
@@ -80,6 +80,6 @@ class TestableEditorRemover
   def webhook
     # This is only run during deployment. SLACK_WEBHOOK exists in the CircleCI deployment job
     # SLACK_PUBLISH_WEBHOOK is used by the Editor itself when running in Test or Live
-    @webhook ||= ENV['SLACK_WEBHOOK']
+    @webhook ||= ENV['SLACK_NOTIFICATION_WEBHOOK']
   end
 end
