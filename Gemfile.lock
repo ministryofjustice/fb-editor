@@ -176,10 +176,10 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.6.0)
     docile (1.4.1)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
+    dotenv (3.2.0)
+    dotenv-rails (3.2.0)
+      dotenv (= 3.2.0)
+      railties (>= 6.1)
     drb (2.2.1)
     dumb_delegator (1.1.0)
     erubi (1.13.1)
@@ -859,7 +859,7 @@ DEPENDENCIES
   csv
   daemons
   delayed_job_active_record
-  dotenv (= 2.8.1)
+  dotenv (= 3.2.0)
   dotenv-rails
   factory_bot_rails (~> 6.5.0)
   faraday (~> 2.14.1)
