@@ -188,11 +188,11 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.14.1)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     fb-jwt-auth (0.10.0)
       activesupport
@@ -270,7 +270,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    json (2.10.2)
+    json (2.21.2)
     json-schema (4.1.1)
       addressable (>= 2.8)
     jwt (2.10.1)
@@ -862,7 +862,7 @@ DEPENDENCIES
   dotenv (= 2.8.1)
   dotenv-rails
   factory_bot_rails (~> 6.5.0)
-  faraday (~> 2.14.1)
+  faraday (~> 2.14.3)
   fb-jwt-auth (= 0.10.0)
   govspeak (~> 7.1)
   govuk-components (~> 6.4)
