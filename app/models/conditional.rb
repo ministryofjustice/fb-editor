@@ -32,7 +32,7 @@ class Conditional
   end
 
   def expressions_attributes=(hash)
-    hash.each do |_index, expression_hash|
+    hash.each_value do |expression_hash|
       expressions.push(
         Expression.new(
           expression_hash.merge(

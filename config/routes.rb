@@ -1,21 +1,31 @@
 Rails.application.routes.draw do
+  resources :questionnaire, only: [:show, :update] do
+    get :back_to_services, on: :collection,as: :back_to_services
+  end
   namespace :admin do
     resources :overviews, only: [:index]
-    resources :legacy_service_names
+    resources :questionnaires, only: [:index]
+    resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
     resources :uptime_checks, only: [:index, :create, :destroy]
-    resources :services, only: [:index, :show, :edit, :update, :create] do
+    resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
       post '/unpublish/:publish_service_id/:deployment_environment',
         to: 'services#unpublish', as: :unpublish
       post '/republish/:publish_service_id/:deployment_environment',
         to: 'services#republish', as: :republish
 
+      get '/approve/:service_id', to: 'services#approve', as: :approve
+      get '/revoke_approval/:service_id', to: 'services#revoke_approval', as: :revoke_approval
+
       resources :api_submission, only: [:create, :index]
       resources :versions, only: [:update, :edit, :show]
     end
-    resources :users
-    resources :publish_services
+    resources :users, only: [:index, :show]
+    resources :publish_services, only: [:index, :show]
     get '/test-service/:test_service_name/(:fixture)', to: 'test_services#create', as: :test_service
     get '/export-services', to: 'overviews#export_services'
+    get '/export_dev_summary', to: 'overviews#export_dev_form_summary'
+    get '/export_prod_summary', to: 'overviews#export_live_form_summary'
+    get '/export-questionnaires', to: 'overviews#export_questionnaires'
 
     root to: "overviews#index"
   end
@@ -35,17 +45,21 @@ Rails.application.routes.draw do
 
   if Rails.env.development?
     post '/auth/developer/callback' => 'auth0#developer_callback'
+    get  '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: [:index, :edit, :update, :create] do
+  resources :services, only: [:index, :edit, :update, :create, :new] do
     member do
       resources :publish, only: [:index, :create]
+      post '/publish_for_review', to: 'publish#publish_for_review'
       resources :pages, param: :page_uuid, only: [:create, :edit, :update, :destroy]
       resources :branches, param: :branch_uuid, only: [:create, :edit, :update, :destroy] do
         collection do
           get '/:previous_flow_uuid/new', to: 'branches#new', as: 'new'
         end
       end
+
+
 
       resources :settings, only: [:index]
       namespace :settings do
@@ -60,6 +74,10 @@ Rails.application.routes.draw do
             resources :confirmation_email, only: [:index, :create]
           end
         end
+
+        get '/form_owner', to: 'form_owner#index', as: :form_ownership
+        put '/form_owner', to: 'form_owner#update', as: :transfer_form_ownership
+        resources :ms_list, only: [:index, :create]
       end
 
       mount MetadataPresenter::Engine => '/preview', as: :preview
@@ -91,18 +109,30 @@ Rails.application.routes.draw do
       resources :branches, param: :previous_flow_uuid do
         get '/conditionals/:conditional_index', to: 'branches#new_conditional'
         get '/destroy-message', to: 'branches#destroy_message', as: :destroy_message
+        get '/conditionals/:conditional_index/expressions/:expression_index/component/:component_uuid', to: 'expressions#show', as: 'expressions'
       end
 
-      get '/components/:component_id/conditionals/:conditional_index/expressions/:expression_index', to: 'expressions#show'
+      post 'conditional_content/components/:component_uuid/edit', to: 'conditional_contents#edit', as: 'edit_conditional_content'
+      put 'conditional_content/components/:component_uuid', to: 'conditional_contents#update', as: 'update_conditional_content'
+      get 'conditional_content/components/:content_component_uuid/conditionals/:conditional_index/expressions/:expression_index/component/:component_uuid', to: 'conditional_content_expressions#show', as: 'conditional_content_expressions'
 
       get '/components/:component_id/autocomplete', to: 'autocomplete#show', as: :autocomplete
       post '/components/:component_id/autocomplete', to: 'autocomplete#create'
 
-      get '/versions/previous/:action/:undoable_action',  to: 'undo#', as: :previous_version
+      get '/versions/previous/:operation/:undoable_action', to: 'undo#show', as: :previous_version,
+          constraints: { operation: /undo|redo/ }
 
       get '/first-publish/:environment', to: 'first_publish#show', environment: /dev|production/, as: :first_publish
+      resources :external_start_page, only:  [:new, :create]
+      delete '/external_start_page', to: 'external_start_page#destroy', as: :remove_external_start_page
+      get '/external_start_page/preview', to: 'external_start_page#preview', as: :preview_external_start_page
     end
   end
 
+  resources :announcements, only: [] do
+    put :dismiss, on: :member
+  end
+
+  get 'accessibility_statement', to: 'home#accessibility'
   root to: 'home#show'
 end

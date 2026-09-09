@@ -1,0 +1,13 @@
+.icon-button {
+  @include icon_button;
+}
+
+.icon-button--remove {
+  @extend .destructive;
+
+  > svg {
+    top: 7px;
+    left: 8px;
+  }
+}
+

@@ -30,7 +30,7 @@
       "check_name": "MassAssignment",
       "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
       "file": "app/controllers/pages_controller.rb",
-      "line": 91,
+      "line": 93,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:page).permit!",
       "render_path": null,
@@ -53,7 +53,7 @@
       "check_name": "MassAssignment",
       "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
       "file": "app/controllers/branches_controller.rb",
-      "line": 94,
+      "line": 103,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:branch).permit!",
       "render_path": null,
@@ -84,7 +84,7 @@
           "type": "controller",
           "class": "PagesController",
           "method": "edit",
-          "line": 12,
+          "line": 14,
           "file": "app/controllers/pages_controller.rb",
           "rendered": {
             "name": "pages/edit",
@@ -104,6 +104,5 @@
       "note": ""
     }
   ],
-  "updated": "2023-03-14 10:51:46 +0000",
-  "brakeman_version": "5.4.0"
+  "brakeman_version": "7.0.0"
 }

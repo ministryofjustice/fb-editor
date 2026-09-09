@@ -7,7 +7,7 @@ module MojFormsComponentsHelper
     define_method(name) do |*args, **kwargs, &block|
       capture do
         render(klass.constantize.new(*args, **kwargs)) do |com|
-          block.call(com) if block.present?
+          block.call(com) if block.present? # rubocop:disable Rails/Presence
         end
       end
     end

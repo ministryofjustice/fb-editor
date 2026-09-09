@@ -70,6 +70,15 @@ class BranchesController < FormController
   helper_method :branch_destinations
   helper_method :branch_detached_destinations
 
+  def page_title
+    if @branch
+      "Edit - #{@branch.title} - MoJ Forms"
+    else
+      'Edit branch - MoJ Forms'
+    end
+  end
+  helper_method :page_title
+
   private
 
   def branch_metadata

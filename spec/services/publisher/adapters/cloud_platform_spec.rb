@@ -129,15 +129,15 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
             create(:publish_service, :completed, :dev, service_id:)
           end
 
-          it 'sends a notification to the slack channel' do
-            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+          it 'no longer sends a notification to the slack channel' do
+            expect(NotificationService).to_not receive(:notify)
             cloud_platform.completed
           end
         end
 
         context 'when publish directly to live production' do
-          it 'sends a notification to the slack channel' do
-            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+          it 'no longer sends a notification to the slack channel' do
+            expect(NotificationService).to_not receive(:notify)
             cloud_platform.completed
           end
         end

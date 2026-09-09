@@ -59,6 +59,7 @@ class DialogActivator {
   #createActivator($target, text) {
     var $activator = $("<button></button>");
     $activator.text((text || "open dialog"));
+    $activator.attr('aria-haspopup', 'dialog')
     $target.before($activator);
     return $activator;
   }

@@ -42,7 +42,7 @@ class FormUrlCreation
 
   def parameterized_service_slug
     # parameterize, use first non-numeric char and limit to 57 chars
-    service_slug.slice(service_slug.index(/\D/), 57).strip.parameterize
+    service_slug.gsub('_', '-').slice(service_slug.index(/\D/), 57).strip.parameterize
   end
 
   def unique_service_slug?

@@ -67,7 +67,6 @@ feature 'Edit single radios question page' do
     and_I_should_see_the_options_that_I_added(preview_form, options_after_deletion)
   end
 
-
   def when_I_update_the_optional_section_heading
     and_I_edit_the_optional_section_heading
     when_I_save_my_changes
@@ -150,7 +149,6 @@ feature 'Edit single radios question page' do
       expect(page).to have_content(option)
     end
   end
-
 
   def then_I_should_see_my_changes_on_preview
     preview_form = and_I_preview_the_form

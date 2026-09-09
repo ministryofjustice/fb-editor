@@ -84,6 +84,7 @@ RSpec.describe PageUpdater do
               '_type': 'content',
               '_uuid': "Dead or alive you're coming with me",
               'content': '[Optional content]',
+              'display': 'always',
               'name': 'confirmation_content_1'
             })
           end
@@ -269,6 +270,7 @@ RSpec.describe PageUpdater do
               '_type': 'content',
               '_uuid' => "Dead or alive you're coming with me",
               'content': '[Optional content]',
+              'display': 'always',
               'name': 'check-answers_content_3'
             })
           end
@@ -313,24 +315,26 @@ RSpec.describe PageUpdater do
       let(:attributes_to_update) do
         {
           'components' => [
-            '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
-            'items' => [
-              {
-                '_uuid' => ''
-              },
-              {
-                '_uuid' => ''
-              },
-              {
-                '_uuid' => ''
-              },
-              {
-                '_uuid' => nil
-              },
-              {
-                '_uuid' => nil
-              }
-            ]
+            {
+              '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+              'items' => [
+                {
+                  '_uuid' => ''
+                },
+                {
+                  '_uuid' => ''
+                },
+                {
+                  '_uuid' => ''
+                },
+                {
+                  '_uuid' => nil
+                },
+                {
+                  '_uuid' => nil
+                }
+              ]
+            }
           ]
         }.stringify_keys
       end
@@ -385,24 +389,26 @@ RSpec.describe PageUpdater do
       let(:attributes_to_update) do
         {
           'components' => [
-            '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
-            'items' => [
-              {
-                '_uuid' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
-              },
-              {
-                '_uuid' => '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6'
-              },
-              {
-                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
-              },
-              {
-                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
-              },
-              {
-                '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
-              }
-            ]
+            {
+              '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4',
+              'items' => [
+                {
+                  '_uuid' => 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
+                },
+                {
+                  '_uuid' => '67160ff1-6f7c-43a8-8bf6-49b3d5f450f6'
+                },
+                {
+                  '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+                },
+                {
+                  '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+                },
+                {
+                  '_uuid' => 'ac41be35-914e-4b22-8683-f5477716b7d4'
+                }
+              ]
+            }
           ]
         }.stringify_keys
       end

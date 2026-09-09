@@ -44,13 +44,6 @@ RSpec.describe SaveAndReturnSettingsUpdater do
               name: 'SAVE_AND_RETURN'
             )
           ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL'
-            )
-          ).to be_empty
         end
       end
     end
@@ -73,23 +66,7 @@ RSpec.describe SaveAndReturnSettingsUpdater do
           expect(
             ServiceConfiguration.find_by(
               service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL',
-              deployment_environment: 'dev'
-            )
-          ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
               name: 'SAVE_AND_RETURN',
-              deployment_environment: 'production'
-            )
-          ).to be_present
-
-          expect(
-            ServiceConfiguration.find_by(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL',
               deployment_environment: 'production'
             )
           ).to be_present
@@ -99,20 +76,13 @@ RSpec.describe SaveAndReturnSettingsUpdater do
       context 'when a user does not tick the box' do
         let(:params) { { save_and_return: '0' } }
 
-        it 'creates the submission settings' do
+        it 'does not create the submission settings' do
           save_and_return_settings_updater.create_or_update!
 
           expect(
             ServiceConfiguration.where(
               service_id: service.service_id,
               name: 'SAVE_AND_RETURN'
-            )
-          ).to be_empty
-
-          expect(
-            ServiceConfiguration.where(
-              service_id: service.service_id,
-              name: 'SAVE_AND_RETURN_EMAIL'
             )
           ).to be_empty
         end

@@ -4,8 +4,7 @@ RSpec.describe DestroyQuestionOptionModal do
       service:,
       page:,
       question:,
-      option:,
-      label: 'option label'
+      option:
     )
   end
   let(:service_metadata) { metadata_fixture(:branching_2) }
@@ -17,11 +16,12 @@ RSpec.describe DestroyQuestionOptionModal do
     end
 
     context 'when there is a branch that relies on the option' do
+      let(:service_metadata) { metadata_fixture(:branching_2) }
       let(:page) { service.find_page_by_url('page-b') }
       let(:option) { question.items.first }
 
       it 'returns can not delete option modal' do
-        expect(partial).to eq('api/question_options/cannot_delete_modal')
+        expect(partial).to eq('api/question_options/delete_option_used_for_branching_modal')
       end
     end
 
@@ -30,7 +30,27 @@ RSpec.describe DestroyQuestionOptionModal do
       let(:option) { question.items.last }
 
       it 'returns default delete option modal' do
-        expect(partial).to eq('api/question_options/destroy_message_modal')
+        expect(partial).to eq('api/question_options/delete_option_modal')
+      end
+    end
+
+    context 'when there is conditional content that depends on the option' do
+      let(:service_metadata) { metadata_fixture(:conditional_content_2) }
+      let(:page) { service.find_page_by_url('marmite') }
+      let(:option) { question.items.first }
+
+      it 'returns the delete conditional content modal' do
+        expect(partial).to eq('api/question_options/delete_option_used_for_conditional_content_modal')
+      end
+    end
+
+    context 'when there is conditional content and branching that depends on the option' do
+      let(:service_metadata) { metadata_fixture(:conditional_content_2) }
+      let(:page) { service.find_page_by_url('coffee') }
+      let(:option) { question.items.first }
+
+      it 'returns the delete conditional content modal' do
+        expect(partial).to eq('api/question_options/delete_option_used_for_conditional_content_modal')
       end
     end
   end

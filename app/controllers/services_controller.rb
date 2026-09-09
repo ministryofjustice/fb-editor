@@ -1,16 +1,25 @@
 class ServicesController < PermissionsController
-  layout 'form', only: :edit
-  skip_before_action :authorised_access, only: %i[index create]
+  skip_before_action :authorised_access, only: %i[index create new]
   ACCEPTANCE_TEST_USER = 'Acceptance Tests'.freeze
 
   def index
     @service_creation = ServiceCreation.new
   end
 
+  def new
+    validator = QuestionnaireAnswersValidator.new(session[:questionnaire_answers])
+    if validator.valid?
+      @service_creation = ServiceCreation.new
+    else
+      redirect_to services_path
+    end
+  end
+
   def create
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
+      session.delete(:questionnaire_answers)
       if current_user.name != ACCEPTANCE_TEST_USER
         FormUrlCreation.new(
           service_id: @service_creation.service_id,
@@ -19,6 +28,8 @@ class ServicesController < PermissionsController
       end
 
       redirect_to edit_service_path(@service_creation.service_id)
+    elsif session[:questionnaire_answers].present?
+      render :new
     else
       render :index
     end
@@ -42,8 +53,23 @@ class ServicesController < PermissionsController
   private
 
   def service_creation_params
+    params.tap do |p|
+      p[:service_creation] ||= {}
+      p[:service_creation][:questionnaire] ||= session[:questionnaire_answers]
+    end
     params.require(
       :service_creation
-    ).permit(:service_name).merge(current_user:)
+    ).permit(:service_name, questionnaire: {}).merge(current_user:)
   end
+
+  def page_title
+    if request.path =~ /edit/
+      "Pages flow - #{service.service_name} - MoJ Forms"
+    elsif (request.path =~ /new/) || (request.request_method == 'POST')
+      "#{t('activemodel.attributes.service_creation.service_name')} - MoJ Forms"
+    else
+      'Your forms - MoJ Forms'
+    end
+  end
+  helper_method :page_title
 end

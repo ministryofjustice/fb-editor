@@ -7,11 +7,11 @@ module Api
 
     def show
       @expression = Expression.new(
-        component: params[:component_id],
+        component: params[:component_uuid],
         page: page_with_component
       )
 
-      render partial: 'expression_answers',
+      render partial: 'expression_condition',
              locals: {
                f: default_form_builder.new(:expression, @expression, view_context, {}),
                expression: @expression,
@@ -21,7 +21,7 @@ module Api
     end
 
     def page_with_component
-      service.page_with_component(params[:component_id])
+      service.page_with_component(params[:component_uuid])
     end
 
     def validate_params

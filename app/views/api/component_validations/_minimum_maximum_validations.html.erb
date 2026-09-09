@@ -8,5 +8,6 @@
        inputmode="numeric"
        spellcheck="false"
        autocomplete=""
-       aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %>"
+       aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %> hint-text-prompt"
        value="<%= @component_validation.main_value %>">
+<p id="hint-text-prompt"><%= t('dialogs.component_validations.hint_text_prompt') %></p>

@@ -273,7 +273,7 @@ RSpec.describe PublishServiceCreation, type: :model do
 
         context 'when send by email is enabled' do
           before do
-            create(:submission_setting, environment.to_sym, :send_email, service_id:)
+            create(:submission_setting, environment.to_sym, :send_email, :do_not_send_to_graph_api, service_id:)
           end
 
           context 'when service email output exists' do
@@ -290,6 +290,16 @@ RSpec.describe PublishServiceCreation, type: :model do
             it 'should return truthy' do
               expect(publish_service_creation.no_service_output?).to be_truthy
             end
+          end
+        end
+
+        context 'when send to ms graph is enabled and email is not' do
+          before do
+            create(:submission_setting, environment.to_sym, :do_not_send_email, :send_to_graph_api, service_id:)
+          end
+
+          it 'should return falsey' do
+            expect(publish_service_creation.no_service_output?).to be_falsey
           end
         end
 

@@ -1,0 +1,17 @@
+<%= f.govuk_fieldset(legend: { text: t("settings.ms_list.fieldset") }) do %>
+  <div class="govuk-form-group">
+    <div class="govuk-form-group govuk-!-margin-left-1">
+      <%= f.govuk_text_field :"ms_site_id",
+      label: {
+        text: t("settings.ms_list.site_id_label"),
+        for: settings_field_id(f, :ms_site_id, deployment_environment),
+          size: 'm'
+      },
+      hint: { text: "#{t("settings.ms_list.site_id_hint")} </br></br> #{govuk_link_to(t('settings.ms_list.help_link_text'), t('settings.ms_list.help_link_ref'))}".html_safe },
+      value: f.object.value_for_site_id,
+      id: settings_field_id(f, :ms_site_id, deployment_environment) %>
+    </div>
+
+    <%= render "created_list_setting", f: f, deployment_environment: deployment_environment %>
+  </div>
+<% end %>

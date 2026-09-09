@@ -1,10 +1,13 @@
 require_relative '../support/data_content_id'
+require_relative '../sections/conditional_content_modal_section'
+require_relative '../sections/branches_section'
+require_relative '../sections/components_section'
 
 class EditorApp < SitePrism::Page
   extend DataContentId
 
-  if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
-    set_url sprintf(ENV['ACCEPTANCE_TESTS_EDITOR_APP'], user: ENV['ACCEPTANCE_TESTS_USER'], password: ENV['ACCEPTANCE_TESTS_PASSWORD'])
+  if ENV['ACCEPTANCE_TESTS_ADMIN_USER'] && ENV['ACCEPTANCE_TESTS_ADMIN_PASSWORD']
+    set_url sprintf(ENV['ACCEPTANCE_TESTS_EDITOR_APP'], user: ENV['ACCEPTANCE_TESTS_ADMIN_USER'], password: ENV['ACCEPTANCE_TESTS_ADMIN_PASSWORD'])
   else
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end
@@ -27,15 +30,17 @@ class EditorApp < SitePrism::Page
   ########
 
   # Your forms
-  element :service_name, '#form-navigation-heading'
+  element :services_link, :link, I18n.t('partials.header.forms')
   element :name_field, :field, I18n.t('activemodel.attributes.service_creation.service_name')
   element :create_service_button, :button, I18n.t('services.create')
   # End Your forms
 
   # Pages flow
+  element :service_name, '#form-navigation-heading'
   element :footer_pages_link, 'button', text: I18n.t('pages.footer')
   element :cookies_link, :link, 'Cookies', class: 'govuk-link'
   element :privacy_link, :link, 'Privacy', class: 'govuk-link'
+  element :accessibility_link, :link, 'Accessibility', class: 'govuk-link'
 
   element :pages_link, :link, I18n.t('pages.name')
   element :publishing_link, :link, I18n.t('publish.name')
@@ -91,6 +96,14 @@ class EditorApp < SitePrism::Page
   elements :form_urls, '#flow-overview .flow-item a.govuk-link'
   elements :flow_items, '#flow-overview .flow-item', visible: true
   elements :preview_page_images, '#flow-overview .flow-item .flow-thumbnail', visible: true
+  element :external_start_page_thumbnail, '.flow-thumbnail.external-url-thumbnail'
+  element :start_page_thumbnail, '.flow-thumbnail.start'
+
+  # form ownership
+  element :form_ownership_link, :link, I18n.t('settings.transfer_ownership.heading')
+  element :transfer_ownership_button, :button, I18n.t('settings.transfer_ownership.heading')
+  element :confirmation_transfer_button, :button, I18n.t('dialogs.button_understood')
+
 
   def page_flow_items(html_class = '#flow-overview .flow-thumbnail')
     find('#main-content', visible: true)
@@ -106,6 +119,9 @@ class EditorApp < SitePrism::Page
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
+  element :change_destination_link, :link, I18n.t('actions.change_destination')
+  element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
+  element :modal_dialog, '.ui-dialog'
 
   def main_flow_titles
     flow_titles(main_flow)
@@ -117,18 +133,18 @@ class EditorApp < SitePrism::Page
 
   def flow_titles(flow_items)
     find('#main-content', visible: true)
-    flow = flow_items.map { |element| element.text.gsub("Edit:\n", '').split("\n").uniq }
+    flow = flow_items.map { |element| element.first('.text').text }
     flow.flatten.reject do |title|
       title == I18n.t('pages.create') || title == I18n.t('pages.actions')
     end
   end
 
   def flow_thumbnail(title)
-    preview_page_images.find { |p| p.text.include?(title) }
+    preview_page_images.find { |p| p.find('.title').text.include?(title) }
   end
 
   def flow_article(title)
-    flow_items.find { |p| p.text.include?(title) }
+    flow_items.find { |p| p.first('.text').text.include?(title) } 
   end
 
   def connection_menu(title)
@@ -166,12 +182,15 @@ class EditorApp < SitePrism::Page
   # End pages flow
 
   element :save_page_button,  '#fb-editor-save'
+  element :disabled_save_button,  '#fb-editor-save', aria: { disabled: true }
+  element :enabled_save_button,  '#fb-editor-save', aria: { disabled: false }
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
 
-  elements :question_heading, 'h1'
-  elements :component_heading, 'h2'
+  element :page_heading, 'h1'
+  elements :question_heading, 'h1 span'
+  elements :component_heading, 'h2 span'
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
@@ -180,13 +199,22 @@ class EditorApp < SitePrism::Page
   data_content_id :page_heading, 'page[heading]'
   data_content_id :page_lede, 'page[lede]'
   data_content_id :page_body, 'page[body]'
+  data_content_id :page_before_you_start, 'page[before_you_start]'
   data_content_id :page_send_heading, 'page[send_heading]'
   data_content_id :page_send_body, 'page[send_body]'
 
   elements :add_content_area_buttons, :link, 'Add content area'
-  data_content_id :first_component, 'page[components[0]]'
-  data_content_id :second_component, 'page[components[1]]'
-  data_content_id :first_extra_component, 'page[extra_components[0]]'
+  data_content_id :first_component, 'page[components][0]'
+  data_content_id :second_component, 'page[components][1]'
+  data_content_id :first_extra_component, 'page[extra_components][0]'
+  elements :editable_content_areas, 'editable-content[data-config]'
+  element :last_editable_content_area, 'editable-content[data-config]:last-of-type'
+
+  def content_area(content)
+    editable_content_areas.select { |a| a.text.include?(content) }
+  end
+
+  section :components_container, ComponentsSection, '.components'
 
   element :add_condition, :button, I18n.t('branches.condition_add')
   element :remove_condition_button, :button, I18n.t('dialogs.button_delete_condition') # dialog confirmation button
@@ -210,11 +238,13 @@ class EditorApp < SitePrism::Page
   element :delete_branching_point_button, :button, I18n.t('branches.delete_modal.submit')
   element :delete_and_update_branching_link, :button, I18n.t('pages.delete_modal.delete_and_update_branching')
 
-  element :change_destination_link, :link, I18n.t('actions.change_destination')
-  element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
-
   elements :main_flow, '#flow-overview .flow-item'
   elements :detached_flow, '.flow-detached-group .flow-item'
+
+  # publisher tabs
+  element :dev_tab, :link, 'Publish to Test'
+  element :production_tab, :link, 'Publish to Live', match: :first
+  element :publish_for_review, :button, I18n.t('publish.publish_for_review.button')
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
@@ -227,11 +257,20 @@ class EditorApp < SitePrism::Page
   end
 
   def branch_title(index)
-    find("div[data-conditional-index='#{index}'] h3")
+    find("section[data-conditional-index='#{index}'] h3")
   end
 
   # When two BranchConditions visible we have two BranchRemover (bin icons) available
   def last_condition_remover
-    all('.condition-remover').last
+    all('.expression__remover').last
   end
+
+  section :branches, BranchesSection, '.branches'
+
+  element :show_if_link, 'span', text: I18n.t('content.menu.show_if')
+  element :show_if_button, :button, text: I18n.t('conditional_content.show_if_button_label')
+  section :conditional_content_modal, ConditionalContentModalSection, '#conditional_content_dialog'
+
+  element :conditional_content_notice, '.govuk-notification-banner', text: I18n.t('presenter.conditional_content.notification')
+
 end

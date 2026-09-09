@@ -1,23 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="govuk-template">
   <head>
-    <title>MoJ Forms</title>
+    <meta charset="utf-8">
+    <title><%= page_title %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= render partial: 'partials/head_tags' %>
     <%= render partial: 'partials/properties' %>
     <%= stylesheet_pack_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
+    <!-- Google tag (gtag.js) -->
+    <% if ENV['PLATFORM_ENV'] == 'live' %>
+      <script nonce=<%= request.content_security_policy_nonce %> async src="https://www.googletagmanager.com/gtag/js?id=G-B3FKFL8JD1"></script>
+      <script nonce=<%= request.content_security_policy_nonce %> >
+        window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-B3FKFL8JD1');
+      </script>
+    <% end %>
   </head>
 
-  <body class="govuk-template__body govuk-body <%= "#{controller_name}-#{action_name}" %>">
+  <body class="govuk-template__body <%= "#{controller_name}-#{action_name}" %>">
     <%= render partial: 'partials/header' %>
 
-    <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
+    <%= render partial: 'partials/form_navigation' if show_form_navigation? %>
 
-      <%= yield %>
-
-    </main>
+    <div class="govuk-width-container">
+      <% if content_for? :back_link %>
+        <div class="mojf-back-link-wrapper">
+          <%= yield :back_link %>
+        </div>
+      <% end %>
+      <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-body-m" id="main-content" role="main">
+        <%= yield %>
+      </main>
+    </div>
 
     <%= render partial: 'partials/footer' %>
     <%= render partial: 'partials/template_dialog' %>

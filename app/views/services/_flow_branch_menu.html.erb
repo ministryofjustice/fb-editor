@@ -1,5 +1,5 @@
 <ul class="govuk-navigation component-activated-menu"
-    data-activator-text="<%= t('pages.actions') %>"
+    data-activator-text="<%= t('pages.flow_branch_menu_label', title: item[:title]) %>"
     data-activator-classname="flow-menu-activator"
     data-component="ItemActionMenu"
     data-title="<%= item[:title] %>"
@@ -12,6 +12,8 @@
     <%= link_to t('actions.delete_branch'),
         api_service_branch_destroy_message_path(service.service_id, item[:uuid]),
         method: :delete,
-        class: 'destructive delete' %>
+        class: 'destructive delete',
+        'aria-haspopup': 'dialog'
+      %>
   </li>
 </ul>

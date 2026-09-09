@@ -1,19 +1,24 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
+
 <%= mojf_settings_screen(
   heading:t('settings.submission.heading'),
   ) do |c| %>
-
-  <% c.with_back_link(href: settings_path) %>
-
   <nav class="govuk-navigation" aria-labelledby="page-heading">
     <dl aria-labelledby="submission-settings-navigation-heading" class="fb-settings">
       <div>
         <dt><%= link_to t('settings.collection_email.heading'), settings_email_index_path(service.service_id), class: 'govuk-link' %></dt>
         <dd class="govuk-hint"><%= t('settings.collection_email.lede') %></dd>
       </div>
-        <div>
-          <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
-          <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
-        </div>
+      <div>
+        <dt><%= link_to t('settings.ms_list.heading'), settings_ms_list_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.ms_list.lede') %></dd>
+      </div>
+      <div>
+        <dt><%= link_to t('settings.confirmation_email.heading'), settings_confirmation_email_index_path(service.service_id), class: 'govuk-link' %></dt>
+        <dd class="govuk-hint" ><%= t('settings.confirmation_email.lede') %></dd>
+      </div>
     </dl>
   </nav>
 <% end %>

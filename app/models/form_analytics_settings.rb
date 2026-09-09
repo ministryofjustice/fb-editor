@@ -1,14 +1,14 @@
 class FormAnalyticsSettings
   include ActiveModel::Model
   attr_accessor :service_id,
-                :enabled_test, :ua_test, :gtm_test, :ga4_test,
-                :enabled_live, :ua_live, :gtm_live, :ga4_live
+                :enabled_test, :gtm_test, :ga4_test,
+                :enabled_live, :gtm_live, :ga4_live
 
   validate :analytics_present
   validates_with FormAnalyticsValidator
 
   PLATFORM_DEPLOYMENTS = { 'test' => 'dev', 'live' => 'production' }.freeze
-  CONFIGS = { ua: 'UA', ga4: 'GA4', gtm: 'GTM' }.freeze
+  CONFIGS = { ga4: 'GA4', gtm: 'GTM' }.freeze
   PERMITTED_PARAMS = (CONFIGS.keys + [:enabled]).map { |param| [:"#{param}_test", :"#{param}_live"] }.flatten.freeze
 
   def config_params

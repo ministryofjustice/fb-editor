@@ -83,7 +83,7 @@ feature 'Preview page' do
 
   def then_I_should_see_that_I_should_add_a_file
     expect(page).to have_content('There is a problem')
-    expect(page).to have_content('Enter an answer for')
+    expect(page).to have_content('Choose a file to upload')
   end
 
   def and_I_remove_the_file

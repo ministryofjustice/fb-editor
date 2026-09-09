@@ -71,6 +71,13 @@ feature 'Create page' do
     then_I_should_see_the_edit_single_question_autocomplete_page
   end
 
+  scenario 'creating a single page with address' do
+    given_I_add_a_single_question_page_with_address
+    and_I_add_a_page_url
+    when_I_add_the_page
+    then_I_should_see_the_edit_single_question_address_page
+  end
+
   scenario 'creating multiple question page' do
     given_I_add_a_multiple_question_page
     and_I_add_a_page_url
@@ -111,10 +118,14 @@ feature 'Create page' do
 
     scenario 'attempt to add a page with an existing url in the service flow' do
       given_I_have_a_single_question_page_with_text
+      # Ensure editor page is loaded and interactive before proceeding
+      expect(page).to have_css('#main-content', visible: true)
       add_existing_url
     end
 
     scenario 'attempt to add a page with an existing url' do
+      # Wait for metadata to be present before collecting URLs
+      expect(page).to have_css('#main-content', visible: true)
       all_page_urls.each { |url| add_existing_url(url) }
     end
   end
@@ -123,6 +134,7 @@ feature 'Create page' do
     let(:error_message) { 'That name is used for something else' }
 
     scenario 'attempt to add a page with a reserved url' do
+      expect(page).to have_css('#main-content', visible: true)
       reserved_urls.each { |url| add_existing_url(url) }
     end
   end
@@ -172,7 +184,12 @@ feature 'Create page' do
     and_I_should_see_the_save_button_visible
     and_I_should_see_default_upload_options_warning
     and_I_should_see_the_save_button_disabled
-    expect(editor.find('.govuk-select')).to be_visible
+    expect(page).to have_css('.govuk-select', visible: true)
+  end
+
+  def then_I_should_see_the_edit_single_question_address_page
+    and_I_should_be_on_the_address_edit_page
+    and_I_should_see_default_address_created
   end
 
   def and_I_should_be_on_the_edit_page
@@ -181,12 +198,20 @@ feature 'Create page' do
     and_I_should_see_the_save_button_disabled
   end
 
-  def and_I_should_see_three_inputs_for_day_month_and_year
-    expect(editor.all('input[type="text"]').size).to be(3)
+  def and_I_should_be_on_the_address_edit_page
+    and_I_should_see_default_values_created('Address question')
+    and_I_should_see_the_save_button_visible
+    and_I_should_see_the_save_button_disabled
   end
 
-  def and_I_should_see_default_values_created
-    expect(editor).to have_content('Question')
+  def and_I_should_see_three_inputs_for_day_month_and_year
+    expect(page).to have_field('Day',   type: 'text')
+    expect(page).to have_field('Month', type: 'text')
+    expect(page).to have_field('Year',  type: 'text')
+  end
+
+  def and_I_should_see_default_values_created(legend_or_label = 'Question')
+    expect(editor).to have_content(legend_or_label)
     expect(editor).to have_content('[Optional hint text]')
   end
 
@@ -208,6 +233,13 @@ feature 'Create page' do
 
   def and_I_should_see_upload_options_warning
     expect(editor).to have_content(I18n.t('dialogs.autocomplete.component_warning'))
+  end
+
+  def and_I_should_see_default_address_created
+    expect(editor.all('input[type="text"]').size).to be(6)
+    expect(editor.all('input[type="text"]').last.value).to eq('United Kingdom')
+    # or, if the field may include trailing spaces or different capitalization:
+    # expect(editor.all('input[type="text"]').last.value).to include('United Kingdom')
   end
 
   def then_I_should_see_the_edit_multiple_question_page
@@ -237,6 +269,21 @@ feature 'Create page' do
 
   def and_I_should_see_the_save_button_disabled
     expect(editor.save_page_button[:'aria-disabled']).to eq("true")
+  end
+
+  def given_I_add_a_single_question_page_with_text_area
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.textarea')).click
+  end
+
+  def given_I_add_a_single_question_page_with_number
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.number')).click
+  end
+
+  def given_I_add_a_single_question_page_with_date
+    given_I_want_to_add_a_single_question_page
+    editor.add_component(I18n.t('components.list.date')).click
   end
 
   def add_existing_url(url = nil)

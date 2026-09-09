@@ -3,7 +3,7 @@
 <fieldset class="govuk-fieldset">
 <% if deployment_environment == 'production' %>
   <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-    <h2 data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
+    <h2 id="dialog-title" data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
       <%= t('activemodel.attributes.publish_service_creation.live_title') %>
     </h2>
   </legend>
@@ -22,7 +22,7 @@
 <% if deployment_environment == 'dev' %>
   <%= f.hidden_field :require_authentication, value: 1 %>
   <legend class="govuk-fieldset__legend govuk-fieldset__legend--m govuk-!-margin-bottom-0">
-    <h2 data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
+    <h2 id="dialog-title" data-node="heading" class="govuk-fieldset__heading govuk-!-margin-top-0">
       <%= t('activemodel.attributes.publish_service_creation.test_title') %>
     </h2>
   </legend>

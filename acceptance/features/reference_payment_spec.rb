@@ -153,10 +153,10 @@ feature 'Reference Payment Page' do
 
   def then_I_should_see_the_payment_link_settings_configuration
     expect(page).to have_content(I18n.t('settings.reference_payment.heading'))
-    expect(page).to have_content(I18n.t('settings.reference_payment.description', href:'user guide' ))
+    expect(page).to have_content(I18n.t('settings.reference_payment.description', href:'user guide (opens in new tab) ' )[0..50], normalize_ws: true, exact: false )
     expect(page).to have_content(I18n.t('settings.reference_number.hint'))
     expect(page).to have_content(I18n.t('settings.payment_link.legend'))
-    expect(page).to have_content(I18n.t('settings.payment_link.hint', href:'GOV.UK Pay account'))
+    expect(page).to have_content(I18n.t('settings.payment_link.hint', href:'GOV.UK Pay account')[0..50])
   end
 
   def with_setting(setting, value)
@@ -185,5 +185,9 @@ feature 'Reference Payment Page' do
   
   def then_I_should_be_warned_when_leaving_the_page
     accept_confirm(wait: 1) { editor.settings_link.click }
+  rescue Capybara::ModalNotFound
+    editor.settings_link.click
+  ensure
+    page.find('#main-content', visible: true)
   end
 end

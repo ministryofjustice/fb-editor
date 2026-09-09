@@ -1,0 +1,403 @@
+          {
+  "_id": "service.base",
+  "flow": {
+    "638f384a-b4d3-4c52-898a-00bc2d12baa3": {
+      "next": {
+        "default": "e1339a1e-e5c7-44ab-94c7-a071468e60e5"
+      },
+      "_type": "flow.page"
+    },
+    "68bdb05e-eac8-4345-a4bc-12b9303c9409": {
+      "next": {
+        "default": "c3e00360-b694-4646-8c23-25095272b94a"
+      },
+      "_type": "flow.page"
+    },
+    "80380700-bf4c-4c5f-9996-6d58194df1f0": {
+      "next": {
+        "default": "b209ad82-e1ed-4e8a-9d39-aa3f46bdc58a",
+        "conditionals": [
+          {
+            "next": "c7a10163-8018-4763-b67a-89fe82471f9f",
+            "_type": "if",
+            "_uuid": "4047cc98-e8c3-440e-8a56-ac6ef181085c",
+            "expressions": [
+              {
+                "page": "c3e00360-b694-4646-8c23-25095272b94a",
+                "field": "f0411fc5-ce7d-4ba2-9457-5998054cf723",
+                "operator": "is",
+                "component": "b1fdcccc-15c6-43b4-9c69-45e620f7fcc5"
+              }
+            ]
+          }
+        ]
+      },
+      "_type": "flow.branch",
+      "title": "Branching point 1"
+    },
+    "88eb0ddf-e8f2-4984-aa9e-595e44204f4c": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    },
+    "9028df9a-68ed-4f3d-b38e-1585c2696b18": {
+      "next": {
+        "default": "638f384a-b4d3-4c52-898a-00bc2d12baa3"
+      },
+      "_type": "flow.page"
+    },
+    "b209ad82-e1ed-4e8a-9d39-aa3f46bdc58a": {
+      "next": {
+        "default": ""
+      },
+      "_type": "flow.page"
+    },
+    "c3e00360-b694-4646-8c23-25095272b94a": {
+      "next": {
+        "default": "80380700-bf4c-4c5f-9996-6d58194df1f0"
+      },
+      "_type": "flow.page"
+    },
+    "c7a10163-8018-4763-b67a-89fe82471f9f": {
+      "next": {
+        "default": "9028df9a-68ed-4f3d-b38e-1585c2696b18"
+      },
+      "_type": "flow.page"
+    },
+    "e1339a1e-e5c7-44ab-94c7-a071468e60e5": {
+      "next": {
+        "default": "88eb0ddf-e8f2-4984-aa9e-595e44204f4c"
+      },
+      "_type": "flow.page"
+    }
+  },
+  "_type": "service.base",
+  "pages": [
+    {
+      "_id": "page.start",
+      "url": "/",
+      "body": "Use this service to apply for a service or contact us about a case.\r\n\r\n## Before you start\r\nYou will need:\r\n\r\n* your 8-digit reference number\r\n* a copy of your photo ID\r\n* something else\r\n\r\nThis form will take around 5 minutes to complete. We will reply within 10 working days.",
+      "_type": "page.start",
+      "_uuid": "68bdb05e-eac8-4345-a4bc-12b9303c9409",
+      "heading": "Service name goes here",
+      "before_you_start": "## Other ways to get in touch\r\nYou can also apply or contact us about your case by:\r\n\r\n* telephone: 01234 567889\r\n* email: <example.service@justice.gov.uk>\r\n\r\nThis form is also [available in Welsh (Cymraeg)](https://example-service.form.service.justice.gov.uk/)."
+    },
+    {
+      "_id": "page.coffee",
+      "url": "coffee",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "c3e00360-b694-4646-8c23-25095272b94a",
+      "heading": "",
+      "components": [
+        {
+          "_id": "coffee_radios_1",
+          "hint": "",
+          "name": "coffee_radios_1",
+          "_type": "radios",
+          "_uuid": "b1fdcccc-15c6-43b4-9c69-45e620f7fcc5",
+          "items": [
+            {
+              "_id": "coffee_radios_1_item_1",
+              "hint": "",
+              "name": "coffee_radios_1",
+              "_type": "radio",
+              "_uuid": "f0411fc5-ce7d-4ba2-9457-5998054cf723",
+              "label": "yes",
+              "value": "value-1",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            },
+            {
+              "_id": "coffee_radios_1_item_2",
+              "hint": "",
+              "name": "coffee_radios_1",
+              "_type": "radio",
+              "_uuid": "0488526c-e257-40e3-85d2-d6b3c0216f7d",
+              "label": "no",
+              "value": "value-2",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            }
+          ],
+          "errors": {
+          },
+          "legend": "Do you like coffee?",
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.checkanswers",
+      "url": "check-answers",
+      "_type": "page.checkanswers",
+      "_uuid": "e1339a1e-e5c7-44ab-94c7-a071468e60e5",
+      "heading": "Check your answers",
+      "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
+      "components": [
+
+      ],
+      "send_heading": "Now send your application",
+      "extra_components": [
+
+      ]
+    },
+    {
+      "_id": "page.confirmation",
+      "url": "form-sent",
+      "_type": "page.confirmation",
+      "_uuid": "88eb0ddf-e8f2-4984-aa9e-595e44204f4c",
+      "heading": "Application complete",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.bye",
+      "url": "bye",
+      "lede": "",
+      "_type": "page.exit",
+      "_uuid": "b209ad82-e1ed-4e8a-9d39-aa3f46bdc58a",
+      "heading": "Sorry",
+      "components": [
+
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.additions",
+      "url": "additions",
+      "body": "Body section",
+      "lede": "",
+      "_type": "page.singlequestion",
+      "_uuid": "c7a10163-8018-4763-b67a-89fe82471f9f",
+      "heading": "",
+      "components": [
+        {
+          "_id": "additions_checkboxes_1",
+          "hint": "",
+          "name": "additions_checkboxes_1",
+          "_type": "checkboxes",
+          "_uuid": "cf6f76e7-0c1c-4be6-89ea-5a8271aaf1e0",
+          "items": [
+            {
+              "_id": "additions_checkboxes_1_item_1",
+              "hint": "",
+              "name": "additions_checkboxes_1",
+              "_type": "checkbox",
+              "_uuid": "958e4e86-33ea-404a-9496-fe6f1a9c9b11",
+              "label": "nothing",
+              "value": "value-1",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            },
+            {
+              "_id": "additions_checkboxes_1_item_2",
+              "hint": "",
+              "name": "additions_checkboxes_1",
+              "_type": "checkbox",
+              "_uuid": "5eeacd08-50bd-4c43-b001-b9c3c46d34ef",
+              "label": "milk",
+              "value": "value-2",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            },
+            {
+              "_id": "additions_checkboxes_1_item_3",
+              "hint": "",
+              "name": "additions_checkboxes_1",
+              "_type": "checkbox",
+              "_uuid": "1de6ec8d-a3ba-47b4-b780-8604d807181b",
+              "label": "sugar",
+              "value": "value-3",
+              "errors": {
+              },
+              "legend": "Question",
+              "collection": "components",
+              "validation": {
+                "required": true
+              }
+            }
+          ],
+          "errors": {
+          },
+          "legend": "What do you put in your coffee?",
+          "collection": "components",
+          "validation": {
+            "required": true
+          }
+        }
+      ],
+      "section_heading": ""
+    },
+    {
+      "_id": "page.multiple",
+      "url": "multiple",
+      "_type": "page.multiplequestions",
+      "_uuid": "9028df9a-68ed-4f3d-b38e-1585c2696b18",
+      "heading": "Extra",
+      "components": [
+        {
+          "_id": "multiple_text_1",
+          "hint": "",
+          "name": "multiple_text_1",
+          "_type": "text",
+          "_uuid": "b93046d0-5f03-4294-9f3a-484f6ef637f9",
+          "label": "What is your name?",
+          "errors": {
+          },
+          "collection": "components",
+          "validation": {
+            "required": false
+          }
+        },
+        {
+          "_id": "multiple_email_1",
+          "hint": "",
+          "name": "multiple_email_1",
+          "_type": "email",
+          "_uuid": "b584808c-38de-4ab3-98f4-d8b690432757",
+          "label": "What is your email address?",
+          "errors": {
+          },
+          "collection": "components",
+          "validation": {
+            "email": true,
+            "required": false,
+            "max_length": 256
+          }
+        },
+        {
+          "_id": "multiple_content_1",
+          "name": "multiple_content_1",
+          "_type": "content",
+          "_uuid": "dab93b43-9363-4f74-b809-269780bc5e6a",
+          "content": "Here is some content that is always visible",
+          "display": "always",
+          "collection": "components"
+        }
+      ],
+      "add_component": "content",
+      "section_heading": ""
+    },
+    {
+      "_id": "page.summary",
+      "url": "summary",
+      "lede": "Here is a summary of your preferences",
+      "_type": "page.content",
+      "_uuid": "638f384a-b4d3-4c52-898a-00bc2d12baa3",
+      "heading": "Summary",
+      "components": [
+        {
+          "_id": "summary_content_1",
+          "name": "summary_content_1",
+          "_type": "content",
+          "_uuid": "215cc7b5-a0dd-42a8-8792-531034348f52",
+          "content": "Unconditional content",
+          "display": "always",
+          "collection": "components"
+        }
+      ],
+      "add_component": "content",
+      "section_heading": ""
+    }
+  ],
+  "locale": "en",
+  "created_at": "2023-10-11T20:31:08Z",
+  "created_by": "339d8726-a6e7-4084-a3ad-0a8300093c40",
+  "service_id": "05990cd6-dc3c-444d-9063-f45d1ad609d8",
+  "version_id": "266d5e69-9ce5-4dca-ab77-90f6cec7248a",
+  "service_name": "Preview conditional content",
+  "configuration": {
+    "meta": {
+      "_id": "config.meta",
+      "_type": "config.meta",
+      "items": [
+        {
+          "_id": "config.meta--link",
+          "href": "/cookies",
+          "text": "Cookies",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--2",
+          "href": "/privacy",
+          "text": "Privacy",
+          "_type": "link"
+        },
+        {
+          "_id": "config.meta--link--3",
+          "href": "/accessibility",
+          "text": "Accessibility",
+          "_type": "link"
+        }
+      ]
+    },
+    "service": {
+      "_id": "config.service",
+      "_type": "config.service"
+    }
+  },
+  "standalone_pages": [
+    {
+      "_id": "page.cookies",
+      "url": "cookies",
+      "body": "Cookies body",
+      "_type": "page.standalone",
+      "_uuid": "b6f0a1c6-3fe0-4fcf-ba12-9ebbabac3b04",
+      "heading": "Cookies",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.privacy",
+      "url": "privacy",
+      "body": "Privacy body",
+      "_type": "page.standalone",
+      "_uuid": "e6b4fd25-7bd5-4638-a1e0-a10f5284a4f4",
+      "heading": "Privacy notice",
+      "components": [
+
+      ]
+    },
+    {
+      "_id": "page.accessibility",
+      "url": "accessibility",
+      "body": "Accessibility body",
+      "_type": "page.standalone",
+      "_uuid": "46a0c930-61d2-4009-aa39-4a37d589117b",
+      "heading": "Accessibility statement",
+      "components": [
+
+      ]
+    }
+  ]
+}
+        

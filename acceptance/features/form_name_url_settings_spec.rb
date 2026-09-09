@@ -20,6 +20,7 @@ feature 'Form name URL settings page' do
 
   scenario 'validates the service name' do
     given_I_update_the_service_name('')
+    sleep 0.5
     then_I_should_see_a_validation_message_for_required('Form name')
   end
 
@@ -35,6 +36,7 @@ feature 'Form name URL settings page' do
 
   scenario 'updates the service in settings' do
     given_I_update_the_service_name(new_service_name)
+    sleep 0.5
     then_I_should_see_the_new_service_name
   end
 
@@ -90,7 +92,9 @@ feature 'Form name URL settings page' do
   end
 
   def and_I_go_to_update_the_form_details_in_settings
+    sleep(1)
     editor.load
+    sleep(1)
     editor.edit_service_link(service_name).click
     editor.settings_link.click
     editor.form_details_link.click

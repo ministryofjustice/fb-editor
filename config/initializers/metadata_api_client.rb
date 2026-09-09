@@ -21,8 +21,8 @@ Rails.application.reloader.to_prepare do
         ]
       )
       Rails.logger.info('Request Headers: %s' % [env[:request_headers]])
-      Rails.logger.info('Request Body: %s' % [env[:request_body]])
-      Rails.logger.info('Response Body: %s' % [env[:response_body]])
+      # Rails.logger.info('Request Body: %s' % [env[:request_body]])
+      # Rails.logger.info('Response Body: %s' % [env[:response_body]])
       Rails.logger.info('Response Status: %s' % [response_status])
     end
   end

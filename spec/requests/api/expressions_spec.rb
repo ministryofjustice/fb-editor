@@ -1,8 +1,9 @@
 RSpec.describe 'Expressions spec', type: :request do
   describe 'GET /api/services/:service_id/components/:component_id/conditionals/:conditionals_index/expressions/:expressions_index' do
     let(:request) do
-      get "/api/services/#{service.service_id}/components/#{component_id}/conditionals/#{conditionals_index}/expressions/#{expressions_index}"
+      get "/api/services/#{service.service_id}/branches/#{previous_flow_uuid}/conditionals/#{conditionals_index}/expressions/#{expressions_index}/component/#{component_id}"
     end
+    let(:previous_flow_uuid) { '1234' }
 
     context 'when authenticated' do
       let(:page) { service.find_page_by_url('do-you-like-star-wars') }

@@ -7,7 +7,9 @@
     <%= f.object.class.human_attribute_name :csv_hint %>
   </div>
   <p class="govuk-!-margin-top-1 govuk-!-margin-bottom-5">
-    <%= link_to f.object.class.human_attribute_name(:csv_sample), asset_url('/sample.csv'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' %>
+    <%= link_to asset_url('/sample.csv'), class: 'govuk-link', target: '_blank', rel: 'noopener nofollow' do %>
+      <%= f.object.class.human_attribute_name(:csv_sample) %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %>
+    <% end %>
   </p>
 
   <%= f.govuk_check_box :service_csv_output, 1, 0,

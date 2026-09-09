@@ -1,0 +1,11 @@
+<span class="flow-expression" data-otherwise="<%= otherwise_expression? %>">
+  <span class="question"><%= question %></span>
+  <% unless otherwise_expression? %>
+    <span class="operator"><%= operator %></span>
+    <span class="answer"><%= answer %></span>
+  <% end %>
+</span>
+
+<% unless iteration.last? %>
+  <span class="condition-operator"><%= t("branches.expression.and") -%></span>
+<% end %>

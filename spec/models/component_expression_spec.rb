@@ -10,6 +10,7 @@ RSpec.describe ComponentExpression do
         {
           'operator': 'is',
           'page': double(uuid: 'some-page-uuid'),
+          'content_component_page': double(uuid: 'another-page-uuid'),
           'component': 'some-component-uuid',
           'field': 'some-field-uuid'
         }
@@ -33,6 +34,7 @@ RSpec.describe ComponentExpression do
         {
           'operator': 'is_answered',
           'page': double(uuid: 'some-page-uuid'),
+          'content_component_page': double(uuid: 'another-page-uuid'),
           'component': 'some-component-uuid',
           'field': nil
         }
@@ -167,7 +169,7 @@ RSpec.describe ComponentExpression do
             expression_index: 0,
             attribute:
           )
-        ).to eq("conditional_component[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
+        ).to eq("conditional_content[conditionals_attributes][1][expressions_attributes][0][#{attribute}]")
       end
     end
   end
@@ -183,7 +185,7 @@ RSpec.describe ComponentExpression do
             expression_index: 1,
             attribute:
           )
-        ).to eq("conditional_component_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
+        ).to eq("conditional_content_conditionals_attributes_0_expressions_attributes_1_#{attribute}")
       end
     end
   end
@@ -202,6 +204,7 @@ RSpec.describe ComponentExpression do
         {
           'operator': 'is',
           'page': page,
+          'content_component_page': double(uuid: 'some-other-uuid'),
           'component': page.components.first.uuid,
           'field': 'c5571937-9388-4411-b5fa-34ddf9bc4ca0'
         }
@@ -219,6 +222,7 @@ RSpec.describe ComponentExpression do
           'operator': 'is',
           'page': page,
           'component': page.components.first.uuid,
+          'content_component_page': double(uuid: 'some-other-uuid'),
           'field': '27d377a2-6828-44ca-87d1-b83ddac98284'
         }
       end
@@ -228,7 +232,7 @@ RSpec.describe ComponentExpression do
         expect(errors).to be_present
         expect(errors.values.first).to include(
           I18n.t(
-            'activemodel.errors.messages.unsupported_component'
+            'activemodel.errors.models.component_expression.unsupported'
           )
         )
       end
@@ -240,6 +244,7 @@ RSpec.describe ComponentExpression do
         {
           'operator': 'is',
           'page': page,
+          'content_component_page': double(uuid: 'some-other-uuid'),
           'component': page.components.first.uuid,
           'field': nil
         }
@@ -251,7 +256,30 @@ RSpec.describe ComponentExpression do
         expect(errors.values.first).to include(
           I18n.t(
             'activemodel.errors.messages.blank',
-            attribute: Expression.human_attribute_name(:operator)
+            attribute: ComponentExpression.human_attribute_name(:field)
+          )
+        )
+      end
+    end
+
+    context 'component on same page' do
+      let(:page) { service.find_page_by_url('star-wars-knowledge') }
+      let(:component_expression_hash) do
+        {
+          'operator': 'is',
+          'page': page,
+          'content_component_page': page,
+          'component': page.find_component_by_uuid('51efe2ca-fc47-4584-8129-e91589a46b9e'),
+          'field': '1b6c5734-04bf-49fa-928a-2e9bbbb09f8c'
+        }
+      end
+
+      it 'returns the error message' do
+        errors = component_expression.errors.messages
+        expect(errors).to be_present
+        expect(errors.values.first).to include(
+          I18n.t(
+            'activemodel.errors.models.component_expression.same_page'
           )
         )
       end

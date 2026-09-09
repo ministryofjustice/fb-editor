@@ -6,13 +6,13 @@ module Api
       @option = @question.find_item_by_uuid(params[:question_option_id])
       @label = @option.present? ? @option.name : params[:label]
 
-      render DestroyQuestionOptionModal.new(
+      modal = DestroyQuestionOptionModal.new(
         service:,
         page: @page,
         question: @question,
-        option: @option,
-        label: @label
+        option: @option
       )
+      render modal, locals: { pages: modal.pages }
     end
   end
 end

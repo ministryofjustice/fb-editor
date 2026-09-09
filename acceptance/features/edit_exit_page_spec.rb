@@ -70,27 +70,12 @@ feature 'Edit exit pages' do
     when_I_add_the_page
   end
 
-  def and_I_add_a_content_component(content:)
-    editor.add_content_area_buttons.first.click
-    and_the_content_component_has_the_optional_content
-    when_I_change_editable_content(editor.first_component, content: content)
-  end
-
   def then_I_should_see_the_component(content)
-    expect(editor.first_component.text).to eq(content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
 
   def then_I_should_not_see_the_continue_button
-    expect(page).not_to have_content(I18n.t('actions.continue'))
-  end
-
-  def and_the_content_component_has_the_optional_content
-    editor.service_name.click # click outside to close the editable component
-
-    # the output element p tag of a content component is the thing which has
-    # the actual text in it
-    output_component = editor.first_component.find('[data-element="editable-content-output"]', visible: false)
-    expect(output_component.text).to eq(optional_content)
+    expect(page).to have_no_content(I18n.t('actions.continue'))
   end
 
   def when_I_preview_the_form_until_the_exit_page
@@ -100,11 +85,14 @@ feature 'Edit exit pages' do
 
   def then_I_should_stop_until_the_exit_page(preview_form)
     within_window(preview_form) do
+      expect(page).to have_button('Start now')
       page.click_button 'Start now'
-      expect(page).to have_content(I18n.t('actions.continue'))
+
+      expect(page).to have_button(I18n.t('actions.continue'))
       page.click_button I18n.t('actions.continue')
-      expect(page.current_path).to include('/preview/exit')
-      expect(page.all('button').to_a).to eq([])
+
+      expect(page).to have_current_path(/\/preview\/exit/)
+      expect(page).to have_no_selector('button')
     end
   end
 

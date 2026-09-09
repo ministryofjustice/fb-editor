@@ -15,7 +15,7 @@ class DateValidation < BaseComponentValidation
   validates_with DateValidator, if: :run_validation?
 
   def run_validation?
-    enabled? && (day.present? && month.present? && year.present?)
+    enabled? && (day.present? && month.present? && year.present?) # rubocop:disable Style/RedundantParentheses
   end
 
   def answered_day

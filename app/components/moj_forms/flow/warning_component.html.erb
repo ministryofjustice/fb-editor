@@ -1,0 +1,9 @@
+<%= tag.article **html_attributes do %>
+    <h2 class="govuk-warning-text">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive"><%= t('assistive_text.warning').titleize %></span>
+        <span class="text"><%= @item[:content] %></span>
+      </strong>
+    </h2>
+<% end %>

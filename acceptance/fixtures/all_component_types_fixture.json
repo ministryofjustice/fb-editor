@@ -89,7 +89,7 @@
       "_type": "page.start",
       "_uuid": "50dfde64-ea8a-41a2-a0b3-c2bd5ce11381",
       "heading": "Service name goes here",
-      "before_you_start": "###Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
+      "before_you_start": "## Before you start\r\nYou can also register by post.\r\n\r\nThe online service is also available in Welsh (Cymraeg).\r\n\r\nYou cannot register for this service if you’re in the UK illegally."
     },
     {
       "_id": "page.text",
@@ -107,8 +107,7 @@
           "_type": "text",
           "_uuid": "2ee4928c-f5ee-43d8-8a99-73f22d57a82f",
           "label": "Text",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "required": true
@@ -134,8 +133,7 @@
           "_type": "textarea",
           "_uuid": "0a04af4e-83c0-4568-bd83-497c95096af7",
           "label": "Textarea",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "required": true
@@ -160,8 +158,7 @@
           "_type": "email",
           "_uuid": "68af7991-eacf-4e46-9b20-918490e058a2",
           "label": "Email address question",
-          "errors": {
-          },
+          "errors": {},
           "validation": {
             "email": true,
             "required": true,
@@ -187,8 +184,7 @@
           "_type": "number",
           "_uuid": "63854936-3594-4bcf-bff4-9d187675b2ae",
           "label": "Number",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "number": true,
@@ -214,8 +210,7 @@
           "name": "date_date_1",
           "_type": "date",
           "_uuid": "163eeaac-6d16-4461-9e0a-7e3a93bf8bb4",
-          "errors": {
-          },
+          "errors": {},
           "legend": "Date",
           "date_type": "day-month-year",
           "collection": "components",
@@ -251,8 +246,7 @@
               "_uuid": "b85923b6-ac97-4bfb-8ece-735625d05ce1",
               "label": "Option",
               "value": "value-1",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -267,8 +261,7 @@
               "_uuid": "fd12834f-0de5-41e9-8330-1c9ae99620fd",
               "label": "Option",
               "value": "value-2",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -276,8 +269,7 @@
               }
             }
           ],
-          "errors": {
-          },
+          "errors": {},
           "legend": "Radios",
           "collection": "components",
           "validation": {
@@ -311,8 +303,7 @@
               "_uuid": "fa114862-a8c6-4432-a199-0e08074e94c7",
               "label": "Option",
               "value": "value-1",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -327,8 +318,7 @@
               "_uuid": "550fd2ac-f6dd-4ba7-b465-6a90c6e35ce2",
               "label": "Option",
               "value": "value-2",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -336,8 +326,7 @@
               }
             }
           ],
-          "errors": {
-          },
+          "errors": {},
           "legend": "Checkboxes",
           "collection": "components",
           "validation": {
@@ -363,8 +352,7 @@
           "_type": "upload",
           "_uuid": "3a92ac01-a622-44a4-8b8e-f7a6b8c665b8",
           "label": "File Upload",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "accept": [
@@ -396,7 +384,7 @@
       "heading": "Multiupload",
       "components": [
         {
-          "_id":  "multiupload_upload_1",
+          "_id": "multiupload_upload_1",
           "name": "multiupload_upload_1",
           "_type": "multiupload",
           "_uuid": "f056a76e-ec3f-47ae-b625-1bba92220ad2",
@@ -469,8 +457,7 @@
           "_type": "text",
           "_uuid": "77718026-6a20-41df-a058-75c4b1ab466b",
           "label": "Text",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "required": true
@@ -484,8 +471,7 @@
           "_type": "textarea",
           "_uuid": "5cfda51a-a52d-4d72-99d6-2c6d15823efc",
           "label": "Textarea",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "required": true
@@ -498,8 +484,7 @@
           "_type": "email",
           "_uuid": "6513532c-14d3-4019-84bd-26f2e9c484f6",
           "label": "Email address question",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "email": true,
@@ -514,8 +499,7 @@
           "_type": "number",
           "_uuid": "d42bc5c6-b534-4735-92a3-109ff2fedf5d",
           "label": "Number",
-          "errors": {
-          },
+          "errors": {},
           "collection": "components",
           "validation": {
             "number": true,
@@ -529,8 +513,7 @@
           "name": "multi_date_1",
           "_type": "date",
           "_uuid": "bfca93dc-99d4-45f8-b5a8-1f17ac0ee00d",
-          "errors": {
-          },
+          "errors": {},
           "legend": "Date",
           "date_type": "day-month-year",
           "collection": "components",
@@ -554,8 +537,7 @@
               "_uuid": "45e55f71-ba06-45d6-998b-9b44f748fe88",
               "label": "Option",
               "value": "value-1",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -570,8 +552,7 @@
               "_uuid": "a204b3e7-335d-445c-a1da-babdd69434c3",
               "label": "Option",
               "value": "value-2",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -579,8 +560,7 @@
               }
             }
           ],
-          "errors": {
-          },
+          "errors": {},
           "legend": "Radios",
           "collection": "components",
           "validation": {
@@ -602,8 +582,7 @@
               "_uuid": "2688434c-b80d-47d6-a4e4-a9498e956c31",
               "label": "Option",
               "value": "value-1",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -618,8 +597,7 @@
               "_uuid": "b75fb407-a228-4143-9c9f-47ae4cf78531",
               "label": "Option",
               "value": "value-2",
-              "errors": {
-              },
+              "errors": {},
               "legend": "Question",
               "collection": "components",
               "validation": {
@@ -627,8 +605,7 @@
               }
             }
           ],
-          "errors": {
-          },
+          "errors": {},
           "legend": "Checkboxes",
           "collection": "components",
           "validation": {
@@ -654,13 +631,9 @@
       "_uuid": "e1f127ac-6374-469c-9d1c-e4f726a01076",
       "heading": "Check your answers",
       "send_body": "By submitting this application you confirm that, to the best of your knowledge, the details you are providing are correct.",
-      "components": [
-
-      ],
+      "components": [],
       "send_heading": "Now send your application",
-      "extra_components": [
-
-      ]
+      "extra_components": []
     },
     {
       "_id": "page.confirmation",
@@ -668,9 +641,7 @@
       "_type": "page.confirmation",
       "_uuid": "6a708f64-6a61-424c-8e41-fe2e1b5b13f0",
       "heading": "Application complete",
-      "components": [
-
-      ]
+      "components": []
     }
   ],
   "locale": "en",
@@ -716,9 +687,7 @@
       "_type": "page.standalone",
       "_uuid": "51671a0e-452e-49a3-b383-ffa57f57a7e7",
       "heading": "Cookies",
-      "components": [
-
-      ]
+      "components": []
     },
     {
       "_id": "page.privacy",
@@ -727,9 +696,7 @@
       "_type": "page.standalone",
       "_uuid": "7224e8c6-67de-49b7-a278-d529fbe0722e",
       "heading": "Privacy notice",
-      "components": [
-
-      ]
+      "components": []
     },
     {
       "_id": "page.accessibility",
@@ -738,9 +705,7 @@
       "_type": "page.standalone",
       "_uuid": "31dad78a-e839-4f49-8b9d-8d76e5cbae52",
       "heading": "Accessibility statement",
-      "components": [
-
-      ]
+      "components": []
     }
   ]
 }

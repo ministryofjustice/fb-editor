@@ -1,0 +1,99 @@
+.expression {
+  margin-top: govuk-spacing(6);
+  // padding-left: govuk-spacing(3);
+  position: relative;
+  border: none;
+  padding: 0;
+
+  &.error {
+    p {
+      color: $govuk-error-colour;
+      font-weight: bold;
+      margin-top: govuk-spacing(3);
+      margin-bottom: govuk-spacing(1);
+    }
+
+    .expression__question {
+      border-color: $govuk-error-colour;
+      > p:first-child {
+        margin-top: 0;
+      }
+    }
+
+    .expression__layout {
+      border-color: $govuk-error-colour;
+    }
+  }
+}
+
+.expression + .expression {
+  margin-top: govuk-spacing(9);
+}
+
+.expression__layout {
+  border-left: 5px solid $govuk-border-colour;
+  padding-left: govuk-spacing(2);
+
+  &--no-border {
+    border-left: none;
+  }
+
+  @include govuk-media-query($from: tablet) {
+    display: grid;
+    grid-template-columns: min(20%, 80px) auto;
+    column-gap: govuk-spacing(2);
+    border-left: none;
+  }
+}
+
+.expression__label {
+  @include govuk-font($size: 24);
+  font-weight: bold;
+  margin-bottom: govuk-spacing(2);
+  @include govuk-media-query($from: tablet) {
+    text-align: right;
+    margin-bottom: 0;
+    // align-self: center;
+    padding-top: govuk-spacing(1);
+  }
+}
+
+.expression__question {
+  @include govuk-media-query($from: tablet) {
+    border-left: 5px solid $govuk-border-colour;
+
+    padding-left: govuk-spacing(2);
+    &--no-border {
+      border-color: transparent;
+    }
+  }
+}
+
+.expression__component {
+  width: 100%;
+}
+
+.expression__condition {
+  clear: both;
+  padding-top: govuk-spacing(6);
+
+  @include govuk-media-query($until: tablet) {
+    & {
+      width: 100%;
+    }
+  }
+}
+
+.expression__operator {
+  margin-right: 18px;
+  width: calc(40% - 22px);
+}
+
+.expression__answer {
+  width: 60%;
+}
+
+.expression__remover {
+  justify-self: center;
+  position: relative;
+}

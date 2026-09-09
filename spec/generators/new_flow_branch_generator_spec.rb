@@ -35,17 +35,19 @@ RSpec.describe NewFlowBranchGenerator do
             'next' => {
               'default' => 'default-next-uuid',
               'conditionals' => [
-                '_uuid' => 'you-can-do-it',
-                '_type' => 'if',
-                'next' => 'another-page-uuid',
-                'expressions' => [
-                  {
-                    'operator' => 'is',
-                    'page' => 'expression-page-uuid',
-                    'component' => 'component-uuid',
-                    'field' => 'field-uuid'
-                  }
-                ]
+                {
+                  '_uuid' => 'you-can-do-it',
+                  '_type' => 'if',
+                  'next' => 'another-page-uuid',
+                  'expressions' => [
+                    {
+                      'operator' => 'is',
+                      'page' => 'expression-page-uuid',
+                      'component' => 'component-uuid',
+                      'field' => 'field-uuid'
+                    }
+                  ]
+                }
               ]
             }
           }

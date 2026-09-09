@@ -33,7 +33,7 @@ class CsvValidator < ActiveModel::Validator
         )
       end
     end
-  rescue CSV::MalformedCSVError
+  rescue CSV::MalformedCSVError, Encoding::CompatibilityError
     record.errors.add(
       :file,
       I18n.t(

@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 module FbEditor
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 8.1
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -37,5 +37,11 @@ module FbEditor
     config.autoload_paths << "#{root}/app/models/component_validations"
 
     config.active_model.i18n_customize_full_message = true
+    config.action_dispatch.ip_spoofing_check = false
+
+    # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
+    # the I18n.default_locale when a translation cannot be found).
+    config.i18n.fallbacks = true
+    config.action_controller.forgery_protection_origin_check = true
   end
 end

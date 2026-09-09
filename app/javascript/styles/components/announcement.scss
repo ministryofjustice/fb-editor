@@ -1,0 +1,16 @@
+.mojf-announcement {
+  .mojf-announcement__dismiss-link {
+    float: right;
+  }
+
+  .govuk-notification-banner__content {
+    p {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    a {
+      @extend .govuk-notification-banner__link;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
+
+<%= mojf_settings_screen(
+      heading:t('settings.transfer_ownership.heading'),
+      description: t('settings.transfer_ownership.lede')
+    ) do |c| %>
+
+<!--  We use the soft deprecated form_for to get the form errors shown at the top -->
+  <%= form_for @form_owner,
+               url: transfer_form_ownership_settings_service_path(service.service_id),
+               method: :put,
+               html: { id: 'transfer-ownership-settings' },
+               builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+
+    <% if f.object.errors.present? %>
+      <div class="govuk-error-summary" data-module="govuk-error-summary">
+        <div role="alert">
+          <h2 class="govuk-error-summary__title"><%= t('activemodel.errors.summary_title') %></h2>
+          <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list govuk-error-message" id="form-owner-settings-field-error" >
+              <% f.object.errors.messages.each do |attribute, messages| %>
+                <% messages.each do |message| %>
+                  <li>
+                    <a href="#form-owner-settings-form-owner-field">
+                      <%= message %>
+                    </a>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="transfer-ownership-field">
+      <%= f.govuk_fieldset legend: { text:t('settings.transfer_ownership.label'), size: 's', id: 'form-owner-legend' } do %>
+        <div class="govuk-hint" id="transfer_ownership_hint"><%= t('settings.transfer_ownership.hint').html_safe %></div>
+
+        <div class="govuk-form-group govuk-!-margin-left-1 <%= f.object.errors.any? ? 'govuk-form-group--error' : '' %>">
+
+        <% f.object.errors.messages.each do |attribute, messages| %>
+          <% messages.each do |message| %>
+            <p id="form-owner-settings-form-owner-field" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> <%= message %>
+            </p>
+          <% end %>
+        <% end %>
+
+        <%= f.govuk_text_field :form_owner,
+                               label: ->  {},
+                               class: "govuk-input width-responsive-full",
+                               value: '',
+                               'aria-labelledby': 'form-owner-legend' %>
+      <% end %>
+      </div>
+      <%= govuk_warning_text(text: t('settings.transfer_ownership.warning'), html_attributes: { id: 'transfer_ownership_warning', 'prevent-unload': true  }) %>
+      <br>
+      <%= f.submit t('settings.transfer_ownership.heading'), class: 'govuk-button govuk-button--warning', id: 'form-owner-save' %>
+    </div>
+  <% end %>
+<% end %>

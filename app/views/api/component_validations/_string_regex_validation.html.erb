@@ -1,0 +1,18 @@
+<label class="govuk-label govuk-label--s" for="component_validation_value">
+<%= t('dialogs.component_validations.regex.title') %>
+</label>
+<div class="govuk-hint" id="regex_pattern_hint" >
+<%= t('dialogs.component_validations.regex.hint_regex_pattern') %>
+</div>
+<input class="govuk-input govuk-input--width-20 <%= @component_validation.errors.present? ? 'govuk-input--error' : '' %>"
+         id="component_validation_value"
+         name="component_validation[value]"
+         pattern="*"
+         inputmode="email"
+         spellcheck="false"
+         autocomplete=""
+         aria-describedby="<%= @component_validation.errors.present? ? 'component_validation_value_error' : '' %> regex_pattern_hint"
+         <%=   @component_validation.errors.present? ? 'aria-invalid=true' : '' %>
+         value="<%= @component_validation.main_value %>">
+
+<p><%= t('dialogs.component_validations.regex.advice_regex_pattern') %></p>

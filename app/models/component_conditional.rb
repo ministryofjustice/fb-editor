@@ -1,6 +1,6 @@
 class ComponentConditional
   include ActiveModel::Model
-  attr_accessor :service
+  attr_accessor :service, :content_component
   attr_writer :expressions
 
   validate :expressions_validations
@@ -10,6 +10,7 @@ class ComponentConditional
 
   def initialize(attributes)
     @service = attributes.delete(:service)
+    @content_component = attributes.delete(:content_component)
     super
   end
 
@@ -21,21 +22,27 @@ class ComponentConditional
     }
   end
 
+  def ==(other)
+    expressions == other.expressions
+  end
+
   def expressions
     @expressions ||= []
   end
 
   def expressions_validations
-    expressions.map(&:invalid?)
+    # expressions.map(&:invalid?)
+    errors.add(:expressions, :invalid_expression) if expressions.map(&:invalid?).any?(true)
   end
 
   # this is tested in the ConditionalComponent model
   def expressions_attributes=(hash)
-    hash.each do |_index, expression_hash|
+    hash.each_value do |expression_hash|
       expressions.push(
         ComponentExpression.new(
           expression_hash.merge(
-            page: service.page_with_component(expression_hash['component'])
+            page: service.page_with_component(expression_hash['component']),
+            content_component_page: service.page_with_component(content_component)
           )
         )
       )

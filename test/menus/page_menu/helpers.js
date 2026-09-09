@@ -52,7 +52,14 @@ function createPageMenu(id, config) {
     activator_text: constants.TEXT_ACTIVATOR,
     id: id,
     preventDefault: true,
-    selection_event: constants.EVENT_SELECTION_NAME
+    selection_event: constants.EVENT_SELECTION_NAME,
+    view: {
+      text: {
+        dialogs: {
+          button_close: 'Close'
+        }
+      }
+    }
   }, config);
 
   server = GlobalHelpers.createServer();

@@ -1,0 +1,34 @@
+<% path =  session.dig(:questionnaire_answers, :govuk_forms_ruled_out) == "true" ?  :form_features : :continue  %>
+<%= link_to t("actions.back"), questionnaire_path(path), class: "govuk-back-link" %>
+
+<%= render 'page_layout' do %>
+  <% set_form_defaults @form %>
+  <%= form_for(@form, url: questionnaire_path, method: :put) do |f| %>
+      <%= render 'partials/form_errors', f: f %>
+      <h1 class="govuk-heading-xl"><%= page_heading %></h1>
+      <p class="govuk-body"><%= t("questionnaire.#{@page}_form.subheading").html_safe %></p>
+
+      <%= f.govuk_collection_radio_buttons :estimated_page_count,
+                                           @form.estimated_page_count_options,
+                                           :value,
+                                           :name,
+                                           legend: { text:  t("questionnaire.new_form_form.estimated_page_count.legend.text") },
+                                           hint: { text: '' } %>
+
+      <%= f.govuk_collection_radio_buttons :estimated_first_year_submissions_count,
+                                           @form.estimated_first_year_submissions_count_options,
+                                           :value,
+                                           :name,
+                                           legend: { text:  t("questionnaire.new_form_form.estimated_first_year_submissions_count.legend.text") },
+                                           hint: { text: '' } %>
+
+      <%= f.govuk_collection_radio_buttons :submission_delivery_method,
+                                           @form.submission_delivery_method_options,
+                                           :value,
+                                           :name,
+                                           legend: { text:  t("questionnaire.new_form_form.submission_delivery_method.legend.text") },
+                                           hint: { text: '' } %>
+
+    <%= render 'form_buttons' %>
+  <% end %>
+<% end %>

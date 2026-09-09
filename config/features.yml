@@ -1,0 +1,9 @@
+feature_flags:
+  developer_tools:
+    local: true
+    test: true   # formbuilder-saas-test
+    live: false  # formbuilder-saas-live
+  ms_list:
+    local: true
+    test: true   # formbuilder-saas-test
+    live: false  # formbuilder-saas-live

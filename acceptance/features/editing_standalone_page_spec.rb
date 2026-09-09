@@ -27,7 +27,7 @@ feature 'Edit standalone pages' do
   end
 
   def then_the_page_should_not_be_editable
-    expect { find('.fb-editable') }.to raise_error(Capybara::ElementNotFound)
+    expect(page).to_not have_css('.fb-editable', wait: 3)  
   end
 
   def and_I_edit_the_privacy_page

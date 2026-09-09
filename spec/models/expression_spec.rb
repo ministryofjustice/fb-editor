@@ -229,7 +229,7 @@ RSpec.describe Expression do
         expect(errors).to be_present
         expect(errors.values.first).to include(
           I18n.t(
-            'activemodel.errors.messages.unsupported_component'
+            'activemodel.errors.models.expression.unsupported'
           )
         )
       end

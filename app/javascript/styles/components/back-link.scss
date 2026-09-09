@@ -1,3 +1,8 @@
+.mojf-back-link-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
 .mojf-back-link {
   @extend %govuk-link;
   @extend %govuk-body-s;

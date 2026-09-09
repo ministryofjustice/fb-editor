@@ -19,15 +19,11 @@ class SaveAndReturnSettingsUpdater
     if save_and_return_settings.save_and_return_enabled?
       create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'dev')
       create_or_update_service_configuration(config: 'SAVE_AND_RETURN', deployment_environment: 'production')
-      create_or_update_service_configuration(config: 'SAVE_AND_RETURN_EMAIL', deployment_environment: 'dev', value: I18n.t('default_values.save_and_return_email', service_name:))
-      create_or_update_service_configuration(config: 'SAVE_AND_RETURN_EMAIL', deployment_environment: 'production', value: I18n.t('default_values.save_and_return_email', service_name:))
     end
 
     unless save_and_return_settings.save_and_return_enabled?
       remove_service_configuration('SAVE_AND_RETURN', 'dev')
       remove_service_configuration('SAVE_AND_RETURN', 'production')
-      remove_service_configuration('SAVE_AND_RETURN_EMAIL', 'dev')
-      remove_service_configuration('SAVE_AND_RETURN_EMAIL', 'production')
     end
   end
 

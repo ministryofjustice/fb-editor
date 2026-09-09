@@ -1,0 +1,37 @@
+<div class="component-dialog-api-request" id="external_start_page_url">
+  <%= form_for @external_url, url: api_service_external_start_page_index_path(service.service_id), method: :post, builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+    <h2 id="external-start-page-dialog-title" class="govuk-heading-m" data-node="heading">
+      <%= editing? ? t('external_start_page_url.editing_title') : t('external_start_page_url.title') %>
+    </h2>
+    
+    <% if !editing? %>
+      <p class="description"><%= t('external_start_page_url.content') %></p>
+
+      <p class="description">
+      <%= govuk_link_to 'https://moj-forms.service.justice.gov.uk/building-and-editing/#start-page', target: :blank, rel: 'noreferrer nofollow' do %>
+        <%= t('external_start_page_url.help_link_text') %><span class="govuk-visually-hidden"><%= t('assistive_text.new_tab') %></span>
+      <% end %>
+      </p>
+      <br/>
+      <%= f.govuk_text_field :url,
+        label: { text: t('external_start_page_url.label'), size: 's', tag: 'h3' },
+        class: @external_url.errors.any? ? 'govuk-input--error' : ''
+      %>
+    <% else %>
+      <%= f.govuk_text_field :url,
+        label: { text: t('external_start_page_url.label'), size: 's', tag: 'h3' },
+        class: @external_url.errors.any? ? 'govuk-input--error editing-external-url' : 'editing-external-url'
+      %>
+    <% end %>
+    
+    <div class="govuk-button-group">
+      <button class="govuk-button fb-govuk-button" type="submit">
+        <%= editing? ? t('external_start_page_url.done') : t('external_start_page_url.confirm') %>
+      </button>
+
+      <button class="govuk-button govuk-button--secondary" type="button" >
+        <%= t('dialogs.button_cancel') %>
+      </button>
+    </div>
+  <% end %>
+</div>

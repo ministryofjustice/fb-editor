@@ -63,14 +63,16 @@ class FormUrlUpdater
   def existing_service_slug_config
     ServiceConfiguration.find_by(
       service_id:,
-      name: 'SERVICE_SLUG'
+      name: 'SERVICE_SLUG',
+      deployment_environment: 'dev'
     )&.decrypt_value
   end
 
   def previous_service_slug
     ServiceConfiguration.find_by(
       service_id:,
-      name: 'PREVIOUS_SERVICE_SLUG'
+      name: 'PREVIOUS_SERVICE_SLUG',
+      deployment_environment: 'dev'
     )
   end
 

@@ -44,7 +44,7 @@ module BranchingSteps
     then_I_should_see_the_branch_title(index: 1, title: 'Branch 2')
 
     and_I_delete_the_branch(1)
-    then_I_should_not_see_text('Branch 2')
+    expect( editor.branches ).to have_conditionals(count: 1)
   end
 
   def when_I_update_the_question_name(question_name)
@@ -71,7 +71,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_branching_page
-    expect(editor.question_heading.first.text).to eq(
+    expect(editor.page_heading.text).to eq(
       I18n.t('default_values.branching_title', branching_number: 1)
     )
   end
@@ -81,7 +81,7 @@ module BranchingSteps
   end
 
   def then_I_should_not_see_unconnected_pages
-    expect(editor).not_to have_selector('.branch-optgroup')
+    expect(editor).to have_no_selector('.branch-optgroup')
   end
 
   def then_I_should_have_unconnected_pages
@@ -127,7 +127,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_no_errors
-    expect(page).not_to have_selector('.govuk-error-summary')
+    expect(page).to have_no_selector('.govuk-error-summary')
   end
 
   def then_I_should_be_on_the_correct_branch_page(path)
@@ -140,7 +140,9 @@ module BranchingSteps
 
   def and_I_delete_the_last_condition
     editor.last_condition_remover.click
-    editor.remove_condition_button.click
+    within('.Dialog') do
+      editor.remove_condition_button.click
+    end
   end
 
   def and_I_add_another_branch
@@ -148,13 +150,14 @@ module BranchingSteps
   end
 
   def and_I_delete_the_branch(index)
-    editor.find("div[data-conditional-index='#{index}'] button").click
-    editor.find('a.branch-remover').click
-    editor.remove_branch_button.click
+    editor.branches.conditional(index).delete_button.click
+    within('.Dialog') do
+      editor.remove_branch_button.click
+    end
   end
 
   def then_I_should_see_the_operator(text)
-    page_with_css('div.question label.govuk-label', text)
+    page_with_css('.expression [data-expression-target="label"]', text)
   end
 
   def page_with_css(element, text)
@@ -162,7 +165,7 @@ module BranchingSteps
   end
 
   def page_without_css(element, text)
-    expect(page).not_to have_css(element, text: text)
+    expect(page).to have_no_css(element, text: text)
   end
 
   def then_I_should_see_another_question_list
@@ -187,11 +190,11 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_delete_condition_button
-    page_with_css('button.condition-remover', I18n.t('branches.condition_remove'))
+    page_with_css('button.expression__remover', I18n.t('branches.condition_remove'))
   end
 
   def then_I_should_see_multiple_delete_condition_buttons
-    expect(page).to have_css("button.condition-remover", :minimum => 2)
+    expect(page).to have_css("button.expression__remover", :minimum => 2)
   end
 
   def then_I_should_not_see_the_operator(text)
@@ -199,7 +202,7 @@ module BranchingSteps
   end
 
   def then_I_should_see_the_branch_title(index:, title:)
-    expect(editor.branch_title(index).text).to eq(title)
+    expect(editor.branches.conditional(index).title).to have_text(title)
   end
 
   def then_I_should_see_the_previous_page_title(page_title)
@@ -287,6 +290,6 @@ module BranchingSteps
 
   # Error summary #
   def then_I_should_not_see_an_error_summary
-    expect(page).not_to have_selector('.govuk-error-summary')
+    expect(page).to have_no_selector('.govuk-error-summary')
   end
 end

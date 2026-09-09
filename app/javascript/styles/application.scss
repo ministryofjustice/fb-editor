@@ -14,6 +14,11 @@
  *= require_self
  */
 
+@use "govuk-frontend/dist/govuk" as * with (
+  $govuk-assets-path: "~govuk-frontend/dist/govuk/assets/",
+  $govuk-global-styles: true
+);
+
 @import "../packs/stylesheets/govuk";
 @import "./mixins";
 @import "./component_dialog";
@@ -22,9 +27,24 @@
 @import "./component_expander";
 @import "./component_warning_text";
 @import "./component_status_message";
+@import "./editable_components";
 @import "components/settings-screen";
 @import "components/back-link";
+@import "components/panel";
+@import "components/conditional";
+@import "components/expression";
+@import "components/icon-button";
+@import "components/editable-content";
+@import "components/announcement";
+// @import "components/movable-component";
 @import "./shared/content";
 @import "./index";
 @import "./admin";
 @import "./utilities";
+
+//Temporary solution to fix broken UI while upgrading govuk-frontend(govuk-components) package from 4.8.0 to 6.4.0
+.panel {
+  background-color: #f3f2f1;
+  border-radius: 15px;
+  padding: 40px 20px;
+}

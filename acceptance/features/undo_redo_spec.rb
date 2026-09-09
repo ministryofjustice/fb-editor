@@ -31,8 +31,6 @@ feature 'Undo redo page' do
       "Service name goes here",
       "page 1",
       "page 2",
-      "!",
-      "Warning",
       "You won’t receive any user data without a check answers page and a confirmation page"
     ]
   end
@@ -85,5 +83,4 @@ feature 'Undo redo page' do
     page.find(:css, '#main-content', visible: true)
     page.find('.fb-govuk-button', text: I18n.t("actions.undo_redo.#{name}")).click
   end
-
 end

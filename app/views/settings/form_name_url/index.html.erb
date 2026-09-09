@@ -1,6 +1,8 @@
-<%= mojf_settings_screen(heading:t('settings.form_name.heading')) do |screen| %>
+<% content_for :back_link do %>
+  <%= render MojForms::BackLinkComponent.new(href: settings_path, hidden_text: "to #{t('settings.name')}")%>
+<% end %>
 
-  <% screen.with_back_link(href: settings_path) %>
+<%= mojf_settings_screen(heading:t('settings.form_name.heading')) do |screen| %>
   
   <%= form_for @form_name_url_settings,
     as: :service,

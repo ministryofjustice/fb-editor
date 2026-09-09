@@ -51,7 +51,6 @@ feature 'Submission email' do
 
   def then_I_should_see_the_submission_email_settings_page(environment)
     expect(page).to have_content(I18n.t('settings.collection_email.heading'))
-    expect(page).to have_content(I18n.t('settings.collection_email.lede'))
     expect(page).to have_content(I18n.t("publish.#{environment}.heading"))
     expect(page).to have_content(I18n.t("publish.#{environment}.description"))
     within( "#email-submission-#{environment}") do

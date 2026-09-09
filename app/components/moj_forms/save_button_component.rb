@@ -45,7 +45,7 @@ module MojForms
     # Translations are not accessible outside of the view context so we use
     # before_render to modify the attributes with our default labels.
     def before_render
-      @text = (@text || t('actions.save'))
+      @text ||= t('actions.save')
       @html_attributes = {
         data: {
           saved_label: t('actions.saved'),

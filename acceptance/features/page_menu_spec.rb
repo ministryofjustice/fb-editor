@@ -3,10 +3,11 @@ require_relative '../spec_helper'
 feature 'Page menu items' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
-  let(:two_menu_items) do
+  let(:start_page_menu_items) do
     [
       I18n.t('actions.edit_page'),
-      I18n.t('actions.preview_page')
+      I18n.t('actions.preview_page'),
+      I18n.t('actions.enable_external_start_page')
     ]
   end
   let(:three_menu_items) do
@@ -44,7 +45,7 @@ feature 'Page menu items' do
 
   scenario 'start page' do
     and_I_click_on_the_page_menu(start_page)
-    then_I_should_see_the_expected_menu_items(start_page, two_menu_items)
+    then_I_should_see_the_expected_menu_items(start_page, start_page_menu_items)
   end
 
   scenario 'standard flow page' do

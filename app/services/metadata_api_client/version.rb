@@ -45,5 +45,9 @@ module MetadataApiClient
     def created_at
       metadata['created_at']
     end
+
+    def created_by
+      metadata['created_by']
+    end
   end
 end

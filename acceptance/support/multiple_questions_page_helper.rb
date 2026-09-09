@@ -12,6 +12,7 @@ module MultipleQuestionsPageHelper
   end
 
   def and_I_add_a_multiple_page_content_component
+    sleep 2
     editor.add_a_component_button.click
     and_I_add_a_content_area
   end
@@ -41,6 +42,7 @@ module MultipleQuestionsPageHelper
       checkboxes_component_question,
       options: checkboxes_component_options
     )
+    and_I_change_the_address_component(address_component_question)
   end
 
   def and_I_change_the_text_component(question, component: 0)
@@ -63,10 +65,14 @@ module MultipleQuestionsPageHelper
     and_I_change_the_component(question, component: component, tag: 'legend', options: options)
   end
 
+  def and_I_change_the_address_component(question, component: 5)
+    and_I_change_the_component(question, component: component, tag: 'legend')
+  end
+
   def and_I_change_the_component(question, component:, tag:, options: nil)
     element = editor.find(
       :xpath,
-      "//*[@data-fb-content-id='page[components[#{component}]]']")
+      "//*[@data-fb-content-id='page[components][#{component}]']")
     question_name = element.find("#{tag} .EditableElement")
     question_name.set(question)
 
@@ -87,7 +93,7 @@ module MultipleQuestionsPageHelper
     and_I_click_the_delete_link
     expect(
       editor.find(:css, '.component-dialog p').text
-    ).to eq(I18n.t('questions.delete_modal.can_not_delete_message'))
+    ).to eq(I18n.t('questions.delete_modal.delete_question_used_for_branching_message'))
     editor.find(:css, '.ui-dialog-titlebar-close').click
   end
 

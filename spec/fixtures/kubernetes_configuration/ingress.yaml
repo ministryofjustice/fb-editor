@@ -14,8 +14,16 @@ metadata:
       }
     external-dns.alpha.kubernetes.io/set-identifier: acceptance-tests-date-ingress-formbuilder-services-test-dev-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      SecAuditEngine On
+      SecRuleEngine DetectionOnly
+      SecDefaultAction "phase:2,pass,log,tag:github_team=form-builder"
+      SecRuleRemoveById 941100
+      SecRuleUpdateTargetByTag attack-xss !REQUEST_COOKIES:_fb_runner_session
+      SecRuleUpdateTargetByTag attack-sqli !REQUEST_COOKIES:_fb_runner_session
 spec:
-  ingressClassName: default
+  ingressClassName: modsec
   tls:
     - hosts:
       - acceptance-tests-date.dev.test.form.service.justice.gov.uk

@@ -30,10 +30,12 @@ feature 'Deleting page' do
   end
 
   def then_I_should_not_see_unconnected_pages
-    expect(editor).not_to have_selector('.destination-optgroup')
+    expect(page).to have_css('#flow-overview', visible: true)
+    expect(editor).to have_no_selector('.destination-optgroup')
   end
 
   def then_I_should_see_unconnected_pages
+    expect(page).to have_css('#flow-overview', visible: true)
     expect(editor).to have_selector('.destination-optgroup')
   end
 
@@ -54,17 +56,12 @@ feature 'Deleting page' do
     expect(editor.unconnected_flow).to eq(
       [
         'Branching point 1',
-        'Page b contains Thor',
-        'Page b contains Hulk',
-        'Otherwise',
         'Page c',
         'Page d',
         'Page e',
         'Page f',
         'Page g',
         'Branching point 2',
-        'Question 2 contains Thor',
-        'Otherwise',
         'Page h',
         'Page i',
         'Page j'
@@ -92,9 +89,6 @@ feature 'Deleting page' do
     page.driver.browser.manage.window.resize_to(30000, 1080)
     expect(editor.unconnected_flow).to eq([
       'Branching point 1',
-      'Page b contains Thor',
-      'Page b contains Hulk',
-      'Otherwise',
       'Page c',
       'Page e',
       'Page g',

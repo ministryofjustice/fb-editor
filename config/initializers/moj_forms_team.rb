@@ -1,18 +1,22 @@
-MOJ_FORMS_ADMIN = [
-  'claire.bowman@digital.justice.gov.uk',
-  'sijy.mathew@digital.justice.gov.uk',
-  'mark.jefferson@digital.justice.gov.uk',
-  'assma.banaris@digital.justice.gov.uk',
-  'fabien.marry@digital.justice.gov.uk',
-  'natalia.stutter@digital.justice.gov.uk',
-  'darren.rooke@digital.justice.gov.uk'
+MOJ_FORMS_ADMIN = %w[
+  moj-form-acceptance-test-admin@devl.justice.gov.uk
+  fb-acceptance-tests@digital.justice.gov.uk
+  mark.jefferson@digital.justice.gov.uk
+  deepika.patel@digital.justice.gov.uk
+  Deepika.Patel@justice.gov.uk
+  Rhian.Townsend@justice.gov.uk
+  Mark.Jefferson1@justice.gov.uk
+  Edwin.Bajomo@justice.gov.uk
+  Lucas.Shaw@justice.gov.uk
 ].freeze
 
-MOJ_FORMS_DEVS = [
-  'matt.tei@digital.justice.gov.uk',
-  'chris.pymm@digital.justice.gov.uk',
-  'hellema.ibrahim@digital.justice.gov.uk',
-  'steven.leighton@digital.justice.gov.uk'
+MOJ_FORMS_DEVS = %w[
+  matt.tei@digital.justice.gov.uk
+  Matthew.Tei@Justice.gov.uk
+  Ripan.Kumar@justice.gov.uk
+  Mohammed.Seedat2@justice.gov.uk
+  Daniel.Glen@justice.gov.uk
+  Lucas.Shaw@justice.gov.uk
 ].freeze
 
 MOJ_FORMS_TEAM = MOJ_FORMS_ADMIN + MOJ_FORMS_DEVS.freeze

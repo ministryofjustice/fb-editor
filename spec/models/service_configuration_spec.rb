@@ -147,6 +147,53 @@ RSpec.describe ServiceConfiguration, type: :model do
     end
   end
 
+  describe '#do_not_send_to_graph_api?' do
+    let!(:submission_setting) do
+      create(
+        :submission_setting,
+        :dev,
+        service_id: service.service_id,
+        send_to_graph_api:
+      )
+    end
+
+    %w[
+      MS_LIST_ID
+      MS_SITE_ID
+      MS_DRIVE_ID
+    ].each do |configuration|
+      context "when configuration is #{configuration} and setting is not checked" do
+        let(:send_to_graph_api) { false }
+        let(:service_configuration) do
+          described_class.new(
+            name: configuration,
+            service_id: service.service_id,
+            deployment_environment: 'dev'
+          )
+        end
+
+        it 'returns truthy' do
+          expect(service_configuration.do_not_send_to_graph_api?).to be_truthy
+        end
+      end
+
+      context "when configuration is #{configuration} and setting is checked" do
+        let(:send_to_graph_api) { true }
+        let(:service_configuration) do
+          described_class.new(
+            name: configuration,
+            service_id: service.service_id,
+            deployment_environment: 'dev'
+          )
+        end
+
+        it 'returns false' do
+          expect(service_configuration.do_not_send_to_graph_api?).to be_falsey
+        end
+      end
+    end
+  end
+
   describe '#do_not_send_confirmation_email?' do
     subject(:service_configuration) do
       described_class.new(name: 'CONFIRMATION_EMAIL_COMPONENT_ID')

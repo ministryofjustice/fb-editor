@@ -1,18 +1,41 @@
 class DestroyQuestionOptionModal
   include ActiveModel::Model
-  attr_accessor :service, :page, :question, :option, :label
+  attr_accessor :service, :page, :question, :option, :pages
 
-  delegate :expressions, :conditionals, to: :service
+  delegate :expressions, :conditionals, :content_expressions, to: :service
+
+  PARTIALS = {
+    used_for_conditional_content?: 'delete_option_used_for_conditional_content',
+    used_for_branching?: 'delete_option_used_for_branching',
+    default?: 'delete_option'
+  }.freeze
+
+  def initialize(service:, page:, question:, option:)
+    @service = service
+    @page = page
+    @question = question
+    @option = option
+    @partial = PARTIALS.select { |method_name, _| method(method_name).call.present? }.values.first
+  end
 
   def to_partial_path
-    return 'api/question_options/cannot_delete_modal' if can_not_be_deleted?
-
-    'api/question_options/destroy_message_modal'
+    "api/question_options/#{@partial}_modal"
   end
 
   private
 
-  def can_not_be_deleted?
+  def used_for_conditional_content?
+    return false if option.blank?
+
+    @pages = service.pages_with_conditional_content_for_question_option(option.uuid)
+    @pages.any?
+  end
+
+  def used_for_branching?
     option.present? && expressions.map(&:field).include?(option.uuid)
+  end
+
+  def default?
+    true
   end
 end

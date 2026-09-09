@@ -2,6 +2,7 @@ RSpec.describe ComponentConditional do
   subject(:component_conditional) do
     described_class.new(component_conditional_hash)
   end
+  let(:page) { double(uuid: 'some-page-uuid') }
   let(:component_conditional_hash) do
     {
       'expressions' => [
@@ -9,7 +10,7 @@ RSpec.describe ComponentConditional do
           {
             'operator' => 'is',
             'component' => '67890',
-            'page' => double(uuid: 'some-page-uuid'),
+            'page' => page,
             'field' => 'some-field-uuid'
           }
         )
@@ -34,6 +35,7 @@ RSpec.describe ComponentConditional do
   describe '#to_metadata' do
     before do
       allow(component_conditional).to receive(:generate_uuid).and_return('til-its-done')
+      allow(page).to receive(:find_component_by_uuid).and_return({})
     end
 
     context 'with a single expression' do
@@ -81,6 +83,7 @@ RSpec.describe ComponentConditional do
 
   describe '#component_expressions' do
     before do
+      allow(page).to receive(:find_component_by_uuid).and_return(nil)
       component_conditional.valid?
     end
 
@@ -92,7 +95,7 @@ RSpec.describe ComponentConditional do
               {
                 'operator' => '',
                 'component' => '',
-                'page' => 'some-page-uuid',
+                'page' => page,
                 'field' => ''
               }
             )

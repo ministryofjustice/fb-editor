@@ -62,6 +62,6 @@ feature 'Edit confirmation pages' do
   end
 
   def then_I_should_see_the_content_component(content)
-    expect(editor.first_component.text).to eq(content)
+    expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
 end

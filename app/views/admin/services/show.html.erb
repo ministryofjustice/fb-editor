@@ -16,6 +16,19 @@
     </a>
 
     <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
+
+    <% if is_already_approved? %>
+      <a href="<%= admin_service_approve_path(:service_id => @service.service_id) %>" class="govuk-button fb-govuk-button" disabled>
+        Already approved to go live
+      </a>
+    <% else %>
+      <%= link_to 'Approve to go live', admin_service_approve_path(:service_id => @service.service_id),
+          method: :get, class: "govuk-button fb-govuk-button" ,
+          data: { confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
+    <% end %>
+    <%= link_to 'Revoke approval to go live', admin_service_revoke_approval_path(:service_id => @service.service_id),
+      method: :get, class: "govuk-button fb-govuk-button" ,
+      data: { confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -134,6 +147,12 @@
       disable_with: 'Re-publishing. . .'
     %>
     <% end %>
+
+<div>
+  <%= link_to 'Delete Service', admin_service_path(@service.service_id, @service),
+              method: :delete, class: "govuk-button fb-govuk-button" ,
+              data: { confirm: 'Is this the right form we are deleting?' }  %>
+</div>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
       Latest Metadata

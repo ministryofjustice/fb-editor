@@ -148,13 +148,14 @@ RSpec.describe PublishingPagePresenter do
           allow_any_instance_of(PublishServiceCreation).to receive(:no_service_output?).and_return(false)
         end
 
-        context 'when there are submission warnings' do
+        context 'when there are submission warnings but not autocomplete warnings' do
           before do
             allow_any_instance_of(SubmissionWarningsPresenter).to receive(:messages).and_return(['Some messages'])
+            allow_any_instance_of(AutocompleteItemsPresenter).to receive(:messages).and_return([])
           end
 
-          it 'returns truthy' do
-            expect(subject.publish_button_disabled?).to be_truthy
+          it 'returns falsey - is allowed to publish' do
+            expect(subject.publish_button_disabled?).to be_falsey
           end
         end
 
