@@ -124,7 +124,7 @@ describe('<editable-content>', function() {
 
         button.focus()
 
-        expect(component.output).to.have.html(`<h1 id="heading-1" class="govuk-heading-xl">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
+        expect(component.output).to.have.html(`<h1 class="govuk-heading-xl" id="heading-1">Heading 1</h1><p class="govuk-body">This is a paragraph</p>
 `)
       })
     })
