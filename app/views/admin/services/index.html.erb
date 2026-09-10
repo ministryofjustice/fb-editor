@@ -64,7 +64,7 @@ It renders the `_table` partial to display details about the resources.
           </td>
           <% if Rails.env.development? %>
           <td class="govuk-table__cell">
-            <%= link_to 'Duplicate',
+            <%= button_to 'Duplicate',
                 admin_services_path(service.id, service_id: service.id),
                 method: :post %>
           </td>
