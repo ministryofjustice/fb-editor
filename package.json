@@ -46,7 +46,7 @@
     "sinon": "^15.0.3",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.0",
-    "tabbable": "^6.0.1",
+    "tabbable": "^6.5.0",
     "terser-webpack-plugin": "^5.3.1",
     "webpack": "^5.101.0",
     "webpack-assets-manifest": "^6.0.0",
@@ -57,7 +57,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "@rspack/dev-server": "^2.0.0",
-    "@sentry/webpack-plugin": "^1.20.0",
+    "@sentry/webpack-plugin": "^5.4.0",
     "chai": "^4.3.7",
     "form-data": "^4.0.4",
     "jquery-ui": "^1.13.2",
