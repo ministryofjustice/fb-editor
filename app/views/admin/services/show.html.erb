@@ -24,11 +24,11 @@
     <% else %>
       <%= link_to 'Approve to go live', admin_service_approve_path(:service_id => @service.service_id),
           method: :get, class: "govuk-button fb-govuk-button" ,
-          data: { confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
+          data: { turbo_confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
     <% end %>
     <%= link_to 'Revoke approval to go live', admin_service_revoke_approval_path(:service_id => @service.service_id),
       method: :get, class: "govuk-button fb-govuk-button" ,
-      data: { confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
+      data: { turbo_confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
@@ -84,17 +84,17 @@
       </div>
     </dl>
     <% if @published_to_live[:id].present? %>
-    <%= link_to 'Unpublish Live', admin_service_unpublish_path(
+    <%= button_to 'Unpublish Live', admin_service_unpublish_path(
         @service.service_id, @published_to_live[:id], 'production'),
         method: :post,
         class: "govuk-button fb-govuk-button",
-        disable_with: 'Unpublishing. . .'
+        data: { disable_with: 'Unpublishing. . .' }
     %>
-    <%= link_to 'Re-publish Live', admin_service_republish_path(
+    <%= button_to 'Re-publish Live', admin_service_republish_path(
       @service.service_id, @published_to_live[:id], 'production'),
       method: :post,
       class: "govuk-button fb-govuk-button",
-      disable_with: 'Re-publishing. . .'
+      data: { disable_with: 'Re-publishing. . .' }
     %>
     <% end %>
 
@@ -134,24 +134,24 @@
       </div>
     </dl>
     <% if @published_to_test[:id].present? %>
-    <%= link_to 'Unpublish Test', admin_service_unpublish_path(
+    <%= button_to 'Unpublish Test', admin_service_unpublish_path(
         @service.service_id, @published_to_test[:id], 'dev'),
         method: :post,
         class: "govuk-button fb-govuk-button",
-        disable_with: 'Unpublishing. . .'
+        data: { disable_with: 'Unpublishing. . .' }
     %>
-    <%= link_to 'Re-publish Test', admin_service_republish_path(
+    <%= button_to 'Re-publish Test', admin_service_republish_path(
       @service.service_id, @published_to_test[:id], 'dev'),
       method: :post,
       class: "govuk-button fb-govuk-button",
-      disable_with: 'Re-publishing. . .'
+      data: { disable_with: 'Re-publishing. . .' }
     %>
     <% end %>
 
 <div>
-  <%= link_to 'Delete Service', admin_service_path(@service.service_id, @service),
-              method: :delete, class: "govuk-button fb-govuk-button" ,
-              data: { confirm: 'Is this the right form we are deleting?' }  %>
+  <%= button_to 'Delete Service', admin_service_path(@service.service_id, @service),
+              method: :delete, class: "govuk-button fb-govuk-button",
+              data: { turbo_confirm: 'Is this the right form we are deleting?' }  %>
 </div>
 
     <h2 class="govuk-heading-m govuk-!-margin-top-5">
