@@ -23,12 +23,12 @@
       </a>
     <% else %>
       <%= link_to 'Approve to go live', admin_service_approve_path(:service_id => @service.service_id),
-          method: :get, class: "govuk-button fb-govuk-button" ,
-          data: { turbo_confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
+          class: "govuk-button fb-govuk-button",
+          data: { turbo_method: :get, turbo_confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
     <% end %>
     <%= link_to 'Revoke approval to go live', admin_service_revoke_approval_path(:service_id => @service.service_id),
-      method: :get, class: "govuk-button fb-govuk-button" ,
-      data: { turbo_confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
+      class: "govuk-button fb-govuk-button",
+      data: { turbo_method: :get, turbo_confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
     <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">
