@@ -69,10 +69,14 @@ module Admin
       )
 
       if @maintenance_mode_settings.valid?
+        was_enabled = maintenance_mode_enabled?
+
         MaintenanceModeSettingsUpdater.new(
           settings: @maintenance_mode_settings,
           service_id: @service.service_id
         ).create_or_update!
+
+        log_maintenance_mode_change(was_enabled:)
 
         redirect_to admin_services_path
       else
@@ -407,6 +411,34 @@ module Admin
       service_id = params[:id]
       @latest_metadata = MetadataApiClient::Service.latest_version(service_id)
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
+    end
+
+    # Whether maintenance mode is currently switched on for this service. The
+    # updater stores a MAINTENANCE_MODE config row only while it is enabled, so
+    # the row's presence is the source of truth.
+    def maintenance_mode_enabled?
+      ServiceConfiguration.exists?(
+        service_id: @service.service_id,
+        deployment_environment: 'production',
+        name: 'MAINTENANCE_MODE'
+      )
+    end
+
+    # Logs a maintenance-mode change so it shows on the admin changes page. Only
+    # records an entry when the switch actually flipped; editing the heading or
+    # content without moving the switch is not a maintenance-mode action and is
+    # not logged. Logging must never take down an otherwise-successful save, so
+    # failures are reported rather than raised.
+    def log_maintenance_mode_change(was_enabled:)
+      now_enabled = maintenance_mode_params[:maintenance_mode] == '1'
+      return if was_enabled == now_enabled
+
+      AdminEvent.create!(
+        user_id: current_user&.id,
+        action: "Maintenance mode #{now_enabled ? 'enabled' : 'disabled'}"
+      )
+    rescue StandardError => e
+      Sentry.capture_exception(e)
     end
 
     def webhook

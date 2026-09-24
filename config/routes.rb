@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :questionnaires, only: [:index]
     resources :announcements, only: [:index, :new, :create, :show, :edit, :update, :destroy]
     resources :uptime_checks, only: [:index, :create, :destroy]
+    resources :changes, only: [:index]
     resources :services, only: [:index, :show, :edit, :update, :create, :destroy] do
       post '/unpublish/:publish_service_id/:deployment_environment',
         to: 'services#unpublish', as: :unpublish

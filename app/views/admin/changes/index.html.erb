@@ -1,0 +1,45 @@
+<% content_for(:title) do %>
+  <%= display_resource_name('Change') %>
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+</header>
+
+<section class="main-content__body">
+  <% if @admin_events.empty? %>
+    <p class="govuk-body">No admin actions have been recorded yet.</p>
+  <% else %>
+    <table class="govuk-table">
+      <caption class="govuk-table__caption govuk-table__caption--m">
+        Most recent <%= @admin_events.size %> admin actions
+      </caption>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">When</th>
+          <th scope="col" class="govuk-table__header">Who</th>
+          <th scope="col" class="govuk-table__header">Action</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% @admin_events.each do |admin_event| %>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <%= admin_event.created_at&.strftime('%d %b %Y %H:%M') %>
+            </td>
+            <td class="govuk-table__cell">
+              <% if admin_event.user_id.nil? %>
+                Non-UI action (console or task)
+              <% else %>
+                <%= admin_event.user&.email || 'Unknown user (account removed)' %>
+              <% end %>
+            </td>
+            <td class="govuk-table__cell"><%= admin_event.action %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</section>
