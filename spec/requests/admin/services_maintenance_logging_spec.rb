@@ -12,8 +12,6 @@ RSpec.describe 'Admin maintenance-mode change logging', type: :request do
     allow(MetadataApiClient::Service).to receive(:latest_version).and_return(metadata)
   end
 
-  # The updater stores a MAINTENANCE_MODE config row only while maintenance mode
-  # is on. Seeding one makes the service start out "enabled".
   def enable_maintenance_mode!
     ServiceConfiguration.create!(
       service_id: service.service_id,

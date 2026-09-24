@@ -413,9 +413,6 @@ module Admin
       @service = MetadataPresenter::Service.new(@latest_metadata, editor: true)
     end
 
-    # Whether maintenance mode is currently switched on for this service. The
-    # updater stores a MAINTENANCE_MODE config row only while it is enabled, so
-    # the row's presence is the source of truth.
     def maintenance_mode_enabled?
       ServiceConfiguration.exists?(
         service_id: @service.service_id,
@@ -424,11 +421,6 @@ module Admin
       )
     end
 
-    # Logs a maintenance-mode change so it shows on the admin changes page. Only
-    # records an entry when the switch actually flipped; editing the heading or
-    # content without moving the switch is not a maintenance-mode action and is
-    # not logged. Logging must never take down an otherwise-successful save, so
-    # failures are reported rather than raised.
     def log_maintenance_mode_change(was_enabled:)
       now_enabled = maintenance_mode_params[:maintenance_mode] == '1'
       return if was_enabled == now_enabled
