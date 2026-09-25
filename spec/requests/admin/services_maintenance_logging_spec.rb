@@ -37,6 +37,7 @@ RSpec.describe 'Admin maintenance-mode change logging', type: :request do
     event = AdminEvent.recent.first
     expect(event.action).to eq('Maintenance mode enabled')
     expect(event.user_id).to eq(current_user.id)
+    expect(event.service_id).to eq(service.service_id)
   end
 
   it 'records a "disabled" event when the switch is turned off' do
@@ -52,12 +53,13 @@ RSpec.describe 'Admin maintenance-mode change logging', type: :request do
       .not_to change(AdminEvent, :count)
   end
 
-  it 'surfaces the maintenance action on the changes page' do
+  it 'surfaces the maintenance action, with its service name, on the changes page' do
     submit(maintenance_mode: '1')
 
     get admin_changes_path
 
     expect(response.body).to include('Maintenance mode enabled')
     expect(response.body).to include(current_user.email)
+    expect(response.body).to include('Branching Fixture')
   end
 end

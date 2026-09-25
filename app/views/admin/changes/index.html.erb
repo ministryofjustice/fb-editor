@@ -14,12 +14,13 @@
   <% else %>
     <table class="govuk-table">
       <caption class="govuk-table__caption govuk-table__caption--m">
-        Most recent <%= @admin_events.size %> admin actions
+        <%= page_entries_info @admin_events, entry_name: 'admin action' %>
       </caption>
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">When</th>
           <th scope="col" class="govuk-table__header">Who</th>
+          <th scope="col" class="govuk-table__header">Service</th>
           <th scope="col" class="govuk-table__header">Action</th>
         </tr>
       </thead>
@@ -36,10 +37,15 @@
                 <%= admin_event.user&.email || 'Unknown user (account removed)' %>
               <% end %>
             </td>
+            <td class="govuk-table__cell">
+              <%= @service_names[admin_event.service_id].presence || admin_event.service_id || '—' %>
+            </td>
             <td class="govuk-table__cell"><%= admin_event.action %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+
+    <%= paginate @admin_events %>
   <% end %>
 </section>

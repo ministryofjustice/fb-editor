@@ -427,6 +427,7 @@ module Admin
 
       AdminEvent.create!(
         user_id: current_user&.id,
+        service_id: @service.service_id,
         action: "Maintenance mode #{now_enabled ? 'enabled' : 'disabled'}"
       )
     rescue StandardError => e

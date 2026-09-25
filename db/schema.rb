@@ -18,7 +18,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_140000) do
   create_table "admin_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.datetime "created_at", null: false
+    t.uuid "service_id"
     t.uuid "user_id"
+    t.index ["service_id"], name: "index_admin_events_on_service_id"
     t.index ["user_id"], name: "index_admin_events_on_user_id"
   end
 
