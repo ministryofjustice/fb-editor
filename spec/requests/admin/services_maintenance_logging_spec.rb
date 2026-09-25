@@ -53,10 +53,10 @@ RSpec.describe 'Admin maintenance-mode change logging', type: :request do
       .not_to change(AdminEvent, :count)
   end
 
-  it 'surfaces the maintenance action, with its service name, on the changes page' do
+  it 'surfaces the maintenance action, with its service name, on the admin events page' do
     submit(maintenance_mode: '1')
 
-    get admin_changes_path
+    get admin_events_path
 
     expect(response.body).to include('Maintenance mode enabled')
     expect(response.body).to include(current_user.email)

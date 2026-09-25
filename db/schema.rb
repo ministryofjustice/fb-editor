@@ -145,6 +145,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_140000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "versions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at"
+    t.string "event", null: false
+    t.string "item_id", null: false
+    t.string "item_type", null: false
+    t.text "object"
+    t.string "whodunnit"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+  end
+
   add_foreign_key "announcements", "users", column: "created_by_id"
   add_foreign_key "announcements", "users", column: "revoked_by_id"
   add_foreign_key "identities", "users"

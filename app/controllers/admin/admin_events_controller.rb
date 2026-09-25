@@ -1,5 +1,5 @@
 module Admin
-  class ChangesController < Admin::ApplicationController
+  class AdminEventsController < Admin::ApplicationController
     PER_PAGE = 50
 
     def index

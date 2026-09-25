@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Admin changes page', type: :request do
+RSpec.describe 'Admin events page', type: :request do
   let(:current_user) { create(:user) }
 
   before do
@@ -10,7 +10,7 @@ RSpec.describe 'Admin changes page', type: :request do
   end
 
   it 'tells the admin when nothing has been recorded yet' do
-    get admin_changes_path
+    get admin_events_path
 
     expect(response.status).to eq(200)
     expect(response.body).to include('No admin actions have been recorded yet')
@@ -27,7 +27,7 @@ RSpec.describe 'Admin changes page', type: :request do
     end
 
     it 'shows the most recent 50 on the first page and paginates the rest' do
-      get admin_changes_path
+      get admin_events_path
 
       expect(response.body).to include('Action number 0')
       expect(response.body).to include('Action number 49')
@@ -38,7 +38,7 @@ RSpec.describe 'Admin changes page', type: :request do
     end
 
     it 'reaches the oldest events on a later page' do
-      get admin_changes_path(page: 2)
+      get admin_events_path(page: 2)
 
       expect(response.body).to include('Action number 59')
       expect(response.body).not_to include('Action number 0')
@@ -57,7 +57,7 @@ RSpec.describe 'Admin changes page', type: :request do
         .with(service_id)
         .and_return('service_name' => 'Apply for a licence')
 
-      get admin_changes_path
+      get admin_events_path
 
       expect(response.body).to include('Apply for a licence')
     end
@@ -67,7 +67,7 @@ RSpec.describe 'Admin changes page', type: :request do
         .with(service_id)
         .and_raise(Faraday::ResourceNotFound.new('not found'))
 
-      get admin_changes_path
+      get admin_events_path
 
       expect(response.status).to eq(200)
       expect(response.body).to include(service_id)
