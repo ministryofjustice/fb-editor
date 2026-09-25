@@ -20,6 +20,7 @@
       }
 
       @include govuk-typography-common;
+      @include govuk-global-styles;
       @extend .govuk-textarea;
       @extend %govuk-body-m;
 
