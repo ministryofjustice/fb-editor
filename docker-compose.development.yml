@@ -1,8 +1,7 @@
+version: '3.4'
+
+
 services:
  editor-app:
    volumes:
      - '.:/app'
-
- editor-metadata-api:
-   ports:
-     - 9091:3000
