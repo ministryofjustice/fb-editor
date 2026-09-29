@@ -2,6 +2,6 @@ version: '3.4'
 
 
 services:
- editor-app:
-   volumes:
-     - '.:/app'
+  editor-app:
+    volumes:
+      - '.:/app'
