@@ -26,6 +26,7 @@
         <th class="cell-label" scope="col">Status</th>
         <th class="cell-label" scope="col">Published by</th>
         <th class="cell-label" scope="col">Environment</th>
+        <th class="cell-label" scope="col">Updated at</th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +48,9 @@
           </td>
           <td class="cell-data">
             <%= presenter.environment_label %>
+          </td>
+          <td class="cell-data">
+            <%= presenter.updated_at %>
           </td>
         </tr>
       <% end %>

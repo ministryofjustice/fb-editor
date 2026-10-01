@@ -7,7 +7,7 @@ module Admin
 
     attr_reader :publish_service
 
-    delegate :service_id, :deployment_environment, :user, to: :publish_service
+    delegate :service_id, :deployment_environment, :user, :updated_at, to: :publish_service
 
     def initialize(publish_service)
       @publish_service = publish_service
