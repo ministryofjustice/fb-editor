@@ -32,14 +32,13 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
 </header>
 
 <section class="main-content__body">
-
   <%= form_with(model: @maintenance_mode_settings,
                url: admin_service_path(@service.service_id),
                method: :put) do |f| %>
 
     <div class="form-actions">
       <%= link_to 'Back to services', admin_services_path, class: "button" %>
-      <%= f.submit 'Save', class: 'button' %>
+      <%= f.submit 'Save', class: 'button', style: 'float: right' %>
     </div>
 
     <% if @maintenance_mode_settings.errors.any? %>
@@ -55,18 +54,18 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
     <% end %>
 
     <fieldset class="field-unit">
-      <legend>Maintenance mode</legend>
-      <div class="field-unit__field">
-        <label>
+      <legend class="field-unit__legend">Maintenance mode</legend>
+      <div class="field-unit__radios">
+        <div class="field-unit__radio-item">
+          <%= f.label :maintenance_mode_1, 'Enabled' %>
           <%= f.radio_button :maintenance_mode, 1,
             checked: @maintenance_mode_settings.maintenance_mode == '1' %>
-          Enabled
-        </label>
-        <label>
+        </div>
+        <div class="field-unit__radio-item">
+          <%= f.label :maintenance_mode_0, 'Disabled' %>
           <%= f.radio_button :maintenance_mode, 0,
             checked: @maintenance_mode_settings.maintenance_mode != '1' %>
-          Disabled
-        </label>
+        </div>
       </div>
     </fieldset>
 

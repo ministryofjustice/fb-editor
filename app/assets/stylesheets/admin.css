@@ -110,3 +110,32 @@ table caption {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
+.form-actions {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+
+#new_maintenance_mode_settings .field-unit__radios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#new_maintenance_mode_settings .field-unit__radio-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 200px;
+}
+
+#new_maintenance_mode_settings .field-unit__radio-item label {
+  font-size: 19px;
+}
+
+#new_maintenance_mode_settings .field-unit__radio-item input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: #1976d2;
+}
