@@ -5,7 +5,7 @@ module Admin
 
     def index
       @environment = requested_environment
-      @publish_services = Kaminari.paginate_array(current_state).page(params[:page]).per(PER_PAGE)
+      @publish_services = current_state.page(params[:page]).per(PER_PAGE)
     end
 
     private
@@ -15,10 +15,13 @@ module Admin
     end
 
     def current_state
-      PublishService.where(deployment_environment: @environment)
-                    .order(created_at: :desc)
-                    .group_by(&:service_id)
-                    .map { |_service_id, publishes| publishes.first }
+      latest_publish_ids_per_service = PublishService
+        .where(deployment_environment: @environment)
+        .select('MAX(id) AS id')
+        .group(:service_id)
+
+      PublishService.where(id: latest_publish_ids_per_service)
+                    .order(created_at: :desc, id: :desc)
     end
   end
 end
