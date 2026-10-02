@@ -89,6 +89,8 @@ services:
         BUNDLE_ARGS: ''
     tty: true
     stdin_open: true
+    ports:
+      - 9091:3000
     environment:
       DATABASE_URL: "postgres://postgres:password@editor-metadata-db/metadata_local"
       RAILS_ENV: development
