@@ -3,9 +3,6 @@ require_relative '../spec_helper'
 feature 'Preview form' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
-  let(:multiple_page_heading) do
-    'Multiple Page'
-  end
   let(:optional_content) do
     I18n.t('default_text.content')
   end

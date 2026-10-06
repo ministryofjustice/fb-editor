@@ -4,11 +4,6 @@ feature 'Submission email' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:start_page) { 'Service name goes here' }
-  let(:message_body) {
-    "Please find attached a submission sent from #{service_name}. Your reference number is: {{reference_number}}."
-  }
-  let(:message_subject) { "Submission from #{service_name}, reference number: {{reference_number}}" }
-  let(:pdf_heading) { "Submission for #{service_name}, reference number: {{reference_number}}" }
 
   background do
     given_I_am_logged_in
