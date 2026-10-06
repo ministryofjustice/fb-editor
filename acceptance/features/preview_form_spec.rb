@@ -178,13 +178,6 @@ feature 'Preview form' do
     when_I_save_my_changes
   end
 
-  def and_I_make_the_question_optional
-    when_I_want_to_select_question_properties
-    and_I_want_to_set_a_question_optional
-    and_I_update_the_question_to_be_optional
-    when_I_save_my_changes
-  end
-
   def and_I_want_to_change_the_checkbox_answer
     page.find(:link, text: 'Your answer for What is your favourite fruit?', visible: false).click
   end

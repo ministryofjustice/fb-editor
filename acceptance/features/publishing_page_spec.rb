@@ -411,12 +411,6 @@ end
     click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
-  def then_I_should_see_username_and_password_fields
-    # defaults to requiring a username and password
-    editor.find(:css, "input#username_#{environment}")
-    editor.find(:css, "input#password_#{environment}")
-  end
-
   def then_username_and_password_should_be_the_default(environment)
     # defaults to requiring a username and password so the radio is pre selected
 
@@ -435,12 +429,6 @@ end
     editor.find("#username_#{environment}").set('foo')
     editor.find("#password_#{environment}").set('bar')
     editor.find('.ui-dialog').find(:button, text: "Publish to #{button_environment.capitalize}").click
-  end
-
-  def then_I_should_see_an_error_message(environment, button_environment)
-    page.find(:css, '#main-content', visible: true)
-    errors = editor.all("form#publish-form-#{environment} .govuk-error-message").map(&:text)
-    expect(errors).to match_array(username_and_password_errors)
   end
 
   def and_I_cancel
