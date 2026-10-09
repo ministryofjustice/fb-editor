@@ -17,7 +17,7 @@ module Admin
     private
 
     def page
-      @page ||= params[:page] || 1
+      params[:page] || 1
     end
 
     def per_page
