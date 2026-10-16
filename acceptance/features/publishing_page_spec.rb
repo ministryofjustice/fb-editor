@@ -431,6 +431,12 @@ end
     editor.find('.ui-dialog').find(:button, text: "Publish to #{button_environment.capitalize}").click
   end
 
+  def then_I_should_see_an_error_message(environment, button_environment)
+    page.find(:css, '#main-content', visible: true)
+    errors = editor.all("form#publish-form-#{environment} .govuk-error-message").map(&:text)
+    expect(errors).to match_array(username_and_password_errors)
+  end
+
   def and_I_cancel
     editor.find('.ui-dialog').find(:button, text: 'Cancel').click
   end
