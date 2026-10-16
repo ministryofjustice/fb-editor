@@ -363,6 +363,10 @@ def then_I_cannot_see_the_conditional_fields
   expect(editor.conditional_content_modal).to have_conditionals_container(visible: :hidden)
 end
 
+def then_I_should_see_one_conditional
+  then_I_should_see_the_conditionals(count: 1)
+end
+
 def then_I_should_see_two_conditionals
   then_I_should_see_the_conditionals(count: 2)
 end
