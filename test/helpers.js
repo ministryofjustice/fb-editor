@@ -36,7 +36,7 @@ function createServer(config) {
     }
   }
 
-  server = sinon.fakeServerWithClock.create(conf);
+  server = require("nise").fakeServerWithClock.create(conf);
   window.XMLHttpRequest = global.XMLHttpRequest;
   return server;
 }
