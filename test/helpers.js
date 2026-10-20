@@ -36,7 +36,9 @@ function createServer(config) {
     }
   }
 
-  server = require("nise").fakeServerWithClock.create(conf);
+  const nise = require('nise');
+
+  server = nise.fakeServerWithClock.create(conf);
   window.XMLHttpRequest = global.XMLHttpRequest;
   return server;
 }
