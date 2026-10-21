@@ -1,4 +1,4 @@
-FROM ruby:3.4.9-alpine
+FROM ruby:4.0.7-alpine
 
 COPY --from=node:22.22.2-alpine /usr/local/bin/node /usr/local/bin/
 COPY --from=node:22.22.2-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
