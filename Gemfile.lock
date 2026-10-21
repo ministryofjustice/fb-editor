@@ -579,7 +579,7 @@ GEM
     parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
+    pg (1.7.0)
     plek (5.2.1)
     pp (0.6.2)
       prettyprint
