@@ -58,7 +58,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-console'
   gem 'site_prism', '~> 6.0'
-  gem 'webmock', '~> 3.25.2'
+  gem 'webmock', '~> 3.32.0'
 end
 
 group :development do
