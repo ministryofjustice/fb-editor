@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/citizensadvice/capybara_accessible_selectors
-  revision: 679abc42cce81b43ed81d31bbe7ad6a96dbe7fef
-  tag: v0.11.0
+  revision: 568699fc71b6648e7186a4ac77bba072447c131e
+  tag: v0.16.0
   specs:
-    capybara_accessible_selectors (0.11.0)
+    capybara_accessible_selectors (0.15.0)
       capybara (~> 3.36)
 
 GEM
@@ -339,7 +339,7 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.19.3)
+    nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     notifications-ruby-client (6.3.0)
@@ -650,7 +650,7 @@ GEM
     rdoc (6.12.0)
       psych (>= 4.0.0)
     redis (4.8.1)
-    regexp_parser (2.12.0)
+    regexp_parser (2.13.1)
     reline (0.6.0)
       io-console (~> 0.5)
     request_store (1.7.0)
