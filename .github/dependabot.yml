@@ -1,9 +1,6 @@
 # Follows the MoJ Developer Portal "Dependabot guidelines":
-#   - daily checks, version updates switched on, cooldown on every entry
-#   - reviewers come from CODEOWNERS (the old `reviewers:` option was removed by GitHub)
 #   - all minor upgrades share one PR and all patch upgrades share one PR, to cut PR volume
 #   - major upgrades are NOT grouped; they get their own PRs
-#   - the old `allow: dependency-type: "all"` was removed: it matched the default
 #
 # Not covered by Dependabot (CircleCI): orbs and images in .circleci/config.yml.
 # See the team note on how those are kept up to date.
