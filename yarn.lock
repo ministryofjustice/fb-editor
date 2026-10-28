@@ -4327,17 +4327,17 @@ setprototypeof@1.2.0, setprototypeof@~1.2.0:
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-shakapacker-rspack@^10.3.1:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/shakapacker-rspack/-/shakapacker-rspack-10.3.1.tgz#19ca385d69b9fd2dcc54a9c330ddd4080e945c0f"
-  integrity sha512-dAFwyBJ3Ecq1NyLd9eoyYHirYl6uBl2ilTBDtPp79dzl5fmw4Bqd7z9eKJhDGnB8F76Tdi2/IdrqoNRY5G62Vg==
+shakapacker-rspack@^10.3.2:
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/shakapacker-rspack/-/shakapacker-rspack-10.3.2.tgz#df505835aabb384f8065a3d044d16e79c5e68eb7"
+  integrity sha512-2ZqiijQU0Oc6QHvYTw4IY8Glzkk2LSMdnMZ80b+jkwAP9ogJud6pWfVogL1nGZXgxBVcwe4JtR4GcKpf3pdPCg==
   dependencies:
-    shakapacker "~10.3.1"
+    shakapacker "~10.3.2"
 
-shakapacker@10.3.1, shakapacker@~10.3.1:
-  version "10.3.1"
-  resolved "https://registry.yarnpkg.com/shakapacker/-/shakapacker-10.3.1.tgz#f92047ac89534cbedd8ac01864facc122e128b22"
-  integrity sha512-yYSbA+JaFisZQL9ImB9IMmPNKUzm0Ycw/wUnwf88f7BeHX9k/M4FIa/4syq/0xx18JqgEL3MIJmsM0RaXQ5zuA==
+shakapacker@10.3.2, shakapacker@~10.3.2:
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/shakapacker/-/shakapacker-10.3.2.tgz#cc8047b8fa67e0b141c8c1a428bc7992967ce62a"
+  integrity sha512-W4LV0MFS1c6ayODF/Ra4RM5xS3DljBc9XGLqz04WGSap97U5gJ7FjBTChPmoJ/7VDiTYmL1w+vh+D360e9qK7Q==
   dependencies:
     js-yaml "^4.1.0"
     pack-config-diff "^0.1.0"
@@ -4365,9 +4365,9 @@ shebang-regex@^3.0.0:
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
 shell-quote@^1.8.4:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.10.0.tgz#482033e192e4f5c07151521ffa03400ec71b1b0f"
-  integrity sha512-w1aiOKwKuRgtwAReIIj89puqg+I7GvX4IbLrvmhXbzQsj1+Zwi4VO3+fa6ZF91TWSjIxoEkKnMeHcLEODK5ZXA==
+  version "1.12.0"
+  resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.12.0.tgz#e98fdfd2e921d8a58ae2820f4fc0f75c39f09675"
+  integrity sha512-PcByqNyT/38F2kDNi006HAMRJaULuBzq/FOsw3qdZvX/GA9W/jamDaRskgHjubHiftXK5sIFxLNkvrXUwcof6Q==
 
 showdown@^2.1.0:
   version "2.1.0"
@@ -4433,14 +4433,10 @@ sinon@^22.1.0:
     "@sinonjs/samsam" "^10.0.2"
     diff "^9.0.0"
 
-"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
-
-source-map-js@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
-  integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2, source-map-js@^1.2.1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.2.tgz#79fb88d97535a21cb27162cb05d211b67acea4ab"
+  integrity sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==
 
 source-map-support@~0.5.20:
   version "0.5.21"
@@ -4655,9 +4651,9 @@ undici-types@~8.3.0:
   integrity sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ==
 
 undici@^8.11.2:
-  version "8.11.2"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-8.11.2.tgz#b8f6f6504384ae535c8e46f8403fd8075f011d46"
-  integrity sha512-u4UB2/IrKdU6lFxumHmmo1a3fCQO5tzQllRorfoRS63txhrB7xTpSn1PftwC4qEHkOaqP95fCWW4lJzwErwzhQ==
+  version "8.12.3"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-8.12.3.tgz#e76a91feee9c275ad0f43bfc0eb632b6124d3bb6"
+  integrity sha512-+fdndUTwBP86cVjihTp21hZHo7d6oj1c/47XPA3lL8mM0XHs+C4EkcjmgRsFnFk2f/UONGDy9ItBItmXsLOQHw==
 
 unpipe@~1.0.0:
   version "1.0.0"
