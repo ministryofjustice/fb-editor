@@ -38,7 +38,7 @@ gem 'puma', '~> 6.4'
 gem 'rack', '3.2.7'
 gem 'rails', '~> 8.1.3.1'
 # Use Redis for Action Cable
-gem 'redis', '~> 4.0'
+gem 'redis', '~> 6.0'
 gem 'sass-rails', '>= 6'
 gem 'sentry-delayed_job', '~> 5.14'
 gem 'sentry-rails', '~> 5.28.1'
