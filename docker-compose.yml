@@ -25,6 +25,8 @@ services:
     container_name: editor-db
     image: postgres:15.19-alpine
     restart: always
+#    ports:
+#      - 5433:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
@@ -45,6 +47,7 @@ services:
       - 9090:3000
     environment:
       <<: *shared-variables
+#      RAILS_DEVELOPMENT_HOSTS: editor-app
     depends_on:
       - editor-db
       - editor-metadata-api
@@ -63,6 +66,7 @@ services:
     stdin_open: true
     environment:
       <<: *shared-variables
+#      RAILS_DEVELOPMENT_HOSTS: editor-workers
     depends_on:
       - editor-db
       - editor-metadata-api
@@ -74,6 +78,8 @@ services:
     container_name: editor-metadata-db
     image: postgres:15.19-alpine
     restart: always
+#    ports:
+#      - 5434:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
@@ -84,7 +90,7 @@ services:
   editor-metadata-api:
     container_name: editor-metadata-api
     build:
-      context: https://github.com/ministryofjustice/fb-metadata-api.git
+      context: ../fb-metadata-api
       args:
         BUNDLE_ARGS: ''
     tty: true
@@ -129,3 +135,20 @@ services:
     image: redis:5.0.6-alpine
     networks:
       - db-net
+
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+#      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - LOCALSTACK_AUTH_TOKEN=ls-roCo6158-GICO-SAxa-xAmU-wiHe08446ff6
+      - DEBUG=${DEBUG:-0}
+#      - RAILS_DEVELOPMENT_HOSTS=localstack-main
+    networks:
+      - app-net
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"

@@ -50,3 +50,4 @@ coverage
 /config/clamd/*.conf
 
 coverage/*
+/volume
