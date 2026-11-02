@@ -437,7 +437,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1156-backup-metadata-and-settings
       - build_workers_image:
           context: *context
           requires:
@@ -449,7 +449,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - CDPTKAN-1156-backup-metadata-and-settings
       - deploy_to_test_eks:
           context: *context
           requires:
@@ -466,15 +466,15 @@ workflows:
           filters:
             branches:
               only:
-                - main
-      - deploy_to_live_eks:
-          context: *context
-          requires:
-            - production_deploy_approval
-          filters:
-            branches:
-              only:
-                - main
+                - CDPTKAN-1156-backup-metadata-and-settings
+#      - deploy_to_live_eks:
+#          context: *context
+#          requires:
+#            - production_deploy_approval
+#          filters:
+#            branches:
+#              only:
+#                - main
   deploy_testable_branch:
     jobs:
       - build:
