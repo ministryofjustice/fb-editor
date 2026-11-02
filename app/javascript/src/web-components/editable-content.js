@@ -1,6 +1,6 @@
-const marked = require("marked");
+const { Marked } = require("marked");
 const govspeak = require("@x-govuk/marked-govspeak");
-const GovukHTMLRenderer = require("govuk-markdown");
+const govukMarkdown = require("govuk-markdown");
 const DOMPurify = require("dompurify");
 
 class EditableContent extends HTMLElement {
@@ -51,18 +51,19 @@ class EditableContent extends HTMLElement {
       return markdown;
     };
 
-    marked.setOptions({
-      renderer: new GovukHTMLRenderer(),
-      headingsStartWith: "xl",
+    const govspeakExtensions = govspeak({
       govspeakGemCompatibility: true,
-    });
+    }).extensions.filter((component) =>
+      allowedGovspeakComponents.includes(component.name),
+    );
 
-    marked.use({
-      extensions: govspeak.filter((component) =>
-        allowedGovspeakComponents.includes(component.name),
-      ),
-      hooks: { preprocess },
-    });
+    this.marked = new Marked(
+      govukMarkdown({ headingsStartWith: "xl" }),
+      {
+        extensions: govspeakExtensions,
+        hooks: { preprocess },
+      },
+    );
   }
 
   connectedCallback() {
@@ -118,7 +119,7 @@ class EditableContent extends HTMLElement {
 
   get html() {
     const content = this.value || this.defaultContent;
-    const unsafeHTML = marked.parse(content);
+    const unsafeHTML = this.marked.parse(content);
     return this.sanitize(unsafeHTML);
   }
 
