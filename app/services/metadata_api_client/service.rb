@@ -1,12 +1,13 @@
 module MetadataApiClient
   class Service < Resource
-    def self.all_services(page:, per_page:, query: '')
+    def self.all_services(page:, per_page:, query: '', include: nil)
       response = connection.get(
         '/services',
         {
           page:,
           per_page:,
-          query:
+          query:,
+          include:
         }
       ).body
 
