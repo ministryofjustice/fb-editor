@@ -37,9 +37,7 @@ require('jquery-ui/ui/unique-id');
 require('jquery-ui/ui/widgets/button');
 require('jquery-ui/ui/widgets/dialog');
 require('jquery-ui/ui/widgets/menu');
-require('jquery-ui/ui/safe-active-element');
 require('jquery-ui/ui/data');
 require('jquery-ui/ui/tabbable');
 require('jquery-ui/ui/focusable');
-require('jquery-ui/ui/safe-blur');
 
