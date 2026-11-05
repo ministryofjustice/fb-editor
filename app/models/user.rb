@@ -17,7 +17,9 @@ class User < ApplicationRecord
   private
 
   def email_uniqueness
-    if User.all.collect(&:email).include? self['email']
+    return if email.blank?
+
+    if User.where.not(id: id).map(&:email).compact.map(&:downcase).include?(email.downcase)
       errors.add(:base, 'Email already exists')
     end
   end
