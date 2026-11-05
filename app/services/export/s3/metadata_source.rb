@@ -45,10 +45,12 @@ module Export
       end
 
       def each_version_id(service_id)
+        # rubocop:disable Rails/FindEach
         @version_api.all(service_id).each do |version|
           version_id = version_id_from(version)
           yield version_id unless version_id.nil?
         end
+        # rubocop:enable Rails/FindEach
       end
 
       def fetch_version(service_id, version_id)
@@ -60,7 +62,7 @@ module Export
       end
 
       # Walks the paginated services endpoint.
-      def each_service
+      def each_service(&block)
         page = 1
         seen = 0
 
@@ -69,7 +71,7 @@ module Export
           services = response[:services] || []
           break if services.empty?
 
-          services.each { |service| yield service }
+          services.each(&block) # https://rubystyle.guide/#block-argument
 
           seen += services.size
           break if seen >= response[:total_services].to_i
