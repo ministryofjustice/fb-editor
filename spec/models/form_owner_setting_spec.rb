@@ -10,7 +10,7 @@ RSpec.describe FormOwnerSettings do
   let(:service_id) { SecureRandom.uuid }
   let(:metadata) { { created_by: 'original author' } }
   let(:an_existing_user) { 'legolas@middle-earth.co.uk' }
-  let(:user) { create :user }
+  let(:user) { create :user, email: 'legolas@middle-earth.co.uk' }
 
   describe '#update' do
     context 'when valid' do
