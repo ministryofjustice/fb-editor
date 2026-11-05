@@ -8,12 +8,6 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
 
-  # Use polling-based file watching so code changes are picked up when the app
-  # runs in Docker with the source bind-mounted from the host. The default
-  # evented checker relies on filesystem events that do not propagate across
-  # bind mounts (notably on macOS/Windows), so live reload would not work.
-  config.file_watcher = ActiveSupport::FileUpdateChecker
-
   # Do not eager load code on boot.
   config.eager_load = false
 
