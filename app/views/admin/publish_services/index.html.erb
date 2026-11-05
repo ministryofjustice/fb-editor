@@ -57,7 +57,7 @@
 
       <% if @publish_services.empty? %>
         <tr>
-          <td class="cell-data" colspan="4">
+          <td class="cell-data" colspan="5">
             No services published to <%= @environment == 'production' ? 'Live' : 'Test' %>.
           </td>
         </tr>
