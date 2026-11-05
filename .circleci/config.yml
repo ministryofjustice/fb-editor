@@ -13,11 +13,14 @@ parameters:
   kubectl-version:
     type: string
     default: v1.24.16
+  ruby-version:
+    type: string
+    default: "4.0.9"
 
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     steps:
       - checkout
       - aws-cli/setup:
@@ -36,7 +39,7 @@ jobs:
             - bash.env
   build:
     docker: &docker_image
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     resource_class: large
     steps:
       - checkout
@@ -63,7 +66,7 @@ jobs:
           include_job_number_field: false
   lint:
     docker:
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -73,7 +76,7 @@ jobs:
       - slack/status: *slack_status
   security:
     docker:
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     steps:
       - checkout
       - ruby/install-deps
@@ -81,7 +84,7 @@ jobs:
       - slack/status: *slack_status
   rspec_test:
     docker: &test_image
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
       - environment:
           POSTGRES_DB: editor_local
           POSTGRES_PASSWORD: password
@@ -116,7 +119,7 @@ jobs:
       - slack/status: *slack_status
   js_test:
     docker:
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     steps:
       - checkout
       - run: *node_version
@@ -217,7 +220,7 @@ jobs:
       - slack/status: *testable_slack_status
   remove_testable_editors:
     docker:
-      - image: "cimg/ruby:3.4.9-node"
+      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
     steps:
       - checkout
       - ruby/install-deps
