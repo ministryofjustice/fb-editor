@@ -9,9 +9,13 @@ ruby '3.4.9'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'test-footer-partial'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.27'
+gem 'metadata_presenter', '3.4.28'
 
-gem 'activerecord-session_store', '~> 2.3.0'
+# Stay on 2.2.0. In 2.3.0 the gem only saves the session when it thinks the
+# data changed, but it doesn't notice edits made inside nested hashes, so
+# answers get lost between pages.
+# See https://github.com/rails/activerecord-session_store/pull/166
+gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.233.2'
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -31,7 +35,7 @@ gem 'omniauth-auth0', '~> 3.2.0'
 gem 'omniauth-rails_csrf_protection', '~> 2.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rack', '3.2.6'
+gem 'rack', '3.2.7'
 gem 'rails', '~> 8.1.3.1'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
@@ -48,7 +52,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
-  gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', tag: 'v0.11.0'
+  gem 'capybara_accessible_selectors', git: 'https://github.com/citizensadvice/capybara_accessible_selectors', tag: 'v0.16.0'
   gem 'dotenv-rails', groups: %i[development test]
   gem 'factory_bot_rails', '~> 6.5.0'
   gem 'rspec_junit_formatter'
