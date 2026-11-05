@@ -1,0 +1,332 @@
+/*
+ * Custom styles for the Administrate admin section.
+ * Loaded via the admin layout after Administrate's own stylesheet, so these
+ * rules take precedence. Keep this file small — Administrate's bundled JS scans
+ * every stylesheet on the page.
+ * Docs: https://administrate-demo.herokuapp.com/customizing_page_views
+ */
+
+/* ---------- Base ---------- */
+
+.main-content__header.api-submission-settings,
+.main-content__body.api-submission-settings {
+  padding-left: 0;
+}
+
+body {
+  font-size: 1.125rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+/* ---------- Show pages: label and value rows ---------- */
+
+.model-info {
+  display: grid;
+  grid-template-columns: 18rem 1fr;
+  align-items: stretch;
+  width: 100%;
+  padding: 5px 0 5px 1px;
+  margin-bottom: 30px;
+}
+
+.model-info--latest-metadata {
+  margin-top: 20px;
+}
+
+.model-info > h2,
+.model-info > legend {
+  grid-column: 1 / -1;
+}
+
+fieldset h2 {
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+fieldset .attribute-label,
+fieldset .attribute-data {
+  float: none;
+  width: auto;
+  margin: 0;
+  padding: 12px 2rem 12px 0;
+  border-bottom: 1px solid #b1b4b6;
+}
+
+fieldset .attribute-label {
+  text-align: left;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #0b0c0c;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.attribute-data,
+.field-unit__hint {
+  margin-left: 0;
+}
+
+.summary-list dd {
+  width: fit-content;
+}
+
+.metadata-info {
+  white-space: pre-wrap;
+}
+
+.service-actions-btn {
+  margin-bottom: 20px;
+}
+
+/* ---------- Edit forms ---------- */
+
+.form-actions {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+
+.field-unit {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.field-unit__legend {
+  width: 100%;
+  padding: 0;
+}
+
+.field-unit__legend h2 {
+  margin: 0;
+}
+
+.field-unit__label,
+.field-unit__field {
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+.field-unit input[type="text"],
+.field-unit textarea {
+  border: 2px solid #0b0c0c;
+}
+
+.field-unit__radios {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.field-unit__radios input {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+/* ---------- Tables ---------- */
+
+table caption {
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+table .cell-data a {
+  color: #1976d2;
+}
+
+/* ---------- Navigation ---------- */
+
+.navigation__link--disabled {
+  color: #6f777b;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ---------- GOV.UK notification banner (announcement PREVIEW only) ---------- */
+
+.govuk-notification-banner {
+  --_govuk-notification-banner-colour: var(--govuk-brand-colour, #1d70b8);
+  --_govuk-notification-banner-title-text-colour: var(--govuk-inverse-text-colour, #fff);
+  font-family: GDS Transport, arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  margin-bottom: 30px;
+  border: 5px solid var(--_govuk-notification-banner-colour);
+}
+
+.govuk-notification-banner__header {
+  padding: 2px 15px 5px;
+  color: var(--_govuk-notification-banner-title-text-colour);
+  background-color: var(--_govuk-notification-banner-colour);
+}
+
+.govuk-notification-banner__title {
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.govuk-notification-banner__content {
+  padding: 15px;
+  color: var(--govuk-text-colour, #0b0c0c);
+  background-color: var(--govuk-body-background-colour, #fff);
+}
+
+.govuk-notification-banner__content > :last-child {
+  margin-bottom: 0;
+}
+
+/* MoJ Forms announcement overrides (from app/javascript/styles/components/announcement.scss) */
+.mojf-announcement .govuk-notification-banner__content p {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.mojf-announcement .govuk-notification-banner__content a {
+  text-decoration: underline;
+  color: var(--govuk-link-colour, #1a65a6);
+}
+
+/* ---------- GOV.UK styles (API submission settings) ---------- */
+
+.govuk-back-link {
+  display: inline-block;
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-left: 0.875em;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  text-decoration: underline;
+}
+
+.govuk-back-link:link,
+.govuk-back-link:visited {
+  color: #0b0c0c;
+}
+
+.govuk-back-link::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.4375em;
+  height: 0.4375em;
+  margin: auto 0;
+  transform: rotate(225deg);
+  border: solid;
+  border-width: 1px 1px 0 0;
+  border-color: #505a5f;
+}
+
+.govuk-heading-m {
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.govuk-form-group {
+  margin-bottom: 30px;
+}
+
+.govuk-form-group .govuk-form-group:last-of-type {
+  margin-bottom: 0;
+}
+
+.govuk-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.31579;
+}
+
+.govuk-hint {
+  margin-bottom: 10px;
+  color: #505a5f;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.31579;
+}
+
+.govuk-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.5rem;
+  margin-top: 0;
+  padding: 5px;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.31579;
+  appearance: none;
+}
+
+.govuk-\!-width-two-thirds {
+  width: 66.66% !important;
+}
+
+.govuk-\!-margin-top-5 {
+  margin-top: 25px !important;
+}
+
+.govuk-\!-margin-top-8 {
+  margin-top: 50px !important;
+}
+
+.govuk-button {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  width: auto;
+  margin: 0 0 22px;
+  padding: 8px 10px 7px;
+  border: 2px solid rgba(0, 0, 0, 0);
+  border-radius: 0;
+  color: #fff;
+  background-color: #00703c;
+  box-shadow: 0 2px 0 #002d18;
+  font-family: "GDS Transport", arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1;
+  text-align: center;
+  vertical-align: top;
+  text-decoration: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.govuk-button:link,
+.govuk-button:visited,
+.govuk-button:hover,
+.govuk-button:active {
+  color: #fff;
+  text-decoration: none;
+}
+
+.fb-govuk-button {
+  background-color: #1d70b8;
+}

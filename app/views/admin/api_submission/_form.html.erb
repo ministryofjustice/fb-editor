@@ -1,43 +1,36 @@
-<%= form_for object,
+<%= form_with model: object,
   url: admin_service_api_submission_index_path(service.service_id),
+  method: :post,
   html: {
     id: "api-submission-#{deployment_environment}",
-    class: 'govuk-!-margin-top-8'
-  },
-  builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+    class: "govuk-!-margin-top-8"
+  } do |f| %>
 
   <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
   <div class="govuk-form-group">
-    <div class="govuk-form-group govuk-heading-m govuk-!-margin-top-5">
-      <%= 'Settings for ' %>
-      <%= deployment_environment %>
-      <%= ' environment for ' %>
-      <%=f.object.service.service_name %>
+    <h2 class="govuk-heading-m govuk-!-margin-top-5">
+      Settings for <%= deployment_environment %> environment for <%= f.object.service.service_name %>
+    </h2>
+    <div class="govuk-form-group">
+      <%= f.label :service_output_json_endpoint, 'Endpoint url',
+        for: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
+        class: "govuk-label" %>
+      <div class="govuk-hint">This is the JSON output endpoint URL</div>
+      <%= f.text_field :service_output_json_endpoint,
+        id: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
+        class: "govuk-input govuk-!-width-two-thirds" %>
     </div>
-    <%= f.govuk_text_field :service_output_json_endpoint,
-    label: {
-      text: 'Endpoint url',
-      for: settings_field_id(f, :service_output_json_endpoint, deployment_environment)
-    },
-    width: 'two-thirds',
-    id: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
-    hint: {
-      text: 'This is the JSON output endpoint URL'
-      } %>
   </div>
 
-  </div>
-    <%= f.govuk_text_field :service_output_json_key,
-    label: {
-      text: 'Endpoint key',
-      for: settings_field_id(f, :service_output_json_key, deployment_environment)
-    },
-    width: 'two-thirds',
-    id: settings_field_id(f, :service_output_json_key, deployment_environment),
-    hint: {
-      text: 'This is the JSON output endpoint key'
-      } %>
+  <div class="govuk-form-group">
+    <%= f.label :service_output_json_key, 'Endpoint key',
+      for: settings_field_id(f, :service_output_json_key, deployment_environment),
+      class: "govuk-label" %>
+    <div class="govuk-hint">This is the JSON output endpoint key</div>
+    <%= f.text_field :service_output_json_key,
+      id: settings_field_id(f, :service_output_json_key, deployment_environment),
+      class: "govuk-input govuk-!-width-two-thirds" %>
   </div>
 
   <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
