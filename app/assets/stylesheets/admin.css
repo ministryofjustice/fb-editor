@@ -330,3 +330,9 @@ table .cell-data a {
 .fb-govuk-button {
   background-color: #1d70b8;
 }
+
+.overview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
