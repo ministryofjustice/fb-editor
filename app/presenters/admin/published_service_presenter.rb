@@ -18,13 +18,9 @@ module Admin
     end
 
     def status
-      if maintenance_mode?
-        'Maintenance mode'
-      elsif publish_service.published?
-        'Published'
-      else
-        'Unpublished'
-      end
+      return publish_service.status.humanize unless publish_service.completed?
+
+      maintenance_mode? ? 'Maintenance mode' : 'Published'
     end
 
     def status_modifier
