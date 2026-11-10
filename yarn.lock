@@ -994,14 +994,10 @@
     tslib "^2.8.1"
     tsyringe "^4.10.0"
 
-"@rails/actioncable@>=7.0":
+"@rails/actioncable@>=7.0", "@rails/actioncable@^8.1.400":
   version "8.1.400"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-8.1.400.tgz#af41a431614e4abb007e65429197d1c5dbf43741"
   integrity sha512-Qffc3/I9xcpeaal12hmi9EPRV3hz9FvakUHBR7kL0jpZviWwO9dyaG8F1ltcjkHIdFxQ5QqzRyequAWHMq17xQ==
-
-"@rails/actioncable@^7.0.4":
-  version "7.0.4"
-  resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.0.4.tgz"
 
 "@rails/activestorage@^7.0.4":
   version "7.0.4"
