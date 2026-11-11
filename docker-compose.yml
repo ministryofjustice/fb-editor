@@ -23,7 +23,7 @@ x-shared-variables: &shared-variables
 services:
   editor-db:
     container_name: editor-db
-    image: postgres:12.4-alpine
+    image: postgres:15.19-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
@@ -72,7 +72,7 @@ services:
 
   editor-metadata-db:
     container_name: editor-metadata-db
-    image: postgres:12.4-alpine
+    image: postgres:15.19-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: password
