@@ -4,6 +4,7 @@ module Export
   module S3
     # Thin wrapper around the S3 operations the backup needs.
     class BackupStorage
+      DEFAULT_CONTENT_TYPE = 'application/zip'
       attr_reader :bucket
 
       def initialize(bucket:, s3_client:)
@@ -23,7 +24,7 @@ module Export
             bucket: bucket,
             key: key,
             body: file,
-            content_type: 'application/zip'
+            content_type: DEFAULT_CONTENT_TYPE
           )
         end
       end
@@ -32,7 +33,11 @@ module Export
 
       # Regions other than us-east-1 require an explicit location constraint.
       def create_bucket_params
-        { bucket: bucket, create_bucket_configuration: { location_constraint: @s3_client.config.region } }
+        { bucket: bucket, create_bucket_configuration: { location_constraint: region } }
+      end
+
+      def region
+        @s3_client.config.region
       end
     end
   end
