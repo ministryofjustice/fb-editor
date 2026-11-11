@@ -42,7 +42,7 @@ module Export
       private
 
       def build_key
-        timestamp = Time.zone.now.utc.strftime('%Y%m%dT%H%M%SZ')
+        timestamp = Time.zone.now.utc.strftime('%Y%m%dT%H%M%S')
 
         [DEFAULT_S3_PREFIX, "metadata-backup-#{timestamp}.zip"].reject(&:empty?).join('/')
       end

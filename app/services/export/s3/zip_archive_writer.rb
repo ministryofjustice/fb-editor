@@ -19,14 +19,30 @@ module Export
 
         Zip::File.open(zip_path, create: true) do |zip|
           services.each do |service|
-            zip.get_output_stream(service_settings_path(service)) do |io|
-              io.write(JSON.pretty_generate(service.settings.as_json(except: :id)))
+            zip.get_output_stream(service_path(service)) do |io|
+              io.write(JSON.pretty_generate({ service_id: service.service_id, service_name: service.service_name }))
             end
-            service.versions.each do |version|
-              zip.get_output_stream(service_matadata_path(version)) do |io|
-                io.write(JSON.pretty_generate(version.metadata))
+
+            if service.settings.present?
+              zip.get_output_stream(service_settings_path(service)) do |io|
+                io.write(JSON.pretty_generate(service.settings.as_json(except: :id)))
               end
             end
+
+            if service.items.present?
+              zip.get_output_stream(service_items_path(service)) do |io|
+                io.write(JSON.pretty_generate(service.items.as_json(except: :id)))
+              end
+            end
+
+            if service.versions.present?
+              service.versions.each do |version|
+                zip.get_output_stream(service_matadata_path(version)) do |io|
+                  io.write(JSON.pretty_generate(version.metadata))
+                end
+              end
+            end
+
             count += 1
           end
         end
@@ -38,12 +54,20 @@ module Export
 
       private
 
+      def service_path(service)
+        File.join(safe_name(service.service_id), 'service.json')
+      end
+
+      def service_items_path(service)
+        File.join(safe_name(service.service_id), 'items.json')
+      end
+
       def service_settings_path(service)
         File.join(safe_name(service.service_id), 'settings.json')
       end
 
       def service_matadata_path(version)
-        File.join(safe_name(version.service_id), "#{Time.zone.parse(version.created_at).strftime('%Y%m%dT%H%M%S')}_#{version.locale}_#{safe_name(version.version_id)}_metadata.json")
+        File.join(safe_name(version.service_id), "version_#{Time.zone.parse(version.created_at).strftime('%Y%m%dT%H%M%S')}_#{version.locale}_#{safe_name(version.version_id)}.json")
       end
 
       # Prevents IDs from introducing unexpected directory paths.

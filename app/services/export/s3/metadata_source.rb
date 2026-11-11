@@ -5,7 +5,7 @@ module Export
     # Reads services with associated metadata and items from MetadataApiClient::Service api.
     class MetadataSource
       VersionEntry = Struct.new(:version_id, :service_id, :metadata, :created_at, :locale, keyword_init: true)
-      ServiceEntry = Struct.new(:service_id, :settings, :versions, keyword_init: true)
+      ServiceEntry = Struct.new(:service_id, :service_name, :settings, :items, :versions, keyword_init: true)
 
       def initialize(per_page:)
         @per_page = per_page
@@ -20,7 +20,7 @@ module Export
           service.metadata['metadata'].each do |metadata|
             versions << VersionEntry.new(version_id: metadata['id'], service_id: metadata['service_id'], metadata: metadata['data'], created_at: metadata['created_at'], locale: metadata['locale'])
           end
-          ServiceEntry.new(service_id: service.id, settings: settings, versions: versions)
+          ServiceEntry.new(service_id: service.id, service_name: service.name, items: service.metadata['items'], settings: settings, versions: versions)
         end
       end
 
