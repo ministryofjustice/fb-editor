@@ -7,20 +7,18 @@ module Export
     # Orchestrates a full metadata backup: reads every service version from the
     # Metadata API, packs it into a ZIP archive and uploads it to S3.
     #
-    #   Export::S3::MetadataBackup.call # => "metadata-backups/metadata-backup-20261102T120000Z.zip"
+    #   Export::S3::MetadataBackup.call(bucket: BUCKET_NAME, services_per_page: SERVICES_TO_FETCH_PER_PAGE) # => "metadata-backups/metadata-backup-20261102T120000Z.zip"
     class MetadataBackup
       DEFAULT_PER_PAGE = 100
-      DEFAULT_S3_BUCKET = 'formbuilder'
       DEFAULT_S3_PREFIX = 'metadata-backups'
-      DEFAULT_QUERY = ''
       REGION = 'eu-west-2'
 
       def self.call(**options)
         new(**options).call
       end
 
-      def initialize(bucket: ENV.fetch('METADATA_BACKUP_BUCKET', DEFAULT_S3_BUCKET))
-        @source = MetadataSource.new(per_page: DEFAULT_PER_PAGE, query: DEFAULT_QUERY)
+      def initialize(bucket: ENV.fetch('METADATA_BACKUP_BUCKET'), services_per_page: DEFAULT_PER_PAGE)
+        @source = MetadataSource.new(per_page: services_per_page)
         @archive_writer = ZipArchiveWriter.new
         @storage = BackupStorage.new(bucket: bucket, s3_client: Aws::S3::Client.new(region: REGION))
       end

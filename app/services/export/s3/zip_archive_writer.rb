@@ -23,7 +23,7 @@ module Export
               io.write(JSON.pretty_generate(service.settings.as_json(except: :id)))
             end
             service.versions.each do |version|
-              zip.get_output_stream(service_matadata_path(service, version)) do |io|
+              zip.get_output_stream(service_matadata_path(version)) do |io|
                 io.write(JSON.pretty_generate(version.metadata))
               end
             end
@@ -42,8 +42,8 @@ module Export
         File.join(safe_name(service.service_id), 'settings.json')
       end
 
-      def service_matadata_path(service, version)
-        File.join(safe_name(service.service_id), "#{safe_name(version.version_id)}_#{Time.zone.parse(version.created_at).strftime('%Y%m%dT%H%M%SZ')}_metadata.json")
+      def service_matadata_path(version)
+        File.join(safe_name(version.service_id), "#{Time.zone.parse(version.created_at).strftime('%Y%m%dT%H%M%S')}_#{version.locale}_#{safe_name(version.version_id)}_metadata.json")
       end
 
       # Prevents IDs from introducing unexpected directory paths.
