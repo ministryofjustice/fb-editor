@@ -94,6 +94,12 @@ services:
       args:
         BUNDLE_ARGS: ''
     tty: true
+    develop:
+      watch:
+        - action: rebuild
+          path: ../fb-metadata-api
+          target: /app/editor-metadata-api
+          initial_sync: true
     stdin_open: true
     ports:
       - 9091:3000

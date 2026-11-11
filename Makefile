@@ -53,3 +53,7 @@ acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
 .PHONY: assets
 assets:
 	docker-compose exec editor-app sh -c "yarn install && bundle exec rails assets:precompile && ./bin/shakapacker"
+
+.PHONY: editor-metadata-api
+editor-metadata-api:
+	$(DOCKER_COMPOSE) up editor-metadata-api --watch
