@@ -857,6 +857,7 @@ DEPENDENCIES
   rubocop
   rubocop-govuk (~> 5.2.0)
   ruby-lsp
+  rubyzip
   sass-rails (>= 6)
   selenium-webdriver (= 4.52.0)
   sentry-delayed_job (~> 7.1)
