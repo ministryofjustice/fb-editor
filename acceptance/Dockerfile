@@ -1,4 +1,5 @@
-FROM ruby:3.4.9-alpine
+ARG RUBY_VERSION=4.0.9
+FROM ruby:${RUBY_VERSION}-alpine
 
 ARG UID=1001
 
@@ -9,7 +10,7 @@ RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/v3.16/
 
 WORKDIR /usr/src/app
 
-COPY Gemfile* ./
+COPY Gemfile Gemfile.lock .ruby-version ./
 RUN gem update --system && gem install bundler
 RUN bundle check || BUNDLE_JOBS=4 bundle install
 

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.9'
+ruby file: '.ruby-version'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
@@ -18,6 +18,7 @@ gem 'metadata_presenter', '3.4.28'
 gem 'activerecord-session_store', '~> 2.3.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.237.0'
+gem 'benchmark'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'csv'
 gem 'daemons'
