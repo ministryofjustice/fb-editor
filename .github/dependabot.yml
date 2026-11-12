@@ -1,6 +1,8 @@
 # Follows the MoJ Developer Portal "Dependabot guidelines":
 #   - minor and patch upgrades are each grouped into a single PR per ecosystem
-#   - major upgrades are NOT grouped; they continue to get their own individual PRs
+#   - major upgrades for development/test dependencies are grouped into a single PR
+#     per ecosystem; major upgrades for production dependencies are NOT grouped and
+#     continue to get their own individual PRs
 #   - minor and patch security fixes are grouped into a single PR per ecosystem
 #     (security fixes ignore cooldown, so they still arrive straight away 
 #     https://github.com/dependabot/dependabot-core/discussions/15582)
@@ -44,6 +46,12 @@ updates:
       patch-updates:
         update-types:
           - "patch"
+      # All major upgrades for development and test dependencies in one PR
+      # (production major upgrades still get their own individual PRs)
+      dev-test-major-updates:
+        dependency-type: "development"
+        update-types:
+          - "major"
       # All minor and patch security fixes in one PR
       security-updates:
         applies-to: security-updates
@@ -81,6 +89,12 @@ updates:
       patch-updates:
         update-types:
           - "patch"
+      # All major upgrades for devDependencies in one PR
+      # (production major upgrades still get their own individual PRs)
+      dev-major-updates:
+        dependency-type: "development"
+        update-types:
+          - "major"
       # All minor and patch security fixes in one PR
       security-updates:
         applies-to: security-updates
