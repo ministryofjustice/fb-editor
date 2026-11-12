@@ -14,30 +14,33 @@ module Export
         end
       end
 
+      UNSAFE_CHARACTERS = /[^0-9A-Za-z._-]/
+      TIMESTAMP_FORMAT  = '%Y%m%dT%H%M%S'
+
       def write(zip_path, services)
         count = 0
 
         Zip::File.open(zip_path, create: true) do |zip|
           services.each do |service|
-            zip.get_output_stream(service_path(service)) do |io|
+            zip.get_output_stream(file_path(service, 'service.json')) do |io|
               io.write(JSON.pretty_generate({ service_id: service.service_id, service_name: service.service_name }))
             end
 
             if service.settings.present?
-              zip.get_output_stream(service_settings_path(service)) do |io|
+              zip.get_output_stream(file_path(service, 'settings.json')) do |io|
                 io.write(JSON.pretty_generate(service.settings.as_json(except: :id)))
               end
             end
 
             if service.items.present?
-              zip.get_output_stream(service_items_path(service)) do |io|
+              zip.get_output_stream(file_path(service, 'items.json')) do |io|
                 io.write(JSON.pretty_generate(service.items.as_json(except: :id)))
               end
             end
 
             if service.versions.present?
               service.versions.each do |version|
-                zip.get_output_stream(service_matadata_path(version)) do |io|
+                zip.get_output_stream(file_path(service,  version_filename(version))) do |io|
                   io.write(JSON.pretty_generate(version.metadata))
                 end
               end
@@ -54,25 +57,22 @@ module Export
 
       private
 
-      def service_path(service)
-        File.join(safe_name(service.service_id), 'service.json')
+      def file_path(service, file_name)
+        File.join(safe_name(service.service_id), file_name)
       end
 
-      def service_items_path(service)
-        File.join(safe_name(service.service_id), 'items.json')
-      end
-
-      def service_settings_path(service)
-        File.join(safe_name(service.service_id), 'settings.json')
-      end
-
-      def service_matadata_path(version)
-        File.join(safe_name(version.service_id), "version_#{Time.zone.parse(version.created_at).strftime('%Y%m%dT%H%M%S')}_#{version.locale}_#{safe_name(version.version_id)}.json")
+      def version_filename(version)
+        [
+          'version',
+          Time.zone.parse(version.created_at).strftime(TIMESTAMP_FORMAT),
+          safe_name(version.locale),
+          safe_name(version.version_id)
+        ].join('_') + '.json'
       end
 
       # Prevents IDs from introducing unexpected directory paths.
       def safe_name(value)
-        value.to_s.gsub(/[^0-9A-Za-z._-]/, '_')
+        value.to_s.gsub(UNSAFE_CHARACTERS, '_')
       end
     end
   end
