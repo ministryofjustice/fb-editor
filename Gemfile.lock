@@ -821,6 +821,7 @@ DEPENDENCIES
   administrate (~> 1.0)
   aws-sdk-s3 (~> 1.237.0)
   axe-core-rspec
+  benchmark
   better_errors
   binding_of_caller
   bootsnap (>= 1.4.2)
@@ -874,7 +875,7 @@ DEPENDENCIES
   webmock (~> 3.34.0)
 
 RUBY VERSION
-   ruby 3.4.9p82
+  ruby 4.0.9
 
 BUNDLED WITH
-   2.4.6
+  4.0.24
