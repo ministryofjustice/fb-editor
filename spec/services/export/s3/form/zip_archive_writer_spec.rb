@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'zip'
 
-RSpec.describe Export::S3::ZipArchiveWriter do
+RSpec.describe Export::S3::Form::ZipArchiveWriter do
   subject(:writer) { described_class.new }
 
   let(:tempfile) { Tempfile.new(['test_archive', '.zip']) }
@@ -17,7 +17,7 @@ RSpec.describe Export::S3::ZipArchiveWriter do
       it 'raises EmptyArchiveError' do
         expect {
           writer.write(zip_path, [])
-        }.to raise_error(Export::S3::ZipArchiveWriter::EmptyArchiveError, 'No version metadata files were generated')
+        }.to raise_error(Export::S3::Form::ZipArchiveWriter::EmptyArchiveError, 'No version metadata files were generated')
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe Export::S3::ZipArchiveWriter do
       end
 
       let(:version_1) do
-        Export::S3::MetadataSource::VersionEntry.new(
+        Export::S3::Form::MetadataSource::VersionEntry.new(
           version_id: 'v1',
           service_id: 'service-1',
           metadata: { 'title' => 'Form 1' },
@@ -37,7 +37,7 @@ RSpec.describe Export::S3::ZipArchiveWriter do
       end
 
       let(:version_2) do
-        Export::S3::MetadataSource::VersionEntry.new(
+        Export::S3::Form::MetadataSource::VersionEntry.new(
           version_id: 'v2/invalid:id',
           service_id: 'service-1',
           metadata: { 'title' => 'Form 2' },
@@ -47,7 +47,7 @@ RSpec.describe Export::S3::ZipArchiveWriter do
       end
 
       let(:service_entry) do
-        Export::S3::MetadataSource::ServiceEntry.new(
+        Export::S3::Form::MetadataSource::ServiceEntry.new(
           service_id: 'service/1',
           service_name: 'Test Service',
           settings: [setting_record],
@@ -85,7 +85,7 @@ RSpec.describe Export::S3::ZipArchiveWriter do
       end
 
       it 'handles services without optional settings, items, or versions' do
-        minimal_service = Export::S3::MetadataSource::ServiceEntry.new(
+        minimal_service = Export::S3::Form::MetadataSource::ServiceEntry.new(
           service_id: 'min-service',
           service_name: 'Minimal Service',
           settings: nil,

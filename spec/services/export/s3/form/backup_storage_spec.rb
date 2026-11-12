@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Export::S3::BackupStorage do
+RSpec.describe Export::S3::Form::BackupStorage do
   subject(:backup_storage) { described_class.new(bucket: bucket, s3_client: s3_client) }
 
   let(:bucket) { 'test-bucket' }

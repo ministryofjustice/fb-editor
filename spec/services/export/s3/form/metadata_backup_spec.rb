@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Export::S3::MetadataBackup do
+RSpec.describe Export::S3::Form::MetadataBackup do
   subject(:backup) do
     described_class.new(
       bucket: bucket,
@@ -13,15 +13,15 @@ RSpec.describe Export::S3::MetadataBackup do
   let(:per_page) { 50 }
   let(:ensure_bucket) { false }
 
-  let(:source_mock) { instance_double(Export::S3::MetadataSource) }
-  let(:archive_writer_mock) { instance_double(Export::S3::ZipArchiveWriter) }
-  let(:storage_mock) { instance_double(Export::S3::BackupStorage, bucket: bucket) }
+  let(:source_mock) { instance_double(Export::S3::Form::MetadataSource) }
+  let(:archive_writer_mock) { instance_double(Export::S3::Form::ZipArchiveWriter) }
+  let(:storage_mock) { instance_double(Export::S3::Form::BackupStorage, bucket: bucket) }
   let(:enum_mock) { double('Enumerator') }
 
   before do
-    allow(Export::S3::MetadataSource).to receive(:new).with(per_page: per_page).and_return(source_mock)
-    allow(Export::S3::ZipArchiveWriter).to receive(:new).and_return(archive_writer_mock)
-    allow(Export::S3::BackupStorage).to receive(:new).with(
+    allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: per_page).and_return(source_mock)
+    allow(Export::S3::Form::ZipArchiveWriter).to receive(:new).and_return(archive_writer_mock)
+    allow(Export::S3::Form::BackupStorage).to receive(:new).with(
       bucket: bucket,
       s3_client: kind_of(Aws::S3::Client)
     ).and_return(storage_mock)
@@ -88,7 +88,7 @@ RSpec.describe Export::S3::MetadataBackup do
 
           expect {
             backup.call
-          }.to raise_error(Export::S3::MetadataBackup::Error, 'Archive is empty, refusing to upload')
+          }.to raise_error(Export::S3::Form::MetadataBackup::Error, 'Archive is empty, refusing to upload')
         end
       end
     end
@@ -105,8 +105,8 @@ RSpec.describe Export::S3::MetadataBackup do
       end
 
       before do
-        allow(Export::S3::MetadataSource).to receive(:new).with(per_page: 100).and_return(source_mock)
-        allow(Export::S3::BackupStorage).to receive(:new).with(
+        allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: 100).and_return(source_mock)
+        allow(Export::S3::Form::BackupStorage).to receive(:new).with(
           bucket: 'env-bucket',
           s3_client: kind_of(Aws::S3::Client)
         ).and_return(storage_mock)

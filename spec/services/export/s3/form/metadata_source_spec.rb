@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Export::S3::MetadataSource do
+RSpec.describe Export::S3::Form::MetadataSource do
   subject(:metadata_source) { described_class.new(per_page: per_page) }
 
   let(:per_page) { 2 }
