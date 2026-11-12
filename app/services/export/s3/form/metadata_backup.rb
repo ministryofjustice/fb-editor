@@ -3,11 +3,11 @@
 require 'tmpdir'
 
 module Export
-  module S3
+  module S3::Form
     # Orchestrates a full metadata backup: reads every service version from the
     # Metadata API, packs it into a ZIP archive and uploads it to S3.
     #
-    #   Export::S3::MetadataBackup.call(bucket: BUCKET_NAME, services_per_page: SERVICES_TO_FETCH_PER_PAGE) # => "metadata-backups/metadata-backup-20261102T120000Z.zip"
+    #   Export::S3::Form::MetadataBackup.call(bucket: BUCKET_NAME, services_per_page: SERVICES_TO_FETCH_PER_PAGE) # => "metadata-backups/metadata-backup-20261102T120000Z.zip"
     class MetadataBackup
       class Error < StandardError; end
 

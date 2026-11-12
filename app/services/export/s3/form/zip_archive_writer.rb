@@ -4,7 +4,7 @@ require 'json'
 require 'zip'
 
 module Export
-  module S3
+  module S3::Form
     # Streams version entries straight into a ZIP archive (no intermediate
     # JSON files on disk). Layout: <service_id>/<version_id>.json
     class ZipArchiveWriter

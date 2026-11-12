@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Export
-  module S3
+  module S3::Form
     # Reads services with their metadata, items and settings from the Metadata API
     # and exposes them as a stream of ServiceEntry objects.
     #

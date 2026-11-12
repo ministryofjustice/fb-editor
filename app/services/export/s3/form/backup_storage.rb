@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Export
-  module S3
+  module S3::Form
     # Thin wrapper around the S3 operations the backup needs.
     class BackupStorage
       DEFAULT_CONTENT_TYPE = 'application/zip'
