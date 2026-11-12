@@ -8,7 +8,7 @@ module Export
     # Services are fetched page by page and yielded lazily, so memory use stays
     # flat regardless of how many services exist.
     #
-    #   source = Export::S3::MetadataSource.new(per_page: 100)
+    #   source = Export::S3::Form::MetadataSource.new(per_page: 100)
     #   source.each_service_version { |entry| ... } # entry is a ServiceEntry
     #   source.each_service_version.first(5)        # also works without a block
     class MetadataSource
