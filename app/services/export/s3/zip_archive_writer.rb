@@ -40,7 +40,7 @@ module Export
 
             if service.versions.present?
               service.versions.each do |version|
-                zip.get_output_stream(file_path(service,  version_filename(version))) do |io|
+                zip.get_output_stream(file_path(service, version_filename(version))) do |io|
                   io.write(JSON.pretty_generate(version.metadata))
                 end
               end
@@ -62,12 +62,8 @@ module Export
       end
 
       def version_filename(version)
-        [
-          'version',
-          Time.zone.parse(version.created_at).strftime(TIMESTAMP_FORMAT),
-          safe_name(version.locale),
-          safe_name(version.version_id)
-        ].join('_') + '.json'
+        timestamp = Time.zone.parse(version.created_at).strftime(TIMESTAMP_FORMAT)
+        "version_#{timestamp}_#{safe_name(version.locale)}_#{safe_name(version.version_id)}.json"
       end
 
       # Prevents IDs from introducing unexpected directory paths.
