@@ -19,7 +19,7 @@ RSpec.describe Export::S3::Form::MetadataBackup do
   let(:enum_mock) { double('Enumerator') }
 
   before do
-    allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: per_page).and_return(source_mock)
+    allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: per_page, deployment_environments: []).and_return(source_mock)
     allow(Export::S3::Form::ZipArchiveWriter).to receive(:new).and_return(archive_writer_mock)
     allow(Export::S3::Form::BackupStorage).to receive(:new).with(
       bucket: bucket,
@@ -105,7 +105,7 @@ RSpec.describe Export::S3::Form::MetadataBackup do
       end
 
       before do
-        allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: 100).and_return(source_mock)
+        allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: 100, deployment_environments: []).and_return(source_mock)
         allow(Export::S3::Form::BackupStorage).to receive(:new).with(
           bucket: 'env-bucket',
           s3_client: kind_of(Aws::S3::Client)

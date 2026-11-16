@@ -23,7 +23,13 @@ module Export
         Zip::File.open(zip_path, create: true) do |zip|
           services.each do |service|
             zip.get_output_stream(file_path(service, 'service.json')) do |io|
-              io.write(JSON.pretty_generate({ service_id: service.service_id, service_name: service.service_name }))
+              io.write(JSON.pretty_generate({
+                id: service.service_id,
+                name: service.service_name,
+                created_by: service.service_created_by,
+                created_at: service.service_created_at,
+                updated_at: service.service_updated_at
+              }))
             end
 
             if service.settings.present?
@@ -63,7 +69,7 @@ module Export
 
       def version_filename(version)
         timestamp = Time.zone.parse(version.created_at).strftime(TIMESTAMP_FORMAT)
-        "version_#{timestamp}_#{safe_name(version.locale)}_#{safe_name(version.version_id)}.json"
+        "version_#{timestamp}_#{safe_name(version.locale)}_#{version.deployment_environments}_#{safe_name(version.version_id)}.json"
       end
 
       # Prevents IDs from introducing unexpected directory paths.

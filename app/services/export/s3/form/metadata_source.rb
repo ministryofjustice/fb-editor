@@ -14,13 +14,14 @@ module Export
     class MetadataSource
       class Error < StandardError; end
 
-      VersionEntry = Struct.new(:version_id, :service_id, :metadata, :created_at, :locale, keyword_init: true)
-      ServiceEntry = Struct.new(:service_id, :service_name, :settings, :items, :versions, keyword_init: true)
+      VersionEntry = Struct.new(:version_id, :service_id, :metadata, :created_at, :locale, :deployment_environments, keyword_init: true)
+      ServiceEntry = Struct.new(:service_id, :service_name, :settings, :items, :versions, :service_created_by, :service_created_at, :service_updated_at, keyword_init: true)
 
-      def initialize(per_page:)
+      def initialize(per_page:, deployment_environments: [])
         @per_page = per_page
         @service_api = MetadataApiClient::Service
         @settings_model = ServiceConfiguration
+        @deployment_environments = deployment_environments
       end
 
       # Yields one ServiceEntry per service, each holding all of its versions.
@@ -65,6 +66,9 @@ module Export
         ServiceEntry.new(
           service_id: service.id,
           service_name: service.name,
+          service_created_by: payload['service_created_by'],
+          service_created_at: payload['service_created_at'],
+          service_updated_at: payload['service_updated_at'],
           settings: settings,
           items: payload['items'] || [],
           versions: Array(payload['metadata']).map { |version| build_version_entry(version) }
@@ -77,12 +81,13 @@ module Export
           service_id: version['service_id'],
           metadata: version['data'],
           created_at: version['created_at'],
-          locale: version['locale']
+          locale: version['locale'],
+          deployment_environments: @deployment_environments.join('_')
         )
       end
 
       def fetch_page(page)
-        response = @service_api.all_services(page: page, per_page: @per_page, include: 'metadata')
+        response = @service_api.published_services(page: page, per_page: @per_page, deployment_environments: @deployment_environments)
         Array(response && response[:services])
       end
     end

@@ -47,10 +47,10 @@ RSpec.describe Export::S3::Form::MetadataSource do
 
     context 'with a block' do
       before do
-        allow(MetadataApiClient::Service).to receive(:all_services).with(page: 1, per_page: 2, include: 'metadata').and_return(
+        allow(MetadataApiClient::Service).to receive(:published_services).with(page: 1, per_page: 2, deployment_environments: []).and_return(
           { services: [service_1, service_2] }
         )
-        allow(MetadataApiClient::Service).to receive(:all_services).with(page: 2, per_page: 2, include: 'metadata').and_return(
+        allow(MetadataApiClient::Service).to receive(:published_services).with(page: 2, per_page: 2, deployment_environments: []).and_return(
           { services: [] }
         )
       end
@@ -84,8 +84,8 @@ RSpec.describe Export::S3::Form::MetadataSource do
       end
 
       it 'paginates through all pages until an empty page is returned' do
-        expect(MetadataApiClient::Service).to receive(:all_services).with(page: 1, per_page: 2, include: 'metadata').once
-        expect(MetadataApiClient::Service).to receive(:all_services).with(page: 2, per_page: 2, include: 'metadata').once
+        expect(MetadataApiClient::Service).to receive(:published_services).with(page: 1, per_page: 2, deployment_environments: []).once
+        expect(MetadataApiClient::Service).to receive(:published_services).with(page: 2, per_page: 2, deployment_environments: []).once
 
         metadata_source.each_service_version.to_a
       end
@@ -95,10 +95,10 @@ RSpec.describe Export::S3::Form::MetadataSource do
       let(:service_empty_metadata) { double(id: 'service-nil', name: 'Empty', metadata: nil) }
 
       before do
-        allow(MetadataApiClient::Service).to receive(:all_services).with(page: 1, per_page: 2, include: 'metadata').and_return(
+        allow(MetadataApiClient::Service).to receive(:published_services).with(page: 1, per_page: 2, deployment_environments: []).and_return(
           { services: [service_empty_metadata] }
         )
-        allow(MetadataApiClient::Service).to receive(:all_services).with(page: 2, per_page: 2, include: 'metadata').and_return(
+        allow(MetadataApiClient::Service).to receive(:published_services).with(page: 2, per_page: 2, deployment_environments: []).and_return(
           { services: [] }
         )
         allow(ServiceConfiguration).to receive(:where).with(service_id: %w[service-nil]).and_return([])

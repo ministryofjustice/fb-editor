@@ -66,12 +66,12 @@ RSpec.describe Export::S3::Form::ZipArchiveWriter do
             'service_1/service.json',
             'service_1/settings.json',
             'service_1/items.json',
-            'service_1/version_20261102T120000_en_v1.json',
-            'service_1/version_20261103T143000_cy_v2_invalid_id.json'
+            'service_1/version_20261102T120000_en__v1.json',
+            'service_1/version_20261103T143000_cy__v2_invalid_id.json'
           )
 
           service_content = JSON.parse(zip.read('service_1/service.json'))
-          expect(service_content).to eq({ 'service_id' => 'service/1', 'service_name' => 'Test Service' })
+          expect(service_content).to eq({ 'id' => 'service/1', 'name' => 'Test Service', 'created_by' => nil, 'created_at' => nil, 'updated_at' => nil })
 
           settings_content = JSON.parse(zip.read('service_1/settings.json'))
           expect(settings_content).to eq([{ 'name' => 'SERVICE_NAME', 'value' => 'Test Service' }])
@@ -79,7 +79,7 @@ RSpec.describe Export::S3::Form::ZipArchiveWriter do
           items_content = JSON.parse(zip.read('service_1/items.json'))
           expect(items_content).to eq([{ 'id' => 'item-1' }])
 
-          version_1_content = JSON.parse(zip.read('service_1/version_20261102T120000_en_v1.json'))
+          version_1_content = JSON.parse(zip.read('service_1/version_20261102T120000_en__v1.json'))
           expect(version_1_content).to eq({ 'title' => 'Form 1' })
         end
       end
