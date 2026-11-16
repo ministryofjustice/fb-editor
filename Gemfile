@@ -9,7 +9,7 @@ ruby file: '.ruby-version'
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'test-footer-partial'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
-gem 'metadata_presenter', '3.4.28'
+gem 'metadata_presenter', '3.4.29'
 
 # Stay on 2.2.0. In 2.3.0 the gem only saves the session when it thinks the
 # data changed, but it doesn't notice edits made inside nested hashes, so
@@ -24,7 +24,7 @@ gem 'csv'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'dotenv', '3.2.0'
-gem 'faraday', '~> 2.15.0'
+gem 'faraday', '~> 2.15.1'
 gem 'fb-jwt-auth', '0.10.0'
 gem 'govspeak', '~> 7.1'
 gem 'govuk-components', '~> 6.6'
@@ -36,7 +36,7 @@ gem 'omniauth-auth0', '~> 3.2.0'
 gem 'omniauth-rails_csrf_protection', '~> 2.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rack', '3.2.7'
+gem 'rack', '3.2.8'
 gem 'rails', '~> 8.1.3.1'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
