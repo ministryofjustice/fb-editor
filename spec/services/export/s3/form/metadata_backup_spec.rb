@@ -97,15 +97,15 @@ RSpec.describe Export::S3::Form::MetadataBackup do
       subject(:default_backup) { described_class.new }
 
       around do |example|
-        old_val = ENV['METADATA_BACKUP_BUCKET']
-        ENV['METADATA_BACKUP_BUCKET'] = 'env-bucket'
+        old_val = ENV['AWS_S3_METADATA_BACKUP_BUCKET']
+        ENV['AWS_S3_METADATA_BACKUP_BUCKET'] = 'env-bucket'
         example.run
       ensure
-        ENV['METADATA_BACKUP_BUCKET'] = old_val
+        ENV['AWS_S3_METADATA_BACKUP_BUCKET'] = old_val
       end
 
       before do
-        allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: 100, deployment_environments: []).and_return(source_mock)
+        allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: 20, deployment_environments: []).and_return(source_mock)
         allow(Export::S3::Form::BackupStorage).to receive(:new).with(
           bucket: 'env-bucket',
           s3_client: kind_of(Aws::S3::Client)

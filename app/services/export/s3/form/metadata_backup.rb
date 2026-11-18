@@ -11,7 +11,7 @@ module Export
     class MetadataBackup
       class Error < StandardError; end
 
-      DEFAULT_PER_PAGE  = 100
+      DEFAULT_PER_PAGE  = 20
       DEFAULT_S3_PREFIX = 'metadata-backups'
       REGION            = 'eu-west-2'
       ZIP_FILENAME      = 'metadata_backup.zip'
@@ -22,7 +22,7 @@ module Export
         new(**options).call
       end
 
-      def initialize(bucket: ENV.fetch('METADATA_BACKUP_BUCKET'), services_per_page: DEFAULT_PER_PAGE, ensure_bucket: false, deployment_environments: [])
+      def initialize(bucket: ENV.fetch('AWS_S3_METADATA_BACKUP_BUCKET'), services_per_page: DEFAULT_PER_PAGE, ensure_bucket: false, deployment_environments: [])
         @bucket = bucket
         @source = MetadataSource.new(per_page: services_per_page, deployment_environments: deployment_environments)
         @archive_writer = ZipArchiveWriter.new
