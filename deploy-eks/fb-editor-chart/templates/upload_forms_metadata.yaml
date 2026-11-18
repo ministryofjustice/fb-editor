@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: fb-editor-cron-upload_forms_metadata-{{ .Values.environmentName }}
+  namespace: formbuilder-saas-{{ .Values.environmentName }}
+spec:
+  schedule: "0 5 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 120
+      template:
+        metadata:
+          labels:
+            from-address: cronjob
+        spec:
+          containers:
+            - name: "fb-editor-workers-{{ .Values.environmentName }}"
+              image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
+              command: ['bin/rails', 'aws:s3:upload_forms_metadata']
+              securityContext:
+                runAsUser: 1001
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: fb-editor-config-map
+              env:
+                - name: AWS_S3_METADATA_BACKUP_BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: s3-fb-metadata-backup-{{ .Values.environmentName }}
+                      key: aws_s3_metadata_backup_bucket
+          restartPolicy: Never
