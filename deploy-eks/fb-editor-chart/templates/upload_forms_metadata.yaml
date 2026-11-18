@@ -1,10 +1,10 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: fb-editor-cron-upload_forms_metadata-{{ .Values.environmentName }}
+  name: fb-editor-cron-upload-forms-metadata-{{ .Values.environmentName }}
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  schedule: "0 5 * * *"
+  schedule: "0 18 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
   jobTemplate:
