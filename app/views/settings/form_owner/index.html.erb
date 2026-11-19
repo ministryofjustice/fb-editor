@@ -8,7 +8,7 @@
     ) do |c| %>
 
 <!--  We use the soft deprecated form_for to get the form errors shown at the top -->
-  <%= form_for @form_owner,
+  <%= form_for @form_owner_settings,
                url: transfer_form_ownership_settings_service_path(service.service_id),
                method: :put,
                html: { id: 'transfer-ownership-settings' },

@@ -511,6 +511,7 @@ en:
       confirmation_title: The form owner has been changed
       confirmation: ‘%{form_name}’ has been transferred to <strong>%{new_owner}</strong>.<br><br>They will see it on the ‘Your forms’ page the next time they sign in. We have also sent a confirmation email.<br><br>If you made this change by mistake, %{href}.
       href: <a class="govuk-link" href="%{text_4_link_ref}" target="_blank" rel="noopener noreferrer">contact us<span class="govuk-visually-hidden">(opens in a new tab)</span></a>
+      admin_event: Form ownership transferred from %{previous_owner_email} to %{new_owner_email}
     collection_email:
       heading: 'Collect information by email'
       lede: 'Receive each form submission by email with PDF and CSV attachments.'
