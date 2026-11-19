@@ -16,6 +16,19 @@ module MetadataApiClient
       }
     end
 
+    def self.published_services(page:, per_page:, deployment_environments:)
+      response = connection.post('/services/published_metadata') { |req|
+        req.params['page'] = page
+        req.params['per_page'] = per_page
+        req.body = { services: published_services_by_deployment_environment(deployment_environments:) }.to_json
+      }.body
+
+      {
+        total_services: response['total_services'],
+        services: Array(response['services']).map { |service| new(service) }
+      }
+    end
+
     def self.all(user_id:)
       response = connection.get("/services/users/#{user_id}").body['services']
       Array(response).map { |service| new(service) }
@@ -38,6 +51,14 @@ module MetadataApiClient
       connection.delete(ActionController::Base.helpers.sanitize("/services/#{service_id}"))
     rescue Faraday::BadRequestError => e
       error_messages(e)
+    end
+
+    def self.published_services_by_deployment_environment(deployment_environments:)
+      published_services = PublishService.where.not(version_id: nil)
+      published_services = published_services.where(deployment_environment: deployment_environments) if deployment_environments.present?
+      published_services.group_by(&:service_id)
+        .map { |k, v| { k.to_s => { versions: v.pluck(:version_id).uniq } } }
+        .reduce({}, :merge)
     end
   end
 end
