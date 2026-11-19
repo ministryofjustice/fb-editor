@@ -298,42 +298,42 @@ jobs:
             K8S_NAMESPACE: formbuilder-saas-test
           command: "./deploy-scripts/bin/deploy-eks"
       - slack/status: *slack_status
-#  acceptance_tests_eks:
-#    docker: *test_image
-#    resource_class: large
-#    environment: *test_environment
-#    parallelism: 7
-#    steps:
-#      - checkout
-#      - ruby/install-deps
-#      - run: sudo apt-get update
-#      - browser-tools/install-chrome:
-#          chrome-version: 149.0.7827.200
-#      - browser-tools/install-chromedriver
-#      - run:
-#          name: Check browser tools install
-#          command: |
-#            google-chrome --version
-#            chromedriver --version
-#      - run: *wait_for_db
-#      - run: *db_setup
-#      - run: mkdir ~/acceptance
-#      - run:
-#          name: Run acceptance tests
-#          command: |
-#            EDITOR_APP=https://fb-editor-test.apps.live.cloud-platform.service.justice.gov.uk
-#            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
-#            echo 'export ACCEPTANCE_TESTS_ADMIN_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
-#            echo 'export ACCEPTANCE_TESTS_ADMIN_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
-#            echo 'export CI_MODE=true' >> $BASH_ENV
-#            echo 'export SITEPRISM_DSL_VALIDATION_DISABLED=true' >> $BASH_ENV
-#            source $BASH_ENV
-#
-#            EXCLUDE_FILES="accessibility_spec.rb"
-#            circleci tests glob "acceptance/**/*_spec.rb" | grep -ve $EXCLUDE_FILES | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
-#      - store_test_results:
-#          path: ~/acceptance
-#      - slack/status: *slack_status
+  acceptance_tests_eks:
+    docker: *test_image
+    resource_class: large
+    environment: *test_environment
+    parallelism: 7
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run: sudo apt-get update
+      - browser-tools/install-chrome:
+          chrome-version: 149.0.7827.200
+      - browser-tools/install-chromedriver
+      - run:
+          name: Check browser tools install
+          command: |
+            google-chrome --version
+            chromedriver --version
+      - run: *wait_for_db
+      - run: *db_setup
+      - run: mkdir ~/acceptance
+      - run:
+          name: Run acceptance tests
+          command: |
+           EDITOR_APP=https://fb-editor-test.apps.live.cloud-platform.service.justice.gov.uk
+            echo 'export ACCEPTANCE_TESTS_EDITOR_APP=$EDITOR_APP' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_ADMIN_USER=$ACCEPTANCE_TESTS_USER' >> $BASH_ENV
+            echo 'export ACCEPTANCE_TESTS_ADMIN_PASSWORD=$ACCEPTANCE_TESTS_PASSWORD' >> $BASH_ENV
+            echo 'export CI_MODE=true' >> $BASH_ENV
+            echo 'export SITEPRISM_DSL_VALIDATION_DISABLED=true' >> $BASH_ENV
+            source $BASH_ENV
+
+            EXCLUDE_FILES="accessibility_spec.rb"
+            circleci tests glob "acceptance/**/*_spec.rb" | grep -ve $EXCLUDE_FILES | circleci tests run --command="xargs bundle exec rspec --format progress --format RspecJunitFormatter -o ~/acceptance/acceptance.xml" --verbose --split-by=timings --timings-type=filename
+      - store_test_results:
+          path: ~/acceptance
+      - slack/status: *slack_status
   testable_branch_acceptance_tests:
     docker: *test_image
     resource_class: large
@@ -455,14 +455,14 @@ workflows:
           requires:
             - build_web_image
             - build_workers_image
-#      - acceptance_tests_eks:
-#          context: *context
-#          requires:
-#            - deploy_to_test_eks
+      - acceptance_tests_eks:
+          context: *context
+          requires:
+            - deploy_to_test_eks
       - production_deploy_approval:
           type: approval
           requires:
-            - deploy_to_test_eks
+            - acceptance_tests_eks
           filters:
             branches:
               only:
