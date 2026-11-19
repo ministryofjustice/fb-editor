@@ -233,11 +233,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: ms_tenant_id
-          - name: AWS_S3_METADATA_BACKUP_BUCKET
-            valueFrom:
-              secretKeyRef:
-                name: s3-fb-metadata-backup-{{ .Values.environmentName }}
-                key: aws_s3_metadata_backup_bucket
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -420,11 +415,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: ms_tenant_id
-          - name: AWS_S3_METADATA_BACKUP_BUCKET
-            valueFrom:
-              secretKeyRef:
-                name: s3-fb-metadata-backup-{{ .Values.environmentName }}
-                key: aws_s3_metadata_backup_bucket
       volumes:
         - name: tmp-files
           emptyDir: {}
