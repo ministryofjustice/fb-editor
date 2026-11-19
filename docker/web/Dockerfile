@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=4.0.9
+ARG RUBY_VERSION=4.0.10
 FROM ruby:${RUBY_VERSION}-alpine
 
 COPY --from=node:22.22.2-alpine /usr/local/bin/node /usr/local/bin/
