@@ -20,7 +20,7 @@ parameters:
 jobs:
   login-to-aws:
     docker: &docker_image
-      - image: "cimg/ruby:<< pipeline.parameters.ruby-version >>-node"
+      - image: "cimg/ruby:4.0-node"
     steps:
       - checkout
       - aws-cli/setup:
