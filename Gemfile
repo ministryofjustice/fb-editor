@@ -36,7 +36,7 @@ gem 'omniauth-auth0', '~> 3.2.0'
 gem 'omniauth-rails_csrf_protection', '~> 2.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 6.4'
-gem 'rack', '3.2.7'
+gem 'rack', '3.2.8'
 gem 'rails', '~> 8.1.3.1'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
