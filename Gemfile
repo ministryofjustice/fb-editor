@@ -19,7 +19,7 @@ gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.237.0'
 gem 'benchmark'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', '>= 1.26.1', require: false
 gem 'csv'
 gem 'daemons'
 gem 'delayed_job_active_record'
