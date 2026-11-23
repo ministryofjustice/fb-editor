@@ -69,7 +69,7 @@ GEM
       activerecord (>= 7.0)
       cgi (>= 0.3.6)
       rack (>= 2.0.8, < 4)
-      railties (>= 7.1)
+      railties (>= 7.0)
     activestorage (8.1.4.1)
       actionpack (= 8.1.4.1)
       activejob (= 8.1.4.1)
