@@ -15,7 +15,7 @@ gem 'metadata_presenter', '3.4.30'
 # data changed, but it doesn't notice edits made inside nested hashes, so
 # answers get lost between pages.
 # See https://github.com/rails/activerecord-session_store/pull/166
-gem 'activerecord-session_store', '~> 2.3.0'
+gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.237.0'
 gem 'benchmark'
