@@ -287,7 +287,7 @@ class PublishController < FormController
     PublishServiceJob.perform_later(
       publish_service_id: @publish_service_creation.publish_service_id
     )
-    NotificationService.notify(review_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
+    NotificationService.notify(review_message, webhook: ENV['SLACK_PUBLISH_FOR_CONTENT_WEBHOOK'])
   end
 
   def notify_of_publish
