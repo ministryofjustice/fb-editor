@@ -15,9 +15,9 @@ gem 'metadata_presenter', '3.4.31'
 # data changed, but it doesn't notice edits made inside nested hashes, so
 # answers get lost between pages.
 # See https://github.com/rails/activerecord-session_store/pull/166
-gem 'activerecord-session_store', '~> 2.2.0'
+gem 'activerecord-session_store', '~> 2.3.0'
 gem 'administrate', '~> 1.0'
-gem 'aws-sdk-s3', '~> 1.237.0'
+gem 'aws-sdk-s3', '~> 1.243.0'
 gem 'benchmark'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'csv'
@@ -41,9 +41,9 @@ gem 'rails', '~> 8.1.4.1'
 # Use Redis for Action Cable
 gem 'redis', '~> 4.0'
 gem 'sass-rails', '>= 6'
-gem 'sentry-delayed_job', '~> 7.1'
-gem 'sentry-rails', '~> 7.1.0'
-gem 'sentry-ruby', '~> 7.1'
+gem 'sentry-delayed_job', '~> 7.2'
+gem 'sentry-rails', '~> 7.2.0'
+gem 'sentry-ruby', '~> 7.2'
 gem 'shakapacker', '~> 10.3'
 gem 'turbo-rails', '~> 2.0.0'
 gem 'tzinfo-data'
@@ -71,7 +71,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'listen', '~> 3.10'
   gem 'rubocop'
-  gem 'rubocop-govuk', '~> 5.2.0'
+  gem 'rubocop-govuk', '~> 6.0.0'
   gem 'ruby-lsp'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.1.0'
