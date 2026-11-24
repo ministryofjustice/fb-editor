@@ -115,7 +115,6 @@ class EditorApp < SitePrism::Page
   element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
-  element :move_page_link, :link, I18n.t('actions.move_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
