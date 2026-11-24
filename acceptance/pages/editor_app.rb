@@ -115,13 +115,20 @@ class EditorApp < SitePrism::Page
   element :three_dots_button, '.flow-menu-activator'
   element :preview_page_link, :link, I18n.t('actions.preview_page')
   element :add_page_here_link, :link, I18n.t('actions.add_page')
-  element :move_page_link, :link, I18n.t('actions.move_page')
   element :delete_page_link, :link, I18n.t('actions.delete_page')
   element :delete_page_modal_button, :button, I18n.t('dialogs.button_delete'), visible: true
   element :branching_link, :link, I18n.t('actions.add_branch')
   element :change_destination_link, :link, I18n.t('actions.change_destination')
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
   element :modal_dialog, '.ui-dialog'
+
+  def click_move_page_link(flow_title)
+    menu_label = I18n.t('pages.flow_page_menu_label', title: flow_title)
+    activator = find("button[aria-label='#{menu_label}']", visible: true)
+    menu = find("[role='menu'][aria-labelledby='#{activator[:id]}']", visible: true)
+
+    menu.find(:link, I18n.t('actions.move_page'), visible: true).click
+  end
 
   def main_flow_titles
     flow_titles(main_flow)
