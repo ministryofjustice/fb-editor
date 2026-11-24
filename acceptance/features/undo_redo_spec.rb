@@ -42,7 +42,7 @@ feature 'Undo redo page' do
 
   scenario 'when moving page' do
     and_I_click_on_the_page_menu(page_1)
-    editor.move_page_link.click
+    editor.click_move_page_link(page_1)
     then_I_should_see_the_move_target_list(page_1)
     and_I_select_a_target(page_2)
     and_I_click_the_move_button

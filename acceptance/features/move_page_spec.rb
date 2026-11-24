@@ -91,21 +91,21 @@ feature 'Move a page' do
 
   scenario 'moving pages' do
     and_I_open_the_page_menu(page_h)
-    editor.move_page_link.click
+    editor.click_move_page_link(page_h)
     then_I_should_see_the_move_target_list(page_h)
     and_I_select_a_target(page_b)
     and_I_click_the_move_button
     then_page_H_should_be_after_page_B
 
     and_I_open_the_page_menu(page_h)
-    editor.move_page_link.click
+    editor.click_move_page_link(page_h)
     then_I_should_see_the_move_target_list(page_h)
     and_I_select_a_target(branching_point_2_branching_1)
     and_I_click_the_move_button
     then_page_H_should_be_the_branching_point_2_branch_1_destination
 
     and_I_open_the_page_menu(page_c)
-    editor.move_page_link.click
+    editor.click_move_page_link(page_c)
     then_I_should_see_the_move_target_list(page_c)
     and_I_select_a_target(page_f)
     and_I_click_the_move_button
@@ -114,7 +114,7 @@ feature 'Move a page' do
 
   scenario 'no default next warning message' do
     and_I_click_on_the_page_menu('Page G')
-    editor.move_page_link.click
+    editor.click_move_page_link('Page G')
     then_I_should_see_the_no_default_next_warning
     and_I_click_understood
     then_no_pages_should_have_moved
@@ -122,7 +122,7 @@ feature 'Move a page' do
 
   scenario 'stacked branching not supported warning message' do
     and_I_click_on_the_page_menu('Page I')
-    editor.move_page_link.click
+    editor.click_move_page_link('Page I')
     then_I_should_see_the_stacked_branches_not_supported_warning
     and_I_click_understood
     then_no_pages_should_have_moved

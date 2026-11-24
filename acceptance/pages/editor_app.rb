@@ -123,6 +123,14 @@ class EditorApp < SitePrism::Page
   element :change_next_page_button, :button, I18n.t('dialogs.destination.button_change')
   element :modal_dialog, '.ui-dialog'
 
+  def click_move_page_link(flow_title)
+    menu_label = I18n.t('pages.flow_page_menu_label', title: flow_title)
+    activator = find("button[aria-label='#{menu_label}']", visible: true)
+    menu = find("[role='menu'][aria-labelledby='#{activator[:id]}']", visible: true)
+
+    menu.find(:link, I18n.t('actions.move_page'), visible: true).click
+  end
+
   def main_flow_titles
     flow_titles(main_flow)
   end
