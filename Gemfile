@@ -26,7 +26,7 @@ gem 'delayed_job_active_record'
 gem 'dotenv', '3.2.0'
 gem 'faraday', '~> 2.15.1'
 gem 'fb-jwt-auth', '0.10.0'
-gem 'govspeak', '~> 7.1'
+gem 'govspeak', '~> 8.0', '>= 8.0.0'
 gem 'govuk-components', '~> 6.6'
 gem 'govuk_design_system_formbuilder'
 gem 'govuk_notify_rails', '~> 3.0.0'
@@ -63,7 +63,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-console'
   gem 'site_prism', '~> 6.0'
-  gem 'webmock', '~> 3.34.0'
+  gem 'webmock', '~> 3.35.0'
 end
 
 group :development do
