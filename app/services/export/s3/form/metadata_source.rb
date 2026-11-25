@@ -40,10 +40,6 @@ module Export
 
       private
 
-      def fetch_service_settings(service_id)
-        ServiceConfiguration.where(service_id: service_id)
-      end
-
       def each_page_of_services
         page = 1
         loop do
