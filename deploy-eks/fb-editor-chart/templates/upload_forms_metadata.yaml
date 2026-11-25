@@ -13,6 +13,7 @@ spec:
           labels:
             upload-forms-metadata: cronjob
         spec:
+          serviceAccountName: "formbuilder-editor-workers-{{ .Values.environmentName }}"
           containers:
             - name: "fb-editor-workers-{{ .Values.environmentName }}"
               image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
@@ -32,6 +33,21 @@ spec:
                     secretKeyRef:
                       name: fb-editor-secrets-{{ .Values.environmentName }}
                       key: aws_s3_metadata_backup_bucket
+                - name: SECRET_KEY_BASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: fb-editor-secrets-{{ .Values.environmentName }}
+                      key: secret_key_base
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: rds-instance-formbuilder-editor-{{ .Values.environmentName }}
+                      key: url
+                - name: ENCODED_PRIVATE_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: fb-editor-secrets-{{ .Values.environmentName }}
+                      key: encoded_private_key
                 - name: PLATFORM_ENV
                   value: {{ .Values.environmentName }}
           restartPolicy: Never

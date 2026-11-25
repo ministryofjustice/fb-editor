@@ -26,7 +26,7 @@ module Export
         @bucket = bucket
         @source = MetadataSource.new(per_page: services_per_page, deployment_environments: deployment_environments)
         @archive_writer = ZipArchiveWriter.new
-        @storage = BackupStorage.new(bucket: bucket, s3_client: Aws::S3::Client.new(region: REGION))
+        @storage = BackupStorage.new(bucket: bucket, s3_client: Aws::S3::Client.new(region: REGION, credentials: Aws::CredentialProviderChain.new.resolve))
         @ensure_bucket = ensure_bucket
       end
 

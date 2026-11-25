@@ -59,6 +59,65 @@ RSpec.describe MetadataApiClient::Service do
     end
   end
 
+  describe '.published_services' do
+    let(:publish_service_1) { FactoryBot.create(:publish_service, deployment_environment: 'dev', status: 'completed') }
+    let(:publish_service_2) { FactoryBot.create(:publish_service, deployment_environment: 'dev', status: 'publishing') }
+    let(:expected_url) { "#{metadata_api_url}/services/published_metadata?page=1&per_page=20" }
+    let(:payload) do
+      {
+        services: {
+          publish_service_1.service_id => { versions: [publish_service_1.version_id] },
+          publish_service_2.service_id => { versions: [publish_service_2.version_id] }
+        }
+      }
+    end
+    let(:expected_api_response) do
+      {
+        total_services: 2,
+        services: [
+          {
+            'service_id' => publish_service_1.service_id,
+            'service_name' => instance_of(String),
+            'service_created_by' => instance_of(String),
+            'service_created_at' => instance_of(String),
+            'service_updated_at' => instance_of(String),
+            'items' => [],
+            'metadata' => instance_of(Array)
+          },
+          {
+            'service_id' => publish_service_2.service_id,
+            'service_name' => instance_of(String),
+            'service_created_by' => instance_of(String),
+            'service_created_at' => instance_of(String),
+            'service_updated_at' => instance_of(String),
+            'items' => [],
+            'metadata' => instance_of(Array)
+          }
+        ]
+      }
+    end
+    let(:expected_result) do
+      {
+        total_services: 2,
+        services: [
+          MetadataApiClient::Service.new(expected_api_response[:services][0]),
+          MetadataApiClient::Service.new(expected_api_response[:services][1])
+        ]
+      }
+    end
+
+    before do
+      stub_request(:post, expected_url)
+        .with(headers: expected_headers, body: payload.to_json)
+        .to_return(status: 200, body: expected_api_response.to_json, headers: { 'Content-Type': 'application/json' })
+    end
+
+    it 'returns a list of all the published services with metadata' do
+      response = described_class.published_services(page: 1, per_page: 20, deployment_environments: [])
+      expect(response).to eq(expected_result)
+    end
+  end
+
   describe '.all' do
     let(:expected_url) { "#{metadata_api_url}/services/users/12345" }
 

@@ -19,6 +19,9 @@ RSpec.describe Export::S3::Form::MetadataBackup do
   let(:enum_mock) { double('Enumerator') }
 
   before do
+    allow_any_instance_of(Aws::CredentialProviderChain).to receive(:resolve).and_return(
+      Aws::Credentials.new('test-access-key', 'test-secret-key')
+    )
     allow(Export::S3::Form::MetadataSource).to receive(:new).with(per_page: per_page, deployment_environments: []).and_return(source_mock)
     allow(Export::S3::Form::ZipArchiveWriter).to receive(:new).and_return(archive_writer_mock)
     allow(Export::S3::Form::BackupStorage).to receive(:new).with(
