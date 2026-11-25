@@ -9,7 +9,7 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"  # external services port range
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - LOCALSTACK_AUTH_TOKEN=ls-roCo6158-GICO-SAxa-xAmU-wiHe08446ff6
+      - LOCALSTACK_AUTH_TOKEN=XYZ # Get the token from https://app.localstack.cloud
       - DEBUG=${DEBUG:-0}
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
